@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'mklib'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<!-- misc -->
+			<label index="general.undef">Undefined</label>
+			<label index="plugin.mklib.label">MK Library</label>
+
+			<!-- TCA tx_mklib_wordlist -->
+			<label index="tx_mklib_wordlist">Wordlist</label>
+			<label index="tx_mklib_wordlist.blacklisted">explicitly forbidden</label>
+			<label index="tx_mklib_wordlist.whitelisted">explicitly allowed</label>
+			<label index="tx_mklib_wordlist.word">Word(s)</label>
+			
+			<!-- TCA static_countries -->
+			<label index="static_countries.zipcode_rule">zip code rule</label>
+			<label index="static_countries.zipcode_length">zip code length</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<!-- misc -->
+			<label index="general.undef">Undefiniert</label>
+			<label index="plugin.mklib.label">MK Bibliothek</label>
+
+			<!-- TCA tx_mklib_wordlist -->
+			<label index="tx_mklib_wordlist">Wortliste</label>
+			<label index="tx_mklib_wordlist.blacklisted">explizit verboten</label>
+			<label index="tx_mklib_wordlist.whitelisted">explizit erlaubt</label>
+			<label index="tx_mklib_wordlist.word">Wort(e)</label>
+			
+			<!-- TCA static_countries -->
+			<label index="static_countries.zipcode_rule">Postleitzahl-Regel</label>
+			<label index="static_countries.zipcode_length">Postleitzahl-Länge</label>
+		</languageKey>
+	</data>
+</T3locallang>

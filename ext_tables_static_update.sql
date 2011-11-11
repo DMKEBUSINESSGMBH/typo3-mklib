@@ -1,0 +1,45 @@
+### statements für die zip code rules (static_countries)
+#importStaticInfoTables START ab hier stehen die statements für das update der zip code rules
+UPDATE static_countries SET	zipcode_rule='4', zipcode_length='5' WHERE cn_iso_2='DE';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='AT';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='CH';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='7'	WHERE cn_iso_2='NL';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='LI';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='BE';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='DK';
+UPDATE static_countries SET	zipcode_rule='5',	zipcode_length='8'	WHERE cn_iso_2='GB';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='5'	WHERE cn_iso_2='IT';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='5'	WHERE cn_iso_2='ES';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='5'	WHERE cn_iso_2='FR';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='LU';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='6'	WHERE cn_iso_2='SW';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='5'	WHERE cn_iso_2='TR';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='3'	WHERE cn_iso_2='IS';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='5'	WHERE cn_iso_2='HR';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='6'	WHERE cn_iso_2='RO';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='6'	WHERE cn_iso_2='SK';
+UPDATE static_countries SET	zipcode_rule='1',	zipcode_length='10'	WHERE cn_iso_2='US';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='6'	WHERE cn_iso_2='CN';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='6'	WHERE cn_iso_2='CZ';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='CY';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='NO';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='6'	WHERE cn_iso_2='PL';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='HU';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='7'	WHERE cn_iso_2='CA';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='5'	WHERE cn_iso_2='FI';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='BG';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='EE';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='6'	WHERE cn_iso_2='GR';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='IE';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='6'	WHERE cn_iso_2='KZ';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='LV';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='LT';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='MT';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='MK';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='5'	WHERE cn_iso_2='MC';
+UPDATE static_countries SET	zipcode_rule='9',	zipcode_length='8'	WHERE cn_iso_2='PT';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='6'	WHERE cn_iso_2='RU';
+UPDATE static_countries SET	zipcode_rule='0',	zipcode_length='0'	WHERE cn_iso_2='RS';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='SI';
+UPDATE static_countries SET	zipcode_rule='4',	zipcode_length='4'	WHERE cn_iso_2='ZA';
+#importStaticInfoTables END ende der statements für die zip code rules

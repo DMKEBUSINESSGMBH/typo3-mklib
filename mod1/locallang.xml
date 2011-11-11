@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>general</type>
+		<description>General Language labels belonging to extension 'mklib'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="label_tableheader_uid">Uid</label>
+			<label index="label_tableheader_title">Title</label>
+			<label index="label_tableheader_actions">Actions</label>
+			<label index="label_button_update">Update</label>
+			<label index="label_button_search">search</label>
+			
+			<label index="label_search">Free text search: </label>
+			<label index="label_hidden">Hidden entries:</label>
+			<label index="label_select_hide_hidden">Hide hidden entries</label>
+			<label index="label_select_show_hidden">Show hidden entries</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+		</languageKey>
+	</data>
+</T3locallang>

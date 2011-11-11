@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<tx_mklib_wordlist>
+		<word>some</word>
+		<blacklisted>0</blacklisted>
+		<whitelisted>0</whitelisted>
+		<hidden>1</hidden>
+	</tx_mklib_wordlist>
+</dataset>

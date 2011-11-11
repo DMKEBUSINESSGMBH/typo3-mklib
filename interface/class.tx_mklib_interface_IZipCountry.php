@@ -1,0 +1,70 @@
+<?php
+/*
+ *
+ *  Copyright notice
+ *
+ *  (c) 2011 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ */
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_model_base');
+
+/**
+ * Interface für PLZ-Validierung von Ländern
+ * 
+ * @package tx_mklib
+ * @subpackage tx_mklib_model
+ * @author René Nitzsche
+ */
+interface tx_mklib_interface_IZipCountry {
+	
+	/**
+	 * Liefert den ISO2 Code des Landes. DE,CZ,PL usw.
+	 * 
+	 * @return String
+	 */
+	public function getISO2();
+	
+	/**
+	 * ID der Regel für die PLZ-Validierung 
+			1: maximum length without gaps
+			2: maximum length numerical without gaps
+			3: exact length without gaps
+			4: exact length numerical without gaps
+			5: maximum length with gaps
+			6: maximum length numerical with gaps
+			7: exact length with gaps
+			8: exact length numerical with gaps
+			9: special rules
+			
+	 * @return int 1-9
+	 */
+	public function getZipRule();
+	
+	/**
+	 * Erlaubte Anzahl Zeichen der PLZ
+	 * 
+	 * @return int 
+	 */
+	public function getZipLength();
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+}

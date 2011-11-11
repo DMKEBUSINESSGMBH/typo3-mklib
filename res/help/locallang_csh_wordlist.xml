@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for the 'tx_mklib_wordlist' context sensitive help (CSH)</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".description">Wordlist for several purposes</label>
+			<label index="blacklisted.description">Is there word explicitly forbidden?</label>
+			<label index="blacklisted.details"></label>
+			<label index="whitelisted.description">Is there word explicitly allowed?</label>
+			<label index="whitelisted.details"></label>
+			<label index="word.description">Not just a single word but several words can be inserted. They have to be separated by comma without any white spaces. the max length of an entry is 255 chars inclusive commas. 1 Example: bad | 2. Example: bad,mean</label>
+			<label index="word.details"></label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index=".description">Wortliste für verschiedene Verwendungen</label>
+			<label index="blacklisted.description">Ist das Wort explizit verboten?</label>
+			<label index="blacklisted.details"></label>
+			<label index="whitelisted.description">Ist das Wort explizit erlaubt?</label>
+			<label index="whitelisted.details"></label>
+			<label index="word.description">Es kann entweder ein einzelnes oder mehrere Wörter eingegeben werden. Mehrere Wörter müssen durch Komma getrennt werden ohne irgendwelche Leerzeichen. Die maximale Länge eines Eintrages beträgt 255 Zeichen inklusive der Kommatas. 1. Beispiel: böse | 2. Beispiel: böse,gemein Hinweis: Es dürfen lediglich Buchstaben, Ziffern und Kommas vorkommen. Einige andere Zeichen könnten zu Fehlern führen!</label>
+			<label index="word.details"></label>
+		</languageKey>
+	</data>
+</T3locallang>
