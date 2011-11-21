@@ -41,18 +41,18 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 class tx_mklib_util_Array {
 
 	/**
-	 * Bereinigt ein Array von allen Werten die leer sind. 
+	 * Bereinigt ein Array von allen Werten die leer sind.
 	 * Leere Arrays innerhalb des zu bereinigenden Arrays werden ebenfalls entfernt.
 	 * Die Keys werden zurückgesetzt.
-	 * 
+	 *
 	 * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyArrayValuesSimple
-	 * 
+	 *
 	 * @author 2011 hbochmann
    	 *
    	 * @param array 	$aArray
    	 * @param array 	$aEmptys 	Alle Werte, die einen leeren Zustand definieren.
    	 * @param boolean 	$bStrict 	Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
-   	 * @return array 
+   	 * @return array
    	 */
   	public static function removeEmptyArrayValuesSimple(array $aArray, array $aEmptys = array('',0,'0',null,false,array()), $bStrict=true) {
   		$aRet = array();
@@ -63,17 +63,17 @@ class tx_mklib_util_Array {
   	}
   	
 	/**
-	 * Bereinigt ein Array von allen Werten die leer sind. 
+	 * Bereinigt ein Array von allen Werten die leer sind.
 	 * Leere Arrays innerhalb des zu bereinigenden Arrays bleiben unberührt.
 	 * Die Keys werden by default nicht zurückgesetzt!
-	 * 
+	 *
 	 * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyValues
-	 * 
+	 *
 	 * @author 2011 mwagner
    	 *
    	 * @param array 	$aArray
    	 * @param boolean 	$bResetIndex	Setzt die Array Keys zurück, falls sie numerisch sind.
-   	 * @return array 
+   	 * @return array
    	 */
   	public static function removeEmptyValues(array $aArray, $bResetIndex=false) {
   		$aEmptyElements = array_keys($aArray, '');
@@ -87,7 +87,7 @@ class tx_mklib_util_Array {
 	 *
 	 * @param 	array	$aData		Zu filternde Daten
 	 * @param 	array	$aNeedle	Enthält die erlaubten Keys
-	 * @return 	array				
+	 * @return 	array
 	 */
 	public static function removeNotIn(array $aData, array $aNeedle) {
 		if (!empty($aNeedle)) {
@@ -102,9 +102,9 @@ class tx_mklib_util_Array {
 
   	/**
   	 * Prüft ob ein oder mehrere Werte in einem Array vorhanden sind.
-  	 * 
+  	 *
 	 * @author 2011 mwagner
-	 * 
+	 *
   	 * @param mixed 	$mNeedle
   	 * @param array 	$aHaystack
   	 * @param boolean 	$bStrict
@@ -120,16 +120,17 @@ class tx_mklib_util_Array {
 		}
 		return FALSE;
   	}
+  	
 	/**
 	 * Erstellt anhand einer Liste von Models/Arrays ein Array mit Werten einer Spalte
-	 * 
+	 *
 	 * @author 2011 mwagner
-   	 * 
+   	 *
 	 * @param tx_rnbase_model_base|array 	$objs
 	 * @param string 						$attr
 	 * @return array
 	 */
-	public static function fieldsToArray($aObj, $sAttr) {
+	public static function fieldsToArray($aObj, $sAttr = 'uid') {
 		$fieldsArray = array();
 		foreach ($aObj As $oObj) {
 			$aRecord = is_object($oObj) ? $oObj->record : (is_array($oObj) ? $oObj : array());
@@ -142,15 +143,15 @@ class tx_mklib_util_Array {
 	
 	/**
 	 * Erstellt anhand einer Liste von Models/Arrays ein String mit Werten einer Spalte
-	 * 
+	 *
 	 * @author 2011 mwagner
-	 * 
+	 *
 	 * @param tx_rnbase_model_base|array 	$objs
 	 * @param string 						$attr
 	 * @param string 						$delimiter
 	 * @return string
 	 */
-	public static function fieldsToString($aObj, $sAttr, $sDelimiter=',') {
+	public static function fieldsToString($aObj, $sAttr='uid', $sDelimiter=',') {
 		$fieldsArray = self::fieldsToArray($aObj, $sAttr);
 		return implode($sDelimiter, self::removeEmptyValues($fieldsArray));
 	}
