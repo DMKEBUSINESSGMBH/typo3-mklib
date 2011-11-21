@@ -54,7 +54,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 		$srv = $this->getService();
 
 		//Filter setzen
-		$filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId.'filter.');
+		$filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId.($this->isOldFilterMode() ? '' : 'filter.'));
 
 		$fields = array();
 		$options = array();
@@ -70,6 +70,10 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 		$viewData->offsetSet($this->getItemsDesignator(), $items);
 
 		return;
+	}
+	
+	protected function isOldFilterMode() {
+		return true;
 	}
 
 	/**
