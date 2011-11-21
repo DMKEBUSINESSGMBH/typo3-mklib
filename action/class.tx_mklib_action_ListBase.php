@@ -54,7 +54,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 		$srv = $this->getService();
 
 		//Filter setzen
-		$filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId);
+		$filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId.'filter.');
 
 		$fields = array();
 		$options = array();
