@@ -14,10 +14,19 @@
 			
 			<label index="label_search">Free text search: </label>
 			<label index="label_hidden">Hidden entries:</label>
-			<label index="label_select_hide_hidden">Hide hidden entries</label>
-			<label index="label_select_show_hidden">Show hidden entries</label>
+			<label index="label_select_hide_hidden">Hide</label>
+			<label index="label_select_show_hidden">Show</label>
 		</languageKey>
 		<languageKey index="de" type="array">
+			<label index="label_tableheader_title">Titel</label>
+			<label index="label_tableheader_actions">Aktionen</label>
+			<label index="label_button_update">Aktualisieren</label>
+			<label index="label_button_search">Suchen</label>
+
+			<label index="label_search">Freitext-Suche: </label>
+			<label index="label_hidden">Versteckte Daten:</label>
+			<label index="label_select_hide_hidden">Ausblenden</label>
+			<label index="label_select_show_hidden">Einblenden</label>
 		</languageKey>
 	</data>
 </T3locallang>
