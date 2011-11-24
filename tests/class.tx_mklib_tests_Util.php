@@ -230,6 +230,44 @@ class tx_mklib_tests_Util {
 		//aktuelle Konfiguration sichern
 		$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = null;
 	}
+	
+	/**
+	 *
+	 * @param 	string			$sActionName
+	 * @param	array			$aConfig
+	 * @param	string			$sExtKey
+	 * @param	array			$aParams
+	 * @param 	boolean 		$execute
+	 * @return tx_mkforms_action_FormBase
+	 */
+	public static function &getAction($sActionName, $aConfig, $sExtKey, $aParams = array(), $execute = true) {
+		$action = tx_rnbase::makeInstance($sActionName);
+		
+		if($execute) {
+			$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+			$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+			
+			//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
+			require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+			$configurations->init(
+					$aConfig,
+					$configurations->getCObj(1),
+					$sExtKey,$sExtKey
+				);
+				
+			//noch extra params?
+			if(!empty($aParams))
+				foreach ($aParams as $sName => $mValue)
+					$parameters->offsetSet($sName,$mValue);
+				
+			$configurations->setParameters($parameters);
+			$action->setConfigurations($configurations);
+			
+//			$action->execute($parameters, $configurations);
+			$out = $action->handleRequest($parameters, $configurations, $configurations->getViewData());
+		}
+		return $action;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
