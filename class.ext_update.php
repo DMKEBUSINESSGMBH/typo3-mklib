@@ -28,7 +28,32 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('mklib') . 'class.abstract_ext_update.php');
+
+/*
+ * @FIXME: ist das nötig? es wird auch exceptions hageln,
+ * wenn eine extension diese abstrakte klasse implementiert, installiert wird,
+ * mklib nocht nicht geladen ist. selbst wenn sie als depends mklib enthält.
+ * das sollte unbedingt umgestellt werden!
+ * auf jeden fall sollte das umgestellt werden, das hier ist nur eine quick and dirty lösung!
+ */
+// wenn mklib installiert wird, funktioniert der aufruf extPath natürlich nicht und wirft eine exception
+if(t3lib_extMgm::isLoaded('mklib')) {
+	require_once(t3lib_extMgm::extPath('mklib', 'class.abstract_ext_update.php'));
+}
+// ist de pfad bereits gesetzt?
+elseif(isset($GLOBALS['absPath'])) {
+	require_once($GLOBALS['absPath'] . 'class.abstract_ext_update.php');
+}
+// ist de pfad bereits gesetzt?
+elseif(isset($absPath)) {
+	require_once($absPath . 'class.abstract_ext_update.php');
+}
+// weitere ausführung abbrechen
+else {
+	// klasse mus erstellt. access liefert false um weitere aufrufe zu verhindern
+	class ext_update { function access() { return FALSE; } }
+	return'';
+}
 
 /**
  * Class for updating the db
