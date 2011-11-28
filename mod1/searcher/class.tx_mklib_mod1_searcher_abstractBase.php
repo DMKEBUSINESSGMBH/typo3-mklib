@@ -260,10 +260,17 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	}
 	
 	/**
+	 * @deprecated Bitte getSearchColumns nutzen!
+	 */
+	protected function getCols() {
+		return $this->getSearchColumns();
+	}
+	
+	/**
 	 * Liefert die Spalten, in denen gesucht werden soll
 	 * @return array
 	 */
-	protected function getCols() {
+	protected function getSearchColumns() {
 		return array();
 	}
 
@@ -294,21 +301,28 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);		
 	}
 	/**
+	 * @deprecated bitte getDecoratorColumns nutzen
+	 */
+	protected function getColumns(&$oDecorator){
+		return $this->getDecoratorColumns($oDecorator);
+	}
+	
+	/**
 	 * Liefert die Spalten für den Decorator.
 	 * @param 	tx_mklib_mod1_decorator_Base 	$oDecorator
 	 * @return 	array
 	 */
-	protected function getColumns(&$oDecorator){
+	protected function getDecoratorColumns(&$oDecorator) {
 		return array(
-				'uid' => array(
-					'title' => 'label_tableheader_uid',
-					'decorator' => &$oDecorator,
-				),
-				'actions' => array(
-					'title' => 'label_tableheader_actions',
-					'decorator' => &$oDecorator,
-				)
-			);
+			'uid' => array(
+				'title' => 'label_tableheader_uid',
+				'decorator' => &$oDecorator,
+			),
+			'actions' => array(
+				'title' => 'label_tableheader_actions',
+				'decorator' => &$oDecorator,
+			)
+		);
 	}
 	
 	/**
