@@ -120,29 +120,41 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	 * @return 	string
 	 */
 	public function getSearchForm() {
+		$data = $this->getFilterTableDataForSearchForm();
+		
+		$selector = $this->getSelector();
+		$out = $selector->buildFilterTable($data);
+		return $out;
+	}
+	
+	/**
+	 * Liefert die Daten für das Basis-Suchformular damit
+	 * das Html gebaut werden kann
+	 * @return array
+	 */
+	protected function getFilterTableDataForSearchForm() {
 		$data = array();
 		$options = array('pid' => $this->options['pid']);
 		$selector = $this->getSelector();
 		
 		$this->currentSearchWord = $selector->showFreeTextSearchForm(
-				$data['search'],
-				$this->getSearcherId().'Search',
-				$options
-			);
+			$data['search'],
+			$this->getSearcherId().'Search',
+			$options
+		);
 		
 		$this->currentShowHidden = $selector->showHiddenSelector(
-				$data['hidden'],
-				$options
-			);
+			$data['hidden'],
+			$options
+		);
 		
 		if($updateButton = $this->getSearchButton())
 			$data['updatebutton'] = array(
-					'label' => '',
-					'button'=> $updateButton
-				);
-			
-		$out = $selector->buildFilterTable($data);
-		return $out;
+				'label' => '',
+				'button'=> $updateButton
+			);
+				
+		return $data;
 	}
 	
 	/**
