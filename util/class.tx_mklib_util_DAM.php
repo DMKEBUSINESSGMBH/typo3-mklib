@@ -95,8 +95,8 @@ class tx_mklib_util_DAM {
 	 *
 	 * @param string 		$sTableName
 	 * @param string 		$sFieldName
-	 * @param int 			$iItemId
-	 * @param int 			$iUid
+	 * @param int 			$iItemId (Referenz Datensatz)
+	 * @param int 			$iUid (DAM Datensatz)
 	 * @param boolean 		$bUpdateCount
 	 * @return int
 	 */
