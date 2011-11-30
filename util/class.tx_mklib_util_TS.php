@@ -76,10 +76,10 @@ class tx_mklib_util_TS {
   	
   	/**
   	 * @TODO: static caching integrieren!?
-  	 * 
+  	 *
   	 * @param 	mixed 		$iPageUid		alias or uid
   	 * @return 	tx_rnbase_configurations
-  	 * 
+  	 *
 	 * @author Michael Wagner
   	 */
   	public static function loadTSFromPage($mPageUid=0, $sExtKey='mklib'){
