@@ -44,7 +44,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	/**
 	 * Kürzt einen Text Feld auf die Anzahl angegebener Zeichen
 	 * Es wird nach dem ersten Leerzeichen nach der Zeichenanzahl gesucht!
-	 * 
+	 *
 	 * @param string 	$sText		Der zu kürzende Text
 	 * @param int 		$iLen 		Die Länge des Textes
 	 * @param string 	$sSuffix 	Wird nur angehängt, wenn der text gekürtzt wurde!
@@ -68,7 +68,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	 * @TODO Leet beachten -> z.B. 4rsch
    	 *
    	 * @param string $string
-   	 * @return string 
+   	 * @return string
    	 */
   	public static function removeNoneLetters($string) {
     	return preg_replace("/[^a-zäöüß ]/i","",$string);
@@ -76,17 +76,17 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
   	
 	/**
 	 * Convert HTML to plain text
-	 * 
-	 * Removes HTML tags and HTML comments and converts HTML entities  
+	 *
+	 * Removes HTML tags and HTML comments and converts HTML entities
 	 * to their applicable characters.
-	 * 
+	 *
 	 * @param string	$t
 	 * @return string	Converted string (utf8-encoded)
 	 */
 	public static function html2plain($t) {
 		return html_entity_decode(
 					preg_replace(
-									array('/(\s+|(<.*?>)+)/', '/<!--.*?-->/'), 
+									array('/(\s+|(<.*?>)+)/', '/<!--.*?-->/'),
 									array(' ', ''),
 									$t
 								),
@@ -95,6 +95,26 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 					);
 	}
 
+	/**
+	 * Entfernt hintereinander mehrfach vorkommende Inhalte.
+	 * Fünf Leerzeichen auf eines reduzieren: 'a b' = removeRepeatedlyOccurrings('a     b', ' ');
+	 *
+	 * @param 	string 	$sHaystack
+	 * @param 	mixed 	$mValue
+	 */
+	public function removeRepeatedlyOccurrings($sHaystack, $mValue = array(' ', TAB, LF, CR, CRLF)){
+		$mValue = is_array($mValue) ? $mValue : array($mValue);
+		// Alle Werte Prprüfen/ersetzen
+		foreach($mValue as $sValue) {
+			// Ist der String mindestens 2x hintereinander enthalten
+			while (strpos($sHaystack, $sValue.$sValue) !== FALSE) {
+				// doppeltes vorkommen entfernen
+				$sHaystack = str_replace($sValue.$sValue, $sValue, $sHaystack);
+			}
+		}
+		return $sHaystack;
+	}
+	
 	/**
 	 * lcfirst gibt es erst ab php 5.3
 	 * @param 	string 	$sString

@@ -31,14 +31,14 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_String');
-	
+
 /**
  * Generic form view test
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
 class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
-	
+
 	/**
 	 * Testen ob crop nur richtig kürzt
 	 */
@@ -47,7 +47,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			'othertext' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
 			'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr'
 		);
-		
+
 		$this->assertEquals(
 				'ein ganz langer text mit vielen worten und noch viel',
 				tx_mklib_util_String::crop($aRecord['othertext'], 50),
@@ -59,7 +59,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 				tx_mklib_util_String::crop($aRecord['othertext'], 50, str_repeat('.', 3)),
 				'Nicht korrekt gekürtzt!'
 			);
-		
+
 		$this->assertEquals(
 				'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
 				tx_mklib_util_String::crop($aRecord['text']),
@@ -67,20 +67,20 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			);
 			
 	}
-  
-  /**
-   * Testen ob removeNoneLetters nur Buchstaben und Leerzeichen überlässt
-   */
-  public function testRemoveNoneLetters(){
-    $this->assertEquals('abcdef ghiäöüß',tx_mklib_util_String::removeNoneLetters('a<>|,b;.:-_c!"\'\\d/&%e$§()f =?´`+*~g#{[]}h^°@µ€i0123456789äöüß'),'Der zurückgegebene String wurde nicht korrekt bereingt.');
-  }
-  
-  /**
-   * Testen ob html2plain sonderzeichen etc entfernt bzw umwandelt
-   */
-  public function testHtml2Plain(){
-    $this->assertEquals(' alert("ohoh") ""\' äö',tx_mklib_util_String::html2plain('<script>alert("ohoh")</script>""\'<!-- my comment -->äö'),'Der zurückgegebene String wurde nicht korrekt bereingt bzw. umgewandelt.');
-  }
+
+	/**
+	 * Testen ob removeNoneLetters nur Buchstaben und Leerzeichen überlässt
+	 */
+	public function testRemoveNoneLetters(){
+		$this->assertEquals('abcdef ghiäöüß',tx_mklib_util_String::removeNoneLetters('a<>|,b;.:-_c!"\'\\d/&%e$§()f =?´`+*~g#{[]}h^°@µ€i0123456789äöüß'),'Der zurückgegebene String wurde nicht korrekt bereingt.');
+	}
+
+	/**
+	 * Testen ob html2plain sonderzeichen etc entfernt bzw umwandelt
+	 */
+	public function testHtml2Plain(){
+		$this->assertEquals(' alert("ohoh") ""\' äö',tx_mklib_util_String::html2plain('<script>alert("ohoh")</script>""\'<!-- my comment -->äö'),'Der zurückgegebene String wurde nicht korrekt bereingt bzw. umgewandelt.');
+	}
 	/**
 	 * isTrueVal testen
 	 */
@@ -110,6 +110,17 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 		$this->assertFalse(tx_mklib_util_String::isFalseVal(1));
 	}
 	/**
+	 * removeRepeatedlyOccurrings testen
+	 */
+	public function testRemoveRepeatedlyOccurrings() {
+		$this->assertEquals(
+				'Hallo String,'.LF.'Du wurdest bereinigt!',
+				tx_mklib_util_String::removeRepeatedlyOccurrings(
+					'Hallo  String,'.LF.LF.LF.'Du  wurdest    bereinigt!'
+				)
+			);
+	}
+	/**
 	 * toCamelCase testen
 	 */
 	public function testToCamelCase(){
@@ -120,5 +131,5 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_String_testcase.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_String_testcase.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_String_testcase.php']);
 }
