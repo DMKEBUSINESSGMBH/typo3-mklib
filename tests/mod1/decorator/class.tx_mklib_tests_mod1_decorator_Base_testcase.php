@@ -28,6 +28,7 @@
 
 require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_mod1_decorator_Base');
+tx_rnbase::load('tx_mklib_tests_mod1_Util');
 
 /**
  *
