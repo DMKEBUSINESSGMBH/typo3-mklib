@@ -66,12 +66,9 @@ class tx_mklib_tests_mod1_Util {
 		//cache und formtoken weg - diese sind ständig unterschiedlich
 		//und deren Funktionalität sollte nicht hier getestet werden
 		//auf der cli über cc ist der formtoken um 2 zeichen länger
-		//@todo vernünftige regex um vC und formToken herauszufiltern
-		//ohne feste Längenangaben!!!
-		$iFormTokenLength = (defined('TYPO3_cliMode') && TYPO3_cliMode) ? 42 : 40;
 		//den formToken gibt es erst ab TYPO3 4.5
-		$sVcAndFormTokenRegex = (tx_rnbase_util_TYPO3::isTYPO45OrHigher()) ? '/&amp;vC=.{10}&formToken=.{'.$iFormTokenLength.'}/' : '/&amp;vC=.{10}/';
-		$sString = preg_replace($sVcAndFormTokenRegex, '', $sString);
+		$sVcAndFormTokenRegex = (tx_rnbase_util_TYPO3::isTYPO45OrHigher()) ? '/&amp;vC=(.*?)&formToken=(.*?)\'\)/' : '/&amp;vC=.*?\')/';
+		$sString = preg_replace($sVcAndFormTokenRegex, '\')', $sString);
 		$sString = str_replace('=1&amp;', '=1\'', $sString);
 	}
 	
