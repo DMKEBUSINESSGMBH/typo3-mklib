@@ -173,7 +173,7 @@ class tx_mklib_util_File {
 	}
 	
 	/**
-	 * Prüft ob es sich um einen absoluten Server-Pfad handelt. 
+	 * Prüft ob es sich um einen absoluten Server-Pfad handelt.
 	 * @param 	$sPath
 	 * @return 	boolean
 	 */
@@ -182,7 +182,7 @@ class tx_mklib_util_File {
 		return (substr(self::removeStartingSlash($sPath), 0, strlen($sServerRoot)) === $sServerRoot);
 	}
 	/**
-	 * Prüft ob es sich um einen absoluten Web-Pfad handelt. 
+	 * Prüft ob es sich um einen absoluten Web-Pfad handelt.
 	 * @param 	$sPath
 	 * @return 	boolean
 	 */
@@ -196,7 +196,7 @@ class tx_mklib_util_File {
 	
 	/**
 	 * Gibt einen relativen Pfad zurück.
-	 * 
+	 *
 	 * @param 	string 	$sPath
 	 * @return 	string
 	 */
@@ -222,7 +222,7 @@ class tx_mklib_util_File {
 	
 	/**
 	 * Gibt einen absoluten Server Pfad zurück.
-	 * 
+	 *
 	 * @param 	string 	$sPath
 	 * @return 	string
 	 */
@@ -252,7 +252,7 @@ class tx_mklib_util_File {
 	
 	/**
 	 * Gibt einen absoluten Web Pfad zurück.
-	 * 
+	 *
 	 * @param 	string 	$sPath
 	 * @return 	string
 	 */
@@ -272,16 +272,16 @@ class tx_mklib_util_File {
 	/**
 	 * Schreibt HTTP-Header um eine Datei zum Download anzubieten
 	 * @todo Output Tests schreiben
-	 * 
+	 *
 	 * @param string $sFilename
 	 * @param string $sContentType
-	 * 
-	 * @return void 
+	 *
+	 * @return void
 	 */
 	public static function writeDownloadHeaders($sFilename, $sContentType = 'application/download') {
 		header("Content-type: ".$sContentType);
 		header("Content-disposition: filename=".$sFilename);
-		// set special header for ssl requests (ie Problem) 
+		// set special header for ssl requests (ie Problem)
 		header("Pragma: private");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
@@ -291,12 +291,12 @@ class tx_mklib_util_File {
 	 * Mit diesem Header wird der übergebene Ausgabestring
 	 * direkt als Datei zum Download angeboten
 	 * @todo Output Tests schreiben
-	 * 
+	 *
 	 * @param string $sOutput
 	 * @param string $sFilename
 	 * @param string $sContentType
-	 * 
-	 * @return void 
+	 *
+	 * @return void
 	 */
 	public static function offerFileForDownload($sOutput, $sFilename, $sContentType = 'application/download') {
 		self::writeDownloadHeaders($sFilename, $sContentType);
