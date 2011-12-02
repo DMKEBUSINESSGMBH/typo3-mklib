@@ -157,7 +157,8 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 							break;
 						case 'folder':
 							tx_rnbase::load('tx_mklib_util_File');
-							$bMessage = !@is_dir($sPath);
+							$sPath = tx_mklib_util_File::getServerPath($mValue);
+							$bMessage = !@is_dir(tx_mklib_util_File::getServerPath($sPath));
 							if (!$bMessage) $mValue = $sPath;
 							break;
 						default:
