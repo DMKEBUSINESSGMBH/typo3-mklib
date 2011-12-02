@@ -69,6 +69,12 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider
 			),
 		);
 	}
+	
+	protected function validateFolder($mValue){
+		return (strpos($mValue, 'typo3temp') === false)
+			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder_eval_typo3temp')
+			: true;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_cleanupTempFilesFieldProvider.php'])	{

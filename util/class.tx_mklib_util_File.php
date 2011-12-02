@@ -69,7 +69,7 @@ class tx_mklib_util_File {
 
 	
 	/**
-	 * Löscht alle Dateien im in einem Verzeichnis.
+	 * Löscht alle Dateien im in einem typo3temp Verzeichnis.
 	 *
 	 * @TODO: fehlerbehandlung integrieren!
 	 *
@@ -78,10 +78,17 @@ class tx_mklib_util_File {
 	 * @return 	int
 	 */
 	public static function cleanupFiles($sDirectory, array $aOptions) {
+		
+		//nur innerhalb von typo3temp zulassen
+		if(!$aOptions['skiptypo3tempcheck'] && strpos($sDirectory,'typo3temp') === false){
+			return 0;
+		}
+		
 		// optionen sammeln.
 		$iLifetime = $aOptions['lifetime'] ? $aOptions['lifetime'] : 0;
 		$aFiletypes = $aOptions['filetypes'] ? t3lib_div::trimExplode(',', strtolower($aOptions['filetypes'])) : array();
 		$bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
+		
 		$iCount = 0;
 		if (@is_dir($sDirectory)) {
 			$iHandle = opendir($sDirectory);

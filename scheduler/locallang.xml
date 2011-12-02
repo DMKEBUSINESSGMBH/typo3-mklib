@@ -14,6 +14,7 @@
 			<label index="scheduler_cleanupTempFiles_field_lifetime_eval_int">Lifetime must be an Integer</label>
 			<label index="scheduler_cleanupTempFiles_field_folder">Folder*</label>
 			<label index="scheduler_cleanupTempFiles_field_folder_eval_folder">The folder does not exist.</label>
+			<label index="scheduler_cleanupTempFiles_field_folder_eval_typo3temp">The folder must be in the typo3temp dir.</label>
 			<label index="scheduler_cleanupTempFiles_field_recursive">Recursive</label>
 			<label index="scheduler_cleanupTempFiles_field_filetypes">Filetypes</label>
 

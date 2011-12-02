@@ -91,6 +91,23 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		}
 	}
 	
+	public function testCleanupFilesNotInTypo3temp(){
+		//@TODO: lifetime testen
+		// testverzeichnis anlegen
+		$testfolder = t3lib_extMgm::extPath('mklib', 'tests/fixtures/toremove');
+		self::createTestfiles($testfolder);
+
+		// das aufräumen!
+		$count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
+			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
+			'lifetime' => -3600,
+			'recursive' => '0',
+			'filetypes' => 'zip, xml',
+		));
+		$this->assertEquals(0, $count, 'wrong deleted count.');
+		// weider löschen
+		t3lib_div::rmdir($testfolder, true);
+	}
 	public function testCleanupFilesWithZipAndXml(){
 		//@TODO: lifetime testen
 		// testverzeichnis anlegen
@@ -102,7 +119,8 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
 			'lifetime' => -3600,
 			'recursive' => '0',
-			'filetypes' => 'zip, xml'
+			'filetypes' => 'zip, xml',
+			'skiptypo3tempcheck' => '1',
 		));
 		$this->assertEquals(2, $count, 'wrong deleted count.');
 		// weider löschen
@@ -120,7 +138,8 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
 			'lifetime' => -3600,
 			'recursive' => '1',
-			'filetypes' => 'zip, xml'
+			'filetypes' => 'zip, xml',
+			'skiptypo3tempcheck' => '1',
 		));
 		$this->assertEquals(4, $count, 'wrong deleted count.');
 		// weider löschen
