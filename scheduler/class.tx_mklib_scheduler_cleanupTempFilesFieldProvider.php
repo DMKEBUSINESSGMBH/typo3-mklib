@@ -53,7 +53,7 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider
 				'type' => 'input',
  				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder',
 				'default' => '', // default is 7 days
-				'eval' => 'trim,folder',
+				'eval' => 'trim,folder,validateFolder',
 			),
 			'filetypes' => array(
 				'type' => 'input',
@@ -70,8 +70,14 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider
 		);
 	}
 	
-	protected function validateFolder($mValue){
-		return (strpos($mValue, 'typo3temp') === false)
+	/**
+	 * Validiert den Pfad. Dieser muss zur sicherheit unter typo3 temp liegen!
+	 *
+	 * @param  string $sPath
+	 * @return 	mixed
+	 */
+	protected function validateFolder($sPath){
+		return (strpos($sPath, 'typo3temp') === false)
 			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder_eval_typo3temp')
 			: true;
 	}

@@ -124,16 +124,6 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 			
 			$bMessage = false;
 			
-			// wir prüfen auf eine eigene validator methode in der Kindklasse.
-			// protected function validateLifetime($mValue){ return true; }
-			$method = 'validate'.ucfirst($sKey);
-			if(method_exists($this, $method)) {
-				$ret = $this->$method($mValue);
-				if (is_string($ret)) {
-					$bMessage = ($sMessage = $ret);
-				}
-			}
-			
 			// Die Einzelnen validatoren anwenden.
 			if (!$bMessage) {
 				foreach(t3lib_div::trimExplode(',', $aOptions['eval']) as $sEval) {
@@ -158,16 +148,18 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 						case 'folder':
 							tx_rnbase::load('tx_mklib_util_File');
 							$sPath = tx_mklib_util_File::getServerPath($mValue);
-							$bMessage = !@is_dir(tx_mklib_util_File::getServerPath($sPath));
+							$bMessage = !@is_dir($sPath);
 							if (!$bMessage) $mValue = $sPath;
 							break;
 						default:
-							// @TODO: untested, lieber die validator methode der kindklasse nutzen!
-							if (t3lib_div::hasValidClassPrefix($sEval)) {
-								// Pair hook to the one in t3lib_TCEmain::checkValue_input_Eval()
-								$oEval = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$sEval] . ':&' . $sEval);
-								if (is_object($oEval) && method_exists($oEval, 'deevaluateFieldValue')) {
-									$mValue = $oEval->deevaluateFieldValue(array('value' => $mValue, 'error' => &$bMessage));
+							// wir prüfen auf eine eigene validator methode in der Kindklasse.
+							// in eval muss validateLifetime stehen, damit folgende methode aufgerufen wird.
+							// protected function validateLifetime($mValue){ return true; }
+							// @TODO: clasname::method prüfen!?
+							if(method_exists($this, $sEval)) {
+								$ret = $this->$sEval($mValue);
+								if (is_string($ret)) {
+									$bMessage = ($sMessage = $ret);
 								}
 							}
 					}
