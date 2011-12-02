@@ -19,4 +19,5 @@ if (TYPO3_MODE=='BE')    {
     $TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:'.$_EXTKEY.'/cli/class.tx_mklib_cli_main.php','_CLI_'.$_EXTKEY);
 }
 
+require_once(t3lib_extMgm::extPath('mklib').'scheduler/ext_localconf.php');
 require_once(t3lib_extMgm::extPath('mklib').'srv/ext_localconf.php');

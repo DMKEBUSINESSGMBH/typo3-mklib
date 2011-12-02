@@ -46,7 +46,7 @@ class tx_mklib_util_File {
 	private static $siteUrl = false;
 	/** @var	string 	cache*/
 	private static $documentRoot = false;
-	
+
 	/**
 	 * Liefert eine Instanz der basicFileFunctions von t3lib
 	 * @return 	t3lib_basicFileFunctions
@@ -67,6 +67,59 @@ class tx_mklib_util_File {
 		return self::$ftInstances[$key];
 	}
 
+	
+	/**
+	 * Löscht alle Dateien im in einem Verzeichnis.
+	 *
+	 * @TODO: fehlerbehandlung integrieren!
+	 *
+	 * @param 	string 	$sDirectory
+	 * @param 	array 	$aOptions
+	 * @return 	int
+	 */
+	public static function cleanupFiles($sDirectory, array $aOptions) {
+		// optionen sammeln.
+		$iLifetime = $aOptions['lifetime'] ? $aOptions['lifetime'] : 0;
+		$aFiletypes = $aOptions['filetypes'] ? t3lib_div::trimExplode(',', strtolower($aOptions['filetypes'])) : array();
+		$bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
+		$iCount = 0;
+		if (@is_dir($sDirectory)) {
+			$iHandle = opendir($sDirectory);
+			while (($sFile = readdir($iHandle)) !== FALSE) {
+				if ($sFile === '.' || $sFile === '..') {
+					continue;
+				}
+				
+				// Dateiendung auslesen
+				$sExt = strtolower(substr($sFile, strrpos($sFile, '.') + 1));
+				// serverpfad zur datei
+				$sFilePath = $sDirectory.$sFile;
+				
+				// Es handelt sich um eine Datei.
+				if (@is_file($sFilePath)) {
+					if (
+						// Stimmt der Dateityp?
+						(empty($aFiletypes) || in_array($sExt, $aFiletypes))
+						// Ist die Datei alt genug, um sie zu löschen?
+						&& (@filemtime($sFilePath) < ($GLOBALS['EXEC_TIME'] - $iLifetime))
+					) {
+						// löschen!
+						@unlink($sFilePath);
+						// count erhöhen
+						$iCount++;
+					}
+				}
+				// Es handelt sich um ein Verzeichniss.
+				elseif ($bRecursive && @is_dir($sFilePath)){
+					//@TODO: $bRecursive!
+					$iCount += self::cleanupFiles($sFilePath.'/', $aOptions);
+				}
+			}
+			closedir($iHandle);
+		}
+		return $iCount;
+	}
+	
 	/**
 	 * Liefert die URL zur Typo3 Seite
 	 * http://www.typo3.de

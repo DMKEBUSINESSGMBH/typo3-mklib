@@ -70,6 +70,62 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 	}
 	public function tearDown() {
 	}
+	private static function createTestfiles($testfolder){
+		t3lib_div::mkdir($testfolder);
+		$files = array(
+			array($testfolder.'/','test.zip'),
+			array($testfolder.'/','test.xml'),
+			array($testfolder.'/','test.tmp'),
+			array($testfolder.'/','test.dat'),
+			array($testfolder.'/sub/','test.zip'),
+			array($testfolder.'/sub/','test.tmp'),
+			array($testfolder.'/sub/sub/','test.xml'),
+			array($testfolder.'/sub/sub/','test.dat'),
+		);
+		foreach ($files as $file) {
+			$path = $file[0]; $file = $file[1];
+			if (!is_dir($path)) t3lib_div::mkdir($path);
+			$iH = fopen($path.$file, "w+");
+			fwrite($iH, 'This is an automatic generated testfile and can be removed.');
+			fclose($iH);
+		}
+	}
+	
+	public function testCleanupFilesWithZipAndXml(){
+		//@TODO: lifetime testen
+		// testverzeichnis anlegen
+		$testfolder = t3lib_extMgm::extPath('mklib', 'tests/fixtures/toremove');
+		self::createTestfiles($testfolder);
+
+		// das aufräumen!
+		$count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
+			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
+			'lifetime' => -3600,
+			'recursive' => '0',
+			'filetypes' => 'zip, xml'
+		));
+		$this->assertEquals(2, $count, 'wrong deleted count.');
+		// weider löschen
+		t3lib_div::rmdir($testfolder, true);
+	}
+	
+	public function testCleanupFilesRecursiveWithZipAndXml(){
+		//@TODO: lifetime testen
+		// testverzeichnis anlegen
+		$testfolder = t3lib_extMgm::extPath('mklib', 'tests/fixtures/toremove');
+		self::createTestfiles($testfolder);
+
+		// das aufräumen!
+		$count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
+			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
+			'lifetime' => -3600,
+			'recursive' => '1',
+			'filetypes' => 'zip, xml'
+		));
+		$this->assertEquals(4, $count, 'wrong deleted count.');
+		// weider löschen
+		t3lib_div::rmdir($testfolder, true);
+	}
 	
 	/**
 	 * getServerPath testen
