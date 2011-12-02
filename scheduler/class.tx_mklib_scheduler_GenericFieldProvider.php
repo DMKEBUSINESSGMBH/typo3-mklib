@@ -70,9 +70,6 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
 
 		$additionalFields = array();
-		t3lib_div::debug(array(
-				$taskInfo, $schedulerModule->CMD
-			), 'DEBUG: '.__METHOD__.' Line: '.__LINE__); // @TODO: remove me
 		foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions){
 			// Initialize extra field value
 			if (empty($taskInfo[$sKey])) {
