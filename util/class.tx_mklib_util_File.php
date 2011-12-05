@@ -360,6 +360,7 @@ class tx_mklib_util_File {
 	 */
 	public static function offerFileForDownload($sOutput, $sFilename, $sContentType = 'application/download') {
 		self::writeDownloadHeaders($sFilename, $sContentType);
+		header("Content-length: ".strlen($sOutput));
 		//jetzt die Datei zum Download anbieten
 		print $sOutput;
 		//und TYPO3 hindern noch irgend etwas auszugeben
