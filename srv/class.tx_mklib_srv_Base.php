@@ -168,6 +168,7 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		
 		tx_rnbase::load('tx_mklib_util_TCA');
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
+		$data = $this->secureFromCrossSiteScripting($model, $data);
 		
 		$data['pid'] = $this->getPid();
 		
@@ -203,7 +204,8 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		// Eleminate columns not in TCA
 		tx_rnbase::load('tx_mklib_util_TCA');
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
-
+		$data = $this->secureFromCrossSiteScripting($model, $data);
+		
 		tx_rnbase::load('tx_mklib_util_DB');
 		tx_mklib_util_DB::doUpdate($table, $where, $data);
 
@@ -305,6 +307,21 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 						$this->create($data)
 					);
 		return $model;
+	}
+
+	/**
+	 * Schützt die Felder vor Cross-Site-Scripting
+	 * @param tx_rnbase_model_base $model
+	 * @param array $data
+	 * @return array
+	 */
+	private function secureFromCrossSiteScripting($model, array $data) {
+		if(!method_exists($model,'getFieldsToBeStripped')) return $data;
+		$tags = method_exists($model,'getTagsToBeIgnoredFromStripping') ? $model->getTagsToBeIgnoredFromStripping() : null;
+		foreach($model->getFieldsToBeStripped() as $field) {
+			if(isset($data[$field])) $data[$field] = strip_tags($data[$field],$tags);
+		}
+		return $data;
 	}
 }
 
