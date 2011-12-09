@@ -38,7 +38,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	/**
 	 * Lifetime of e file.
 	 *
-	 * @var	int
+	 * @var	array
 	 */
 	protected $options;
 	
@@ -120,7 +120,8 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @return 	array
 	 */
 	public function getOptions(){
-		return $this->options;
+		//wir brauchen per default ein array
+		return !empty($this->options) ? $this->options : array();
 	}
 
 }
