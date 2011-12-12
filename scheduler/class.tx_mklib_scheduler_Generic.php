@@ -40,7 +40,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 *
 	 * @var	array
 	 */
-	protected $options;
+	protected $options = array();
 	
 	/**
 	 * Function executed from the Scheduler.
@@ -121,7 +121,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 */
 	public function getOptions(){
 		//wir brauchen per default ein array
-		return !empty($this->options) ? $this->options : array();
+		return is_array($this->options) ? $this->options : array();
 	}
 
 }
