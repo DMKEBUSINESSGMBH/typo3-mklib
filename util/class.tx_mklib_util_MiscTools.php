@@ -43,7 +43,7 @@ class tx_mklib_util_MiscTools {
 	 * Liefert einen Wert aus der Extension-Konfiguration.
 	 * Gibt es für die angegebene Extension keine Konfiguration,
 	 * wird als Fallback der Wert von mklib zurückgegeben.
-	 * 
+	 *
 	 * @param string 	$sValueKey
 	 * @param string 	$sExtKey
 	 * @param boolean 	$bFallback
@@ -53,7 +53,7 @@ class tx_mklib_util_MiscTools {
 		tx_rnbase::load('tx_rnbase_configurations');
 		$mValue = tx_rnbase_configurations::getExtensionCfgValue($sExtKey, $sValueKey);
 		if($bFallback && $mValue === false && $sExtKey != 'mklib')
-			$mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey); 
+			$mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey);
 		return $mValue;
 	}
 	
@@ -115,6 +115,20 @@ class tx_mklib_util_MiscTools {
 	 */
 	public static function isEasyKontoActive($sExtKey='mklib', $bFallback=true){
 		return self::getExtensionValue('easyKontoActive', $sExtKey, $bFallback);
+	}
+	
+	/**
+	 * IP-based Access restrictions
+	 * @TODO: in util_dev auslagern!?
+	 *
+	 * @param 	string 		$remoteAddress
+	 * @param 	string 		$devIPmask
+	 * @return 	boolean
+	 */
+	public static function isDevIpMask($remoteAddress='',$devIPmask=''){
+		$devIPmask = trim(strcmp($devIPmask, '') ? $devIPmask : $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
+		$remoteAddress = trim(strcmp($remoteAddress, '') ? $remoteAddress : t3lib_div::getIndpEnv('REMOTE_ADDR'));
+		return t3lib_div::cmpIP($remoteAddress, $devIPmask);
 	}
 }
 
