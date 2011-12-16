@@ -3,12 +3,12 @@
 /*
  * Seit Version 4.3 bietet TYPO3 einen Autoloader der sehr einfach einzusetzen ist.
  * In dieser Datei machen wir nichts weiteres als ein assoziatives Array zurückzugeben.
- * 
+ *
  * Die grösste Fehlerquelle dabei ist, dass man darauf achten muss,
  * den Schlüssel des assoziativen Arrays klein zu schreiben.
  * Verwendet man den korrekten Klassennamen, also camel case,
  * wird die Klasse nicht eingebunden.
- * 
+ *
  * Um die Datei automatisch generieren zu lassen, kann die Extension extdeveval genutzt werden.
  */
 
@@ -38,6 +38,7 @@ return array(
 	'tx_mklib_util_tca' => $extensionPath . 'util/class.tx_mklib_util_TCA.php',
 	'tx_mklib_util_ts' => $extensionPath . 'util/class.tx_mklib_util_TS.php',
 	'tx_mklib_util_var' => $extensionPath . 'util/class.tx_mklib_util_Var.php',
+	'tx_mklib_util_Debug' => $extensionPath . 'util/class.tx_mklib_util_Debug.php',
 	'tx_mklib_validator_easykonto' => $extensionPath . 'validator/class.tx_mklib_validator_EasyKonto.php',
 	'tx_mklib_validator_wordlist' => $extensionPath . 'validator/class.tx_mklib_validator_WordList.php',
 	'tx_mklib_validator_zipcode' => $extensionPath . 'validator/class.tx_mklib_validator_ZipCode.php',
