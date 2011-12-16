@@ -163,10 +163,10 @@ class tx_mklib_util_TCA {
 
 	/**
 	 * Liefert den Spaltenname für enablecolumns aus der TCA
-	 * 
+	 *
 	 * @TODO: t3lib_div::loadTCA($sTableName);
 	 * @FIXME: Nicht alle felder stehen unter ctrlo.enablecolumns. siehe: tstamp, crdate, cruser_id, delete, ...
-	 * 
+	 *
 	 * @param 	string 	$sTableName
 	 * @param 	string 	$sColumn
 	 * @param 	string 	$sFallback
@@ -198,7 +198,7 @@ class tx_mklib_util_TCA {
 	 * the extensions yours depends you can apply this function.
 	 *
 	 * @author      Franz Holzinger
-	 * 
+	 *
 	 * @param 	array 		extension keys which have TCA additions to load
 	 * @param 	boolean 	force include
 	 * @return 	void
@@ -220,7 +220,7 @@ class tx_mklib_util_TCA {
 	
 	/**
 	 * Liefert Wizard-Daten für die TCA.
-	 * 
+	 *
 	 * @param 	string 	$sTable
 	 * @param 	array 	$options
 	 * @return 	array
@@ -275,6 +275,16 @@ class tx_mklib_util_TCA {
 						'searchWholePhrase' => true, // true: LIKE %term% false: LIKE term%
 					),
 				);
+		}
+		if(isset($options['RTE'])) {
+			$wizards['RTE'] = Array(
+				'notNewRecords' => 1,
+				'RTEonly' => 1,
+				'type' => 'script',
+				'title' => 'Full screen Rich Text Editing',
+				'icon' => 'wizard_rte2.gif',
+				'script' => 'wizard_rte.php',
+			);
 		}
 		return $wizards;
 	}
