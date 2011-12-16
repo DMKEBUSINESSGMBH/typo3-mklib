@@ -34,11 +34,11 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  *
  *	// schließst die datei beim beenden von php,
  *	// wird auch aufgerufen, wenn die ausgabe
- *	//durch ein fatal error abgebrochen wird.
+ *	// durch ein fatal error abgebrochen wird.
  *	tx_mklib_util_Debug::registerShutdownFunction();
  *	// legt eine datei für die debugs an,
  *	// damit diese nicht im speicher liegen und
- *	//oder nicht im fe ausgegeben werden
+ *	// oder nicht im fe ausgegeben werden
  *	tx_mklib_util_Debug::openFile('c:/xampp/htdocs/t3/buhl/typo3conf/ext/mkbuhl/xmlfeed/', $file);
  *	// initialisiert die startwerte
  *	tx_mklib_util_Debug::init();
@@ -47,7 +47,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  *	... do some things here ...
  *	tx_mklib_util_Debug::addDebug('after some things.');
  *	// fertig, datei schließen
- *	tx_mklib_util_Debug::closeFile
+ *	tx_mklib_util_Debug::closeFile();
  *
  *	//alternativ kann ohne aufruf von openFile
  *	//der gesammelte bug im fe ausgegeben werden
@@ -173,6 +173,13 @@ class tx_mklib_util_Debug {
 	 */
 	public static function t3Debug(){
 		tx_rnbase_util_Debug::debug(self::$aDebug, 'tx_mklib_util_Debug', 'mklib Debug'); // @TODO: remove me
+	}
+	/**
+	 * Gibt die gesammelten Debug meldungen aus
+	 * Funktioiniert nur, wenn die debugs nicht in eine datie geschrieben wird.
+	 */
+	public static function getDebugArray(){
+		return self::$aDebug;
 	}
 	public static function registerShutdownFunction(){
 		register_shutdown_function(array(get_class(),'shutDown'));
