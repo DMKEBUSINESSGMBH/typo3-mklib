@@ -161,7 +161,7 @@ class tx_mklib_util_Debug {
 		// debug merken
 		// ACHTUNG, benötigt zusätzlichen speicher
 		else {
-			self::$debug[] = $data;
+			self::$aDebug[] = $data;
 		}
 		unset($data);
 		unset($iMicroTime);
