@@ -71,7 +71,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 			$ret = $wrap[0].$value.$wrap[1];
 		} 
 		elseif($colName == 'actions') {
-			$ret .= $this->getActions($item, $this->getActionOptions());
+			$ret .= $this->getActions($item, $this->getActionOptions($item));
 		}
 		
 		return $ret;
@@ -79,9 +79,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	
 	/**
 	 * Liefert die möglichen Optionen für die actions
-	 * @param array
+	 * @param tx_rnbase_model_base $item
+	 * @return array
 	 */
-	protected function getActionOptions() {
+	protected function getActionOptions($item = null) {
 		return array(
 			'edit' => '',
 			'hide' => '',
