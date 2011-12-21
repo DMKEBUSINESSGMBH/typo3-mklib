@@ -60,7 +60,8 @@ class tx_mklib_util_TCA {
 	 * @param array $options	These options are merged into the resulting TCA
 	 * @return array
 	 */
-	public static function getDamMediaTCA($ref, $options=array()) {
+	public static function getDamMediaTCA($ref, $options = array()) {
+		if(!is_array($options)) $options = array('type'=>$options);
 		tx_rnbase::load('tx_rnbase_util_TSDAM');
 		$tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, isset($options['type']) ? $options['type'] : 'image_field');
 		unset($options['type']);
