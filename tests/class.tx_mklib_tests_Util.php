@@ -125,7 +125,7 @@ class tx_mklib_tests_Util {
 		if($statementType || $bIgnoreStatementType) {
 			$statements = t3lib_install::getStatementArray($sql, 1);
 			foreach($statements as $statement){
-				if(t3lib_div::isFirstPartOfStr($statement, $statementType) && !$bIgnoreStatementType) {
+				if(!$bIgnoreStatementType && t3lib_div::isFirstPartOfStr($statement, $statementType)) {
 					$GLOBALS['TYPO3_DB']->admin_query($statement);
 				}elseif($bIgnoreStatementType){//alle gefundenen statements ausführen
 					$GLOBALS['TYPO3_DB']->admin_query($statement);
@@ -194,7 +194,7 @@ class tx_mklib_tests_Util {
 	
 	/**
 	 * Setzt das fe_user objekt, falls es noch nicht gesetzt wurde
-	 * 
+	 *
 	 * @param 	tslib_feuserauth 	$oFeUser 	Erzeugt das tslib_feuserauth Objekt wenn nix übergeben wurde
 	 * @param 	boolean 			$bForce		Setzt das fe_user Objekt auch, wenn es bereits gesetzt ist.
 	 * @return 	void
