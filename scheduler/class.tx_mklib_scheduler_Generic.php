@@ -41,6 +41,11 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @var	array
 	 */
 	protected $options = array();
+	/**
+	 * Extension key, used for devlog.
+	 * @var 	string
+	 */
+	protected $extKey = 'mklib';
 	
 	/**
 	 * Function executed from the Scheduler.
@@ -51,17 +56,49 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 		$bSuccess = true;
 
 		try {
+			// beispiel für das logging array.
+// 			$aDevLog = array('message' => '', 'extKey' => 'mklib', 'dataVar' => FALSE);
+// 			$aDevLog = array(
+// 				tx_rnbase_util_Logger::LOGLEVEL_DEBUG => $aDevLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_INFO => $aDevLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_NOTICE => $aDevLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_WARN => $aDevLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_FATAL => $aDevLog
+// 			);
+			$aDevLog = array();
 			$aOptions = $this->getOptions();
-			$sMessage = $this->executeTask($aOptions);
-			tx_rnbase_util_Logger::info($sMessage, 'mklib');
+			$sMessage = $this->executeTask($aOptions, $aDevLog);
+			
+			// devlog
+			if (t3lib_extMgm::isLoaded('devlog')) {
+				if(
+					// infolog setzen, wenn devlog leer
+					empty($aDevLog)
+					// infolog setzen, wenn infolog gesetzt, aber keine message vorhanden ist
+					|| (
+							isset($aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO])
+							&& empty($aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'])
+						)
+					)
+					$aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'] = $sMessage;
+				
+				foreach ($aDevLog as $logLevel => $logData) {
+					if (empty($logData['message'])) continue;
+					t3lib_div::devLog(
+							$logData['message'],
+							isset($logData['extKey']) ? $logData['extKey'] : $this->extKey,
+							$logLevel,
+							isset($logData['dataVar']) ? $logData['dataVar'] : FALSE
+						);
+				}
+			}
 		} catch (Exception $oException) {
-			tx_rnbase_util_Logger::fatal('Task failed', 'mklib', array('Exception' => $oException->getMessage()));
-			// Da die Exception gefangen wird, würden die Entwickler keine Mail bekommen
-			// also machen wir das manuell
+			if (tx_rnbase_util_Logger::isFatalEnabled())
+				tx_rnbase_util_Logger::fatal('Task failed. '.$oException->getMessage(), 'mklib');
+			// Exception Mail an die Entwicker senden
 			if($sMail = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException')) {
 				tx_rnbase::load('tx_rnbase_util_Misc');
-				//die Mail soll immer geschickt werden
-				tx_rnbase_util_Misc::sendErrorMail($sMail, get_class($this), $oException, array('ignoremaillock' => true));
+				tx_rnbase_util_Misc::sendErrorMail($sMail, get_class($this), $oException);
 			}
 			$bSuccess = false;
 		}
@@ -71,19 +108,24 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	
 	/**
 	 *
-	 *
-	 * @param 	array 	$options
+	 * @param 	array 	$aOptions
+	 * @param 	array 	$aDevLog	Put some informations for the logging here.
 	 * @return 	string
 	 */
-	abstract protected function executeTask(array $options);
+	abstract protected function executeTask(array $aOptions, array &$aDevLog);
 	
 	/**
 	 * This method returns the destination mail address as additional information
 	 *
 	 * @return	string	Information to display
 	 */
-	public function getAdditionalInformation() {
-		return 'Generic task. Child class has to override getAdditionalInformation()';
+	public function getAdditionalInformation($sInfo='') {
+// 		return 'Generic task. Child class has to override getAdditionalInformation()';
+		$aOptions = array();
+		foreach($this->getOptions() as $sKey => $mValue){
+			$aOptions [] = '\''.$sKey.'\' => \''.$mValue.'\'';
+		}
+		return $sInfo.CRLF.' Options: '.implode(', ',$aOptions);
 	}
 
 	/**

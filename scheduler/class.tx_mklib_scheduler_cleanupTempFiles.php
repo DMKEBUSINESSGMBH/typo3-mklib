@@ -51,13 +51,9 @@ class tx_mklib_scheduler_cleanupTempFiles extends tx_mklib_scheduler_Generic {
 	 * @return	string	Information to display
 	 */
 	public function getAdditionalInformation() {
-		$aOptions = array();
-		foreach($this->getOptions() as $sKey => $mValue){
-			$aOptions [] = '\''.$sKey.'\' => \''.$mValue.'\'';
-		}
-		return $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_taskinfo')
-				.CRLF
-				.'Options: '.implode(', ',$aOptions);
+		return parent::getAdditionalInformation(
+				$GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_taskinfo')
+			);
 	}
 }
 
