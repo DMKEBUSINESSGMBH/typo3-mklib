@@ -43,9 +43,11 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	protected $options = array();
 	/**
 	 * Extension key, used for devlog.
-	 * @var 	string
+	 * @return 	string
 	 */
-	protected $extKey = 'mklib';
+	protected function getExtKey() {
+		return 'mklib';
+	}
 	
 	/**
 	 * Function executed from the Scheduler.
@@ -86,7 +88,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 					if (empty($logData['message'])) continue;
 					t3lib_div::devLog(
 							$logData['message'],
-							isset($logData['extKey']) ? $logData['extKey'] : $this->extKey,
+							isset($logData['extKey']) ? $logData['extKey'] : $this->getExtKey(),
 							$logLevel,
 							isset($logData['dataVar']) ? $logData['dataVar'] : FALSE
 						);
