@@ -16,25 +16,24 @@ $extensionPath = t3lib_extMgm::extPath('mklib');
 return array(
 	// exceptions
 	'tx_mklib_exception_invalidconfiguration' => $extensionPath . 'exception/class.tx_mklib_exception_InvalidConfiguration.php',
-	
+
 	// interfaces
 	'tx_mklib_interface_izipcountry' => $extensionPath . 'interface/class.tx_mklib_interface_IZipCountry.php',
-	
+
 	// models
 	'tx_mklib_model_staticcountry' => $extensionPath . 'model/class.tx_mklib_model_StaticCountry.php',
-	
+
 	// treelib
 	'tx_mklib_treelib_config' => $extensionPath . 'treelib/class.tx_mklib_treelib_Config.php',
 	'tx_mklib_treelib_renderer' => $extensionPath . 'treelib/class.tx_mklib_treelib_Renderer.php',
 	'tx_mklib_treelib_tce' => $extensionPath . 'treelib/class.tx_mklib_treelib_TCE.php',
 	'tx_mklib_treelib_treeview' => $extensionPath . 'treelib/class.tx_mklib_treelib_TreeView.php',
-	
+
 	// utils
 	'tx_mklib_util_array' => $extensionPath . 'util/class.tx_mklib_util_Array.php',
 	'tx_mklib_util_dam' => $extensionPath . 'util/class.tx_mklib_util_DAM.php',
 	'tx_mklib_util_db' => $extensionPath . 'util/class.tx_mklib_util_DB.php',
 	'tx_mklib_util_date' => $extensionPath . 'util/class.tx_mklib_util_Date.php',
-	'tx_mklib_util_easykonto' => $extensionPath . 'util/class.tx_mklib_util_EasyKonto.php',
 	'tx_mklib_util_file' => $extensionPath . 'util/class.tx_mklib_util_File.php',
 	'tx_mklib_util_misctools' => $extensionPath . 'util/class.tx_mklib_util_MiscTools.php',
 	'tx_mklib_util_model' => $extensionPath . 'util/class.tx_mklib_util_Model.php',
@@ -48,12 +47,12 @@ return array(
 	'tx_mklib_util_ts' => $extensionPath . 'util/class.tx_mklib_util_TS.php',
 	'tx_mklib_util_var' => $extensionPath . 'util/class.tx_mklib_util_Var.php',
 	'tx_mklib_util_Debug' => $extensionPath . 'util/class.tx_mklib_util_Debug.php',
-	
+
 	// validatoren
 	'tx_mklib_validator_easykonto' => $extensionPath . 'validator/class.tx_mklib_validator_EasyKonto.php',
 	'tx_mklib_validator_wordlist' => $extensionPath . 'validator/class.tx_mklib_validator_WordList.php',
 	'tx_mklib_validator_zipcode' => $extensionPath . 'validator/class.tx_mklib_validator_ZipCode.php',
-	
+
 	// scheduler
 	'tx_mklib_scheduler_cleanuptempfiles' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_cleanupTempFiles.php',
 	'tx_mklib_scheduler_cleanuptempfilesfieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_cleanupTempFilesFieldProvider.php',

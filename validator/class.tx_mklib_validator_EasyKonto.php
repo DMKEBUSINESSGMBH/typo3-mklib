@@ -30,7 +30,7 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-tx_rnbase::load('tx_mklib_util_EasyKonto');
+require_once(t3lib_extMgm::extPath('mklib') . 'util/easyKontoAutoloader.php');
 
 /**
  * Validatoren für den EasyKonto Service
@@ -40,52 +40,40 @@ tx_rnbase::load('tx_mklib_util_EasyKonto');
  * @subpackage tx_mklib_validator
  */
 class tx_mklib_validator_EasyKonto {
-	
-	protected $username;
-	protected $password;
-	protected $use_ssl;
-	protected $baseUrl;
-	
-	/**
-	 * Klassen konstruktor
-	 * @param string $username
-	 * @param string $password
-	 * @param bool $use_ssl
-	 * @param string $baseUrl
-	 */
-	public function __construct($username='', $password='', $use_ssl='', $baseUrl='') {
-		$this->username = $username;
-		$this->password = $password;
-		$this->use_ssl = $use_ssl;
-		$this->baseUrl = $baseUrl;
-	}
 
 	/**
 	 * Prüft ob die Bankleitzahl und die Kontonummer zusammen passen
-	 * Wrapper für tx_mklib_util_EasyKonto::checkBICAndAccountNumber()
    	 *
    	 * @param int $bic
    	 * @param int $accountNumber
-   	 * @return bool 
+   	 * @param string $username
+	 * @param string $password
+	 *
+   	 * @return bool
    	 */
-  	public function checkBICAndAccountNumber ($bic,$accountNumber) {
-  		$easyKontoSrv = tx_mklib_util_EasyKonto::getInstance($this->username,$this->password,$this->use_ssl,$this->baseUrl);
-  	    $checkResult = $easyKontoSrv->checkBICAndAccountNumber($bic, $accountNumber);
+  	public static function checkBICAndAccountNumber ($bic,$accountNumber,$username='', $password='') {
+  		//bei nicht aktiven EasyKonto gilt alles als valide. Nur für TESTS!!!
+  		if(!tx_mklib_util_MiscTools::isEasyKontoActive())
+  			return true;
 
-  	    //Achtung: Wenn hier auf einen string geprüft wird, führt das
-  	    //im Falle von 0 zur fehlerhaften Einstufung als Fehler. 0 bedeutet
-  	    //valide
-    	if (is_null($checkResult))//Fehler bei der Prüfung
-        	return false;
+		//Zugangsdaten für den webservice setzen
+		$username = empty($username) ? tx_rnbase_configurations::getExtensionCfgValue('mklib', 'easyKontoUser') : $username;
+    	$password = empty($password) ? tx_rnbase_configurations::getExtensionCfgValue('mklib', 'easyKontoPass') : $password;
 
-        switch ($checkResult){
-            case EASYKONTO_VALID:
-            case EASYKONTO_NOT_CHECKABLE:
-                return true;
-                break;
-            default:
-                return false;
-        }
+  		//SINGLE_NODE bedeutet dass die verbindung über ssl hergestellt wird
+  		$oConf = new EasyKonto_ConnectionConfiguration(
+		    EasyKonto_ConnectionType::SINGLE_NODE,
+		    $username,
+		    $password
+		);
+
+		$oBankService = new EasyKonto_DE_Service($oConf);
+  	    $oCheckResult = $oBankService->checkAccount($bic, $accountNumber);
+
+		if ($oCheckResult->isValid())
+			return true;
+		else
+			return false;
   	}
 
 }

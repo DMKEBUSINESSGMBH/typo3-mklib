@@ -30,6 +30,7 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_mklib_validator_EasyKonto');
 
 /**
  * Testfälle für tx_mklib_validator_EasyKonto
@@ -39,27 +40,26 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  * @subpackage tx_mklib_tests_validator
  */
 class tx_mklib_tests_validator_EasyKonto_testcase extends tx_phpunit_testcase {
-	protected $easyKontoValidator;
-  	/**
+
+	/**
    	 * setUp() = init DB etc.
    	 */
   	public function setUp() {
   		$this->markTestSkipped('Tests können im Moment nicht ausgeführt werden, da der Demoaccount nicht mehr gültig ist! Bei Bedarf muss ein neuer Demoaccount erstellt werden!');
-	    $this->easyKontoValidator = tx_rnbase::makeInstance('tx_mklib_validator_EasyKonto','dasMedienkombinat','mk2010',0,'www.easykonto.de/services/');
   	}
-  	
+
   	/**
    	 * Prüft das checkBICAndAccountNumber() true zurück gibt
    	 */
   	public function testCheckBICAndAccountNumberReturnsTrue() {
-  		$this->assertTrue($this->easyKontoValidator->checkBICAndAccountNumber(99999999,1),'Die Kombination wurde nicht als richtig erkannt!');
+  		$this->assertTrue(tx_mklib_validator_EasyKonto::checkBICAndAccountNumber(99999999,1,'dasMedienkombinat','mk2010'),'Die Kombination wurde nicht als richtig erkannt!');
   	}
-  	
+
 /**
    	 * Prüft das checkBICAndAccountNumber() false zurück gibt
    	 */
   	public function testCheckBICAndAccountNumberReturnsFalse() {
-  		$this->assertFalse($this->easyKontoValidator->checkBICAndAccountNumber(99999999,2),'Die Kombination wurde als richtig erkannt!');
+  		$this->assertFalse(tx_mklib_validator_EasyKonto::checkBICAndAccountNumber(99999999,2,'dasMedienkombinat','mk2010'),'Die Kombination wurde als richtig erkannt!');
   	}
 }
 

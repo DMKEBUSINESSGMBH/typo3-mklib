@@ -9,9 +9,9 @@ portalPageId = 0
 
 # cat=base; type=boolean; label=logDbHandler:Put a notice on db changes to the devlog. (Log level notice must be enabled for devlog)
 logDbHandler = 0 
+
 # cat=base; type=string; label=logDbIgnoreTables:Do not log this tables. (comma separated)
 logDbIgnoreTables = 
-
 
 # cat=easykonto; type=string; label= Nutzer des easyKonto Service
 easyKontoUser = dasMedienkombinat
@@ -19,19 +19,11 @@ easyKontoUser = dasMedienkombinat
 # cat=easykonto; type=string; label= Passwort des easyKonto Service
 easyKontoPass = mk2010
 
-# cat=easykonto; type=boolean; label= Soll SSl für den easyKonto Service genutzt werden?
-easyKontoUseSSL = 0
-
-# cat=easykonto; type=string; label= URL des easyKonto Service
-easyKontoURL = www.easykonto.de/services/
-
 # cat=easykonto; type=boolean; label= Ist Easykonto aktiv? Wenn nicht gelten alle Bankdaten als valide.
 easyKontoActive = 1
 
-
 # cat=rtf; type=string; label=Marker für Sonderzeichen
 specialCharMarker = SPECIALCHAR_
-
 
 # cat=tables; type=boolean; label=Wordlist (tx_mklib_wordlist):Integriert die TCA für tx_mklib_wordlist
 tableWordlist = 0
