@@ -71,6 +71,9 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
 		$GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 		
+		//sprache auf default setzen damit wir die richtigen labels haben
+		$GLOBALS['LANG']->lang = 'default';
+		
 		//damit labels geladen sind
 		global $LOCAL_LANG;
 		$LOCAL_LANG['default']['label_select_hide_hidden'] = 'Hide hidden entries';

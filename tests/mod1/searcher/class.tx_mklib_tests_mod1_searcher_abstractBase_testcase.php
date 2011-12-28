@@ -51,6 +51,9 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 	protected $oMod;
 	
 	public function setUp() {
+		//sprache auf default setzen damit wir die richtigen labels haben
+		$GLOBALS['LANG']->lang = 'default';
+		
 		//wir müssen noch die TCA für die Wordlist laden
 		global $TCA;
 		$TCA['tx_mklib_wordlist'] = array (
