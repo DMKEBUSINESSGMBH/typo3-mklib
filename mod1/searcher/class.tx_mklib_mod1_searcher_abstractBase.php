@@ -189,12 +189,12 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 			);
 
 		$fields = $options = array();
-		$this->prepareFieldsAndOptions($fields, $options);
 		
 		//@todo tests schreiben
 		//es könnte sein dass ein sorting gewählt wurde. dann wollen wir dieses
 		//auch nutzen
 		$this->prepareSorting($options);
+		$this->prepareFieldsAndOptions($fields, $options);
 
 		// Get counted data
 		$cnt = $this->getCount($fields, $options);
