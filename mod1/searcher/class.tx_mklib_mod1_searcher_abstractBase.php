@@ -194,22 +194,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		//@todo tests schreiben
 		//es könnte sein dass ein sorting gewählt wurde. dann wollen wir dieses
 		//auch nutzen
-		if(t3lib_div::_GET('sortField') && t3lib_div::_GET('sortRev')) {
-			$options['orderby'] = array(t3lib_div::_GET('sortField') => t3lib_div::_GET('sortRev'));
-			//wir setzen die daten noch für das Modul um bei einem seiten wechsel
-			//weiterhin die richtige sortierung zu haben
-			$this->getSelector()->setValueToModuleData($this->getModule()->getName(),array($this->getSearcherId().'orderby' => $options['orderby']));
-		}elseif($aOrderByByModuleData = $this->getSelector()->getValueFromModuleData($this->getSearcherId().'orderby')){
-			$options['orderby'] = $aOrderByByModuleData;
-			//wenn die sortierung aus dem Modul kommt, müssen wir die Sortierung in
-			//den $_GET Daten setzen damit die richtigen Pfeile angezeigt werden
-			//siehe tx_rnbase_util_FormTool::createSortLink
-			$aKeys = array_keys($aOrderByByModuleData);
-			$_GET['sortField'] = $aKeys[0];
-			$aValues = array_values($aOrderByByModuleData);
-			$_GET['sortRev'] = $aValues[0];
-		}
-		
+		$this->prepareSorting($options);
+
 		// Get counted data
 		$cnt = $this->getCount($fields, $options);
 		
@@ -235,7 +221,45 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 				'pager' 	=> '<div class="pager">' . $sPagerData .'</div>',
 			);
 	}
-	
+	/**
+	 * Sortierung vorbereiten
+	 * @param array $options
+	 */
+	private function prepareSorting(&$options) {
+		$sortedCols = array();
+		if(t3lib_div::_GET('sortField') && t3lib_div::_GET('sortRev')) {
+			$sortedCols = array(t3lib_div::_GET('sortField') => t3lib_div::_GET('sortRev'));
+			//wir setzen die daten noch für das Modul um bei einem seiten wechsel
+			//weiterhin die richtige sortierung zu haben
+			$this->getSelector()->setValueToModuleData(
+				$this->getModule()->getName(),
+				array($this->getSearcherId().'orderby' => $sortedCols));
+		}elseif($aOrderByByModuleData = $this->getSelector()->getValueFromModuleData($this->getSearcherId().'orderby')){
+			$sortedCols = $aOrderByByModuleData;
+			//wenn die sortierung aus dem Modul kommt, müssen wir die Sortierung in
+			//den $_GET Daten setzen damit die richtigen Pfeile angezeigt werden
+			//siehe tx_rnbase_util_FormTool::createSortLink
+			$aKeys = array_keys($aOrderByByModuleData);
+			$_GET['sortField'] = $aKeys[0];
+			$aValues = array_values($aOrderByByModuleData);
+			$_GET['sortRev'] = $aValues[0];
+		}
+
+		if(!empty($sortedCols)) {
+			$cols = $this->getDecoratorColumns($this->getDecorator($this->getModule()));
+
+			foreach($sortedCols As $colLabel => $sortOrder) {
+				$configuredCol = $cols[$colLabel];
+				if(!$configuredCol || !array_key_exists('sortable', $configuredCol)) continue;
+
+				// das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
+				$sortCol = $configuredCol['sortable'];
+				// Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
+				$sortCol = substr($sortCol, -1) === '.' ? $sortCol.$colLabel : $sortCol;
+				$options['orderby'][$sortCol] = (strtolower($sortOrder)== 'asc' ? 'asc':'desc');
+			}
+		}
+	}
 	/**
 	 * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
 	 * 
