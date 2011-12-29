@@ -1,7 +1,7 @@
 <?php
 /**
- * 	@package tx_mkkvbb
- *  @subpackage tx_mkkvbb_hooks
+ * 	@package tx_mklib
+ *  @subpackage tx_mklib_hooks
  *  @author Hannes Bochmann
  *
  *  Copyright notice
@@ -30,7 +30,7 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-tx_rnbase::load('tx_mkkvbb_util_ServiceRegistry');
+tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 
 /**
  * Hooks for auto-updating search indices
@@ -41,7 +41,7 @@ class tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass {
 	 * Stellt die required eval Funktionalität für select felder in TCA zur Verfügung.
 	 * Wenn in einem Select Feld eval = 'required' gesetzt wird
 	 * und maxitems = minitems = 1 dann darf kein leerer string gewählt werden.
-	 * Beispiel: 
+	 * Beispiel:
 	 * 'config' => array (
 	 * 		'type' => 'select',
 	 * 		'items' => array (
@@ -51,7 +51,7 @@ class tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass {
 	 * 		'maxitems' => 1,
 	 * 		'eval' => 'required'
 	 * )
-	 * 
+	 *
 	 * @param string $table
 	 * @param string $field
 	 * @param array $row
@@ -62,14 +62,14 @@ class tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass {
 	 */
 	public function getSingleField_postProcess($table, $field, $row, $out, $PA, $parent) {
 		//required für select felder
-		//wenn eval = required und maxitems = mintitems = 1 gesetzt ist, 
+		//wenn eval = required und maxitems = mintitems = 1 gesetzt ist,
 		//dann darf kein leerer wert gewählt werden
 		if(
 			$PA['fieldConf']['config']['type'] == 'select' &&
 			preg_match('/required/', $PA['fieldConf']['config']['eval']) &&
 			$PA['fieldConf']['config']['minitems'] == 1 &&
 			$PA['fieldConf']['config']['maxitems'] == 1){
-			$parent->requiredFields[$table.'_'.$row['uid'].'_'.$field] = 'data['.$table.']['.$row['uid'].']['.$field.']';	
+			$parent->requiredFields[$table.'_'.$row['uid'].'_'.$field] = 'data['.$table.']['.$row['uid'].']['.$field.']';
 		}
 	}
 }
