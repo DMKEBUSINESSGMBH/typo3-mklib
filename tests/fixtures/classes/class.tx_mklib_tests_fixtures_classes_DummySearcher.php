@@ -70,11 +70,12 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
 	 * @param 	tx_mklib_mod1_decorator_Base 	$oDecorator
 	 * @return 	array
 	 */
-	protected function getColumns(&$oDecorator){
+	protected function getDecoratorColumns(&$oDecorator){
 		return array(
 				'uid' => array(
 					'title' => 'label_tableheader_uid',
 					'decorator' => &$oDecorator,
+					'sortable' => 'WORDLIST.'
 				),
 				'actions' => array(
 					'title' => 'label_tableheader_actions',
