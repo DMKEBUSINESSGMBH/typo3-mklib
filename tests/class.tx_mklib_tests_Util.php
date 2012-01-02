@@ -144,7 +144,15 @@ class tx_mklib_tests_Util {
 	 * @see tx_phpunit_module1::simulateFrontendEnviroment
 	 * @todo in eigene Klasse auslagern, die von tx_phpunit_module1 erbt und simulateFrontendEnviroment public macht
 	 */
-	public static function simulateFrontendEnviroment() {
+	public static function simulateFrontendEnviroment($extKey = 'mklib') {
+		//wenn phpunit mindestens in version 3.5.14 installiert ist, nutzen
+		//wir deren create frontend methode
+		if(t3lib_div::int_from_ver(t3lib_extMgm::getExtensionVersion('phpunit')) >= 3005014){
+			$oTestFramework = tx_rnbase::makeInstance('Tx_Phpunit_Framework',$extKey);
+			return $oTestFramework->createFakeFrontEnd();
+		}
+			
+			
 		if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
 			// avoids some memory leaks
 			unset(
@@ -243,26 +251,25 @@ class tx_mklib_tests_Util {
 	public static function &getAction($sActionName, $aConfig, $sExtKey, $aParams = array(), $execute = true) {
 		$action = tx_rnbase::makeInstance($sActionName);
 		
+		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+		
+		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
+		require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+		$configurations->init(
+				$aConfig,
+				$configurations->getCObj(1),
+				$sExtKey,$sExtKey
+			);
+			
+		//noch extra params?
+		if(!empty($aParams))
+			foreach ($aParams as $sName => $mValue)
+				$parameters->offsetSet($sName,$mValue);
+			
+		$configurations->setParameters($parameters);
+		$action->setConfigurations($configurations);
 		if($execute) {
-			$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
-			$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-			
-			//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
-			require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
-			$configurations->init(
-					$aConfig,
-					$configurations->getCObj(1),
-					$sExtKey,$sExtKey
-				);
-				
-			//noch extra params?
-			if(!empty($aParams))
-				foreach ($aParams as $sName => $mValue)
-					$parameters->offsetSet($sName,$mValue);
-				
-			$configurations->setParameters($parameters);
-			$action->setConfigurations($configurations);
-			
 //			$action->execute($parameters, $configurations);
 			$out = $action->handleRequest($parameters, $configurations, $configurations->getViewData());
 		}
