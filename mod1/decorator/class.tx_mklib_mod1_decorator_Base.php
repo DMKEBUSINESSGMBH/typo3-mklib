@@ -69,6 +69,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 			// @TODO: hier nicht lieber <del></del> nutzen?
 			$wrap = $mRecordValue ? array('<strike>','</strike>') : array('','');
 			$ret = $wrap[0].$value.$wrap[1];
+			$dates = array();
+			$dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
+			$dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
+			$ret = "<span title=\"Creation: ".$dates['crdate']." \nLast Change: ".$dates['tstamp']." \">".$ret .'</span>';
 		} 
 		elseif($colName == 'actions') {
 			$ret .= $this->getActions($item, $this->getActionOptions($item));
