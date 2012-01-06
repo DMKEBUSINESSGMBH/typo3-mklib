@@ -32,7 +32,7 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
- * Hooks for auto-updating search indices
+ * Hooks für das Bearbeiten von einzelnen TCA Feldern.
  */
 class tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass {
 

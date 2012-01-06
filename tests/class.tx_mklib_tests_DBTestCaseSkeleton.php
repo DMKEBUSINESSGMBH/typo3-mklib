@@ -54,12 +54,15 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 	 */
 	protected $importDependencies = false;
 	/**
-	 * Sollen Statiche Daten in die Datenbank importiert werden?
+	 * Sollen die statischen Daten einer Extension 
+	 * (ext_tables_static.sql) in die Datenbank importiert werden?
 	 * @var boolean
 	 */
 	protected $importStaticTables = false;
 	/**
 	 * Diese FixtureXMLs werden beim setUp in die Datenbank geladen.
+	 * Es sollte nach folgendem Muster angegeben werden:
+	 * EXT:mklib/tests/fixtures/test.xml
 	 * @var array
 	 */
 	protected $importDataSet = array();
