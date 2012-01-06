@@ -1,0 +1,7 @@
+GRID.units = px
+GRID.pagewidth = 940
+GRID.coloums = 12
+GRID.coloumswidth = 60
+GRID.gutterwidth = 20
+GRID.pagetopmargin = 10
+GRID.rowheight = 0

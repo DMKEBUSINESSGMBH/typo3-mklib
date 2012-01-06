@@ -42,3 +42,4 @@ t3lib_extMgm::addPlugin(
 );
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'static/basic/', 'MK Lib - Basics');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'static/development/', 'MK Lib - Development');
