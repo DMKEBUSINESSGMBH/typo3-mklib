@@ -66,21 +66,23 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$record = array('uid' => 1, 'disable' => 0);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertEquals(1, $result, 'es wurde nicht der korrekte Wert zurück geliefert');
-		
+		// Achtung: Das Ergebnis ist Multiline. Leider wird der Modifikator nicht akzeptiert...
+		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
+
+
 		//jetzt mit versteckt und record fallback
 		$record = array('uid' => 1, 'disable' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertEquals('<strike>1</strike>', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
-		
+		$this->assertRegExp('/<strike>1<\/strike>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
+
 		//jetzt mit versteckt und ohne record fallback
 		$record = array('uid' => 1, 'disable' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertEquals('<strike>1</strike>', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
+		$this->assertRegExp('/<strike>1<\/strike>/', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
 	}
-	
+
 	public function testFormatWithUidColumnAndNoEnableColumnsConfig() {
 		//es sollte hidden genommen werden da nicht in enablecolumns konfiguriert
 		$GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null;//konfig löschen
@@ -88,24 +90,24 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$record = array('uid' => 1, 'disable' => 0);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertEquals(1, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 1');
+		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 		
 		//jetzt mit versteckt im falschen feld
 		$record = array('uid' => 1, 'disable' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertEquals(1, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 2');
+		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 2');
 		
 		//jetzt mit versteckt im fallback feld
 		$record = array('uid' => 1, 'hidden' => 0);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertEquals(1, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 3');
+		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 3');
 		
 		$record = array('uid' => 1, 'hidden' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertEquals('<strike>1</strike>', $result, 'es wurde nicht der korrekte Wert zurück geliefert. 4');
+		$this->assertRegExp('/<strike>1<\/strike>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 	}
 	
 	public function testFormatWithActionsColumn() {
