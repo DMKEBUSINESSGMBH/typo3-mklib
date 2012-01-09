@@ -45,13 +45,13 @@ class tx_mklib_util_DAM {
 
 	/**
 	 * Prüft, ob Dam installiert ist.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public static function isLoaded(){
 		return t3lib_extMgm::isLoaded('dam');
 	}
-	
+
 	/**
 	 * Gibt DAM Records von definierten UIDs zurück.
 	 *
@@ -66,7 +66,7 @@ class tx_mklib_util_DAM {
 			$aUid = array($aUid);
 		}
 		$aRes = tx_dam_db::getDataWhere(false, array('uid' => 'tx_dam.uid IN ('.implode(',',$aUid).')'));
-	
+
 		$aFiles = $aRows = array();
 		if (count($aRes)) {
 			foreach($aRes as $aRow) {
@@ -89,7 +89,7 @@ class tx_mklib_util_DAM {
 		$aRefs = self::getRecords($aUid);
 		return self::getFileInfos($aRefs);
 	}
-	
+
 	/**
 	 * Fügt eine Referenz hinzu
 	 *
@@ -119,7 +119,7 @@ class tx_mklib_util_DAM {
 
 		return $iId;
 	}
-	
+
 	/**
 	 * Löscht eine Referenz
 	 *
@@ -195,7 +195,7 @@ class tx_mklib_util_DAM {
 			return 0;
 		}
 		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
-		
+
 		$ret = tx_dam_db::getReferencedFiles(
 					$sTableName, $iItemId, $sFieldName,
 					'tx_dam_mm_ref', '\'ret\' as uid, count(tx_dam.uid) as cnt',
@@ -218,13 +218,24 @@ class tx_mklib_util_DAM {
 			return array('files' => array(), 'rows' => array());
 		}
 		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
-		
+
 		$files = tx_dam_db::getReferencedFiles($sTableName, $iItemId, $sFieldName);
-		
+
+		return self::wrapReferencesResult($files,$options);
+	}
+
+	/**
+	 * Wrappt das ergebnis von einer referenzen abfrage
+	 * @param array $files
+	 * @param array $options
+	 *
+	 * @return array
+	 */
+	protected static function wrapReferencesResult($files, $options=array()) {
 		// den record in ein model wrappen?
-		$wrapperClass = $options['wrapperclass']===true ? 'tx_mklib_model_Dam' : 
+		$wrapperClass = $options['wrapperclass']===true ? 'tx_mklib_model_Dam' :
 							(is_string($options['wrapperclass']) ? trim($options['wrapperclass']) : false);
-		if($wrapperClass) {
+		if($wrapperClass && !empty($files['rows'])) {
 			foreach($files['rows'] as $uid => $record) {
 				$files['rows'][$uid] = tx_rnbase::makeInstance($wrapperClass, $record);
 			}
@@ -236,6 +247,76 @@ class tx_mklib_util_DAM {
 			$files['files'] = array_merge($files['files']);
 		}
 		return $files;
+	}
+
+	/**
+	 * Gibt alle Referenzen zur DAM Uid zurück
+	 *
+	 * @return 	array
+	 */
+	public static function getReferencesByDamUid($iLocalUid, $foreign_table = '', $foreign_uid = '', $MM_ident='', $MM_table='tx_dam_mm_ref', $options=array()) {
+		if(!self::isLoaded()) {
+			return array('files' => array(), 'rows' => array());
+		}
+		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+
+		$fields = tx_dam_db::getMetaInfoFieldList();
+		$res = tx_dam_db::referencesQuery('tx_dam',$iLocalUid, $foreign_table, $foreign_uid, $MM_ident, $MM_table, $fields);
+
+		$files = array();
+		if ($res) {
+			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				$files[$row['uid']] = $row['file_path'].$row['file_name'];
+				$rows[$row['uid']] = $row;
+			}
+			$files = array('files' => $files, 'rows' => $rows);
+		}
+
+		return self::wrapReferencesResult($files,$options);
+	}
+
+	/**
+	 * Setzt einen Dam Record auf hidden
+	 * @todo nicht nur verstecken sondern auch löschen integrieren
+	 * @param array $aDamRecord sollte nur einen record in ['rows'] enthalten
+	 * @param bool $bDeletePicture
+	 * @param int $iMode verstecken, auf deleted setzen oder ganz löschen
+	 *
+	 * @return void
+	 */
+	public static function deleteDamRecord($aDamRecords, $bDeletePicture = false, $iMode = 0) {
+		if(empty($aDamRecords['rows'])) return;
+		foreach ($aDamRecords['rows'] as $iDam => $row){
+			//jetzt müssen wir prüfen ob dieser DAM Eintrag noch weitere
+			//Referenzen hat.
+			$aReferencesByDamRecord = tx_mklib_util_DAM::getReferencesByDamUid($iDam);
+			//wenn wir nur keine referenzen mehr haben dann können wir das bild und
+			//den eigentlichen eintrag löschen
+			if(empty($aReferencesByDamRecord['rows'])){
+				//dam eintrag und bild löschen
+				tx_rnbase::load('tx_rnbase_util_DB');
+				switch ($iMode) {
+					case 0://verstecken
+					default:
+						tx_rnbase_util_DB::doUpdate('tx_dam', 'tx_dam.uid = '.$iDam, array('hidden' => 1));
+						break;
+					case 1://löschen
+						tx_rnbase_util_DB::doUpdate('tx_dam', 'tx_dam.uid = '.$iDam, array('deleted' => 1));
+						break;
+					case 2://hart löschen
+						tx_rnbase_util_DB::doDelete('tx_dam', 'tx_dam.uid = '.$iDam);
+						break;
+				}
+
+				//und bild löschen?
+				if($bDeletePicture){
+					unlink(
+						t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT').'/'.
+						$aDamRecord['files'][$iDam]
+					);
+				}
+			}
+		}
 	}
 
 	/**
@@ -345,10 +426,10 @@ class tx_mklib_util_DAM {
 			return $res ? $res : null;
 		}
 	}
-  
+
 	/**
 	 * Indiziert eine Datei mit DAM.
-	 * 
+	 *
 	 * @param string 	$sFile
 	 * @param int 		$iBeUserId
 	 * @return uid
@@ -405,9 +486,9 @@ class tx_mklib_util_DAM {
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 		}
-		
+
 	}
-  
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DAM.php']) {
