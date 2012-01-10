@@ -209,12 +209,12 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
 		$this->assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
 
-		//bild noch da?
+		//bild gelöscht?
 		$this->assertFileNotExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
 	}
 
 	/**
-	 * ganz löschen und bild löschen
+	 * nichts machen da es noch referenzen gibt
 	 */
 	public function testDeleteDamRecordWorksCorrectWithDeletingImageAndExistingReferences() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -229,7 +229,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$this->assertEquals(0,$res[0]['deleted'],'deleted falsch!');
 
 		//bild noch da?
-		$this->assertFileNotExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
+		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
 	}
 
 	/**
