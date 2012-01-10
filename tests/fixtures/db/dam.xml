@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<tx_dam>
+		<uid>1</uid>
+		<title>test</title>
+		<index_type>man</index_type>
+		<file_mime_type>image</file_mime_type>
+		<file_mime_subtype>jpeg</file_mime_subtype>
+		<file_type>jpg</file_type>
+		<file_name>test.jpg</file_name>
+		<file_path>typo3conf/ext/mklib/tests/typo3temp/</file_path>
+		<deleted>0</deleted>
+	</tx_dam>
+</dataset>

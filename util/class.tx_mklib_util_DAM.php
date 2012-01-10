@@ -250,49 +250,41 @@ class tx_mklib_util_DAM {
 	}
 
 	/**
-	 * Gibt alle Referenzen zur DAM Uid zurück
+	 * Hat der DAM Eintrag noch Referenzen?
 	 *
-	 * @return 	array
+	 * @return 	bool
 	 */
-	public static function getReferencesByDamUid($iLocalUid, $foreign_table = '', $foreign_uid = '', $MM_ident='', $MM_table='tx_dam_mm_ref', $options=array()) {
+	public static function damRecordHasReferences($iLocalUid, $foreign_table = '', $foreign_uid = '', $MM_ident='', $MM_table='tx_dam_mm_ref', $options=array()) {
 		if(!self::isLoaded()) {
-			return array('files' => array(), 'rows' => array());
+			return false;
 		}
 		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
 
 		$fields = tx_dam_db::getMetaInfoFieldList();
 		$res = tx_dam_db::referencesQuery('tx_dam',$iLocalUid, $foreign_table, $foreign_uid, $MM_ident, $MM_table, $fields);
 
-		$files = array();
-		if ($res) {
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$files[$row['uid']] = $row['file_path'].$row['file_name'];
-				$rows[$row['uid']] = $row;
-			}
-			$files = array('files' => $files, 'rows' => $rows);
-		}
+		if ($res && $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))
+			return true;
+		//else
+		return false;
 
-		return self::wrapReferencesResult($files,$options);
 	}
 
 	/**
 	 * Setzt einen Dam Record auf hidden
 	 * @todo nicht nur verstecken sondern auch löschen integrieren
 	 * @param array $aDamRecord sollte nur einen record in ['rows'] enthalten
-	 * @param bool $bDeletePicture
 	 * @param int $iMode verstecken, auf deleted setzen oder ganz löschen
+	 * @param bool $bDeletePicture
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public static function deleteDamRecord($aDamRecords, $bDeletePicture = false, $iMode = 0) {
-		if(empty($aDamRecords['rows'])) return;
+	public static function deleteDamRecord($aDamRecords, $iMode = 0, $bDeletePicture = false) {
+		if(empty($aDamRecords['rows'])) return false;
 		foreach ($aDamRecords['rows'] as $iDam => $row){
-			//jetzt müssen wir prüfen ob dieser DAM Eintrag noch weitere
-			//Referenzen hat.
-			$aReferencesByDamRecord = tx_mklib_util_DAM::getReferencesByDamUid($iDam);
 			//wenn wir nur keine referenzen mehr haben dann können wir das bild und
 			//den eigentlichen eintrag löschen
-			if(empty($aReferencesByDamRecord['rows'])){
+			if(!tx_mklib_util_DAM::damRecordHasReferences($iDam)){
 				//dam eintrag und bild löschen
 				tx_rnbase::load('tx_rnbase_util_DB');
 				switch ($iMode) {
@@ -312,11 +304,12 @@ class tx_mklib_util_DAM {
 				if($bDeletePicture){
 					unlink(
 						t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT').'/'.
-						$aDamRecord['files'][$iDam]
+						$aDamRecords['files'][$iDam]
 					);
 				}
 			}
 		}
+		return true;
 	}
 
 	/**
