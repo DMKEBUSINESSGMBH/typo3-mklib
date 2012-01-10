@@ -3,7 +3,7 @@
 	<tx_dam_mm_ref>
 		<uid_local>1</uid_local>
 		<uid_foreign>1</uid_foreign>
-		<tablenames>tx_mklib_none_existing_dummy_1</tablenames>
-		<ident>dummyfield_1</ident>
+		<tablenames>tx_mklib_wordlist</tablenames>
+		<ident>blacklisted</ident>
 	</tx_dam_mm_ref>
 </dataset>

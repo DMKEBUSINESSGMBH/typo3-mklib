@@ -303,13 +303,45 @@ class tx_mklib_util_DAM {
 				//und bild löschen?
 				if($bDeletePicture){
 					unlink(
-						t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT').'/'.
+						PATH_site.'/'.
 						$aDamRecords['files'][$iDam]
 					);
 				}
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Löscht die Referenzen (auf jeden fall),
+	 * den DAM Eintrag (evtl.) und das Bild (evtl.)
+	 *
+	 * @param string $sTableName
+	 * @param int $iItemId
+	 * @param string $sFieldName
+	 * @param int $iMode
+	 * @param bool $bDeletePicture
+	 *
+	 * @return array wie viele referenzen und dam einträge wurden gelöscht
+	 */
+	public function handleDelete($sTableName, $iItemId, $sFieldName, $iMode = 0, $bDeletePicture = false) {
+		$iDeletedReferences = $iDeletedRecords = 0;
+		//dazu holen wir uns alle dam referenzen
+		$aReferences = self::getReferences($sTableName, $iItemId, $sFieldName);
+		if(!empty($aReferences['rows'])){
+			//zu den referenzen holen wir uns die eigentlichen dam records
+			foreach ($aReferences['rows'] as $uid => $row){
+				//jetzt können wir erstmal die referenz löschen da wir sie nicht mehr benötigen
+				self::deleteReferences($sTableName, $sFieldName, $iItemId);
+				$iDeletedReferences++;
+				//kann nur einer sein.
+				$aDamRecord = self::getRecords($uid);
+				//und dam eintrag selbst löschen wenn dieser keine weiteren referenzen hat
+				if(self::deleteDamRecord($aDamRecord,$iMode,$bDeletePicture))
+					$iDeletedRecords++;
+			}
+		}
+		return array('deletedReferences' => $iDeletedReferences,'deletedRecords' => $iDeletedRecords);
 	}
 
 	/**
