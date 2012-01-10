@@ -229,7 +229,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$this->assertEquals(0,$res[0]['deleted'],'deleted falsch!');
 
 		//bild noch da?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
+		$this->assertFileNotExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
 	}
 
 	/**
