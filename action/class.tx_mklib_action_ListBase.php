@@ -72,6 +72,11 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 		return;
 	}
 	
+	/**
+	 * Soll der filter über $confId.filter (neu) oder direkt über die
+	 * $confId (alt) eingebunden werden
+	 * @return bool
+	 */
 	protected function isOldFilterMode() {
 		return true;
 	}
