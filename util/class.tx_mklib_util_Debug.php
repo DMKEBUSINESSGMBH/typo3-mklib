@@ -103,8 +103,16 @@ class tx_mklib_util_Debug {
 	 * @param 	string 	$file
 	 * @return 	int
 	 */
-	public static function openFile($path, $file=''){
-		$file = $file ? $file : 'mklib_debug_'.time().'.txt';
+	public static function openFile($path='', $file='') {
+		$file = $file ? $file : 'mklib_debug_'.date('Y-m-d_H-i-s', time()).'.txt';
+		if (!$path) {
+			$path = 'typo3temp/mklib/';
+			if (!is_writable(PATH_site.$path)) {
+				t3lib_div::mkdir_deep(PATH_site, $path);
+			}
+			$path = PATH_site.$path;
+		}
+		
 		self::$file = fopen($path.$file, "a");
 		unset($path); unset($file);
 		return self::$file;
