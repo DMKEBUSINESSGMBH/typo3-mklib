@@ -87,11 +87,17 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	 * @return array
 	 */
 	protected function getActionOptions($item = null) {
-		return array(
+		$cols = array(
 			'edit' => '',
 			'hide' => '',
-			'remove' => '',
 		);
+		
+		$userIsAdmin = is_object($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->isAdmin() : 0;
+		//admins dürfen auch löschen
+		if ($userIsAdmin)
+			$cols['remove'] = '';
+		
+		return $cols;
 	}
 	
 	/**
