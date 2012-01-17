@@ -232,7 +232,8 @@ class tx_mklib_tests_Util {
 	
 	/**
 	 * Deaktiviert den Cache
-	 * damit nicht 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.' kommt
+	 * damit nicht 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.' kommt.
+	 * wenn der text mit einem mkforms formular ist, dann muss auch der testmode gesetzt sein.
 	 */
 	public static function deactivateCacheFile() {
 		//aktuelle Konfiguration sichern
