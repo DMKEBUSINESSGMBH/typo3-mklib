@@ -276,7 +276,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		//die fields nun mit dem Suchbegriff und den Spalten, 
 		//in denen gesucht werden soll, füllen
 		tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
-		tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, $this->currentSearchWord, $this->getSearchColumns());
+		tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, $this->currentSearchWord, $this->getCols());
 		
 		// das muss die kindklasse auswerten (oder eigene methode?)
 //		if($this->currentSearchWord){}
