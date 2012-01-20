@@ -48,10 +48,10 @@ abstract class tx_mklib_abstract_ObservableT3Service extends t3lib_svbase implem
 	 * (non-PHPdoc)
 	 * @see tx_mklib_interface_IObservable::notifyObservers()
 	 */
-	public function notifyObservers(array $aData = array()) {
+	public function notifyObservers() {
 		if(!empty($this->aObservers)){
 			foreach ($this->aObservers as $oObserver) {
-				$oObserver->notify($aData);
+				$oObserver->notify($this);
 			}
 		}
 	}

@@ -53,14 +53,15 @@ class tx_mklib_abstract_ObservableT3Service_testcase extends tx_phpunit_testcase
 		$oSecondObserver = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_SecondObserver');
 		$this->oObservable->registerObserver($oSecondObserver);
 
+		$this->oObservable->doSomething(array('firstTestData' => 'john doe'));
+		$this->oObservable->doSomething(array('secondTestData' => 'fran doe'));
+
 		//richtige observer registiert?
 		$this->assertEquals(array(
 			'tx_mklib_tests_fixtures_classes_FirstObserver' => $oFirstObserver,
 			'tx_mklib_tests_fixtures_classes_SecondObserver' => $oSecondObserver,
 		), $this->oObservable->getObservers(), 'Falsche Observer registiert!');
 
-		$this->oObservable->notifyObservers(array('firstTestData' => 'john doe'));
-		$this->oObservable->notifyObservers(array('secondTestData' => 'fran doe'));
 		//jetzt registreirung löschen um zu sehen ob nur noch der eine observer
 		//benachrichtigt wird
 		$this->oObservable->unregisterObserver($oSecondObserver);
@@ -70,7 +71,7 @@ class tx_mklib_abstract_ObservableT3Service_testcase extends tx_phpunit_testcase
 			'tx_mklib_tests_fixtures_classes_FirstObserver' => $oFirstObserver
 		), $this->oObservable->getObservers(), 'Falsche Observer registiert!');
 
-		$this->oObservable->notifyObservers(array('thirdTestData' => 'jimmy doe'));
+		$this->oObservable->doSomething(array('thirdTestData' => 'jimmy doe'));
 
 		//richtige Daten in notify angekommen?
 		$this->assertEquals(array(

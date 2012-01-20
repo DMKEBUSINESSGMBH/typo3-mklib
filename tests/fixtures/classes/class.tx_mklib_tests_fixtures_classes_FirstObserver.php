@@ -56,8 +56,11 @@ class tx_mklib_tests_fixtures_classes_FirstObserver implements tx_mklib_interfac
 	 * (non-PHPdoc)
 	 * @see tx_mklib_interface_IObserver::notify()
 	 */
-	public function notify(array $aData = array()) {
-		$this->aNotified[] = $aData;
+	public function notify(tx_mklib_interface_IObservable $oObservable) {
+		//prüfen ob wir die richtige klasse haben damit wir die daten abgreifen können die wir brauchen
+		if(!$oObservable instanceof tx_mklib_tests_fixtures_classes_ObservableInterface)
+			return;
+		$this->aNotified[] = $oObservable->getDataForObservers();
 		$this->iNotified++;
 	}
 }

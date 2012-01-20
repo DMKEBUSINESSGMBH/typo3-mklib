@@ -24,44 +24,16 @@
  */
 
 /**
- * Interface für ein Subject Objekt bei Verwendung des Subject/Observer Patterns
+ * Interface für ein Subject welches die daten für einen oberserver bereit stellt
  *
  * @package tx_mklib
  * @subpackage tx_mklib_model
  * @author Hannes Bochmann
  */
-interface tx_mklib_interface_IObservable {
+interface tx_mklib_tests_fixtures_classes_ObservableInterface {
 
-	/**
-	 * regisriert einen Observer
-	 * @param tx_mklib_interface_IObserver $oObserver
-	 *
-	 * @return void
-	 */
-	public function registerObserver(tx_mklib_interface_IObserver $oObserver);
-
-	/**
-	 * löscht einen regisrierten einen Observer
-	 * @param tx_mklib_interface_IObserver $oObserver
-	 *
-	 * @return void
-	 */
-	public function unregisterObserver(tx_mklib_interface_IObserver $oObserver);
-
-	/**
-	 * ruft notify() auf allen regisrtierten Observern
-	 * aus
-	 *
-	 * @return void
-	 */
-	public function notifyObservers();
-
-	/**
-	 * liefert die registrierten observer
-	 *
-	 * @return array[tx_mklib_interface_IObserver]
-	 */
-	public function getObservers();
+	public function getDataForObservers();
+	public function setDataForObservers();
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {

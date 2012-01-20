@@ -31,6 +31,7 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_abstract_ObservableT3Service');
+tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableInterface');
 
 /**
  * Dummy Service um uns DB Abfragen zu ersparen
@@ -38,8 +39,18 @@ tx_rnbase::load('tx_mklib_abstract_ObservableT3Service');
  * @package tx_mklib
  * @subpackage tx_mklib_srv
  */
-class tx_mklib_tests_fixtures_classes_ObservableT3Service extends tx_mklib_abstract_ObservableT3Service {
-
+class tx_mklib_tests_fixtures_classes_ObservableT3Service extends tx_mklib_abstract_ObservableT3Service implements tx_mklib_tests_fixtures_classes_ObservableInterface{
+	protected $aData = array();
+	public function getDataForObservers() {
+		return $this->aData;
+	}
+	public function setDataForObservers($aData = array()) {
+		$this->aData = $aData;
+	}
+	public function doSomething($aData = array()) {
+		$this->setDataForObservers($aData);
+		$this->notifyObservers();
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'])	{

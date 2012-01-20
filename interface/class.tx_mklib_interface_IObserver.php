@@ -35,11 +35,11 @@ interface tx_mklib_interface_IObserver {
 	/**
 	 * wird vom subject aufgerufen bei statusänderungen u.Ä.
 	 *
-	 * @param array $aData | Daten, die an die Observer weitergegeben werden
+	 * @param tx_mklib_interface_IObservable $oObservable
 	 *
 	 * @return void
 	 */
-	public function notify(array $aData = array());
+	public function notify(tx_mklib_interface_IObservable $oObservable);
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
