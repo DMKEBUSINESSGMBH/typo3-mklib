@@ -3,6 +3,10 @@
  * 	@package tx_mklib
  *  @subpackage tx_mklib
  *
+ *	@TODO: unbedingt umstellen,
+ *		als standalone liefert es falsche ergebnisse.
+ *		typo3 ändert intern das error reporting noch mehrmals!
+ *
  *  Copyright notice
  *
  *  (c) 2011 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
