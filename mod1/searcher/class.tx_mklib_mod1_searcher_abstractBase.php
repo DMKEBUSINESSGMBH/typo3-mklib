@@ -189,7 +189,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 			);
 
 		$fields = $options = array();
-		
+		if(is_array($this->options['baseOptions']))
+			$options = $this->options['baseOptions'];
+		if(is_array($this->options['baseOptions']))
+			$fields = $this->options['baseFields'];
 		//@todo tests schreiben
 		//es könnte sein dass ein sorting gewählt wurde. dann wollen wir dieses
 		//auch nutzen
