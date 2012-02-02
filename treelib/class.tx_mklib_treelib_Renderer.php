@@ -175,6 +175,8 @@ class tx_mklib_treelib_Renderer {
 	 */
 	private function addJs(&$oTreeView, $content, &$oTtce=null){
 			
+		//@todo ajax funktionalitäten von typo3 nutzen wenn möglich
+		//damit nicht extra die xajax Extension installiert werden muss
 		if($oTreeView->useAjax() && is_object($oTtce)) {
 //		require_once(t3lib_extMgm::extPath( 'xajax', 'class.tx_xajax.php'));
 			$xajax = tx_rnbase::makeInstance('tx_xajax');
