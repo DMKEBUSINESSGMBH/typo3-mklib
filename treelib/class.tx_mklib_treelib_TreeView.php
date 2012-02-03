@@ -246,6 +246,12 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 			$res = $TYPO3_DB->exec_SELECTquery($what, $fromClause, $where);
 			return $res;
 		}
+		
+		//@workaround - siehe Wiki von mklib und mkdownloads
+		//damit nicht eingeschränkt wird
+		if($this->getConfig()->forceAdminRootRecord())
+			$this->clause = '';
+			
 		return parent::getDataInit($parentId, $subCSSclass);
 	}
 	/**
@@ -391,6 +397,16 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 		return $link;
 	}
 
+	/**
+	 * @workaround - siehe Wiki von mklib und mkdownloads
+	 * (non-PHPdoc)
+	 * @see t3lib_treeView::getBrowsableTree()
+	 */
+	function getBrowsableTree() {
+		if($this->getConfig()->forceAdminRootRecord())
+			$this->MOUNTS = array(0 => 0); // dummy
+		return parent::getBrowsableTree();
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TreeView.php'])	{

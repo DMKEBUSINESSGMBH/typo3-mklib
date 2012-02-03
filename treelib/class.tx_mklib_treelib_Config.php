@@ -158,6 +158,20 @@ class tx_mklib_treelib_Config {
 		return $this->get('wizards');
 	}
 	
+	/**
+	 * wenn bei einem normalen nutzer kein root record
+	 * gefunden wird, dann kommt es zur exception. das 
+	 * ist ein Bug in TYPO3 bzw. in der Extension,
+	 * die keine Mounts unterstützt.
+	 * Damit der gleiche dummy record wie
+	 * bei einem Admin verwendet wird, kann diese option
+	 * gesetzt werden.
+	 * 
+	 * @return boolean
+	 */
+	public function forceAdminRootRecord() {
+		return (boolean)$this->get('forceAdminRootRecord');
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php'])	{
