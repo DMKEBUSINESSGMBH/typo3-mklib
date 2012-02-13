@@ -40,7 +40,7 @@ config.admPanel = 0
 ### php-ids
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:phpids = 1]
 	config.linkVars := addToList(phpids)
-	page.8.General.debug_mode = 0
+	page.8.General.debug_mode = 1
 [global]
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:phpids = 2]
 	config.linkVars := addToList(phpids)
