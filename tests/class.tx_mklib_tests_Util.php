@@ -275,7 +275,8 @@ class tx_mklib_tests_Util {
 		$configurations->setParameters($parameters);
 		$action->setConfigurations($configurations);
 		if($execute) {
-			// logoff für phpmyadmin deaktivieren
+			// logoff für phpmyadmin deaktivieren. ist nicht immer notwendig
+			// aber sollte auch nicht stören!
 			/*
 			 * Error in test case test_handleRequest aus mkforms
 			 * in file C:\xampp\htdocs\typo3\typo3conf\ext\phpmyadmin\res\class.tx_phpmyadmin_utilities.php
