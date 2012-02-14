@@ -141,6 +141,13 @@ class tx_mklib_tests_Util {
 	 * Wurde tx_phpunit_module1 entnommen da die Methode protected ist
 	 * und nicht bei der Ausführung auf dem CLI aufgerufen wird. Das
 	 * kann in manchen Fällen aber notwendig sein
+	 * 
+	 * ACHTUNG bei Datenbank Testfällen!!!
+	 * Dann muss diese Funktion immer vor dem erstellen der Datenbank etc. ausgeführt
+	 * werden da sonst extra eine Seite in "pages" eingefügt werden muss.
+	 * In einem normalen TYPO3 gibt es bereits Seiten womit das vor dem
+	 * Aufsetzen der Testdatenbank ausgenutzt werden kann!!!
+	 * 
 	 * @see tx_phpunit_module1::simulateFrontendEnviroment
 	 * @todo in eigene Klasse auslagern, die von tx_phpunit_module1 erbt und simulateFrontendEnviroment public macht
 	 */
