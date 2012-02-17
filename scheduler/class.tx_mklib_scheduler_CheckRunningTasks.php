@@ -51,7 +51,7 @@ class tx_mklib_scheduler_CheckRunningTasks extends tx_mklib_scheduler_Generic {
 				'where' => '
 					uid != ' . intval($this->taskUid) . ' AND
 					LENGTH(serialized_executions) > 0 AND
-					lastexecution_time > ' . (time() - $this->getOption('threshold'))
+					lastexecution_time < ' . (time() - $this->getOption('threshold'))
 
 			)
 		);

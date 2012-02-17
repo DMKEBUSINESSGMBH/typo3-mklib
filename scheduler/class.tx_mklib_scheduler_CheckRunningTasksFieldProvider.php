@@ -53,9 +53,22 @@ class tx_mklib_scheduler_CheckRunningTasksFieldProvider
 				'type' => 'input',
  				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_field_threshold',
 				'default' => 7200, // 2 h
-				'eval' => 'int',
+				'eval' => 'int,minThreshold',
 			),
 		);
+	}
+
+	/**
+	 * der threshold sollte nicht kleiner als 10 sekunden sein. dsa
+	 * prüfen wir hier
+	 *
+	 * @param  string $sPath
+	 * @return 	mixed
+	 */
+	protected function minThreshold($iThreshold){
+		return ($iThreshold < 10)
+			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_field_threshold_eval_minThreshold')
+			: true;
 	}
 }
 
