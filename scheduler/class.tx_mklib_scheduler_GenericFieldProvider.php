@@ -33,6 +33,10 @@ require_once t3lib_extMgm::extPath('scheduler', '/interfaces/interface.tx_schedu
  */
 abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_AdditionalFieldProvider {
 
+	protected $taskInfo;
+	protected $task;
+	protected $schedulerModule;
+
 	/**
 	 * Liefert die Konfiguration für zusätzliche Felder des Tasks.
 	 *
@@ -52,7 +56,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 // 			),
 // 		);
 // 	}
-	
+
 	/**
 	 * This method is used to define new fields for adding or editing a task
 	 *
@@ -68,6 +72,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 	 *											['cshLabel']	=> The code of the CSH label
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
+		$this->taskInfo =& $taskInfo;
+		$this->task =& $task;
+		$this->schedulerModule =& $schedulerModule;
 
 		$additionalFields = array();
 		foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions){
@@ -82,7 +89,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 					$taskInfo[$sKey] = $aOptions['default'];
 				}
 			}
-			
+
 			// Write the code for the field
 			$fieldID = 'task_'.$sKey;
 			switch($aOptions['type']){
@@ -101,7 +108,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 							'cshLabel' => ($aOptions['cshLabel'] ? $aOptions['cshLabel'] : $sKey).'_csh'
 			);
 		}
-		
+
 		return $additionalFields;
 	}
 
@@ -121,9 +128,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 			if( $aOptions['type'] && $mValue === 'on') {
 				$mValue = 1;
 			}
-			
+
 			$bMessage = false;
-			
+
 			// Die Einzelnen validatoren anwenden.
 			if (!$bMessage) {
 				foreach(t3lib_div::trimExplode(',', $aOptions['eval']) as $sEval) {
@@ -163,14 +170,14 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 								}
 							}
 					}
-	
+
 					// wir generieren nur eine meldung pro feld!
 					if($bMessage) {
 						continue;
 					}
 				}
 			}
-			
+
 			// wurde eine fehlermeldung erzeugt?
 			if($bMessage) {
 				$sMessage = $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
@@ -179,9 +186,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 				$bError = true;
 				continue;
 			}
-			
+
 		}
-		
+
 		return !$bError;
 	}
 

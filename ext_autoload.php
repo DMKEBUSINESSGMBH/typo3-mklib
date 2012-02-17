@@ -59,4 +59,6 @@ return array(
 	'tx_mklib_scheduler_emailfieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_EmailFieldProvider.php',
 	'tx_mklib_scheduler_generic' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_Generic.php',
 	'tx_mklib_scheduler_genericfieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php',
+	'tx_mklib_scheduler_checkrunningtasks' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_CheckRunningTasks.php',
+	'tx_mklib_scheduler_checkrunningtasksfieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_CheckRunningTasksFieldProvider.php',
 );

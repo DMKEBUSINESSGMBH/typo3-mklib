@@ -34,7 +34,7 @@ tx_rnbase::load('tx_rnbase_util_Logger');
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
-	
+
 	/**
 	 * Lifetime of e file.
 	 *
@@ -48,7 +48,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	protected function getExtKey() {
 		return 'mklib';
 	}
-	
+
 	/**
 	 * Function executed from the Scheduler.
 	 *
@@ -70,7 +70,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			$aDevLog = array();
 			$aOptions = $this->getOptions();
 			$sMessage = $this->executeTask($aOptions, $aDevLog);
-			
+
 			// devlog
 			if (t3lib_extMgm::isLoaded('devlog')) {
 				if(
@@ -83,7 +83,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 						)
 					)
 					$aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'] = $sMessage;
-				
+
 				foreach ($aDevLog as $logLevel => $logData) {
 					if (empty($logData['message'])) continue;
 					t3lib_div::devLog(
@@ -104,10 +104,10 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			}
 			$bSuccess = false;
 		}
-			
+
 		return $bSuccess;
 	}
-	
+
 	/**
 	 *
 	 * @param 	array 	$aOptions
@@ -115,7 +115,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @return 	string
 	 */
 	abstract protected function executeTask(array $aOptions, array &$aDevLog);
-	
+
 	/**
 	 * This method returns the destination mail address as additional information
 	 *

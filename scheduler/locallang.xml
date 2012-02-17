@@ -18,6 +18,12 @@
 			<label index="scheduler_cleanupTempFiles_field_recursive">Recursive</label>
 			<label index="scheduler_cleanupTempFiles_field_filetypes">Filetypes</label>
 
+			<label index="scheduler_CheckRunningTasks_name">Laufende Scheduler Tasks prüfen</label>
+			<label index="scheduler_CheckRunningTasks_taskinfo">Prüft ob aktuell Scheduler Tasks laufen, die schon seit längerer Zeit laufen und somit scheinbar hängen geblieben sind.</label>
+			<label index="scheduler_CheckRunningTasks_field_receiver">Empfänger der Meldungen</label>
+			<label index="scheduler_CheckRunningTasks_field_receiver_eval_email">Bitte eine korrekte Mail Addresse eintragen</label>
+			<label index="scheduler_CheckRunningTasks_field_threshold">maximal erlaubte Laufdauer</label>
+			<label index="scheduler_CheckRunningTasks_field_threshold_eval_int">Bitte eine Zahl als Laufdauer eintragen</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>
