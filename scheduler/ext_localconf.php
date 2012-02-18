@@ -15,11 +15,11 @@ if (TYPO3_MODE=='BE')    {
     );
 
     // prüft ob scheduler schon seit längerer zeit hängen
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_mklib_scheduler_CheckRunningTasks'] = array(
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_mklib_scheduler_SchedulerTaskFreezeDetection'] = array(
     	'extension'        => 'mklib',
-    	'title'            => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_name',
-    	'description'      => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_taskinfo',
-		'additionalFields' => 'tx_mklib_scheduler_CheckRunningTasksFieldProvider'
+    	'title'            => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_name',
+    	'description'      => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_taskinfo',
+		'additionalFields' => 'tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider'
     );
 
 }

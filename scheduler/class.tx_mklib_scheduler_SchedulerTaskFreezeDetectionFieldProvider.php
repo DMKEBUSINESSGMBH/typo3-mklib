@@ -33,27 +33,35 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
  * @subpackage tx_mketernit_scheduler
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
-class tx_mklib_scheduler_CheckRunningTasksFieldProvider
+class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider
 	extends tx_mklib_scheduler_GenericFieldProvider
 	implements tx_scheduler_AdditionalFieldProvider {
 
 	/**
 	 *
 	 * @return 	array
+	 * @todo CSH einfügen
 	 */
 	protected function getAdditionalFieldConfig(){
 		return array(
 			'receiver' => array(
 				'type' => 'input',
- 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_field_receiver',
+ 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
 				'default' => $GLOBALS['BE_USER']->user['email'], // default is 7 days
 				'eval' => 'email',
 			),
 			'threshold' => array(
 				'type' => 'input',
- 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_field_threshold',
-				'default' => 7200, // 2 h
+ 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_threshold',
+				'default' => 90, // jeder task sollte nach 90 sekunden fertig sein
 				'eval' => 'int,minThreshold',
+			),
+			'rememberAfter' => array(
+				'type' => 'input',
+ 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter',
+				'cshLabel' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter', // key aus der ssh locallang zu cshKey
+				'default' => 3600, // nach 1 h erneut mail schicken
+				'eval' => 'int',
 			),
 		);
 	}
@@ -67,7 +75,7 @@ class tx_mklib_scheduler_CheckRunningTasksFieldProvider
 	 */
 	protected function minThreshold($iThreshold){
 		return ($iThreshold < 10)
-			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_field_threshold_eval_minThreshold')
+			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold')
 			: true;
 	}
 }
