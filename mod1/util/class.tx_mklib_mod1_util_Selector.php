@@ -55,7 +55,7 @@ class tx_mklib_mod1_util_Selector {
 	/**
 	 * Method to display a form with an input array, a description and a submit button.
 	 * Keys are 'field' and 'button'.
-	 * 
+	 *
 	 * @param 	string 	$out 				HTML string
 	 * @param 	string 	$key 				mod key
 	 * @param 	array 	$options
@@ -66,7 +66,7 @@ class tx_mklib_mod1_util_Selector {
 	 */
 	public function showFreeTextSearchForm (&$out, $key, array $options = array()) {
 		
-		$searchstring = $this->getValueFromModuleData($key);	
+		$searchstring = $this->getValueFromModuleData($key);
 
 		// Erst das Suchfeld, danach der Button.
 		$out['field'] 	= $this->formTool->createTxtInput('SET['.$key.']',$searchstring,10);
@@ -76,7 +76,7 @@ class tx_mklib_mod1_util_Selector {
 			);
 		$out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_search');
 	
-		return $searchstring;			
+		return $searchstring;
 	}
 	
 	/**
@@ -99,7 +99,7 @@ class tx_mklib_mod1_util_Selector {
 	 * @param array $aItems Array mit den werten der Auswahlbox
 	 * @param string $sDefId ID-String des Elements
 	 * @param array $aData enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
-	 * @param array $aOptions zusätzliche Optionen: yearfrom, yearto, 
+	 * @param array $aOptions zusätzliche Optionen: yearfrom, yearto,
 	 * @return DateTime selected day
 	 */
 	public function showDateSelector($sDefId, &$aData, $aOptions=array()) {
@@ -128,7 +128,7 @@ class tx_mklib_mod1_util_Selector {
 		$today = new DateTime();
 		$from = intval($aOptions['yearfrom']);
 		if(!$from) {
-			// Default 10 Jahre. Damit wir PHP 5.2. verwenden können, die Berechnung etwas umständlich. 
+			// Default 10 Jahre. Damit wir PHP 5.2. verwenden können, die Berechnung etwas umständlich.
 			$from = intval($today->format('Y')) - 10;
 		}
 		$to = intval($aOptions['yearto']);
@@ -177,6 +177,8 @@ class tx_mklib_mod1_util_Selector {
 
 		$selectedItem = array_key_exists('forcevalue', $aOptions) ? $aOptions['forcevalue'] : $this->getValueFromModuleData($id);
 		
+		$pid = $aOptions['pid'] ? $aOptions['pid'] : 0;
+		
 		// Build select box items
 		$aData['selector'] = t3lib_BEfunc::getFuncMenu(
 			$pid, 'SET['.$id.']', $selectedItem, $aItems
@@ -208,14 +210,14 @@ class tx_mklib_mod1_util_Selector {
 
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	protected function getMod() {
 		return $this->mod;
 	}
 	/**
-	 * 
+	 *
 	 * @return tx_rnbase_util_FormTool
 	 */
 	protected function getFormTool() {
@@ -224,7 +226,7 @@ class tx_mklib_mod1_util_Selector {
 	
 	/**
 	 * Return requested value from module data
-	 * 
+	 *
 	 * @param 	string $key
 	 * @return 	mixed
 	 */
@@ -239,7 +241,7 @@ class tx_mklib_mod1_util_Selector {
 	/**
 	 * Setzt einen Wert in den Modul Daten. Dabei werden die bestehenden
 	 * ergänzt oder ggf. überschrieben
-	 * 
+	 *
 	 * @param 	array $aModuleData
 	 * @return 	void
 	 */
@@ -253,7 +255,7 @@ class tx_mklib_mod1_util_Selector {
 	
 
 	/**
-	 * 
+	 *
 	 * @param 	array 	$data
 	 * @return 	string
 	 */
