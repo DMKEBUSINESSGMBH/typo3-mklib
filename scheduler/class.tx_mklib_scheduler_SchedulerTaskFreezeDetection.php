@@ -44,7 +44,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		//alle die nicht mehr laufen auf freezedetected = 0 setzen
 		//alle bei denen exectime > freezedeteceted + rememberafter auf freezedetecetd = 0
 		$this->resetPossiblyFrozenTasks();
-		
+
 		//wir brauchen alle laufenden Tasks die freezedeteceted=0 sind
 		$aPossiblyFrozenTasks = $this->getPossiblyFrozenTasks();
 		//nix zu tun
@@ -53,9 +53,9 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 
 		return $this->handleFrozenTasks($aPossiblyFrozenTasks);
 	}
-	
+
 	/**
-	 * sendet eine error mail für alle tasks die hängen geblieben 
+	 * sendet eine error mail für alle tasks die hängen geblieben
 	 * sind. außerdem werden diese tasks auf freezdeteced = exectime gesetzt
 	 * @param array $aPossiblyFrozenTasks
 	 * @return void
@@ -67,7 +67,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 			$aMessages[] = '"' . $aPossiblyFrozenTask['classname'] . ' (Task-Uid: ' . $aPossiblyFrozenTask['uid'] . ')"';
 			$aUids[] = $aPossiblyFrozenTask['uid'];
 		}
-		
+
 		//wir bauen eine exception damit die error mail von rnbase gebaut werden kann
 		$sMsg = 'Die folgenden Scheduler Tasks hängen seit mindestens ' . ($this->getOption('threshold') / 60) . ' Minuten: ' . implode(', ', $aMessages);
 		$oException = new Exception($sMsg, 0);
@@ -75,14 +75,14 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		//die Mail soll immer geschickt werden
 		$aOptions = array('ignoremaillock' => true);
 		tx_rnbase_util_Misc::sendErrorMail($this->getOption('receiver'), 'tx_mklib_scheduler_CheckRunningTasks', $oException, $aOptions);
-		
+
 		//bei allen hängen geblibenen tasks freezedetected setzen
 		//damit erst nach der errinerungszeit wieder eine mail versendet wird
 		$this->setFreezeDetected($aUids);
-		
+
 		return $sMsg;
 	}
-	
+
 	/**
 	 * alle uids (tasks) auf freezedetected = exec time setzen
 	 * @param array $aUids
@@ -94,7 +94,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 					array('freezedetected' => $GLOBALS['EXEC_TIME'])
 		);
 	}
-	
+
 	/**
 	 * alle die nicht laufen oder bei denen
 	 * eine errinnerung notwendig ist
@@ -103,11 +103,11 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 	protected function resetPossiblyFrozenTasks() {
 		tx_rnbase_util_DB::doUpdate(
 			'tx_scheduler_task',
-			'LENGTH(serialized_executions) = 0 OR freezedetected < ' . ($GLOBALS['EXEC_TIME'] + $this->getOption('rememberAfter')),
+			'LENGTH(serialized_executions) = 0 OR freezedetected < ' . ($GLOBALS['EXEC_TIME'] - $this->getOption('rememberAfter')),
 			array('freezedetected' => 0)
 		);
 	}
-	
+
 	/**
 	 * möglicherweise hängen geblibene tasks
 	 * @return array
