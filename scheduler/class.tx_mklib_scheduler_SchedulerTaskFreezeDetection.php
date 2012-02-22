@@ -79,6 +79,8 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		//bei allen hängen geblibenen tasks freezedetected setzen
 		//damit erst nach der errinerungszeit wieder eine mail versendet wird
 		$this->setFreezeDetected($aUids);
+		
+		return $sMsg;
 	}
 	
 	/**
