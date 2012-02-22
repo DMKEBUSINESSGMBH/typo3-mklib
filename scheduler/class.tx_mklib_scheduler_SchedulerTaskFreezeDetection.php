@@ -49,11 +49,9 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		$aPossiblyFrozenTasks = $this->getPossiblyFrozenTasks();
 		//nix zu tun
 		if(empty($aPossiblyFrozenTasks))
-			return true;
+			return 'keine hängengebliebene Scheduler entdeckt!';
 
-		$this->handleFrozenTasks($aPossiblyFrozenTasks);
-
-		return true;
+		return $this->handleFrozenTasks($aPossiblyFrozenTasks);
 	}
 	
 	/**
@@ -71,9 +69,8 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		}
 		
 		//wir bauen eine exception damit die error mail von rnbase gebaut werden kann
-		$oException = new Exception(
-					'Die folgenden Scheduler Tasks hängen seit mindestens ' . ($this->getOption('threshold') / 60) . ' Minuten: ' . implode(', ', $aMessages), 0
-		);
+		$sMsg = 'Die folgenden Scheduler Tasks hängen seit mindestens ' . ($this->getOption('threshold') / 60) . ' Minuten: ' . implode(', ', $aMessages);
+		$oException = new Exception($sMsg, 0);
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		//die Mail soll immer geschickt werden
 		$aOptions = array('ignoremaillock' => true);
