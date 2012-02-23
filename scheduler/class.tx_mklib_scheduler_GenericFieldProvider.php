@@ -150,12 +150,12 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 							$mValue = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $mValue);
 							break;
 						case 'email':
-							//wir ünterstützen kommaseparierte listen von email andresse
+							//wir unterstützen kommaseparierte listen von email andressen
 							$aEmails = explode(',', $mValue);
-							$bMessage = true;
+							$bMessage = false;
 							foreach ($aEmails as $sEmail) {
 								if(!t3lib_div::validEmail($sEmail))
-									$bMessage = false;
+									$bMessage = true;
 							}
 
 							break;
