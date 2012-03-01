@@ -29,6 +29,7 @@
 require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  *
@@ -76,8 +77,16 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 
 		//damit labels geladen sind
 		global $LOCAL_LANG;
-		$LOCAL_LANG['default']['label_select_hide_hidden'] = 'Hide hidden entries';
-		$LOCAL_LANG['default']['label_select_show_hidden'] = 'Show hidden entries';
+		//ab typo 4.6 ist das mit den lang labels anders
+		$mHideEntry = 'Hide hidden entries';
+		$mShowEntry = 'Show hidden entries';
+		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()){
+			$LOCAL_LANG['default']['label_select_hide_hidden'][0]['target'] = $mHideEntry;
+			$LOCAL_LANG['default']['label_select_show_hidden'][0]['target'] = $mShowEntry;
+		}else{
+			$LOCAL_LANG['default']['label_select_hide_hidden'] = $mHideEntry;
+			$LOCAL_LANG['default']['label_select_show_hidden'] = $mShowEntry;
+		}
 	}
 
 	public function testBuildFilerTableWithoutData() {
