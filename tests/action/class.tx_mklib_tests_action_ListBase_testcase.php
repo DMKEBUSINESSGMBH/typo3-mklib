@@ -55,9 +55,14 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		return $configurations;
 	}
 	
-	protected function getSrvMock($returnValue = array('result' => array('firstItem'))) {
+	protected function getSrvMock($expectedFields = array(),$returnValue = array('result' => array('firstItem'))) {
 		$oSrv = $this->getMock('dummySrv',array('search'));
-		$this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD'=>array(''=>'anotherValue'),'test'=>'value');
+		
+		if($expectedFields)
+			$this->expectedFields = $expectedFields; 
+		else
+			$this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD'=>array(''=>'anotherValue'),'test'=>'value');
+		
 		$this->expectedOptions = array('orderby'=>'someOrderBy');
 		$oSrv->expects($this->once())
 		->method('search')
@@ -178,38 +183,36 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 	
 	public function testViewDataIsCorrectWithoutItems() {
 		//mock für den searcher
-		$oSrv = $this->getSrvMock(null);
+		$oSrv = $this->getSrvMock(null,null);
 		
 		//mock für die zu testende action
-		$oListBase = $this->getActionMock($oSrv,'ListBaseWithNewFilterMode');
-	
+		$oListBase = $this->getActionMock($oSrv);
+		
 		//jetzt den aufruf der action simulieren
 		$aConfig = array(
-				'dummyconfig.' => array(
-					'filter.' => array(
-						'class'  => 'tx_mklib_tests_fixtures_classes_DummyFilter',
-		//fields und options sollte übernommen werden
-						'fields.' => array(
-							'anotherTest.' => array(
-								'anotherField.' => array(
-									'=>' => 'anotherValue'
-		)
-		)
-		),
-						'options.' => array(
-							'orderby' => 'someOrderBy'
-		),
-		)
-		)
+			'dummyconfig.' => array(
+				'filter' => 'tx_mklib_tests_fixtures_classes_DummyFilter',
+				//fields und options sollte übernommen werden
+				'fields.' => array(
+					'anotherTest.' => array(
+						'anotherField.' => array(
+							'=>' => 'anotherValue'
+						)
+					)
+				),
+				'options.' => array(
+					'orderby' => 'someOrderBy'
+				),
+			)
 		);
 		$configurations = $this->getConfigurations($aConfig);
-	
+		
 		//handle request sollte nichts zurück geben
 		$this->assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
-	
-		//view daten mit den daten des searchers gefüllt?
+		
+		//view daten mit den daten des searchers leer?
 		$this->assertFalse($configurations->getViewData()->offsetExists('items'),'View daten falsch!');
-	
+		
 		$pageBrowserConfig = $configurations->getViewData()->offsetGet('pageBrowserConfig');
 		//daten die dem pagebrowser übergeben wurden korrekt?
 		$this->assertEquals('dummyconfig.pagebrowser',$pageBrowserConfig['confid'],'daten für den page browser falsch: confid falsch!');
