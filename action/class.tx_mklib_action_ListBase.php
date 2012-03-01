@@ -67,6 +67,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 		);
 
 		$items = $srv->search($fields,$options);
+
 		if(!empty($items))
 			$viewData->offsetSet($this->getItemsDesignator(), $items);
 
