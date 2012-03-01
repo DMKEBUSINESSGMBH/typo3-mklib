@@ -58,10 +58,10 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 	protected function getSrvMock($expectedFields = array(),$returnValue = array('result' => array('firstItem'))) {
 		$oSrv = $this->getMock('dummySrv',array('search'));
 		
-		if($expectedFields)
+		if(!empty($expectedFields))
 			$this->expectedFields = $expectedFields; 
 		else
-			$this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD'=>array(''=>'anotherValue'),'test'=>'value');
+			$this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD'=>array(OP_EQ=>'anotherValue'),'test'=>'value');
 		
 		$this->expectedOptions = array('orderby'=>'someOrderBy');
 		$oSrv->expects($this->once())
@@ -112,7 +112,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 				'fields.' => array(
 					'anotherTest.' => array(
 						'anotherField.' => array(
-							'=>' => 'anotherValue'
+							'OP_EQ' => 'anotherValue'
 						)
 					)
 				),
@@ -154,7 +154,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 					'fields.' => array(
 						'anotherTest.' => array(
 							'anotherField.' => array(
-								'=>' => 'anotherValue'
+								'OP_EQ' => 'anotherValue'
 							)
 						)
 					),
@@ -196,7 +196,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 				'fields.' => array(
 					'anotherTest.' => array(
 						'anotherField.' => array(
-							'=>' => 'anotherValue'
+							'OP_EQ' => 'anotherValue'
 						)
 					)
 				),
