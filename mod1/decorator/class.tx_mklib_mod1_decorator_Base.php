@@ -60,22 +60,30 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	public function format($value, $colName, $record, tx_rnbase_model_base $item) {
 		$ret = $value;
 		
-		if($colName == 'uid') {
-			$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($item->getTableName(),  'disabled', 'hidden');
-			//fallback
-			$mRecordValue = $item->record[$sHiddenColumn] ?
-								$item->record[$sHiddenColumn] : 
-								$record[$sHiddenColumn];
-			// @TODO: hier nicht lieber <del></del> nutzen?
-			$wrap = $mRecordValue ? array('<strike>','</strike>') : array('','');
-			$ret = $wrap[0].$value.$wrap[1];
-			$dates = array();
-			$dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
-			$dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
-			$ret = "<span title=\"Creation: ".$dates['crdate']." \nLast Change: ".$dates['tstamp']." \">".$ret .'</span>';
-		} 
-		elseif($colName == 'actions') {
-			$ret .= $this->getActions($item, $this->getActionOptions($item));
+		switch ($colName) {
+			case 'uid':
+				$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($item->getTableName(),  'disabled', 'hidden');
+				//fallback
+				$mRecordValue = $item->record[$sHiddenColumn] ?
+									$item->record[$sHiddenColumn] : 
+									$record[$sHiddenColumn];
+				// @TODO: hier nicht lieber <del></del> nutzen?
+				$wrap = $mRecordValue ? array('<strike>','</strike>') : array('','');
+				$ret = $wrap[0].$value.$wrap[1];
+				$dates = array();
+				$dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
+				$dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
+				$ret = "<span title=\"Creation: ".$dates['crdate']." \nLast Change: ".$dates['tstamp']." \">".$ret .'</span>';
+				
+				break;
+				
+			case 'actions':
+				$ret .= $this->getActions($item, $this->getActionOptions($item));
+				break;
+				
+			default:
+				$ret = $ret;
+				break;
 		}
 		
 		return $ret;
