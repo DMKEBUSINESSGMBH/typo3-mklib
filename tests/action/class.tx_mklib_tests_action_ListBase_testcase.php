@@ -38,7 +38,7 @@ abstract class ListBaseWithNewFilterMode extends tx_mklib_action_ListBase {
  */
 class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 
-	protected function getConfigurations($aConfig) {
+	protected function getConfigurations($aConfig = array()) {
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 		
@@ -74,6 +74,11 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		return $oSrv;
 	}
 	
+	/**
+	 * konfigurieren wie oft welche methoden aufgerufen werden sollten
+	 * @param unknown_type $oSearchSrv
+	 * @param unknown_type $sClassToMock
+	 */
 	protected function getActionMock($oSearchSrv,$sClassToMock = 'tx_mklib_action_ListBase') {
 		$oListBase = $this->getMockForAbstractClass($sClassToMock);
 		//abstrakte methoden mocken
@@ -84,6 +89,9 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$oListBase->expects($this->once())
 		->method('getTsPathPageBrowser')
 		->will($this->returnValue('pagebrowser'));
+		
+		$oListBase->expects($this->once())
+		->method('getService');
 		
 		//damit die konfig stimmt
 		$oListBase->expects($this->any())
@@ -97,7 +105,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		return $oListBase;
 	}
 	
-	public function testFilterPageBrowserAndSearchServiceIsCalledCorrectWithOldFilterMode() {
+	public function testHandleRequestCallsFilterPageBrowserAndSearchServiceCorrectWithOldFilterMode() {
 		//mock für den searcher
 		$oSrv = $this->getSrvMock();
 		
@@ -138,7 +146,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$this->assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
 	}
 	
-	public function testFilterPageBrowserAndSearchServiceIsCalledCorrectWithNewFilterMode() {
+	public function testHandleRequestCallsFilterPageBrowserAndSearchServiceCorrectWithNewFilterMode() {
 		//mock für den searcher
 		$oSrv = $this->getSrvMock();
 	
@@ -181,7 +189,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$this->assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
 	}
 	
-	public function testViewDataIsCorrectWithoutItems() {
+	public function testHandleRequestSetsNoViewDataIfServiceReturnsNothing() {
 		//mock für den searcher
 		$oSrv = $this->getSrvMock(null,null);
 		
@@ -220,6 +228,32 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$this->assertEquals($this->expectedFields,$pageBrowserConfig['fields'],'daten für den page browser falsch: fields falsch!');
 		$this->assertEquals($this->expectedOptions,$pageBrowserConfig['options'],'daten für den page browser falsch: options falsch!');
 		$this->assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
+	}
+	
+	/**
+	 * @expectedException RuntimeException
+	 * @expectedExceptionCode 4001
+	 * @expectedExceptionMessage Der Service dummySrv muss die Methode search unterstützen!
+	 */
+	public function testHandleRequestThrowsExceptionIfServiceDoesNotSupportSearchCallback() {
+		//mock für den searcher
+		$oSrv = $this->getMock('dummySrv',array('__toString'));
+		$oSrv->expects($this->once())
+		->method('__toString')
+		//kommt die exception message richtig ist
+		->will($this->returnValue('dummySrv'));
+		
+		//mock für die zu testende action
+		$oListBase = $this->getMockForAbstractClass('tx_mklib_action_ListBase');
+		//abstrakte methoden mocken
+		$oListBase->expects($this->once())
+		->method('getService')
+		->will($this->returnValue($oSrv));
+		
+		$configurations = $this->getConfigurations();
+		
+		//handle request sollte nichts zurück geben
+		$oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData());
 	}
 }
 

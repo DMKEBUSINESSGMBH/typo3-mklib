@@ -46,6 +46,8 @@
 			<label index="label_ziperror_r9_KR">Die PLZ muss in folgendem Format angegeben werden (N-Ziffer): NNN-NNN</label>
 			<label index="label_ziperror_r9_PT">Die PLZ muss in folgendem Format angegeben werden (N-Ziffer): NNNN-NNN oder NNNN</label>
 
+			<label index="ERROR_default">Leider ist ein Fehler aufgetreten!</label>
+			<label index="ERROR_4001">Leider ist ein Fehler aufgetreten!</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="label_form_undefined">Undefiniert</label>
@@ -66,6 +68,9 @@
 			<label index="month_10">Oktober</label>
 			<label index="month_11">November</label>
 			<label index="month_12">Dezember</label>
+			
+			<label index="ERROR_default">Leider ist ein Fehler aufgetreten!</label>
+			<label index="ERROR_4001">Leider ist ein Fehler aufgetreten!</label>
 		</languageKey>
 	</data>
 </T3locallang>

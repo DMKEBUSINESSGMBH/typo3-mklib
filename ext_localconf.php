@@ -22,3 +22,8 @@ if (TYPO3_MODE=='BE')    {
 require_once(t3lib_extMgm::extPath($_EXTKEY).'scheduler/ext_localconf.php');
 require_once(t3lib_extMgm::extPath($_EXTKEY).'srv/ext_localconf.php');
 require_once(t3lib_extMgm::extPath($_EXTKEY).'hooks/ext_localconf.php');
+
+//das ist nur eine info für entwickler welcher basis exception code
+//für diese extension verwendet wird. in diesem fall 400.
+//also könnte ein valider exception code dieser extension 4001 sein
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['baseExceptionCode'] = 400;

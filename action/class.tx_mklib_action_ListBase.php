@@ -48,11 +48,17 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 	 * @param tx_rnbase_configurations $configurations
 	 * @param ArrayObject $viewData
 	 * @return string error msg or null
+	 * @throws RuntimeException
 	 */
 	public function handleRequest(&$parameters,&$configurations, &$viewData){
 		$confId = $this->getConfId();
 		$srv = $this->getService();
-
+		
+		//@todo interface für die services bereitstellen um nicht prüfen zu müssen ob es die Such methode gibt!
+		$sSearchCallback = $this->getSearchCallback();
+		if(!method_exists($srv,$sSearchCallback))
+			throw new RuntimeException('Der Service ' . $srv . ' muss die Methode ' . $sSearchCallback .' unterstützen!', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'1');;
+		
 		//Filter setzen
 		$filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId.($this->isOldFilterMode() ? '' : 'filter.'));
 
@@ -63,10 +69,10 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 
 		$filter->handlePageBrowser($configurations,
 			$confId.$this->getTsPathPageBrowser(), $viewData, $fields, $options,
-			array('searchcallback'=> array($srv, $this->getSearchCallback()))
+			array('searchcallback'=> array($srv, $sSearchCallback))
 		);
 
-		$items = $srv->search($fields,$options);
+		$items = $srv->$sSearchCallback($fields,$options);
 
 		if(!empty($items))
 			$viewData->offsetSet($this->getItemsDesignator(), $items);
