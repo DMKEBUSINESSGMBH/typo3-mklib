@@ -36,6 +36,14 @@ tx_rnbase::load('tx_rnbase_util_DB');
 class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler_Generic {
 
 	/**
+	 * Diese werte/optionen werden bei der ausgabe in der scheduler 
+	 * übersicht als eine richtige zeitangabe formatiert wie hh:mm:ss
+	 * 
+	 * @var array
+	 */
+	protected $aOptionsToFormat = array('threshold','rememberAfter');
+	
+	/**
 	 *
 	 * @param 	array 	$options
 	 * @return 	string
@@ -69,7 +77,10 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		}
 
 		//wir bauen eine exception damit die error mail von rnbase gebaut werden kann
-		$sMsg = 'Die folgenden Scheduler Tasks hängen seit mindestens ' . ($this->getOption('threshold') / 60) . ' Minuten: ' . implode(', ', $aMessages);
+		$sMsg = '
+			Die folgenden Scheduler Tasks hängen seit mindestens ' . 
+			t3lib_befunc::time($this->getOption('threshold')) . ' : ' . implode(', ', $aMessages)
+		;
 		$oException = new Exception($sMsg, 0);
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		//die Mail soll immer geschickt werden
@@ -140,6 +151,23 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		return parent::getAdditionalInformation(
 				$GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_taskinfo')
 			);
+	}
+	
+	/**
+	 * Liefert alle Optionen. sekunden werden in einer ordentlichen
+	 * zeitangabe formatiert
+	 *
+	 * @return 	array
+	 */
+	public function getOptions(){
+		$aOptions = parent::getOptions();
+		
+		foreach($this->aOptionsToFormat as $sOption) {
+			if(isset($aOptions[$sOption]))
+				$aOptions[$sOption] = t3lib_befunc::time($aOptions[$sOption]);
+		}
+		
+		return $aOptions;
 	}
 }
 
