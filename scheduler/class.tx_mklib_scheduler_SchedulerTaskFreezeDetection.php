@@ -37,7 +37,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 
 	/**
 	 * Diese werte/optionen werden bei der ausgabe in der scheduler 
-	 * übersicht als eine richtige zeitangabe formatiert wie hh:mm:ss
+	 * übersicht als eine richtige zeitangabe formatiert wie 1 minute 30 sekunden
 	 * 
 	 * @var array
 	 */
@@ -79,7 +79,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		//wir bauen eine exception damit die error mail von rnbase gebaut werden kann
 		$sMsg = '
 			Die folgenden Scheduler Tasks hängen seit mindestens ' . 
-			t3lib_befunc::time($this->getOption('threshold')) . ' : ' . implode(', ', $aMessages)
+			$this->getFormattedTime($this->getOption('threshold')) . ' : ' . implode(', ', $aMessages)
 		;
 		$oException = new Exception($sMsg, 0);
 		tx_rnbase::load('tx_rnbase_util_Misc');
@@ -164,10 +164,34 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		
 		foreach($this->aOptionsToFormat as $sOption) {
 			if(isset($aOptions[$sOption]))
-				$aOptions[$sOption] = t3lib_befunc::time($aOptions[$sOption]);
+				$aOptions[$sOption] = $this->getFormattedTime($aOptions[$sOption]);
 		}
 		
 		return $aOptions;
+	}
+	
+	/**
+	 * formatiert die sekunden als eine leserliche ausgabe
+	 * wie 1 minute 30 sekunden
+	 * 
+	 * @param integer $iSeconds
+	 */
+	protected function getFormattedTime($iSeconds) {
+		$aTime = array();
+		$aTime['hours'] = floor($iSeconds/3600);
+		$aTime['minutes'] = floor(($iSeconds-$aTime['hours']*3600)/60);
+		$aTime['seconds'] = $iSeconds-$aTime['hours']*3600-$aTime['minutes'] *60;
+		
+		$sFormattedTime = '';
+		foreach ($aTime as $sTimePart => $iValue) {
+			if($iValue < 1) continue; //null wollen wir nicht sehen
+			//else
+			$sLabelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_' . 
+									$sTimePart . '_' . (($iValue > 1) ? 'plural' : 'singular');
+			$sFormattedTime .= sprintf('%01d', $iValue) . ' ' . $GLOBALS['LANG']->sL($sLabelKey) . ' ';
+		}
+		
+		return $sFormattedTime;
 	}
 }
 

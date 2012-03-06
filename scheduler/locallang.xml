@@ -27,6 +27,13 @@
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold">Die maximal erlaubte Tasklaufdauer darf nicht kleiner als 10 Sekunden sein.</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter">Zeit nach der erneut eine Mail versendet wird</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter_eval_int">Bitte eine Zahl (Sekunden) als Zeit nach der erneut eine Mail versendet wird</label>
+			
+			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_singular">Stunde</label>
+			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_plural">Stunden</label>
+			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_singular">Minute</label>
+			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_plural">Minuten</label>
+			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_singular">Sekunde</label>
+			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_plural">Sekunden</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>
