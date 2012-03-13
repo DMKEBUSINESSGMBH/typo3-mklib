@@ -77,6 +77,12 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 				
 				break;
 				
+			case 'crdate':
+			case 'tstamp':
+				$ret = strftime('%d.%m.%y %H:%M:%S', intval($ret));
+				
+				break;
+				
 			case 'actions':
 				$ret .= $this->getActions($item, $this->getActionOptions($item));
 				break;
