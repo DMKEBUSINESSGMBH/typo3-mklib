@@ -96,6 +96,13 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 				case 'check':
 					$fieldCode = '<input type="checkbox" id="'.$fieldID.'" name="tx_scheduler['.$sKey.']" '.($taskInfo[$sKey] ? 'checked="checked"': '').'>';
 					break;
+				case 'select':
+					$fieldCode = '<select id="'.$fieldID.'" name="tx_scheduler['.$sKey.']">';
+					foreach($aOptions['items'] as $value => $caption) {
+						$fieldCode .= '<option value="'.$value.'" '.($taskInfo[$sKey] == $value ? 'selected="selected"': '').'>'.$caption.'</option>';
+					}
+					$fieldCode .= '</select>';
+					break;
 				case 'input':
 				default:
 					$fieldCode = '<input type="text" name="tx_scheduler['.$sKey.']" id="'.$fieldID.'" value="'.$taskInfo[$sKey].'" size="30" />';
@@ -171,7 +178,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 							// protected function validateLifetime($mValue){ return true; }
 							// @TODO: clasname::method prüfen!?
 							if(method_exists($this, $sEval)) {
-								$ret = $this->$sEval($mValue);
+								$ret = $this->$sEval($mValue, $submittedData);
 								if (is_string($ret)) {
 									$bMessage = ($sMessage = $ret);
 								}

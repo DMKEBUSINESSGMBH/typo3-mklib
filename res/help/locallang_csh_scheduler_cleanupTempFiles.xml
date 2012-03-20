@@ -9,8 +9,10 @@
 		
 			<label index="lifetime_csh.alttitle">Lifetime</label>
 			<label index="lifetime_csh.description">How old must be the file to be removed.</label>
+			<label index="directorycheckdir_csh.alttitle">directoryCheckDir</label>
+			<label index="directorycheckdir_csh.description">The folder where the folder must be located.</label>
 			<label index="folder_csh.alttitle">Folder</label>
-			<label index="folder_csh.description">The folder where the files can be found.</label>
+			<label index="folder_csh.description">The folder where the files can be found. Momentan der absolute Pfad! @TODO: relativ, ab directoryCheckDir</label>
 			<label index="recursive_csh.alttitle">Recursive</label>
 			<label index="recursive_csh.description">Check subfolders for files.</label>
 			<label index="filetypes_csh.alttitle">Filetypes</label>

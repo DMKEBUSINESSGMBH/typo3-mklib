@@ -41,7 +41,8 @@ class tx_mklib_scheduler_cleanupTempFiles extends tx_mklib_scheduler_Generic {
 	 */
 	protected function executeTask(array $aOptions, array &$aDevLog) {
 		$sDirectory = $aOptions['folder'];
-		$iCount = tx_mklib_util_File::cleanupFiles($sDirectory, $aOptions);
+		$iCount = tx_mklib_util_File::cleanupFiles($sDirectory, $aOptions, $unlinkedFiles);
+		$aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO] = array('dataVar' => $unlinkedFiles);
 		return sprintf($iCount ? '%d files removed.' : 'No files found for cleanup.' , $iCount);
 	}
 

@@ -49,36 +49,48 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider
 				'default' => 604800, // default is 7 days
 				'eval' => 'trim,int',
 			),
+			'directorycheckdir' => array(
+				'type' => 'select',
+ 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_directorycheckdir',
+				'items' => array(
+					// $value => $caption
+					'typo3temp' => 'typo3temp',
+					'uploads' => 'uploads',
+				),
+				'default' => '',
+				'eval' => 'required',
+			),
 			'folder' => array(
 				'type' => 'input',
  				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder',
-				'default' => '', // default is 7 days
+				'default' => '',
 				'eval' => 'trim,folder,validateFolder',
 			),
 			'filetypes' => array(
 				'type' => 'input',
  				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_filetypes',
-				'default' => '', // default is 7 days
+				'default' => '',
 				'eval' => 'trim',
 			),
 			'recursive' => array(
 				'type' => 'check',
  				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_recursive',
-				'default' => '', // default is 7 days
+				'default' => '',
 				'eval' => '',
 			),
 		);
 	}
 	
 	/**
-	 * Validiert den Pfad. Dieser muss zur sicherheit unter typo3 temp liegen!
+	 * Validiert den Pfad. Dieser muss zur sicherheit unter typo3temp oder uploads liegen!
 	 *
 	 * @param  string $sPath
 	 * @return 	mixed
 	 */
-	protected function validateFolder($sPath){
-		return (strpos($sPath, 'typo3temp') === false)
-			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder_eval_typo3temp')
+	protected function validateFolder($sPath, $submittedData) {
+		$directoryCheckDir = isset($submittedData['directorycheckdir']) ? $submittedData['directorycheckdir'] : 'typo3temp';
+		return (strpos($sPath, $directoryCheckDir) === false)
+			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder_eval_'.$directoryCheckDir)
 			: true;
 	}
 }

@@ -75,12 +75,16 @@ class tx_mklib_util_File {
 	 *
 	 * @param 	string 	$sDirectory
 	 * @param 	array 	$aOptions
+	 * @param 	array 	$aUnlinkedFiles Hier werden die Dateien eingetragen, welche gelöscht wurden.
 	 * @return 	int
 	 */
-	public static function cleanupFiles($sDirectory, array $aOptions) {
+	public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles) {
+		
+		$directoryCheckDir = isset($aOptions['directorycheckdir']) ? $aOptions['directorycheckdir'] : 'typo3temp';
+		if (!is_array($aUnlinkedFiles)) { $aUnlinkedFiles = array(); }
 		
 		//nur innerhalb von typo3temp zulassen
-		if(!$aOptions['skiptypo3tempcheck'] && strpos($sDirectory,'typo3temp') === false){
+		if(!$aOptions['skiptypo3tempcheck'] && strpos($sDirectory, $directoryCheckDir) === false) {
 			return 0;
 		}
 		
@@ -90,6 +94,7 @@ class tx_mklib_util_File {
 		$bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
 		
 		$iCount = 0;
+		
 		if (@is_dir($sDirectory)) {
 			$iHandle = opendir($sDirectory);
 			while (($sFile = readdir($iHandle)) !== FALSE) {
@@ -110,6 +115,7 @@ class tx_mklib_util_File {
 						// Ist die Datei alt genug, um sie zu löschen?
 						&& (@filemtime($sFilePath) < ($GLOBALS['EXEC_TIME'] - $iLifetime))
 					) {
+						$aUnlinkedFiles[] = $sFilePath;
 						// löschen!
 						@unlink($sFilePath);
 						// count erhöhen
@@ -119,7 +125,7 @@ class tx_mklib_util_File {
 				// Es handelt sich um ein Verzeichniss.
 				elseif ($bRecursive && @is_dir($sFilePath)){
 					//@TODO: $bRecursive!
-					$iCount += self::cleanupFiles($sFilePath.'/', $aOptions);
+					$iCount += self::cleanupFiles($sFilePath.'/', $aOptions, $aUnlinkedFiles);
 				}
 			}
 			closedir($iHandle);
