@@ -78,7 +78,7 @@ class tx_mklib_util_File {
 	 * @param 	array 	$aUnlinkedFiles Hier werden die Dateien eingetragen, welche gelöscht wurden.
 	 * @return 	int
 	 */
-	public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles) {
+	public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles = array()) {
 		
 		$directoryCheckDir = isset($aOptions['directorycheckdir']) ? $aOptions['directorycheckdir'] : 'typo3temp';
 		if (!is_array($aUnlinkedFiles)) { $aUnlinkedFiles = array(); }
