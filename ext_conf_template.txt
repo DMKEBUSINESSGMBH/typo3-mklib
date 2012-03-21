@@ -13,15 +13,6 @@ logDbHandler = 0
 # cat=base; type=string; label=logDbIgnoreTables:Do not log this tables. (comma separated)
 logDbIgnoreTables = 
 
-# cat=easykonto; type=string; label= Nutzer des easyKonto Service
-easyKontoUser = dasMedienkombinat
-
-# cat=easykonto; type=string; label= Passwort des easyKonto Service
-easyKontoPass = mk2010
-
-# cat=easykonto; type=boolean; label= Ist Easykonto aktiv? Wenn nicht gelten alle Bankdaten als valide.
-easyKontoActive = 1
-
 # cat=rtf; type=string; label=Marker für Sonderzeichen
 specialCharMarker = SPECIALCHAR_
 

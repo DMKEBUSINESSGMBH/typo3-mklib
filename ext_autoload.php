@@ -49,7 +49,6 @@ return array(
 	'tx_mklib_util_Debug' => $extensionPath . 'util/class.tx_mklib_util_Debug.php',
 
 	// validatoren
-	'tx_mklib_validator_easykonto' => $extensionPath . 'validator/class.tx_mklib_validator_EasyKonto.php',
 	'tx_mklib_validator_wordlist' => $extensionPath . 'validator/class.tx_mklib_validator_WordList.php',
 	'tx_mklib_validator_zipcode' => $extensionPath . 'validator/class.tx_mklib_validator_ZipCode.php',
 

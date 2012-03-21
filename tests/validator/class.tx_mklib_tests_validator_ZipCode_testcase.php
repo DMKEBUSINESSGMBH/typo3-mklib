@@ -28,20 +28,20 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
 
 /**
- * Testfälle für tx_mklib_validator_EasyKonto
+ * Testfälle für tx_mklib_validator_ZipCode
  *
  * @author	 Michael Wagner <michael.wagner@das-medienkombinat.de>
  * @package tx_mklib
  * @subpackage tx_mklib_tests_validator
  */
 class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCaseSkeleton {
-	
+
 	protected $importExtensions = array('static_info_tables', 'mklib');
 	protected $importStaticTables = true;
 
 	/**
 	 * Wurden die ZipRules geladen?
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private static function checkStaticCountries($skip=false){
@@ -52,7 +52,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 		}
 		return $loaded;
 	}
-	
+
 	/**
 	 * @param 	mixed $rowOrUid
 	 * @return tx_mklib_model_StaticCountry
@@ -62,16 +62,16 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 //		return tx_mklib_model_StaticCountry::getInstance($rowOrUid);
 		return tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
 	}
-	
+
 	protected function setUp(){
 		parent::setUp();
 		// ziprules in die db schreiben
 		self::importStaticTables('mklib', array('ext_tables_static_update.sql'), 'UPDATE');
 	}
-	
+
 	public function testValidateDE(){
 		self::checkStaticCountries(true);
-		
+
 		$oCountry = self::getStaticCountryModel(54 /*DE*/);
 
 		$this->assertTrue(is_object($oCountry), 'No model given.');
@@ -79,9 +79,9 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 		$this->assertEquals('DE', $oCountry->getISO2(), 'No or wrong iso 2 given.');
 		$this->assertEquals(5, $oCountry->getZipLength(), 'No or wrong  zip length given.');
 		$this->assertEquals(4, $oCountry->getZipRule(), 'No or wrong  zip rule given.');
-		
+
 		$validator = tx_mklib_validator_ZipCode::getInstance();
-		
+
 		$zips = array('09113', '14482');
 		foreach($zips as $zip) {
 			$this->assertTrue($validator->validate($oCountry, $zip), $zip.' -> '.$validator->getFormatInfo($oCountry));
@@ -121,7 +121,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 				__LINE__ => array('A0A 0A0', (36 /*CA*/), true),
 				__LINE__ => array('9120', (36 /*CA*/), false),
 				__LINE__ => array('irgendwas', (36 /*CA*/), false),
-				
+
 				__LINE__ => array('333', (103 /*IS*/), true),
 				__LINE__ => array('33', (103 /*IS*/), false),
 				__LINE__ => array('3333', (103 /*IS*/), false),
@@ -134,7 +134,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 				__LINE__ => array('666666', (46 /*CN*/), true),
 				__LINE__ => array('66666', (46 /*CN*/), false),
 				__LINE__ => array('6666666', (46 /*CN*/), false),
-				
+
 			) as $key => $row) {
 			$key = 'Line:'.strtolower($key).' Zip:'.$row[0].' Country:'.intval($row[1]).' Return:'.intval($row[2]);
 			$return[$key] = $row;

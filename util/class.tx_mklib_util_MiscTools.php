@@ -56,7 +56,7 @@ class tx_mklib_util_MiscTools {
 			$mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey);
 		return $mValue;
 	}
-	
+
 	/**
 	 * Liefert eine BE-Account.
 	 * Dieser Nutzer wird für TCE Operationen verwendet. Er sollte Admin-Rechte haben.
@@ -79,7 +79,7 @@ class tx_mklib_util_MiscTools {
 	public static function getPicturesUploadPath($sExtKey='mklib', $bFallback=true){
 		return self::getExtensionValue('picturesUploadPath', $sExtKey, $bFallback);
 	}
-	
+
 	/**
 	 * Liefert die Page-ID, wo alle Portaldaten gespeichert sind.
 	 *
@@ -90,7 +90,7 @@ class tx_mklib_util_MiscTools {
 	public static function getPortalPageId($sExtKey='mklib', $bFallback=true){
 		return intval( self::getExtensionValue('portalPageId', $sExtKey, $bFallback) );
 	}
-	
+
 	/**
 	 * Gibt die Extension Konfiguration für den Sonderzeichen Marker zurück
 	 * Diese wird aber lediglich angegeben. Die Mehrwertsteuer wird durch die Extension
@@ -103,20 +103,7 @@ class tx_mklib_util_MiscTools {
 	public static function getSpecialCharMarker($sExtKey='mklib', $bFallback=true){
 		return self::getExtensionValue('specialCharMarker', $sExtKey, $bFallback);
 	}
-	
-	/**
-	 * Gibt die Extension Konfiguration ob Easykonto genutzt wird zurück
-	 * Diese wird aber lediglich angegeben. Die Mehrwertsteuer wird durch die Extension
-	 * Konfiguration NICHT angelegt!
-	 *
-	 * @param string 	$sExtKey
-	 * @param boolean 	$bFallback
-	 * @return int
-	 */
-	public static function isEasyKontoActive($sExtKey='mklib', $bFallback=true){
-		return self::getExtensionValue('easyKontoActive', $sExtKey, $bFallback);
-	}
-	
+
 	/**
 	 * IP-based Access restrictions
 	 * @TODO: in util_dev auslagern!?
