@@ -74,7 +74,7 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC {
 		}
 		
 		// Suche initialisieren und nur ausführen wenn der Filter es erlaubt.
-		if ($filter->init($fields, $options)) {
+		if ($doSearch = $filter->init($fields, $options)) {
 			
 			// Soll ein PageBrowser verwendet werden?
 			if ($configurations->get($confId.'pagebrowser')) {
@@ -109,6 +109,7 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC {
 		else $items = array();
 		
 		$viewData->offsetSet('items', $items);
+		$viewData->offsetSet('searched', $doSearch);
 
 		return null;
 	}
