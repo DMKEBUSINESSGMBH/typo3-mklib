@@ -44,10 +44,15 @@ class tx_mklib_util_TS {
    	 * Lädt ein COnfigurations Objekt nach mit der TS aus der Extension
    	 * Dabei wird alles geholt was in "plugin.tx_$extKey", "lib.$extKey." und
    	 * "lib.links." liegt
-   	 * @param string $extKey | Extension, deren TS Config geladen werden soll
+   	 * @param string $extKey 	| 	Extension, deren TS Config geladen werden soll
+   	 * @param string $extKeyTS 	|	Extension, deren Konfig innerhalb der TS Config geladen werden soll.
+   	 * 								es kann also zb. das TS von mklib geladen werden aber darin die konfig für
+   	 * 								das plugin von mkxyz
+   	 * @param string $sStaticPath | pfad zum TS
+   	 * @param array $aConfig | zusätzliche Konfig, die die default Konfig überschreibt
    	 * @return tx_rnbase_configurations
    	 */
-  	public static function loadConfig4BE($extKey, $extKeyTS = null, $sStaticPath = '') {
+  	public static function loadConfig4BE($extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array()) {
   		$extKeyTS = is_null($extKeyTS) ? $extKey : $extKeyTS;
   		
   		if(!$sStaticPath) $sStaticPath = '/static/ts/setup.txt';
@@ -68,6 +73,10 @@ class tx_mklib_util_TS {
 	    $pageTSconfig = $tempConfig;
 
 	    $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $extKeyTS;
+	    
+	    //möglichkeit die default konfig zu überschreiben
+	    $pageTSconfig = t3lib_div::array_merge_recursive_overrule($pageTSconfig,$aConfig);
+	    
 	    $configurations = new tx_rnbase_configurations();
 	    $configurations->init($pageTSconfig, $cObj, $extKeyTS, $qualifier);
 	
