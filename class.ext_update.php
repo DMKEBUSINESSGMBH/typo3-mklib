@@ -48,7 +48,7 @@ elseif(isset($GLOBALS['absPath'])) {
 elseif(isset($absPath)) {
 	require_once($absPath . 'class.abstract_ext_update.php');
 }
-// weitere ausführung abbrechen
+// weitere ausführung abbrechen 
 else {
 	// klasse mus erstellt. access liefert false um weitere aufrufe zu verhindern
 	class ext_update { function access() { return FALSE; } }
