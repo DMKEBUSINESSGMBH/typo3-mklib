@@ -318,6 +318,21 @@ class tx_mklib_tests_Util {
 		tx_rnbase_util_Misc::prepareTSFE(array('force'=>true));
 		$loaded = true;
 	}
+
+	/**
+	 * deaktiviert extbase. kann notwendig sein damit die meldung
+	 * 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.'
+	 * nicht erscheint.
+	 *
+	 * @return void
+	 */
+	public static function deactivateExtbase() {
+		global $TYPO3_LOADED_EXT;
+		unset($TYPO3_LOADED_EXT['extbase']);
+
+		//und noch die caching konfig löschen
+		self::deactivateCacheFile();
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
