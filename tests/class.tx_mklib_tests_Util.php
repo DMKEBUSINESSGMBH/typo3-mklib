@@ -135,19 +135,19 @@ class tx_mklib_tests_Util {
 			$GLOBALS['TYPO3_DB']->admin_query($sql);
 		}
 	}
-	
+
 	/**
 	 * Simuliert ein einfaches FE zur testausführung
 	 * Wurde tx_phpunit_module1 entnommen da die Methode protected ist
 	 * und nicht bei der Ausführung auf dem CLI aufgerufen wird. Das
 	 * kann in manchen Fällen aber notwendig sein
-	 * 
+	 *
 	 * ACHTUNG bei Datenbank Testfällen!!!
 	 * Dann muss diese Funktion immer vor dem erstellen der Datenbank etc. ausgeführt
 	 * werden da sonst extra eine Seite in "pages" eingefügt werden muss.
 	 * In einem normalen TYPO3 gibt es bereits Seiten womit das vor dem
 	 * Aufsetzen der Testdatenbank ausgenutzt werden kann!!!
-	 * 
+	 *
 	 * @see tx_phpunit_module1::simulateFrontendEnviroment
 	 * @todo in eigene Klasse auslagern, die von tx_phpunit_module1 erbt und simulateFrontendEnviroment public macht
 	 */
@@ -158,8 +158,8 @@ class tx_mklib_tests_Util {
 			$oTestFramework = tx_rnbase::makeInstance('Tx_Phpunit_Framework',$extKey);
 			return $oTestFramework->createFakeFrontEnd();
 		}
-			
-			
+
+
 		if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
 			// avoids some memory leaks
 			unset(
@@ -190,7 +190,7 @@ class tx_mklib_tests_Util {
 
 		$GLOBALS['TSFE'] = $frontEnd;
 	}
-	
+
  	/**
    	 * Lädt den Inhalt einer Datei
    	 * @param string $filename
@@ -203,10 +203,10 @@ class tx_mklib_tests_Util {
 	    $templateCode = file_get_contents($path);
 		if($subpart)
 			$templateCode = $cObj->getSubpart($templateCode,$subpart);
-	
+
 		return $templateCode;
 	}
-	
+
 	/**
 	 * Setzt das fe_user objekt, falls es noch nicht gesetzt wurde
 	 *
@@ -220,7 +220,7 @@ class tx_mklib_tests_Util {
 						$oFeUser : tx_rnbase::makeInstance('tslib_feuserauth');
 		}
 	}
-	
+
 	/**
 	 * Speichert den Cache
 	 */
@@ -228,7 +228,7 @@ class tx_mklib_tests_Util {
 		//aktuelle Konfiguration sichern
 		self::$sCacheFile = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'];
 	}
-	
+
 	/**
 	 * Reaktiviert den Cache
 	 */
@@ -236,7 +236,7 @@ class tx_mklib_tests_Util {
 		//aktuelle Konfiguration sichern
 		$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = self::$sCacheFile;
 	}
-	
+
 	/**
 	 * Deaktiviert den Cache
 	 * damit nicht 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.' kommt.
@@ -246,13 +246,13 @@ class tx_mklib_tests_Util {
 		//aktuelle Konfiguration sichern
 		$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = null;
 	}
-	
+
 	/**
 	 * Liefert eine rn_base basierte Action auf Grund der gelieferten
 	 * TS Konfig zurück.
 	 * Dabei wird automatisch handleRequest aufgerufen.
 	 * Parameter können frei gesetzt werden.
-	 * 
+	 *
 	 * @param 	string			$sActionName
 	 * @param	array			$aConfig
 	 * @param	string			$sExtKey
@@ -262,10 +262,10 @@ class tx_mklib_tests_Util {
 	 */
 	public static function &getAction($sActionName, $aConfig, $sExtKey, $aParams = array(), $execute = true) {
 		$action = tx_rnbase::makeInstance($sActionName);
-		
+
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
-		
+
 		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
 		require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
 		$configurations->init(
@@ -273,12 +273,12 @@ class tx_mklib_tests_Util {
 				$configurations->getCObj(1),
 				$sExtKey,$sExtKey
 			);
-			
+
 		//noch extra params?
 		if(!empty($aParams))
 			foreach ($aParams as $sName => $mValue)
 				$parameters->offsetSet($sName,$mValue);
-			
+
 		$configurations->setParameters($parameters);
 		$action->setConfigurations($configurations);
 		if($execute) {
@@ -303,11 +303,20 @@ class tx_mklib_tests_Util {
 					}
 				}
 			}
-				
+
 			$out = $action->handleRequest($parameters, $configurations, $configurations->getViewData());
-			
+
 		}
 		return $action;
+	}
+
+	public static function prepareTSFE() {
+		static $loaded = false;
+		if ($loaded) return;
+
+		tx_rnbase::load('tx_rnbase_util_Misc');
+		tx_rnbase_util_Misc::prepareTSFE(array('force'=>true));
+		$loaded = true;
 	}
 }
 
