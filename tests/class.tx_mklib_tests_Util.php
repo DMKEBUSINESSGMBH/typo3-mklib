@@ -241,6 +241,7 @@ class tx_mklib_tests_Util {
 	 * Deaktiviert den Cache
 	 * damit nicht 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.' kommt.
 	 * wenn der text mit einem mkforms formular ist, dann muss auch der testmode gesetzt sein.
+	 * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2
 	 */
 	public static function deactivateCacheFile() {
 		//aktuelle Konfiguration sichern
@@ -323,6 +324,7 @@ class tx_mklib_tests_Util {
 	 * deaktiviert extbase. kann notwendig sein damit die meldung
 	 * 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.'
 	 * nicht erscheint.
+	 * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2
 	 *
 	 * @return void
 	 */
