@@ -23,7 +23,7 @@ return array(
 	// models
 	'tx_mklib_model_staticcountry' => $extensionPath . 'model/class.tx_mklib_model_StaticCountry.php',
 
-	//treelib
+	// treelib
 	'tx_mklib_treelib_config' => $extensionPath . 'treelib/class.tx_mklib_treelib_Config.php',
 	'tx_mklib_treelib_renderer' => $extensionPath . 'treelib/class.tx_mklib_treelib_Renderer.php',
 	'tx_mklib_treelib_tce' => $extensionPath . 'treelib/class.tx_mklib_treelib_TCE.php',
