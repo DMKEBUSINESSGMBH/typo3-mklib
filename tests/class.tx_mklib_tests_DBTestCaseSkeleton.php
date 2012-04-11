@@ -38,7 +38,7 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @subpackage tx_mklib_tests
  */
 class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
-	
+
 	protected $workspaceIdAtStart;
 	/**
 	 * Extensions, welche importiert werden sollen
@@ -46,7 +46,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 	 * @var array
 	 */
 	protected $importExtensions = array();
-	
+
 	/**
 	 * Sollen Abhängigkeiten in Extension mit importiert werden?
 	 * @see tx_phpunit_database_testcase::importExtensions();
@@ -54,7 +54,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 	 */
 	protected $importDependencies = false;
 	/**
-	 * Sollen die statischen Daten einer Extension 
+	 * Sollen die statischen Daten einer Extension
 	 * (ext_tables_static.sql) in die Datenbank importiert werden?
 	 * @var boolean
 	 */
@@ -69,7 +69,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 
 	/**
 	 * Constructs a test case with the given name.
-	 * 
+	 *
 	 *  Klassenkonstruktor - BE-Workspace setzen
 	 *
 	 * @param string $name
@@ -94,7 +94,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 			$extKey='mklib',
 			$files = array('ext_tables_static+adt.sql')
 		){
-			
+
 		foreach($files as $file) {
 			// read sql file content
 			$sqlFilename = t3lib_div::getFileAbsFileName(t3lib_extMgm::extPath($extKey, $file));
@@ -102,25 +102,25 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 				tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
 			}
 		}
-		
+
 	}
-	
+
 	/**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
-     * 
+     *
 	 * setUp() = init DB etc.
 	 */
 	protected function setUp(){
-		
+
 		//Devlog stört beim Testen nur
 		tx_mklib_tests_Util::disableDevlog();
-		
+
 		$this->createDatabase();
 		// assuming that test-database can be created otherwise PHPUnit will skip the test
 		$this->useTestDatabase();
 		$this->importStdDB();
-		
+
 		// extensions laden
 		if(count($this->importExtensions)) {
 			foreach($this->importExtensions as $extension){
@@ -143,7 +143,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 	/**
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
-     * 
+     *
 	 * tearDown() = destroy DB etc.
 	 */
 	protected function tearDown () {
@@ -152,11 +152,11 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
 	}
-	
+
 	/**
 	 * Auf der CLI wird die Klasse als Test betrachtet. Da sie
 	 * eigentlich keine Tests hat, kommt ein Fehler zu Stande.
-	 * Also bieten wir einen leeren dummy Test an 
+	 * Also bieten wir einen leeren dummy Test an
 	 */
 	public function testDummy() {
 		return true;
