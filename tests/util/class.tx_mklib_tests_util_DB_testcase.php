@@ -64,7 +64,7 @@ class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
 		// devlog erstmal deaktivieren,
 		// da Prozesse auserhalb des Tests auch darauf zugreifen!
 		tx_mklib_tests_Util::disableDevlog();
-		
+
 	}
 
 	/**
@@ -76,17 +76,21 @@ class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
 		$this->db = $this->useTestDatabase();
 		$this->importStdDB();
 		$this->importExtensions(array('cms', 'devlog'));
-		
+
 		// devlog wieder aktivieren
 		tx_mklib_tests_Util::disableDevlog('devlog', false);
 
 		// logging aktivieren
 		tx_mklib_tests_Util::storeExtConf();
 		tx_mklib_tests_Util::setExtConfVar('logDbHandler', 1);
-		
+
 		//logging zurücksetzen
 		tx_mklib_util_testDB::clearLogCache();
-		
+
+		//wir setzen noch das min Log Level auf -1 damit
+		//systemeinstellungen nicht hereinspielen und alles geloggt wird
+		tx_mklib_tests_Util::storeExtConf('devlog');
+		tx_mklib_tests_Util::setExtConfVar('minLogLevel', -1, 'devlog');
 	}
 
 	/**
@@ -98,18 +102,19 @@ class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
 		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 
 		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
-		
+
 		// devlog wieder deaktivieren
 		tx_mklib_tests_Util::disableDevlog();
-		
+
 		// ext conf zurückspielen aktivieren
 		tx_mklib_tests_Util::restoreExtConf();
+		tx_mklib_tests_Util::restoreExtConf('devlog');
 	}
-	
+
 	public function testInsertTtContent(){
 		// logging deaktivieren
 		tx_mklib_tests_Util::setExtConfVar('logDbHandler', 0);
-		
+
 		$aValues = array(
 				'uid' => 20,
 				'pid' => 128,
@@ -118,21 +123,21 @@ class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
 				'bodytext' => 'Test!'
 			);
 		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
-		
+
 		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
 //		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-		
+
 		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
 		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-		
+
 		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
 	}
 	public function testInsertTtContentWithDevLogAndIgnoreTable(){
 		// logging für tt_content deaktivieren
 		tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
-		
+
 		$aValues = array(
 				'uid' => 20,
 				'pid' => 128,
@@ -141,18 +146,18 @@ class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
 				'bodytext' => 'Test!'
 			);
 		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
-		
+
 		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
 //		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-		
+
 		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
 		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-		
+
 		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
 	}
-	
+
 	public function testInsertTtContentWithDevLog(){
 		$aValues = array(
 				'uid' => 20,
@@ -162,54 +167,54 @@ class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
 				'bodytext' => 'Test!'
 			);
 		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
-		
+
 		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
 //		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-		
+
 		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
 		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-		
+
 		$this->assertEquals(1, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals('mklib', $aDevLog[0]['extkey'], 'Falscher extkey in tx_devlog!');		
+		$this->assertEquals('mklib', $aDevLog[0]['extkey'], 'Falscher extkey in tx_devlog!');
 		$this->assertEquals('doInsert(tt_content)', $aDevLog[0]['msg'], 'Falsche msg in tx_devlog!');
 		$this->assertEquals(true, !empty($aDevLog[0]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
-		
+
 		$aDevLogData = unserialize($aDevLog[0]['data_var']);
 		$this->assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
 		$this->assertEquals(128, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
 	}
-	
+
 	public function testUpdateTtContentWithDevLog(){
 		// Daten eintragen!
 		$this->testInsertTtContentWithDevLog();
-		
+
 		$aValues = array(
 				'pid' => 256,
 				'bodytext' => 'geändert!'
 			);
 		tx_mklib_util_testDB::doUpdate('tt_content', 'uid=20', $aValues);
-		
+
 		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-		
+
 		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
 		$this->assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-		
+
 		$this->assertEquals(2, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals('mklib', $aDevLog[1]['extkey'], 'Falscher extkey in tx_devlog!');		
-		$this->assertEquals('doUpdate(tt_content)', $aDevLog[1]['msg'], 'Falsche msg in tx_devlog!');		
+		$this->assertEquals('mklib', $aDevLog[1]['extkey'], 'Falscher extkey in tx_devlog!');
+		$this->assertEquals('doUpdate(tt_content)', $aDevLog[1]['msg'], 'Falsche msg in tx_devlog!');
 		$this->assertEquals(true, !empty($aDevLog[1]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
-		
+
 		$aDevLogData = unserialize($aDevLog[1]['data_var']);
 		$this->assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
-		$this->assertEquals(256, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');		
+		$this->assertEquals(256, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
 	}
 
 
-	
+
 	public function testUpdateTtContentWithIgnoreTables(){
 		// Daten eintragen!
 		$this->testInsertTtContentWithDevLog();
@@ -217,23 +222,23 @@ class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
 		tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
 		// db cache löschen
 		tx_mklib_util_testDB::clearLogCache();
-		
+
 		$aValues = array(
 				'pid' => 256,
 				'bodytext' => 'geändert!'
 			);
 		tx_mklib_util_testDB::doUpdate('tt_content', 'uid=20', $aValues);
-		
+
 		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-		
+
 		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
 		$this->assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
 		$this->assertEquals(1, count($aDevLog), 'tx_devlog wurde in die Datenbank eingefügt!');
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_DB_testcase.php']) {
