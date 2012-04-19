@@ -112,7 +112,7 @@ class tx_mklib_util_Debug {
 			}
 			$path = PATH_site.$path;
 		}
-		
+
 		self::$file = fopen($path.$file, "a");
 		unset($path); unset($file);
 		return self::$file;
@@ -139,7 +139,7 @@ class tx_mklib_util_Debug {
 		else
 			return true;
 	}
-	
+
 	/**
 	 * Fügt eine Debug ausgabe hinzu.
 	 *
@@ -149,7 +149,7 @@ class tx_mklib_util_Debug {
 	public static function addDebug($msg, array $data = array()) {
 		$iMicroTime = microtime(true);
 		$iMemory = memory_get_usage();
-		
+
 		$data['msg'] = $msg;
 		$data['time'] = ($iMicroTime - self::$iMicroTime);
 		$data['timeLast'] = ($iMicroTime - self::$iLastMicroTime);
@@ -221,7 +221,7 @@ class tx_mklib_util_Debug {
 		self::debug();
 		return false;
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Debug.php']) {
