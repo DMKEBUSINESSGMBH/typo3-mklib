@@ -54,23 +54,23 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	abstract public function getSearchClass();
 
 	/**
-	 * 
+	 *
 	 * @return 	tx_rnbase_util_SearchBase
 	 */
 	private function getSearcher(){
 		return tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
 	}
 	/**
-	 * 
+	 *
 	 * @TODO: 	Achtung,
 	 * 			tx_rnbase_util_SearchBase::getWrapperClass() ist eigentlich protected!
-	 * 
+	 *
 	 * @return 	string
 	 */
 	protected function getWrapperClass(){
 		return $this->getSearcher()->getWrapperClass();
 	}
-	
+
 	/**
 	 * Search database
 	 *
@@ -144,14 +144,14 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	/**
 	 * Liefert die PageId für diese Tabelle.
 	 * Dies kann überschrieben werden, um individuelle pid's zu setzen.
-	 * 
+	 *
 	 * @return 	int
 	 */
 	protected function getPid(){
 		tx_rnbase::load('tx_mklib_util_MiscTools');
 		return tx_mklib_util_MiscTools::getPortalPageId();
 	}
-	
+
 	/**
 	 * Create a new record
 	 *
@@ -165,13 +165,13 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	public function create(array $data) {
 		$model = $this->getDummyModel();
 		$table = $model->getTableName();
-		
+
 		tx_rnbase::load('tx_mklib_util_TCA');
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 		$data = $this->secureFromCrossSiteScripting($model, $data);
-		
+
 		$data['pid'] = $this->getPid();
-		
+
 		tx_rnbase::load('tx_mklib_util_DB');
 		$uid = tx_mklib_util_DB::doInsert($table, $data/*, 1*/);
 
@@ -205,7 +205,7 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		tx_rnbase::load('tx_mklib_util_TCA');
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 		$data = $this->secureFromCrossSiteScripting($model, $data);
-		
+
 		tx_rnbase::load('tx_mklib_util_DB');
 		tx_mklib_util_DB::doUpdate($table, $where, $data);
 
@@ -218,7 +218,7 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 *
 	 * Delete records according to given ready-constructed "where" condition and deletion mode
 	 * @TODO: use tx_mklib_util_TCA::getEnableColumn to get enablecolumns!
-	 * 
+	 *
 	 * @param string	$table
 	 * @param string	$where		Ready-to-use where condition containing uid restriction
 	 * @param int		$mode		@see self::handleDelete()
@@ -278,9 +278,9 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		if(empty($table)) {
 			$table = $model->getTableName();
 		}
-		
+
 		$uid = $model->getUid();
-		
+
 		if (!$where) {
 			$where = '1=1 AND `'.$table.'`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
 		}
@@ -298,7 +298,7 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
 	 * aufzurufen ;)
 	 *
-	 * @param 	array 					$data		
+	 * @param 	array 					$data
 	 * @return 	tx_rnbase_model_base				Created model.
 	 */
 	public function handleCreation(array $data){
@@ -311,6 +311,9 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 
 	/**
 	 * Schützt die Felder vor Cross-Site-Scripting
+	 *
+	 * @TODO: model has to implement interface!
+	 *
 	 * @param tx_rnbase_model_base $model
 	 * @param array $data
 	 * @return array
