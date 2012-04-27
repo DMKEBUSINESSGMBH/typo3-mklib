@@ -63,9 +63,14 @@ abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserve
 	 */
 	final public function notify(tx_mklib_interface_IObservable $oObservable) {
 		//wird nur ein bestimmtes interface unterstützt?
-		if($this->sSupportedInterface && !$oObservable instanceof $this->sSupportedInterface)
+		$supportedInterface = $this->getSupportedInterface();
+		if($supportedInterface && !$oObservable instanceof $supportedInterface)
 			return;
 		$this->execute($oObservable);
+	}
+
+	protected function getSupportedInterface() {
+		return null;
 	}
 
 	/**
