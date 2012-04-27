@@ -44,7 +44,7 @@ class tx_mklib_util_TCA {
 	 * @var 	array
 	 */
 	private static $tcaAdditionsLoaded = array();
-	
+
 	/**
 	 * Get DAM TCA for ONE file
 	 *
@@ -88,7 +88,7 @@ class tx_mklib_util_TCA {
 		$options['config']['maxitems'] = 1;
 		$options['config']['size'] = 1;
 		return self::getDamMediaTCA($ref, $options);
-		 
+
 		tx_rnbase::load('tx_rnbase_util_TSDAM');
 		$tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, 'image_field');
 		$tca['config']['maxitems'] = 1; $tca['config']['size'] = 1;
@@ -116,7 +116,7 @@ class tx_mklib_util_TCA {
 		$options['config']['maxitems'] = 1;
 		$options['config']['size'] = 1;
 		return self::getDamMediaTCA($ref, $options);
-		 
+
 		tx_rnbase::load('tx_rnbase_util_TSDAM');
 		$tca = tx_rnbase_util_TSDAM::getMediaTCA($ref,  'media_field');
 		$tca['config']['maxitems'] = 1; $tca['config']['size'] = 1;
@@ -188,7 +188,7 @@ class tx_mklib_util_TCA {
 		}
 		return $sFallback;
 	}
-	
+
 	/**
 	 * Taken from tx_div!
 	 * Loads TCA additions of other extensions
@@ -218,7 +218,7 @@ class tx_mklib_util_TCA {
 			}
 		}
 	}
-	
+
 	/**
 	 * Liefert Wizard-Daten für die TCA.
 	 *

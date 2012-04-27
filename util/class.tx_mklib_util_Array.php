@@ -61,7 +61,7 @@ class tx_mklib_util_Array {
     	}
     	return $aRet;
   	}
-  	
+
 	/**
 	 * Bereinigt ein Array von allen Werten die leer sind.
 	 * Leere Arrays innerhalb des zu bereinigenden Arrays bleiben unberührt.
@@ -120,7 +120,7 @@ class tx_mklib_util_Array {
 		}
 		return FALSE;
   	}
-  	
+
 	/**
 	 * Erstellt anhand einer Liste von Models/Arrays ein Array mit Werten einer Spalte
 	 *
@@ -140,7 +140,7 @@ class tx_mklib_util_Array {
 		}
 		return $fieldsArray;
 	}
-	
+
 	/**
 	 * Erstellt anhand einer Liste von Models/Arrays ein String mit Werten einer Spalte
 	 *
@@ -155,7 +155,7 @@ class tx_mklib_util_Array {
 		$fieldsArray = self::fieldsToArray($aObj, $sAttr);
 		return implode($sDelimiter, self::removeEmptyValues($fieldsArray));
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php']) {
