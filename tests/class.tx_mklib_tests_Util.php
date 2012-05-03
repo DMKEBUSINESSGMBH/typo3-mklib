@@ -335,6 +335,25 @@ class tx_mklib_tests_Util {
 		//und noch die caching konfig löschen
 		self::deactivateCacheFile();
 	}
+
+	/**
+	 * Liefert einen eindeutigen klassenname für einen Mock.
+	 * Dies ist sinnvoll, wenn ein Mock mehrfach generiert wird aber nicht gecached werden soll.
+	 *
+	 * @param string $originalClassName
+	 * @param string $mockClassName
+	 * @return object
+	 */
+	public static function generateUniqueMockClassName($originalClassName, $mockClassName='') {
+		if ($mockClassName == '') {
+			do {
+				$mockClassName = 'Mock_' . $originalClassName . '_' .
+				substr(md5(microtime()), 0, 8);
+			}
+			while (class_exists($mockClassName, FALSE));
+		}
+		return $mockClassName;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
