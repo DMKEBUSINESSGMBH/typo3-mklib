@@ -122,12 +122,14 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @return	string	Information to display
 	 */
 	public function getAdditionalInformation($sInfo='') {
-// 		return 'Generic task. Child class has to override getAdditionalInformation()';
+		return $sInfo.CRLF.' Options: '.t3lib_div::arrayToLogString($this->getOptions(), array(), 64);
+		/* old code
 		$aOptions = array();
 		foreach($this->getOptions() as $sKey => $mValue){
 			$aOptions [] = '\''.$sKey.'\' => \''.$mValue.'\'';
 		}
 		return $sInfo.CRLF.' Options: '.implode(', ',$aOptions);
+		*/
 	}
 
 	/**
