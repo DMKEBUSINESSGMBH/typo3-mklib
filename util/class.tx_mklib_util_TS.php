@@ -97,7 +97,7 @@ class tx_mklib_util_TS {
 		$sysPageObj = tx_rnbase::makeInstance('t3lib_pageSelect');
 		$aRootLine = $sysPageObj->getRootLine(
 						// wenn ein alias übergeben wurde, müssen wir uns die uid besorgen
-						is_string($mPageUid) ? $sysPageObj->getPageIdFromAlias($mPageUid) : intval($mPageUid)
+						is_numeric($mPageUid) ? intval($mPageUid) : $sysPageObj->getPageIdFromAlias($mPageUid)
 					);
 					
 		// ts für die rootlines erzeugen
