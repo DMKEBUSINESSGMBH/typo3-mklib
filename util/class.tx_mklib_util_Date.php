@@ -111,13 +111,13 @@ class tx_mklib_util_Date {
 		return $return;
 
 	}
-	
+
 	/**
-	 * Gibt ein Array mit alle Zeiten innerhalb der Spanne zurück 
+	 * Gibt ein Array mit alle Zeiten innerhalb der Spanne zurück
 	 * im gegebenen Format zurück
 	 * Jahrestage => der 1. februar wäre der 32. tag
 	 * @see tx_mklib_tests_util_Date_testcase::testgetTimesInTimeRangeReturnsCorrectDays
-	 * 
+	 *
 	 * @param 	int 	$starttime
 	 * @param 	int 	$endtime
 	 * @param 	string 	$format
@@ -130,10 +130,10 @@ class tx_mklib_util_Date {
 		}
   		return $days;
 	}
-	
+
 	/**
 	 * Prüft, ob es sich bei dem string um ein Datum handelt.
-	 * 
+	 *
 	 * @param 	string 	$date
 	 * @return 	boolean
 	 */
@@ -144,7 +144,7 @@ class tx_mklib_util_Date {
 			|| count(explode('-', $date)) !== 3
 		);
 	}
-	
+
 	/**
 	 * prüft String ob es sich um Datetime handelt
 	 * Format: YYYY-mm-dd HH:ii:ss
@@ -159,6 +159,18 @@ class tx_mklib_util_Date {
 			|| count(explode('-', $datetime))!==3
 		);
 	}
+
+	/**
+	 * Liefert dei Scriptausführungszeit
+	 * @param string $format
+	 * @param boolean $useGMT
+	 * @return string
+	 */
+	public static function getExecDate($format = 'U', $useGMT = false) {
+		$tstamp = isset($GLOBALS['EXEC_TIME']) ? $GLOBALS['EXEC_TIME'] : time();
+		return $useGMT ? gmdate($format, $tstamp) : date($format, $tstamp);
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Date.php']) {
