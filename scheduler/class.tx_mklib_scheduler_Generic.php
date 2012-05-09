@@ -102,6 +102,8 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 				tx_rnbase::load('tx_rnbase_util_Misc');
 				tx_rnbase_util_Misc::sendErrorMail($sMail, get_class($this), $oException);
 			}
+			//Wir geben die Exception weiter, damit der Scheduler eine entsprechende Meldung ausgeben kann.
+			throw $oException;
 			$bSuccess = false;
 		}
 
