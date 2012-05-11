@@ -172,6 +172,11 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 		return is_array($this->options) ? $this->options : array();
 	}
 
+	protected function sendErrorMail($email, Exception $exception) {
+		tx_rnbase::load('tx_rnbase_util_Misc');
+		$options = array('ignoremaillock' => true);
+		tx_rnbase_util_Misc::sendErrorMail($email, 'tx_mktegut_scheduler_GuteKarteWebserviceTest', $exception, $options);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_Generic.php']) {
