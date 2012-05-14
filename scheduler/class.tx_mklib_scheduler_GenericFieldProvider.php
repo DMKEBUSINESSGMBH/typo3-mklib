@@ -39,7 +39,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 
 	/**
 	 * Liefert die Konfiguration für zusätzliche Felder des Tasks.
-	 * 
+	 *
 	 * ACHTUNG!!!
 	 * Die Feldnamen sollten eindeutig und einzigartig sein aus folgendem Grund.
 	 * Damit das Anlegen eines Scheduler schneller geht, werden die addtionalFields
@@ -177,6 +177,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 							$sPath = tx_mklib_util_File::getServerPath($mValue);
 							$bMessage = !@is_dir($sPath);
 							if (!$bMessage) $mValue = $sPath;
+							break;
+						case 'url':
+							$bMessage = !t3lib_div::isValidUrl($mValue);
 							break;
 						default:
 							// wir prüfen auf eine eigene validator methode in der Kindklasse.
