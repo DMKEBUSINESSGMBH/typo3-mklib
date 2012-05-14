@@ -6,7 +6,9 @@ Ext.onReady(function() {
 });
 
 function setValueToAllMklibEmailFields(value) {
-	Ext.each(Ext.select('#task_mklibEmail'), function(element, index) {
-    	element.elements[index].value = value;
+	Ext.each(Ext.select('#task_mklibEmail'), function(elements) {
+		Ext.each(elements.elements, function(element) {
+			element.value = value;
+		});
 	});
 }

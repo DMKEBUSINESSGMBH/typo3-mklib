@@ -41,7 +41,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @var	array
 	 */
 	private $options = array();
-	
+
 	/**
 	 * Extension key, used for devlog.
 	 * @return 	string
@@ -60,32 +60,32 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 
 		try {
 			// beispiel für das logging array.
-// 			$aDevLog = array('message' => '', 'extKey' => 'mklib', 'dataVar' => FALSE);
-// 			$aDevLog = array(
-// 				tx_rnbase_util_Logger::LOGLEVEL_DEBUG => $aDevLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_INFO => $aDevLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_NOTICE => $aDevLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_WARN => $aDevLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_FATAL => $aDevLog
+// 			$devLog = array('message' => '', 'extKey' => 'mklib', 'dataVar' => FALSE);
+// 			$devLog = array(
+// 				tx_rnbase_util_Logger::LOGLEVEL_DEBUG => $devLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_INFO => $devLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_NOTICE => $devLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_WARN => $devLog,
+// 				tx_rnbase_util_Logger::LOGLEVEL_FATAL => $devLog
 // 			);
-			$aDevLog = array();
-			$aOptions = $this->getOptions();
-			$sMessage = $this->executeTask($aOptions, $aDevLog);
+			$devLog = array();
+			$options = $this->getOptions();
+			$sMessage = $this->executeTask($options, $devLog);
 
 			// devlog
 			if (t3lib_extMgm::isLoaded('devlog')) {
 				if(
 					// infolog setzen, wenn devlog leer
-					empty($aDevLog)
+					empty($devLog)
 					// infolog setzen, wenn infolog gesetzt, aber keine message vorhanden ist
 					|| (
-							isset($aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO])
-							&& empty($aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'])
+							isset($devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO])
+							&& empty($devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'])
 						)
 					)
-					$aDevLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'] = $sMessage;
+					$devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'] = $sMessage;
 
-				foreach ($aDevLog as $logLevel => $logData) {
+				foreach ($devLog as $logLevel => $logData) {
 					if (empty($logData['message'])) continue;
 					t3lib_div::devLog(
 							$logData['message'],
@@ -97,11 +97,10 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			}
 		} catch (Exception $oException) {
 			if (tx_rnbase_util_Logger::isFatalEnabled())
-				tx_rnbase_util_Logger::fatal('Task failed. '.$oException->getMessage(), 'mklib');
+				tx_rnbase_util_Logger::fatal('Task failed. '.$oException->getMessage(), $this->getExtKey());
 			// Exception Mail an die Entwicker senden
 			if($sMail = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException')) {
-				tx_rnbase::load('tx_rnbase_util_Misc');
-				tx_rnbase_util_Misc::sendErrorMail($sMail, get_class($this), $oException);
+				$this->sendErrorMail($sMail, $oException);
 			}
 			//Wir geben die Exception weiter, damit der Scheduler eine entsprechende Meldung ausgeben kann.
 			throw $oException;
@@ -113,11 +112,11 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 
 	/**
 	 *
-	 * @param 	array 	$aOptions
-	 * @param 	array 	$aDevLog	Put some informations for the logging here.
+	 * @param 	array 	$options
+	 * @param 	array 	$devLog	Put some informations for the logging here.
 	 * @return 	string
 	 */
-	abstract protected function executeTask(array $aOptions, array &$aDevLog);
+	abstract protected function executeTask(array $options, array &$devLog);
 
 	/**
 	 * This method returns the destination mail address as additional information
@@ -127,11 +126,11 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	public function getAdditionalInformation($sInfo='') {
 		return $sInfo.CRLF.' Options: '.t3lib_div::arrayToLogString($this->getOptions(), array(), 64);
 		/* old code
-		$aOptions = array();
+		$options = array();
 		foreach($this->getOptions() as $sKey => $mValue){
-			$aOptions [] = '\''.$sKey.'\' => \''.$mValue.'\'';
+			$options [] = '\''.$sKey.'\' => \''.$mValue.'\'';
 		}
-		return $sInfo.CRLF.' Options: '.implode(', ',$aOptions);
+		return $sInfo.CRLF.' Options: '.implode(', ',$options);
 		*/
 	}
 
@@ -176,7 +175,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	protected function sendErrorMail($email, Exception $exception) {
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		$options = array('ignoremaillock' => true);
-		tx_rnbase_util_Misc::sendErrorMail($email, 'tx_mktegut_scheduler_GuteKarteWebserviceTest', $exception, $options);
+		tx_rnbase_util_Misc::sendErrorMail($email, get_class($this), $exception, $options);
 	}
 }
 
