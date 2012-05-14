@@ -29,8 +29,8 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 /**
  * Fügt Felder im scheduler task hinzu
  *
- * @package tx_mketernit
- * @subpackage tx_mketernit_scheduler
+ * @package TYPO3
+ * @subpackage tx_mklib
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider

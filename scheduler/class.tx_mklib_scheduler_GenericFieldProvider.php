@@ -39,6 +39,12 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 
 	/**
 	 * Liefert die Konfiguration für zusätzliche Felder des Tasks.
+	 * 
+	 * ACHTUNG!!!
+	 * Die Feldnamen sollten eindeutig und einzigartig sein aus folgendem Grund.
+	 * Damit das Anlegen eines Scheduler schneller geht, werden die addtionalFields
+	 * von allen vorhandenen Schedulern vorgeladen. Dadurch kann es zu Überschreibungen
+	 * kommen wenn 2 Felder den gleichen Namen haben. Ein gutes Beispiel dafür ist der EmailFieldProvider.
 	 *
 	 * @return 	array
 	 */

@@ -1,12 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_scheduler
- *  @author Hannes Bochmann
- *
  *  Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  (c) 2011 das MedienKombinat <kontakt@das-medienkombinat.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,103 +21,35 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-require_once t3lib_extMgm::extPath('scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php');
+tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 
 /**
- * Fügt das email feld im scheduler task hinzu
+ * Bietet ein Feld für eine Email Adresse
  *
- * @author		Hannes Bochmann
- * @package		tx_mklib
- * @subpackage	tx_mklib_scheduler
- *
+ * @package TYPO3
+ * @subpackage tx_mklib
+ * @author Hannes Bochmann <hann.bochmann@das-medienkombinat.de>
  */
-class tx_mklib_scheduler_EmailFieldProvider implements tx_scheduler_AdditionalFieldProvider {
+class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFieldProvider {
 
 	/**
-	 * This method is used to define new fields for adding or editing a task
-	 * In this case, it adds an email field
 	 *
-	 * @param	array					$taskInfo: reference to the array containing the info used in the add/edit form
-	 * @param	object					$task: when editing, reference to the current task object. Null when adding.
-	 * @param	tx_scheduler_Module		$parentObject: reference to the calling object (Scheduler's BE module)
-	 * @return	array					Array containg all the information pertaining to the additional fields
-	 *									The array is multidimensional, keyed to the task class name and each field's id
-	 *									For each field it provides an associative sub-array with the following:
-	 *										['code']		=> The HTML code for the field
-	 *										['label']		=> The label of the field (possibly localized)
-	 *										['cshKey']		=> The CSH key for the field
-	 *										['cshLabel']	=> The code of the CSH label
+	 * @return 	array
+	 * @todo CSH einfügen
 	 */
-	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $parentObject) {
-
-			// Initialize extra field value
-		if (empty($taskInfo['email'])) {
-			if ($parentObject->CMD == 'add') {
-					// In case of new task and if field is empty, set default email address
-				$taskInfo['email'] = $GLOBALS['BE_USER']->user['email'];
-
-			} elseif ($parentObject->CMD == 'edit') {
-					// In case of edit, and editing a test task, set to internal value if not data was submitted already
-				$taskInfo['email'] = $task->email;
-			} else {
-					// Otherwise set an empty value, as it will not be used anyway
-				$taskInfo['email'] = '';
-			}
-		}
-
-			// Write the code for the field
-		$fieldID = 'task_email';
-		$fieldCode = '<input type="text" name="tx_scheduler[email]" id="' . $fieldID . '" value="' . $taskInfo['email'] . '" size="30" />';
-		$additionalFields = array();
-		$additionalFields[$fieldID] = array(
-			'code'     => $fieldCode,
-			'label'    => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
-			'cshKey'   => '_MOD_tools_txschedulerM1',
-			'cshLabel' => $fieldID
+	protected function getAdditionalFieldConfig(){
+		return array(
+			// wir brauchen einen eindeutigen namen da es das email
+			// feld schon im scheduler test task gibt. dieser überschreibt
+			// dann unseren email wert da er später im quelltext auftaucht.
+			'mklibEmail' => array(
+				'type' => 'input',
+ 				'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
+				'default' => $GLOBALS['BE_USER']->user['email'], 
+				'eval' => 'email',
+			),
 		);
-
-		return $additionalFields;
-	}
-
-	/**
-	 * This method checks any additional data that is relevant to the specific task
-	 * If the task class is not relevant, the method is expected to return true
-	 *
-	 * @param	array					$submittedData: reference to the array containing the data submitted by the user
-	 * @param	tx_scheduler_Module		$parentObject: reference to the calling object (Scheduler's BE module)
-	 * @return	boolean					True if validation was ok (or selected class is not relevant), false otherwise
-	 */
-	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
-		$submittedData['email'] = trim($submittedData['email']);
-
-		if (empty($submittedData['email'])) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:mklib/locallang.xml:msg_form_report-email_required'), t3lib_FlashMessage::ERROR);
-			$result = false;
-		} else if (!t3lib_div::validEmail($submittedData['email'])) {
-			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:mklib/locallang.xml:msg_form_report-receiver_invalid'), t3lib_FlashMessage::ERROR);
-			$result = false;
-		} else {
-			$result = true;
-		}
-
-		return $result;
-	}
-
-	/**
-	 * This method is used to save any additional input into the current task object
-	 * if the task class matches
-	 *
-	 * @param	array				$submittedData: array containing the data submitted by the user
-	 * @param	tx_scheduler_Task	$task: reference to the current task object
-	 * @return	void
-	 */
-	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
-		$task->email = $submittedData['email'];
 	}
 }
 

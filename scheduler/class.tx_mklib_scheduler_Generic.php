@@ -36,11 +36,12 @@ tx_rnbase::load('tx_rnbase_util_Logger');
 abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 
 	/**
-	 * Lifetime of e file.
+	 * die verschiedenen optionen vom field provider
 	 *
 	 * @var	array
 	 */
-	protected $options = array();
+	private $options = array();
+	
 	/**
 	 * Extension key, used for devlog.
 	 * @return 	string
