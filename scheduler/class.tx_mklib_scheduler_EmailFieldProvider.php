@@ -34,9 +34,8 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFieldProvider {
 
 	/**
-	 *
-	 * @return 	array
-	 * @todo CSH einfügen
+	 * (non-PHPdoc)
+	 * @see tx_mklib_scheduler_GenericFieldProvider::getAdditionalFieldConfig()
 	 */
 	protected function getAdditionalFieldConfig(){
 		// wenn mehrere Scheduler den email field provider

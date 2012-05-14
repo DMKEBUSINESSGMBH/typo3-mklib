@@ -56,7 +56,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @return	void
 	 */
 	public function execute() {
-		$bSuccess = true;
+		$success = true;
 
 		try {
 			// beispiel für das logging array.
@@ -70,7 +70,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 // 			);
 			$devLog = array();
 			$options = $this->getOptions();
-			$sMessage = $this->executeTask($options, $devLog);
+			$message = $this->executeTask($options, $devLog);
 
 			// devlog
 			if (t3lib_extMgm::isLoaded('devlog')) {
@@ -83,7 +83,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 							&& empty($devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'])
 						)
 					)
-					$devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'] = $sMessage;
+					$devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'] = $message;
 
 				foreach ($devLog as $logLevel => $logData) {
 					if (empty($logData['message'])) continue;
@@ -95,19 +95,19 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 						);
 				}
 			}
-		} catch (Exception $oException) {
+		} catch (Exception $exception) {
 			if (tx_rnbase_util_Logger::isFatalEnabled())
-				tx_rnbase_util_Logger::fatal('Task ('.get_class($this).') failed. '.$oException->getMessage(), $this->getExtKey());
+				tx_rnbase_util_Logger::fatal('Task ['.get_class($this).'] failed. '.$exception->getMessage(), $this->getExtKey());
 			// Exception Mail an die Entwicker senden
-			if($sMail = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException')) {
-				$this->sendErrorMail($sMail, $oException);
+			if($mail = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException')) {
+				$this->sendErrorMail($mail, $exception);
 			}
 			//Wir geben die Exception weiter, damit der Scheduler eine entsprechende Meldung ausgeben kann.
-			throw $oException;
-			$bSuccess = false;
+			throw $exception;
+			$success = false;
 		}
 
-		return $bSuccess;
+		return $success;
 	}
 
 	/**
@@ -123,44 +123,44 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 *
 	 * @return	string	Information to display
 	 */
-	public function getAdditionalInformation($sInfo='') {
-		return $sInfo.CRLF.' Options: '.t3lib_div::arrayToLogString($this->getOptions(), array(), 64);
+	public function getAdditionalInformation($info='') {
+		return $info.CRLF.' Options: '.t3lib_div::arrayToLogString($this->getOptions(), array(), 64);
 		/* old code
 		$options = array();
-		foreach($this->getOptions() as $sKey => $mValue){
-			$options [] = '\''.$sKey.'\' => \''.$mValue.'\'';
+		foreach($this->getOptions() as $key => $value){
+			$options [] = '\''.$key.'\' => \''.$value.'\'';
 		}
-		return $sInfo.CRLF.' Options: '.implode(', ',$options);
+		return $info.CRLF.' Options: '.implode(', ',$options);
 		*/
 	}
 
 	/**
 	 * Setzt eine Option
 	 *
-	 * @param 	string 	$sKey
-	 * @param 	mixed 	$mValue
+	 * @param 	string 	$key
+	 * @param 	mixed 	$value
 	 * @return 	mixed	Der gesetzte Wert.
 	 */
-	public function setOption($sKey, $mValue){
-		return $this->options[$sKey] = $mValue;
+	public function setOption($key, $value){
+		return $this->options[$key] = $value;
 	}
 	/**
 	 * Liefert eine Option.
 	 *
-	 * @param 	string 	$sKey
+	 * @param 	string 	$key
 	 * @return 	mixed
 	 */
-	public function getOption($sKey){
-		return $this->options[$sKey];
+	public function getOption($key){
+		return $this->options[$key];
 	}
 	/**
 	 * Setzt alle Otionen.
 	 *
-	 * @param 	array 	$aValues
+	 * @param 	array 	$values
 	 * @return 	mixed 	Der gesetzte Wert.
 	 */
-	public function setOptions(array $aValues){
-		return $this->options = $aValues;
+	public function setOptions(array $values){
+		return $this->options = $values;
 	}
 	/**
 	 * Liefert alle Optionen
