@@ -39,6 +39,15 @@ class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFi
 	 * @todo CSH einfügen
 	 */
 	protected function getAdditionalFieldConfig(){
+		// wenn mehrere Scheduler den email field provider
+		// verwenden, dann überschreiben diese felder sich gegenseitig
+		// da alle im Quelltext vorhanden sind.
+		// also setzen wir den wert von mklibEmail, der eingegeben wird,
+		// für alle übrigen Felder.
+		// siehe http://forge.typo3.org/issues/25805
+		$this->schedulerModule->doc->getPageRenderer()->
+			addJsFile(t3lib_extMgm::extRelPath('mklib').'res/js/emailFieldProvider.js');
+			
 		return array(
 			// wir brauchen einen eindeutigen namen da es das email
 			// feld schon im scheduler test task gibt. dieser überschreibt
