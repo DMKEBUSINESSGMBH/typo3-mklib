@@ -88,7 +88,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 				foreach ($devLog as $logLevel => $logData) {
 					if (empty($logData['message'])) continue;
 					t3lib_div::devLog(
-							$logData['message'],
+							'['.get_class($this).']: '.$logData['message'],
 							isset($logData['extKey']) ? $logData['extKey'] : $this->getExtKey(),
 							$logLevel,
 							isset($logData['dataVar']) ? $logData['dataVar'] : FALSE
@@ -97,7 +97,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			}
 		} catch (Exception $oException) {
 			if (tx_rnbase_util_Logger::isFatalEnabled())
-				tx_rnbase_util_Logger::fatal('Task failed. '.$oException->getMessage(), $this->getExtKey());
+				tx_rnbase_util_Logger::fatal('Task ('.get_class($this).') failed. '.$oException->getMessage(), $this->getExtKey());
 			// Exception Mail an die Entwicker senden
 			if($sMail = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException')) {
 				$this->sendErrorMail($sMail, $oException);
