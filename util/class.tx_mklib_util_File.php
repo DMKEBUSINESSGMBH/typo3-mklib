@@ -186,6 +186,7 @@ class tx_mklib_util_File {
 	 * @return 	string
 	 */
 	public static function removeEndingSlash($sPath) {
+// 		return preg_replace('|/$|','', $sPath); @TODO: was ist besser!?
 		return (substr($sPath, -1) === '/') ? substr($sPath, 0, -1) : $sPath;
 	}
 	/**
