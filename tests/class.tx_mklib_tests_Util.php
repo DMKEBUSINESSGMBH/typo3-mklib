@@ -354,6 +354,19 @@ class tx_mklib_tests_Util {
 		}
 		return $mockClassName;
 	}
+
+	/**
+	 * damit nicht 
+	 * PHP Fatal error:  Call to a member function getHash() on a non-object in 
+	 * typo3/sysext/cms/tslib/class.tslib_content.php on line 1814 
+	 * auftritt. passiert zb bei link generierung
+	 * 
+	 * @return void
+	 */
+	public static function setSysPageToTsfe() {
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		$GLOBALS['TSFE']->sys_page = tx_rnbase_util_TYPO3::getSysPage();
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
