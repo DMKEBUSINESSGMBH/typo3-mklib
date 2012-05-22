@@ -67,7 +67,7 @@ class tx_mklib_util_File {
 		return self::$ftInstances[$key];
 	}
 
-	
+
 	/**
 	 * Löscht alle Dateien im in einem typo3temp Verzeichnis.
 	 *
@@ -79,34 +79,34 @@ class tx_mklib_util_File {
 	 * @return 	int
 	 */
 	public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles = array()) {
-		
+
 		$directoryCheckDir = isset($aOptions['directorycheckdir']) ? $aOptions['directorycheckdir'] : 'typo3temp';
 		if (!is_array($aUnlinkedFiles)) { $aUnlinkedFiles = array(); }
-		
+
 		//nur innerhalb von typo3temp zulassen
 		if(!$aOptions['skiptypo3tempcheck'] && strpos($sDirectory, $directoryCheckDir) === false) {
 			return 0;
 		}
-		
+
 		// optionen sammeln.
 		$iLifetime = $aOptions['lifetime'] ? $aOptions['lifetime'] : 0;
 		$aFiletypes = $aOptions['filetypes'] ? t3lib_div::trimExplode(',', strtolower($aOptions['filetypes'])) : array();
 		$bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
-		
+
 		$iCount = 0;
-		
+
 		if (@is_dir($sDirectory)) {
 			$iHandle = opendir($sDirectory);
 			while (($sFile = readdir($iHandle)) !== FALSE) {
 				if ($sFile === '.' || $sFile === '..') {
 					continue;
 				}
-				
+
 				// Dateiendung auslesen
 				$sExt = strtolower(substr($sFile, strrpos($sFile, '.') + 1));
 				// serverpfad zur datei
 				$sFilePath = $sDirectory.$sFile;
-				
+
 				// Es handelt sich um eine Datei.
 				if (@is_file($sFilePath)) {
 					if (
@@ -132,7 +132,7 @@ class tx_mklib_util_File {
 		}
 		return $iCount;
 	}
-	
+
 	/**
 	 * Liefert die URL zur Typo3 Seite
 	 * http://www.typo3.de
@@ -158,7 +158,7 @@ class tx_mklib_util_File {
 		}
 		return self::$documentRoot;
 	}
-	
+
 	/**
 	 * Entfernt doppelte slashes. Das Schema wird hierbei berücksichtigt
 	 * @param 	string 	$sPath
@@ -204,17 +204,17 @@ class tx_mklib_util_File {
 	 * @return 	string
 	 */
 	public static function fixPath($sPath, $slashPath=true){
-		
+
 		// stellt sicher, das keine backslashes vorhanden sind.
 //		$sPath = t3lib_div::fixWindowsFilePath($sPath);
 		$sPath = str_replace('\\','/', $sPath);
-		
+
 		// entfernt überflüssige slashes
 		$sPath = self::trimSlashes($sPath);
-		
+
 		// Konvertiert alle double slashes (//) zu einem single slash (/)
 		$sPath = self::removeDoubleSlash($sPath);
-		
+
 		return $slashPath ? self::slashPath($sPath) : $sPath;
 	}
 	/**
@@ -237,7 +237,7 @@ class tx_mklib_util_File {
 		}
 		return $sPath;
 	}
-	
+
 	/**
 	 * Prüft ob es sich um einen absoluten Server-Pfad handelt.
 	 * @param 	$sPath
@@ -259,7 +259,7 @@ class tx_mklib_util_File {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Gibt einen relativen Pfad zurück.
 	 *
@@ -270,22 +270,22 @@ class tx_mklib_util_File {
 		if (!strcmp($sPath,'/')){
 			return $sPath;
 		}
-		
+
 		$sPath = self::fixPath($sPath);
-	
+
 		// Web-Pfad abschneiden
 		if(self::isAbsWebPath($sPath) && strpos($sPath, self::getSiteUrl()) !== false) {
 			$sPath = str_replace(self::getSiteUrl(), '', $sPath);
 		}
-		
+
 		// wir brauchen den server pfad, um verschiedene prüfungen zu machen
 		$sPath = self::getServerPath($sPath);
 		$sPath = str_replace(self::removeStartingSlash(self::getDocumentRoot()), '', $sPath);
-		
+
 		// gegebenenfals ein slash anfügen
 		return ($sPath{0} != '/' ? '/' : '') . $sPath;
 	}
-	
+
 	/**
 	 * Gibt einen absoluten Server Pfad zurück.
 	 *
@@ -302,20 +302,18 @@ class tx_mklib_util_File {
 		if(self::isAbsWebPath($sPath)) {
 			$sPath = self::getRelPath($sPath);
 		}
-		
+
 		$sPath = self::fixPath($sPath, false);
-		
-		$oFileTool = self::getFileTool();
-		
+
 		// Nur in einen Absoluten Pfad umwandeln, wenn es noch keiner ist.
 		if(!self::isAbsServerPath($sPath)) {
 			// Absoluten Pfad generieren
 			$sPath = t3lib_div::getFileAbsFileName($sPath);
 		}
-	
+
 		return self::slashPath($sPath);
 	}
-	
+
 	/**
 	 * Gibt einen absoluten Web Pfad zurück.
 	 *
@@ -334,7 +332,7 @@ class tx_mklib_util_File {
 		//@TODO: das funktioniert beim webpfad nicht!
 		return $sPath;
 	}
-	
+
 	/**
 	 * Schreibt HTTP-Header um eine Datei zum Download anzubieten
 	 * @todo Output Tests schreiben
@@ -371,6 +369,26 @@ class tx_mklib_util_File {
 		print $sOutput;
 		//und TYPO3 hindern noch irgend etwas auszugeben
 		exit;
+	}
+
+	/**
+	 * Legt eine .htaccess an, um ein Verzeichnis vor Zugriffen zu schützen.
+	 * @param unknown_type $path
+	 * @param unknown_type $content
+	 */
+	public static function createDenyHtaccess($path, $content=null) {
+		$theFile = self::getServerPath($path).'.htaccess';
+		if (@is_file($theFile)) {
+			return false;
+		}
+		$content = $content ? $content
+			: 	'order deny,allow'.PHP_EOL.
+				'deny from all'.PHP_EOL.
+				'allow from 127.0.0.1'.PHP_EOL
+// 				'allow from 192.168'.PHP_EOL // das funktioniert bei clustern nicht.
+			;
+		t3lib_div::writeFile($theFile, $content);
+		return @is_file($theFile);
 	}
 }
 
