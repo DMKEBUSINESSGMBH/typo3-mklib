@@ -373,8 +373,9 @@ class tx_mklib_util_File {
 
 	/**
 	 * Legt eine .htaccess an, um ein Verzeichnis vor Zugriffen zu schützen.
-	 * @param unknown_type $path
-	 * @param unknown_type $content
+	 *
+	 * @param string $path
+	 * @param string $content
 	 */
 	public static function createDenyHtaccess($path, $content=null) {
 		$theFile = self::getServerPath($path).'.htaccess';
