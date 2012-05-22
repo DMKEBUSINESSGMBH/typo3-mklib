@@ -392,7 +392,8 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		if($where) $data['where'] = $where;
 		if($values) $data['values'] = $values;
 		// backtrace Konfigurierbar machen?
-		$data['debug_backtrace'] = t3lib_div::debug_trail();
+		tx_rnbase::load('tx_mklib_util_Logger');
+		$data['debug_backtrace'] = tx_mklib_util_Logger::getDebugBacktrace();
 		
 		// wurde auf hidden gesetzt?
 		$disabled = tx_mklib_util_TCA::getEnableColumn($tablename, 'disabled', 'hidden');
@@ -406,6 +407,10 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		
 		tx_rnbase_util_Logger::notice($msg, 'mklib', $data);
 		return true;
+	}
+	
+	private function getBackTrace() {
+		
 	}
 }
 
