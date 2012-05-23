@@ -56,20 +56,20 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @return	void
 	 */
 	public function execute() {
-		$success = true;
+		/* beispiel für das logging array.
+		$devLog = array('message' => '', 'extKey' => 'mklib', 'dataVar' => FALSE);
+		$devLog = array(
+			tx_rnbase_util_Logger::LOGLEVEL_DEBUG => $devLog,
+			tx_rnbase_util_Logger::LOGLEVEL_INFO => $devLog,
+			tx_rnbase_util_Logger::LOGLEVEL_NOTICE => $devLog,
+			tx_rnbase_util_Logger::LOGLEVEL_WARN => $devLog,
+			tx_rnbase_util_Logger::LOGLEVEL_FATAL => $devLog
+		);
+		*/
+		$devLog = array();
+		$options = $this->getOptions();
 
 		try {
-			// beispiel für das logging array.
-// 			$devLog = array('message' => '', 'extKey' => 'mklib', 'dataVar' => FALSE);
-// 			$devLog = array(
-// 				tx_rnbase_util_Logger::LOGLEVEL_DEBUG => $devLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_INFO => $devLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_NOTICE => $devLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_WARN => $devLog,
-// 				tx_rnbase_util_Logger::LOGLEVEL_FATAL => $devLog
-// 			);
-			$devLog = array();
-			$options = $this->getOptions();
 			$message = $this->executeTask($options, $devLog);
 
 			// devlog
@@ -96,18 +96,37 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 				}
 			}
 		} catch (Exception $exception) {
+			$dataVar = array(
+				'errorcode' => $exception->getCode(),
+				'errormsg' => $exception->getMessage(),
+				'trace' => $exception->getTraceAsString(),
+				'options' => $options,
+				'devlog' => $devLog, // bisherige logs mitgeben
+			);
 			if (tx_rnbase_util_Logger::isFatalEnabled())
-				tx_rnbase_util_Logger::fatal('Task ['.get_class($this).'] failed. '.$exception->getMessage(), $this->getExtKey());
+				tx_rnbase_util_Logger::fatal(
+					'Task ['.get_class($this).'] failed.'
+						.' Error('.$exception->getCode().'):'
+						.$exception->getMessage(),
+					$this->getExtKey(), $dataVar
+				);
 			// Exception Mail an die Entwicker senden
 			if($mail = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException')) {
-				$this->sendErrorMail($mail, $exception);
+				$this->sendErrorMail(
+					$mail,
+					// Wir erstellen eine weitere Exception mit zusätzlichen Daten.
+					// @TODO: $previous sollte in rn_base übergeben werden können
+					tx_rnbase::makeInstance(
+						'tx_rnbase_util_Exception',
+						get_class($exception).': '.$exception->getMessage(),
+						$exception->getCode(), $dataVar
+					)
+				);
 			}
 			//Wir geben die Exception weiter, damit der Scheduler eine entsprechende Meldung ausgeben kann.
 			throw $exception;
-			$success = false;
 		}
-
-		return $success;
+		return true;
 	}
 
 	/**
@@ -119,7 +138,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	abstract protected function executeTask(array $options, array &$devLog);
 
 	/**
-	 * This method returns the destination mail address as additional information
+	 * Liefert die im Scheduler gesetzten Optionen.
 	 *
 	 * @return	string	Information to display
 	 */
