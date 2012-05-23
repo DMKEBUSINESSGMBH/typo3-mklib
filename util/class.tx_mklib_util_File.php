@@ -377,6 +377,7 @@ class tx_mklib_util_File {
 	 *
 	 * @param string $path
 	 * @param string $content
+	 * @return boolean
 	 */
 	public static function createDenyHtaccess($path, $content=null) {
 		$theFile = self::getServerPath($path).'.htaccess';
@@ -387,7 +388,9 @@ class tx_mklib_util_File {
 			: 	'order deny,allow'.PHP_EOL.
 				'deny from all'.PHP_EOL.
 				'allow from 127.0.0.1'.PHP_EOL
-// 				'allow from 192.168'.PHP_EOL // das funktioniert bei clustern nicht.
+				// Das funktioniert bei den meisten Clustern nicht,
+				// da der LoadBallancer die Anfragen intern weiterleitet!
+// 				'allow from 192.168'.PHP_EOL
 			;
 		t3lib_div::writeFile($theFile, $content);
 		return @is_file($theFile);
