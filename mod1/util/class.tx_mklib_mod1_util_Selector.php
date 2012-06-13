@@ -41,9 +41,9 @@ class tx_mklib_mod1_util_Selector {
 	 *  @var tx_rnbase_mod_IModule
 	 */
 	private $mod;
-	
+
 	private $formTool;
-	
+
 	/**
 	 * Initialisiert das Objekt mit dem Template und der Modul-Config.
 	 */
@@ -51,7 +51,7 @@ class tx_mklib_mod1_util_Selector {
 		$this->mod = $module;
 		$this->formTool = $this->mod->getFormTool();
 	}
-	
+
 	/**
 	 * Method to display a form with an input array, a description and a submit button.
 	 * Keys are 'field' and 'button'.
@@ -65,20 +65,20 @@ class tx_mklib_mod1_util_Selector {
 	 * @return 	string 						search term
 	 */
 	public function showFreeTextSearchForm (&$out, $key, array $options = array()) {
-		
+
 		$searchstring = $this->getValueFromModuleData($key);
 
 		// Erst das Suchfeld, danach der Button.
 		$out['field'] 	= $this->formTool->createTxtInput('SET['.$key.']',$searchstring,10);
-		$out['button'] 	= $this->formTool->createSubmit(
+		$out['button'] 	= empty($options['submit']) ? '' : $this->formTool->createSubmit(
 				$options['buttonName'] ? $options['buttonName'] : $key,
 				$options['buttonValue'] ? $options['buttonValue'] : $GLOBALS['LANG']->getLL('label_button_search')
 			);
 		$out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_search');
-	
+
 		return $searchstring;
 	}
-	
+
 	/**
 	 * Returns a delete select box. All data is stored in array $data.
 	 * @param 	array 	$data
@@ -90,7 +90,7 @@ class tx_mklib_mod1_util_Selector {
 			0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
 			1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
 		);
-		
+
 		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
 		return $this->showSelectorByArray($items,'showhidden',$data, $options);
 	}
@@ -108,10 +108,10 @@ class tx_mklib_mod1_util_Selector {
 		$dayId = $baseId.'_day';
 		$monthId = $baseId.'_month';
 		$yearId = $baseId.'_year';
-		
+
 		// Defaultwerte werden benötigt, wenn noch keine Eingabe erfolgte
 		$aDefault = explode('-', $aOptions['default']);
-		
+
 		if(isset($aOptions['id']))
 			unset($aOptions['id']);
 		// Monate
@@ -123,7 +123,7 @@ class tx_mklib_mod1_util_Selector {
 		}
 		$selectedMonth = $this->getValueFromModuleData($monthId);
 		$selectedMonth = $this->showSelectorByArray($items, $monthId, $tmpDataMonth, array('forcevalue'=>($selectedMonth) ? $selectedMonth : $aDefault[1]));
-		
+
 		// Jahre
 		$today = new DateTime();
 		$from = intval($aOptions['yearfrom']);
@@ -143,7 +143,7 @@ class tx_mklib_mod1_util_Selector {
 		}
 		$selectedYear = $this->getValueFromModuleData($yearId);
 		$selectedYear = $this->showSelectorByArray($items, $yearId, $tmpDataYear, array('forcevalue'=>($selectedYear) ? $selectedYear : $aDefault[0]));
-		
+
 		// Tage
 		$tmpDataDay = array();
 		$items = array();
@@ -152,18 +152,18 @@ class tx_mklib_mod1_util_Selector {
 		$selectedDay = $this->getValueFromModuleData($dayId);
 		$selectedDay = ($selectedDay>$totalDays) ? $totalDays : $selectedDay;
 		$selectedDay = $this->showSelectorByArray($items, $dayId, $tmpDataDay, array('forcevalue'=>($selectedDay) ? $selectedDay : $aDefault[2]));
-		
+
 		// Rückgabe
 		$aData['day_selector'] = $tmpDataDay['selector'];
 		$aData['month_selector'] = $tmpDataMonth['selector'];
 		$aData['year_selector'] = $tmpDataYear['selector'];
-		
+
 		$ret = new DateTime();
 		$ret->setDate($selectedYear, $selectedMonth, $selectedDay);
 
 		return $ret;
 	}
-	
+
 	/**
 	 * Gibt einen selector mit den elementen im gegebenen array zurück
 	 * @param array $aItems Array mit den werten der Auswahlbox
@@ -176,17 +176,17 @@ class tx_mklib_mod1_util_Selector {
 		$id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
 
 		$selectedItem = array_key_exists('forcevalue', $aOptions) ? $aOptions['forcevalue'] : $this->getValueFromModuleData($id);
-		
+
 		$pid = $aOptions['pid'] ? $aOptions['pid'] : 0;
-		
+
 		// Build select box items
 		$aData['selector'] = t3lib_BEfunc::getFuncMenu(
 			$pid, 'SET['.$id.']', $selectedItem, $aItems
 		);
-		
+
 		//label
 		$aData['label'] = $aOptions['label'];
-		
+
 		// as the deleted fe users have always to be hidden the function returns always false
 		//@todo wozu die alte abfrage? return $defId==$id ? false : $selectedItem;
 		return $selectedItem;
@@ -223,7 +223,7 @@ class tx_mklib_mod1_util_Selector {
 	protected function getFormTool() {
 		return $this->getMod()->getFormTool();
 	}
-	
+
 	/**
 	 * Return requested value from module data
 	 *
@@ -237,7 +237,7 @@ class tx_mklib_mod1_util_Selector {
 		// else
 		return null;
 	}
-	
+
 	/**
 	 * Setzt einen Wert in den Modul Daten. Dabei werden die bestehenden
 	 * ergänzt oder ggf. überschrieben
@@ -252,7 +252,7 @@ class tx_mklib_mod1_util_Selector {
 				$aExistingModuleData[$sKey] = $mValue;
 		$GLOBALS['BE_USER']->pushModuleData($sModuleName,$aExistingModuleData);
 	}
-	
+
 
 	/**
 	 *
@@ -268,7 +268,7 @@ class tx_mklib_mod1_util_Selector {
 				$out .= '<td>'. (isset($filter['label']) ? $filter['label'] : $label).'</td>';
 				unset($filter['label']);
 				$out .= '<td>'. implode(' ', $filter) .'</td>';
-				
+
 				$out .= '</tr>';
 			}
 			$out .= '</table>';

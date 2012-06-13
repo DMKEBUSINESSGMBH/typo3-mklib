@@ -26,13 +26,13 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
  * Basisklasse für Suchfunktionen in BE-Modulen
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 abstract class tx_mklib_mod1_searcher_abstractBase {
-	
+
 	/**
 	 * Wurde die ll bereits geladen?
 	 * @var boolean
@@ -53,23 +53,23 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	 * @var array
 	 */
 	protected $options = array();
-	
+
 	/**
-	 * Current search term 
+	 * Current search term
 	 * @var 	string
 	 */
 	protected $currentSearchWord = '';
-	
+
 	/**
-	 * Current hidden option 
+	 * Current hidden option
 	 * @var 	string
 	 */
 	protected $currentShowHidden = 1;
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param 	tx_rnbase_mod_IModule 	$mod
 	 * @param 	array 					$options
 	 */
@@ -107,26 +107,26 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		$pageId = tx_mklib_util_String::toCamelCase(get_class($this));
 		return $pageId;
 	}
-	
+
 	/**
 	 * Liefert den Service.
-	 * 
+	 *
 	 * @return tx_mklib_srv_Base
 	 */
 	abstract protected function getService();
-	
+
 	/**
 	 * Returns the complete search form
 	 * @return 	string
 	 */
 	public function getSearchForm() {
 		$data = $this->getFilterTableDataForSearchForm();
-		
+
 		$selector = $this->getSelector();
 		$out = $selector->buildFilterTable($data);
 		return $out;
 	}
-	
+
 	/**
 	 * Liefert die Daten für das Basis-Suchformular damit
 	 * das Html gebaut werden kann
@@ -136,27 +136,27 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		$data = array();
 		$options = array('pid' => $this->options['pid']);
 		$selector = $this->getSelector();
-		
+
 		$this->currentSearchWord = $selector->showFreeTextSearchForm(
 			$data['search'],
 			$this->getSearcherId().'Search',
-			$options
+			array_merge(array('submit' => 1), $options)
 		);
-		
+
 		$this->currentShowHidden = $selector->showHiddenSelector(
 			$data['hidden'],
 			$options
 		);
-		
+
 		if($updateButton = $this->getSearchButton())
 			$data['updatebutton'] = array(
 				'label' => '',
 				'button'=> $updateButton
 			);
-				
+
 		return $data;
 	}
-	
+
 	/**
 	 * Returns the search button
 	 * @return 	string|false
@@ -171,7 +171,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 
 	/**
 	 * Bildet die Resultliste mit Pager
-	 * 
+	 *
 	 * @param tx_mklib_mod1_searcher_Base $callingClass
 	 * @param object $srv
 	 * @param array $fields
@@ -201,7 +201,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 
 		// Get counted data
 		$cnt = $this->getCount($fields, $options);
-		
+
 		$pager->setListSize($cnt);
 		$pager->setOptions($options);
 
@@ -209,15 +209,15 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		$items = $srv->search($fields, $options);
 		$content = '';
 		$this->showItems($content, $items);
-		
+
 		$pagerData = $pager->render();
-		
+
 		//der zusammengeführte Pager für die Ausgabe
 		//nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
 		$sPagerData = '';
 		if($cnt)
 			$sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
-			
+
 		return array(
 				'table' 	=> $content,
 				'totalsize' => $cnt,
@@ -265,34 +265,34 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	}
 	/**
 	 * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
-	 * 
+	 *
 	 * @param 	array 	$fields
 	 * @param 	array 	$options
 	 */
 	protected function prepareFieldsAndOptions(array &$fields, array &$options) {
 		$options['distinct'] = 1;
 //		$options['debug'] = true;
-		
+
 		if(!$this->currentShowHidden) { $options['enablefieldsfe'] = 1;}
 		else { $options['enablefieldsbe'] = 1; }
-		
-		//die fields nun mit dem Suchbegriff und den Spalten, 
+
+		//die fields nun mit dem Suchbegriff und den Spalten,
 		//in denen gesucht werden soll, füllen
 		tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 		tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, $this->currentSearchWord, $this->getCols());
-		
+
 		// das muss die kindklasse auswerten (oder eigene methode?)
 //		if($this->currentSearchWord){}
 //		if(isset($this->options['pid'])){}
 	}
-	
+
 	/**
 	 * @deprecated Bitte getSearchColumns nutzen!
 	 */
 	protected function getCols() {
 		return $this->getSearchColumns();
 	}
-	
+
 	/**
 	 * Liefert die Spalten, in denen gesucht werden soll
 	 * @return array
@@ -310,7 +310,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	protected function showItems(&$content, array $items) {
 		if(count($items) === 0) {
 			$content = $this->getNoItemsFoundMsg();
-			return;//stop	
+			return;//stop
 		}
 		// else
 		$aColumns = $this->getColumns( $this->getDecorator( $this->getModule() ) );
@@ -320,12 +320,12 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		$content .= $out;
 		return $out;
 	}
-	
+
 	/**
 	 * @return 	tx_mklib_mod1_decorator_Base
 	 */
 	protected function getDecorator(&$mod){
-		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);		
+		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
 	}
 	/**
 	 * @deprecated bitte getDecoratorColumns nutzen
@@ -333,7 +333,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	protected function getColumns(&$oDecorator){
 		return $this->getDecoratorColumns($oDecorator);
 	}
-	
+
 	/**
 	 * Liefert die Spalten für den Decorator.
 	 * @param 	tx_mklib_mod1_decorator_Base 	$oDecorator
@@ -351,11 +351,11 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 			)
 		);
 	}
-	
+
 	/**
 	 * Returns an instance of tx_mkhoga_beutil_Selector.
 	 * Der Selector wird erst erzeugt, wenn er benötigt wird
-	 * 
+	 *
 	 * @return 	tx_mklib_mod1_util_Selector
 	 */
 	protected function getSelector() {
@@ -365,9 +365,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		}
 		return $this->selector;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param array $fields
 	 * @param array $options
 	 */
@@ -376,37 +376,37 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		$options['count'] = 1;
 		return $this->getService()->search($fields, $options);
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	protected function getModule() {
 		return $this->mod;
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	protected function getOptions() {
 		return $this->options;
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_util_FormTool
 	 */
 	protected function getFormTool() {
 		return $this->mod->getFormTool();
 	}
-	
+
 	/**
 	 * Returns the message in case no items could be found in showItems()
-	 * 
+	 *
 	 * @return 	string
 	 */
 	protected function getNoItemsFoundMsg() {
