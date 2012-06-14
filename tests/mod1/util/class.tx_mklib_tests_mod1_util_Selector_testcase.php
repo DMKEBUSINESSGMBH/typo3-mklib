@@ -114,10 +114,11 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	public function testShowFreeTextSearchFormWithEmptySearchString() {
 		$out = array();
 		$options = array(
-				'buttonName' => 'testName',
-				'buttonValue' => 'testSearchValue',
-				'label' => 'testLabel',
-			);
+			'buttonName' => 'testName',
+			'buttonValue' => 'testSearchValue',
+			'label' => 'testLabel',
+			'submit' => true, // wird vom searcher abstractBase gesetzt
+		);
 		$sSearchString = $this->oSelector->showFreeTextSearchForm($out, $this->sModuleKey, $options);
 
 		$this->assertEmpty($sSearchString,'suchstring ist nicht leer');
@@ -132,6 +133,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'buttonName' => 'testName',
 			'buttonValue' => 'testSearchValue',
 			'label' => 'testLabel',
+			'submit' => true, // wird vom searcher abstractBase gesetzt
 		);
 		//suchstring setzen
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
