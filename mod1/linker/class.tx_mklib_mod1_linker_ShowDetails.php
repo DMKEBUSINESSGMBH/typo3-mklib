@@ -40,8 +40,6 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  * // Die ID wird aus den Parametern oder aud den Modul-Daten geholt
  * // Dabei wird gleichzeitig das Clear Event geprüft!
  * $linker->getCurrentUid($mod);
- * // Liefert das fertige Model. Intern wird getCurrentUid aufgerufen!
- * $linker->getCurrentItem($mod);
  *
  * @TODO: UnitTests!!!
  *
@@ -49,20 +47,23 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  */
 class tx_mklib_mod1_linker_ShowDetails {
 
-	private $moduleDataConfId = null;
+	private $identifier = null;
 
 	/**
 	 *
 	 * @throws InvalidArgumentException
-	 * @param string $moduleDataConfId
+	 * @param string $identifier (model or tablename)
+	 * 		Wird zum Speichern in den Moduldaten,
+	 * 		zum erzeugen der buttons und
+	 * 		zum auslesend er Parameter verwendet
 	 */
-	public function __construct($moduleDataConfId) {
-		if (empty($moduleDataConfId)) {
+	public function __construct($identifier) {
+		if (empty($identifier)) {
 			throw new InvalidArgumentException(
-				'Constructor needs a valid moduleDataConfId'
+				'Constructor needs a valid identifier'
 			);
 		}
-		$this->moduleDataConfId = $moduleDataConfId;
+		$this->identifier = $identifier;
 	}
 
 	/**
@@ -78,7 +79,7 @@ class tx_mklib_mod1_linker_ShowDetails {
 			$options=array()
 	) {
 		$out = $formTool->createSubmit(
-				'showDetails['.get_class($item).']['.$item->getUid().']',
+				'showDetails['.$this->identifier.']['.$item->getUid().']',
 				isset($options['label']) ? $options['label'] : '###LABEL_SHOW_DETAILS###',
 				isset($options['confirm']) ? $options['confirm'] : '',
 				$options
@@ -93,12 +94,12 @@ class tx_mklib_mod1_linker_ShowDetails {
 	 * @return string
 	 */
 	public function makeClearLink(
-			tx_rnbase_model_base $item,
+			tx_rnbase_model_base $item, // wird eigentlich nicht benötigt.
 			tx_rnbase_util_FormTool $formTool,
 			$options=array()
 	) {
 		$out = $formTool->createSubmit(
-				'showDetails['.get_class($item).'][clear]',
+				'showDetails['.$this->identifier.'][clear]',
 				isset($options['label']) ? $options['label'] : '###LABEL_BTN_NEWSEARCH###',
 				isset($options['confirm']) ? $options['confirm'] : '',
 				$options
@@ -115,8 +116,7 @@ class tx_mklib_mod1_linker_ShowDetails {
 	) {
 
 		$modSettings = array(
-			$this->moduleDataConfId.'_class' => '',
-			$this->moduleDataConfId.'_id' => '0',
+			$this->identifier => '0',
 		);
 
 		$params = t3lib_div::_GP('showDetails');
@@ -127,7 +127,7 @@ class tx_mklib_mod1_linker_ShowDetails {
 		}
 
 		if (
-			!(empty($model) || empty($uid))
+			!empty($uid)
 			&& $uid === 'clear'
 		){
 			t3lib_BEfunc::getModuleData(
@@ -142,57 +142,16 @@ class tx_mklib_mod1_linker_ShowDetails {
 		$uid = intval($uid);
 		$data = t3lib_BEfunc::getModuleData(
 			$modSettings,
-			(!empty($model) && !empty($uid))
+			$uid
 				? array(
-					$this->moduleDataConfId.'_class' => $model,
-					$this->moduleDataConfId.'_id' => $uid,
+					$this->identifier => $uid,
 				) : array(),
 			$mod->getName()
 		);
 
-		return intval($data[$this->moduleDataConfId.'_id']);
+		return intval($data[$this->identifier]);
 	}
 
-	/**
-	 * Returns the currently selected company or false
-	 * @throws InvalidArgumentException
-	 * @return tx_mkhoga_models_CouponGroup
-	 */
-	public function getCurrentItem(
-		tx_rnbase_mod_IModule $mod
-	) {
-		$uid = $this->getCurrentUid($mod);
-		if (!$uid) {
-			return null;
-		}
-
-		$data = t3lib_BEfunc::getModuleData(
-				array(),
-				array(),
-				$mod->getName()
-		);
-
-		if (
-			   empty($data[$this->moduleDataConfId.'_class'])
-			|| empty($data[$this->moduleDataConfId.'_id'])
-		) {
-			return null;
-		}
-
-		$item = tx_rnbase::makeInstance(
-			$data[$this->moduleDataConfId.'_class'],
-			$data[$this->moduleDataConfId.'_id']
-		);
-
-		if(!$item->isValid()) {
-			throw new InvalidArgumentException(
-				'Model "'.$this->getModelClass().'" with uid ('. $uid .') is invalid.'
-			);
-		}
-
-		return $item;
-
-	}
 }
 
 
