@@ -234,48 +234,68 @@ class tx_mklib_util_TCA {
 			);
 		if(isset($options['edit'])) {
 			$wizards['edit'] = array (
-					'type' => 'popup',
-					'title' => 'Edit entry', // LLL:EXT:mketernit/locallang.
-					'icon' => 'edit2.gif',
-					'script' => 'wizard_edit.php',
-					'popup_onlyOpenIfSelected' => 1,
-					'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
-				);
+				'type' => 'popup',
+				'title' => 'Edit entry', // LLL:EXT:mketernit/locallang.
+				'icon' => 'edit2.gif',
+				'script' => 'wizard_edit.php',
+				'popup_onlyOpenIfSelected' => 1,
+				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
+			);
+			if (is_array($options['edit'])) {
+				$wizards['edit']
+					= t3lib_div::array_merge_recursive_overrule(
+							$wizards['edit'], $options['edit']);
+			}
 		}
 		if(isset($options['add'])) {
 			$wizards['add'] = array (
-					'type' => 'script',
-					'title' => 'Create new entry',
-					'icon' => 'add.gif',
-					'params' => array (
-						'table' => $sTable,
-						'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
-						'setValue' => 'prepend',
-					),
-					'script' => 'wizard_add.php',
-				);
+				'type' => 'script',
+				'title' => 'Create new entry',
+				'icon' => 'add.gif',
+				'params' => array (
+					'table' => $sTable,
+					'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
+					'setValue' => 'prepend',
+				),
+				'script' => 'wizard_add.php',
+			);
+			if (is_array($options['add'])) {
+				$wizards['add']
+					= t3lib_div::array_merge_recursive_overrule(
+							$wizards['add'], $options['add']);
+			}
 		}
 		if(isset($options['list'])) {
 			$wizards['list'] = array (
-					'type' => 'popup',
-					'title' => 'List entries',
-					'icon' => 'list.gif',
-					'params' => array (
-						'table' => $sTable,
-						'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
-					),
-					'script' => 'wizard_list.php',
-					'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
-				);
+				'type' => 'popup',
+				'title' => 'List entries',
+				'icon' => 'list.gif',
+				'params' => array (
+					'table' => $sTable,
+					'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
+				),
+				'script' => 'wizard_list.php',
+				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
+			);
+			if (is_array($options['list'])) {
+				$wizards['list']
+					= t3lib_div::array_merge_recursive_overrule(
+							$wizards['list'], $options['list']);
+			}
 		}
 		if(isset($options['suggest'])) {
 			$wizards['suggest'] = array (
-					'type' => 'suggest',
-					'default' => array(
-						'maxItemsInResultList' => 5,
-						'searchWholePhrase' => true, // true: LIKE %term% false: LIKE term%
-					),
-				);
+				'type' => 'suggest',
+				'default' => array(
+					'maxItemsInResultList' => 8,
+					'searchWholePhrase' => true, // true: LIKE %term% false: LIKE term%
+				),
+			);
+			if (is_array($options['suggest'])) {
+				$wizards['suggest']
+					= t3lib_div::array_merge_recursive_overrule(
+							$wizards['suggest'], $options['suggest']);
+			}
 		}
 		if(isset($options['RTE'])) {
 			$wizards['RTE'] = Array(
