@@ -38,7 +38,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  * @subpackage tx_mklib_util
  */
 class tx_mklib_util_TS {
-	
+
 
   	/**
    	 * Lädt ein COnfigurations Objekt nach mit der TS aus der Extension
@@ -54,35 +54,35 @@ class tx_mklib_util_TS {
    	 */
   	public static function loadConfig4BE($extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array()) {
   		$extKeyTS = is_null($extKeyTS) ? $extKey : $extKeyTS;
-  		
+
   		if(!$sStaticPath) $sStaticPath = '/static/ts/setup.txt';
 	    t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
-	
+
 	    tx_rnbase::load('tx_rnbase_configurations');
 	    tx_rnbase::load('tx_rnbase_util_Misc');
-	
+
 	    tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
 	    $GLOBALS['TSFE']->config = array();
 	    $cObj = t3lib_div::makeInstance('tslib_cObj');
-	
+
 	    $pageTSconfig = t3lib_BEfunc::getPagesTSconfig(0);
-	    
+
 	    $tempConfig = $pageTSconfig['plugin.']['tx_'.$extKeyTS.'.'];
 	    $tempConfig['lib.'][$extKeyTS.'.'] = $pageTSconfig['lib.'][$extKeyTS.'.'];
 	    $tempConfig['lib.']['links.'] = $pageTSconfig['lib.']['links.'];
 	    $pageTSconfig = $tempConfig;
 
 	    $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $extKeyTS;
-	    
+
 	    //möglichkeit die default konfig zu überschreiben
 	    $pageTSconfig = t3lib_div::array_merge_recursive_overrule($pageTSconfig,$aConfig);
-	    
+
 	    $configurations = new tx_rnbase_configurations();
 	    $configurations->init($pageTSconfig, $cObj, $extKeyTS, $qualifier);
-	
+
 	  	return $configurations;
   	}
-  	
+
   	/**
   	 * @TODO: static caching integrieren!?
   	 *
@@ -99,7 +99,7 @@ class tx_mklib_util_TS {
 						// wenn ein alias übergeben wurde, müssen wir uns die uid besorgen
 						is_numeric($mPageUid) ? intval($mPageUid) : $sysPageObj->getPageIdFromAlias($mPageUid)
 					);
-					
+
 		// ts für die rootlines erzeugen
   		/* @var $TSObj t3lib_tsparser_ext */
 		$TSObj = tx_rnbase::makeInstance('t3lib_tsparser_ext');
@@ -107,28 +107,28 @@ class tx_mklib_util_TS {
 		$TSObj->init();
 		$TSObj->runThroughTemplates($aRootLine);
 		$TSObj->generateConfig();
-		
+
 		// tsfe config setzen (wird in der tx_rnbase_configurations gebraucht (language))
 	    if(!is_array($GLOBALS['TSFE']->config))
 	    	$GLOBALS['TSFE']->config = $TSObj->setup['config.'];
-	    
+
         // tsfe config setzen (ansonsten funktionieren refereznen nicht (fpdf <= lib.fpdf))
 		// @TODO: Konfigurierbar machen
 	    $GLOBALS['TSFE']->tmpl->setup = array_merge($TSObj->setup, $GLOBALS['TSFE']->tmpl->setup);
 //	    if(!is_array($GLOBALS['TSFE']->setup)) // @TODO: müssen wir das in die tsfe speichern?
 //	    	$GLOBALS['TSFE']->setup = $TSObj->setup;
-	    	
-	    	
+
+
 	    // ts für die extension auslesen
 		$pageTSconfig = $TSObj->setup['plugin.']['tx_'.$sExtKey.'.'];
 	    $pageTSconfig['lib.'] = $pageTSconfig['lib.']; // libs mit nehmen
 	    $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $sExtKey;
-	    
+
 	    // konfiguration erzeugen
   		/* @var $configurations tx_rnbase_configurations */
 	    $configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
 	    $configurations->init($pageTSconfig, $configurations->getCObj(1), $sExtKey, $qualifier);
-		
+
 		return $configurations;
   	}
 }

@@ -181,12 +181,14 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	public function getResultList() {
 		$srv = $this->getService();
 		/* @var $pager tx_rnbase_util_BEPager */
-		$pager = tx_rnbase::makeInstance(
+		$pager = $this->usePager()
+			? tx_rnbase::makeInstance(
 				'tx_rnbase_util_BEPager',
 				$this->getSearcherId().'Pager',
 				$this->getModule()->getName(),
 				$pid = 0 //@TODO: die PageId solle noch konfigurierbar gemacht werden.
-			);
+			)
+		: null;
 
 		$fields = $options = array();
 		if(is_array($this->options['baseOptions']))
@@ -202,28 +204,43 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		// Get counted data
 		$cnt = $this->getCount($fields, $options);
 
-		$pager->setListSize($cnt);
-		$pager->setOptions($options);
+		if ($pager) {
+			$pager->setListSize($cnt);
+			$pager->setOptions($options);
+		}
 
 		// Get data
 		$items = $srv->search($fields, $options);
 		$content = '';
 		$this->showItems($content, $items);
 
-		$pagerData = $pager->render();
+		$data = array(
+			'table' 	=> $content,
+			'totalsize' => $cnt,
+		);
 
-		//der zusammengeführte Pager für die Ausgabe
-		//nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
-		$sPagerData = '';
-		if($cnt)
-			$sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
+		if ($pager) {
+			$pagerData = $pager->render();
 
-		return array(
-				'table' 	=> $content,
-				'totalsize' => $cnt,
-				'pager' 	=> '<div class="pager">' . $sPagerData .'</div>',
-			);
+			//der zusammengeführte Pager für die Ausgabe
+			//nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
+			$sPagerData = '';
+			if($cnt)
+				$sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
+			$data['pager'] = '<div class="pager">' . $sPagerData .'</div>';
+		}
+
+		return $data;
 	}
+
+	protected function usePager() {
+		if (isset($this->options['usepager'])) {
+			return $this->options['usepager'] === false
+				|| intval($this->options['usepager']) !== 0;
+		}
+		return true;
+	}
+
 	/**
 	 * Sortierung vorbereiten
 	 * @param array $options
