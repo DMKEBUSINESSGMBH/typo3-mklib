@@ -30,7 +30,7 @@ tx_rnbase::load('tx_mklib_util_TCA');
 
 /**
  * Beinhaltet Utility-Methoden für Datenbank handling
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_util
  * @author Michael Wagner
@@ -44,18 +44,18 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	 * @var array
 	 */
 	private static $aTCACache = array();
-	
+
 	/**
 	 * Is logging enabled? (protected für Tests)
 	 * @var 	boolean
 	 */
 	protected static $log = -1;
 	/**
-	 * Dont log this tables 
+	 * Dont log this tables
 	 * @var array
 	 */
 	protected static $ignoreTables = -1;
-	
+
 	/**
 	 * Insert crdate and timestamp into correct field (gotten from TCA)
 	 *
@@ -72,7 +72,7 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		) {
 			$data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
 		}
-			
+
 		return self::insertTimestamp($data, $tablename);
 	}
 
@@ -92,10 +92,10 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		) {
 			$data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 		}
-			
+
 		return $data;
 	}
-	
+
 	/**
 	 * Make a SQL INSERT Statement
 	 *
@@ -115,7 +115,7 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		self::log('doInsert', $tablename, '1=1 AND `'.$tablename.'`.`uid`=\''.$newUid.'\'', $values);
 		return $newUid;
 	}
-	
+
 	/**
 	 * Aktualisiert einen Datensatz
 	 *
@@ -137,7 +137,7 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		self::log('doUpdate', $tablename, $where, $values);
 		return $res;
 	}
-	
+
 	/**
 	 * Löscht einen Datensatz
 	 *
@@ -149,15 +149,15 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	public static function doDelete($tablename, $where, $debug=0) {
 		$res = parent::doDelete($tablename, $where, $debug);
 		self::log('doDelete', $tablename, $where);
-		return $res;		
+		return $res;
 	}
-	
+
 	/**
 	 * Führt ein SELECT aus
-	 * 
+	 *
 	 * @param 	string 		$what 		requested columns
-	 * @param 	string 		$from 		either the name of on table or an array with index 0 the from clause 
-	 *              					and index 1 the requested tablename and optional index 2 a table alias to use. 
+	 * @param 	string 		$from 		either the name of on table or an array with index 0 the from clause
+	 *              					and index 1 the requested tablename and optional index 2 a table alias to use.
 	 * @param 	array 		$arr 		the options array
 	 * @param 	boolean 	$debug = 0 	Set to 1 to debug sql-String
 	 * @return 	array
@@ -165,14 +165,14 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	public static function doSelect($what, $from, $arr, $debug=0){
 		return parent::doSelect($what, $from, $arr, $debug);
 	}
-	
+
 	/**
 	 * Läd die TCA für eine Tabelle.
 	 * Optional kann geprüft werden, ob eine Spalte in der TCA für diese Tabelle existiert.
-	 * 
+	 *
 	 * @TODO: Änderung an der TCA durch fremde Extensions berücksichtigen.
 	 * Vor dem aufruf muss tx_mklib_util_TCA::loadTcaAdditions(array('extkey')); aufgerufen werden.
-	 * 
+	 *
 	 * @param 	string 	$sTable
 	 * @param 	string 	$sField		False if no field check is needed.
 	 * @return 	boolean				Returns true if field exists.
@@ -181,20 +181,20 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		if(!isset(self::$aTCACache[$sTable]))
 			t3lib_div::loadTCA($sTable);
 		self::$aTCACache[$sTable] = true;
-		
+
 		return (!$sField || ($sField && is_array($GLOBALS['TCA'][$sTable]['columns'][$sField]['config'])))
 					? true : false;
 	}
-	
+
 	/* *** ************ *** *
 	 * *** MM FUNCTIONS ***
 	 * *** ************ *** */
-	
+
 	/**
 	 * Prüft ob ein MM eintrag bereits existiert.
-	 * 
+	 *
 	 * @TODO: write tests
-	 * 
+	 *
 	 * @param 	string 	$sTable
 	 * @param 	string 	$sField
 	 * @param 	int 	$sLocalId
@@ -203,31 +203,31 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	 */
 	public static function mmExists($sTable, $sField, $sLocalId, $iForeignId){
 		if(!self::loadTCA($sTable)) { return false; }
-		
+
 		$sMmTable = self::mmGetTable($sTable, $sField);
-		
+
 		$where = implode(
 					' AND ',
 					self::mmGetData($sTable, $sField, $sLocalId, $iForeignId, true)
 				);
-		
+
 		$options = array(
 			'where' => $where,
 			'enablefieldsoff' => true,
 //			'debug' => 1,
 		);
-		
+
 		tx_rnbase::load('tx_mklib_util_DB');
 		$ret = self::doSelect('COUNT(*) as cnt', $sMmTable, $options);
-		
+
 		return count($ret) ? (intval($ret[0]['cnt']) > 0) : false;
 	}
 
 	/**
 	 * Liefert alle Einträge zu einem Feld.
-	 *  
+	 *
 	 * @TODO: write tests
-	 * 
+	 *
 	 * @param 	string 	$sTable
 	 * @param 	string 	$sField
 	 * @param 	int 	$sLocalId
@@ -236,14 +236,14 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	 */
 	public static function mmSelectForeign($sTable, $sField, $sLocalId, array $options = array()) {
 		if(!self::loadTCA($sTable)) { return false; }
-		
+
 		$sMmTable = self::mmGetTable($sTable, $sField);
 		$sForeignTable = self::mmGetTable($sTable, $sField, 'foreign_table');
 		$where = implode(' AND ', self::mmGetData($sTable, $sField, $sLocalId, false, true) );
 		$sJoin = $sForeignTable.' JOIN '.$sMmTable.' on '.$sMmTable.'.uid_foreign = '.$sForeignTable.'.uid';
-		
+
 		$options['where'] = (isset($options['where']) ? $options['where'].' AND ' : '') . $where;
-		
+
 		return self::doSelect(
 					$sForeignTable.'.*',
 					array($sJoin, $sForeignTable),
@@ -251,12 +251,12 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 //					, 1
 				);
 	}
-	
+
 	/**
 	 * Erstellt einen Eintrag in einer MM Tabelle.
-	 *  
+	 *
 	 * @TODO: write tests
-	 * 
+	 *
 	 * @param 	string 	$sTable
 	 * @param 	string 	$sField
 	 * @param 	int 	$sLocalId
@@ -265,23 +265,23 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	 */
 	public static function mmCreate($sTable, $sField, $sLocalId, $iForeignId) {
 		if(!self::loadTCA($sTable)) { return false; }
-		
+
 		// Der mm Eintrag existiert bereits
 		if(self::mmExists($sTable, $sField, $sLocalId, $iForeignId)){
 			return true;
 		}
-		
+
 		$sMmTable = self::mmGetTable($sTable, $sField);
 		$aData = self::mmGetData($sTable, $sField, $sLocalId, $iForeignId);
 		self::doInsert($sMmTable, $aData/*, 1*/);
 		return true; //$this->mmExists($sTable, $sField, $sLocalId, $iForeignId);
 	}
-	
+
 	/**
 	 * Liefert den Tabellenname für die MM Tabelle aus der TCA
-	 *  
+	 *
 	 * @TODO: write tests
-	 * 
+	 *
 	 * @param 	string 	$sTable
 	 * @param 	string 	$sField
 	 * @return 	string
@@ -290,12 +290,12 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		if(!self::loadTCA($sTable)) { return false; }
 		return $GLOBALS['TCA'][$sTable]['columns'][$sField]['config'][$sCF];
 	}
-	
+
 	/**
 	 * Erstellt einen Eintrag in einer MM Tabelle.
-	 *  
+	 *
 	 * @TODO: write tests
-	 * 
+	 *
 	 * @param 	string 	$sTable
 	 * @param 	string 	$sField
 	 * @param 	int 	$sLocalId
@@ -305,23 +305,24 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	 */
 	private static function mmGetData($sTable, $sField, $sLocalId = false, $iForeignId = false, $bWhere = false) {
 		if(!self::loadTCA($sTable)) { return false; }
-		
+
 		$aFieldConfig = $GLOBALS['TCA'][$sTable]['columns'][$sField]['config'];
-			
+
 		$sMmTable = $aFieldConfig['MM'];
-		
-		// wenn opposite_field dann die uid felder vertauschen 
+
+		// wenn opposite_field dann die uid felder vertauschen
 		$sLocalField = isset($aFieldConfig['MM_opposite_field']) ? 'uid_foreign' : 'uid_local';
-		$sForeignField = isset($aFieldConfig['MM_opposite_field']) ? 'uid_local' : 'uid_foreign'; 
-		
-		$aData = is_array($aFieldConfig['MM_insert_fields']) ? $aFieldConfig['MM_insert_fields'] : array();
+		$sForeignField = isset($aFieldConfig['MM_opposite_field']) ? 'uid_local' : 'uid_foreign';
+
+		$aData = is_array($aFieldConfig['MM_match_fields']) ? $aFieldConfig['MM_match_fields'] : array();
+		$aData = is_array($aFieldConfig['MM_insert_fields']) ? $aFieldConfig['MM_insert_fields'] : $aData;
 		if($sLocalId) {
 			$aData[$sLocalField] = $sLocalId;
 		}
 		if($iForeignId) {
 			$aData[$sForeignField] = $iForeignId;
 		}
-		
+
 		if($bWhere){
 			// Anhand der Daten das WHERE aufbauen
 			$where = array();
@@ -330,18 +331,18 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 			}
 			return $where;
 		}
-		
+
 		return $aData;
 	}
-	
-	
+
+
 	/* *** **************** *** *
 	 * *** LOGGIN FUNCTIONS ***
 	 * *** **************** *** */
-	
+
 	/**
 	 * Is logging enabled?
-	 * 
+	 *
 	 * @param 	string 	$tablename
 	 * @return 	boolean
 	 */
@@ -369,12 +370,12 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		}
 		return self::$log;
 	}
-	
+
 	/**
 	 * Logs DB changes
-	 * 
+	 *
 	 * @TODO: t3users log nutzen, wenn installiert! tx_t3users_util_ServiceRegistry::getLoggingService();
-	 * 
+	 *
 	 * @param 	string 	$msg
 	 * @param 	string 	$tablename
 	 * @param 	string 	$where
@@ -383,7 +384,7 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	private static function log($msg, $tablename, $where=false, $values=false){
 		if(!self::isLog($tablename)) return false;
 		// else
-		
+
 		// daten sammeln
 		$data = array();
 		$data['fe_user'] = isset($GLOBALS['TSFE']->fe_user->user['uid']) ? $GLOBALS['TSFE']->fe_user->user['uid'] : 'none';
@@ -394,23 +395,23 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		// backtrace Konfigurierbar machen?
 		tx_rnbase::load('tx_mklib_util_Logger');
 		$data['debug_backtrace'] = tx_mklib_util_Logger::getDebugBacktrace();
-		
+
 		// wurde auf hidden gesetzt?
 		$disabled = tx_mklib_util_TCA::getEnableColumn($tablename, 'disabled', 'hidden');
 		if($values && isset($values[$disabled]) && $values[$disabled]) $msg .= '->disabled';
 		// wurde gelöscht?
 		$delete = tx_mklib_util_TCA::getEnableColumn($tablename, 'delete', 'deleted');
 		if($values && isset($values[$delete]) && $values[$delete]) $msg .= '->delete';
-		
+
 		// tabellenname ergänzen
 		$msg .= '('.$tablename.')';
-		
+
 		tx_rnbase_util_Logger::notice($msg, 'mklib', $data);
 		return true;
 	}
-	
+
 	private function getBackTrace() {
-		
+
 	}
 }
 
