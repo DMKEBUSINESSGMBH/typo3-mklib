@@ -217,6 +217,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 		$data = array(
 			'table' 	=> $content,
 			'totalsize' => $cnt,
+			'items' => $items,
 		);
 
 		if ($pager) {
@@ -325,7 +326,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	 * @return 	string
 	 */
 	protected function showItems(&$content, array $items) {
-		if(count($items) === 0) {
+		if(empty($items)) {
 			$content = $this->getNoItemsFoundMsg();
 			return;//stop
 		}
