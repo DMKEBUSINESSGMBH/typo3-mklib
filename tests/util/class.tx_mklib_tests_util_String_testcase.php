@@ -176,7 +176,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	/**
 	 * wie über TS
 	 */
-	private function initSpamProtectionConfig() {
+	public static function initSpamProtectionConfig() {
 		$GLOBALS['TSFE']->spamProtectEmailAddresses = 2;
 		$GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst'] = '&#8203;(at)&#8203';
 	}
