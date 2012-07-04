@@ -53,7 +53,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 				tx_mklib_util_String::crop($aRecord['othertext'], 50),
 				'Nicht korrekt gekürtzt!'
 			);
-			
+
 		$this->assertEquals(
 				'ein ganz langer text mit vielen worten und noch viel...',
 				tx_mklib_util_String::crop($aRecord['othertext'], 50, str_repeat('.', 3)),
@@ -65,7 +65,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 				tx_mklib_util_String::crop($aRecord['text']),
 				'Nicht korrekt gekürtzt!'
 			);
-			
+
 	}
 
 	/**
@@ -127,6 +127,58 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 		$this->assertEquals('feUsers',tx_mklib_util_String::toCamelCase('fe_users'));
 		$this->assertEquals('txMklibWordlist',tx_mklib_util_String::toCamelCase('tx_mklib_wordlist'));
 		$this->assertEquals('txMklibTestsUtilStringTestcase',tx_mklib_util_String::toCamelCase('tx_mklib_tests_util_String_testcase'));
+	}
+
+	public function testObfusicateEmail() {
+		$this->initSpamProtectionConfig();
+
+		$this->assertEquals(
+			'test.mail&#8203;(at)&#8203ein-host.de',
+			tx_mklib_util_String::obfusicateEmail(array(0=>'test.mail@ein-host.de')),
+			'Mail falsch verschleiert'
+		);
+	}
+
+	public function testObfusicateContainedEmails() {
+		$this->initSpamProtectionConfig();
+
+		$this->assertEquals(
+			'ein text mit einer mail mail&#8203;(at)&#8203host.de und noch einer anothermail&#8203;(at)&#8203host.de',
+			tx_mklib_util_String::obfusicateContainedEmails(
+				'ein text mit einer mail mail@host.de und noch einer anothermail@host.de'
+			),
+			'Mail falsch verschleiert'
+		);
+	}
+
+	public function testConvertEmailToMailToLink() {
+		$this->initSpamProtectionConfig();
+
+		$this->assertEquals(
+			'<a href="javascript:linkTo_UnCryptMailto(\'ocknvq,vguv0ocknBgkp/jquv0fg\');" >test.mail&#8203;(at)&#8203ein-host.de</a>',
+			tx_mklib_util_String::convertEmailToMailToLink(array(0=>'test.mail@ein-host.de')),
+			'Mailto Link falsch'
+		);
+	}
+
+	public function testConvertContainedEmailsToMailToLinks() {
+		$this->initSpamProtectionConfig();
+
+		$this->assertEquals(
+			'ein text mit einer mail <a href="javascript:linkTo_UnCryptMailto(\'ocknvq,ocknBjquv0fg\');" >mail&#8203;(at)&#8203host.de</a> und noch einer <a href="javascript:linkTo_UnCryptMailto(\'ocknvq,cpqvjgtocknBjquv0fg\');" >anothermail&#8203;(at)&#8203host.de</a>',
+			tx_mklib_util_String::convertContainedEmailsToMailToLinks(
+				'ein text mit einer mail mail@host.de und noch einer anothermail@host.de'
+			),
+			'Mailto Links falsch'
+		);
+	}
+
+	/**
+	 * wie über TS
+	 */
+	private function initSpamProtectionConfig() {
+		$GLOBALS['TSFE']->spamProtectEmailAddresses = 2;
+		$GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst'] = '&#8203;(at)&#8203';
 	}
 }
 

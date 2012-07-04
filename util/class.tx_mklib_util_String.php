@@ -41,6 +41,8 @@ tx_rnbase::load('tx_mklib_util_Var');
  */
 class tx_mklib_util_String extends tx_mklib_util_Var{
 
+	const emailRegex = "/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,4}))/";
+
 	/**
 	 * Kürzt einen Text Feld auf die Anzahl angegebener Zeichen
 	 * Es wird nach dem ersten Leerzeichen nach der Zeichenanzahl gesucht!
@@ -62,7 +64,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 		}
 		return $sText;
 	}
-	
+
 	/**
 	 * Bereinigt ein String von allen Zeichen außer Buchstaben und Leerzeichen
 	 * @TODO Leet beachten -> z.B. 4rsch
@@ -73,7 +75,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
   	public static function removeNoneLetters($string) {
     	return preg_replace("/[^a-zäöüß ]/i","",$string);
   	}
-  	
+
 	/**
 	 * Convert HTML to plain text
 	 *
@@ -114,7 +116,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 		}
 		return $sHaystack;
 	}
-	
+
 	/**
 	 * lcfirst gibt es erst ab php 5.3
 	 * @param 	string 	$sString
@@ -127,7 +129,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 		$sString{0} = strtolower($sString{0});
 		return $sString;
 	}
-	
+
 	/**
 	 * Wandelt einen String anhand eines Trennzeichens in CamelCase um.
 	 * @param 	string 	$sString
@@ -143,7 +145,65 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 		}
 		return self::lcfirst($sCamelCase);
 	}
-	
+
+	/**
+	 * @param string $text
+	 * @return string
+	 */
+	public static function obfusicateContainedEmails($text) {
+		$text = preg_replace_callback(
+			self::emailRegex, array(self,'obfusicateEmail'), $text
+		);
+
+		return $text;
+	}
+
+	/**
+	 * @param array $emailParts | provided e.g. from preg_replace
+	 * @return string
+	 */
+	public static function obfusicateEmail($emailParts) {
+		static $cObj;
+
+		if(!$cObj)
+			/* @var $cObj tslib_cObj */
+			$cObj = tx_rnbase::makeInstance('tx_rnbase_configurations')->getCObj();
+
+		$emailMailTo = $cObj->getMailTo($emailParts[0]);
+
+		return $emailMailTo[1];
+	}
+
+
+	/**
+	 * @param string $text
+	 * @return string
+	 */
+	public static function convertContainedEmailsToMailToLinks($text) {
+		$text = preg_replace_callback(
+			self::emailRegex, array(self,'convertEmailToMailToLink'), $text
+		);
+
+		return $text;
+	}
+
+	/**
+	 * @param array $emailParts | provided e.g. from preg_replace
+	 * @return string
+	 */
+	public static function convertEmailToMailToLink($emailParts) {
+		static $configurations;
+
+		if(!$configurations)
+			/* @var $configurations tx_rnbase_configurations */
+			$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+
+		$link = $configurations->createLink();
+		$link->destination($emailParts[0]);
+
+		return $link->makeTag();
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_String.php']) {
