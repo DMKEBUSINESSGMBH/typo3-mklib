@@ -151,6 +151,18 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 		);
 	}
 
+	public function testObfusicateContainedEmailsIfNoContained() {
+		$this->initSpamProtectionConfig();
+
+		$this->assertEquals(
+			'ein text mit keiner mail.',
+			tx_mklib_util_String::obfusicateContainedEmails(
+				'ein text mit keiner mail.'
+			),
+			'Mail falsch verschleiert'
+		);
+	}
+
 	public function testConvertEmailToMailToLink() {
 		$this->initSpamProtectionConfig();
 
@@ -168,6 +180,18 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			'ein text mit einer mail <a href="javascript:linkTo_UnCryptMailto(\'ocknvq,ocknBjquv0fg\');" >mail&#8203;(at)&#8203host.de</a> und noch einer <a href="javascript:linkTo_UnCryptMailto(\'ocknvq,cpqvjgtocknBjquv0fg\');" >anothermail&#8203;(at)&#8203host.de</a>',
 			tx_mklib_util_String::convertContainedEmailsToMailToLinks(
 				'ein text mit einer mail mail@host.de und noch einer anothermail@host.de'
+			),
+			'Mailto Links falsch'
+		);
+	}
+
+	public function testConvertContainedEmailsToMailToLinksIfNoContained() {
+		$this->initSpamProtectionConfig();
+
+		$this->assertEquals(
+			'ein text mit keiner mail.',
+			tx_mklib_util_String::convertContainedEmailsToMailToLinks(
+				'ein text mit keiner mail.'
 			),
 			'Mailto Links falsch'
 		);
