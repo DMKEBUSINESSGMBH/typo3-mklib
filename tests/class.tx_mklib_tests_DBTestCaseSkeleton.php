@@ -157,6 +157,8 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 	 * Auf der CLI wird die Klasse als Test betrachtet. Da sie
 	 * eigentlich keine Tests hat, kommt ein Fehler zu Stande.
 	 * Also bieten wir einen leeren dummy Test an
+	 * 
+	 * @group dummytest
 	 */
 	public function testDummy() {
 		return true;

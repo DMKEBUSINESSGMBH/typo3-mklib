@@ -5,9 +5,15 @@
 	stopOnFailure="false" syntaxCheck="true"
 	testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
 
-<testsuites>
-  <testsuite name="MKLibTestSuite">
-    <directory suffix="testcase.php">./</directory>
-  </testsuite>
-</testsuites>
+	<testsuites>
+		<testsuite name="MKLibTestSuite">
+			<directory suffix="testcase.php">./</directory>
+		</testsuite>
+	</testsuites>
+
+	<groups>
+		<exclude>
+			<group>dummytest</group>
+		</exclude>
+	</groups>
 </phpunit>
