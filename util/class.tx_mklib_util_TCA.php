@@ -169,7 +169,7 @@ class tx_mklib_util_TCA {
 	 * @FIXME: Nicht alle felder stehen unter ctrlo.enablecolumns. siehe: tstamp, crdate, cruser_id, delete, ...
 	 *
 	 * @param 	string 	$sTableName
-	 * @param 	string 	$sColumn
+	 * @param 	string 	$sColumn (disabled, starttime, endtime, fe_group')
 	 * @param 	string 	$sFallback
 	 * @return 	string
 	 */
