@@ -26,11 +26,11 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_Logger');
 
 /**
- * Soap Client Basis
+ * Soap Client Basis. Im Prinzip nur ein Wrapper für SoapClient.
  *
  * @author Hannes Bochmann
  */
-abstract class tx_mklib_abstract_SoapClient {
+abstract class tx_mklib_abstract_SoapClientWrapper {
 
 	/**
 	 * @var string
@@ -52,10 +52,10 @@ abstract class tx_mklib_abstract_SoapClient {
 		try {
 			$methodResult = call_user_func_array(
 				array($this->getSoapClient(), $method),
-				$args
+				array($args)
 			);
-		} catch (SoapFault $soapFault) {
-			$this->handleException($soapFault, $args);
+		} catch (Exception $exception) {
+			$this->handleException($exception, $args);
 		}
 		
 		return $methodResult;
@@ -94,7 +94,6 @@ abstract class tx_mklib_abstract_SoapClient {
 		throw new RuntimeException(
 			$exception->getMessage(),
 			$exception->getCode(),
-			$args,
 			$exception
 		);
 	}

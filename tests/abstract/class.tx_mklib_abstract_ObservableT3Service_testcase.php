@@ -31,7 +31,7 @@ tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableT3Service');
  * Enter description here ...
  * @author Hannes Bochmann
  */
-class tx_mklib_abstract_ObservableT3Service_testcase extends tx_phpunit_testcase{
+class tx_mklib_tests_abstract_ObservableT3Service_testcase extends tx_phpunit_testcase{
 
 	/**
 	 *
