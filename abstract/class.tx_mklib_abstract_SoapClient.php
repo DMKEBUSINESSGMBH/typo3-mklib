@@ -43,14 +43,6 @@ abstract class tx_mklib_abstract_SoapClient {
 	private $soapclient;
 	
 	/**
-	 * @param array $credentials
-	 * @return void
-	 */
-	public function __construct(array $credentials) {
-		$this->url = $credentials['url'];
-	}
-
-	/**
 	 * @param string $method
 	 * @param array $args
 	 * @return array
@@ -59,7 +51,7 @@ abstract class tx_mklib_abstract_SoapClient {
 	public function callSoapMethod($method, array $args = array()) {
 		try {
 			$methodResult = call_user_func_array(
-				array($this->getSoapClient(), $method), 
+				array($this->getSoapClient(), $method),
 				$args
 			);
 		} catch (SoapFault $soapFault) {
@@ -85,8 +77,8 @@ abstract class tx_mklib_abstract_SoapClient {
 		
 		if($soapClient instanceof SoapClient){
 			tx_rnbase_util_Logger::fatal(
-				'Access to Soap Interface failed: ' . $exception->getMessage(), 
-				'mkjjk', 
+				'Access to Soap Interface failed: ' . $exception->getMessage(),
+				'mkjjk',
 				array(
 					'Fehler',
 					'functions'	=>	$soapClient->__getFunctions(),
@@ -100,9 +92,9 @@ abstract class tx_mklib_abstract_SoapClient {
 		}
 		
 		throw new RuntimeException(
-			$exception->getMessage(), 
-			$exception->getCode(), 
-			$args, 
+			$exception->getMessage(),
+			$exception->getCode(),
+			$args,
 			$exception
 		);
 	}
@@ -113,4 +105,12 @@ abstract class tx_mklib_abstract_SoapClient {
 	public function getUrl() {
 		return $this->url;
 	}
+	
+	/**
+	 * @param string $url
+	 */
+	public function setUrl($url) {
+		$this->url = $url;
+	}
+
 }
