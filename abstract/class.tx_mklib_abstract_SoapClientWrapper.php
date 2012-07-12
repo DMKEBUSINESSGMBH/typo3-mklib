@@ -52,7 +52,7 @@ abstract class tx_mklib_abstract_SoapClientWrapper {
 		try {
 			$methodResult = call_user_func_array(
 				array($this->getSoapClient(), $method),
-				array($args)
+				$args
 			);
 		} catch (Exception $exception) {
 			$this->handleException($exception, $args);
