@@ -73,6 +73,16 @@ abstract class tx_mklib_abstract_SoapClientWrapper {
 	 * @throws RuntimeException
 	 */
 	protected function handleException(Exception $exception, array $args = array()) {
+		$this->logException($exception,$args);
+		$this->throwRuntimeException($exception);
+	}
+	
+	/**
+	 * @param Exception $exception
+	 * @param array $args
+	 * @return void
+	 */
+	private function logException(Exception $exception, array $args = array()) {
 		$soapClient = $this->getSoapClient();
 		
 		if($soapClient instanceof SoapClient){
@@ -90,10 +100,22 @@ abstract class tx_mklib_abstract_SoapClientWrapper {
 		}else{
 			tx_rnbase_util_Logger::fatal('Soap Client was not instanciated!', 'mkjjk');
 		}
+	}
+	
+	/**
+	 * @param Exception $exception
+	 * @throws RuntimeException
+	 * @return void
+	 */
+	protected function throwRuntimeException(Exception $exception) {
+		if($exception instanceof SoapFault)
+			$errorCode = $exception->faultcode;
+		else
+			$errorCode = $exception->getCode();
 		
 		throw new RuntimeException(
 			$exception->getMessage(),
-			$exception->getCode(),
+			$errorCode,
 			$exception
 		);
 	}
