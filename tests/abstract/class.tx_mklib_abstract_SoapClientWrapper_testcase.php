@@ -66,11 +66,30 @@ class tx_mklib_tests_abstract_SoapClientWrapper_testcase extends tx_phpunit_test
 	 * @group unit
 	 * @expectedException RuntimeException
 	 * @expectedExceptionCode 987654321
-	 * @expectedExceptionMessage There was a Soap Fault
+	 * @expectedExceptionMessage There was a Soap Exception
 	 */
 	public function testCallSoapMethodWithInvalidMethodThrowsCorrectException() {
 		$expectedSoapMethodParams = array('someParam' => 'usedInSoapMethod');
-		$soapException = new Exception('There was a Soap Fault', 987654321);
+		$soapException = new Exception('There was a Soap Exception', 987654321);
+		$soapClientWrapper = $this->getSoapClientWrapper(
+			$expectedSoapMethodParams,
+			$soapException,
+			$this->exactly(2)
+		);
+		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
+			self::SOAP_TEST_METHOD, $expectedSoapMethodParams
+		);
+	}
+	
+	/**
+	 * @group unit
+	 * @expectedException RuntimeException
+	 * @expectedExceptionCode 987654321
+	 * @expectedExceptionMessage There was a Soap Fault
+	 */
+	public function testCallSoapMethodHandlesSoapFaultCorrect() {
+		$expectedSoapMethodParams = array('someParam' => 'usedInSoapMethod');
+		$soapException = new SoapFault('987654321','There was a Soap Fault');
 		$soapClientWrapper = $this->getSoapClientWrapper(
 			$expectedSoapMethodParams,
 			$soapException,
