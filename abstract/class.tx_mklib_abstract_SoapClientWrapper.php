@@ -88,7 +88,7 @@ abstract class tx_mklib_abstract_SoapClientWrapper {
 		if($soapClient instanceof SoapClient){
 			tx_rnbase_util_Logger::fatal(
 				'Access to Soap Interface failed: ' . $exception->getMessage(),
-				'mkjjk',
+				'mklib',
 				array(
 					'Fehler',
 					'functions'	=>	$soapClient->__getFunctions(),
