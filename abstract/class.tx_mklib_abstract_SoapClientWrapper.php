@@ -112,7 +112,9 @@ abstract class tx_mklib_abstract_SoapClientWrapper {
 			$errorCode = $exception->faultcode;
 		else
 			$errorCode = $exception->getCode();
-		
+		// Der ErrorCode eine SOAP-Fault kann auch ein String sein.
+		$errorCode = intval($errorCode) == $errorCode ? intval($errorCode) : -1;
+
 		throw new RuntimeException(
 			$exception->getMessage(),
 			$errorCode,

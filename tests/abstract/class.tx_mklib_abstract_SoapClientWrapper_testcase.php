@@ -112,6 +112,24 @@ class tx_mklib_tests_abstract_SoapClientWrapper_testcase extends tx_phpunit_test
 			self::SOAP_TEST_METHOD, array($expectedSoapMethodParams)
 		);
 	}
+	/**
+	 * @group unit
+	 * @expectedException RuntimeException
+	 * @expectedExceptionCode 0
+	 * @expectedExceptionMessage There was a Soap Fault
+	 */
+	public function testCallSoapMethodHandlesSoapFaultWithStringCodeCorrect() {
+		$expectedSoapMethodParams = array('someParam' => 'usedInSoapMethod');
+		$soapException = new SoapFault('a string code','There was a Soap Fault');
+		$soapClientWrapper = $this->getSoapClientWrapper(
+				$expectedSoapMethodParams,
+				$soapException,
+				$this->exactly(2)
+		);
+		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
+				self::SOAP_TEST_METHOD, array($expectedSoapMethodParams)
+		);
+	}
 	
 	/**
 	 * @param string $soapMethodReturnValue
