@@ -220,7 +220,28 @@ class tx_mklib_tests_Util {
 						$oFeUser : tx_rnbase::makeInstance('tslib_feuserauth');
 		}
 	}
+	/**
+	 * Setzt Sprach-Labels
+	 *
+	 * @param 	array 	$labels
+	 * @param 	string	$lang
+	 * @return 	void
+	 */
+	public static function setLocallangLabels($labels = array(), $lang = 'default') {
+		global $LOCAL_LANG;
+		$GLOBALS['LANG']->lang = $lang;
+		//ab typo 4.6 ist das mit den lang labels anders
+		foreach ($labels as $key => $label) {
+			if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+				$LOCAL_LANG[$lang][$key][0]['target'] = $label;
+			}
+			else{
+				$LOCAL_LANG[$lang][$key] = $label;
+			}
+		}
+	}
 
+	
 	/**
 	 * Speichert den Cache
 	 */
@@ -356,11 +377,11 @@ class tx_mklib_tests_Util {
 	}
 
 	/**
-	 * damit nicht 
-	 * PHP Fatal error:  Call to a member function getHash() on a non-object in 
-	 * typo3/sysext/cms/tslib/class.tslib_content.php on line 1814 
+	 * damit nicht
+	 * PHP Fatal error:  Call to a member function getHash() on a non-object in
+	 * typo3/sysext/cms/tslib/class.tslib_content.php on line 1814
 	 * auftritt. passiert zb bei link generierung
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function setSysPageToTsfe() {
