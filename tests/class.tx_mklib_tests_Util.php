@@ -220,7 +220,28 @@ class tx_mklib_tests_Util {
 						$oFeUser : tx_rnbase::makeInstance('tslib_feuserauth');
 		}
 	}
+	/**
+	 * Setzt Sprach-Labels
+	 *
+	 * @param 	array 	$labels
+	 * @param 	string	$lang
+	 * @return 	void
+	 */
+	public static function setLocallangLabels($labels = array(), $lang = 'default') {
+		global $LOCAL_LANG;
+		$GLOBALS['LANG']->lang = $lang;
+		//ab typo 4.6 ist das mit den lang labels anders
+		foreach ($labels as $key => $label) {
+			if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+				$LOCAL_LANG[$lang][$key][0]['target'] = $label;
+			}
+			else{
+				$LOCAL_LANG[$lang][$key] = $label;
+			}
+		}
+	}
 
+	
 	/**
 	 * Speichert den Cache
 	 */
@@ -356,16 +377,37 @@ class tx_mklib_tests_Util {
 	}
 
 	/**
-	 * damit nicht 
-	 * PHP Fatal error:  Call to a member function getHash() on a non-object in 
-	 * typo3/sysext/cms/tslib/class.tslib_content.php on line 1814 
+	 * damit nicht
+	 * PHP Fatal error:  Call to a member function getHash() on a non-object in
+	 * typo3/sysext/cms/tslib/class.tslib_content.php on line 1814
 	 * auftritt. passiert zb bei link generierung
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function setSysPageToTsfe() {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		$GLOBALS['TSFE']->sys_page = tx_rnbase_util_TYPO3::getSysPage();
+	}
+	
+	/**
+	 * Error in test case test_handleRequest
+	 * in file C:\xampp\htdocs\typo3\typo3conf\ext\phpmyadmin\res\class.tx_phpmyadmin_utilities.php
+	 * on line 66:
+	 * Message:
+	 * Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\typo3\typo3conf\ext\phpunit\mod1\class.tx_phpunit_module1.php:112)
+	 *
+	 * Diese Fehler passiert, wenn die usersession ausgelesen wird. der feuser hat natürlich keine.
+	 * Das Ganze passiert in der t3lib_userauth->fetchUserSession.
+	 * Dort wird t3lib_userauth->logoff aufgerufen, da keine session vorhanden ist.
+	 * phpmyadmin klingt sich da ein und schreibt daten in die session.
+	 */
+	public static function disablePhpMyAdminLogging() {
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing']))
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $k=>$v){
+				if($v = 'tx_phpmyadmin_utilities->pmaLogOff'){
+					unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'][$k]);
+				}
+			}
 	}
 }
 
