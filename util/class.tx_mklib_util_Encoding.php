@@ -65,7 +65,7 @@ class tx_mklib_util_Encoding {
 	 * 		@see Supported Encodings http://www.php.net/manual/en/mbstring.supported-encodings.php
 	 * @param boolean $forceEncoding
 	 * 		Forces encoding, if mb_detect_encoding returns correct encoding.
-	 * @return
+	 * @return Ambigous <mixed, Traversable, tx_rnbase_model_base, string>
 	 */
 	public static function convertEncoding(
 			$var, $toEncoding = null, $fromEncoding = null,
@@ -142,6 +142,7 @@ class tx_mklib_util_Encoding {
 	 * @return string|false
 	 */
 	public static function detectUtfEncoding($var) {
+		tx_rnbase::load('tx_rnbase_util_Strings');
 		$bytes = tx_rnbase_util_Strings::isUtf8String($var);
 		$encoding = FALSE;
 		switch($bytes) {
