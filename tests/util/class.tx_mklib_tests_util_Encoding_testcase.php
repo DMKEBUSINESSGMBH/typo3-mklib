@@ -247,6 +247,51 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 *
+	 * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
+	 * @group integration
+	 */
+	public function test_convert_array_with_model_from_ISO_8859_1_to_UTF_8() {
+		$stringIso = pack("H*", self::$hexIso88591);
+		$stringUtf8 = pack("H*", self::$hexUtf8);
+
+		$modelTo = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 1,
+				'title' => $stringUtf8,
+				'description' => $stringUtf8,
+			)
+		);
+		$data = array(
+			'one' => tx_rnbase::makeInstance(
+					'tx_rnbase_model_base',
+					array(
+						'uid' => 1,
+						'title' => $stringIso,
+						'description' => $stringIso,
+					)
+				),
+			'twoe' => tx_rnbase::makeInstance(
+					'tx_rnbase_model_base',
+					array(
+						'uid' => 1,
+						'title' => $stringIso,
+						'description' => $stringIso,
+					)
+				),
+		);
+
+		$data = tx_mklib_util_Encoding::convertEncoding(
+				$data, 'UTF-8', 'ISO-8859-1');
+
+		$this->assertEquals($modelTo->record, $data['one']->record,
+				'$array wurde nicht richtig nach UTF-8 codiert.');
+		$this->assertEquals($modelTo->record, $data['twoe']->record,
+				'$array wurde nicht richtig nach UTF-8 codiert.');
+	}
+
+	/**
 	 * @expectedException     InvalidArgumentException
 	 * @expectedExceptionCode 4005
 	 * @group integration
