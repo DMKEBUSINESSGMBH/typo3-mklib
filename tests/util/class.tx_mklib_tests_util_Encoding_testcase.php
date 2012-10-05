@@ -56,7 +56,61 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 	 */
 	private static $hexUtf8 = 'c384c3a4c396c3b6c39cc3bcc39f';
 
+	/**
+	 *
+	 * @group integration
+	 */
+	public function test_is_encoding() {
+		$strUtf8 = pack("H*", self::$hexUtf8);
+		$strIso88591 = pack("H*", self::$hexIso88591);
 
+		if (false)
+			echo '<pre>'.var_export(array(
+				'iso88591' => array(
+					'string' => $strIso88591,
+					'utf8 level' => tx_rnbase_util_Strings::isUtf8String($strIso88591),
+					'utf8 encoding' => tx_mklib_util_Encoding::detectUtfEncoding($strIso88591),
+					'bytelength' => mb_strlen($strIso88591, '8bit'),
+					'bin2hex' => bin2hex($strIso88591),
+					'is utf8' => tx_mklib_util_Encoding::isEncoding($strIso88591, 'UTF-8'),
+					'is iso88591' => tx_mklib_util_Encoding::isEncoding($strIso88591, 'ISO-8859-1'),
+				),
+				'utf8' => array(
+					'string' => $strUtf8,
+					'utf8 level' => tx_rnbase_util_Strings::isUtf8String($strUtf8),
+					'utf8 encoding' => tx_mklib_util_Encoding::detectUtfEncoding($strUtf8),
+					'bytelength' => mb_strlen($strUtf8, '8bit'),
+					'bin2hex' => bin2hex($strUtf8),
+					'is utf8' => tx_mklib_util_Encoding::isEncoding($strUtf8, 'UTF-8'),
+					'is iso88591' => tx_mklib_util_Encoding::isEncoding($strUtf8, 'ISO-8859-1'),
+				),
+				'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__
+			),true).'</pre>'; // @TODO: remove me
+
+		$this->assertTrue(
+			tx_mklib_util_Encoding::isEncoding($strIso88591, 'ISO-8859-1'),
+			'$strIso88591 ist NICHT ISO-8859-1'
+		);
+		$this->assertFalse(
+			tx_mklib_util_Encoding::isEncoding($strIso88591, 'UTF-8'),
+			'$strIso88591 IST UTF-8'
+		);
+
+		$this->assertTrue(
+			tx_mklib_util_Encoding::isEncoding($strUtf8, 'UTF-8'),
+			'$strUtf8 ist NICHT UTF-8'
+		);
+		$this->assertFalse(
+			tx_mklib_util_Encoding::isEncoding($strUtf8, 'ISO-8859-1'),
+			'$strUtf8 IST ISO-8859-1'
+		);
+
+	}
+
+	/**
+	 *
+	 * @group integration
+	 */
 	public function test_convert_string_from_ISO_8859_1_to_UTF_8() {
 		$string = pack("H*", self::$hexIso88591);
 
@@ -72,6 +126,10 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 				'Der HEX-Wert von $string stimmt nach der codierung nicht.');
 	}
 
+	/**
+	 *
+	 * @group integration
+	 */
 	public function test_convert_string_from_UTF_8_to_ISO_8859_1() {
 		$string = pack("H*", self::$hexUtf8);
 
@@ -90,6 +148,7 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 	/**
 	 *
 	 * @depends test_convert_string_from_ISO_8859_1_to_UTF_8
+	 * @group integration
 	 */
 	public function test_convert_array_from_ISO_8859_1_to_UTF_8() {
 		$stringIso = pack("H*", self::$hexIso88591);
@@ -121,6 +180,83 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals($arrayTo, $arrayFrom,
 				'$array wurde nicht richtig nach UTF-8 codiert.');
+	}
+
+	/**
+	 *
+	 * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
+	 * @group integration
+	 */
+	public function test_convert_ArrayObject_from_ISO_8859_1_to_UTF_8() {
+		$stringIso = pack("H*", self::$hexIso88591);
+		$stringUtf8 = pack("H*", self::$hexUtf8);
+
+		$modelFrom = new ArrayObject(
+			array(
+				'uid' => 1,
+				'title' => $stringIso,
+				'description' => $stringIso,
+			)
+		);
+		$modelTo = new ArrayObject(
+			array(
+				'uid' => 1,
+				'title' => $stringUtf8,
+				'description' => $stringUtf8,
+			)
+		);
+
+		$modelFrom = tx_mklib_util_Encoding::convertEncoding(
+				$modelFrom, 'UTF-8', 'ISO-8859-1');
+
+		$this->assertEquals($modelTo->getArrayCopy(), $modelFrom->getArrayCopy(),
+				'$array wurde nicht richtig nach UTF-8 codiert.');
+	}
+
+	/**
+	 *
+	 * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
+	 * @group integration
+	 */
+	public function test_convert_model_from_ISO_8859_1_to_UTF_8() {
+		$stringIso = pack("H*", self::$hexIso88591);
+		$stringUtf8 = pack("H*", self::$hexUtf8);
+
+		$modelFrom = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 1,
+				'title' => $stringIso,
+				'description' => $stringIso,
+			)
+		);
+		$modelTo = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 1,
+				'title' => $stringUtf8,
+				'description' => $stringUtf8,
+			)
+		);
+
+		$modelFrom = tx_mklib_util_Encoding::convertEncoding(
+				$modelFrom, 'UTF-8', 'ISO-8859-1');
+
+		$this->assertEquals($modelTo->record, $modelFrom->record,
+				'$array wurde nicht richtig nach UTF-8 codiert.');
+	}
+
+	/**
+	 * @expectedException     InvalidArgumentException
+	 * @expectedExceptionCode 4005
+	 * @group integration
+	 */
+	public function test_convert_model_throws_exception() {
+		// aufruf mittels falschem object
+		tx_mklib_util_Encoding::convertEncoding(
+			new Exception(),
+			'UTF-8', 'ISO-8859-1'
+		);
 	}
 
 }

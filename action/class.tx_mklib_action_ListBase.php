@@ -53,12 +53,12 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 	public function handleRequest(&$parameters,&$configurations, &$viewData){
 		$confId = $this->getConfId();
 		$srv = $this->getService();
-		
+
 		//@todo interface für die services bereitstellen um nicht prüfen zu müssen ob es die Such methode gibt!
 		$sSearchCallback = $this->getSearchCallback();
 		if(!method_exists($srv,$sSearchCallback))
-			throw new RuntimeException('Der Service ' . $srv . ' muss die Methode ' . $sSearchCallback .' unterstützen!', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'1');;
-		
+			throw new RuntimeException('Der Service ' . $srv . ' muss die Methode ' . $sSearchCallback .' unterstützen!', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'1');
+
 		//Filter setzen
 		$filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId.($this->isOldFilterMode() ? '' : 'filter.'));
 
@@ -79,7 +79,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 
 		return;
 	}
-	
+
 	/**
 	 * Soll der filter über $confId.filter (neu) oder direkt über die
 	 * $confId (alt) eingebunden werden
@@ -95,7 +95,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 	 * @return string
 	 */
 	public function getViewClassName() {return 'tx_rnbase_view_List';}
-	
+
 	/**
 	 * Liefert den bezeichner für die gefundenen elemente in den view daten
 	 * @return string
@@ -103,7 +103,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 	protected function getItemsDesignator() {
 		return 'items';
 	}
-	
+
 	/**
 	 * Liefert die Methode, welche im Service zum Suchen aufgerufen wird
 	 * @return string
@@ -117,7 +117,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 	 * @return tx_mklib_srv_Base
 	 */
 	abstract protected function getService();
-	
+
 	/**
 	 * Liefert den Ts Pfad für den pagebrowser ausgehend von $this->getConfId()
 	 * @return string

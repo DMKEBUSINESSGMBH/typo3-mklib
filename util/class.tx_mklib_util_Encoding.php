@@ -35,7 +35,6 @@ require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
  */
 class tx_mklib_util_Encoding {
 
-
 	/**
 	 * Liefert die Zeichencodierung der Umgebung
 	 *
@@ -53,9 +52,9 @@ class tx_mklib_util_Encoding {
 	}
 
 	/**
-	 * Encodes a value using mb_convert_encoding
-	 * @param string|array $var
-	 * 		The string or array being encoded.
+	 * Encodes a value using mb_convert_encoding.
+	 * @param mixed $var
+	 * 		The string, array or object being encoded.
 	 * @param string $toEncoding
 	 * 		The type of encoding that str is being converted to.
 	 * 		If toEncoding is not specified, the Typo3 encoding will be used.
@@ -64,24 +63,99 @@ class tx_mklib_util_Encoding {
 	 * 		It is either an array, or a comma separated enumerated list.
 	 * 		If fromEncoding is not specified, the internal encoding will be used.
 	 * 		@see Supported Encodings http://www.php.net/manual/en/mbstring.supported-encodings.php
+	 * @param boolean $forceEncoding
+	 * 		Forces encoding, if mb_detect_encoding returns correct encoding.
+	 * @return
 	 */
 	public static function convertEncoding(
-			$var, $toEncoding = null, $fromEncoding = null
+			$var, $toEncoding = null, $fromEncoding = null,
+			$forceEncoding = false
 		) {
+		// use Typo3 encoding
 		if (is_null($toEncoding)){
 			$toEncoding = self::getTypo3Encoding();
 		}
-		if (is_array($var)) {
+		// convert array recursive
+		if (is_array($var) || (is_object($var) && $var instanceof Traversable)) {
 			foreach ($var as &$value) {
 				$value = self::convertEncoding(
 					$value, $toEncoding, $fromEncoding);
 			}
 		}
-		else {
+		// convert models record
+		elseif (is_object($var)){
+			if ($var instanceof tx_rnbase_model_base) {
+				$var->record = self::convertEncoding(
+						$var->record, $toEncoding, $fromEncoding);
+			}
+			else {
+				throw new InvalidArgumentException(
+					'Object "'.get_class($var).'" was not supportet for convertEncoding.'.
+					'Possible types are string, array or an object '.
+					'(instanceof "Traversable" or "tx_rnbase_model_base").',
+					$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5'
+				);
+			}
+		}
+		// do nothing, if we have an empty sting or a number
+		elseif(empty($var) || is_numeric($var)) {
+			//$var = $var;
+		}
+		// convert only, if encoding does not match
+		elseif ($forceEncoding
+				|| (
+					!self::isEncoding(strval($var), $toEncoding)
+					// @TODO: ist diese doppelte prüfung notwendig?
+					&& self::isEncoding(strval($var), $fromEncoding)
+				)
+		) {
 			$var = mb_convert_encoding(
 				strval($var), $toEncoding, $fromEncoding);
 		}
 		return $var;
+	}
+
+	/**
+	 * Prüft, ob ein String ein bestimmtes Encoding hat.
+	 * 	mb_detect_encoding liefert auch bei ISO Codierung UTF-8.
+	 * 	Deshalb prüfen wir immer das UTF-8 Encoding!
+	 * @param string $var
+	 * @param string $encoding
+	 * @return boolean
+	 */
+	public static function isEncoding($var, $encoding = null) {
+		$utf8Detect = self::detectUtfEncoding($var);
+		switch(strtolower($encoding)) {
+			case 'utf-8':
+			case 'utf-32':
+			case 'utf-16':
+				return strtolower($encoding) === strtolower($utf8Detect);
+			case 'iso-8859-1':
+				return $utf8Detect === FALSE
+					&& mb_detect_encoding(strval($var), $encoding, true) !== FALSE;
+		}
+	}
+
+	/**
+	 * Liefert die
+	 * @param string $var
+	 * @return string|false
+	 */
+	public static function detectUtfEncoding($var) {
+		$bytes = tx_rnbase_util_Strings::isUtf8String($var);
+		$encoding = FALSE;
+		switch($bytes) {
+			case 2:
+				$encoding = 'UTF-8';
+				break;
+			case 3:
+				$encoding = 'UTF-16';
+				break;
+			case 4:
+				$encoding = 'UTF-32';
+				break;
+		}
+		return $encoding;
 	}
 }
 
