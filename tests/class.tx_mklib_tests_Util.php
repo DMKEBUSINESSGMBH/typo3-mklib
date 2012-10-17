@@ -339,7 +339,7 @@ class tx_mklib_tests_Util {
 	 */
 	public static function prepareTSFE(array $options = array()) {
 		static $loaded = false;
-		if ($loaded) return;
+		if ($loaded && !isset($options['force'])) return;
 
 		if (isset($options['initFEuser'])) {
 			self::disablePhpMyAdminLogging();
