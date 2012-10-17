@@ -332,13 +332,28 @@ class tx_mklib_tests_Util {
 		return $action;
 	}
 
-	public static function prepareTSFE() {
+	/**
+	 * 
+	 * @param array $options
+	 * 			initFEuser: verhindert das Schreiben von Headerdaten
+	 */
+	public static function prepareTSFE(array $options = array()) {
 		static $loaded = false;
 		if ($loaded) return;
 
+		if (isset($options['initFEuser'])) {
+			self::disablePhpMyAdminLogging();
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] = 1;
+			$GLOBALS['TYPO3_CONF_VARS']['FE']['dontSetCookie'] = 1;
+		}
+		
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		tx_rnbase_util_Misc::prepareTSFE(array('force'=>true));
 		$loaded = true;
+		
+		if (isset($options['initFEuser'])) {
+			$GLOBALS['TSFE']->initFEuser();
+		}
 	}
 
 	/**
