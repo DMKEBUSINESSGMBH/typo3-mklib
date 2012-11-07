@@ -147,7 +147,7 @@ class tx_mklib_cli_main extends t3lib_cli {
 		if(!$commandFound){
 			$this->exitWithError();
 		} else {
-			print_r("Befehl '".$this->cli_isArg($this->commands['flush']['long']['desc']."' erfolgreich ausgeführt.");
+			print_r("Befehl '".$this->cli_isArg($this->commands['flush']['long']['desc'])."' erfolgreich ausgeführt.");
 		}
 			
 	}
