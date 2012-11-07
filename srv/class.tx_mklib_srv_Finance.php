@@ -156,7 +156,10 @@ class tx_mklib_srv_Finance extends t3lib_svbase {
 	 */
 	public function getIntByDouble($double, $digits = 4) {
 		$digits = intval('1'.str_repeat('0',$digits));
-		return intval( $double * $digits );
+		// erst zu String, danach zu Integer!
+		// (int) 40.05 = 4004
+		// (int) (string) 40.05 = 4005
+		return (int) (string) ( $double * $digits );
 	}
 	
 	/**
