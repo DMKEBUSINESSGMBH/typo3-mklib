@@ -123,7 +123,7 @@ class tx_mklib_tests_Util {
 		if(empty($sql))
 			throw new Exception('SQL-Datei nicht gefunden');
 		if($statementType || $bIgnoreStatementType) {
-			$statements = t3lib_install::getStatementArray($sql, 1);
+			$statements = self::getSqlStatementArrayDependendOnTypo3Version($sql);
 			foreach($statements as $statement){
 				if(!$bIgnoreStatementType && t3lib_div::isFirstPartOfStr($statement, $statementType)) {
 					$GLOBALS['TYPO3_DB']->admin_query($statement);
@@ -134,6 +134,22 @@ class tx_mklib_tests_Util {
 		} else {
 			$GLOBALS['TYPO3_DB']->admin_query($sql);
 		}
+	}
+	
+	/**
+	 * @param string $sql
+	 * 
+	 * @return array
+	 */
+	private static function getSqlStatementArrayDependendOnTypo3Version($sql) {
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()){
+			$dbHandler = tx_rnbase::makeInstance('t3lib_install_Sql');
+		} else {
+			$dbHandler = tx_rnbase::makeInstance('t3lib_install');
+		}
+		
+		return $dbHandler->getStatementArray($sql, 1);
 	}
 
 	/**
