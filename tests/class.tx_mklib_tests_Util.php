@@ -291,15 +291,17 @@ class tx_mklib_tests_Util {
 	 * Dabei wird automatisch handleRequest aufgerufen.
 	 * Parameter können frei gesetzt werden.
 	 *
-	 * @param 	string			$sActionName
+	 * @param 	string			$action
 	 * @param	array			$aConfig
 	 * @param	string			$sExtKey
 	 * @param	array			$aParams
 	 * @param 	boolean 		$execute
 	 * @return tx_rnbase_action_BaseIOC
 	 */
-	public static function &getAction($sActionName, $aConfig, $sExtKey, $aParams = array(), $execute = true) {
-		$action = tx_rnbase::makeInstance($sActionName);
+	public static function &getAction($action, $aConfig, $sExtKey, $aParams = array(), $execute = true) {
+		if(is_string($action)) {
+			$action = tx_rnbase::makeInstance($action);
+		}
 
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
