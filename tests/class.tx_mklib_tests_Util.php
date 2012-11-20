@@ -321,6 +321,7 @@ class tx_mklib_tests_Util {
 
 		$configurations->setParameters($parameters);
 		$action->setConfigurations($configurations);
+		$parameters->setQualifier($configurations->getQualifier());
 		if($execute) {
 			// logoff für phpmyadmin deaktivieren. ist nicht immer notwendig
 			// aber sollte auch nicht stören!
