@@ -142,6 +142,32 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 		//kein Treffer!!!
 		return null;
 	}
+	
+	/**
+	 * @return array
+	 */
+	public static function getTca() {
+		$_EXTKEY = 'mklib';
+		return array (
+		    'ctrl' => array (
+		        'title'     => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist',
+		        'label'     => 'word',
+		    	'label_alt' => 'uid',
+		    	'label_alt_force' => false,
+		        'tstamp'    => 'tstamp',
+		        'crdate'    => 'crdate',
+		        'cruser_id' => 'cruser_id',
+		        'default_sortby' => 'ORDER BY crdate',
+		        'delete' => 'deleted',
+		        'enablecolumns' => array (
+		            'disabled' => 'hidden',
+		        ),
+		        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca/tx_mklib_wordlist.php',
+		        'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon/icon_tx_mklib_wordlist.gif',
+		        'dividers2tabs'     => true,
+		    ),
+		);
+	}
 
   /**
    * Liefert die zugehörige Search-Klasse zurück

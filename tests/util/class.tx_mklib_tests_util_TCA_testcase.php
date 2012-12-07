@@ -31,6 +31,7 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_TCA');
+tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * Generic form view test
@@ -40,15 +41,27 @@ tx_rnbase::load('tx_mklib_util_TCA');
 class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 
 	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+	protected function setUp() {
+		//es kann sein dass die TCA von der wordlist nicht geladen wurde.
+		//also stellen wir die TCA hier bereit
+		tx_rnbase::load('tx_mklib_srv_Wordlist');
+		global $TCA;
+		$TCA['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
+	}
+	
+	/**
 	 *
 	 */
 	public function testEleminateNonTcaColumns(){
 		$model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array());
 		$data = array(
-  		'blacklisted' => true,
-  		'whitelisted' => 0,
-  		'ich-muss-raus' => true,
-  		'ich-auch' => false,
+	  		'blacklisted' => true,
+	  		'whitelisted' => 0,
+	  		'ich-muss-raus' => true,
+	  		'ich-auch' => false,
 		);
 		$res = tx_mklib_util_TCA::eleminateNonTcaColumns($model,$data);
 		$this->assertEquals(2,count($res),'falsche array größe');
@@ -62,10 +75,10 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	 */
 	public function testEleminateNonTcaColumnsByTable(){
 		$data = array(
-  		'blacklisted' => true,
-  		'whitelisted' => 0,
-  		'ich-muss-raus' => true,
-  		'ich-auch' => false,
+	  		'blacklisted' => true,
+	  		'whitelisted' => 0,
+	  		'ich-muss-raus' => true,
+	  		'ich-auch' => false,
 		);
 		$res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('tx_mklib_wordlist',$data);
 		$this->assertEquals(2,count($res),'falsche array größe');

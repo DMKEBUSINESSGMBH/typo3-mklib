@@ -20,25 +20,8 @@ $_EXTCONF = is_array($_EXTCONF) ? $_EXTCONF : unserialize($_EXTCONF);
 
 // tca integrieren für tx_mklib_wordlist einbinden, wenn gesetzt.
 if(is_array($_EXTCONF) && array_key_exists('tableWordlist', $_EXTCONF) && intval($_EXTCONF['tableWordlist'])) {
-	$TCA['tx_mklib_wordlist'] = array (
-	    'ctrl' => array (
-	        'title'     => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist',
-	        'label'     => 'word',
-	    	'label_alt' => 'uid',
-	    	'label_alt_force' => false,
-	        'tstamp'    => 'tstamp',
-	        'crdate'    => 'crdate',
-	        'cruser_id' => 'cruser_id',
-	        'default_sortby' => 'ORDER BY crdate',
-	        'delete' => 'deleted',
-	        'enablecolumns' => array (
-	            'disabled' => 'hidden',
-	        ),
-	        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca/tx_mklib_wordlist.php',
-	        'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon/icon_tx_mklib_wordlist.gif',
-	        'dividers2tabs'     => true,
-	    ),
-	);
+	tx_rnbase::load('tx_mklib_srv_Wordlist');
+	$TCA['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
 }
 
 // static_info_tables um PLZ regeln erweitern
