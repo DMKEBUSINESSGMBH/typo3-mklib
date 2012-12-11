@@ -23,117 +23,12 @@
  ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-tx_rnbase::load('tx_rnbase_util_Logger');
+tx_rnbase::load('tx_mklib_soap_ClientWrapper');
 
 /**
- * Soap Client Basis. Im Prinzip nur ein Wrapper für SoapClient.
+ * @deprecated use tx_mklib_soap_ClientWrapper
  *
  * @author Hannes Bochmann
  */
-abstract class tx_mklib_abstract_SoapClientWrapper {
-
-	/**
-	 * @var string
-	 */
-	private $url;
-	
-	/**
-	 * @var SoapClient
-	 */
-	private $soapclient;
-	
-	/**
-	 * @param string $method
-	 * @param array $args
-	 * @return array
-	 * @throws RuntimeException
-	 */
-	public function callSoapMethod($method, array $args = array()) {
-		try {
-			$methodResult = call_user_func_array(
-				array($this->getSoapClient(), $method),
-				$args
-			);
-		} catch (Exception $exception) {
-			$this->handleException($exception, $args);
-		}
-		
-		return $methodResult;
-	}
-	
-	/**
-	 * @return SoapClient
-	 */
-	abstract protected function getSoapClient();
-	
-	/**
-	 * @param Exception $soapFault
-	 * @param array $args
-	 * @return void
-	 * @throws RuntimeException
-	 */
-	protected function handleException(Exception $exception, array $args = array()) {
-		$this->logException($exception,$args);
-		$this->throwRuntimeException($exception);
-	}
-	
-	/**
-	 * @param Exception $exception
-	 * @param array $args
-	 * @return void
-	 */
-	private function logException(Exception $exception, array $args = array()) {
-		$soapClient = $this->getSoapClient();
-		
-		if($soapClient instanceof SoapClient){
-			tx_rnbase_util_Logger::fatal(
-				'Access to Soap Interface failed: ' . $exception->getMessage(),
-				'mklib',
-				array(
-					'Fehler',
-					'functions'	=>	$soapClient->__getFunctions(),
-					'response'	=>	$soapClient->__getLastResponse(),
-					'request' 	=> 	$soapClient->__getLastRequest(),
-					'args'		=>	$args
-				)
-			);
-		}else{
-			tx_rnbase_util_Logger::fatal('Soap Client was not instanciated!', 'mkjjk');
-		}
-	}
-	
-	/**
-	 * @param Exception $exception
-	 * @throws RuntimeException
-	 * @return void
-	 */
-	protected function throwRuntimeException(Exception $exception) {
-		if($exception instanceof SoapFault)
-			$errorCode = $exception->faultcode;
-		else
-			$errorCode = $exception->getCode();
-		// Der ErrorCode eine SOAP-Fault kann auch ein String sein.
-		$errorCode = intval($errorCode) == $errorCode ? intval($errorCode) : -1;
-
-		throw new RuntimeException(
-			$exception->getMessage(),
-			$errorCode,
-			$exception
-		);
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getUrl() {
-		return $this->url;
-	}
-	
-	/**
-	 * @param string $url
-	 */
-	public function setUrl($url) {
-		$this->url = $url;
-	}
-
+class tx_mklib_abstract_SoapClientWrapper extends tx_mklib_soap_ClientWrapper{
 }

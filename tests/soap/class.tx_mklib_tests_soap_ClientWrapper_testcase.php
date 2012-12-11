@@ -24,13 +24,13 @@
  */
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-tx_rnbase::load('tx_mklib_abstract_SoapClientWrapper');
+tx_rnbase::load('tx_mklib_soap_ClientWrapper');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_abstract_SoapClientWrapper_testcase extends tx_phpunit_testcase{
+class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_phpunit_testcase{
 	
 	const SOAP_TEST_METHOD = 'mySoapTestMethod';
 	const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';
@@ -134,7 +134,7 @@ class tx_mklib_tests_abstract_SoapClientWrapper_testcase extends tx_phpunit_test
 	/**
 	 * @param string $soapMethodReturnValue
 	 * @param array $expectedParams
-	 * @return tx_mklib_abstract_SoapClientWrapper
+	 * @return tx_mklib_soap_ClientWrapper
 	 */
 	private function getSoapClientWrapper(
 		$expectedParams = array(), $exceptionToThrow = null, 
@@ -142,7 +142,7 @@ class tx_mklib_tests_abstract_SoapClientWrapper_testcase extends tx_phpunit_test
 	) {
 		$soapClient = $this->getSoapClientMock($expectedParams, $exceptionToThrow);
 		
-		$soapClientWrapper = $this->getMockForAbstractClass('tx_mklib_abstract_SoapClientWrapper');
+		$soapClientWrapper = $this->getMock('tx_mklib_soap_ClientWrapper',array('getSoapClient'));
 		
 		if(!$getSoapClientInvocationCount)	
 			$getSoapClientInvocationCount = $this->once();
