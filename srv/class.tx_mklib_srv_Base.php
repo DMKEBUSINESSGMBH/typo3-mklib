@@ -93,6 +93,17 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 
 		return $this->getSearcher()->search($fields, $options);
 	}
+	
+	/**
+	 * @param array $fields
+	 * @param array $options
+	 * @return null || tx_rnbase_model_base
+	 */
+	public function searchSingle($fields, $options) {
+		$result = $this->search($fields, $options);
+	    
+		return $result ? $result[0] : null;
+	}
 
 	/**
 	 * Search the item for the given uid

@@ -42,9 +42,21 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base {
 	    );
 	    $options = array('limit' => 1);
 	    
-	    $result = $this->search($fields, $options);
+	    return $this->searchSingle($fields, $options);
+	}
+	
+	/**
+	 * @param string $germanShortName
+	 * 
+	 * @return null || tx_mklib_model_StaticCountry
+	 */
+	public function getCountryByGermanShortName($germanShortName){
+		$fields = array(
+		  	'STATICCOUNTRY.cn_short_de' => array(OP_EQ => $germanShortName)
+	    );
+	    $options = array('limit' => 1);
 	    
-		return $result ? $result[0] : null;
+	    return $this->searchSingle($fields, $options);
 	}
 	
 	
