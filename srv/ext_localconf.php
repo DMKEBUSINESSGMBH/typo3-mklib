@@ -37,3 +37,14 @@ t3lib_extMgm::addService($_EXTKEY,  'mklib' /* sv type */,  'tx_mklib_srv_Financ
     'className' => 'tx_mklib_srv_Finance',
   )
 );
+
+t3lib_extMgm::addService($_EXTKEY,  'mklib' /* sv type */,  'tx_mklib_srv_StaticCountries' /* sv key */,
+  array(
+    'title' => 'StaticCountries services', 'description' => 'Service functions for handling StaticCountries',
+    'subtype' => 'staticCountries',
+    'available' => TRUE, 'priority' => 50, 'quality' => 50,
+    'os' => '', 'exec' => '',
+    'classFile' => t3lib_extMgm::extPath($_EXTKEY).'srv/class.tx_mklib_srv_StaticCountries.php',
+    'className' => 'tx_mklib_srv_StaticCountries',
+  )
+);
