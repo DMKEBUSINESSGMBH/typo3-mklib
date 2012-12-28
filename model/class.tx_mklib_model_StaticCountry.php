@@ -92,6 +92,13 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
 	public function getZipLength() {
 		return intval($this->record['zipcode_length']);
 	}
+	
+	/**
+	 * @return String
+	 */
+	public function getGermanShortName(){
+		return $this->record['cn_short_de'];
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_StaticCountry.php']) {
