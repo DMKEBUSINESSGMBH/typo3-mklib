@@ -40,7 +40,6 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base {
 		$fields = array(
 		  	'STATICCOUNTRY.cn_iso_nr' => array(OP_EQ_INT => $isoNumber)
 	    );
-	    $options = array('limit' => 1);
 	    
 	    return $this->searchSingle($fields, $options);
 	}
@@ -54,7 +53,6 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base {
 		$fields = array(
 		  	'STATICCOUNTRY.cn_short_de' => array(OP_EQ => $germanShortName)
 	    );
-	    $options = array('limit' => 1);
 	    
 	    return $this->searchSingle($fields, $options);
 	}
