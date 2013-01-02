@@ -125,6 +125,45 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$this->assertTrue(is_string($sFields), 'No string given.');
 		$this->assertEquals($sFields, 'Model Nr. 2<>Model Nr. 5<>Model Nr. 6', 'Wrong string given.');
 	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testCastObjectToArray() {
+		$object = new CastObjectToArrayTest();
+		$objectArray = tx_mklib_util_Array::castObjectToArray($object);
+		
+		$this->assertEquals(
+			'publicVariable',$objectArray['publicVariable'], 'publicVariable falsch gecastet'
+		);
+		$this->assertEquals(
+			'protectedVariable',$objectArray['protectedVariable'], 'protectedVariable falsch gecastet'
+		);
+		$this->assertEquals(
+			'privateVariable',$objectArray['privateVariable'], 'privateVariable falsch gecastet'
+		);
+		$this->assertEquals(
+			'publicStaticVariable',$objectArray['publicStaticVariable'], 'publicStaticVariable falsch gecastet'
+		);
+		$this->assertEquals(
+			'protectedStaticVariable',$objectArray['protectedStaticVariable'], 'protectedStaticVariable falsch gecastet'
+		);
+		$this->assertEquals(
+			'privateStaticVariable',$objectArray['privateStaticVariable'], 'privateStaticVariable falsch gecastet'
+		);
+	}
+}
+
+/**
+ * @author Hannes Bochmann
+ */
+class CastObjectToArrayTest {
+	public   			$publicVariable 			= 'publicVariable';
+	protected 			$protectedVariable 			= 'protectedVariable';
+	private 			$privateVariable 			= 'privateVariable';
+	public static   	$publicStaticVariable 		= 'publicStaticVariable';
+	protected static 	$protectedStaticVariable 	= 'protectedStaticVariable';
+	private static 		$privateStaticVariable 		= 'privateStaticVariable';
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Array_testcase.php']) {
