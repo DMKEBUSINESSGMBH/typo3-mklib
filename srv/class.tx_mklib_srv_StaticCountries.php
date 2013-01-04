@@ -37,6 +37,8 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base {
 	 * @return null || tx_mklib_model_StaticCountry
 	 */
 	public function getCountryByIsoNr($isoNumber){
+		$options = array();
+		
 		$fields = array(
 		  	'STATICCOUNTRY.cn_iso_nr' => array(OP_EQ_INT => $isoNumber)
 	    );
@@ -50,6 +52,8 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base {
 	 * @return null || tx_mklib_model_StaticCountry
 	 */
 	public function getCountryByGermanShortName($germanShortName){
+		$options = array();
+		
 		$fields = array(
 		  	'STATICCOUNTRY.cn_short_de' => array(OP_EQ => $germanShortName)
 	    );
