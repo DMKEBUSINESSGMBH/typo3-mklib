@@ -57,6 +57,17 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base {
 	    return $this->searchSingle($fields, $options);
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see tx_mklib_srv_Base::search()
+	 */
+	public function search($fields, $options) {
+		// TCA gibt es nicht
+		$options['enablefieldsoff'] = true;
+
+		return parent::search($fields, $options);
+	}
+	
 	
 	/**
 	 * @return string
