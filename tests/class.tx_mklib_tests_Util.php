@@ -443,6 +443,21 @@ class tx_mklib_tests_Util {
 				}
 			}
 	}
+	
+	/**
+	 * @param int $pageId
+	 * 
+	 * @return void
+	 */
+	public static function enableLinkCreation($pageId = 1) {
+		tx_rnbase_util_Misc::prepareTSFE();
+		
+		$GLOBALS['TSFE']->sys_page = tx_rnbase_util_TYPO3::getSysPage();
+		$GLOBALS['TSFE']->initTemplate();
+		
+		$GLOBALS['TSFE']->id = $pageId;
+		
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
