@@ -296,9 +296,13 @@ class tx_mklib_tests_Util {
 	 * @param	string			$sExtKey
 	 * @param	array			$aParams
 	 * @param 	boolean 		$execute
+	 * @param	string			$frontendOutput hier wird die rückgabe der action reingeschrieben
+	 * 
 	 * @return tx_rnbase_action_BaseIOC
 	 */
-	public static function &getAction($action, $aConfig, $sExtKey, $aParams = array(), $execute = true) {
+	public static function &getAction(
+		$action, $aConfig, $sExtKey, $aParams = array(), $execute = true, &$frontendOutput = ''
+	) {
 		if(is_string($action)) {
 			$action = tx_rnbase::makeInstance($action);
 		}
@@ -345,7 +349,8 @@ class tx_mklib_tests_Util {
 				}
 			}
 
-			$out = $action->handleRequest($parameters, $configurations, $configurations->getViewData());
+			$frontendOutput = 
+				$action->handleRequest($parameters, $configurations, $configurations->getViewData());
 
 		}
 		return $action;
