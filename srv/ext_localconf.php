@@ -48,3 +48,14 @@ t3lib_extMgm::addService($_EXTKEY,  'mklib' /* sv type */,  'tx_mklib_srv_Static
     'className' => 'tx_mklib_srv_StaticCountries',
   )
 );
+
+t3lib_extMgm::addService($_EXTKEY,  'mklib' /* sv type */,  'tx_mklib_srv_StaticCountryZones' /* sv key */,
+  array(
+    'title' => 'StaticCountryZones services', 'description' => 'Service functions for handling StaticCountryZones',
+    'subtype' => 'staticCountryZones',
+    'available' => TRUE, 'priority' => 50, 'quality' => 50,
+    'os' => '', 'exec' => '',
+    'classFile' => t3lib_extMgm::extPath($_EXTKEY).'srv/class.tx_mklib_srv_StaticCountryZones.php',
+    'className' => 'tx_mklib_srv_StaticCountryZones',
+  )
+);

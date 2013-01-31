@@ -64,6 +64,13 @@ class tx_mklib_util_ServiceRegistry {
 	public static function getStaticCountriesService() {
 		return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountries');
 	}
+	
+	/**
+	 * @return tx_mklib_srv_StaticCountryZones
+	 */
+	public static function getStaticCountryZonesService() {
+		return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountryZones');
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php'])	{
