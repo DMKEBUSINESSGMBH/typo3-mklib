@@ -46,11 +46,15 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	protected $sortConfId = 'sort.';
 	
 	/**
+	 * ausgehend von $sortConfId
+	 * 
 	 * @var string
 	 */
 	protected $allowedFieldsConfId = 'fields';
 	
 	/**
+	 * ausgehend von $sortConfId
+	 * 
 	 * @var string
 	 */
 	protected $sortLinkConfId = 'link.';	
