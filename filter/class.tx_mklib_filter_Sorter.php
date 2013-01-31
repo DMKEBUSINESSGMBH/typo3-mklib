@@ -33,6 +33,18 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  * BITTE INS WIKI SCHAUEN FÜR EINEN BEISPIEL TESTCASE, 
  * DER FÜR ABGELEITETE KLASSEN GESCHRIEBEN WERDEN SOLLTE!
  * 
+ *  Beispiel TS config:
+ *  	myConfId.filter.sort{
+ *  		fields = title, name
+ *  		link {
+ *  			pid = alias oder pid
+ *  			...
+ *  		}
+ *  	}
+ *  
+ *  Beispiel Template:
+ *  	###SORT_TITLE_LINK###sortieren nach titel###SORT_TITLE_LINK###
+ * 
  * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
  * 
  * @todo default sortierung per TypoScript konfigurierbar machen
@@ -91,9 +103,6 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	private $initiatedSorting = null;
 	
 	/**
-	 * Beispiel TS config:
-	 * myConfId.filter.sort.fields = title, name
-	 * 
 	 * setzt $this->sortBy und $this->sortOrder
 	 * 
 	 * @param 	tx_rnbase_IParameters 	$parameters
@@ -157,9 +166,6 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	}
 	
 	/**
-	 * Beispiel TS config:
-	 * myConfId.filter.sort.fields = title, name
-	 * 
 	 * @return array
 	 */
 	private function getAllowedSortFields() {
@@ -194,12 +200,6 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	}
 
 	/**
-	 * Beispiel TS config:
-	 * myConfId.filter.sort.fields = title, name
-	 * 
-	 * Beispiel Template:
-	 * ###SORT_TITLE_LINK###sortieren nach titel###SORT_TITLE_LINK###
-	 * 
 	 * @param string $template HTML template
 	 * @param array $markerArray
 	 * @param array $subpartArray
