@@ -34,26 +34,45 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  * DER FÜR ABGELEITETE KLASSEN GESCHRIEBEN WERDEN SOLLTE!
  * 
  * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ * 
+ * @todo default sortierung per TypoScript konfigurierbar machen
+ * @todo mehrfach sortierung unertsützen?
  */
 class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	
 	/**
-	 * bei bedarf default wert überschreiben.
-	 * 
 	 * @var string
 	 */
-	protected $defaultSortBy = '';
+	protected $sortConfId = 'sort.';
 	
 	/**
-	 * bei bedarf default wert überschreiben.
-	 * 
 	 * @var string
 	 */
-	protected $defaultSortOrder = 'asc';
+	protected $allowedFieldsConfId = 'fields';
 	
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
+	protected $sortLinkConfId = 'link.';	
+	
+	/**
+	 * @var string
+	 */
+	protected $sortByParameterName = 'sortBy';
+	
+	/**
+	 * @var string
+	 */
+	protected $sortOrderParameterName = 'sortOrder';
+	
+	/**
+	 * @var string
+	 */
+	protected $markerPrefix = 'SORT';
+	
+	/**
+	 * @var string
+	 */
 	private $sortBy;
 	
 	/**
@@ -82,10 +101,11 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 			return $this->initiatedSorting;
 		}
 		
-		$sortBy = $this->getSortByFromParameters();
+		$parameters = $this->getParameters();
+		$sortBy = trim($parameters->get($this->sortByParameterName));
 		
 		if($sortBy && $this->sortByIsAllowed($sortBy)) {
-			$sortOrder = $this->getSortOrderFromParameters();
+			$sortOrder = $parameters->get($this->sortOrderParameterName);
 			$sortOrder = $this->assureSortOrderIsValid($sortOrder);
 			
 			$this->sortBy = $sortBy;
@@ -101,31 +121,12 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	}
 	
 	/**
-	 * 
-	 * @return string
-	 */
-	private function getSortByFromParameters() {
-		$parameters = $this->getParameters();
-		$sortBy = trim($parameters->get('sortBy'));
-		return $sortBy ? $sortBy : $this->defaultSortBy;
-	}
-	
-	/**
-	 * @return string
-	 */
-	private function getSortOrderFromParameters() {
-		$parameters = $this->getParameters();
-		$sortOrder = $parameters->get('sortOrder');
-		return $sortOrder ? $sortOrder : $this->defaultSortOrder;
-	}
-	
-	/**
 	 * @param string $sortOrder
 	 * 
 	 * @return string
 	 */
 	private function assureSortOrderIsValid($sortOrder) {
-		return ($sortOrder == 'asc') ? 'asc' : 'desc';
+		return ($sortOrder == 'desc') ? 'desc' : 'asc';
 	}
 	
 	/**
@@ -148,7 +149,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	 * @return boolean
 	 */
 	private function sortByIsAllowed($sortField) {
-		return in_array($sortField, $this->getAllowSortFields());
+		return in_array($sortField, $this->getAllowedSortFields());
 	}
 	
 	/**
@@ -157,11 +158,11 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	 * 
 	 * @return array
 	 */
-	private function getAllowSortFields() {
-		$confId = $this->getConfId().'sort.';
+	private function getAllowedSortFields() {
+		$confId = $this->getConfId().$this->sortConfId;
 		$configurations = $this->getConfigurations();
 
-		$sortFields = $configurations->get($confId.'fields');
+		$sortFields = $configurations->get($confId.$this->allowedFieldsConfId);
 		$sortFields = $sortFields ? t3lib_div::trimExplode(',', $sortFields, true) : array();
 		
 		return $sortFields;
@@ -180,7 +181,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 
 		$this->initSorting();
 		$this->insertMarkersForSorting(
-			$template, $markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId, $marker
+			$template, $markerArray, $subpartArray, $wrappedSubpartArray, $formatter, $confId
 		);
 
 		$template = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
@@ -205,13 +206,11 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	 * 
 	 * @return void
 	 */
-	private function insertMarkersForSorting($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$formatter, $confId, $marker = 'FILTER') {
-		$marker = 'SORT';
-		$confId = $this->getConfId().'sort.';
+	private function insertMarkersForSorting($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$formatter, $confId) {
+		$confId = $this->getConfId().$this->sortConfId;
 		$configurations = $formatter->getConfigurations();
 		
-		// die felder für die sortierung stehen kommasepariert im ts
-		$sortFields = $this->getAllowSortFields();
+		$sortFields = $this->getAllowedSortFields();
 
 		if(!empty($sortFields)) {
 			tx_rnbase::load('tx_rnbase_util_BaseMarker');
@@ -220,9 +219,9 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 			foreach($sortFields as $field) {
 				$isField = ($field == $this->getSortBy());
 				// sortOrder ausgeben
-				$markOrders[$field.'_order'] = $isField ? $this->sortOrder : '';
+				$markOrders[$field.'_order'] = $isField ? $this->getSortOrder() : '';
 
-				$fieldMarker = $marker.'_'.strtoupper($field).'_LINK';
+				$fieldMarker = $this->markerPrefix.'_'.strtoupper($field).'_LINK';
 				$makeLink = tx_rnbase_util_BaseMarker::containsMarker($template, $fieldMarker);
 				$makeUrl = tx_rnbase_util_BaseMarker::containsMarker($template, $fieldMarker.'URL');
 				// link generieren
@@ -234,7 +233,11 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 						);
 					$link = $configurations->createLink();
 					$link->label($token);
-					$link->initByTS($configurations, $confId.'link.', $params);
+					$link->initByTS(
+						$configurations, 
+						$confId.$this->sortLinkConfId, 
+						$params
+					);
 					if($makeLink)
 						$wrappedSubpartArray['###'.$fieldMarker.'###'] = explode($token, $link->makeTag());
 					if($makeUrl)
@@ -242,7 +245,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 				}
 			}
 			// die sortOrders parsen
-			$markOrders = $formatter->getItemMarkerArrayWrapped($markOrders, $confId, 0,$marker.'_', array_keys($markOrders));
+			$markOrders = $formatter->getItemMarkerArrayWrapped($markOrders, $confId, 0,$this->markerPrefix.'_', array_keys($markOrders));
 			$markerArray = array_merge($markerArray, $markOrders);
 		}
 	}
