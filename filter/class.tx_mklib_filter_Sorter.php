@@ -42,14 +42,25 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	 * 
 	 * @var string
 	 */
-	protected $sortBy = '';
+	protected $defaultSortBy = '';
 	
 	/**
 	 * bei bedarf default wert überschreiben.
 	 * 
 	 * @var string
 	 */
-	protected $sortOrder = 'asc';
+	protected $defaultSortOrder = 'asc';
+	
+	/**
+	* @var string
+	*/
+	private $sortBy;
+	
+	/**
+	 * @var string
+	 */
+	private $sortOrder;
+	
 	
 	/**
 	 * @var null || boolean
@@ -71,18 +82,12 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 			return $this->initiatedSorting;
 		}
 		
-		$parameters = $this->getParameters();
-		$sortBy = trim($parameters->get('sortBy'));
-		// wurden keine parameter gefunden, nutzen wir den default des filters
-		$sortBy = $sortBy ? $sortBy : $this->sortBy;
+		$sortBy = $this->getSortByFromParameters();
 		
-		if($sortBy && $this->sortFieldIsAllowed($sortBy)) {
-			$sortOrder = $parameters->get('sortOrder');
-			// den default order nutzen!
-			$sortOrder = $sortOrder ? $sortOrder : $this->sortOrder;
-			// sicherstellen, das immer desc oder asc gesetzt ist
-			$sortOrder = ($sortOrder == 'asc') ? 'asc' : 'desc';
-			// wird beim parsetemplate benötigt
+		if($sortBy && $this->sortByIsAllowed($sortBy)) {
+			$sortOrder = $this->getSortOrderFromParameters();
+			$sortOrder = $this->assureSortOrderIsValid($sortOrder);
+			
 			$this->sortBy = $sortBy;
 			$this->sortOrder = $sortOrder;
 			$this->initiatedSorting = true;
@@ -93,6 +98,34 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 		
 		$this->initiatedSorting = false;
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	private function getSortByFromParameters() {
+		$parameters = $this->getParameters();
+		$sortBy = trim($parameters->get('sortBy'));
+		return $sortBy ? $sortBy : $this->defaultSortBy;
+	}
+	
+	/**
+	 * @return string
+	 */
+	private function getSortOrderFromParameters() {
+		$parameters = $this->getParameters();
+		$sortOrder = $parameters->get('sortOrder');
+		return $sortOrder ? $sortOrder : $this->defaultSortOrder;
+	}
+	
+	/**
+	 * @param string $sortOrder
+	 * 
+	 * @return string
+	 */
+	private function assureSortOrderIsValid($sortOrder) {
+		return ($sortOrder == 'asc') ? 'asc' : 'desc';
 	}
 	
 	/**
@@ -114,7 +147,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	 * 
 	 * @return boolean
 	 */
-	private function sortFieldIsAllowed($sortField) {
+	private function sortByIsAllowed($sortField) {
 		return in_array($sortField, $this->getAllowSortFields());
 	}
 	
