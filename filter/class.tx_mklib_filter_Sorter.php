@@ -91,7 +91,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 		}
 		//else
 		
-		$this->initiatedSorting = true;
+		$this->initiatedSorting = false;
 		return false;
 	}
 	
