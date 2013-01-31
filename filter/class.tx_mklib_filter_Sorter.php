@@ -38,34 +38,38 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	
 	/**
+	 * bei bedarf default wert überschreiben.
+	 * 
 	 * @var string
 	 */
-	private $sortBy = '';
+	protected $sortBy = '';
 	
 	/**
+	 * bei bedarf default wert überschreiben.
+	 * 
 	 * @var string
 	 */
-	private $sortOrder = 'asc';
+	protected $sortOrder = 'asc';
 	
 	/**
-	 * @var boolean
+	 * @var null || boolean
 	 */
-	private $sortingInitiated = false;
+	private $initiatedSorting = null;
 	
 	/**
 	 * Beispiel TS config:
 	 * myConfId.filter.sort.fields = title, name
+	 * 
+	 * setzt $this->sortBy und $this->sortOrder
 	 * 
 	 * @param 	tx_rnbase_IParameters 	$parameters
 	 * 
 	 * @return boolean
 	 */
 	protected function initSorting() {
-		if($this->sortingInitiated){
-			return true;
+		if(!is_null($this->initiatedSorting)){
+			return $this->initiatedSorting;
 		}
-		
-		$this->sortingInitiated = true;
 		
 		$parameters = $this->getParameters();
 		$sortBy = trim($parameters->get('sortBy'));
@@ -81,10 +85,13 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 			// wird beim parsetemplate benötigt
 			$this->sortBy = $sortBy;
 			$this->sortOrder = $sortOrder;
+			$this->initiatedSorting = true;
 			
 			return true;
 		}
 		//else
+		
+		$this->initiatedSorting = true;
 		return false;
 	}
 	
