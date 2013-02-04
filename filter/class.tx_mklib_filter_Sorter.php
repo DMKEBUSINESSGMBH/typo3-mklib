@@ -36,6 +36,10 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  *  Beispiel TS config:
  *  	myConfId.filter.sort{
  *  		fields = title, name
+ *  		default {
+ *  			field = title
+ *  			sortOrder = desc
+ *  		}
  *  		link {
  *  			pid = alias oder pid
  *  			...
@@ -63,6 +67,27 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	 * @var string
 	 */
 	protected $allowedFieldsConfId = 'fields';
+	
+	/**
+	 * ausgehend von $sortConfId
+	 * 
+	 * @var string
+	 */
+	protected $defaultConfigurationConfId = 'default.';
+	
+	/**
+	 * ausgehend von $defaultConfigurationConfId
+	 * 
+	 * @var string
+	 */
+	protected $defaultFieldConfId = 'field';
+	
+	/**
+	 * ausgehend von $defaultConfigurationConfId
+	 * 
+	 * @var string
+	 */
+	protected $defaultSortOrderConfId = 'sortOrder';
 	
 	/**
 	 * ausgehend von $sortConfId
@@ -114,11 +139,10 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 			return $this->initiatedSorting;
 		}
 		
-		$parameters = $this->getParameters();
-		$sortBy = trim($parameters->get($this->sortByParameterName));
+		$sortBy = $this->getCurrentSortBy();
 		
 		if($sortBy && $this->sortByIsAllowed($sortBy)) {
-			$sortOrder = $parameters->get($this->sortOrderParameterName);
+			$sortOrder = $this->getCurrentSortOrder();
 			$sortOrder = $this->assureSortOrderIsValid($sortOrder);
 			
 			$this->sortBy = $sortBy;
@@ -131,6 +155,45 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 		
 		$this->initiatedSorting = false;
 		return false;
+	}
+	
+	/**
+	 * @return string
+	 */
+	private function getCurrentSortBy() {
+		$parameters = $this->getParameters();
+		
+		if(!$sortBy = trim($parameters->get($this->sortByParameterName))) {
+			$sortBy = $this->getDefaultValue($this->defaultFieldConfId);
+		}
+		
+		return $sortBy;
+	}
+	
+	/**
+	 * @return string
+	 */
+	private function getCurrentSortOrder() {
+		$parameters = $this->getParameters();
+		
+		if(!$sortOrder = trim($parameters->get($this->sortOrderParameterName))) {
+			$sortOrder = $this->getDefaultValue($this->defaultSortOrderConfId);
+		}
+		
+		return $sortOrder;
+	}
+
+	/**
+	 * @param string $defaultValue
+	 * 
+	 * @return string
+	 */
+	private function getDefaultValue($confId) {
+		$defaultConfigurationConfId = 
+			$this->getConfId() . $this->sortConfId . $this->defaultConfigurationConfId;
+		$configurations = $this->getConfigurations();
+
+		return $configurations->get($defaultConfigurationConfId.$confId);
 	}
 	
 	/**
@@ -233,7 +296,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 					// sortierungslinks ausgeben
 					$params = array(
 							'sortBy' => $field,
-							'sortOrder' => $isField && $this->getSortOrder() == 'asc' ? 'desc' : 'asc',
+							'sortOrder' => $isField && ($this->getSortOrder() == 'asc') ? 'desc' : 'asc',
 						);
 					$link = $configurations->createLink();
 					$link->label($token);
