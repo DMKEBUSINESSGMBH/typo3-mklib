@@ -39,10 +39,9 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 
 	/**
-	 * @var int
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
-	private $rootLineBackUp;
-	
 	protected function setUp() {
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		tx_rnbase_util_Misc::prepareTSFE();
@@ -54,8 +53,8 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 	}
 	
 	/**
-	 * 
-	 * Enter description here ...
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::tearDown()
 	 */
 	protected function tearDown() {
 		unset($GLOBALS['TSFE']->rootLine[0]['uid']);
