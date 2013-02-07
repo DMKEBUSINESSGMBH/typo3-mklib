@@ -190,6 +190,8 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	/**
 	 * @param array $emailParts | provided e.g. from preg_replace
 	 * @return string
+	 * 
+	 * @todo prüfen ob es die email schon im link gibt und dann nicht parsen
 	 */
 	public static function convertEmailToMailToLink($emailParts) {
 		static $configurations;
