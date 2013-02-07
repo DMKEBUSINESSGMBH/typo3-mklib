@@ -39,6 +39,28 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 
 	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+	protected function setUp() {
+		tx_rnbase::load('tx_rnbase_util_Misc');
+		tx_rnbase_util_Misc::prepareTSFE();
+		
+		//tq_seo extension hat einen hook der auf das folgende feld zugreift.
+		//wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
+		//wir verhindern wollen!
+		$GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::tearDown()
+	 */
+	protected function tearDown() {
+		unset($GLOBALS['TSFE']->rootLine[0]['uid']);
+	}
+	
+	/**
 	 * @group unit
 	 * @dataProvider getExpectedParsedLinks
 	 */
