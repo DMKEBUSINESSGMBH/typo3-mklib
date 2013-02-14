@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
@@ -156,16 +156,18 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 	/**
 	 * Auf der CLI wird die Klasse als Test betrachtet. Da sie
 	 * eigentlich keine Tests hat, kommt ein Fehler zu Stande.
-	 * Also bieten wir einen leeren dummy Test an
-	 * 
+	 *
+	 * Da wir einen Datenbank testcase bereitstellen,
+	 * können wir wenigstens die Verbindung zur DB prüfen.
+	 *
 	 * @group dummytest
 	 */
-	public function testDummy() {
-		return true;
+	public function testCheckConnection() {
+		$dbs = $GLOBALS['TYPO3_DB']->admin_get_dbs();
+		$this->assertTrue(in_array($this->testDatabase, $dbs));
 	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_DBTestCaseSkeleton.php']) {
   include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_DBTestCaseSkeleton.php']);
 }
-?>

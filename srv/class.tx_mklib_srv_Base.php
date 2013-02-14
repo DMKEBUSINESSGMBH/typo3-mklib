@@ -93,7 +93,7 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 
 		return $this->getSearcher()->search($fields, $options);
 	}
-	
+
 	/**
 	 * @param array $fields
 	 * @param array $options
@@ -102,12 +102,15 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	public function searchSingle($fields, $options) {
 		$options = array('limit' => 1);
 		$result = $this->search($fields, $options);
-	    
+
 		return $result ? $result[0] : null;
 	}
 
 	/**
 	 * Search the item for the given uid
+	 *
+	 * @TODO: das liefert immer ein moddel, auch wenn kein datensatz existiert!
+	 * 		  es sollte NULL zurückgegeben werden, wenn kein datensatz existiert!
 	 *
 	 * @param int $ct
 	 * @return tx_rnbase_model_base
@@ -182,7 +185,12 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 		$data = $this->secureFromCrossSiteScripting($model, $data);
 
-		$data['pid'] = $this->getPid();
+		// setzen wir nur, wenn noch nicht gesetzt!
+		// Achtung: wird durch eleminateNonTcaColumns entfernt,
+		// wenn pid nicht in der tca steht.
+		if (empty($data['pid'])) {
+			$data['pid'] = $this->getPid();
+		}
 
 		tx_rnbase::load('tx_mklib_util_DB');
 		$uid = tx_mklib_util_DB::doInsert($table, $data/*, 1*/);
@@ -316,8 +324,8 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	public function handleCreation(array $data){
 		// datensatz anlegen and model holen
 		$model = $this->get(
-						$this->create($data)
-					);
+			$this->create($data)
+		);
 		return $model;
 	}
 

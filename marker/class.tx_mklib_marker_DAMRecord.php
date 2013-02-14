@@ -67,15 +67,15 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 					);
 		return $template;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * Daten im Record:
 	 *  uid, pid, title, media_type, tstamp, crdate, cruser_id,
-	 *  deleted, sys_language_uid, l18n_parent, hidden, starttime, endtime, fe_group, 
+	 *  deleted, sys_language_uid, l18n_parent, hidden, starttime, endtime, fe_group,
 	 *  file_name, file_dl_name, file_path, file_size, file_type, file_ctime, file_mtime,
 	 *  file_hash, file_mime_type, file_mime_subtype, file_status, index_type, parent_id
-	 * 
+	 *
 	 * @param 	tx_mklib_model_Dam 				$item
 	 * @param 	array 							$record
 	 * @param 	tx_rnbase_util_FormatUtil 		$formatter
@@ -87,21 +87,21 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 		if(!is_object($item)) {
 			$item = self::getEmptyInstance('tx_mklib_model_Dam');
 		}
-		
+
 		$item->record['file_path_name'] = isset($item->record['file_path_name']) ?
 				$item->record['file_path_name'] : $item->record['file_path'].$item->record['file_name'];
-		
+
 		if($this->containsMarker($template, $marker.'_FILE_WEBPATH'))
 			$item->fillPath('webpath');
-		
+
 		if($this->containsMarker($template, $marker.'_FILE_SERVERPATH'))
 			$item->fillPath('serverpath');
-		
+
 		if($this->containsMarker($template, $marker.'_FILE_RELPATH'))
 			$item->fillPath('relpath');
 
 		$template = $this->addIcon($template, $item, $formatter, $confId, $marker);
-		
+
 		// Fill marker array with data
 		$ignore = self::findUnusedCols($item->record, $template, $marker);
 		$markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId , $ignore, $marker.'_',$item->getColumnNames());
@@ -113,7 +113,7 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
 	}
-	
+
 	/**
 	 * Icon für den Typ hinzufügen
 	 *
@@ -132,8 +132,8 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 		return $template;
 		//@TODO: implement if needet
 /*
-	###TS 
-	
+	###TS
+
 	icon = IMAGE
 	icon {
 		### welches feld soll für das mapping genutzt werden? (file_mime_type, file_mime_subtype, file_type )
@@ -144,8 +144,8 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 		### mapping der Felder
 		###		wenn im field docx und in fileext gif steht wird doc.gif ausgegeben
 		### 	ACHTUNG: in der kommaseparierten liste dürfen keine leerzeichen sein!
-		### 				doc, docx wäre falsch und würde nicht funktionieren.  
-		mapping {			
+		### 				doc, docx wäre falsch und würde nicht funktionieren.
+		mapping {
 			doc = doc,docx
 			jpg = jpg,jpeg
 			dwg = dwg
@@ -154,7 +154,7 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 			tiff = tiff
 			xls = xls
 			zip = zip
-			video = 
+			video =
 		}
 	}
 	icon.file {
@@ -163,20 +163,20 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 	}
  */
 		$configuration = $formatter->getConfigurations();
-		
+
 		$field = $configuration->get($confId.'icon.field');
 		$field = $field ? $field : 'fiel_type';
-		
+
 		$mapping = $configuration->get($confId.'icon.mapping');
 		$type = $item->record[$field];
-		
+
 		$default = $configuration->get($confId.'icon.default');
 		$default = $default ? $default : $type;
-		
+
 		$fileExt = $configuration->get($confId.'icon.fileext');
 		$fileExt = $fileExt ? $fileExt : 'gif';
-		
-		
+
+
 		$icon = $default.'.'.$fileExt;
 		if(is_array($mapping)){
 			foreach($mapping as $key => $value) {
@@ -186,7 +186,7 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 				}
 			}
 		}
-		$item->record['icon'] = $icon; 
+		$item->record['icon'] = $icon;
 	}
 	/**
 	 * Links vorbereiten
@@ -200,7 +200,7 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 	 */
 	private function prepareLinks(&$item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, &$formatter, $template) {
 		$configurations = $formatter->getConfigurations();
-		
+
 		// @TODO Downloadlink integrieren?!
 		// 		index.php?id=download&$mklib[damref]=2
 		//		hätte einige vorteile
