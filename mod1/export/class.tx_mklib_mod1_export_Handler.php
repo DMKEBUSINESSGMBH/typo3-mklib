@@ -26,6 +26,7 @@
  */
 
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('tx_mklib_mod1_export_Util');
 
 /**
  * Handelt die über Typoscript definierte Exportfunktionalität.
@@ -38,33 +39,37 @@ require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 				template = EXT:mkhoga/mod1/templates/funccompanies.html
 				export.types {
 					excel {
+						### Label des Buttons, kann auch: ###LABEL_*
 						label = Excel
+						### ein für Typo3 bekanntes Sprite Icon. Siehe tx_rnbase_mod_Util::debugSprites
 						spriteIcon = mimetypes-excel
+						### konfiguration für das template
 						template {
-							subpart =
-							itempath
-							markerclass
+							### Pfad zum Template
+							template = EXT:mkhoga/mod1/templates/export/data.xls
+							### Marker für den Subpart
+							subpart = ###DATALIST###
+							### Item Pfad, wird für die confid (lowercase) und den markernamen (uppercase) genutzt. Default ist item
+							itempath = data
+							### Markerklasse, wleche die daten rendert. Default ist tx_rnbase_util_SimpleMarker
+							markerclass = tx_mkhoga_marker_Data
 						}
-					}
-					zip {
-						label = Zip
-						spriteIcon = mimetypes-compressed
-					}
-					pdf {
-						label = PDF
-						spriteIcon = mimetypes-pdf
+						### Header konfiguration. Diese header werden gesendet, wenn ein export statfindet.
+						headers {
+							### der Dateiname
+							filename = companies.xls
+							### der contenttype
+							contenttype = application/vnd.ms-excel
+							### zusätzliche Headerdaten ($key: $value)
+							additional {
+								### daraus wird location: http://www.das-medienkombinat.de/
+								#location = http://www.das-medienkombinat.de/
+							}
+						}
 					}
 					csv {
 						label = CSV
 						spriteIcon = mimetypes-text-csv
-					}
-					html {
-						label = HTML
-						spriteIcon = mimetypes-text-html
-					}
-					text {
-						label = Text
-						spriteIcon = mimetypes-text-text
 					}
 				}
 			}
@@ -102,40 +107,25 @@ class tx_mklib_mod1_export_Handler {
 
 		$template = $this->getExportTemplate($type);
 
-		echo '<pre>'.var_export(array(
-				$type,
-				$this->getExportTemplate($type),
-				'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__
-		),true).'</pre>'; // @TODO: remove me
-		return;
+		$provider = $this->getListProvider();
 
-		/*
-		 * @TODO: rendern der einzelnen items.
-		 * das ganze allerdings nicht wie hier in den rückgabewert $tamplate,
-		 * sondern idealerweise direkt ausgeben um den speicher gleich wieder freizuräumen!
-		 */
+		$itemPath = $this->getItemPath($type);
 
-		/* @var $provider tx_rnbase_util_ListProvider */
-		$provider = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
-		$provider->initBySearch(array($service, 'search'), $fields, $options);
+		tx_mklib_mod1_export_Util::sendHeaders($this->getHeaderConfig($type));
 
-
-		/* @var $listBuilder tx_rnbase_util_ListBuilder */
-		$listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+		/* @var $listBuilder tx_mklib_mod1_export_ListBuilder */
+		$listBuilder = tx_rnbase::makeInstance('tx_mklib_mod1_export_ListBuilder');
 		$template = $listBuilder->renderEach(
-			$provider, $viewData,
-			$template, 'tx_mkhoga_marker_ApplicationJobOfferImmeditate',
-			$confId.'applicationjobofferimmeditate.', 'APPLICATIONJOBOFFERIMMEDITATE', $formatter
+			$provider, FALSE,
+			$template,
+			$this->getMarkerClass($type),
+			$this->getModFunc()->getConfId().strtolower($itemPath).'.',
+			strtoupper($itemPath),
+			$this->getConfigurations()->getFormatter()
 		);
 
-
-
-		// @TODO: vorher muss noch das Template ausgelesen werden.
-		// die cbExportItem sollte nicht hier,
-		// sondern in einem extra handler existieren!
-
-		$this->getModFunc()->getSearcher()
-			->searchForExport(array($this, 'cbExportItem'));
+		// done!
+		exit();
 	}
 
 	/**
@@ -146,12 +136,12 @@ class tx_mklib_mod1_export_Handler {
 	 */
 	public function parseTemplate($template) {
 		tx_rnbase::load('tx_rnbase_util_BaseMarker');
-		if (tx_rnbase_util_BaseMarker::containsMarker($template, $markerPrefix)) {
-
+		if (!tx_rnbase_util_BaseMarker::containsMarker($template, 'EXPORT_BUTTONS')) {
+			return;
 		}
 
-		$configuration = $this->getModule()->getConfigurations();
-		$confId = $this->getModFunc()->getConfId().'export.types.';
+		$configuration = $this->getConfigurations();
+		$confId = $this->getConfId().'types.';
 
 		$buttons = '';
 		foreach ($this->getExportTypes() as $type) {
@@ -181,19 +171,9 @@ class tx_mklib_mod1_export_Handler {
 	 * @return array
 	 */
 	private function getExportTypes() {
-		return $this->getModule()->getConfigurations()->getKeyNames(
-			$this->getModFunc()->getConfId().'export.types.'
+		return $this->getConfigurations()->getKeyNames(
+			$this->getConfId().'types.'
 		);
-	}
-
-	/**
-	 *
-	 * @param tx_rnbase_model_base $Item
-	 */
-	public function cbExportItem(
-		tx_rnbase_model_base $Item
-	) {
-
 	}
 
 	/**
@@ -203,6 +183,40 @@ class tx_mklib_mod1_export_Handler {
 	 */
 	protected function getModFunc() {
 		return $this->modFunc;
+	}
+
+	/**
+	 * Liefert den Searcher des Module
+	 *
+	 * @return tx_mklib_mod1_export_ISearcher
+	 */
+	protected function getSearcher() {
+		$searcher = $this->getModFunc()->getSearcher();
+		if (!$searcher instanceof tx_mklib_mod1_export_ISearcher) {
+			throw new Exception(
+				'The searcher "'.get_class($searcher).'" has to implement'.
+				' the interface tx_mklib_mod1_export_ISearcher',
+				1361174776
+			);
+		}
+		return $searcher;
+	}
+
+	/**
+	 * Liefert den Provider für die Listenausgabe.
+	 *
+	 * @return tx_rnbase_util_IListProvider
+	 */
+	protected function getListProvider() {
+		$provider = $this->getSearcher()->getInitialisedListProvider();
+		if (!$provider instanceof tx_rnbase_util_IListProvider) {
+			throw new Exception(
+				'The provider "'.get_class($provider).'" has to implement'.
+				' the interface tx_rnbase_util_IListProvider',
+				1361174776
+			);
+		}
+		return $provider;
 	}
 
 	/**
@@ -221,21 +235,21 @@ class tx_mklib_mod1_export_Handler {
 	 * @return string
 	 */
 	private function getExportTemplate($type) {
-		$configuration = $this->getModule()->getConfigurations();
-		$confId = $this->getModFunc()->getConfId().'export.types.'.$type.'.template.';
+		$configuration = $this->getConfigurations();
+		$confId = $this->getConfId().'types.'.$type.'.template.';
 
 		// template laden
 		$sAbsPath = t3lib_div::getFileAbsFileName( $configuration->get($confId.'template') );
 		$templateCode = t3lib_div::getURL($sAbsPath);
 		if(!$templateCode) {
 			$this->getModule()->addMessage(
-				'Could not find the template "'.$sAbsPath.'"  defined under '.$confId.'subpart'.'.',
+				'Could not find the template "'.$sAbsPath.'"  defined under '.$confId.'template'.'.',
 				'Template not found', 2
 			);
 			return FALSE;
 		}
 		// subpart auslesen
-		$subpart = t3lib_div::getFileAbsFileName( $configuration->get($confId.'subpart') );
+		$subpart = $configuration->get($confId.'subpart');
 		tx_rnbase::load('tx_rnbase_util_Templates');
 		$template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
 		if(!$template) {
@@ -249,6 +263,55 @@ class tx_mklib_mod1_export_Handler {
 	}
 
 	/**
+	 * @return string
+	 */
+	protected function getMarkerClass($type) {
+		$configuration = $this->getConfigurations();
+		$confId = $this->getConfId().'types.'.$type.'.template.';
+		$class = $configuration->get($confId.'markerclass');
+		$class = $class ? $class : 'tx_rnbase_util_SimpleMarker';
+		if (!tx_rnbase::load($class)) {
+			$class = 'tx_rnbase_util_SimpleMarker';
+		}
+		return $class;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getItemPath($type) {
+		$configuration = $this->getConfigurations();
+		$confId = $this->getConfId().'types.'.$type.'.template.';
+		$class = $configuration->get($confId.'itempath');
+		return $class ? $class : 'item';
+	}
+
+	/**
+	 *
+	 * @param string $type
+	 * @return array
+	 */
+	protected function getHeaderConfig($type) {
+		$headers = $this->getConfigurations()->get(
+			$this->getConfId().'types.'.$type.'.headers.');
+		return is_array($headers) ? $headers : array();
+	}
+
+	/**
+	 * @return tx_rnbase_configurations
+	 */
+	protected function getConfigurations() {
+		return $this->getModule()->getConfigurations();
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getConfId() {
+		return $this->getModFunc()->getConfId().'export.';
+	}
+
+	/**
 	 * Liefert die styles der Buttons
 	 *
 	 * @return string
@@ -257,7 +320,7 @@ class tx_mklib_mod1_export_Handler {
 		return '<style type="text/css">
 		.imgsubmit {
 			position: relative;
-			margin: 0 5px;
+			margin: 5px;
 			float: left;
 		}
 		.imgsubmit span {

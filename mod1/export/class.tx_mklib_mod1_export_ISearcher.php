@@ -32,13 +32,13 @@
 interface tx_mklib_mod1_export_ISearcher {
 
 	/**
-	 * Stößt die Suche an.
-	 * Der Callback dient dazu, die Einträge einzeln rauszurendern.
+	 * Liefert den List-Provider,
+	 * welcher die Ausgabe der einzelnen Datensätze generiert
+	 * und an den Listbuilder übergeben wird.
 	 *
-	 * @param array $callback
-	 * @return void
+	 * @return tx_rnbase_util_IListProvider
 	 */
-	public function searchForExport($callback);
+	public function getInitialisedListProvider();
 
 }
 

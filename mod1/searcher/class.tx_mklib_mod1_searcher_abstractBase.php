@@ -171,16 +171,19 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	}
 
 	/**
-	 * Liefert den Service.
+	 * Liefert den initialisierten Listbuilder.
 	 *
-	 * @param array $callback
-	 * @return void
+	 * @return tx_rnbase_util_ListProvider
 	 */
-	public function searchForExport($callback) {
+	public function getInitialisedListProvider() {
+		// Wir initialisieren das Formular und damit auch die Filter.
+		$this->getFilterTableDataForSearchForm();
 		list($fields, $options) = $this->getFieldsAndOptions();
-		$options['callback'] = $callback;
-		$this->getService()->search($fields, $options);
+		$provider = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
+		$provider->initBySearch(array($this->getService(), 'search'), $fields, $options);
+		return $provider;
 	}
+
 	/**
 	 * Bildet die Resultliste mit Pager
 	 *
