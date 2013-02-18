@@ -21,8 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('tx_mklib_mod1_export_ISearcher');
 
 /**
  * Basisklasse für Suchfunktionen in BE-Modulen
@@ -31,7 +31,8 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  * @subpackage tx_mklib_mod1
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
-abstract class tx_mklib_mod1_searcher_abstractBase {
+abstract class tx_mklib_mod1_searcher_abstractBase
+	implements tx_mklib_mod1_export_ISearcher {
 
 	/**
 	 * Wurde die ll bereits geladen?
@@ -170,12 +171,22 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	}
 
 	/**
+	 * Liefert den initialisierten Listbuilder.
+	 *
+	 * @return tx_rnbase_util_ListProvider
+	 */
+	public function getInitialisedListProvider() {
+		// Wir initialisieren das Formular und damit auch die Filter.
+		$this->getFilterTableDataForSearchForm();
+		list($fields, $options) = $this->getFieldsAndOptions();
+		$provider = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
+		$provider->initBySearch(array($this->getService(), 'search'), $fields, $options);
+		return $provider;
+	}
+
+	/**
 	 * Bildet die Resultliste mit Pager
 	 *
-	 * @param tx_mklib_mod1_searcher_Base $callingClass
-	 * @param object $srv
-	 * @param array $fields
-	 * @param array $options
 	 * @return string
 	 */
 	public function getResultList() {
@@ -190,16 +201,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 			)
 		: null;
 
-		$fields = $options = array();
-		if(is_array($this->options['baseOptions']))
-			$options = $this->options['baseOptions'];
-		if(is_array($this->options['baseFields']))
-			$fields = $this->options['baseFields'];
-		//@todo tests schreiben
-		//es könnte sein dass ein sorting gewählt wurde. dann wollen wir dieses
-		//auch nutzen
-		$this->prepareSorting($options);
-		$this->prepareFieldsAndOptions($fields, $options);
+		list($fields, $options) = $this->getFieldsAndOptions();
 
 		// Get counted data
 		$cnt = $this->getCount($fields, $options);
@@ -240,6 +242,29 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 				|| intval($this->options['usepager']) !== 0;
 		}
 		return true;
+	}
+
+	/**
+	 * Erzeugt die Fields und Options für den Service.
+	 *
+	 * @return array[fields, options]
+	 */
+	protected function getFieldsAndOptions() {
+		$fields = $options = array();
+		if(!empty($this->options['baseOptions'])
+			&& is_array($this->options['baseOptions']))
+			$options = $this->options['baseOptions'];
+		if(!empty($this->options['baseFields'])
+			&& is_array($this->options['baseFields']))
+			$fields = $this->options['baseFields'];
+
+		//@todo tests schreiben
+		//es könnte sein dass ein sorting gewählt wurde. dann wollen wir dieses
+		//auch nutzen
+		$this->prepareSorting($options);
+		$this->prepareFieldsAndOptions($fields, $options);
+
+		return array($fields, $options);
 	}
 
 	/**
@@ -288,6 +313,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase {
 	 * @param 	array 	$options
 	 */
 	protected function prepareFieldsAndOptions(array &$fields, array &$options) {
+		// @TODO: Performater ist group by!
 		$options['distinct'] = 1;
 //		$options['debug'] = true;
 
