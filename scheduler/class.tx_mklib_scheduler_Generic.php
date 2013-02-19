@@ -115,11 +115,10 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 				$this->sendErrorMail(
 					$mail,
 					// Wir erstellen eine weitere Exception mit zusätzlichen Daten.
-					// @TODO: $previous sollte in rn_base übergeben werden können
 					tx_rnbase::makeInstance(
 						'tx_rnbase_util_Exception',
 						get_class($exception).': '.$exception->getMessage(),
-						$exception->getCode(), $dataVar
+						$exception->getCode(), $dataVar, $exception
 					)
 				);
 			}
