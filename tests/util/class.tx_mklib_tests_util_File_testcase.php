@@ -31,7 +31,7 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_File');
-	
+
 /**
  * Generic form view test
  * @package tx_mklib
@@ -56,16 +56,16 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			tx_mklib_util_File::getFileTool();
 		$end = time();
 		t3lib_div::debug($end-$start, 'with static cache: '.__METHOD__.' Line: '.__LINE__); // @TODO: remove me
-		
+
 		$start = time();
 		for($i=0;$i<$count;$i++)
 			tx_mklib_util_File::getFileTool(array('count'=>$i), array('count'=>$i));
 		$end = time();
 		t3lib_div::debug($end-$start, 'without static cache: '.__METHOD__.' Line: '.__LINE__); // @TODO: remove me
-		
+
 	}
 	*/
-	
+
 	public function setUp() {
 	}
 	public function tearDown() {
@@ -90,7 +90,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			fclose($iH);
 		}
 	}
-	
+
 	public function testCleanupFilesNotInTypo3temp(){
 		//@TODO: lifetime testen
 		// testverzeichnis anlegen
@@ -126,7 +126,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		// weider löschen
 		t3lib_div::rmdir($testfolder, true);
 	}
-	
+
 	public function testCleanupFilesRecursiveWithZipAndXml(){
 		//@TODO: lifetime testen
 		// testverzeichnis anlegen
@@ -145,7 +145,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		// weider löschen
 		t3lib_div::rmdir($testfolder, true);
 	}
-	
+
 	/**
 	 * getServerPath testen
 	 */
@@ -159,7 +159,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($pathSite.'typo3conf/', tx_mklib_util_File::getServerPath('\typo3conf'));
 		$this->assertEquals($pathSite.'typo3conf/localconf.php', tx_mklib_util_File::getServerPath('/typo3conf\localconf.php'));
 	}
-	
+
 	/**
 	 * getRelPath testen
 	 */
@@ -173,7 +173,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		$this->assertEquals('/typo3conf/', tx_mklib_util_File::getRelPath($pathSite.'\typo3conf'));
 		$this->assertEquals('/typo3conf/localconf.php', tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php'));
 	}
-	
+
 	/**
 	 * getWebPath testen
 	 */
@@ -190,8 +190,40 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath($pathSite.'/typo3conf\localconf.php'));
 		$this->assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath('typo3conf\localconf.php'));
 	}
-	
-	
+
+	public function testParseUrlFromParts() {
+		$url = 'https://kunde:mk17@jenkins.project.dmknet.de:80/jenkins?test=param#anchor';
+		$parts = parse_url($url);
+		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
+		$this->assertEquals($url, $newUrl);
+
+		unset($parts['pass']);
+		$url = 'https://kunde@jenkins.project.dmknet.de:80/jenkins?test=param#anchor';
+		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
+		$this->assertEquals($url, $newUrl);
+
+		unset($parts['user']);
+		$url = 'https://jenkins.project.dmknet.de:80/jenkins?test=param#anchor';
+		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
+		$this->assertEquals($url, $newUrl);
+
+		unset($parts['port']);
+		$url = 'https://jenkins.project.dmknet.de/jenkins?test=param#anchor';
+		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
+		$this->assertEquals($url, $newUrl);
+
+		unset($parts['query']);
+		$url = 'https://jenkins.project.dmknet.de/jenkins#anchor';
+		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
+		$this->assertEquals($url, $newUrl);
+
+		unset($parts['fragment']);
+		$url = 'https://jenkins.project.dmknet.de/jenkins';
+		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
+		$this->assertEquals($url, $newUrl);
+	}
+
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_File_testcase.php']) {

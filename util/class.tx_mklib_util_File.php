@@ -373,6 +373,32 @@ class tx_mklib_util_File {
 	}
 
 	/**
+	 * Erzeugt eine URL anhand von den uri parts
+	 *
+	 * http://www.php.net/manual/en/function.parse-url.php
+	 *
+	 * @param array $parts
+	 * @return string
+	 */
+	public static function parseUrlFromParts(array $parts) {
+		$parts = array_merge(array(
+			'scheme' => '', 'host' => '', 'port' => '',
+			'user' => '', 'pass' => '',
+			'path' => '', 'query' => '', 'fragment' => '',
+		), $parts);
+
+		$password = strlen($parts['pass']) > 0 ? ':'.$parts['pass'] : '';
+		$auth = strlen($parts['user']) > 0 ? $parts['user'] . $password . '@' : '';
+		$port = strlen($parts['port']) > 0 ? ':'.$parts['port'] : '';
+		$query = strlen($parts['query']) > 0 ? '?'.$parts['query'] : '';
+		$fragment = strlen($parts['fragment']) > 0 ? '#'.$parts['fragment'] : '';
+
+		return $parts['scheme'] . '://' . $auth
+			. $parts['host'] . $port
+			. $parts['path'] . $query . $fragment;
+	}
+
+	/**
 	 * Legt eine .htaccess an, um ein Verzeichnis vor Zugriffen zu schützen.
 	 *
 	 * @param string $path
