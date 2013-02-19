@@ -33,9 +33,11 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
  * Util Methoden für die Date.
- * @author	Hannes Bochmann
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_util
+ * @author	Hannes Bochmann
+ * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 class tx_mklib_util_Date {
 	public static $days = array(
@@ -158,6 +160,41 @@ class tx_mklib_util_Date {
 			|| count(explode(':', $datetime))!==3
 			|| count(explode('-', $datetime))!==3
 		);
+	}
+
+
+	/**
+	 * DateTimeZone ist wichtig, falls nicht dann:
+	 * 	It is not safe to rely on the system's timezone settings.
+	 * 	Please use the date.timezone setting, the TZ envir onment variable
+	 * 	or the date_default_timezone_set() function. In case you used any
+	 * 	of those methods and you are still getting this warning, you most
+	 * 	likely missp elled the timezone identifier. We selected
+	 * 	'Europe/Paris' for '2.0/DST' instead.
+	 *
+	 * @param string|DateTimeZone $timezone
+	 * @return DateTimeZone
+	 */
+	public static function getDateTimeZone($timezone=null) {
+		static $europeBerlin = null;
+		if (is_null($timezone) && is_null($europeBerlin)) {
+			$europeBerlin = new DateTimeZone('Europe/Berlin');
+		}
+		return is_null($timezone)
+			? $europeBerlin
+			: new DateTimeZone($timezone)
+		;
+	}
+	/**
+	 * @param string|DateTimeZone $date
+	 * @param string $timezone
+	 * @return DateTime
+	 */
+	public static function getDateTime($date=null, $timezone=null) {
+		$timezone = is_object($timezone)
+			? $timezone
+			: self::getDateTimeZone($timezone);
+		return new DateTime($date, $timezone);
 	}
 
 	/**
