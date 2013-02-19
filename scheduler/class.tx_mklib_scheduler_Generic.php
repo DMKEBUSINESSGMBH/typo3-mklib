@@ -103,6 +103,9 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 				'options' => $options,
 				'devlog' => $devLog, // bisherige logs mitgeben
 			);
+			if ($exception instanceof tx_rnbase_util_Exception) {
+				$dataVar['exception_data'] = $exception->getAdditional(FALSE);
+			}
 			if (tx_rnbase_util_Logger::isFatalEnabled())
 				tx_rnbase_util_Logger::fatal(
 					'Task ['.get_class($this).'] failed.'
