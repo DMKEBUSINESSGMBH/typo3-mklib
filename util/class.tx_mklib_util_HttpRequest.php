@@ -353,7 +353,7 @@ class tx_mklib_util_HttpRequest {
 		// Set the Content-Type header
 		if ($this->method == self::METHOD_POST
 			&& !isset($this->headers['content-type'])) {
-			$headers[] = self::CONTENT_TYPE . ': application/x-www-form-urlencoded';
+			$headers[] = 'Content-Type: application/x-www-form-urlencoded';
 		}
 
 		// Set the user agent header
