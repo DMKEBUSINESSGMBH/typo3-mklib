@@ -33,7 +33,8 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_HttpRequest');
 
 /**
- * Array util tests
+ * Http Request Object Tests
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */

@@ -81,7 +81,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement {
 	}
 
 	/**
-	 * Existiert ein Wert f�r den angegebenen Pfad
+	 * Existiert ein Wert für den angegebenen Pfad
 	 * @param string $path
 	 * @return bool
 	 */
@@ -138,7 +138,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement {
 	/**
 	 * 20121001202520 ist eigentlich ein integer.
 	 * auf 32-bit Systemen allerdings nicht,
-	 * deswegen pr�fen wir hier nur auf is_numeric!
+	 * deswegen prüfen wir hier nur auf is_numeric!
 	 *
 	 * @TODO: kommazahlen abtrennen und umwandeln!
 	 *
@@ -149,7 +149,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement {
 		return null;
 	}
 	/**
-	 * Pr�ft, ob das Tag Attribute oder ChildNodes hat
+	 * Prüft, ob das Tag Attribute oder ChildNodes hat
 	 * @return boolean
 	 */
 	public function isEmpty() {
@@ -173,15 +173,17 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement {
 
 	/**
 	 * Liefert ein double anhand eines Strings im XML.
+	 *
 	 * @param string $path
-	 * @param int $digits
+	 * @param int $digits bei 2 wird aus 1999 19,99.
+	 * 		Die Preise sollten also als Centbeträge im Code stehen.
 	 * @return float
 	 */
 	public function getPriceFromPath($path, $digits=2) {
 		$value = $this->getIntFromPath($path);
 		if (!is_null($value)) {
 			$digits = (int) '1'.str_repeat('0', $digits);
-			// komma zu dot umwandeln
+			// @TODO: komma zu dot umwandeln
 			$value = (float) ($value / $digits);
 		}
 		return $value;
@@ -254,7 +256,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement {
 	 */
 	public function asArray() {
 		throw new Exception('asArray has to be implementet.');
-		// mal bei merchstore scheuen und kopieren.
+		// mal bei merchstore schauen und kopieren.
 // 		tx_Base::load('tx_util_XmlToArray');
 // 		$array = tx_util_XmlToArray::createArray($this->asXML());
 // 		return $array[$this->getName()];

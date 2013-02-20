@@ -73,7 +73,6 @@ interface tx_mklib_util_httprequest_adapter_Interface {
 	 *
 	 * @param string $method
 	 * @param string $url
-	 * @param string $http_ver
 	 * @param array $headers
 	 * @param string $body
 	 * @return string Request as text
