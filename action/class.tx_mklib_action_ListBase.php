@@ -55,6 +55,10 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 		$srv = $this->getService();
 
 		//@todo interface für die services bereitstellen um nicht prüfen zu müssen ob es die Such methode gibt!
+		// mw:
+		// eventuell einfach auf tx_rnbase_sv1_Base prüfen !?
+		// die methode getSearchCallback ist überflüssig,
+		// da es auch bei einem interface immer eine fest definierte sein muss > search!
 		$sSearchCallback = $this->getSearchCallback();
 		if(!method_exists($srv,$sSearchCallback))
 			throw new RuntimeException('Der Service ' . $srv . ' muss die Methode ' . $sSearchCallback .' unterstützen!', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'1');
@@ -83,6 +87,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 	/**
 	 * Soll der filter über $confId.filter (neu) oder direkt über die
 	 * $confId (alt) eingebunden werden
+	 * @TODO: sollte die confid liefern, keinen boolischen wert!
 	 * @return bool
 	 */
 	protected function isOldFilterMode() {
@@ -98,6 +103,8 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 
 	/**
 	 * Liefert den bezeichner für die gefundenen elemente in den view daten
+	 * @TODO: überflüssig, der item designator sollte immer item sein,
+	 * 	da die basisklassen (rnbase) nur damit arbeiten können!
 	 * @return string
 	 */
 	protected function getItemsDesignator() {
@@ -106,6 +113,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 
 	/**
 	 * Liefert die Methode, welche im Service zum Suchen aufgerufen wird
+	 * @TODO: überflüssig, sollte immer search sein!
 	 * @return string
 	 */
 	protected function getSearchCallback() {
@@ -120,6 +128,10 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 
 	/**
 	 * Liefert den Ts Pfad für den pagebrowser ausgehend von $this->getConfId()
+	 *
+	 * @TODO: sollte nicht abstract sein, sondern immer eine confid liefern.
+	 * wenn notwendig, wird die methode eben überschrieben!
+	 *
 	 * @return string
 	 */
 	abstract protected function getTsPathPageBrowser();
