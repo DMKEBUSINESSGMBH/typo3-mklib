@@ -31,6 +31,14 @@ tx_rnbase::load('tx_mklib_srv_Base');
  */
 class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base {
 
+
+	/**
+	 * @return string
+	 */
+	public function getSearchClass(){
+		return 'tx_mklib_search_StaticCountryZones';
+	}
+
 	/**
 	 * (non-PHPdoc)
 	 * @see tx_mklib_srv_Base::search()
@@ -41,15 +49,19 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base {
 
 		return parent::search($fields, $options);
 	}
-	
-	
+
 	/**
-	 * @return string
+	 * Liefert alle Regionen anhand eines ISO-2-Länder-Codes.
+	 *
+	 * @param string $iso
+	 * @return array[tx_mklib_model_StaticCountryZone]
 	 */
-	public function getSearchClass(){
-		return 'tx_mklib_search_StaticCountryZones';
+	public function getByIso2Code($iso) {
+		$fields = $options = array();
+		$fields['STATICCOUNTRYZONE.zn_country_iso_2'][OP_EQ] = strtoupper($iso);
+		return $this->search($fields, $options);
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see tx_mklib_srv_Base::create()

@@ -95,7 +95,7 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 
 		return $data;
 	}
-	
+
 	/**
 	 * Escaping and quoting values for SQL statements.
 	 * Usage count/core: 100
@@ -177,6 +177,20 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	 */
 	public static function doSelect($what, $from, $arr, $debug=0){
 		return parent::doSelect($what, $from, $arr, $debug);
+	}
+
+	/**
+	 * Make a plain SQL Query.
+	 * Notice: The db resource is not closed by this method. The caller is in charge to do this!
+	 *
+	 * @TODO: logging integrieren!
+	 *
+	 * @param string $sqlQuery
+	 * @param int $debug
+	 * @return result pointer for SELECT, EXPLAIN, SHOW, DESCRIBE or boolean
+	 */
+	public static function doQuery($query, array $options = array()) {
+		return parent::doQuery($query);
 	}
 
 	/**

@@ -328,6 +328,14 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		);
 		return $model;
 	}
+	/**
+	 * Clears the complete table.
+	 */
+	public function truncate() {
+		$table = $this->getDummyModel()->getTableName();
+		tx_rnbase::load('tx_mklib_util_DB');
+		return tx_mklib_util_DB::doQuery('TRUNCATE TABLE ' . $table);
+	}
 
 	/**
 	 * Schützt die Felder vor Cross-Site-Scripting
