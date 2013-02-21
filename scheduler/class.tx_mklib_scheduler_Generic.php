@@ -69,6 +69,8 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 		$devLog = array();
 		$options = $this->getOptions();
 
+		tx_rnbase_util_Logger::info('['.get_class($this).']: Scheduler starts', $this->getExtKey());
+
 		try {
 			$message = $this->executeTask($options, $devLog);
 
@@ -128,6 +130,9 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			//Wir geben die Exception weiter, damit der Scheduler eine entsprechende Meldung ausgeben kann.
 			throw $exception;
 		}
+
+		tx_rnbase_util_Logger::info('['.get_class($this).']: Scheduler ends successful ', $this->getExtKey());
+
 		return true;
 	}
 
