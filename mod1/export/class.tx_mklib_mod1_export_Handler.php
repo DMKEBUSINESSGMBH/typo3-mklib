@@ -113,6 +113,15 @@ class tx_mklib_mod1_export_Handler {
 
 		$itemPath = $this->getItemPath($type);
 
+		// Der Subpart für Debug-Ausgaben wird am ende ausgegeben
+		$debug = tx_rnbase_util_Templates::getSubpart($template, '###DEBUG###');
+		if ($debug) {
+			$template = tx_rnbase_util_Templates
+				::substituteSubpart($template, '###DEBUG###', '');
+			$timeStart = microtime(true);
+			$memStart = memory_get_usage();
+		}
+
 		tx_mklib_mod1_export_Util::sendHeaders($this->getHeaderConfig($type));
 
 		/* @var $listBuilder tx_mklib_mod1_export_ListBuilder */
@@ -125,6 +134,8 @@ class tx_mklib_mod1_export_Handler {
 			strtoupper($itemPath),
 			$this->getConfigurations()->getFormatter()
 		);
+
+		$this->parseDebugs($debug, $timeStart, $memStart);
 
 		// done!
 		exit();
@@ -337,6 +348,44 @@ class tx_mklib_mod1_export_Handler {
 	 */
 	protected function getConfId() {
 		return $this->getModFunc()->getConfId().'export.';
+	}
+
+	/**
+	 * Parst den DEBUG Subpart und gibt diesen direkt aus!
+	 *
+	 * @param string $template
+	 * @param int $timeStart
+	 * @param int $memStart
+	 * @param array $markerArr
+	 * @return boolean
+	 */
+	protected function parseDebugs(
+		$template,
+		$timeStart = 0, $memStart = 0,
+		array $markerArr = array()
+	) {
+		if (empty($template)) {
+			return FALSE;
+		}
+		tx_rnbase::load('tx_mklib_util_Date');
+		$memEnd = memory_get_usage();
+		$markerArr['###DEBUG_PARSETIME###'] = (microtime(true) - $timeStart);
+		$markerArr['###DEBUG_MEMUSED###'] = ($memEnd - $memStart);
+		$markerArr['###DEBUG_MEMSTART###'] = $memStart;
+		$markerArr['###DEBUG_MEMEND###'] = $memEnd;
+		$markerArr['###DEBUG_DATE###'] = tx_mklib_util_Date::getExecDate(DATE_ATOM);
+		$markerArr['###DEBUG_ITEMCOUNT###'] = 'N/A';
+		// die anzahl der ausgegebenen Datensätze ermitteln.
+		$provider = $this->getListProvider();
+		if ($provider instanceof tx_rnbase_util_ListProvider) {
+			$params = array($provider->fields, $provider->options);
+			$params[1]['count'] = 1;
+			$count = call_user_func_array($provider->searchCallback, $params);
+			$markerArr['###DEBUG_ITEMCOUNT###'] = $count;
+		}
+		$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArr);
+		echo $out;
+		return TRUE;
 	}
 
 	/**

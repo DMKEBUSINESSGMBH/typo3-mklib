@@ -179,6 +179,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 		// Wir initialisieren das Formular und damit auch die Filter.
 		$this->getFilterTableDataForSearchForm();
 		list($fields, $options) = $this->getFieldsAndOptions();
+		/* @var $provider tx_rnbase_util_ListProvider */
 		$provider = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
 		$provider->initBySearch(array($this->getService(), 'search'), $fields, $options);
 		return $provider;
