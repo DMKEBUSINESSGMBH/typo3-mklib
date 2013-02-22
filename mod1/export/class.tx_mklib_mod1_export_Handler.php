@@ -41,6 +41,8 @@ tx_rnbase::load('tx_mklib_mod1_export_Util');
 					excel {
 						### Label des Buttons, kann auch: ###LABEL_*
 						label = Excel
+						### Diese Beschreibung wird als ToolTip beim Hovern über den Button ausgegeben. Kann auch: ###LABEL_*
+						description = Firmen mit Hauptkontakt und Anzahl geschaltener Anzeigen
 						### ein für Typo3 bekanntes Sprite Icon. Siehe tx_rnbase_mod_Util::debugSprites
 						spriteIcon = mimetypes-excel
 						### konfiguration für das template
@@ -145,15 +147,7 @@ class tx_mklib_mod1_export_Handler {
 
 		$buttons = '';
 		foreach ($this->getExportTypes() as $type) {
-			$sprite = $configuration->get($confId.$type.'.spriteIcon');
-			$button = $this->getModule()->getFormTool()->createSubmit(
-				'mklib[export]['.$type.']',
-				$configuration->get($confId.$type.'.label')
-			);
-			if ($sprite) {
-				$button = tx_rnbase_mod_Util::getSpriteIcon($sprite) . $button;
-			}
-			$buttons .= '<span class="imgsubmit">'.$button.'</span>';
+			$buttons .= $this->renderButton($type);
 		}
 
 		if (!empty($buttons)){
@@ -165,6 +159,34 @@ class tx_mklib_mod1_export_Handler {
 
 		$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray);
 		return $out;
+	}
+
+	/**
+	 * Rendert einen einzelnen Button inklusive Icons und Beschreibungs-Tooltip.
+	 * @param string $type
+	 * @return string
+	 */
+	protected function renderButton($type) {
+
+		$configuration = $this->getConfigurations();
+		$confId = $this->getConfId().'types.';
+
+		$sprite = $configuration->get($confId.$type.'.spriteIcon');
+		$button = $this->getModule()->getFormTool()->createSubmit(
+			'mklib[export]['.$type.']',
+			$configuration->get($confId.$type.'.label')
+		);
+		if ($sprite) {
+			$sprite = tx_rnbase_mod_Util::getSpriteIcon($sprite);
+		}
+		$description = $configuration->get($confId.$type.'.description');
+		if ($description) {
+			$description = '<span class="bgColor2 info">'
+			. tx_rnbase_mod_Util::getSpriteIcon('status-dialog-information')
+			. $description . '</span>';
+		}
+		$button = '<span class="imgbtn">' . $sprite . $button . '</span>';
+		return '<span class="mklibexport">' . $button . $description . '</span>';
 	}
 
 	/**
@@ -318,18 +340,31 @@ class tx_mklib_mod1_export_Handler {
 	 */
 	private function getButtonStyles() {
 		return '<style type="text/css">
-		.imgsubmit {
+		.mklibexport {
+			display: block;
+			position: relative;
+		}
+		.mklibexport .imgbtn {
 			position: relative;
 			margin: 5px;
 			float: left;
 		}
-		.imgsubmit span {
+		.mklibexport .imgbtn span.t3-icon {
 			left: 8px;
 			margin: 0;
 			position: absolute;
 			top: 2px;
 		}
-		.imgsubmit input[type="submit"] {
+		.mklibexport span.info {
+			display: none;
+			position: absolute;
+			padding: 5px;
+			top: 25px
+		}
+		.mklibexport:hover span.info {
+			display: block;
+		}
+		.mklibexport input[type="submit"] {
 			float: none;
 			padding-left: 24px;
 		}
