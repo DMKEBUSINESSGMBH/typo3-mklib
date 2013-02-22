@@ -167,6 +167,12 @@ class tx_mklib_mod1_export_Handler {
 	 * @return string
 	 */
 	protected function renderButton($type) {
+		static $infoSprite = FALSE;
+
+		if ($infoSprite == FALSE) {
+			$infoSprite = tx_rnbase_mod_Util
+				::getSpriteIcon('status-dialog-information');
+		}
 
 		$configuration = $this->getConfigurations();
 		$confId = $this->getConfId().'types.';
@@ -182,7 +188,7 @@ class tx_mklib_mod1_export_Handler {
 		$description = $configuration->get($confId.$type.'.description');
 		if ($description) {
 			$description = '<span class="bgColor2 info">'
-			. tx_rnbase_mod_Util::getSpriteIcon('status-dialog-information')
+			. $infoSprite
 			. $description . '</span>';
 		}
 		$button = '<span class="imgbtn">' . $sprite . $button . '</span>';
@@ -339,7 +345,7 @@ class tx_mklib_mod1_export_Handler {
 	 * @return string
 	 */
 	private function getButtonStyles() {
-		return '<style type="text/css">
+		$css = '<style type="text/css">
 		.mklibexport {
 			display: block;
 			position: relative;
@@ -369,6 +375,8 @@ class tx_mklib_mod1_export_Handler {
 			padding-left: 24px;
 		}
 		</style>';
+		// alle umbrüche und tabs entfernen
+		return str_replace(array("\t", "\n", "\r"), '', $css);
 	}
 
 }
