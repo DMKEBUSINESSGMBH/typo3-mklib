@@ -44,7 +44,11 @@ class tx_mklib_mod1_export_Util {
 		$fileName = empty($options['filename']) ? 'export.dat' : $options['filename'];
 		$contentType = empty($options['contenttype']) ? 'application/octet-stream' : $options['contenttype'];
 
-		ob_clean();
+		// Ausgabe-Puffer leeren und deaktivieren.
+		// Damit wird direkt der Download-Dialig geöffnet
+		// und direkt an den Client gestreamt.
+		ob_end_clean();
+
 		header('Pragma: public');
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
