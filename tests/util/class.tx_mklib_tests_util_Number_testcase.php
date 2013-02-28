@@ -74,7 +74,9 @@ class tx_mklib_tests_util_Number_testcase extends tx_phpunit_testcase {
 			// über die parseFloat, sollte genau das herauskommen, was wir benötigen
 			// ein Float mit einem Punkt als Dezimaltrennzeichen.
 			'Line:'.__LINE__ => array('5.43', '5.43', array()),
+			'Line:'.__LINE__ => array('-5.43', '-5.43', array()),
 			'Line:'.__LINE__ => array('5.43', '5,43', array()),
+			'Line:'.__LINE__ => array('-5.43', '-5,43', array()),
 			// hierzu muss erst der Todo aus parseFloat abgearbeidet werden.
 // 			'Line:'.__LINE__ => array('5435.55', '5.435,55', array()),
 // 			'Line:'.__LINE__ => array('5435.55', '5,435.55', array()),

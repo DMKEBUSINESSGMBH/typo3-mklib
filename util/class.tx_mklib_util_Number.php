@@ -64,7 +64,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var {
 	}
 
 	/**
-	 * Erzeugt einen richtigen Float-Wert.
+	 * Erzeugt einen technisch richtigen Float-Wert.
 	 * Bei floatval() werden die Eistellungen über setlocal beachtet.
 	 * Wurde das beispielsweise auf Deutsch gesetzt, wird aus 5.45 > 5,45.
 	 * Das Komma macht dann Beispielsweise DB-Abfragen kaputt/fehlerhaft.
