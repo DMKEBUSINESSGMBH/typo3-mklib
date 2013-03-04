@@ -114,6 +114,11 @@ class tx_mklib_mod1_export_Handler {
 			return ;
 		}
 
+		// Ignoriere Stop-Button
+		ignore_user_abort(true);
+		// No Time-Limit
+		set_time_limit(0);
+
 		$itemPath = $this->getItemPath($type);
 
 		// Der Subpart für Debug-Ausgaben wird am ende ausgegeben
