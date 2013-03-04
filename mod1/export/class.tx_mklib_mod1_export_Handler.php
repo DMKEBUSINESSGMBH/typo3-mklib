@@ -108,8 +108,11 @@ class tx_mklib_mod1_export_Handler {
 		}
 
 		$template = $this->getExportTemplate($type);
-
 		$provider = $this->getListProvider();
+
+		if (!$template || !$provider) {
+			return ;
+		}
 
 		$itemPath = $this->getItemPath($type);
 
@@ -249,11 +252,12 @@ class tx_mklib_mod1_export_Handler {
 	protected function getListProvider() {
 		$provider = $this->getSearcher()->getInitialisedListProvider();
 		if (!$provider instanceof tx_rnbase_util_IListProvider) {
-			throw new Exception(
+			$this->getModule()->addMessage(
 				'The provider "'.get_class($provider).'" has to implement'.
 				' the interface tx_rnbase_util_IListProvider',
-				1361174776
+				'Subpart not found', 2
 			);
+			return FALSE;
 		}
 		return $provider;
 	}
