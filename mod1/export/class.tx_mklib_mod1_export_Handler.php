@@ -196,10 +196,11 @@ class tx_mklib_mod1_export_Handler {
 		$configuration = $this->getConfigurations();
 		$confId = $this->getConfId().'types.';
 
+		$label = $configuration->get($confId.$type.'.label');
 		$sprite = $configuration->get($confId.$type.'.spriteIcon');
 		$button = $this->getModule()->getFormTool()->createSubmit(
 			'mklib[export]['.$type.']',
-			$configuration->get($confId.$type.'.label')
+			$label
 		);
 		if ($sprite) {
 			$sprite = tx_rnbase_mod_Util::getSpriteIcon($sprite);
@@ -207,7 +208,7 @@ class tx_mklib_mod1_export_Handler {
 		$description = $configuration->get($confId.$type.'.description');
 		if ($description) {
 			$description = '<span class="bgColor2 info">'
-			. $infoSprite
+			. $infoSprite . '<strong>' . $label . '</strong><br />'
 			. $description . '</span>';
 		}
 		$button = '<span class="imgbtn">' . $sprite . $button . '</span>';
