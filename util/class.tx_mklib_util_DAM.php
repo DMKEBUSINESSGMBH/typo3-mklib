@@ -490,8 +490,10 @@ class tx_mklib_util_DAM {
 		// Check BE User
 		if(!is_object($BE_USER) || !is_array($BE_USER->user)) {
 			if(!$beUserId) {
-				tx_rnbase::load('tx_rnbase_util_Misc');
-				tx_rnbase_util_Misc::mayday('NO BE User id given!');
+				throw tx_rnbase::makeInstance(
+						'tx_mklib_exception_NoBeUser',
+						'NO BE User id given!'
+				);
 			}
 			require_once(PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 			unset($BE_USER);
