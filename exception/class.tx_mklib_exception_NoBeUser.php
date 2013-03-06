@@ -32,7 +32,7 @@
  * @package tx_mklib
  * @subpackage tx_mklib_exception
  */
-class tx_mklib_exception_NoFeUser extends t3lib_exception {
+class tx_mklib_exception_NoBeUser extends t3lib_exception {
   /**
    * Error code
    *
@@ -41,6 +41,6 @@ class tx_mklib_exception_NoFeUser extends t3lib_exception {
     protected $code = 1;
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_NoFeUser.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_NoFeUser.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_NoBeUser.php']) {
+  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_NoBeUser.php']);
 }
