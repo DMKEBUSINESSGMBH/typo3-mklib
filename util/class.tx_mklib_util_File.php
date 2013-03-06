@@ -390,6 +390,8 @@ class tx_mklib_util_File {
 		$password = strlen($parts['pass']) > 0 ? ':'.$parts['pass'] : '';
 		$auth = strlen($parts['user']) > 0 ? $parts['user'] . $password . '@' : '';
 		$port = strlen($parts['port']) > 0 ? ':'.$parts['port'] : '';
+		// check excisting ? ???
+		//$query = strlen($parts['query']) > 0 ? ($parts['query'][0] == '?' ? $parts['query'] : '?'.$parts['query']) : '';
 		$query = strlen($parts['query']) > 0 ? '?'.$parts['query'] : '';
 		$fragment = strlen($parts['fragment']) > 0 ? '#'.$parts['fragment'] : '';
 

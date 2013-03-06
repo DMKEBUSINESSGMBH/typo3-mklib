@@ -300,7 +300,7 @@ class tx_mklib_util_HttpRequest {
 			if ($this->config['rfc3986_strict']) {
 				$query = str_replace('+', '%20', $query);
 			}
-			$uri['query']  = empty($uri['query']) ? '?' : $uri['query'] . '&';
+			$uri['query']  = empty($uri['query']) ? '' : $uri['query'] . '&';
 			$uri['query'] .= $query;
 		}
 
