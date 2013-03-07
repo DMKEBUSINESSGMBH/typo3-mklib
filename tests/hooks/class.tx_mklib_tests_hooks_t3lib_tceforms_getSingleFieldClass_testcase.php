@@ -29,54 +29,81 @@ require_once(PATH_t3lib.'class.t3lib_tceforms.php');
 class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends tx_phpunit_testcase {
 
 	protected $oTceForms;
-	
+
+	/**
+	 * damit ersichtlicher ist, was welches feld repräsentiert.
+	 * @var array
+	 */
+	private $fieldMappings = array(
+		'inputNotRequiredField' 	=> 't3ver_oid',
+		'selectNotRequired1Field' 	=> 't3ver_id',
+		'selectNotRequired2Field' 	=> 't3ver_wsid',
+		'selectNotRequired3Field' 	=> 't3ver_label',
+		'selectNotRequired4Field' 	=> 't3ver_state',
+		'selectNotRequired5Field' 	=> 't3ver_count',
+		'selectRequired1Field' 		=> 't3ver_tstamp',
+		'selectRequired2Field' 		=> 't3ver_swapmode',
+		'selectRequired3Field' 		=> 't3ver_move_id',
+		'selectRequired4Field' 		=> 't3_origuid',
+	);
+
+	/**
+	 * @var string
+	 */
+	private $testTable = 'pages';
+
+	/**
+	 * @var array
+	 */
+	private $tcaBackup;
+
 	public function setUp() {
-		//Fake TCA tabelle für die Tests
-		//da es diese nicht in der DB gibt, kommt es zu Fehlern
-		//bei der Ausführung. Das ist aber vollkommen irrelevant
-		//da wir nichts in Bezug auf die DB testen.
+		//wir nutzen hier die pages tabelle und überschreiben die TCA
+		//für ein paar felder. wir müssen das mit bestehenden feldern
+		//in einer echten tabelle testen da es sonst zu warnungen kommt.
 		global $TCA;
-		$TCA['tx_mklib_getSingleFieldTest'] = Array (
+		$this->tcaBackup = $TCA[$this->testTable];
+		$TCA[$this->testTable] = Array (
 			'ctrl' => array (
-				'title'     => 'tx_mklib_getSingleFieldTest',
+				'title'     => $this->testTable,
 				'readOnly' => 1,
 				'is_static' => 1
 			),
 			'columns' => Array (
-				'inputNotRequired' => array (
+				$this->fieldMappings['inputNotRequiredField'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'input',
 					)
 				),
-				'selectNotRequired1' => array (
+				$this->fieldMappings['selectNotRequired1Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
 					)
 				),
-				'selectNotRequired2' => array (
+				$this->fieldMappings['selectNotRequired2Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
 						'eval' => 'required'
 					)
 				),
-				'selectNotRequired3' => array (
+				$this->fieldMappings['selectNotRequired3Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
 						'maxitems' => 1
 					)
 				),
-				'selectNotRequired4' => array (
+				$this->fieldMappings['selectNotRequired4Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
 						'minitems' => 1
 					)
 				),
-				'selectNotRequired5' => array (
+				$this->fieldMappings['selectNotRequired5Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
@@ -84,7 +111,7 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 						'maxitems' => 1
 					)
 				),
-				'selectRequired1' => array (
+				$this->fieldMappings['selectRequired1Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
@@ -93,7 +120,7 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 						'minitems' => 1
 					)
 				),
-				'selectRequired2' => array (
+				$this->fieldMappings['selectRequired2Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
@@ -102,7 +129,7 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 						'minitems' => 1
 					)
 				),
-				'selectRequired3' => array (
+				$this->fieldMappings['selectRequired3Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
@@ -111,7 +138,7 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 						'minitems' => 1
 					)
 				),
-				'selectRequired4' => array (
+				$this->fieldMappings['selectRequired4Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
 						'type'    => 'select',
@@ -124,12 +151,19 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 		);
 		//damit alles auf der CLI funktioniert
 		$GLOBALS['BE_USER']->user['admin'] = 1;
-		
+
 		//tceforms initialisieren
 		$this->oTceForms = t3lib_div::makeInstance('t3lib_tceforms');
 	}
-	
-	
+
+	/**
+	 */
+	public function tearDown() {
+		global $TCA;
+		$TCA[$this->testTable] = $this->tcaBackup;
+	}
+
+
 	/**
 	 * Wird aus start- und enddatum ein datetime gemacht?
 	 * Enter description here ...
@@ -137,28 +171,82 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 	public function testAddingRequiredEvalForSelects() {
 		//testdaten
 		$row = array('uid' => 1);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'inputNotRequired', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectNotRequired1', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectNotRequired2', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectNotRequired3', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectNotRequired4', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectNotRequired5', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectRequired1', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectRequired2', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectRequired3', $row);
-		$this->oTceForms->getSingleField('tx_mklib_getSingleFieldTest', 'selectRequired4', $row);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['inputNotRequiredField'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectNotRequired1Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectNotRequired2Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectNotRequired3Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectNotRequired4Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectNotRequired5Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectRequired1Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectRequired2Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectRequired3Field'], $row
+		);
+		$this->oTceForms->getSingleField(
+			$this->testTable, $this->fieldMappings['selectRequired4Field'], $row
+		);
+
 		//test
-		$this->assertFalse(isset($this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_inputNotRequired']),'inputNotRequired ist required!');
-		$this->assertFalse(isset($this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectNotRequired1']),'inputNotRequired ist required!');
-		$this->assertFalse(isset($this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectNotRequired2']),'inputNotRequired ist required!');
-		$this->assertFalse(isset($this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectNotRequired3']),'inputNotRequired ist required!');
-		$this->assertFalse(isset($this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectNotRequired4']),'inputNotRequired ist required!');
-		$this->assertFalse(isset($this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectNotRequired5']),'inputNotRequired ist required!');
-		$this->assertEquals('data[tx_mklib_getSingleFieldTest][1][selectRequired1]', $this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectRequired1'],'selectRequired1 ist nicht required!');
-		$this->assertEquals('data[tx_mklib_getSingleFieldTest][1][selectRequired2]', $this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectRequired2'],'selectRequired2 ist nicht required!');
-		$this->assertEquals('data[tx_mklib_getSingleFieldTest][1][selectRequired3]', $this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectRequired3'],'selectRequired3 ist nicht required!');
-		$this->assertEquals('data[tx_mklib_getSingleFieldTest][1][selectRequired4]', $this->oTceForms->requiredFields['tx_mklib_getSingleFieldTest_1_selectRequired4'],'selectRequired4 ist nicht required!');
-		
+		$this->assertFalse(
+			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['inputNotRequiredField']]),
+			$this->fieldMappings['inputNotRequiredField']. ' ist required!'
+		);
+		$this->assertFalse(
+			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired1Field']]),
+			$this->fieldMappings['selectNotRequired1Field']. ' ist required!'
+		);
+		$this->assertFalse(
+			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired2Field']]),
+			$this->fieldMappings['selectNotRequired2Field']. ' ist required!'
+		);
+		$this->assertFalse(
+			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired3Field']]),
+			$this->fieldMappings['selectNotRequired3Field']. ' ist required!'
+		);
+		$this->assertFalse(
+			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired4Field']]),
+			$this->fieldMappings['selectNotRequired4Field']. ' ist required!'
+		);
+		$this->assertFalse(
+			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired5Field']]),
+			$this->fieldMappings['selectNotRequired5Field']. ' ist required!'
+		);
+		$this->assertEquals(
+			'data[pages][1][t3ver_tstamp]',
+			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired1Field']],
+			$this->fieldMappings['selectRequired1Field']. ' ist nicht required!'
+		);
+		$this->assertEquals(
+			'data[pages][1][t3ver_swapmode]',
+			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired2Field']],
+			$this->fieldMappings['selectRequired2Field']. ' ist nicht required!'
+		);
+		$this->assertEquals(
+			'data[pages][1][t3ver_move_id]',
+			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired3Field']],
+			$this->fieldMappings['selectRequired3Field']. ' ist nicht required!'
+		);
+		$this->assertEquals(
+			'data[pages][1][t3_origuid]',
+			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired4Field']],
+			$this->fieldMappings['selectRequired4Field']. 'ist nicht required!'
+		);
 	}
 }
 
