@@ -227,7 +227,8 @@ class tx_mklib_marker_DAMRecord extends tx_rnbase_util_BaseMarker {
 					$markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(false);
 			}
 			else {
-				$this->disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, false);
+				$remove = $configurations->getBool($confId.'link.removeIfDisabled', false, true);
+				$this->disableLink($markerArray, $subpartArray, $wrappedSubpartArray, $linkMarker, $remove);
 			}
 		}
 	}
