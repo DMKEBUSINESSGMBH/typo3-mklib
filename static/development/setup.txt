@@ -76,3 +76,12 @@ config.admPanel = 0
 </script>
 )
 [global]
+
+### sourceopt-Deaktivieren
+[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP : sourceopt = 1]
+  config.sourceopt {
+    formatHtml = 4
+    formatHtml.tabSize = 2
+  }
+  config.linkVars := addToList(sourceopt)
+[global]
