@@ -44,35 +44,18 @@ class tx_mklib_util_list_Builder
 	 */
 	private $output = NULL;
 	
-	
-	public function __construct($data = array(), $outputHandler = null) {
-		
-		$this->setOutputHandler($outputHandler, $data);
-		if (!$this->output instanceof tx_mklib_util_list_output_Interface) {
-			$this->setOutputHandler('tx_mklib_util_list_output_File', $data);
-		}
+	/**
+	 * @param tx_mklib_util_list_output_Interface $outputHandler
+	 * @param array $data
+	 */
+	public function __construct(tx_mklib_util_list_output_Interface $outputHandler, $data = array()) {
+		$this->output = $outputHandler;
+
 		$info = (is_array($data) && array_key_exists('info', $data)) ? $data['info'] : null;
 		parent::__construct($info);
 	}
 	
 	/**
-	* Load the output handler
-	*
-	* @param string $outputHandlerd
-	* @param array $data
-	* @return bool $success
-	*/
-	public function setOutputHandler($outputHandler, $data = array()) {
-		if (!is_string($outputHandler)) {
-			return false;
-		}
-		$outputHandler = tx_rnbase::makeInstance($outputHandler, $data);
-		if (!$outputHandler instanceof tx_mklib_util_list_output_Interface) {
-			throw new Exception('Passed output Handler is not valid');
-		}
-		$this->output = $outputHandler;
-		return true;
-	}
 	
 	/**
 	 * Add a visitor callback. It is called for each item before rendering
@@ -148,11 +131,8 @@ class tx_mklib_util_list_Builder
 	 * @return bool
 	 */
 	private function handleOutput($out) {
-		if ($this->output instanceof tx_mklib_util_list_output_Interface) {
-			$this->output->handleOutput($out);
-			return true;
-		}
-		return false;
+		$this->output->handleOutput($out);
+		return true;
 	}
 
 }
