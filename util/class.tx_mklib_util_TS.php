@@ -50,9 +50,12 @@ class tx_mklib_util_TS {
    	 * 								das plugin von mkxyz
    	 * @param string $sStaticPath | pfad zum TS
    	 * @param array $aConfig | zusätzliche Konfig, die die default Konfig überschreibt
+   	 * @param boolean $resolveReferences
    	 * @return tx_rnbase_configurations
    	 */
-  	public static function loadConfig4BE($extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array()) {
+  	public static function loadConfig4BE(
+  		$extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array(), $resolveReferences = false
+  		) {
   		$extKeyTS = is_null($extKeyTS) ? $extKey : $extKeyTS;
 
   		if(!$sStaticPath) $sStaticPath = '/static/ts/setup.txt';
@@ -70,7 +73,11 @@ class tx_mklib_util_TS {
 	    $tempConfig = $pageTSconfig['plugin.']['tx_'.$extKeyTS.'.'];
 	    $tempConfig['lib.'][$extKeyTS.'.'] = $pageTSconfig['lib.'][$extKeyTS.'.'];
 	    $tempConfig['lib.']['links.'] = $pageTSconfig['lib.']['links.'];
-	    $GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTS . '.'] = $tempConfig['lib.'][$extKeyTS . '.'];
+	    
+	    if($resolveReferences) {
+	    	$GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTS . '.'] = 
+	    		$tempConfig['lib.'][$extKeyTS . '.'];
+	    }
 
 	    $pageTSconfig = $tempConfig;
 
