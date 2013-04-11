@@ -70,6 +70,8 @@ class tx_mklib_util_TS {
 	    $tempConfig = $pageTSconfig['plugin.']['tx_'.$extKeyTS.'.'];
 	    $tempConfig['lib.'][$extKeyTS.'.'] = $pageTSconfig['lib.'][$extKeyTS.'.'];
 	    $tempConfig['lib.']['links.'] = $pageTSconfig['lib.']['links.'];
+	    $GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTS . '.'] = $tempConfig['lib.'][$extKeyTS . '.'];
+
 	    $pageTSconfig = $tempConfig;
 
 	    $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $extKeyTS;
