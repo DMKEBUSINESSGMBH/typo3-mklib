@@ -51,11 +51,14 @@ class tx_mklib_util_TS {
    	 * @param string $sStaticPath | pfad zum TS
    	 * @param array $aConfig | zusätzliche Konfig, die die default Konfig überschreibt
    	 * @param boolean $resolveLibReferences | sollen referenzen die in lib. stehen aufgelöst werden?
+   	 * @param boolean $forceTsfePreparation
+   	 * 
    	 * @return tx_rnbase_configurations
    	 */
   	public static function loadConfig4BE(
-  		$extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array(), $resolveLibReferences = false
-  		) {
+  		$extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array(), $resolveLibReferences = false,
+  		$forceTsfePreparation = false
+  	) {
   		$extKeyTS = is_null($extKeyTS) ? $extKey : $extKeyTS;
 
   		if(!$sStaticPath) $sStaticPath = '/static/ts/setup.txt';
@@ -64,7 +67,11 @@ class tx_mklib_util_TS {
 	    tx_rnbase::load('tx_rnbase_configurations');
 	    tx_rnbase::load('tx_rnbase_util_Misc');
 
-	    tx_rnbase_util_Misc::prepareTSFE(array('force' => true)); // Ist bei Aufruf aus BE notwendig!
+	    $tsfePreparationOptions = array();
+	    if($forceTsfePreparation) {
+	    	$tsfePreparationOptions['force'] = true;
+	    }
+	    tx_rnbase_util_Misc::prepareTSFE($tsfePreparationOptions); // Ist bei Aufruf aus BE notwendig!
 	    $GLOBALS['TSFE']->config = array();
 	    $cObj = t3lib_div::makeInstance('tslib_cObj');
 
