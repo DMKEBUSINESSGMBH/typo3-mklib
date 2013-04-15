@@ -64,7 +64,7 @@ class tx_mklib_util_TS {
 	    tx_rnbase::load('tx_rnbase_configurations');
 	    tx_rnbase::load('tx_rnbase_util_Misc');
 
-	    tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
+	    tx_rnbase_util_Misc::prepareTSFE(array('force' => true)); // Ist bei Aufruf aus BE notwendig!
 	    $GLOBALS['TSFE']->config = array();
 	    $cObj = t3lib_div::makeInstance('tslib_cObj');
 
