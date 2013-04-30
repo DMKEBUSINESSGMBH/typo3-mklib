@@ -84,7 +84,7 @@ class tx_mklib_tests_filter_SingleItem_testcase extends tx_phpunit_testcase{
 		$this->assertEquals($expectedFields, $fields, 'fields nicht leer');
 		
 		$expectedOptions = array(
-			'limit' 	=> true,
+			'limit' 	=> 1,
 		);
 		$this->assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
 	}
