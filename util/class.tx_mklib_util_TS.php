@@ -61,8 +61,13 @@ class tx_mklib_util_TS {
   	) {
   		$extKeyTS = is_null($extKeyTS) ? $extKey : $extKeyTS;
 
-  		if(!$sStaticPath) $sStaticPath = '/static/ts/setup.txt';
-	    t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
+  		if(!$sStaticPath) {
+  			$sStaticPath = '/static/ts/setup.txt';	
+  		}
+  		
+  		if(file_exists(t3lib_div::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
+	    	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
+  		}
 
 	    tx_rnbase::load('tx_rnbase_configurations');
 	    tx_rnbase::load('tx_rnbase_util_Misc');
