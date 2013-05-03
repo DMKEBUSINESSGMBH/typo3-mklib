@@ -164,11 +164,13 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 							break;
 						case 'email':
 							//wir unterstützen kommaseparierte listen von email andressen
-							$aEmails = explode(',', $mValue);
-							$bMessage = false;
-							foreach ($aEmails as $sEmail) {
-								if(!t3lib_div::validEmail($sEmail))
-									$bMessage = true;
+							if(!empty($mValue)) {
+								$aEmails = explode(',', $mValue);
+								$bMessage = false;
+								foreach ($aEmails as $sEmail) {
+									if(!t3lib_div::validEmail($sEmail))
+										$bMessage = true;
+								}
 							}
 
 							break;
