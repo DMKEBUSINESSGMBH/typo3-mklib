@@ -58,7 +58,7 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 *
 	 * @return 	tx_rnbase_util_SearchBase
 	 */
-	private function getSearcher(){
+	protected function getSearcher(){
 		return tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
 	}
 	/**
@@ -80,7 +80,6 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 * @return array[tx_rnbase_model_base]
 	 */
 	public function search($fields, $options) {
-
 		// On default, return hidden and deleted fields in backend
 		// @TODO: realy return deleted fields? make Konfigurable!
 		if (
