@@ -61,6 +61,16 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base {
 		$fields['STATICCOUNTRYZONE.zn_country_iso_2'][OP_EQ] = strtoupper($iso);
 		return $this->search($fields, $options);
 	}
+	
+	/**
+	 * @param string $znCode
+	 * @return array[tx_mklib_model_StaticCountryZone]
+	 */
+	public function getByZnCode($znCode) {
+		$fields = $options = array();
+		$fields['STATICCOUNTRYZONE.zn_code'][OP_EQ] = strtoupper($znCode);
+		return $this->search($fields, $options);
+	}
 
 	/**
 	 * (non-PHPdoc)
