@@ -39,13 +39,13 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @subpackage tx_mklib_tests_srv
  */
 class tx_mklib_tests_srv_StaticCountryZones_testcase extends tx_phpunit_testcase {
-
+	
 	/**
 	 * @group integration
 	 */
 	public function testGetByZnCode(){
 		$service = tx_mklib_util_ServiceRegistry::getStaticCountryZonesService();
-		$models = $service->getByZnCode('sn');
+		$models = $service->getByZnCode('al');//Alabama
 		$model = $models[0];
 
 		$this->assertInstanceOf(
@@ -53,7 +53,7 @@ class tx_mklib_tests_srv_StaticCountryZones_testcase extends tx_phpunit_testcase
 			'Statemodel hat falsche Klasse'
 		);
 		$this->assertEquals(
-			'Sachsen',
+			'Alabama',
 			$model->getZnNameLocal(), 
 			'Bundesland falsch.'
 		);
