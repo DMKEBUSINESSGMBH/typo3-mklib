@@ -243,7 +243,7 @@ class tx_mklib_mod1_export_Handler {
 		if (!$searcher instanceof tx_mklib_mod1_export_ISearcher) {
 			throw new Exception(
 				'The searcher "'.get_class($searcher).'" has to implement'.
-				' the interface tx_mklib_mod1_export_ISearcher',
+				' the interface "tx_mklib_mod1_export_ISearcher"',
 				1361174776
 			);
 		}

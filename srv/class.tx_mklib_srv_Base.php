@@ -2,11 +2,10 @@
 /**
  * 	@package tx_mklib
  *  @subpackage tx_mklib_srv
- *  @author Hannes Bochmann
  *
  *  Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  (c) 2010 - 2013 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,6 +37,8 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_srv
+ * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 abstract class tx_mklib_srv_Base extends t3lib_svbase {
 
@@ -57,7 +58,7 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 *
 	 * @return 	tx_rnbase_util_SearchBase
 	 */
-	private function getSearcher(){
+	protected function getSearcher(){
 		return tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
 	}
 	/**
@@ -79,7 +80,6 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 * @return array[tx_rnbase_model_base]
 	 */
 	public function search($fields, $options) {
-
 		// On default, return hidden and deleted fields in backend
 		// @TODO: realy return deleted fields? make Konfigurable!
 		if (
@@ -104,6 +104,56 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		$result = $this->search($fields, $options);
 
 		return $result ? $result[0] : null;
+	}
+
+
+
+	/**
+	 * Liefert das erste Element aus dem Ergebniss.
+	 * Es wird eine Warnung in die Devlog geschrieben,
+	 * wenn mehr als ein Element enthalten ist.
+	 *
+	 * @param array $items
+	 * @return tx_rnbase_model_base
+	 */
+	protected function getFirstResult(array $items) {
+		$result = $this->limitResults($items, 1);
+		return empty($result) ? NULL : reset($result);
+	}
+
+	/**
+	 * Kürzt die Elemente auf die gewünschte Größe.
+	 *
+	 * Es wird eine Warnung in die Devlog geschrieben,
+	 * wenn mehr als die angegebene Anzahl Element enthalten ist.
+	 *
+	 * Wenn keine Warnung erzeugt werden soll,
+	 * muss bei dem $this->search() Aufruf ein Limit mitgegebenwerden
+	 * um die Elemente zu beschränken! Oder auch $this->searchSingle aufrufen.
+	 *
+	 * @param array $items
+	 * @param unknown_type $limit
+	 * @param array $options
+	 * @return array
+	 */
+	protected function limitResults(array $items, $limit, array $options = array()) {
+		// Leer, wir haben nichts zu tun.
+		if (empty($items)) {
+			return $items;
+		}
+		$count = count($items);
+		// Nur bearbeiten, wenn mehr Elemente vorhanden sind, als notwendig.
+		if ($count > $limit) {
+			// Wir kürzen die Elemente.
+			$items = array_slice($items, 0, $limit);
+			// Wir Schreiben einen Log-Eintrag um den Fehler zu melden.
+			tx_rnbase::load('tx_rnbase_util_Logger');
+			tx_rnbase_util_Logger::warn(
+					'There are more elements('.$count.') for limitResults supplied than expected('.$limit.').',
+					'mkhoga'
+			);
+		}
+		return $items;
 	}
 
 	/**

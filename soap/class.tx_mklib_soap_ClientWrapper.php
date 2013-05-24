@@ -119,7 +119,7 @@ class tx_mklib_soap_ClientWrapper {
 				)
 			);
 		}else{
-			tx_rnbase_util_Logger::fatal('Soap Client was not instanciated!', 'mkjjk');
+			tx_rnbase_util_Logger::fatal('Soap Client was not instanciated!', 'mklib');
 		}
 	}
 	

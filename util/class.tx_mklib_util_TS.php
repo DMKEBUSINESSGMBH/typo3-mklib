@@ -50,18 +50,33 @@ class tx_mklib_util_TS {
    	 * 								das plugin von mkxyz
    	 * @param string $sStaticPath | pfad zum TS
    	 * @param array $aConfig | zusätzliche Konfig, die die default Konfig überschreibt
+   	 * @param boolean $resolveLibReferences | sollen referenzen die in lib. stehen aufgelöst werden?
+   	 * @param boolean $forceTsfePreparation
+   	 * 
    	 * @return tx_rnbase_configurations
    	 */
-  	public static function loadConfig4BE($extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array()) {
+  	public static function loadConfig4BE(
+  		$extKey, $extKeyTS = null, $sStaticPath = '', $aConfig = array(), $resolveLibReferences = false,
+  		$forceTsfePreparation = false
+  	) {
   		$extKeyTS = is_null($extKeyTS) ? $extKey : $extKeyTS;
 
-  		if(!$sStaticPath) $sStaticPath = '/static/ts/setup.txt';
-	    t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
+  		if(!$sStaticPath) {
+  			$sStaticPath = '/static/ts/setup.txt';	
+  		}
+  		
+  		if(file_exists(t3lib_div::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
+	    	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
+  		}
 
 	    tx_rnbase::load('tx_rnbase_configurations');
 	    tx_rnbase::load('tx_rnbase_util_Misc');
 
-	    tx_rnbase_util_Misc::prepareTSFE(); // Ist bei Aufruf aus BE notwendig!
+	    $tsfePreparationOptions = array();
+	    if($forceTsfePreparation) {
+	    	$tsfePreparationOptions['force'] = true;
+	    }
+	    tx_rnbase_util_Misc::prepareTSFE($tsfePreparationOptions); // Ist bei Aufruf aus BE notwendig!
 	    $GLOBALS['TSFE']->config = array();
 	    $cObj = t3lib_div::makeInstance('tslib_cObj');
 
@@ -70,6 +85,12 @@ class tx_mklib_util_TS {
 	    $tempConfig = $pageTSconfig['plugin.']['tx_'.$extKeyTS.'.'];
 	    $tempConfig['lib.'][$extKeyTS.'.'] = $pageTSconfig['lib.'][$extKeyTS.'.'];
 	    $tempConfig['lib.']['links.'] = $pageTSconfig['lib.']['links.'];
+	    
+	    if($resolveLibReferences) {
+	    	$GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTS . '.'] = 
+	    		$tempConfig['lib.'][$extKeyTS . '.'];
+	    }
+
 	    $pageTSconfig = $tempConfig;
 
 	    $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $extKeyTS;
