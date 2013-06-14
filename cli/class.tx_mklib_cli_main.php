@@ -47,36 +47,36 @@ require_once(PATH_t3lib.'class.t3lib_cli.php');
 class tx_mklib_cli_main extends t3lib_cli {
 
 	protected $commands = array(
-      'flush' => array(
-            'short' => array(
+		'flush' => array(
+			'short' => array(
                   'desc' => 'Das gleiche wie --flush-cache',
                   'name' => '-fc',
-	),
+			),
             'long' => array(
                   'desc' => 'Den gesamten TYPO3-Cache löschen.',
                   'name' => '--flush-cache',
-	),
-	),
-      'update' => array(
+			),
+		),
+      	'update' => array(
             'short' => array(
                   'desc' => 'Das gleiche wie --update-ext',
                   'name' => '-up',
-	),
+			),
             'long' => array(
                   'desc' => 'Eine bestimmte Extension innerhalb von TYPO3 updaten.',
                   'name' => '--update-ext',
-	),
-	),
-      'help' => array(
+			),
+		),
+      	'help' => array(
             'short' => array(
                   'desc' => 'Das gleiche wie --help',
                   'name' => '-h',
-	),
+			),
             'long' => array(
                   'desc' => 'Die möglichen Optionen anzeigen.',
                   'name' => '--help',
-	),
-	)
+			),
+		)
 	);
 
 	/**
@@ -100,11 +100,11 @@ class tx_mklib_cli_main extends t3lib_cli {
 		$this->cli_options[] = array($this->commands['help']['short']['name'], $this->commands['help']['short']['desc']);
 
 		$this->cli_help = array_merge($this->cli_help, array(
-      'name' => 'MKLib CLI',
-      'synopsis' => $this->extKey . ' command ###OPTIONS###',
-      'description' => 'Klasse mit Basisfunktionen um den Cache von Extensions zu löschen und selbige zu updaten!',
-      'examples' => 'typo3/cli_dispatch.phpsh mklib --flush-cache',
-      'author' => '(c) 2010 das MedienKombinat GmbH Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>',
+			'name' => 'MKLib CLI',
+	      	'synopsis' => $this->extKey . ' command ###OPTIONS###',
+	      	'description' => 'Klasse mit Basisfunktionen um den Cache von Extensions zu löschen und selbige zu updaten!',
+	      	'examples' => 'typo3/cli_dispatch.phpsh mklib --flush-cache',
+	      	'author' => '(c) 2010 das MedienKombinat GmbH Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>',
 		));
 	}
 
@@ -147,7 +147,9 @@ class tx_mklib_cli_main extends t3lib_cli {
 		if(!$commandFound){
 			$this->exitWithError();
 		} else {
-			print_r("Befehl '".$this->commands['flush']['long']['desc']."' erfolgreich ausgeführt.\n");
+			$this->cli_echo(utf8_decode(
+				"Befehl '".$this->commands['flush']['long']['desc']."' erfolgreich ausgeführt.\n"
+			));
 		}
 			
 	}
@@ -186,7 +188,6 @@ class tx_mklib_cli_main extends t3lib_cli {
 		// Make instance:
 		$SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');
 		$SOBE->init();
-		$SOBE->forceDBupdates('tx_mkmarketplace');
 	}
 }
 
