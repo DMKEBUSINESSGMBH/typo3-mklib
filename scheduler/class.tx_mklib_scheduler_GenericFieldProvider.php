@@ -27,8 +27,8 @@ require_once t3lib_extMgm::extPath('scheduler', '/interfaces/interface.tx_schedu
 /**
  * Fügt Felder im scheduler task hinzu
  *
- * @package tx_mketernit
- * @subpackage tx_mketernit_scheduler
+ * @package tx_mklib
+ * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_AdditionalFieldProvider {

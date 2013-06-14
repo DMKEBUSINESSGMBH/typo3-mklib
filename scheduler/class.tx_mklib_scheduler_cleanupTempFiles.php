@@ -27,8 +27,8 @@ tx_rnbase::load('tx_mklib_scheduler_Generic');
 
 /**
  *
- * @package tx_mketernit
- * @subpackage tx_mketernit_scheduler
+ * @package tx_mklib
+ * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 class tx_mklib_scheduler_cleanupTempFiles extends tx_mklib_scheduler_Generic {
