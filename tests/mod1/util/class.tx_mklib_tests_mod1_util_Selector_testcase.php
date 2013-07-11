@@ -356,10 +356,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$selector->init($this->oMod);
 
 		$key = 'test';
-		$selector->expects($this->any())
-			->method('getValueFromModuleData')
-			->with($key)
-			->will($this->returnValue('test'));
+		$selector->expects($this->never())
+			->method('getValueFromModuleData');
 		
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
@@ -381,7 +379,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$selector->init($this->oMod);
 
 		$key = 'test';
-		$selector->expects($this->any())
+		$selector->expects($this->once())
 			->method('getValueFromModuleData')
 			->with($key)
 			->will($this->returnValue('test'));
