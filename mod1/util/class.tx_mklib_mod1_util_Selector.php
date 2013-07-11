@@ -276,6 +276,91 @@ class tx_mklib_mod1_util_Selector {
 		}
 		return $out;
 	}
+	
+	/**
+	 * @param 	array 	$out 				HTML string
+	 * @param 	string 	$key 				mod key
+	 * @return 	array[to => int, from => int]
+	 */
+	public function showDateRangeSelector (&$out, $key) {
+		$this->loadAdditionalJsForDatePicker();
+		
+		$fromValue = $this->getDateFieldByKey($key . '_from', $out);
+		$toValue = $this->getDateFieldByKey($key . '_to', $out);
+		$out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_daterange');
+		
+		return $this->getCrDateReturnArray($fromValue, $toValue);
+	}
+	
+	/**
+	 * @return void
+	 */
+	protected function loadAdditionalJsForDatePicker() {
+		$this->getMod()->getDoc()->getPageRenderer()->loadPrototype();
+		$this->getMod()->getDoc()->getPageRenderer()->loadExtJS();
+		$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
+		$this->getFormTool()->getTCEForm()->loadJavascriptLib('jsfunc.tbe_editor.js');
+		
+		$typo3Settings = array(
+			'datePickerUSmode' => 0,
+			'dateFormat' => array('d-m-Y', 'G:i j-n-Y'),
+			'dateFormatUS' => array('n-j-Y', 'G:i n-j-Y'),
+		);
+		$this->getMod()->getDoc()->getPageRenderer()->addInlineSettingArray('', $typo3Settings);
+		$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
+		$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
+	}
+	
+	/**
+	 * @param string $key
+	 * 
+	 * @return string gewählte zeit in d-m-Y
+	 */
+	private function getDateFieldByKey($key, &$out) {
+		$value = t3lib_div::_GP($key) ? t3lib_div::_GP($key) : '';
+		$out['field'] .= '<input name="' . $key . '" type="text" id="tceforms-datefield-' . $key . '" value="' . $value . '" />' .
+			t3lib_iconWorks::getSpriteIcon(
+				'actions-edit-pick-date',
+				array(
+					'style' => 'cursor:pointer;',
+					'id' => 'picker-tceforms-datefield-' . $key
+				)
+			);
+		
+		return $value;
+	}
+	
+	/**
+	 * @param string $fromValue d-m-Y
+	 * @param string $toValue d-m-Y
+	 * 
+	 * @return array[to => int, from => int]
+	 */
+	private function getCrDateReturnArray($fromValue, $toValue) {
+		tx_rnbase::load('tx_rnbase_util_Dates');
+		$fromTimestamp = tx_rnbase_util_Dates::date_mysql2tstamp(
+			tx_rnbase_util_Dates::date_german2mysql($fromValue)
+		);
+		
+		$toTimestamp = tx_rnbase_util_Dates::date_mysql2tstamp(
+			tx_rnbase_util_Dates::date_german2mysql($toValue)
+		);
+		
+		if($toTimestamp) {
+			$toTimestamp = $this->moveTimestampToTheEndOfTheDay($toTimestamp);
+		}
+		
+		return array('from' => $fromTimestamp, 'to' => $toTimestamp);
+	}
+	
+	/**
+	 * @param int $timestamp
+	 * 
+	 * @return int
+	 */
+	private function moveTimestampToTheEndOfTheDay($timestamp) {
+		return $timestamp + 86400;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/mod1/util/class.tx_mklib_mod1_util_Selector.php'])	{
