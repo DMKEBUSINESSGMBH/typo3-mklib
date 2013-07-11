@@ -289,6 +289,11 @@ class tx_mklib_mod1_util_Selector {
 		$toValue = $this->getDateFieldByKey($key . '_to', $out);
 		$out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_daterange');
 		
+		$this->setValueToModuleData(
+			$this->getMod()->getName(),
+			array($key . '_from' => $fromValue, $key . '_to' => $toValue)
+		);
+		
 		return $this->getCrDateReturnArray($fromValue, $toValue);
 	}
 	
@@ -317,7 +322,8 @@ class tx_mklib_mod1_util_Selector {
 	 * @return string gewählte zeit in d-m-Y
 	 */
 	private function getDateFieldByKey($key, &$out) {
-		$value = t3lib_div::_GP($key) ? t3lib_div::_GP($key) : '';
+		$value = isset($_POST[$key]) ? t3lib_div::_GP($key) : $this->getValueFromModuleData($key);
+		 
 		$out['field'] .= '<input name="' . $key . '" type="text" id="tceforms-datefield-' . $key . '" value="' . $value . '" />' .
 			t3lib_iconWorks::getSpriteIcon(
 				'actions-edit-pick-date',

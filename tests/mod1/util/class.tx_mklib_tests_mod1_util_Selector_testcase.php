@@ -263,7 +263,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenNoPostValueReturnsEmptyValue() {
-		$selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+		$selector = $this->oSelector;
 		
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
@@ -279,7 +279,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenNoPostValueSetsInputCorrect() {
-		$selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+		$selector = $this->oSelector;
 		
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
@@ -296,7 +296,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyKeepsExistingOutFieldValue() {
-		$selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+		$selector = $this->oSelector;
 		
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
@@ -314,7 +314,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	 */
 	public function testGetDateFieldByKeyWhenPostValueReturnsCorrectValue() {
 		$_POST['test'] = 123;
-		$selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+		$selector = $this->oSelector;
 		
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
@@ -331,7 +331,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	 */
 	public function testGetDateFieldByKeyWhenPostValueSetsInputCorrect() {
 		$_POST['test'] = 123;
-		$selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+		$selector = $this->oSelector;
 		
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
@@ -347,11 +347,63 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	/**
 	 * @group unit
 	 */
+	public function testGetDateFieldByKeyWhenPrefersGetPostDataOverModuleData() {
+		$_POST['test'] = 123;
+		$selector = $this->getMock(
+			'tx_mklib_mod1_util_Selector', 
+			array('getValueFromModuleData')
+		);
+		$selector->init($this->oMod);
+
+		$key = 'test';
+		$selector->expects($this->any())
+			->method('getValueFromModuleData')
+			->with($key)
+			->will($this->returnValue('test'));
+		
+		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
+		$method->setAccessible(true);
+		
+		$out = array('field' => '');
+		$returnValue = $method->invoke($selector, $key, &$out);
+		
+		$this->assertEquals(123, $returnValue, 'return value falsch');
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testGetDateFieldByKeyWhenUsesModuleDataWhenNoPostData() {
+		$selector = $this->getMock(
+			'tx_mklib_mod1_util_Selector', 
+			array('getValueFromModuleData')
+		);
+		$selector->init($this->oMod);
+
+		$key = 'test';
+		$selector->expects($this->any())
+			->method('getValueFromModuleData')
+			->with($key)
+			->will($this->returnValue('test'));
+		
+		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
+		$method->setAccessible(true);
+		
+		$out = array('field' => '');
+		$returnValue = $method->invoke($selector, $key, &$out);
+		
+		$this->assertEquals('test', $returnValue, 'return value falsch');
+	}
+	
+	/**
+	 * @group unit
+	 */
 	public function testShowDateRangeSelectorReturnsCorrectTimestampArray() {
 		$selector = $this->getMock(
 			'tx_mklib_mod1_util_Selector', 
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
+		$selector->init($this->oMod);
 		
 		$selector->expects($this->any())
 			->method('getFormTool')
@@ -379,6 +431,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'tx_mklib_mod1_util_Selector', 
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
+		$selector->init($this->oMod);
 		
 		$selector->expects($this->any())
 			->method('getFormTool')
@@ -403,6 +456,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'tx_mklib_mod1_util_Selector', 
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
+		$selector->init($this->oMod);
 		
 		$selector->expects($this->any())
 			->method('getFormTool')
@@ -427,6 +481,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'tx_mklib_mod1_util_Selector', 
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
+		$selector->init($this->oMod);
 		
 		$selector->expects($this->any())
 			->method('getFormTool')
@@ -438,6 +493,32 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		
 		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="08-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span><input name="test_to" type="text" id="tceforms-datefield-test_to" value="09-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedOut, $out['field'], 'out falsch');
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testShowDateRangeSelectorSetModuleDataCorrect() {
+		$_POST['test_from'] = '08-07-2013';
+		$_POST['test_to'] = '09-07-2013';
+		
+		$selector = $this->getMock(
+			'tx_mklib_mod1_util_Selector', 
+			array('loadAdditionalJsForDatePicker', 'getFormTool', 'setValueToModuleData')
+		);
+		$selector->init($this->oMod);
+		
+		$selector->expects($this->any())
+			->method('getFormTool')
+			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+
+		$key = 'test';
+		$selector->expects($this->any())
+			->method('setValueToModuleData')
+			->with('dummyMod', array($key . '_from' => $_POST['test_from'], $key . '_to' => $_POST['test_to']));
+		
+		$out = array('field' => '');
+		$selector->showDateRangeSelector($out, $key);
 	}
 }
 
