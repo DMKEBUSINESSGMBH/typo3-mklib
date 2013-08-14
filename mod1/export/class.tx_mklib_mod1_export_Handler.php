@@ -158,7 +158,7 @@ class tx_mklib_mod1_export_Handler {
 	public function parseTemplate($template) {
 		tx_rnbase::load('tx_rnbase_util_BaseMarker');
 		if (!tx_rnbase_util_BaseMarker::containsMarker($template, 'EXPORT_BUTTONS')) {
-			return;
+			return $template;
 		}
 
 		$configuration = $this->getConfigurations();
