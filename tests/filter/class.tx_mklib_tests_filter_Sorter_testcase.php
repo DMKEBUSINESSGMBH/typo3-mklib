@@ -89,7 +89,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 		$filter->init($fields,$options);
 		
 		$formatter = $configurations->getFormatter();
-		$parsedTemplate = $filter->parseTemplate($template, &$formatter, $confId);
+		$parsedTemplate = $filter->parseTemplate($template, $formatter, $confId);
 
 		$this->assertEquals($expectedParsedTemplate, $parsedTemplate, 'link falsch');
 	}
