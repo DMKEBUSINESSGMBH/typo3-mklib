@@ -270,7 +270,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		
 		$key = 'test';
 		$out = array('field' => '');
-		$returnValue = $method->invoke($selector, $key, &$out);
+		$arguments = array($key, &$out);
+		$returnValue = $method->invokeArgs($selector, $arguments);
 		
 		$this->assertEmpty($returnValue, 'doch ein return value');
 	}
@@ -286,7 +287,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		
 		$key = 'test';
 		$out = array('field' => '');
-		$returnValue = $method->invoke($selector, $key, &$out);
+		$arguments = array($key, &$out);
+		$returnValue = $method->invokeArgs($selector, $arguments);
 		
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
@@ -303,7 +305,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		
 		$key = 'test';
 		$out = array('field' => 'test');
-		$returnValue = $method->invoke($selector, $key, &$out);
+		$arguments = array($key, &$out);
+		$returnValue = $method->invokeArgs($selector, $arguments);
 		
 		$expectedInput = 'test<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
@@ -321,7 +324,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		
 		$key = 'test';
 		$out = array('field' => '');
-		$returnValue = $method->invoke($selector, $key, &$out);
+		$arguments = array($key, &$out);
+		$returnValue = $method->invokeArgs($selector, $arguments);
 		
 		$this->assertEquals(123, $returnValue, 'return value falsch');
 	}
@@ -338,7 +342,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		
 		$key = 'test';
 		$out = array('field' => '');
-		$returnValue = $method->invoke($selector, $key, &$out);
+		$arguments = array($key, &$out);
+		$returnValue = $method->invokeArgs($selector, $arguments);
 		
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="123" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
@@ -363,7 +368,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$method->setAccessible(true);
 		
 		$out = array('field' => '');
-		$returnValue = $method->invoke($selector, $key, &$out);
+		$arguments = array($key, &$out);
+		$returnValue = $method->invokeArgs($selector, $arguments);
 		
 		$this->assertEquals(123, $returnValue, 'return value falsch');
 	}
@@ -388,7 +394,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$method->setAccessible(true);
 		
 		$out = array('field' => '');
-		$returnValue = $method->invoke($selector, $key, &$out);
+		$arguments = array($key, &$out);
+		$returnValue = $method->invokeArgs($selector, $arguments);
 		
 		$this->assertEquals('test', $returnValue, 'return value falsch');
 	}
