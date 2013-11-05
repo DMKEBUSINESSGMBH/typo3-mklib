@@ -41,6 +41,11 @@ tx_rnbase::load('tx_mklib_tests_Util');
 class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 
 	/**
+	 * @var string
+	 */
+	private $returnUrlBackup;
+	
+	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
@@ -50,6 +55,16 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		tx_rnbase::load('tx_mklib_srv_Wordlist');
 		global $TCA;
 		$TCA['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
+		
+		$this->returnUrlBackup = $_GET['returnUrl'];
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::tearDown()
+	 */
+	protected function tearDown() {
+		$_GET['returnUrl'] = $this->returnUrlBackup;
 	}
 	
 	/**
@@ -86,6 +101,48 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(0,$res['whitelisted'],'whitelisted Feld ist nicht korrekt!');
 		$this->assertFalse(isset($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
 		$this->assertFalse(isset($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testGetParentUidFromReturnUrlReturnsNullIfNoReturnUrl(){
+		$this->assertNull(
+			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
+		);
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotExistentInReturnUrl(){
+		$_GET['returnUrl'] = 'typo3/wizard_add.php';
+	
+		$this->assertNull(
+			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
+		);
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotSetInReturnUrl(){
+		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=';
+	
+		$this->assertNull(
+			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
+		);
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testGetParentUidFromReturnUrlReturnsCorrectParentUid(){
+		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=2';
+	
+		$this->assertEquals(
+			2, tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid nicht korrekt'
+		);
 	}
 }
 

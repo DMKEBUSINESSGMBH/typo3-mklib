@@ -309,6 +309,39 @@ class tx_mklib_util_TCA {
 		}
 		return $wizards;
 	}
+	
+	/**
+	 * @return int
+	 */
+	public static function getParentUidFromReturnUrl() {
+		$parentUid = null;
+		
+		if(
+			($parsedQueryParameters = self::getQueryParametersFromReturnUrl()) &&
+			!empty($parsedQueryParameters['P']['uid'])
+		) {
+			$parentUid = $parsedQueryParameters['P']['uid'];
+		} 
+		
+		return $parentUid;
+	}
+	
+	/**
+	 * @return array
+	 */
+	private static function getQueryParametersFromReturnUrl() {
+		$parsedQueryParameters = array();
+		
+		if(
+			($returnUrl = t3lib_div::_GET('returnUrl')) &&
+			($parsedUrl = parse_url($returnUrl)) && 
+			isset($parsedUrl['query'])
+		) {
+			parse_str($parsedUrl['query'], $parsedQueryParameters);
+		}
+		
+		return $parsedQueryParameters;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']) {
