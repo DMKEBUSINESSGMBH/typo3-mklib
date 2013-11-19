@@ -144,6 +144,73 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			2, tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid nicht korrekt'
 		);
 	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testCropLabelsWithDefaultLengthOf80CharsCorrect() {
+		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
+		$tcaTableInformation = array('items' => array(0 => array(0 => $labelWith81Chars)));
+		
+		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+		
+		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
+		$this->assertEquals(
+			$labelWith80CharsAnd3Dots, 
+			$tcaTableInformation['items'][0][0], 
+			'Label nicht richtig gekürzt'
+		);
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testCropLabelsWithEmptyItems() {
+		$tcaTableInformation = array('items' => array());
+		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+		unset($tcaTableInformation['items']);
+		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testCropLabelsWithConfiguredLengthOf40Chars() {
+		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
+		$tcaTableInformation = array(
+			'items' => array(0 => array(0 => $labelWith81Chars)),
+			'config' => array('labelLength' => 40)	
+		);
+	
+		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+	
+		$labelWith40CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur s...';
+		$this->assertEquals(
+			$labelWith40CharsAnd3Dots, 
+			$tcaTableInformation['items'][0][0], 
+			'Label nicht richtig gekürzt'
+		);
+	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testCropLabelsUsesDefaultLengthIfConfiguredLengthIsNoIntegerGreaterThan0() {
+		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
+		$tcaTableInformation = array(
+			'items' => array(0 => array(0 => $labelWith81Chars)),
+			'config' => array('labelLength' => 'test')
+		);
+	
+		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+	
+		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
+		$this->assertEquals(
+			$labelWith80CharsAnd3Dots,
+			$tcaTableInformation['items'][0][0],
+			'Label nicht richtig gekürzt'
+		);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']) {

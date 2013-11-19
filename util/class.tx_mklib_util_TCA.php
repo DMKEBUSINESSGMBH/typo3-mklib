@@ -342,6 +342,45 @@ class tx_mklib_util_TCA {
 		
 		return $parsedQueryParameters;
 	}
+	
+	/**
+	 * Die Länge kann in $tcaTableInformation['config']['labelLength'] angegeben werden.
+	 * Default ist 80 Zeichen.
+	 *
+	 * @param array $tcaTableInformation
+	 *
+	 * @return void
+	 */
+	public static function cropLabels(array &$tcaTableInformation) {
+		$items = &$tcaTableInformation['items'];
+		$labelLength = self::getLabelLength($tcaTableInformation);
+	
+		if(!empty($items)) {
+			foreach($items as &$item) {
+				$label = &$item[0];
+				$label = $GLOBALS['LANG']->csConvObj->crop(
+					$GLOBALS['LANG']->charSet, $label, $labelLength, '...'
+				);
+			}
+		}
+	}
+	
+	/**
+	 * @param array $tcaTableInformation
+	 *
+	 * @return array
+	 */
+	private static function getLabelLength(array $tcaTableInformation) {
+		$labelLength = 80;
+		if(
+			isset($tcaTableInformation['config']['labelLength']) &&
+			intval($tcaTableInformation['config']['labelLength']) > 0
+		) {
+			$labelLength = $tcaTableInformation['config']['labelLength'];
+		}
+		
+		return $labelLength;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']) {
