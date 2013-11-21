@@ -249,6 +249,15 @@ class tx_mklib_util_HttpRequest {
 	}
 
 	/**
+	 * Gets Parameters
+	 *
+	 * @return array
+	 */
+	public function getParameters() {
+		return $this->parameters;
+	}
+
+	/**
 	 * Set the next request's method
 	 *
 	 * Validated the passed method and sets it. If we have files set for
