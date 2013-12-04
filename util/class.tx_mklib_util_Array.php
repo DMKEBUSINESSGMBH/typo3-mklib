@@ -155,52 +155,52 @@ class tx_mklib_util_Array {
 		$fieldsArray = self::fieldsToArray($aObj, $sAttr);
 		return implode($sDelimiter, self::removeEmptyValues($fieldsArray));
 	}
-	
+
 	/**
 	 * @param object $object
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function castObjectToArray($object) {
-		if(class_exists('ReflectionClass')) {
+		if(class_exists('ReflectionObject')) {
 			return self::castObjectToArrayViaReflection($object);
 		} else {
 			$result = (array) $object;
-				
+
 			foreach ($result as $key => $value) {
 			  $key = self::fixProtectedInstanceVariableNames($key);
 			  $result[$key] = $value;
 			}
-			
+
 			return $result;
 		}
-		
+
 	}
-	
+
 	/**
 	 * @param object $object
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function castObjectToArrayViaReflection($object) {
 		$result = array();
-		
-	    $reflectedObject = new ReflectionClass($object);
-	    
+
+	    $reflectedObject = new ReflectionObject($object);
+
 	    $properties = $reflectedObject->getProperties();
-	    
+
 	    foreach ($properties as $property) {
 	    	$property->setAccessible(true);
 	        $result[$property->getName()] = $property->getValue($object);
 	    }
-	    
+
 	    return $result;
 	}
-	
+
 	/**
-	 * Variablennamen von protected Variablen werden beim cast zum array mit 
+	 * Variablennamen von protected Variablen werden beim cast zum array mit
 	 * x00*x00 geprefixed. Das entfernen wir.
-	 * 
+	 *
 	 * @param string $variableName
 	 *
 	 * @return string

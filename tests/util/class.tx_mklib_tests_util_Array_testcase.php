@@ -31,14 +31,14 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_Array');
-	
+
 /**
  * Array util tests
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
 class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
-	
+
 	/**
 	 * Prüfen ob alle leeren Elemente außer dem array gelöscht werden
 	 * und keys unberührt bleiben
@@ -49,7 +49,7 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 
 		$this->assertTrue(is_array($aNoEmptyValues), 'No array given.');
 		$this->assertEquals(count($aNoEmptyValues), 6, 'Wrong count of entries.');
-		//auf die keys im zurück gegebenen und initialen array achten!!!					
+		//auf die keys im zurück gegebenen und initialen array achten!!!
 		$this->assertEquals('ich',$aNoEmptyValues[0], '1. wert falsch');
 		$this->assertEquals('bin',$aNoEmptyValues[1], '2. wert falsch');
 		$this->assertEquals(1,$aNoEmptyValues[2], '3. wert falsch');
@@ -57,7 +57,7 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$this->assertEquals('Test',$aNoEmptyValues[6], '5. wert falsch');
 		$this->assertEquals(true,$aNoEmptyValues[7], '6. wert falsch');
 	}
-	
+
 	/**
 	 * Prüfen ob alle leeren Elemente auch das array gelöscht werden
 	 * und keys zurückgesetzt werden
@@ -65,7 +65,7 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 	public function testRemoveEmptyArrayValuesSimple(){
 		$aArray = array('ich', 'bin', 1, '', 0, null, 'Array' => array(), 'Test', true, false);
 		$aNoEmptyValues = tx_mklib_util_Array::removeEmptyArrayValuesSimple($aArray);
-		
+
 		$this->assertTrue(is_array($aNoEmptyValues), 'No array given.');
 		$this->assertEquals(count($aNoEmptyValues), 5, 'Wrong count of entries.');
 		//auf die keys im zurück gegebenen und initialen array achten!!!
@@ -75,7 +75,7 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$this->assertEquals('Test',$aNoEmptyValues[3], '4. wert falsch');
 		$this->assertEquals(true,$aNoEmptyValues[4], '5. wert falsch');
 	}
-	
+
 	public function testFieldsToArray(){
 		$aArray = array(
 						tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid'=>2,'name'=>'Model Nr. 2')),
@@ -89,11 +89,11 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$this->assertEquals('Model Nr. 5', $aFields[1], 'Wrong name in array key 1.');
 		$this->assertEquals('Model Nr. 6', $aFields[2], 'Wrong name in array key 2.');
 	}
-	
+
 	public function testinArray(){
 		$aArray = array('wert1' => 1, 'zwei', 3, 'wert4' => 'vier', '5');
 		$sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
-		
+
 		$this->assertTrue(tx_mklib_util_Array::inArray(1, $aArray), '1 wurde nicht gefunden.');
 		$this->assertTrue(tx_mklib_util_Array::inArray(1, $aArray, true), '1 wurde nicht gefunden.');
 		$this->assertFalse(tx_mklib_util_Array::inArray(2, $aArray), '2 wurde gefunden.');
@@ -110,7 +110,7 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$this->assertTrue(tx_mklib_util_Array::inArray('5', $aArray, true), '5 wurde nichtgefunden.');
 		$this->assertTrue(tx_mklib_util_Array::inArray(5, $aArray), '5 wurde nicht gefunden.');
 		$this->assertFalse(tx_mklib_util_Array::inArray(5, $aArray, true), '5 wurde gefunden.');
-		
+
 		$this->assertTrue(tx_mklib_util_Array::inArray(array('zwei', 5), $aArray), 'zwei oder 5 wurde nicht gefunden.');
 		$this->assertFalse(tx_mklib_util_Array::inArray(array('3', 5), $aArray, true), '3 oder 5 wurde gefunden.');
 	}
@@ -121,18 +121,19 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 						tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid'=>6,'name'=>'Model Nr. 6')),
 					);
 		$sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
-		
+
 		$this->assertTrue(is_string($sFields), 'No string given.');
 		$this->assertEquals($sFields, 'Model Nr. 2<>Model Nr. 5<>Model Nr. 6', 'Wrong string given.');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testCastObjectToArray() {
 		$object = new CastObjectToArrayTest();
+		$object->dynamicVariable = 'dynamicVariable';
 		$objectArray = tx_mklib_util_Array::castObjectToArray($object);
-		
+
 		$this->assertEquals(
 			'publicVariable',$objectArray['publicVariable'], 'publicVariable falsch gecastet'
 		);
@@ -150,6 +151,9 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		);
 		$this->assertEquals(
 			'privateStaticVariable',$objectArray['privateStaticVariable'], 'privateStaticVariable falsch gecastet'
+		);
+		$this->assertEquals(
+			'dynamicVariable',$objectArray['dynamicVariable'], 'dynamicVariable falsch gecastet'
 		);
 	}
 }
