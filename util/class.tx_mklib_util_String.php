@@ -211,9 +211,9 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	 *
 	 * @return string
 	 */
-	public static function removeLineBreaks($value) {
-		$value = str_replace("\r\n",'',$value);
-		$value = str_replace("\n",'',$value);
+	public static function removeLineBreaks($value, $replacement = '') {
+		$value = str_replace("\r\n", $replacement, $value);
+		$value = str_replace("\n", $replacement, $value);
 	
 		return $value;
 	}

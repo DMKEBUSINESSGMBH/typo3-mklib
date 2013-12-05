@@ -224,6 +224,11 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			tx_mklib_util_String::removeLineBreaks($testString),
 			'Line breaks nicht enfernt'
 		);
+		$this->assertEquals(
+			"test1 test2 ",
+			tx_mklib_util_String::removeLineBreaks($testString, ' '),
+			'Line breaks nicht enfernt'
+		);
 	}
 }
 
