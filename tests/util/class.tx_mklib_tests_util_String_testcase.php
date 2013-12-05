@@ -212,6 +212,19 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 		//wir verhindern wollen!
 		$GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
 	}
+	
+	/**
+	 * @group unit
+	 */
+	public function testRemoveLineBreaks() {
+		$testString = "test1\ntest2\r\n";
+	
+		$this->assertEquals(
+			"test1test2",
+			tx_mklib_util_String::removeLineBreaks($testString),
+			'Line breaks nicht enfernt'
+		);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_String_testcase.php']) {

@@ -206,6 +206,17 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 		return $link->makeTag();
 	}
 
+	/**
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	public static function removeLineBreaks($value) {
+		$value = str_replace("\r\n",'',$value);
+		$value = str_replace("\n",'',$value);
+	
+		return $value;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_String.php']) {
