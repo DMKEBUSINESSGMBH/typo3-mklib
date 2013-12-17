@@ -165,28 +165,72 @@ class tx_mklib_util_TCA {
 	/**
 	 * Liefert den Spaltenname für enablecolumns aus der TCA
 	 *
-	 * @TODO: t3lib_div::loadTCA($sTableName);
 	 * @FIXME: Nicht alle felder stehen unter ctrlo.enablecolumns. siehe: tstamp, crdate, cruser_id, delete, ...
 	 *
+	 * @param 	string 	$tableName
+	 * @param 	string 	$column (disabled, starttime, endtime, fe_group')
+	 * @param 	string 	$default
+	 * @return 	string
+	 */
+	public static function getEnableColumn($tableName, $column, $default = null){
+//		$allowed = array('fe_group', 'delete', 'disabled', 'starttime', 'endtime');
+		$fields = self::getCtrlField($tableName, 'enablecolumns', array());
+		if(!isset($fields[$column])) {
+			throw new Exception(__METHOD__.': Enablecolumn "'.$column.'" not found in TCA for table "'.$tableName.'".');
+		}
+		return isset($fields[$column]) ? $fields[$column] : $default;
+	}
+
+	/**
+	 * Liefert den Spaltenname aus dem ctrl der TCA
+	 *
 	 * @param 	string 	$sTableName
-	 * @param 	string 	$sColumn (disabled, starttime, endtime, fe_group')
 	 * @param 	string 	$sFallback
 	 * @return 	string
 	 */
-	public static function getEnableColumn($sTableName, $sColumn, $sFallback=false){
-//		$allowed = array('fe_group', 'delete', 'disabled', 'starttime', 'endtime');
-		if(isset($GLOBALS['TCA'][$sTableName])){
-			if(isset($GLOBALS['TCA'][$sTableName]['ctrl']['enablecolumns'][$sColumn])) {
-				return $GLOBALS['TCA'][$sTableName]['ctrl']['enablecolumns'][$sColumn];
+	private static function getCtrlField($tableName, $field, $default = null){
+		global $TCA; t3lib_div::loadTCA($tableName);
+		if(!isset($TCA[$tableName])){
+			if ($default !== null) {
+				return $default;
 			}
-			if($sFallback===false) {
-				throw new Exception(__METHOD__.': Enablecolumn "'.$sColumn.'" not found in TCA for table "'.$sTableName.'".');
-			}
+			throw new Exception(__METHOD__.': Table "'.$tableName.'" not found in TCA!');
 		}
-		if($sFallback===false) {
-			throw new Exception(__METHOD__.': Table "'.$sTableName.'" not found in TCA!');
-		}
-		return $sFallback;
+		return isset($TCA[$tableName]['ctrl'][$field])
+			? $TCA[$tableName]['ctrl'][$field]
+			: $default
+		;
+	}
+
+	/**
+	 * Liefert den Spaltenname für das sys_language_uid feld.
+	 *
+	 * @param string $tableName
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public static function getLanguageField($tableName, $default = null) {
+		return self::getCtrlField($tableName, 'languageField', $default);
+	}
+	/**
+	 * Liefert den Spaltenname für das l18n_parent feld.
+	 *
+	 * @param string $tableName
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public static function getTransOrigPointerField($tableName, $default = null) {
+		return self::getCtrlField($tableName, 'transOrigPointerField', $default);
+	}
+	/**
+	 * Liefert den Spaltenname für das l18n_diffsource feld.
+	 *
+	 * @param string $tableName
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public static function getTransOrigDiffSourceField($tableName, $default = null) {
+		return self::getCtrlField($tableName, 'transOrigDiffSourceField', $default);
 	}
 
 	/**
@@ -309,40 +353,40 @@ class tx_mklib_util_TCA {
 		}
 		return $wizards;
 	}
-	
+
 	/**
 	 * @return int
 	 */
 	public static function getParentUidFromReturnUrl() {
 		$parentUid = null;
-		
+
 		if(
 			($parsedQueryParameters = self::getQueryParametersFromReturnUrl()) &&
 			!empty($parsedQueryParameters['P']['uid'])
 		) {
 			$parentUid = $parsedQueryParameters['P']['uid'];
-		} 
-		
+		}
+
 		return $parentUid;
 	}
-	
+
 	/**
 	 * @return array
 	 */
 	private static function getQueryParametersFromReturnUrl() {
 		$parsedQueryParameters = array();
-		
+
 		if(
 			($returnUrl = t3lib_div::_GET('returnUrl')) &&
-			($parsedUrl = parse_url($returnUrl)) && 
+			($parsedUrl = parse_url($returnUrl)) &&
 			isset($parsedUrl['query'])
 		) {
 			parse_str($parsedUrl['query'], $parsedQueryParameters);
 		}
-		
+
 		return $parsedQueryParameters;
 	}
-	
+
 	/**
 	 * Die Länge kann in $tcaTableInformation['config']['labelLength'] angegeben werden.
 	 * Default ist 80 Zeichen.
@@ -354,7 +398,7 @@ class tx_mklib_util_TCA {
 	public static function cropLabels(array &$tcaTableInformation) {
 		$items = &$tcaTableInformation['items'];
 		$labelLength = self::getLabelLength($tcaTableInformation);
-	
+
 		if(!empty($items)) {
 			foreach($items as &$item) {
 				$label = &$item[0];
@@ -364,7 +408,7 @@ class tx_mklib_util_TCA {
 			}
 		}
 	}
-	
+
 	/**
 	 * @param array $tcaTableInformation
 	 *
@@ -378,7 +422,7 @@ class tx_mklib_util_TCA {
 		) {
 			$labelLength = $tcaTableInformation['config']['labelLength'];
 		}
-		
+
 		return $labelLength;
 	}
 }

@@ -83,12 +83,22 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		// On default, return hidden and deleted fields in backend
 		// @TODO: realy return deleted fields? make Konfigurable!
 		if (
-		TYPO3_MODE == 'BE' &&
-		!isset($options['enablefieldsoff']) &&
-		!isset($options['enablefieldsbe']) &&
-		!isset($options['enablefieldsfe'])
+			TYPO3_MODE == 'BE' &&
+			!isset($options['enablefieldsoff']) &&
+			!isset($options['enablefieldsbe']) &&
+			!isset($options['enablefieldsfe'])
 		) {
 			$options['enablefieldsoff'] = true;
+		}
+
+		// wir laden immer die default sprache,
+		// die language overlays der aktuellen sprache werden dann von rn_base geladen.
+		if (
+			!isset($options['i18n'])
+			&& !isset($options['ignorei18n'])
+			&& !isset($options['enablefieldsoff'])
+		) {
+			$options['i18n'] = '-1,0';
 		}
 
 		return $this->getSearcher()->search($fields, $options);
