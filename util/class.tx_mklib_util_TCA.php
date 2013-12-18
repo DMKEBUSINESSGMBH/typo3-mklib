@@ -6,7 +6,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  (c) 2010 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +33,9 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
  * Util Methoden für die TCA.
+ * @errorcodebase 3000
  * @author	Hannes Bochmann
+ * @author	Michael Wagner <michael.wagner@das-medienkombinat.de>
  * @package tx_mklib
  * @subpackage tx_mklib_util
  */
@@ -171,13 +173,25 @@ class tx_mklib_util_TCA {
 	 * @param 	string 	$tableName
 	 * @param 	string 	$column (disabled, starttime, endtime, fe_group')
 	 * @param 	string 	$default
+	 *
+	 * @throws Exception
+	 *
 	 * @return 	string
 	 */
 	public static function getEnableColumn($tableName, $column, $default = null){
 //		$allowed = array('fe_group', 'delete', 'disabled', 'starttime', 'endtime');
-		$fields = self::getCtrlField($tableName, 'enablecolumns', array());
-		if(!isset($fields[$column]) && $default !== null) {
-			throw new Exception(__METHOD__.': Enablecolumn "'.$column.'" not found in TCA for table "'.$tableName.'".');
+		$fields = self::getCtrlField(
+			$tableName,
+			'enablecolumns',
+			// wenn ein defaultwert definiert ist,
+			// wollen wir als fallback immer ein array!
+			$default === null ? null: array()
+		);
+		if(!(is_array($fields) && isset($fields[$column])) && $default === null) {
+			throw new LogicException (
+				'The enablecolumn "'.$column.'" does not exists in TCA for for table "'.$tableName.'".',
+				intval( ERROR_CODE_MKLIB . 3002 )
+			);
 		}
 		return isset($fields[$column]) ? $fields[$column] : $default;
 	}
@@ -195,7 +209,10 @@ class tx_mklib_util_TCA {
 			if ($default !== null) {
 				return $default;
 			}
-			throw new Exception(__METHOD__.': Table "'.$tableName.'" not found in TCA!');
+			throw new LogicException (
+				'The table "'.$tableName.'" not found in TCA!',
+				intval( ERROR_CODE_MKLIB . 3001 )
+			);
 		}
 		return isset($TCA[$tableName]['ctrl'][$field])
 			? $TCA[$tableName]['ctrl'][$field]

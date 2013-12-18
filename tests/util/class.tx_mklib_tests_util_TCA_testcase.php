@@ -44,7 +44,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	 * @var string
 	 */
 	private $returnUrlBackup;
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::setUp()
@@ -55,18 +55,19 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		tx_rnbase::load('tx_mklib_srv_Wordlist');
 		global $TCA;
 		$TCA['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
-		
+
 		$this->returnUrlBackup = $_GET['returnUrl'];
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::tearDown()
 	 */
 	protected function tearDown() {
 		$_GET['returnUrl'] = $this->returnUrlBackup;
+		unset($GLOBALS['TCA']['tt_mktest_table']);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -102,7 +103,58 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		$this->assertFalse(isset($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
 		$this->assertFalse(isset($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
 	}
-	
+
+	/**
+	 * @group unit
+	 */
+	public function testGetEnableColumnReturnsDeletedForDisabled() {
+		$expected = 'deleted';
+		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns']['disabled'] = $expected;
+		$actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
+		$this->assertEquals($expected, $actual);
+	}
+	/**
+	 * @group unit
+	 * @expectedException LogicException
+     * @expectedExceptionCode 4003001
+	 */
+	public function testGetEnableColumnThrowsExceptionForNonExcitingTable() {
+		tx_mklib_util_TCA::getEnableColumn('tt_mktest_table_does_not_exists', 'disabled');
+	}
+	/**
+	 * @group unit
+	 * @expectedException LogicException
+     * @expectedExceptionCode 4003002
+	 */
+	public function testGetEnableColumnThrowsExceptionForNonExcitingColumn() {
+		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns'] = array();
+		tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
+	}
+	/**
+	 * @group unit
+	 */
+	public function testGetEnableColumnReturnsDefaultValueForDisabled() {
+		$expected = 'removed';
+		$actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled', $expected);
+		$this->assertEquals($expected, $actual);
+	}
+	/**
+	 * @group unit
+	 */
+	public function testGetLanguageFieldReturnsRightValue() {
+		$expected = 'sys_language_identifier';
+		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['languageField'] = $expected;
+		$actual = tx_mklib_util_TCA::getLanguageField('tt_mktest_table');
+		$this->assertEquals($expected, $actual);
+	}
+	/**
+	 * @group unit
+	 * @expectedException LogicException
+     * @expectedExceptionCode 4003001
+	 */
+	public function testGetLanguageThrowsExceptionForNonExcitingTable() {
+		tx_mklib_util_TCA::getLanguageField('tt_mktest_table_does_not_exists');
+	}
 	/**
 	 * @group unit
 	 */
@@ -111,57 +163,57 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
 		);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotExistentInReturnUrl(){
 		$_GET['returnUrl'] = 'typo3/wizard_add.php';
-	
+
 		$this->assertNull(
 			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
 		);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotSetInReturnUrl(){
 		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=';
-	
+
 		$this->assertNull(
 			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
 		);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetParentUidFromReturnUrlReturnsCorrectParentUid(){
 		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=2';
-	
+
 		$this->assertEquals(
 			2, tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid nicht korrekt'
 		);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testCropLabelsWithDefaultLengthOf80CharsCorrect() {
 		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
 		$tcaTableInformation = array('items' => array(0 => array(0 => $labelWith81Chars)));
-		
+
 		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
-		
+
 		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
 		$this->assertEquals(
-			$labelWith80CharsAnd3Dots, 
-			$tcaTableInformation['items'][0][0], 
+			$labelWith80CharsAnd3Dots,
+			$tcaTableInformation['items'][0][0],
 			'Label nicht richtig gekürzt'
 		);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
@@ -171,7 +223,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		unset($tcaTableInformation['items']);
 		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
@@ -179,19 +231,19 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
 		$tcaTableInformation = array(
 			'items' => array(0 => array(0 => $labelWith81Chars)),
-			'config' => array('labelLength' => 40)	
+			'config' => array('labelLength' => 40)
 		);
-	
+
 		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
-	
+
 		$labelWith40CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur s...';
 		$this->assertEquals(
-			$labelWith40CharsAnd3Dots, 
-			$tcaTableInformation['items'][0][0], 
+			$labelWith40CharsAnd3Dots,
+			$tcaTableInformation['items'][0][0],
 			'Label nicht richtig gekürzt'
 		);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
@@ -201,9 +253,9 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			'items' => array(0 => array(0 => $labelWith81Chars)),
 			'config' => array('labelLength' => 'test')
 		);
-	
+
 		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
-	
+
 		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
 		$this->assertEquals(
 			$labelWith80CharsAnd3Dots,
