@@ -166,6 +166,7 @@ class tx_mklib_util_TCA {
 	 * Liefert den Spaltenname für enablecolumns aus der TCA
 	 *
 	 * @FIXME: Nicht alle felder stehen unter ctrlo.enablecolumns. siehe: tstamp, crdate, cruser_id, delete, ...
+	 * @TODO: wirft keine exception, wenn ein default wert gegeben ist. das ist allerdings falsch.
 	 *
 	 * @param 	string 	$tableName
 	 * @param 	string 	$column (disabled, starttime, endtime, fe_group')
@@ -175,7 +176,7 @@ class tx_mklib_util_TCA {
 	public static function getEnableColumn($tableName, $column, $default = null){
 //		$allowed = array('fe_group', 'delete', 'disabled', 'starttime', 'endtime');
 		$fields = self::getCtrlField($tableName, 'enablecolumns', array());
-		if(!isset($fields[$column])) {
+		if(!isset($fields[$column]) && $default !== null) {
 			throw new Exception(__METHOD__.': Enablecolumn "'.$column.'" not found in TCA for table "'.$tableName.'".');
 		}
 		return isset($fields[$column]) ? $fields[$column] : $default;
