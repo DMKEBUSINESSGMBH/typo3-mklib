@@ -80,8 +80,19 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 * @return array[tx_rnbase_model_base]
 	 */
 	public function search($fields, $options) {
-		// On default, return hidden and deleted fields in backend
-		// @TODO: realy return deleted fields? make Konfigurable!
+		$this->handleEnableFieldsOptions($fields, $options);
+		$this->handleLanguageOptions($fields, $options);
+		return $this->getSearcher()->search($fields, $options);
+	}
+
+	/**
+	 * On default, return hidden and deleted fields in backend
+	 * @TODO: realy return deleted fields? make Konfigurable!
+	 *
+	 * @param array $fields
+	 * @param array $options
+	 */
+	protected function handleEnableFieldsOptions(&$fields, &$options) {
 		if (
 			TYPO3_MODE == 'BE' &&
 			!isset($options['enablefieldsoff']) &&
@@ -90,7 +101,15 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		) {
 			$options['enablefieldsoff'] = true;
 		}
+	}
 
+	/**
+	 * @TODO: make configurable!
+	 *
+	 * @param array $fields
+	 * @param array $options
+	 */
+	protected function handleLanguageOptions(&$fields, &$options) {
 		// wir laden immer die default sprache,
 		// die language overlays der aktuellen sprache werden dann von rn_base geladen.
 		if (
@@ -98,10 +117,20 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 			&& !isset($options['ignorei18n'])
 			&& !isset($options['enablefieldsoff'])
 		) {
-			$options['i18n'] = '-1,0';
+			$tableName = $this->getDummyModel()->getTableName();
+			$languageField = tx_mklib_util_TCA::getLanguageField($tableName);
+			// Das Ganze machen wir nur, wenn ein Sprachfeld gesetzt ist.
+			if (!empty($languageField)) {
+				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
+				$languages = array('-1' /*all*/, '0' /*default*/);
+				// Wenn eine bestimmte Sprache gesetzt ist,
+				// laden wir diese ebenfalls.
+				if (is_object($tsfe) && $tsfe->sys_language_content) {
+					$languages[] = $tsfe->sys_language_content;
+				}
+				$options['i18n'] = implode(',',$languages);
+			}
 		}
-
-		return $this->getSearcher()->search($fields, $options);
 	}
 
 	/**
