@@ -35,17 +35,17 @@ class tx_mklib_soap_ClientWrapper {
 	/**
 	 * @var string
 	 */
-	private $url;
+	protected $url;
 	
 	/**
 	 * @var SoapClient
 	 */
-	private $soapclient;
+	protected $soapclient;
 	
 	/**
 	 * @var integer
 	 */
-	private $soapVersion = SOAP_1_1; 
+	protected $soapVersion = SOAP_1_1; 
 	
 	/**
 	 * @param string $method
@@ -103,7 +103,7 @@ class tx_mklib_soap_ClientWrapper {
 	 * @param array $args
 	 * @return void
 	 */
-	private function logException(Exception $exception, array $args = array()) {
+	protected function logException(Exception $exception, array $args = array()) {
 		$soapClient = $this->getSoapClient();
 		
 		if($soapClient instanceof SoapClient){
