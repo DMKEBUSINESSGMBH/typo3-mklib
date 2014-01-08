@@ -10,6 +10,8 @@
 			<label index="general.undef">Undefined</label>
 			<label index="plugin.mklib.label">MK Library</label>
 			
+			<label index="please_choose">==please choose==</label>
+			
 			<!--  flexform -->
 			<label index="plugin.mklib.flexform.tab.common">Common</label>
 			<label index="plugin.mklib.flexform.action">View</label>
@@ -33,6 +35,8 @@
 			<!-- misc -->
 			<label index="general.undef">Undefiniert</label>
 			<label index="plugin.mklib.label">MK Bibliothek</label>
+			
+			<label index="please_choose">==bitte wählen==</label>
 
 			<!-- TCA tx_mklib_wordlist -->
 			<label index="tx_mklib_wordlist">Wortliste</label>
