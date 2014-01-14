@@ -104,14 +104,13 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	}
 
 	/**
-	 * @TODO: make configurable!
+	 * Setzt eventuelle Sprachparameter,
+	 * damit nur valide Daten für die aktuelle Sprache ausgelesen werden.
 	 *
 	 * @param array $fields
 	 * @param array $options
 	 */
 	protected function handleLanguageOptions(&$fields, &$options) {
-		// wir laden immer die default sprache,
-		// die language overlays der aktuellen sprache werden dann von rn_base geladen.
 		if (
 			!isset($options['i18n'])
 			&& !isset($options['ignorei18n'])
@@ -119,16 +118,21 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 		) {
 			$tableName = $this->getDummyModel()->getTableName();
 			$languageField = tx_mklib_util_TCA::getLanguageField($tableName);
-			// Das Ganze machen wir nur, wenn ein Sprachfeld gesetzt ist.
+			// Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
 			if (!empty($languageField)) {
 				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
-				$languages = array('-1' /*all*/, '0' /*default*/);
+				$languages = array();
+				$languages[] = '-1'; // for all languages
 				// Wenn eine bestimmte Sprache gesetzt ist,
 				// laden wir diese ebenfalls.
 				if (is_object($tsfe) && $tsfe->sys_language_content) {
 					$languages[] = $tsfe->sys_language_content;
 				}
-				$options['i18n'] = implode(',',$languages);
+				// andernfalls nutzen wir die default sprache
+				else {
+					$languages[] = '0'; // default language
+				}
+				$options['i18n'] = implode(',', $languages);
 			}
 		}
 	}
