@@ -263,6 +263,63 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			'Label nicht richtig gekürzt'
 		);
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetGermanStatesFieldWithoutRequired() {
+		$expectedGermanStatesField = array (
+			'exclude'	=> 1,
+			'label'		=> 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+			'config'	=> array (
+				'type'	=> 'select',
+				'items'	=> array (
+					array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
+				),
+				'foreign_table'			=> 'static_country_zones',
+				'foreign_table_where' 	=> ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+				'size' 					=> 1,
+			)
+		);
+
+		$germanStatesField = tx_mklib_util_TCA::getGermanStatesField();
+
+		$this->assertEquals(
+			$expectedGermanStatesField,
+			$germanStatesField,
+			'TCA Feld falsch'
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetGermanStatesFieldWithRequired() {
+		$expectedGermanStatesField = array (
+			'exclude'	=> 1,
+			'label'		=> 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+			'config'	=> array (
+				'type'	=> 'select',
+				'items'	=> array (
+					array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
+				),
+				'foreign_table'			=> 'static_country_zones',
+				'foreign_table_where' 	=> ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+				'size' 					=> 1,
+				'minitems' => 1,
+				'maxitems' => 1,
+				'eval' => 'required'
+			)
+		);
+
+		$germanStatesField = tx_mklib_util_TCA::getGermanStatesField(true);
+
+		$this->assertEquals(
+			$expectedGermanStatesField,
+			$germanStatesField,
+			'TCA Feld falsch'
+		);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']) {

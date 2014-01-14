@@ -443,6 +443,36 @@ class tx_mklib_util_TCA {
 
 		return $labelLength;
 	}
+
+	/**
+	 *
+	 * @param boolean $required
+	 *
+	 * @return array
+	 */
+	public static function getGermanStatesField($isRequired = false) {
+		$tcaFieldConfig = array (
+			'exclude'	=> 1,
+			'label'		=> 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+			'config'	=> array (
+				'type'	=> 'select',
+				'items'	=> array (
+					array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
+				),
+				'foreign_table'			=> 'static_country_zones',
+				'foreign_table_where' 	=> ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+				'size' 					=> 1,
+			)
+		);
+
+		if($isRequired) {
+			$tcaFieldConfig['config']['minitems'] = 1;
+			$tcaFieldConfig['config']['maxitems'] = 1;
+			$tcaFieldConfig['config']['eval'] = 'required';
+		}
+
+		return $tcaFieldConfig;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']) {

@@ -30,6 +30,9 @@
 			<!-- TCA static_countries -->
 			<label index="static_countries.zipcode_rule">zip code rule</label>
 			<label index="static_countries.zipcode_length">zip code length</label>
+			
+			<!-- tt_address -->
+			<label index="tt_address.region">Region/State</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<!-- misc -->
@@ -47,6 +50,9 @@
 			<!-- TCA static_countries -->
 			<label index="static_countries.zipcode_rule">Postleitzahl-Regel</label>
 			<label index="static_countries.zipcode_length">Postleitzahl-Länge</label>
+			
+			<!-- tt_address -->
+            <label index="tt_address.region">Bundesland</label>
 		</languageKey>
 	</data>
 </T3locallang>
