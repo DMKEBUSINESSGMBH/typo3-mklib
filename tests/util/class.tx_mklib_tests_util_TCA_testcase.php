@@ -320,6 +320,38 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			'TCA Feld falsch'
 		);
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetWizardsReturnsLinkWizardCorrect() {
+		$linkWizard = tx_mklib_util_TCA::getWizards(
+			'', array(
+				'link' => array(
+					'params' => Array(
+						'blindLinkOptions' => 'file,page,mail,spec,folder',
+					)
+				)
+			)
+		);
+
+		$expectedLinkWizard = array(
+			'_PADDING' => 2,
+			'_VERTICAL' => 1,
+			'link' => array(
+				'type' => 'popup',
+				'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
+				'icon' => 'link_popup.gif',
+				'script' => 'browse_links.php?mode=wizard',
+				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+				'params' => Array(
+						'blindLinkOptions' => 'file,page,mail,spec,folder',
+				)
+			)
+		);
+
+		$this->assertEquals($expectedLinkWizard, $linkWizard, 'link wizard nicht korrekt');
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']) {

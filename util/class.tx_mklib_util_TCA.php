@@ -291,9 +291,10 @@ class tx_mklib_util_TCA {
 	public static function getWizards($sTable, array $options = array()) {
 		$bGlobalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
 		$wizards = array (
-				'_PADDING' => 2,
-				'_VERTICAL' => 1,
-			);
+			'_PADDING' => 2,
+			'_VERTICAL' => 1,
+		);
+
 		if(isset($options['edit'])) {
 			$wizards['edit'] = array (
 				'type' => 'popup',
@@ -304,11 +305,13 @@ class tx_mklib_util_TCA {
 				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
 			);
 			if (is_array($options['edit'])) {
-				$wizards['edit']
-					= t3lib_div::array_merge_recursive_overrule(
-							$wizards['edit'], $options['edit']);
+				$wizards['edit'] =
+					t3lib_div::array_merge_recursive_overrule(
+						$wizards['edit'], $options['edit']
+					);
 			}
 		}
+
 		if(isset($options['add'])) {
 			$wizards['add'] = array (
 				'type' => 'script',
@@ -322,11 +325,13 @@ class tx_mklib_util_TCA {
 				'script' => 'wizard_add.php',
 			);
 			if (is_array($options['add'])) {
-				$wizards['add']
-					= t3lib_div::array_merge_recursive_overrule(
-							$wizards['add'], $options['add']);
+				$wizards['add'] =
+					t3lib_div::array_merge_recursive_overrule(
+						$wizards['add'], $options['add']
+					);
 			}
 		}
+
 		if(isset($options['list'])) {
 			$wizards['list'] = array (
 				'type' => 'popup',
@@ -340,11 +345,13 @@ class tx_mklib_util_TCA {
 				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
 			);
 			if (is_array($options['list'])) {
-				$wizards['list']
-					= t3lib_div::array_merge_recursive_overrule(
-							$wizards['list'], $options['list']);
+				$wizards['list'] =
+					t3lib_div::array_merge_recursive_overrule(
+						$wizards['list'], $options['list']
+					);
 			}
 		}
+
 		if(isset($options['suggest'])) {
 			$wizards['suggest'] = array (
 				'type' => 'suggest',
@@ -354,11 +361,13 @@ class tx_mklib_util_TCA {
 				),
 			);
 			if (is_array($options['suggest'])) {
-				$wizards['suggest']
-					= t3lib_div::array_merge_recursive_overrule(
-							$wizards['suggest'], $options['suggest']);
+				$wizards['suggest'] =
+					t3lib_div::array_merge_recursive_overrule(
+						$wizards['suggest'], $options['suggest']
+					);
 			}
 		}
+
 		if(isset($options['RTE'])) {
 			$wizards['RTE'] = Array(
 				'notNewRecords' => 1,
@@ -369,6 +378,26 @@ class tx_mklib_util_TCA {
 				'script' => 'wizard_rte.php',
 			);
 		}
+
+		if(isset($options['link'])) {
+			$wizards['link'] = Array(
+				'type' => 'popup',
+				'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
+				'icon' => 'link_popup.gif',
+				'script' => 'browse_links.php?mode=wizard',
+				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
+				'params' => Array(
+					'blindLinkOptions' => '',
+				)
+			);
+			if (is_array($options['link'])) {
+				$wizards['link'] =
+					t3lib_div::array_merge_recursive_overrule(
+						$wizards['link'], $options['link']
+					);
+			}
+		}
+
 		return $wizards;
 	}
 
