@@ -41,6 +41,16 @@ tx_rnbase::load('tx_mklib_tests_Util');
 class tx_mklib_tests_srv_StaticCountryZones_testcase extends tx_phpunit_testcase {
 	
 	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+	protected function setUp() {
+		if(!t3lib_extMgm::isLoaded('static_info_tables')) {
+			$this->markTestSkipped('static_info_tables nicht installiert.');
+		}
+	}
+	
+	/**
 	 * @group integration
 	 */
 	public function testGetByZnCode(){
