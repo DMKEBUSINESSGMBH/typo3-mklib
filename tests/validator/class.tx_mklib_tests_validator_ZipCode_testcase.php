@@ -48,7 +48,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 		$cnt = tx_rnbase_util_DB::doSelect('COUNT(uid) as cnt','static_countries', array('enablefieldsoff'=>1,/*'debug'=>1,*/ 'where'=>'zipcode_rule > 0'));
 		$loaded = intval($cnt[0]['cnt']) > 0;
 		if(!$loaded && $skip) {
-			$this->markTestSkipped('Zip code rules not found in database');
+			self::markTestSkipped('Zip code rules not found in database');
 		}
 		return $loaded;
 	}
