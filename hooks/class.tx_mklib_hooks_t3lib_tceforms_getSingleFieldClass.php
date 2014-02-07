@@ -44,7 +44,7 @@ class tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass {
 	 * 'config' => array (
 	 * 		'type' => 'select',
 	 * 		'items' => array (
-	 * 			array('bitte wählen', ''),
+	 * 			array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
 	 * 		),
 	 * 		'minitems' => 1,
 	 * 		'maxitems' => 1,
