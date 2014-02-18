@@ -72,6 +72,9 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	 *
 	 */
 	public function testEleminateNonTcaColumns(){
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
+		}
 		$model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array());
 		$data = array(
 	  		'blacklisted' => true,
@@ -90,6 +93,9 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	 *
 	 */
 	public function testEleminateNonTcaColumnsByTable(){
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
+		}
 		$data = array(
 	  		'blacklisted' => true,
 	  		'whitelisted' => 0,
