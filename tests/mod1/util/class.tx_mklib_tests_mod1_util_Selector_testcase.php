@@ -87,6 +87,11 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			$LOCAL_LANG['default']['label_select_hide_hidden'] = $mHideEntry;
 			$LOCAL_LANG['default']['label_select_show_hidden'] = $mShowEntry;
 		}
+		
+		// sonst fehler die icon klassen
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			\TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
+		}
 	}
 	
 	/**
