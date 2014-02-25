@@ -87,7 +87,7 @@ class tx_mklib_treelib_Config {
 	 */
 	public function getMM($field='MM', $default=null){
 		global $TCA;
-		$config = $TCA[$this->getForeignTable()]['ctrl']['treeParentMM'];
+		$config = (array) $TCA[$this->getForeignTable()]['ctrl']['treeParentMM'];
 		return array_key_exists($field, $config) ? $config[$field] : $default;
 	}
 	public function addLabelAltFields(array &$fields = array()){
