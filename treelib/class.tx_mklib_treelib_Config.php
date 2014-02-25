@@ -29,14 +29,14 @@ require_once (t3lib_extMgm::extPath('rn_base').'class.tx_rnbase.php');
 
 /**
  * Konfiguration für einen TreeView.
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_treelib
  * @author Michael Wagner
  */
 class tx_mklib_treelib_Config {
 	/**
-	 * 
+	 *
 	 * @var t3lib_TCEforms
 	 */
 	private $oTceForm = null;
@@ -44,10 +44,10 @@ class tx_mklib_treelib_Config {
 	 * @var array
 	 */
 	private $config = array();
-	
+
 	/**
 	 * Liefert eine Instans des Treeviews
-	 * 
+	 *
 	 * @param 	array 			$PA
 	 * @param 	t3lib_TCEforms 	$fObj
 	 * @return 	void
@@ -56,10 +56,10 @@ class tx_mklib_treelib_Config {
 		$this->oTceForm = &$PA['pObj'];
 		$this->config = &$PA['fieldConf']['config'];
 	}
-	
+
 	/**
 	 * Liefert eine Instans der Konfiguration
-	 * 
+	 *
 	 * @param 	array 			$PA
 	 * @param 	t3lib_TCEforms 	$fObj
 	 * @return 	tx_mklib_treelib_Config
@@ -67,14 +67,14 @@ class tx_mklib_treelib_Config {
 	public static function &makeInstance(&$PA, &$pObj) {
 		return tx_rnbase::makeInstance('tx_mklib_treelib_Config', $PA, $pObj);
 	}
-	
+
 	/**
 	 * @return 	t3lib_TCEforms 	$fObj
 	 */
 	public function &getTceForm(){
 		return $this->oTceForm;
 	}
-	
+
 	public function get($field, $default=null) {
 		return array_key_exists($field, $this->config) ? $this->config[$field] : $default;
 	}
@@ -111,6 +111,7 @@ class tx_mklib_treelib_Config {
 		return $val;
 	}
 	public function getParentField(){
+		global $TCA;
 		$val = $TCA[$this->getForeignTable()]['ctrl']['treeParentField'];
 		return $val ? $val : $this->get('field', 'parent');
 	}
@@ -129,7 +130,7 @@ class tx_mklib_treelib_Config {
 	public function getExtIconMode(){
 		return $this->get('ext_IconMode', true); // default no context menu on icons
 	}
-	
+
 	public function getMinItems(){
 		return t3lib_div::intInRange($this->get('minitems', 0), 0);
 	}
@@ -142,7 +143,7 @@ class tx_mklib_treelib_Config {
 	public function getSize(){
 		return $this->get('size', 1);
 	}
-	
+
 	public function getTreeWrapStyle(){
 		$default = 'border:solid 1px; overflow:auto; background:#fff; margin-bottom:5px; padding:1px 0;';
 		// Breite und Höhe anfügen!
@@ -153,20 +154,20 @@ class tx_mklib_treelib_Config {
 	public function getSelectedListStyle(){
 		return $this->get('selectedListStyle', 'width:250px;');
 	}
-	
+
 	public function getWizards(){
 		return $this->get('wizards');
 	}
-	
+
 	/**
 	 * wenn bei einem normalen nutzer kein root record
-	 * gefunden wird, dann kommt es zur exception. das 
+	 * gefunden wird, dann kommt es zur exception. das
 	 * ist ein Bug in TYPO3 bzw. in der Extension,
 	 * die keine Mounts unterstützt.
 	 * Damit der gleiche dummy record wie
 	 * bei einem Admin verwendet wird, kann diese option
 	 * gesetzt werden.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function forceAdminRootRecord() {
