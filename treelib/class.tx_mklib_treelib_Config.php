@@ -173,6 +173,13 @@ class tx_mklib_treelib_Config {
 	public function forceAdminRootRecord() {
 		return (boolean)$this->get('forceAdminRootRecord');
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function dontLinkParentRecords() {
+		return (boolean) $this->getTreeConfig('dontLinkParentRecords', 0);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php'])	{

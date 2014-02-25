@@ -30,7 +30,7 @@ require_once (t3lib_extMgm::extPath('rn_base').'class.tx_rnbase.php');
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_treelib
  * @author Michael Wagner
@@ -68,10 +68,10 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	 * @var int
 	 */
 	private $iCurrentRow = 0;
-	
+
 	/**
 	 * Liefert eine Instans des Treeviews
-	 * 
+	 *
 	 * @param 	array 					$PA
 	 * @param 	t3lib_TCEforms 			$fObj
 	 * @return 	tx_mklib_treelib_TreeView
@@ -80,7 +80,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 		$oTreeView = tx_rnbase::makeInstance('tx_mklib_treelib_TreeView', $PA, $fObj);
 		return $oTreeView;
 	}
-	
+
 	/**
 	 * Initialisiert den Treeview
 	 *
@@ -91,31 +91,31 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	 */
 	public function tx_mklib_treelib_TreeView($PA, &$fObj)	{
 		global $GLOBALS, $LANG, $TCA;
-		
+
 		$this->oTceForm = &$PA['pObj'];
 		$this->PA = &$PA;
 
 		tx_rnbase::load('tx_mklib_treelib_Config');
 		$oConfig = tx_mklib_treelib_Config::makeInstance($PA, $fObj);
 		$this->config = &$oConfig;
-		
+
 		$this->table = $oConfig->getForeignTable(); //$PA['table'];
 		$this->parentField = $oConfig->getParentField();
 		$this->row = $PA['row'];
-		
+
 		$TCA[$this->table]['ctrl']['treeParentMM'];
-		
+
 		$this->backPath = $this->oTceForm->backPath;
-		
+
 		$clause = ' AND '.$GLOBALS['BE_USER']->getPagePermsClause(1);
 		$orderByFields = '';
 		parent::init($clause, $orderByFields);
-		
+
 		$this->setTreeName($PA['table'].'_'.$PA['field'].'_tree');
-		
+
 		$this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		$this->MOUNTS = $GLOBALS['WEBMOUNTS'];
-		
+
 		$this->maxDepth = $oConfig->getMaxDepth();
 		$this->expandAll = $oConfig->getExpandAll();
 		$this->expandFirst = $oConfig->getExpandFirst();
@@ -126,19 +126,19 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 							);
 		// label_alt felder zum record hinzufügen.
 		$oConfig->addLabelAltFields($this->fieldArray);
-		
+
 		$this->showDefaultTitleAttribute = true;
-		$this->ext_IconMode = $oConfig->getExtIconMode(); 
+		$this->ext_IconMode = $oConfig->getExtIconMode();
 		$this->title = $LANG->sL( $TCA[$oConfig->getForeignTable()]['ctrl']['title'] );
 		$this->thisScript = 'alt_doc.php';
-		
+
 		$this->hiddenField = '<input type="hidden" name="PM" value="">';
 		$this->itemArray = t3lib_div::trimExplode (',', $this->PA['itemFormElValue'], 1);
 		$this->makeHTML = 1;
-		
+
 		if (t3lib_extMgm::isLoaded('xajax') && $oConfig->get('useAjax', true)) {
 			$this->useAjax = 'xajax';
-			
+
 			if (!defined('XAJAX_DEFAULT_CHAR_ENCODING')) {
 				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) {
 					define('XAJAX_DEFAULT_CHAR_ENCODING', $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
@@ -147,16 +147,16 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public function useAjax(){
 		return $this->useAjax !== FALSE;
 	}
-	
+
 	/**
 	 * Liefert das Konfigurations Objekt.
-	 *  
+	 *
 	 * @return 	tx_mklib_treelib_Config
 	 */
 	public function &getConfig() {
@@ -164,7 +164,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	}
 	/**
 	 * Liefert ein Array mit den bereits selektierten Daten.
-	 *  
+	 *
 	 * @return 	array
 	 */
 	public function getItemArray() {
@@ -172,7 +172,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	}
 	/**
 	 * Liefert ein Array mit den UIDs der bereits selektierten Daten.
-	 *  
+	 *
 	 * @return 	array
 	 */
 	private function getItemArrayIds(){
@@ -218,12 +218,12 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 		}
 		return parent::getCount($uid);
 	}
-	
+
 	/**
 	 * Getting the tree data: Selecting/Initializing data pointer to items for a certain parent id.
 	 * For tables: This will make a database query to select all children to "parent"
 	 * For arrays: This will return key to the ->dataLookup array
-	 * 
+	 *
 	 * @param	integer		$parentId
 	 * @param	string		$subCSSclass	(unused)
 	 * @return	mixed		data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
@@ -246,12 +246,12 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 			$res = $TYPO3_DB->exec_SELECTquery($what, $fromClause, $where);
 			return $res;
 		}
-		
+
 		//@workaround - siehe Wiki von mklib und mkdownloads
 		//damit nicht eingeschränkt wird
 		if($this->getConfig()->forceAdminRootRecord())
 			$this->clause = '';
-			
+
 		return parent::getDataInit($parentId, $subCSSclass);
 	}
 	/**
@@ -274,7 +274,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 				$bgColorClass = 'bgColor4';
 			}
 			$row['_CSSCLASS'] = ($row['_CSSCLASS'] ? ' ' : '') . $bgColorClass;
-			
+
 			$oConfig = $this->getConfig();
 			// den Titel mit label_alt fülen
 			if($oConfig->getTreeConfig('parseRecordTitle')) {
@@ -283,10 +283,10 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 		}
 		return $row;
 	}
-	
+
 	/**
 	 * Setzt die nötigen SQL werte für die Abfrage einer MM Relation
-	 * 
+	 *
 	 * @param 	string 		$parentId
 	 * @param 	string 		$what
 	 * @param 	string 		$fromClause
@@ -296,21 +296,21 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 		global $TCA;
 		$oConfig = $this->getConfig();
 		$sMM = $oConfig->getMM();
-		
+
 		$aWhat = array();
 		foreach($this->fieldArray as $field) {
 			$aWhat[] = 'BASE.'.$field;
 		}
 		// doppelte einträge vermeiden
 		$what = 'DISTINCT '.implode(',',$aWhat);
-		
+
 		//@FIXME 'MM_opposite_field', 'uid_local' => 'uid_foreign', 'uid_foreign' beachten!?
 		$fromClause  = $this->table.' as BASE';
 		$fromClause .= ' JOIN '.$sMM.' as MM ON MM.uid_local = BASE.uid';
 		$fromClause .= ' JOIN '.$this->table.' AS PARENT ON MM.uid_foreign = PARENT.uid';
-		
+
 		$where = 'PARENT.uid = '.$parentId;
-		
+
 		// match_field anhängen.
 		$aMatchFields = array();
 		foreach($oConfig->getMM('MM_match_fields', array()) as $field => $value) {
@@ -343,26 +343,26 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 //			)); // @TODO: remove me
 //		echo '</pre>';
 //exit;
-		
+
 		if ($this->thisScript) {
-		
+
 //			$cmdParts = explode ( '_', $cmd );
 //			if(count($cmdParts) < 5) { $cmd .= '_'.$this->PA['row']['uid']; }
-			
+
 			$additionalParams = array();
-			
+
 			if ($this->useAjax()) {
 				$title = $cmdParts[1] == '1' ? 'expand' : 'collapse';
 				// Die Funktion $this->treeName.'_sendXajaxResponse wird von xajax angelegt
 				$additionalParams[] = 'onclick="'.$this->treeName.'_sendXajaxResponse(\'' . $cmd . '\');return false;"';
 				$additionalParams[] = 'title="'.$title.'"';
 			}
-			
+
 			if ($bMark)	{
 				$anchor = '#'.$bMark;
 				$name=' name="'.$bMark.'"';
 			}
-			
+
 			// Den Query-String bis auf den PM Parameter übernehmen.
 			$queryString = t3lib_div::getIndpEnv('QUERY_STRING');
 			// pm vom query string abschneiden!
@@ -371,16 +371,16 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 			}
 			// Erstes & Anfügen, wenn noch nicht vorhanden.
 			if($queryString{0} !== '&') {
-				$queryString = '&'.$queryString; 
+				$queryString = '&'.$queryString;
 			}
-			
+
 			$aUrl = $this->thisScript.'?PM='.$cmd.$queryString.$anchor;
 			return '<a href="'.htmlspecialchars($aUrl).'"'.$name.(count($additionalParams) ? ' '.implode(' ', $additionalParams) : '').'>'.$icon.'</a>';
 		} else {
 			return $icon;
 		}
 	}
-	
+
 	/**
 	 * Wrappt den Titel in einen Link, welcher den Eintrag zur Liste hinzufügt.
 	 *
@@ -389,12 +389,42 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	 * @return	string
 	 */
 	function wrapTitle($title, $v, $bank) {
+		$title_alt = $v[$this->getConfig()->getTitleField().'_alt'];
+		$title = ($title_alt ? $title_alt : $title);
+		//nicht wählbar
+		if(
+			$this->isRootRecord($v) ||
+			($this->getConfig()->dontLinkParentRecords() && $v[$this->getConfig()->getParentField()] == 0)
+		) {
+			$link = $title;
+		} else {
+			$link = $this->getRecordOnClickLink($title, $v);
+		}
+		return $link;
+	}
+
+	/**
+	 * @param	string 		$title
+	 * @param	array 		$v
+	 *
+	 * @return string
+	 */
+	private function getRecordOnClickLink($title, $v) {
 		$aOnClick =  'setFormValueFromBrowseWin(\'' . $this->PA['itemFormElName'] . '\',' . $v['uid'] . ',\'' . $title . '\');';
 		$title_alt = $v[$this->getConfig()->getTitleField().'_alt'];
-		$link = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . htmlentities($v['description']) . '">' . 
-					($title_alt ? $title_alt : $title)
+		$link = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . htmlentities($v['description']) . '">' .
+				$title
 				. '</a>';
+
 		return $link;
+	}
+
+	/**
+	 * @param array $record
+	 * @return boolean
+	 */
+	private function isRootRecord(array $record) {
+		return $record['uid'] == 0;
 	}
 
 	/**
