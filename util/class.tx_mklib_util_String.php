@@ -190,7 +190,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	/**
 	 * @param array $emailParts | provided e.g. from preg_replace
 	 * @return string
-	 * 
+	 *
 	 * @todo prüfen ob es die email schon als link im text gibt und dann nicht parsen
 	 */
 	public static function convertEmailToMailToLink($emailParts) {
@@ -214,8 +214,29 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	public static function removeLineBreaks($value, $replacement = '') {
 		$value = str_replace("\r\n", $replacement, $value);
 		$value = str_replace("\n", $replacement, $value);
-	
+
 		return $value;
+	}
+
+	/**
+	 * macht aus http://www.google.de, https://www.google.de, ftp://www.google.de,
+	 * ftps://www.google.de, www.google.de, email@domain.tld die passenden HTML Links
+	 *
+	 * dabei wird der Text auch XSS geschützt
+	 *
+	 * @see http://buildinternet.com/2010/05/how-to-automatically-linkify-text-with-php-regular-expressions/
+	 *
+	 * @param string $text
+	 * @param string $aTagParams
+	 *
+	 * @return string
+	 */
+	public static function convertUrlsInTextToLinks($text, $aTagParams = 'target="_blank"'){
+		$text= preg_replace("/(^|[\n ])([\w]*?)((ht|f)tp(s)?:\/\/[\w]+[^ \,\"\n\r\t]*)/is", "$1$2&lt;a $aTagParams href=\"$3\" &gt;$3&lt;/a&gt;", $text);
+		$text= preg_replace("/(^|[\n ])([\w]*?)((www|ftp)\.[^ \,\"\t\n\r]*)/is", "$1$2&lt;a $aTagParams href=\"http://$3\" &gt;$3&lt;/a&gt;", $text);
+		$text= preg_replace("/(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i", "$1&lt;a href=\"mailto:$2@$3\"&gt;$2@$3&lt;/a&gt;", $text);
+
+		return t3lib_div::removeXSS(html_entity_decode($text));
 	}
 }
 

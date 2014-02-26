@@ -203,22 +203,22 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	public static function initSpamProtectionConfig() {
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		tx_rnbase_util_Misc::prepareTSFE();
-		
+
 		$GLOBALS['TSFE']->spamProtectEmailAddresses = 2;
 		$GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst'] = '&#8203;(at)&#8203';
-		
+
 		//tq_seo extension hat einen hook der auf das folgende feld zugreift.
 		//wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
 		//wir verhindern wollen!
 		$GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testRemoveLineBreaks() {
 		$testString = "test1\ntest2\r\n";
-	
+
 		$this->assertEquals(
 			"test1test2",
 			tx_mklib_util_String::removeLineBreaks($testString),
@@ -228,6 +228,40 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			"test1 test2 ",
 			tx_mklib_util_String::removeLineBreaks($testString, ' '),
 			'Line breaks nicht enfernt'
+		);
+	}
+
+	/**
+	 * @group unit
+	 * @dataProvider getUrls
+	 */
+	public function testConvertUrlsinTextToLinks(
+		$text, $aTagParams, $expectedParsedText
+	) {
+		$this->assertEquals(
+			$expectedParsedText,
+			tx_mklib_util_String::convertUrlsInTextToLinks($text, $aTagParams),
+			'Text falsch geparsed'
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getUrls() {
+		return array(
+			array('text mit www.google.de link', '', 'text mit <a  href="http://www.google.de" >www.google.de</a> link'),
+			array('www.google.de link', 'target="_blank"', '<a target="_blank" href="http://www.google.de" >www.google.de</a> link'),
+			array('www.google.de?param1=value1&param2=value2-#anchor link', '', '<a  href="http://www.google.de?param1=value1&param2=value2-#anchor" >www.google.de?param1=value1&param2=value2-#anchor</a> link'),
+			array('text mit www.google.de', '', 'text mit <a  href="http://www.google.de" >www.google.de</a>'),
+			array('text mit http://www.google.de link', '', 'text mit <a  href="http://www.google.de" >http://www.google.de</a> link'),
+			array('http://www.google.de link', '', '<a  href="http://www.google.de" >http://www.google.de</a> link'),
+			array('text mit http://www.google.de', '', 'text mit <a  href="http://www.google.de" >http://www.google.de</a>'),
+			array('text mit https://www.google.de link', '', 'text mit <a  href="https://www.google.de" >https://www.google.de</a> link'),
+			array('https://www.google.de link', '', '<a  href="https://www.google.de" >https://www.google.de</a> link'),
+			array('text mit https://www.google.de', '', 'text mit <a  href="https://www.google.de" >https://www.google.de</a>'),
+			array('text mit <a href="https://www.google.de">link</a>', '', 'text mit <a href="https://www.google.de">link</a>'),
+			array('text mit <script type="text/javascript">alert(\'ohoh\');</script>', '', 'text mit <sc<x>ript type="text/javascript">alert(\'ohoh\');</script>'),
 		);
 	}
 }
