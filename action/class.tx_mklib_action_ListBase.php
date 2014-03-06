@@ -69,17 +69,16 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 		$fields = array();
 		$options = array();
 		//suche initialisieren
-		// @TODO: rückgabewert auslesen und entsprechend suchen oder nicht.
-		$filter->init($fields, $options);
+		if($filter->init($fields, $options)) {
+			// @TODO: charbrowser integrieren
+			// @TODO: pagebrowser und charbrowser sollte endlich filter übernehmen!
+			$filter->handlePageBrowser($configurations,
+				$confId.$this->getTsPathPageBrowser(), $viewData, $fields, $options,
+				array('searchcallback'=> array($srv, $sSearchCallback))
+			);
 
-		// @TODO: charbrowser integrieren
-		// @TODO: pagebrowser und charbrowser sollte endlich filter übernehmen!
-		$filter->handlePageBrowser($configurations,
-			$confId.$this->getTsPathPageBrowser(), $viewData, $fields, $options,
-			array('searchcallback'=> array($srv, $sSearchCallback))
-		);
-
-		$items = $srv->$sSearchCallback($fields,$options);
+			$items = $srv->$sSearchCallback($fields,$options);
+		}
 
 		$viewData->offsetSet($this->getItemsDesignator(), $items);
 
