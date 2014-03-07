@@ -86,7 +86,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		->method('getService')
 		->will($this->returnValue($oSearchSrv));
 
-		$oListBase->expects($this->once())
+		$oListBase->expects($this->any())
 		->method('getTsPathPageBrowser')
 		->will($this->returnValue('pagebrowser'));
 
@@ -254,6 +254,30 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 
 		//handle request sollte nichts zurück geben
 		$oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData());
+	}
+
+	public function testHandleRequestCallsNotSearchIfFilterInitReturnedFalse() {
+		//mock für den searcher
+		$oSrv = $this->getMock('dummySrv',array('search'));
+		$oSrv->expects($this->never())
+			->method('search');
+
+		//mock für die zu testende action
+		$oListBase = $this->getActionMock($oSrv);
+
+		//jetzt den aufruf der action simulieren
+		$aConfig = array(
+			'dummyconfig.' => array(
+				'filter' => 'tx_mklib_tests_fixtures_classes_DummyFilterWithReturnFalse',
+			)
+		);
+		$configurations = $this->getConfigurations($aConfig);
+
+		//handle request sollte nichts zurück geben
+		$this->assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
+
+		//view daten mit den daten des searchers leer?
+		$this->assertEmpty($configurations->getViewData()->offsetGet('items'),'View daten falsch!');
 	}
 }
 
