@@ -68,6 +68,20 @@ abstract class tx_mklib_repository_Abstract
 		return $this->getSearcher()->getWrapperClass();
 	}
 
+	/**
+	 * Holt einen bestimmten Datensatz aus dem Repo.
+	 *
+	 * @param integer|array $rowOrUid
+	 * @return tx_rnbase_model_base|null
+	 */
+	public function findByUid($rowOrUid) {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			$this->getWrapperClass(),
+			$rowOrUid
+		);
+		return $model->isPersisted() && $model->isValid() ? $model : NULL;
+	}
 
 	/**
 	 * Search database
