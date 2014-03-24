@@ -38,7 +38,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 class tx_mklib_util_Session {
-	
+
 	/**
 	 * Set a session value.
 	 * The value is stored in TYPO3 session storage.
@@ -55,7 +55,7 @@ class tx_mklib_util_Session {
 		$vars[$key] = &$value;
 		$GLOBALS['TSFE']->fe_user->setKey('ses', $extKey, $vars);
 	}
-	
+
 	/**
 	 * Returns a session value.
 	 *
@@ -70,7 +70,7 @@ class tx_mklib_util_Session {
 		$vars = $GLOBALS['TSFE']->fe_user->getKey('ses', $extKey);
 		return $vars[$key];
 	}
-	
+
 	/**
 	 * Removes a session value.
 	 *
@@ -85,14 +85,22 @@ class tx_mklib_util_Session {
 		unset($vars[$key]);
 		$GLOBALS['TSFE']->fe_user->setKey('ses', $extKey, $vars);
 	}
-	
+
 	/**
 	 * Saves the session data to database.
 	 */
 	public static function storeSessionData() {
 		$GLOBALS['TSFE']->fe_user->storeSessionData();
 	}
-	
+
+	/**
+	 * @return boolean
+	 */
+	public static function areCookiesActivatedInFrontend() {
+		// fe_typo_user ist im FE immer gesetzt. Außer beim aller ersten Aufruf
+		// der Seite
+		return isset($_COOKIE['fe_typo_user']);
+	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php']);
