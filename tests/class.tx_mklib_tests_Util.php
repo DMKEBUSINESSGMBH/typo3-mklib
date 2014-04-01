@@ -135,10 +135,10 @@ class tx_mklib_tests_Util {
 			$GLOBALS['TYPO3_DB']->admin_query($sql);
 		}
 	}
-	
+
 	/**
 	 * @param string $sql
-	 * 
+	 *
 	 * @return array
 	 */
 	private static function getSqlStatementArrayDependendOnTypo3Version($sql) {
@@ -148,7 +148,7 @@ class tx_mklib_tests_Util {
 		} else {
 			$dbHandler = tx_rnbase::makeInstance('t3lib_install');
 		}
-		
+
 		return $dbHandler->getStatementArray($sql, 1);
 	}
 
@@ -257,7 +257,7 @@ class tx_mklib_tests_Util {
 		}
 	}
 
-	
+
 	/**
 	 * Speichert den Cache
 	 */
@@ -298,7 +298,7 @@ class tx_mklib_tests_Util {
 	 * @param 	boolean 		$execute
 	 * @param	string			$frontendOutput hier wird die rückgabe der action reingeschrieben
 	 * @param	string			$viewData hier werden die viewData reingeschrieben
-	 * 
+	 *
 	 * @return tx_rnbase_action_BaseIOC
 	 */
 	public static function &getAction(
@@ -351,7 +351,7 @@ class tx_mklib_tests_Util {
 				}
 			}
 
-			$frontendOutput = 
+			$frontendOutput =
 				$action->handleRequest($parameters, $configurations, $configurations->getViewData());
 			$viewData = $configurations->getViewData();
 		}
@@ -359,7 +359,7 @@ class tx_mklib_tests_Util {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param array $options
 	 * 			initFEuser: verhindert das Schreiben von Headerdaten
 	 */
@@ -372,13 +372,17 @@ class tx_mklib_tests_Util {
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] = 1;
 			$GLOBALS['TYPO3_CONF_VARS']['FE']['dontSetCookie'] = 1;
 		}
-		
+
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		tx_rnbase_util_Misc::prepareTSFE(array('force'=>true));
 		$loaded = true;
-		
+
 		if (isset($options['initFEuser'])) {
 			$GLOBALS['TSFE']->initFEuser();
+		}
+
+		if (isset($options['initCObject'])) {
+			$GLOBALS['TSFE']->newCObj();
 		}
 	}
 
@@ -429,7 +433,7 @@ class tx_mklib_tests_Util {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		$GLOBALS['TSFE']->sys_page = tx_rnbase_util_TYPO3::getSysPage();
 	}
-	
+
 	/**
 	 * Error in test case test_handleRequest
 	 * in file C:\xampp\htdocs\typo3\typo3conf\ext\phpmyadmin\res\class.tx_phpmyadmin_utilities.php
@@ -450,20 +454,20 @@ class tx_mklib_tests_Util {
 				}
 			}
 	}
-	
+
 	/**
 	 * @param int $pageId
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function enableLinkCreation($pageId = 1) {
 		tx_rnbase_util_Misc::prepareTSFE();
-		
+
 		$GLOBALS['TSFE']->sys_page = tx_rnbase_util_TYPO3::getSysPage();
 		$GLOBALS['TSFE']->initTemplate();
-		
+
 		$GLOBALS['TSFE']->id = $pageId;
-		
+
 	}
 }
 
