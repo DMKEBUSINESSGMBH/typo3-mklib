@@ -41,7 +41,7 @@ tx_rnbase::load('tx_mklib_tests_Util');
 class tx_mklib_tests_util_MiscTools_testcase extends tx_phpunit_testcase {
 
 	/**
-	 * setUp() = Extension-Konfiguration speichern 
+	 * setUp() = Extension-Konfiguration speichern
 	 */
 	public function setUp() {
 		tx_mklib_tests_Util::storeExtConf('mklib');
@@ -61,42 +61,43 @@ class tx_mklib_tests_util_MiscTools_testcase extends tx_phpunit_testcase {
 	 */
 	public function testGetProxyBeUserId(){
 		tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', 2, 'mklib');
-		
+
 		$val = tx_mklib_util_MiscTools::getProxyBeUserId();
 		$this->assertEquals($val, 2, 'Falscher BE-User geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-		
+
 		$val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest');
 		$this->assertEquals($val, 2, 'Falscher BE-User geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-		
+
 		$val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest', false);
 		$this->assertEquals($val, 0, 'Es wurde ein BE-User geliefert.');
-		
+
 		tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', '5', 'mktest');
-		
+
 		$val = tx_mklib_util_MiscTools::getProxyBeUserId();
 		$this->assertEquals($val, 2, 'Falscher BE-User geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-		
-		
+
+
 		$val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest');
 		$this->assertEquals($val, 5, 'Falscher BE-User geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
 	}
-	
+
 	/**
 	 * Prüfen ob die richtig Extension Konfiguration geliefert wird
 	 */
 	public function testGetPicturesUploadPath(){
 		tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mklib', 'mklib');
-		
+
 		$this->assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
+		$this->assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(array()), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
 		$this->assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
 		$this->assertFalse(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest', false), 'Es wurde ein Pfad geliefert.');
-		
+
 		tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mktest', 'mktest');
-		
+
 		$this->assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
 		$this->assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mktest', 'Falscher Pfad geliefert.');
 	}
@@ -106,29 +107,29 @@ class tx_mklib_tests_util_MiscTools_testcase extends tx_phpunit_testcase {
 	 */
 	public function testGetPortalPageId(){
 		tx_mklib_tests_Util::setExtConfVar('portalPageId', 2, 'mklib');
-		
+
 		$val = tx_mklib_util_MiscTools::getPortalPageId();
 		$this->assertEquals($val, 2, 'Falsche Page-ID geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-		
+
 		$val = tx_mklib_util_MiscTools::getPortalPageId('mktest');
 		$this->assertEquals($val, 2, 'Falsche Page-ID geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-		
+
 		$val = tx_mklib_util_MiscTools::getPortalPageId('mktest', false);
 		$this->assertEquals($val, 0, 'Es wurde eine Page-ID geliefert.');
-		
+
 		tx_mklib_tests_Util::setExtConfVar('portalPageId', '5', 'mktest');
-		
+
 		$val = tx_mklib_util_MiscTools::getPortalPageId();
 		$this->assertEquals($val, 2, 'Falsche Page-ID geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-		
-		
+
+
 		$val = tx_mklib_util_MiscTools::getPortalPageId('mktest');
 		$this->assertEquals($val, 5, 'Falsche Page-ID geliefert.');
 		$this->assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-		
+
 	}
 
 

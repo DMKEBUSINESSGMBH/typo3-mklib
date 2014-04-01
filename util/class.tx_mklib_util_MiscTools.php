@@ -50,6 +50,9 @@ class tx_mklib_util_MiscTools {
 	 * @return mixed
 	 */
 	public static function getExtensionValue($sValueKey, $sExtKey='mklib', $bFallback=false){
+		if(!$sExtKey) {
+			$sExtKey = 'mklib';
+		}
 		tx_rnbase::load('tx_rnbase_configurations');
 		$mValue = tx_rnbase_configurations::getExtensionCfgValue($sExtKey, $sValueKey);
 		if($bFallback && $mValue === false && $sExtKey != 'mklib')
