@@ -232,7 +232,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	 * @return string
 	 */
 	public static function convertUrlsInTextToLinks($text, $aTagParams = 'target="_blank"'){
-		$text= preg_replace("/(^|[\n ])([\w]*?)((ht|f)tp(s)?:\/\/[\w]+[^ \,\"\n\r\t]*)/is", "$1$2&lt;a $aTagParams href=\"$3\" &gt;$3&lt;/a&gt;", $text);
+		$text= preg_replace("/(^|[\n >])([\w]*?)((ht|f)tp(s)?:\/\/[\w]+[^ \,\"\n\r\t<]*)/is", "$1$2&lt;a $aTagParams href=\"$3\" &gt;$3&lt;/a&gt;", $text);
 		$text= preg_replace("/(^|[\n ])([\w]*?)((www|ftp)\.[^ \,\"\t\n\r]*)/is", "$1$2&lt;a $aTagParams href=\"http://$3\" &gt;$3&lt;/a&gt;", $text);
 		$text= preg_replace("/(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i", "$1&lt;a href=\"mailto:$2@$3\"&gt;$2@$3&lt;/a&gt;", $text);
 

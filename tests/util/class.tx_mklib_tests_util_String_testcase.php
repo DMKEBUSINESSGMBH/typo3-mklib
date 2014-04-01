@@ -262,6 +262,8 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			array('text mit https://www.google.de', '', 'text mit <a  href="https://www.google.de" >https://www.google.de</a>'),
 			array('text mit <a href="https://www.google.de">link</a>', '', 'text mit <a href="https://www.google.de">link</a>'),
 			array('text mit <script type="text/javascript">alert(\'ohoh\');</script>', '', 'text mit <sc<x>ript type="text/javascript">alert(\'ohoh\');</script>'),
+			array('<p>http://www.difu.de</p>', '', '<p><a  href="http://www.difu.de" >http://www.difu.de</a></p>'),
+			array('<p> http://www.difu.de </p>', '', '<p> <a  href="http://www.difu.de" >http://www.difu.de</a> </p>'),
 		);
 	}
 }
