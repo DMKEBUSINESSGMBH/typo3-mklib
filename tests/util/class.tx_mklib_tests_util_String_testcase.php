@@ -267,6 +267,10 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			array('<p> http://www.difu.de </p>', '', '<p> <a  href="http://www.difu.de" >http://www.difu.de</a> </p>'),
 			array('mail@dummy.com', '', '<a href="mailto:mail@dummy.com">mail@dummy.com</a>'),
 			array('<p>mail@dummy.com</p>', '', '<p><a href="mailto:mail@dummy.com">mail@dummy.com</a></p>'),
+			array('(www.difu.de)', '', '(<a  href="http://www.difu.de" >www.difu.de</a>)'),
+			array('-www.difu.de?test-test', '', '-<a  href="http://www.difu.de?test-test" >www.difu.de?test-test</a>'),
+			array('_www.difu.de?test_test', '', '_<a  href="http://www.difu.de?test_test" >www.difu.de?test_test</a>'),
+			array('*www.difu.de', '', '*<a  href="http://www.difu.de" >www.difu.de</a>'),
 		);
 	}
 }
