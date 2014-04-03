@@ -40,6 +40,27 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 class tx_mklib_util_Session {
 
 	/**
+	 * Liefert die aktuelle Session id des Nutzers.
+	 *
+	 * Wenn für den aktuellen Nutzer noch keine Session vorhanden ist,
+	 * variert die ID für jeden Seitenaufruf.
+	 * Wenn die ID bei jedem Seitenaufruf gleich bleiben soll,
+	 * dann ist es notwendig, daten in die Session zu schreiben.
+	 * Nur das bewegt Typo3 dazu, sich die Session zu merken!
+	 *
+	 * @param boolean $keepId
+	 * @return string
+	 */
+	public static function getSessionId($keepId = FALSE) {
+		$id = $GLOBALS['TSFE']->fe_user->id;
+		if ($keepId && !self::getSessionValue('keepsessid')) {
+			self::setSessionValue('keepsessid', TRUE);
+			self::storeSessionData();
+		}
+		return $id;
+	}
+
+	/**
 	 * Set a session value.
 	 * The value is stored in TYPO3 session storage.
 	 *
