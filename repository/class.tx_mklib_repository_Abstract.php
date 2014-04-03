@@ -92,7 +92,8 @@ abstract class tx_mklib_repository_Abstract
 	 */
 	public function search($fields, $options) {
 		$this->prepareFieldsAndOptions($fields, $options);
-		return $this->getSearcher()->search($fields, $options);
+		$items = $this->getSearcher()->search($fields, $options);
+		return $this->prepareItems($items, $options);
 	}
 
 	/**
@@ -142,13 +143,15 @@ abstract class tx_mklib_repository_Abstract
 		) {
 			$model = tx_rnbase::makeInstance($this->getWrapperClass(), array('uid' => 0));
 			$tableName = $model->getTableName();
-			$languageField = @$GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
+			$languageField = tx_mklib_util_TCA::getLanguageField($tableName);
 			// Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
 			if (!empty($languageField)) {
 				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 				$languages = array();
-				// for all languages
-				$languages[] = '-1';
+				if (isset($options['additionali18n'])) {
+					$languages = t3lib_div::trimExplode(',', $options['additionali18n'], TRUE);
+				}
+				$languages[] = '-1'; // for all languages
 				// Wenn eine bestimmte Sprache gesetzt ist,
 				// laden wir diese ebenfalls.
 				if (is_object($tsfe) && $tsfe->sys_language_content) {
@@ -156,12 +159,60 @@ abstract class tx_mklib_repository_Abstract
 				}
 				// andernfalls nutzen wir die default sprache
 				else {
-					// default language
-					$languages[] = '0';
+					$languages[] = '0'; // default language
 				}
-				$options['i18n'] = implode(',', $languages);
+				$options['i18n'] = implode(',', array_unique($languages, SORT_NUMERIC));
 			}
 		}
+	}
+
+	/**
+	 * Modifiziert die Ergebisliste
+	 *
+	 * @param array $items
+	 * @param array $options
+	 * @return array[tx_rnbase_model_base]
+	 */
+	protected function prepareItems(array $items, $options) {
+		$items = $this->uniqueItems($items, $options);
+		return $items;
+	}
+
+	/**
+	 * Entfernt alle doppelten Datensatze, wenn die Option distinct gesetzt ist.
+	 * Dabei werden die Sprachoverlays bevorzugt.
+	 *
+	 * @param array $items
+	 * @param unknown_type $options
+	 * @return array[tx_rnbase_model_base]
+	 */
+	protected function uniqueItems(array $items, $options) {
+		// uniqueue, if there are models and the distinct option
+		if (
+			reset($items) instanceof tx_rnbase_model_base
+			&& isset($options['distinct'])
+			&& $options['distinct']
+		) {
+			$master = $overlay = array();
+			/* @var $item tx_rnbase_model_base */
+			foreach ($items as $item) {
+				$uid = $item->getUid();
+				if ($uid === $item->uid) {
+					$master[$uid] = $item;
+				} else {
+					$overlay[$uid] = $item;
+				}
+			}
+			// array_merge doesnt work, it resets the numerical keys.
+			// so twoe models with the same master uid in both arrays
+			// are both existance in the merged array
+			// the + array union operator doesnt overide exiting keys
+			// and adds only new keys
+			$items = ($overlay + $master);
+			// we put back the keys
+			$items = array_values($items);
+		}
+		return $items;
 	}
 
 }

@@ -82,7 +82,8 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	public function search($fields, $options) {
 		$this->handleEnableFieldsOptions($fields, $options);
 		$this->handleLanguageOptions($fields, $options);
-		return $this->getSearcher()->search($fields, $options);
+		$items = $this->getSearcher()->search($fields, $options);
+		return $this->prepareItems($items, $options);
 	}
 
 	/**
@@ -122,6 +123,9 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 			if (!empty($languageField)) {
 				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 				$languages = array();
+				if (isset($options['additionali18n'])) {
+					$languages = t3lib_div::trimExplode(',', $options['additionali18n'], TRUE);
+				}
 				$languages[] = '-1'; // for all languages
 				// Wenn eine bestimmte Sprache gesetzt ist,
 				// laden wir diese ebenfalls.
@@ -132,9 +136,58 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 				else {
 					$languages[] = '0'; // default language
 				}
-				$options['i18n'] = implode(',', $languages);
+				$options['i18n'] = implode(',', array_unique($languages, SORT_NUMERIC));
 			}
 		}
+	}
+
+	/**
+	 * Modifiziert die Ergebisliste
+	 *
+	 * @param array $items
+	 * @param array $options
+	 * @return array[tx_rnbase_model_base]
+	 */
+	protected function prepareItems(array $items, $options) {
+		$items = $this->uniqueItems($items, $options);
+		return $items;
+	}
+
+	/**
+	 * Entfernt alle doppelten Datensatze, wenn die Option distinct gesetzt ist.
+	 * Dabei werden die Sprachoverlays bevorzugt.
+	 *
+	 * @param array $items
+	 * @param unknown_type $options
+	 * @return array[tx_rnbase_model_base]
+	 */
+	protected function uniqueItems(array $items, $options) {
+		// uniqueue, if there are models and the distinct option
+		if (
+			reset($items) instanceof tx_rnbase_model_base
+			&& isset($options['distinct'])
+			&& $options['distinct']
+		) {
+			$master = $overlay = array();
+			/* @var $item tx_rnbase_model_base */
+			foreach ($items as $item) {
+				$uid = $item->getUid();
+				if ($uid === $item->uid) {
+					$master[$uid] = $item;
+				} else {
+					$overlay[$uid] = $item;
+				}
+			}
+			// array_merge doesnt work, it resets the numerical keys.
+			// so twoe models with the same master uid in both arrays
+			// are both existance in the merged array
+			// the + array union operator doesnt overide exiting keys
+			// and adds only new keys
+			$items = ($overlay + $master);
+			// we put back the keys
+			$items = array_values($items);
+		}
+		return $items;
 	}
 
 	/**
@@ -145,11 +198,8 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	public function searchSingle($fields, $options) {
 		$options['limit'] = 1;
 		$result = $this->search($fields, $options);
-
 		return $result ? $result[0] : null;
 	}
-
-
 
 	/**
 	 * Liefert das erste Element aus dem Ergebniss.

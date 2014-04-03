@@ -30,6 +30,7 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_repository_Abstract');
 tx_rnbase::load('tx_mklib_model_WordlistEntry');
 tx_rnbase::load('tx_mklib_search_Wordlist');
@@ -38,7 +39,21 @@ tx_rnbase::load('tx_mklib_search_Wordlist');
  * @package tx_mklib
  * @subpackage tx_mklib_tests
  */
-class tx_mklib_tests_repository_Abstract_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_repository_Abstract_testcase
+	extends tx_rnbase_tests_BaseTestCase {
+
+	protected function setUp() {
+		if (empty($GLOBALS['TCA']['tx_mklib_wordlist'])) {
+			tx_rnbase::load('tx_mklib_srv_Wordlist');
+			$GLOBALS['TCA']['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
+			$GLOBALS['TCA']['tx_mklib_wordlist']['test'] = TRUE;
+		}
+	}
+	protected function tearDown() {
+		if (!empty($GLOBALS['TCA']['tx_mklib_wordlist']['test'])) {
+			unset($GLOBALS['TCA']['tx_mklib_wordlist']);
+		}
+	}
 
 	/**
 	 * @group unit
@@ -110,9 +125,8 @@ class tx_mklib_tests_repository_Abstract_testcase extends Tx_Phpunit_TestCase {
 	public function testSearchCallsSearcherCorrect() {
 		$repository = $this->getRepositoryMock(array('getSearcher'));
 
-
 		$fields = array('someField' => 1);
-		$options = array('enablefieldsfe' => 1);
+		$options = array('enablefieldsbe' => 1);
 
 		$searcher = $this->getMock(
 			'tx_mklib_search_Wordlist',
@@ -122,17 +136,79 @@ class tx_mklib_tests_repository_Abstract_testcase extends Tx_Phpunit_TestCase {
 		$searcher->expects($this->once())
 			->method('search')
 			->with($fields, $options)
-			->will($this->returnValue('searched'));
+			->will($this->returnValue(array('searched')));
 
 		$repository->expects($this->any())
 			->method('getSearcher')
 			->will($this->returnValue($searcher));
 
 		$this->assertEquals(
-			'searched',
+			array('searched'),
 			$repository->search($fields, $options),
 			'falsch gesucht'
 		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testUniqueItemsReducesCorrect() {
+		$repository = $this->getRepositoryMock();
+		$master = $this->getMock(
+			'tx_rnbase_model_base',
+			array('getTableName'),
+			array(array('uid' => 123))
+		);
+		$master->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('tt_content'));
+
+		$overlay = $this->getMock(
+			'tx_rnbase_model_base',
+			array('getTableName'),
+			array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
+		);
+		$overlay->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('tt_content'));
+
+		$items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array('distinct' => TRUE));
+
+		$this->assertCount(1, $items);
+		$this->assertArrayHasKey(0, $items);
+		$this->assertEquals($overlay, $items[0]);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testUniqueItemsDoesNotReduceCorrect() {
+		$repository = $this->getRepositoryMock();
+		$master = $this->getMock(
+			'tx_rnbase_model_base',
+			array('getTableName'),
+			array(array('uid' => 123))
+		);
+		$master->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('tt_content'));
+
+		$overlay = $this->getMock(
+			'tx_rnbase_model_base',
+			array('getTableName'),
+			array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
+		);
+		$overlay->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('tt_content'));
+
+		$items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array());
+
+		$this->assertCount(2, $items);
+		$this->assertArrayHasKey(0, $items);
+		$this->assertEquals($master, $items[0]);
+		$this->assertArrayHasKey(1, $items);
+		$this->assertEquals($overlay, $items[1]);
 	}
 
 	/**
