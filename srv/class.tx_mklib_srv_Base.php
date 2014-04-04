@@ -148,7 +148,10 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 * @param array $options
 	 * @return array[tx_rnbase_model_base]
 	 */
-	protected function prepareItems(array $items, $options) {
+	protected function prepareItems($items, $options) {
+		if (!is_array($items)) {
+			return $items;
+		}
 		$items = $this->uniqueItems($items, $options);
 		return $items;
 	}
