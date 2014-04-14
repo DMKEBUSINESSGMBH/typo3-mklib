@@ -351,9 +351,15 @@ class tx_mklib_tests_Util {
 				}
 			}
 
-			$frontendOutput =
-				$action->handleRequest($parameters, $configurations, $configurations->getViewData());
+			$handleRequest = new ReflectionMethod(get_class($action), 'handleRequest');
+			$handleRequest->setAccessible(true);
 			$viewData = $configurations->getViewData();
+			$frontendOutput = $handleRequest->invokeArgs(
+					$action,
+					array(
+						&$parameters, &$configurations, &$viewData
+					)
+			);
 		}
 		return $action;
 	}
