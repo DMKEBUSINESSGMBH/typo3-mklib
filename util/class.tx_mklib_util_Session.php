@@ -122,6 +122,17 @@ class tx_mklib_util_Session {
 		// der Seite
 		return isset($_COOKIE['fe_typo_user']);
 	}
+
+	/**
+	 *
+	 * @param string $sessionId
+	 * @return void
+	 */
+	public static function setSessionId($sessionId) {
+		$GLOBALS['TSFE']->fe_user->id = $sessionId;
+		$GLOBALS['TSFE']->fe_user->sesData = array(); //sonst werden die Session Daten nicht neu geholt
+		$GLOBALS['TSFE']->fe_user->fetchSessionData();
+	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php']);

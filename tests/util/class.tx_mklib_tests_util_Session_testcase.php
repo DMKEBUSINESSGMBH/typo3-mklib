@@ -84,4 +84,26 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 			array(array(), false)
 		);
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSetSessionIdSetsIdAndEmptiesSessionData(){
+		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true));
+
+		$GLOBALS['TSFE']->fe_user->id = 123;
+		$GLOBALS['TSFE']->fe_user->sesData = array('something');
+
+		tx_mklib_util_Session::setSessionId(456);
+
+		$this->assertEquals(
+			456, $GLOBALS['TSFE']->fe_user->id,
+			'falsche id'
+		);
+
+		$this->assertEquals(
+			array(), $GLOBALS['TSFE']->fe_user->sesData,
+			'session data nicht leer'
+		);
+	}
 }
