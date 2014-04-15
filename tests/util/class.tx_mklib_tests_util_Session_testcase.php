@@ -45,11 +45,17 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	private $cookiesBackup = array();
 
 	/**
+	 * @var array
+	 */
+	private $feUserBackUp = array();
+
+	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
 	protected function setUp() {
 		$this->cookiesBackup = $_COOKIE;
+		$this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
 	}
 
 	/**
@@ -58,6 +64,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 */
 	protected function tearDown() {
 		$_COOKIE = $this->cookiesBackup;
+		if(isset($GLOBALS['TSFE']->fe_user)) {
+			$GLOBALS['TSFE']->fe_user = $this->feserBackUp;
+		}
 	}
 
 	/**
@@ -105,5 +114,18 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 			array(), $GLOBALS['TSFE']->fe_user->sesData,
 			'session data nicht leer'
 		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSetSessionIdCallsFetchSessionDataOnFeUser(){
+		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true));
+
+		$GLOBALS['TSFE']->fe_user = $this->getMock('tslib_feUserAuth', array('fetchSessionData'));
+		$GLOBALS['TSFE']->fe_user->expects($this->once())
+			->method('fetchSessionData');
+
+		tx_mklib_util_Session::setSessionId(456);
 	}
 }
