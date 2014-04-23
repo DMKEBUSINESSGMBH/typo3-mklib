@@ -50,7 +50,7 @@ class tx_mklib_tests_util_HttpRequest_testcase extends tx_phpunit_testcase {
 		$url = 'https://mwagner.project.dmknet.de/tests/httprequest.php?method=POST';
 		#$url = 'https://api.broadmail.de/';
 		$config = array(
-			'sslcainfo' => tx_mklib_tests_Util::getFixturePath('dmknet.de.crt'),
+			'sslcainfo' => tx_mklib_tests_Util::getFixturePath('project.dmknet.de.crt'),
 			#'sslcainfo' => tx_mklib_tests_Util::getFixturePath('broadmail.crt'),
 			#'curloptions' => array(
 			#	CURLOPT_SSL_VERIFYPEER => FALSE,
