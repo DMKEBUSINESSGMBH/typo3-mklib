@@ -39,12 +39,12 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 		'selectNotRequired1Field' 	=> 't3ver_id',
 		'selectNotRequired2Field' 	=> 't3ver_wsid',
 		'selectNotRequired3Field' 	=> 't3ver_label',
-		'selectNotRequired4Field' 	=> 't3ver_state',
-		'selectNotRequired5Field' 	=> 't3ver_count',
+		'selectNotRequired4Field' 	=> 't3ver_count',
 		'selectRequired1Field' 		=> 't3ver_tstamp',
 		'selectRequired2Field' 		=> 't3ver_swapmode',
 		'selectRequired3Field' 		=> 't3ver_move_id',
 		'selectRequired4Field' 		=> 't3_origuid',
+		'selectRequired6Field' 		=> 't3ver_state',
 	);
 
 	/**
@@ -96,21 +96,6 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 						'maxitems' => 1
 					)
 				),
-				$this->fieldMappings['selectNotRequired4Field'] => array (
-					'exclude' => 1,
-					'config'  => array (
-						'type'    => 'select',
-						'minitems' => 1
-					)
-				),
-				$this->fieldMappings['selectNotRequired5Field'] => array (
-					'exclude' => 1,
-					'config'  => array (
-						'type'    => 'select',
-						'eval' => 'required',
-						'maxitems' => 1
-					)
-				),
 				$this->fieldMappings['selectRequired1Field'] => array (
 					'exclude' => 1,
 					'config'  => array (
@@ -145,6 +130,21 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 						'eval' => 'int,required,trim',
 						'maxitems' => 1,
 						'minitems' => 1
+					)
+				),
+				$this->fieldMappings['selectRequired6Field'] => array (
+					'exclude' => 1,
+					'config'  => array (
+						'type'    => 'select',
+						'minitems' => 1
+					)
+				),
+				$this->fieldMappings['selectNotRequired4Field'] => array (
+					'exclude' => 1,
+					'config'  => array (
+						'type'    => 'select',
+						'eval' => 'required',
+						'maxitems' => 1
 					)
 				),
 			)
@@ -190,10 +190,10 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 			$this->testTable, $this->fieldMappings['selectNotRequired3Field'], $row
 		);
 		$this->oTceForms->getSingleField(
-			$this->testTable, $this->fieldMappings['selectNotRequired4Field'], $row
+			$this->testTable, $this->fieldMappings['selectRequired6Field'], $row
 		);
 		$this->oTceForms->getSingleField(
-			$this->testTable, $this->fieldMappings['selectNotRequired5Field'], $row
+			$this->testTable, $this->fieldMappings['selectNotRequired4Field'], $row
 		);
 		$this->oTceForms->getSingleField(
 			$this->testTable, $this->fieldMappings['selectRequired1Field'], $row
@@ -229,9 +229,10 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired4Field']]),
 			$this->fieldMappings['selectNotRequired4Field']. ' ist required!'
 		);
-		$this->assertFalse(
-			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired5Field']]),
-			$this->fieldMappings['selectNotRequired5Field']. ' ist required!'
+		$this->assertEquals(
+			'data[pages][1][t3ver_state]',
+			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired6Field']],
+			$this->fieldMappings['selectRequired6Field']. ' ist nicht required!'
 		);
 		$this->assertEquals(
 			'data[pages][1][t3ver_tstamp]',

@@ -38,8 +38,9 @@ class tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass {
 
 	/**
 	 * Stellt die required eval Funktionalität für select felder in TCA zur Verfügung.
-	 * Wenn in einem Select Feld eval = 'required' gesetzt wird
-	 * und maxitems = minitems = 1 dann darf kein leerer string gewählt werden.
+	 * Wenn in einem Select Feld minitems = 1 gesetzt wird
+	 * dann darf kein leerer string gewählt werden.
+	 *	 *
 	 * Beispiel:
 	 * 'config' => array (
 	 * 		'type' => 'select',
@@ -47,32 +48,46 @@ class tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass {
 	 * 			array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
 	 * 		),
 	 * 		'minitems' => 1,
-	 * 		'maxitems' => 1,
-	 * 		'eval' => 'required'
 	 * )
+	 *
+	 * Wurde ab Typo3 6.1.8 in den Core implementiert:
+	 * http://forge.typo3.org/issues/24925
 	 *
 	 * @param string $table
 	 * @param string $field
 	 * @param array $row
 	 * @param string $out
-	 * @param array $PA Field Konfiguration
+	 * @param array $pa Field Konfiguration
 	 * @param t3lib_TCEforms $parent
 	 * @return void
 	 */
-	public function getSingleField_postProcess($table, $field, $row, $out, $PA, $parent) {
-		//required für select felder
-		//wenn eval = required und maxitems = mintitems = 1 gesetzt ist,
-		//dann darf kein leerer wert gewählt werden
-		if(
-			$PA['fieldConf']['config']['type'] == 'select' &&
-			preg_match('/required/', $PA['fieldConf']['config']['eval']) &&
-			$PA['fieldConf']['config']['minitems'] == 1 &&
-			$PA['fieldConf']['config']['maxitems'] == 1){
-			$parent->requiredFields[$table.'_'.$row['uid'].'_'.$field] = 'data['.$table.']['.$row['uid'].']['.$field.']';
+	public function getSingleField_postProcess($table, $field, $row, $out, $pa, $parent) {
+		// required für select felder
+		// wenn mintitems = 1 gesetzt ist,
+		// dann darf kein leerer wert gewählt werden!
+// 		if ('t3ver_id' == $field) {
+// 			echo '<pre>'.var_export(array(
+// 					(
+// 			$pa['fieldConf']['config']['type'] == 'select'
+// 			|| $pa['fieldConf']['config']['minitems'] == 1
+// 		),$table, $field,
+// 					$parent->requiredFields[$table . '_' . $row['uid'] . '_' . $field],
+// 					$pa['fieldConf']['config'],
+// 					$row,
+// 					'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__
+// 				),true).'</pre>'; // @TODO: remove me
+// 			exit;
+// 		}
+		if (
+			$pa['fieldConf']['config']['type'] == 'select'
+			&& $pa['fieldConf']['config']['minitems'] == 1
+		) {
+			$parent->requiredFields[$table . '_' . $row['uid'] . '_' . $field] =
+				'data[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 		}
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/hooks/class.tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/hooks/class.tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/hooks/class.tx_mklib_hooks_t3lib_tceforms_getSingleFieldClass.php']);
 }
