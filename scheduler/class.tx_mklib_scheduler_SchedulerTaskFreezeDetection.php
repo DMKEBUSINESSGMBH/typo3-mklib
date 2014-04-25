@@ -31,18 +31,17 @@ tx_rnbase::load('tx_rnbase_util_DB');
  * @package tx_mklib
  * @subpackage tx_mklib_scheduler
  * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
- * @todo mails sollten erst nach bestimmter zeit wieder versendet werden
  */
 class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler_Generic {
 
 	/**
-	 * Diese werte/optionen werden bei der ausgabe in der scheduler 
+	 * Diese werte/optionen werden bei der ausgabe in der scheduler
 	 * übersicht als eine richtige zeitangabe formatiert wie 1 minute 30 sekunden
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $aOptionsToFormat = array('threshold','rememberAfter');
-	
+
 	/**
 	 *
 	 * @param 	array 	$options
@@ -78,7 +77,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 
 		//wir bauen eine exception damit die error mail von rnbase gebaut werden kann
 		$sMsg = '
-			Die folgenden Scheduler Tasks hängen seit mindestens ' . 
+			Die folgenden Scheduler Tasks hängen seit mindestens ' .
 			$this->getFormattedTime($this->getOption('threshold')) . ' : ' . implode(', ', $aMessages)
 		;
 		$oException = new Exception($sMsg, 0);
@@ -152,7 +151,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 				$GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_taskinfo')
 			);
 	}
-	
+
 	/**
 	 * Liefert alle Optionen. sekunden werden in einer ordentlichen
 	 * zeitangabe formatiert
@@ -161,19 +160,19 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 	 */
 	public function getOptions(){
 		$aOptions = parent::getOptions();
-		
+
 		foreach($this->aOptionsToFormat as $sOption) {
 			if(isset($aOptions[$sOption]))
 				$aOptions[$sOption] = $this->getFormattedTime($aOptions[$sOption]);
 		}
-		
+
 		return $aOptions;
 	}
-	
+
 	/**
 	 * formatiert die sekunden als eine leserliche ausgabe
 	 * wie 1 minute 30 sekunden
-	 * 
+	 *
 	 * @param integer $iSeconds
 	 */
 	protected function getFormattedTime($iSeconds) {
@@ -181,16 +180,16 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		$aTime['hours'] = floor($iSeconds/3600);
 		$aTime['minutes'] = floor(($iSeconds-$aTime['hours']*3600)/60);
 		$aTime['seconds'] = $iSeconds-$aTime['hours']*3600-$aTime['minutes'] *60;
-		
+
 		$sFormattedTime = '';
 		foreach ($aTime as $sTimePart => $iValue) {
 			if($iValue < 1) continue; //null wollen wir nicht sehen
 			//else
-			$sLabelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_' . 
+			$sLabelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_' .
 									$sTimePart . '_' . (($iValue > 1) ? 'plural' : 'singular');
 			$sFormattedTime .= sprintf('%01d', $iValue) . ' ' . $GLOBALS['LANG']->sL($sLabelKey) . ' ';
 		}
-		
+
 		return $sFormattedTime;
 	}
 }
