@@ -32,215 +32,94 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_tests_Util');
 tx_rnbase::load('tx_mklib_util_DB');
-
-/** Kindklasse der eigentlichen UtilDB, um die Variable $log von setzen zu können */
-class tx_mklib_util_testDB extends tx_mklib_util_DB {
-	public static function clearLogCache(){ self::$log = -1; self::$ignoreTables = -1; }
-}
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * DB util tests
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_DB_testcase extends tx_phpunit_database_testcase {
-	protected $workspaceIdAtStart;
-	protected $db;
+class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
-	 * Klassenkonstruktor
+	 * @expectedException Exception
+	 * @expectedExceptionMessage tx_mklib_util_DB::delete(): Unknown deletion mode (123)
 	 *
-	 * @param string $name
+	 * @group unit
 	 */
-	public function __construct ($name=null) {
-		global $TYPO3_DB, $BE_USER;
-
-		parent::__construct ($name);
-		$TYPO3_DB->debugOutput = TRUE;
-
-		$this->workspaceIdAtStart = $BE_USER->workspace;
-		$BE_USER->setWorkspace(0);
-
-		// devlog erstmal deaktivieren,
-		// da Prozesse auserhalb des Tests auch darauf zugreifen!
-		tx_mklib_tests_Util::disableDevlog();
-
+	public function testDeleteWithUnknownModeThrowsException(){
+		tx_mklib_util_DB::delete('', '', 123);
 	}
 
 	/**
-	 * setUp() = init DB etc.
+	 * @expectedException Exception
+	 * @expectedExceptionMessage tx_mklib_util_DB::delete(): Cannot hide records in table unknown - no $TCA entry found!
+	 *
+	 * @group unit
 	 */
-	public function setUp() {
-		$this->createDatabase();
-		// assuming that test-database can be created otherwise PHPUnit will skip the test
-		$this->db = $this->useTestDatabase();
-		$this->importStdDB();
-		$this->importExtensions(array('cms', 'devlog'));
-
-		// devlog wieder aktivieren
-		tx_mklib_tests_Util::disableDevlog('devlog', false);
-
-		// logging aktivieren
-		tx_mklib_tests_Util::storeExtConf();
-		tx_mklib_tests_Util::setExtConfVar('logDbHandler', 1);
-
-		//logging zurücksetzen
-		tx_mklib_util_testDB::clearLogCache();
-
-		//wir setzen noch das min Log Level auf -1 damit
-		//systemeinstellungen nicht hereinspielen und alles geloggt wird
-		tx_mklib_tests_Util::storeExtConf('devlog');
-		tx_mklib_tests_Util::setExtConfVar('minLogLevel', -1, 'devlog');
+	public function testDeleteWithModeHiddenThrowsExceptionIfNoDisableColumnInTca(){
+		tx_mklib_util_DB::delete('unknown', '', tx_mklib_util_DB::DELETION_MODE_HIDE);
 	}
 
 	/**
-	 * tearDown() = destroy DB etc.
+	 * @expectedException Exception
+	 * @expectedExceptionMessage tx_mklib_util_DB::delete(): Cannot soft-delete records in table unknown - no $TCA entry found!
+	 *
+	 * @group unit
 	 */
-	public function tearDown () {
-		$this->cleanDatabase();
-		$this->dropDatabase();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-
-		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
-
-		// devlog wieder deaktivieren
-		tx_mklib_tests_Util::disableDevlog();
-
-		// ext conf zurückspielen aktivieren
-		tx_mklib_tests_Util::restoreExtConf();
-		tx_mklib_tests_Util::restoreExtConf('devlog');
+	public function testDeleteWithModeSoftDeleteThrowsExceptionIfNoDeleteColumnInTca(){
+		tx_mklib_util_DB::delete('unknown', '', tx_mklib_util_DB::DELETION_MODE_SOFTDELETE);
 	}
 
-	public function testInsertTtContent(){
-		// logging deaktivieren
-		tx_mklib_tests_Util::setExtConfVar('logDbHandler', 0);
+	/**
+	 * @group unit
+	 */
+	public function testDeleteWithModeHiddenCallsDoUpdateCorrect(){
+		$util = $this->getUtilMock();
+		$util::staticExpects($this->never())
+			->method('doDelete');
 
-		$aValues = array(
-				'uid' => 20,
-				'pid' => 128,
-				'hidden' => 0,
-				'deleted' => 0,
-				'bodytext' => 'Test!'
-			);
-		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
+		$util::staticExpects($this->once())
+			->method('doUpdate')
+			->with('pages', 'someWhereClause', array('hidden' => 1));
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-//		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-
-		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
-	}
-	public function testInsertTtContentWithDevLogAndIgnoreTable(){
-		// logging für tt_content deaktivieren
-		tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
-
-		$aValues = array(
-				'uid' => 20,
-				'pid' => 128,
-				'hidden' => 0,
-				'deleted' => 0,
-				'bodytext' => 'Test!'
-			);
-		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
-
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-//		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-
-		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
+		$util::delete('pages', 'someWhereClause', tx_mklib_util_DB::DELETION_MODE_HIDE);
 	}
 
-	public function testInsertTtContentWithDevLog(){
-		$aValues = array(
-				'uid' => 20,
-				'pid' => 128,
-				'hidden' => 0,
-				'deleted' => 0,
-				'bodytext' => 'Test!'
-			);
-		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
+	/**
+	 * @group unit
+	 */
+	public function testDeleteWithModeSoftDeleteCallsDoUpdateCorrect(){
+		$util = $this->getUtilMock();
+		$util::staticExpects($this->never())
+			->method('doDelete');
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-//		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$util::staticExpects($this->once())
+			->method('doUpdate')
+			->with('pages', 'someWhereClause', array('deleted' => 1));
 
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-
-		$this->assertEquals(1, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals('mklib', $aDevLog[0]['extkey'], 'Falscher extkey in tx_devlog!');
-		$this->assertEquals('doInsert(tt_content)', $aDevLog[0]['msg'], 'Falsche msg in tx_devlog!');
-		$this->assertEquals(true, !empty($aDevLog[0]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
-
-		$aDevLogData = unserialize($aDevLog[0]['data_var']);
-		$this->assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
-		$this->assertEquals(128, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
+		$util::delete('pages', 'someWhereClause', tx_mklib_util_DB::DELETION_MODE_SOFTDELETE);
 	}
 
-	public function testUpdateTtContentWithDevLog(){
-		// Daten eintragen!
-		$this->testInsertTtContentWithDevLog();
+	/**
+	 * @group unit
+	 */
+	public function testDeleteWithModeHardDeleteCallsDoDeleteCorrect(){
+		$util = $this->getUtilMock();
+		$util::staticExpects($this->never())
+			->method('doUpdate');
 
-		$aValues = array(
-				'pid' => 256,
-				'bodytext' => 'geändert!'
-			);
-		tx_mklib_util_testDB::doUpdate('tt_content', 'uid=20', $aValues);
+		$util::staticExpects($this->once())
+			->method('doDelete')
+			->with('pages', 'someWhereClause');
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-
-		$this->assertEquals(2, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals('mklib', $aDevLog[1]['extkey'], 'Falscher extkey in tx_devlog!');
-		$this->assertEquals('doUpdate(tt_content)', $aDevLog[1]['msg'], 'Falsche msg in tx_devlog!');
-		$this->assertEquals(true, !empty($aDevLog[1]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
-
-		$aDevLogData = unserialize($aDevLog[1]['data_var']);
-		$this->assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
-		$this->assertEquals(256, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
+		$util::delete('pages', 'someWhereClause', tx_mklib_util_DB::DELETION_MODE_REALLYDELETE);
 	}
 
-
-
-	public function testUpdateTtContentWithIgnoreTables(){
-		// Daten eintragen!
-		$this->testInsertTtContentWithDevLog();
-		// logging für tt_content deaktivieren
-		tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
-		// db cache löschen
-		tx_mklib_util_testDB::clearLogCache();
-
-		$aValues = array(
-				'pid' => 256,
-				'bodytext' => 'geändert!'
-			);
-		tx_mklib_util_testDB::doUpdate('tt_content', 'uid=20', $aValues);
-
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
-
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
-
-		$this->assertEquals(1, count($aDevLog), 'tx_devlog wurde in die Datenbank eingefügt!');
+	/**
+	 * @return tx_mklib_util_DB
+	 */
+	private function getUtilMock() {
+		return $this->getMockClass('tx_mklib_util_DB', array('doUpdate', 'doDelete'));
 	}
-
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_DB_testcase.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_DB_testcase.php']);
 }

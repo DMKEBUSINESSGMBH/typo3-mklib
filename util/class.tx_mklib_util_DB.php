@@ -38,6 +38,21 @@ tx_rnbase::load('tx_mklib_util_TCA');
 class tx_mklib_util_DB extends tx_rnbase_util_DB {
 
 	/**
+	 * @var int
+	 */
+	const DELETION_MODE_HIDE = 0;
+
+	/**
+	 * @var int
+	 */
+	const DELETION_MODE_SOFTDELETE = 1;
+
+	/**
+	 * @var int
+	 */
+	const DELETION_MODE_REALLYDELETE = 2;
+
+	/**
 	 * Enthält alle Tabellen, für welche die TCA
 	 * über tx_mklib_util_DB::loadTCA bereits geladen wurde.
 
@@ -439,6 +454,64 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 
 	private function getBackTrace() {
 
+	}
+
+	/**
+	 * Wrapper for actual deletion
+	 *
+	 * Delete records according to given ready-constructed "where" condition and deletion mode
+	 * @TODO: use tx_mklib_util_TCA::getEnableColumn to get enablecolumns!
+	 *
+	 * @param string	$table
+	 * @param string	$where		Ready-to-use where condition containing uid restriction
+	 * @param int		$mode		@see self::handleDelete()
+	 *
+	 * @return int anzahl der betroffenen zeilen
+	 */
+	public static function delete($table, $where, $mode) {
+		$affectedRows = 0;
+		switch ($mode) {
+			// Hide model
+			case self::DELETION_MODE_HIDE:
+				global $GLOBALS;
+				// Set hidden field according to $TCA
+				if (!isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
+					throw new Exception(
+						"tx_mklib_util_DB::delete(): Cannot hide records in table $table - no \$TCA entry found!"
+					);
+				}
+
+				//else
+				$data = array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1);
+				$affectedRows = static::doUpdate($table, $where, $data);
+				break;
+
+				// Soft-delete model
+			case self::DELETION_MODE_SOFTDELETE:
+				global $GLOBALS;
+				// Set deleted field according to $TCA
+				if (!isset($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
+					throw new Exception(
+						"tx_mklib_util_DB::delete(): Cannot soft-delete records in table $table - no \$TCA entry found!"
+					);
+				}
+
+				//else
+				$data = array($GLOBALS['TCA'][$table]['ctrl']['delete'] => 1);
+				$affectedRows = static::doUpdate($table, $where, $data);
+				break;
+
+				// Really hard-delete model
+			case self::DELETION_MODE_REALLYDELETE:
+				$affectedRows = static::doDelete($table, $where);
+				break;
+
+			default:
+				throw new Exception("tx_mklib_util_DB::delete(): Unknown deletion mode ($mode)");
+
+		}
+
+		return $affectedRows;
 	}
 }
 

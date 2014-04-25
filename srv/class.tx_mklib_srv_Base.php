@@ -388,43 +388,12 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	 * @param string	$table
 	 * @param string	$where		Ready-to-use where condition containing uid restriction
 	 * @param int		$mode		@see self::handleDelete()
+	 *
+	 * @return int anzahl der betroffenen zeilen
 	 */
-	protected function delete($table, $where, $mode) {
+	public static function delete($table, $where, $mode) {
 		tx_rnbase::load('tx_mklib_util_DB');
-		switch ($mode) {
-			// Hide model
-			case self::DELETION_MODE_HIDE:
-				global $GLOBALS;
-				// Set hidden field according to $TCA
-				if (!isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']))
-				throw new Exception("tx_mklib_srv_base->delete(): Cannot hide records in table $table - no \$TCA entry found!");
-
-				//else
-				$data = array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1);
-				tx_mklib_util_DB::doUpdate($table, $where, $data);
-				break;
-
-				// Soft-delete model
-			case self::DELETION_MODE_SOFTDELETE:
-				global $GLOBALS;
-				// Set deleted field according to $TCA
-				if (!isset($GLOBALS['TCA'][$table]['ctrl']['delete']))
-				throw new Exception("tx_mklib_srv_base->delete(): Cannot soft-delete records in table $table - no \$TCA entry found!");
-
-				//else
-				$data = array($GLOBALS['TCA'][$table]['ctrl']['delete'] => 1);
-				tx_mklib_util_DB::doUpdate($table, $where, $data);
-				break;
-
-				// Really hard-delete model
-			case self::DELETION_MODE_REALLYDELETE:
-				tx_mklib_util_DB::doDelete($table, $where);
-				break;
-
-			default:
-				throw new Exception("tx_mklib_srv_base->delete(): Unknown deletion mode ($mode)");
-
-		}
+		return tx_mklib_util_DB::delete($table, $where, $mode);
 	}
 
 	/**

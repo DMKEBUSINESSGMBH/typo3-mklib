@@ -37,6 +37,15 @@
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_plural">Minuten</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_singular">Sekunde</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_plural">Sekunden</label>
+			
+			<label index="scheduler_DeleteFromDatabase_name">Datensätze in der Datenbank löschen</label>
+			<label index="scheduler_DeleteFromDatabase_taskinfo">Vorsicht: Die where Bedingung, der Modus und die Tabelle sollten korrekt sein!</label>
+			<label index="scheduler_DeleteFromDatabase_field_where">where Bedingung</label>
+			<label index="scheduler_DeleteFromDatabase_field_mode">Löschmodus</label>
+			<label index="scheduler_DeleteFromDatabase_field_mode_hidden">Verstecken</label>
+			<label index="scheduler_DeleteFromDatabase_field_mode_delete">Löschen</label>
+			<label index="scheduler_DeleteFromDatabase_field_mode_delete_hard">hart löschen</label>
+			<label index="scheduler_DeleteFromDatabase_field_table">Tabelle</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>
