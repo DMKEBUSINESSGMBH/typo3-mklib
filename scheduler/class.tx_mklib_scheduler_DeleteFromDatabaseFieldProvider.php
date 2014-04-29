@@ -54,7 +54,7 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider
 			'where' => array(
 				'type' => 'input',
 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_where',
-				'default' => "hidden = 1 AND tstamp < (CURRENT_TIMESTAMP() - $twentyEightDaysInSeconds)",
+				'default' => "hidden = 1 AND tstamp < (UNIX_TIMESTAMP() - $twentyEightDaysInSeconds)",
 				'eval' => 'required',
 			),
 			'mode' => array(
