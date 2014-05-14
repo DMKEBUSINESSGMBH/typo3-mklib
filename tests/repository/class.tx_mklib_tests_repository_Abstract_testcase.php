@@ -212,6 +212,24 @@ class tx_mklib_tests_repository_Abstract_testcase
 	}
 
 	/**
+	 * @group unit
+	 */
+	public function testGetAll() {
+		$repository = $this->getRepositoryMock(array('search'));
+
+		$repository->expects($this->once())
+			->method('search')
+			->with(array(), array())
+			->will($this->returnValue(array('searched')));
+
+		$this->assertEquals(
+			array('searched'),
+			$repository->getAll(),
+			'falsch gesucht'
+		);
+	}
+
+	/**
 	 * @param array $mockedMethods
 	 * @return tx_mklib_repository_Abstract
 	 */

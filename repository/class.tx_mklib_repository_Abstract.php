@@ -97,6 +97,13 @@ abstract class tx_mklib_repository_Abstract
 	}
 
 	/**
+	 * @return array[tx_rnbase_model_base]
+	 */
+	public function getAll() {
+		return $this->search(array(), array());
+	}
+
+	/**
 	 * On default, return hidden and deleted fields in backend
 	 *
 	 * @param array &$fields
