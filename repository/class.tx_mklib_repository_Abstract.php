@@ -99,7 +99,7 @@ abstract class tx_mklib_repository_Abstract
 	/**
 	 * @return array[tx_rnbase_model_base]
 	 */
-	public function getAll() {
+	public function findAll() {
 		return $this->search(array(), array());
 	}
 

@@ -214,7 +214,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	/**
 	 * @group unit
 	 */
-	public function testGetAll() {
+	public function testFindAll() {
 		$repository = $this->getRepositoryMock(array('search'));
 
 		$repository->expects($this->once())
@@ -224,7 +224,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$this->assertEquals(
 			array('searched'),
-			$repository->getAll(),
+			$repository->findAll(),
 			'falsch gesucht'
 		);
 	}
