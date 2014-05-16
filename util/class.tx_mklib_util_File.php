@@ -408,7 +408,6 @@ class tx_mklib_util_File {
 	 * @return boolean
 	 */
 	public static function createDenyHtaccess($path, $content=null) {
-		// @TODO check, if ther is an slash after the path!
 		$theFile = self::getServerPath($path).'.htaccess';
 		if (@is_file($theFile)) {
 			return false;
