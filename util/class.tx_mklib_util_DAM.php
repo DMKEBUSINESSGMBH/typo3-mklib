@@ -40,6 +40,11 @@ if(t3lib_extMgm::isLoaded('dam'))
  * @author	Michael Wagner
  * @package tx_mklib
  * @subpackage tx_mklib_util
+ *
+ * funktioniert nur bis TYPO 6.x da ab dann kein DAM mehr.
+ * @TODO FAL Util bereitstellen mit gleicher API
+ * @TODO diese klasse sollte ein wrapper sein um abhängig von TYPO3 Version
+ * auf DAM oder FAL zu gehen.
  */
 class tx_mklib_util_DAM {
 
@@ -495,7 +500,6 @@ class tx_mklib_util_DAM {
 						'NO BE User id given!'
 				);
 			}
-			require_once(PATH_t3lib.'class.t3lib_tsfebeuserauth.php');
 			unset($BE_USER);
 			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
 			$BE_USER->OS = TYPO3_OS;

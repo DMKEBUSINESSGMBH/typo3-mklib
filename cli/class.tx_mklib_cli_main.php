@@ -35,9 +35,6 @@ if (!defined('TYPO3_cliMode'))  die('You cannot run this script directly!');
 // This will work as long as the script is called by it's absolute path!
 //define('PATH_thisScript',$_ENV['_']?$_ENV['_']:$_SERVER['_']);
 
-// Include basis cli class
-require_once(PATH_t3lib.'class.t3lib_cli.php');
-
 /**
  * Basis-klasse für Funktionalitäten auf dem CLI
  * @author	Hannes Bochmann
@@ -151,7 +148,7 @@ class tx_mklib_cli_main extends t3lib_cli {
 				"Befehl '".$this->commands['flush']['long']['desc']."' erfolgreich ausgeführt.\n"
 			));
 		}
-			
+
 	}
 
 	/**
@@ -159,7 +156,6 @@ class tx_mklib_cli_main extends t3lib_cli {
 	 *
 	 */
 	public function flushCache(){
-		require_once (PATH_t3lib."class.t3lib_tcemain.php");
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 
 		$tce->start(Array(),Array());
@@ -182,8 +178,6 @@ class tx_mklib_cli_main extends t3lib_cli {
 		if(!$extensions) $this->exitWithError('Bitte gib eine Extension an, die geupdatet werden soll!');
 
 		require_once(PATH_typo3.'init.php');
-		require_once(PATH_typo3.'template.php');
-		require_once(PATH_typo3.'mod/tools/em/class.em_index.php');
 
 		// Make instance:
 		$SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');

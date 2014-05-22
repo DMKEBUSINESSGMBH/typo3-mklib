@@ -30,15 +30,13 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-require_once(PATH_typo3 . 'class.db_list.inc');
-require_once(PATH_typo3 . 'class.db_list_extra.inc');
 
 /**
  * Die Klasse ermöglicht direkt eine CSV Datei
  * mit den Boardmitteln von TYPO3 zu schreiben
  */
 class tx_mklib_util_Csv extends localRecordList {
-	
+
 	/**
 	 * Gibt die Csv Zeilen zurück, die gesetzt wurden
 	 * @return array
@@ -46,31 +44,31 @@ class tx_mklib_util_Csv extends localRecordList {
 	public function getCsvLines() {
 		return $this->csvLines;
 	}
-	
+
 	/**
 	 * Schreibt die ganzen CSV Zeilen in eine Datei
-	 * 
+	 *
 	 * @param string $sDir
 	 * @param string $sPrefix
 	 * @param array $aData
 	 * @param string $sFileName	| gibt es einen festen dateinamen?
-	 * 
+	 *
 	 * @return string | Name der Datei
 	 */
 	public function writeCsv($sDir, $sPrefix = '', $aData = array(), $sFileName = '') {
 		if(empty($aData)) $aData = $this->getCsvLines();
-		
+
 		if(!$sFileName){
 			if($sPrefix)$sPrefix = $sPrefix.'_';
 			$sFileName=$sPrefix.date('dmy-Hi').'.csv';
 		}
 		$sCsvLines = implode(chr(13).chr(10),$aData);
-		
+
 		if(t3lib_div::writeFile($sDir.$sFileName,$sCsvLines))
 			return $sFileName;
 		else return false;
 	}
-	
+
 	/**
 	 * Adds input row of values to the internal csvLines array as a CSV formatted line
 	 *

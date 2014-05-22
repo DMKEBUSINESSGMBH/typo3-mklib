@@ -23,7 +23,6 @@
 ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-require_once(PATH_t3lib.'class.t3lib_tceforms.php');
 
 
 class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends tx_phpunit_testcase {
