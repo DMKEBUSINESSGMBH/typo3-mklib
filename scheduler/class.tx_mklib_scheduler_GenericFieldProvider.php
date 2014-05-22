@@ -22,7 +22,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-require_once t3lib_extMgm::extPath('scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php');
+if (!interface_exists('tx_scheduler_AdditionalFieldProvider')) {
+	require_once t3lib_extMgm::extPath(
+		'scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php'
+	);
+}
 
 /**
  * Fügt Felder im scheduler task hinzu
