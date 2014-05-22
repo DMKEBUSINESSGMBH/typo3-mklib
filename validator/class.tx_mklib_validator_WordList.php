@@ -61,8 +61,8 @@ class tx_mklib_validator_WordList {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_WordList.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_WordList.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_WordList.php']) {
+  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_WordList.php']);
 }
 
 ?>

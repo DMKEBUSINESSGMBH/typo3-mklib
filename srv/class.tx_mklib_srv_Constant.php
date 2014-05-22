@@ -69,6 +69,6 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mktegut/srv/class.tx_mktegut_srv_Constant.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mktegut/srv/class.tx_mktegut_srv_Constant.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/srv/class.tx_mktegut_srv_Constant.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/srv/class.tx_mktegut_srv_Constant.php']);
 }

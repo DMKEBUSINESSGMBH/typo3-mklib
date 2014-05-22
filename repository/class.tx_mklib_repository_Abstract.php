@@ -227,6 +227,6 @@ abstract class tx_mklib_repository_Abstract
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
 }

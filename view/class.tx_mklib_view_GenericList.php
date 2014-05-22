@@ -101,6 +101,6 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/view/class.tx_mklib_view_GenericList.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/view/class.tx_mklib_view_GenericList.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/view/class.tx_mklib_view_GenericList.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/view/class.tx_mklib_view_GenericList.php']);
 }

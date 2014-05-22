@@ -53,6 +53,6 @@ class tx_mklib_tca_eval_priceDecimalSeperator {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php'])	{
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php']);
 }
