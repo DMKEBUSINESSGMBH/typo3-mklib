@@ -27,13 +27,15 @@
  */
 
 require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
-require_once(PATH_site.'typo3/template.php');
+if (!class_exists('template')) {
+	require_once(PATH_site.'typo3/template.php');
+}
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
@@ -44,16 +46,16 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 	 * @var tx_mklib_tests_fixtures_classes_DummySearcher
 	 */
 	protected $oSearcher;
-	
+
 	/**
 	 * @var tx_mklib_tests_fixtures_classes_DummyMod
 	 */
 	protected $oMod;
-	
+
 	public function setUp() {
 		//sprache auf default setzen damit wir die richtigen labels haben
 		$GLOBALS['LANG']->lang = 'default';
-		
+
 		//wir müssen noch die TCA für die Wordlist laden
 		global $TCA;
 		$TCA['tx_mklib_wordlist'] = array (
@@ -80,35 +82,35 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$this->oSearcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher',$this->oMod);
 		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
 		$GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
-		
+
 		$GLOBALS['emptyTestResult'] = false;
-		
+
 		//immer wieder löschen
 		$_GET['SET'] = null;
 		tx_mklib_tests_mod1_Util::unsetSorting($this->oMod);
 		if(isset($GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['showhidden']))
 			unset($GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['showhidden']);
 	}
-	
+
 	public function testGetSearchForm() {
 		$sSearchForm = $this->oSearcher->getSearchForm();
 		$sExpected = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchForm.html');
 		//auf der CLI müssen einige Dinge ersetzt werden
 		$sExpected = tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
-		
+
 		$this->assertEquals(trim($sExpected), trim($sSearchForm), 'das suchformular ist falsch.');
 	}
-	
+
 	public function testGetResultListReturnsNoPagerAndEmptyMsgIfResultEmpty() {
 		$GLOBALS['emptyTestResult'] = true;
 		$aResultList = $this->oSearcher->getResultList();
-		
+
 		$this->assertEquals('<p><strong>###LABEL_NO_DUMMYSEARCHER_FOUND###</strong></p><br/>', $aResultList['table'], 'Die Tabelle ist falsch.');
-		
+
 		$this->assertEquals(0, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 		$this->assertEquals('<div class="pager"></div>', $aResultList['pager'], 'Der Pager ist falsch.');
 	}
-	
+
 	public function testGetResultListReturnsCorrectTableAndPagerIfResults() {
 		//damit currenShowHidden gesetzt wird
 		$this->oSearcher->getSearchForm();
@@ -124,7 +126,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedTable);
 */
 		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-		
+
 		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
@@ -139,19 +141,19 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$this->assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 		$this->assertEquals($sExpectedPager, $aResultList['pager'], 'Der Pager ist falsch.');
 	}
-	
+
 	public function testGetResultReturnsCorrectResultsDependendOnHiddenSettings() {
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['showhidden'] = 1;
 		//damit currenShowHidden gesetzt wird
 		$this->oSearcher->getSearchForm();
 		$aResultList = $this->oSearcher->getResultList();
-		
+
 		$sDbListClass = '';
 		if(tx_rnbase_util_TYPO3::isTYPO44OrHigher())//wird darunter nicht gesetzt
 			$sDbListClass = ' class="typo3-dblist"';
-		
+
 		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-		
+
 		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
@@ -164,30 +166,30 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
 		$this->assertRegExp('/"><strike>6<\/strike><\/span>/', $result, 'versteckter Wert 6 fehlt in Tabelle');
-		
+
 		$this->assertEquals(6, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 		$this->assertEquals($sExpectedPager, $aResultList['pager'], 'Der Pager ist falsch.');
 	}
-	
+
 	public function testGetResultListReturnsCorrectTableAndPagerIfSortLinkIsClickedAndSetsSortOptionToModuleData() {
 		$_GET['sortField'] = 'uid';
 		$_GET['sortRev'] = 'asc';
-		
+
 		//damit currenShowHidden gesetzt wird
 		$this->oSearcher->getSearchForm();
 		$aResultList = $this->oSearcher->getResultList();
-		
+
 		//Daten im Modul korrekt?
 		$aModuleData = t3lib_BEfunc::getModuleData(array (),t3lib_div::_GP('SET'),$this->oMod->getName());
 		$this->assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
-		
+
 		//HTML Ausgabe korrekt?
 		$sDbListClass = '';
 		if(tx_rnbase_util_TYPO3::isTYPO44OrHigher())//wird darunter nicht gesetzt
 			$sDbListClass = ' class="typo3-dblist"';
-		
+
 		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-		
+
 		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
@@ -196,7 +198,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
 		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
 
-		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden. 
+		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
 		for($i=1; $i<6; $i++) {
 			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
@@ -205,26 +207,26 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		//unberührt?
 		$this->assertEquals($sExpectedPager, $aResultList['pager'], 'Der Pager ist falsch.');
 	}
-	
+
 	public function testGetResultListReturnsCorrectTableAndPagerIfSortingFromModuleDataAndSetsSortOptionToGetParams() {
 		//daten fürs modul setzen
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['dummySearcherorderby'] = array('uid' => 'asc');
-		
+
 		//damit currenShowHidden gesetzt wird
 		$this->oSearcher->getSearchForm();
 		$aResultList = $this->oSearcher->getResultList();
-		
+
 		//Daten in $_GET korrekt?
 		$this->assertEquals('uid', $_GET['sortField'], '$_GET[\'sortField\'] nicht korrekt gesetzt.');
 		$this->assertEquals('asc', $_GET['sortRev'], '$_GET[\'sortRev\'] nicht korrekt gesetzt.');
-		
+
 		//HTML Ausgabe korrekt?
 		$sDbListClass = '';
 		if(tx_rnbase_util_TYPO3::isTYPO44OrHigher())//wird darunter nicht gesetzt
 			$sDbListClass = ' class="typo3-dblist"';
 
 		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-		
+
 		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
@@ -233,7 +235,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
 		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
 
-		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden. 
+		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
 		for($i=1; $i<6; $i++) {
 			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
