@@ -45,13 +45,13 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 	protected function setUp() {
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		tx_rnbase_util_Misc::prepareTSFE();
-		
+
 		//tq_seo extension hat einen hook der auf das folgende feld zugreift.
 		//wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
 		//wir verhindern wollen!
 		$GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::tearDown()
@@ -59,7 +59,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 	protected function tearDown() {
 		unset($GLOBALS['TSFE']->rootLine[0]['uid']);
 	}
-	
+
 	/**
 	 * @group unit
 	 * @dataProvider getExpectedParsedLinks
@@ -69,31 +69,36 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 	) {
 		$parameters = $this->getParameters();
 		$configurations = $this->getConfigurations(true);
-		
+
 		if($sortBy) {
 			$parameters->offsetSet('sortBy', $sortBy);
 		}
-		
+
 		if($sortOrder) {
 			$parameters->offsetSet('sortOrder', $sortOrder);
 		}
-		
+
 		$confId = 'myConfId.filter.';
 		$filter = tx_rnbase::makeInstance(
 			'tx_mklib_filter_Sorter',
 			$parameters,$configurations,$confId
 		);
-			
+
 		$fields = array();
 		$options = array();
 		$filter->init($fields,$options);
-		
+
 		$formatter = $configurations->getFormatter();
 		$parsedTemplate = $filter->parseTemplate($template, $formatter, $confId);
 
+		// leerzeichen ab 6.2.3 nicht mehr vorhanden
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$expectedParsedTemplate = str_replace('" >', '">', $expectedParsedTemplate);
+		}
+
 		$this->assertEquals($expectedParsedTemplate, $parsedTemplate, 'link falsch');
 	}
-	
+
 	/**
 	 * @return array
 	 */
@@ -141,27 +146,27 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 				'',
 				''
 			),
-		);		
+		);
 	}
-	
+
 	/**
 	 * @return tx_rnbase_parameters
 	 */
 	private function getParameters() {
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 		$parameters->setQualifier('mklib');
-		
+
 		return $parameters;
 	}
-	
+
 	/**
 	 * @param boolean $defaultConfig
-	 * 
+	 *
 	 * @return tx_rnbase_configurations
 	 */
 	private function getConfigurations($defaultConfig = false) {
 		tx_rnbase_util_Misc::prepareTSFE();
-		
+
 		$configurations = new tx_rnbase_configurations();
 		$cObj = t3lib_div::makeInstance('tslib_cObj');
 		$config = array(
@@ -176,95 +181,95 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 				)
 			)
 		);
-		
+
 		if($defaultConfig) {
 			$config['myConfId.']['filter.']['sort.']['default.'] = array(
 				'field' 	=> 'firstField',
 				'sortOrder'	=> 'asc'
 			);
 		}
-		
+
 	    $configurations->init($config, $cObj, 'mklib', 'mklib');
-	    
+
 		return $configurations;
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testFilterSetsOrderByEmptyIfNoDefaultConfigurationAndNoSortingViaParameter() {
 		$parameters = $this->getParameters();
 		$configurations = $this->getConfigurations();
-		
+
 		$confId = 'myConfId.filter.';
 		$filter = tx_rnbase::makeInstance(
 			'tx_mklib_tests_fixtures_classes_SorterFilter',
 			$parameters,$configurations,$confId
 		);
-			
+
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
 		$this->assertEquals('0  ',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testFilterSetsOrderByCorrectFromParametersIfNoDefaultConfigurationButSortingViaParameter() {
 		$parameters = $this->getParameters();
 		$configurations = $this->getConfigurations();
-		
+
 		$parameters->offsetSet('sortBy', 'firstField');
 		$parameters->offsetSet('sortOrder', 'desc');
-		
+
 		$confId = 'myConfId.filter.';
 		$filter = tx_rnbase::makeInstance(
 			'tx_mklib_tests_fixtures_classes_SorterFilter',
 			$parameters,$configurations,$confId
 		);
-			
+
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
 		$this->assertEquals('1 firstField desc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testFilterSetsOrderByCorrectFromDefaultConfigIfDefaultConfigurationAndNoSortingViaParameter() {
 		$parameters = $this->getParameters();
 		$configurations = $this->getConfigurations(true);
-		
+
 		$confId = 'myConfId.filter.';
 		$filter = tx_rnbase::makeInstance(
 			'tx_mklib_tests_fixtures_classes_SorterFilter',
 			$parameters,$configurations,$confId
 		);
-			
+
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
 		$this->assertEquals('1 firstField asc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testFilterSetsOrderByCorrectDromParametersIfDefaultConfigurationAndSortingViaParameter() {
 		$parameters = $this->getParameters();
 		$configurations = $this->getConfigurations(true);
-		
+
 		$parameters->offsetSet('sortBy', 'firstField');
 		$parameters->offsetSet('sortOrder', 'desc');
-		
+
 		$confId = 'myConfId.filter.';
 		$filter = tx_rnbase::makeInstance(
 			'tx_mklib_tests_fixtures_classes_SorterFilter',
 			$parameters,$configurations,$confId
 		);
-			
+
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);

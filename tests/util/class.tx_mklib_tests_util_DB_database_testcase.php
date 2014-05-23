@@ -75,7 +75,8 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		// assuming that test-database can be created otherwise PHPUnit will skip the test
 		$this->db = $this->useTestDatabase();
 		$this->importStdDB();
-		$this->importExtensions(array('cms', 'devlog'));
+		$ttContentExtension = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ? 'frontend' : 'cms';
+		$this->importExtensions(array($ttContentExtension, 'devlog'));
 
 		// devlog wieder aktivieren
 		tx_mklib_tests_Util::disableDevlog('devlog', false);

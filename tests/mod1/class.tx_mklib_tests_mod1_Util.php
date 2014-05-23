@@ -71,6 +71,8 @@ class tx_mklib_tests_mod1_Util {
 		//den formToken gibt es erst ab TYPO3 4.5
 		$sVcAndFormTokenRegex = (tx_rnbase_util_TYPO3::isTYPO45OrHigher()) ? '/&amp;vC=(.*?)&formToken=(.*?)\'\)/' : '/&amp;vC=(.*?)\'\)/';
 		$sString = preg_replace($sVcAndFormTokenRegex, '\')', $sString);
+		$moduleTokenRegex = (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) ? '/%26moduleToken%3D(.*?)&amp/' : '//';
+		$sString = preg_replace($moduleTokenRegex, '&amp', $sString);
 		$sString = str_replace('=1&amp;', '=1\'', $sString);
 	}
 

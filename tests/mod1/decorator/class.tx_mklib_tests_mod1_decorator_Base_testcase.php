@@ -131,6 +131,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpected);
+
 		$this->assertEquals($sExpected, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 1');
 
 		//schon versteckt

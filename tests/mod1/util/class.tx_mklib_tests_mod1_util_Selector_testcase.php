@@ -87,13 +87,13 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			$LOCAL_LANG['default']['label_select_hide_hidden'] = $mHideEntry;
 			$LOCAL_LANG['default']['label_select_show_hidden'] = $mShowEntry;
 		}
-		
+
 		// sonst fehler die icon klassen
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			\TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
 		}
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::tearDown()
@@ -102,15 +102,15 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		if(isset($_POST['test'] )) {
 			unset($_POST['test']);
 		}
-		
+
 		if(isset($_POST['test_from'] )) {
 			unset($_POST['test_from']);
 		}
-		
+
 		if(isset($_POST['test_to'] )) {
 			unset($_POST['test_to']);
 		}
-		
+
 	}
 
 	public function testBuildFilerTableWithoutData() {
@@ -208,10 +208,27 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	public function testShowHiddenSelectorWithDefaultId() {
 		$data = array();
 		$return = $this->oSelector->showHiddenSelector($data);
-		$sExpected = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/hiddenSelector1.html');
-		//auf der CLI müssen einige Dinge ersetzt werden
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
-		$this->assertEquals($sExpected, $data['selector'],'falscher selector');
+
+		$this->assertContains(
+			'<select name="SET[showhidden]" onchange="jumpToUrl',
+			$data['selector'],
+			'falscher selector'
+		);
+		$this->assertContains(
+			'<option value="0">Hide hidden entries</option>',
+			$data['selector'],
+			'falscher selector'
+		);
+		$this->assertContains(
+			'<option value="1">Show hidden entries</option>',
+			$data['selector'],
+			'falscher selector'
+		);
+		$this->assertContains(
+			'</select>',
+			$data['selector'],
+			'falscher selector'
+		);
 		$this->assertNull($return,'falscher return value');
 	}
 
@@ -221,24 +238,40 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$data = array();
 		$options = array('id' => $this->sModuleKey);
 		$return = $this->oSelector->showHiddenSelector($data,$options);
-		//auf der CLI müssen einige Dinge ersetzt werden
-		$sExpected = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/hiddenSelector2.html');
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
 
-		$this->assertEquals($sExpected, $data['selector'],'falscher selector');
+		$this->assertContains(
+			'<select name="SET[testSearch]" onchange="jumpToUrl',
+			$data['selector'],
+			'falscher selector'
+		);
+		$this->assertContains(
+			'<option value="0">Hide hidden entries</option>',
+			$data['selector'],
+			'falscher selector'
+		);
+		$this->assertContains(
+			'<option value="1" selected="selected">Show hidden entries</option>',
+			$data['selector'],
+			'falscher selector'
+		);
+		$this->assertContains(
+			'</select>',
+			$data['selector'],
+			'falscher selector'
+		);
 		$this->assertEquals(1, $return,'falscher return value');
 	}
-	
+
 
 	/**
 	 * @group unit
 	 */
 	public function testGetCrDateReturnArrayFormatsDatesCorrect() {
 		$selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getCrDateReturnArray');
 		$method->setAccessible(true);
-		
+
 		$returnArray = $method->invoke($selector, '08-07-2013', '09-07-2013');
 		$expectedReturnArray = array(
 			'from'	=> 1373234400,
@@ -246,16 +279,16 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$this->assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetCrDateReturnArrayFormatsDatesCorrectIfValuesEmpty() {
 		$selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getCrDateReturnArray');
 		$method->setAccessible(true);
-		
+
 		$returnArray = $method->invoke($selector, '', '');
 		$expectedReturnArray = array(
 			'from'	=> '',
@@ -263,104 +296,104 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$this->assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenNoPostValueReturnsEmptyValue() {
 		$selector = $this->oSelector;
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
-		
+
 		$this->assertEmpty($returnValue, 'doch ein return value');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenNoPostValueSetsInputCorrect() {
 		$selector = $this->oSelector;
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
-		
+
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyKeepsExistingOutFieldValue() {
 		$selector = $this->oSelector;
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
-		
+
 		$key = 'test';
 		$out = array('field' => 'test');
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
-		
+
 		$expectedInput = 'test<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenPostValueReturnsCorrectValue() {
 		$_POST['test'] = 123;
 		$selector = $this->oSelector;
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
-		
+
 		$this->assertEquals(123, $returnValue, 'return value falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenPostValueSetsInputCorrect() {
 		$_POST['test'] = 123;
 		$selector = $this->oSelector;
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
-		
+
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="123" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenPrefersGetPostDataOverModuleData() {
 		$_POST['test'] = 123;
 		$selector = $this->getMock(
-			'tx_mklib_mod1_util_Selector', 
+			'tx_mklib_mod1_util_Selector',
 			array('getValueFromModuleData')
 		);
 		$selector->init($this->oMod);
@@ -368,23 +401,23 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$key = 'test';
 		$selector->expects($this->never())
 			->method('getValueFromModuleData');
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
-		
+
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
-		
+
 		$this->assertEquals(123, $returnValue, 'return value falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testGetDateFieldByKeyWhenUsesModuleDataWhenNoPostData() {
 		$selector = $this->getMock(
-			'tx_mklib_mod1_util_Selector', 
+			'tx_mklib_mod1_util_Selector',
 			array('getValueFromModuleData')
 		);
 		$selector->init($this->oMod);
@@ -394,130 +427,130 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			->method('getValueFromModuleData')
 			->with($key)
 			->will($this->returnValue('test'));
-		
+
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
-		
+
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
-		
+
 		$this->assertEquals('test', $returnValue, 'return value falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testShowDateRangeSelectorReturnsCorrectTimestampArray() {
 		$selector = $this->getMock(
-			'tx_mklib_mod1_util_Selector', 
+			'tx_mklib_mod1_util_Selector',
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
 		$selector->init($this->oMod);
-		
+
 		$selector->expects($this->any())
 			->method('getFormTool')
 			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$timestampArray = $selector->showDateRangeSelector($out, $key);
-		
+
 		$expectedReturnArray = array(
 			'from'	=> '',
 			'to'	=> ''
 		);
 		$this->assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testShowDateRangeSelectorReturnsCorrectTimestampArrayWhenPostValuesSet() {
 		$_POST['test_from'] = '08-07-2013';
 		$_POST['test_to'] = '09-07-2013';
-		
+
 		$selector = $this->getMock(
-			'tx_mklib_mod1_util_Selector', 
+			'tx_mklib_mod1_util_Selector',
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
 		$selector->init($this->oMod);
-		
+
 		$selector->expects($this->any())
 			->method('getFormTool')
 			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$timestampArray = $selector->showDateRangeSelector($out, $key);
-		
+
 		$expectedReturnArray = array(
 			'from'	=> 1373234400 ,
-			'to'	=> 1373407200 
+			'to'	=> 1373407200
 		);
 		$this->assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testShowDateRangeSelectorReturnsCorrectInputs() {
 		$selector = $this->getMock(
-			'tx_mklib_mod1_util_Selector', 
+			'tx_mklib_mod1_util_Selector',
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
 		$selector->init($this->oMod);
-		
+
 		$selector->expects($this->any())
 			->method('getFormTool')
 			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
-		
+
 		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span><input name="test_to" type="text" id="tceforms-datefield-test_to" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedOut, $out['field'], 'out falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testShowDateRangeSelectorReturnsCorrectInputsWhenPostValuesSet() {
 		$_POST['test_from'] = '08-07-2013';
 		$_POST['test_to'] = '09-07-2013';
-		
+
 		$selector = $this->getMock(
-			'tx_mklib_mod1_util_Selector', 
+			'tx_mklib_mod1_util_Selector',
 			array('loadAdditionalJsForDatePicker', 'getFormTool')
 		);
 		$selector->init($this->oMod);
-		
+
 		$selector->expects($this->any())
 			->method('getFormTool')
 			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
-		
+
 		$key = 'test';
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
-		
+
 		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="08-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span><input name="test_to" type="text" id="tceforms-datefield-test_to" value="09-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
 		$this->assertEquals($expectedOut, $out['field'], 'out falsch');
 	}
-	
+
 	/**
 	 * @group unit
 	 */
 	public function testShowDateRangeSelectorSetModuleDataCorrect() {
 		$_POST['test_from'] = '08-07-2013';
 		$_POST['test_to'] = '09-07-2013';
-		
+
 		$selector = $this->getMock(
-			'tx_mklib_mod1_util_Selector', 
+			'tx_mklib_mod1_util_Selector',
 			array('loadAdditionalJsForDatePicker', 'getFormTool', 'setValueToModuleData')
 		);
 		$selector->init($this->oMod);
-		
+
 		$selector->expects($this->any())
 			->method('getFormTool')
 			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
@@ -526,7 +559,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$selector->expects($this->any())
 			->method('setValueToModuleData')
 			->with('dummyMod', array($key . '_from' => $_POST['test_from'], $key . '_to' => $_POST['test_to']));
-		
+
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
 	}

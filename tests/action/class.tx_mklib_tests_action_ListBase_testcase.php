@@ -43,7 +43,9 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 
 		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
-		require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+		if (!class_exists('tslib_cObj')) {
+			require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+		}
 		$configurations->init(
 			$aConfig,
 			$configurations->getCObj(1),

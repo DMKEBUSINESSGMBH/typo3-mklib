@@ -93,12 +93,38 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 	}
 
 	public function testGetSearchForm() {
-		$sSearchForm = $this->oSearcher->getSearchForm();
-		$sExpected = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchForm.html');
-		//auf der CLI müssen einige Dinge ersetzt werden
-		$sExpected = tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
+		$searchForm = $this->oSearcher->getSearchForm();
 
-		$this->assertEquals(trim($sExpected), trim($sSearchForm), 'das suchformular ist falsch.');
+		$this->assertContains(
+			'<table class="filters"><tr><td>Free text search: </td><td><input type="text" name="SET[dummySearcherSearch]" style="width:96px;" value="" /> <input type="submit" name="dummySearcherSearch" value="search" /></td></tr><tr><td>Hidden entries:</td><td>',
+			$searchForm,
+			'das suchformular ist falsch.'
+		);
+		$this->assertContains(
+			'<select name="SET[showhidden]" onchange="jumpToUrl',
+			$searchForm,
+			'das suchformular ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="0">Hide</option>',
+			$searchForm,
+			'das suchformular ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="1">Show</option>',
+			$searchForm,
+			'das suchformular ist falsch.'
+		);
+		$this->assertContains(
+			'</select>',
+			$searchForm,
+			'das suchformular ist falsch.'
+		);
+		$this->assertContains(
+			'</td></tr><tr><td></td><td><input type="submit" name="dummySearcherSearch" value="Update" /></td></tr></table>',
+			$searchForm,
+			'das suchformular ist falsch.'
+		);
 	}
 
 	public function testGetResultListReturnsNoPagerAndEmptyMsgIfResultEmpty() {
@@ -115,21 +141,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		//damit currenShowHidden gesetzt wird
 		$this->oSearcher->getSearchForm();
 		$aResultList = $this->oSearcher->getResultList();
-		$sDbListClass = '';
-		if(tx_rnbase_util_TYPO3::isTYPO44OrHigher())//wird darunter nicht gesetzt
-			$sDbListClass = ' class="typo3-dblist"';
-
-/*		$sExpectedTable = '<table border="0" cellspacing="0" cellpadding="0"'.$sDbListClass.' id="typo3-tmpltable"><tr><td valign="top"><a href="'.t3lib_div::getIndpEnv('TYPO3_REQUEST_URL').'&amp;sortField=uid&amp;sortRev=asc">Uid</a></td><td valign="top">Actions</td></tr><tr><td valign="top">1</td><td valign="top"><a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[tx_mklib_wordlist][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[tx_mklib_wordlist][1][hidden]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[tx_mklib_wordlist][1][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 1" border="0" alt="" /></a></td></tr><tr><td valign="top">2</td><td valign="top"><a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[tx_mklib_wordlist][2]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 2" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[tx_mklib_wordlist][2][hidden]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 2" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[tx_mklib_wordlist][2][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 2" border="0" alt="" /></a></td></tr><tr><td valign="top">3</td><td valign="top"><a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[tx_mklib_wordlist][3]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 3" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[tx_mklib_wordlist][3][hidden]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 3" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[tx_mklib_wordlist][3][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 3" border="0" alt="" /></a></td></tr><tr><td valign="top">4</td><td valign="top"><a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[tx_mklib_wordlist][4]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 4" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[tx_mklib_wordlist][4][hidden]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 4" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[tx_mklib_wordlist][4][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 4" border="0" alt="" /></a></td></tr><tr><td valign="top">5</td><td valign="top"><a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[tx_mklib_wordlist][5]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 5" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[tx_mklib_wordlist][5][hidden]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 5" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[tx_mklib_wordlist][5][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 5" border="0" alt="" /></a></td></tr></table>';
-
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedTable);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['table']);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedTable);
-*/
-		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
 
 		$result = $aResultList['table'];
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
@@ -138,8 +149,48 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		for($i=1; $i<6; $i++) {
 			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
+
 		$this->assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-		$this->assertEquals($sExpectedPager, $aResultList['pager'], 'Der Pager ist falsch.');
+		$this->assertContains(
+			'<div class="pager">',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="10" selected="selected">10 Einträge</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="100">100 Einträge</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'</select>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<select name="SET[dummySearcherPagerdata_offset]"',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="0" selected="selected">Seite 0</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'</div>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
 	}
 
 	public function testGetResultReturnsCorrectResultsDependendOnHiddenSettings() {
@@ -147,16 +198,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		//damit currenShowHidden gesetzt wird
 		$this->oSearcher->getSearchForm();
 		$aResultList = $this->oSearcher->getResultList();
-
-		$sDbListClass = '';
-		if(tx_rnbase_util_TYPO3::isTYPO44OrHigher())//wird darunter nicht gesetzt
-			$sDbListClass = ' class="typo3-dblist"';
-
-		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
 
 		$result = $aResultList['table'];
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
@@ -168,7 +209,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$this->assertRegExp('/"><strike>6<\/strike><\/span>/', $result, 'versteckter Wert 6 fehlt in Tabelle');
 
 		$this->assertEquals(6, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-		$this->assertEquals($sExpectedPager, $aResultList['pager'], 'Der Pager ist falsch.');
 	}
 
 	public function testGetResultListReturnsCorrectTableAndPagerIfSortLinkIsClickedAndSetsSortOptionToModuleData() {
@@ -183,17 +223,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$aModuleData = t3lib_BEfunc::getModuleData(array (),t3lib_div::_GP('SET'),$this->oMod->getName());
 		$this->assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
-		//HTML Ausgabe korrekt?
-		$sDbListClass = '';
-		if(tx_rnbase_util_TYPO3::isTYPO44OrHigher())//wird darunter nicht gesetzt
-			$sDbListClass = ' class="typo3-dblist"';
-
-		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
-
 		$result = $aResultList['table'];
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
 		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
@@ -205,7 +234,46 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 
 		$this->assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 		//unberührt?
-		$this->assertEquals($sExpectedPager, $aResultList['pager'], 'Der Pager ist falsch.');
+		$this->assertContains(
+			'<div class="pager">',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="10" selected="selected">10 Einträge</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="100">100 Einträge</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'</select>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<select name="SET[dummySearcherPagerdata_offset]"',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="0" selected="selected">Seite 0</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'</div>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
 	}
 
 	public function testGetResultListReturnsCorrectTableAndPagerIfSortingFromModuleDataAndSetsSortOptionToGetParams() {
@@ -220,17 +288,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$this->assertEquals('uid', $_GET['sortField'], '$_GET[\'sortField\'] nicht korrekt gesetzt.');
 		$this->assertEquals('asc', $_GET['sortRev'], '$_GET[\'sortRev\'] nicht korrekt gesetzt.');
 
-		//HTML Ausgabe korrekt?
-		$sDbListClass = '';
-		if(tx_rnbase_util_TYPO3::isTYPO44OrHigher())//wird darunter nicht gesetzt
-			$sDbListClass = ' class="typo3-dblist"';
-
-		$sExpectedPager = file_get_contents(t3lib_extMgm::extPath('mklib').'tests/fixtures/html/searchPager.html');
-
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpectedPager);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($aResultList['pager']);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpectedPager);
-
 		$result = $aResultList['table'];
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
 		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
@@ -242,7 +299,46 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 
 		$this->assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 		//unberührt?
-		$this->assertEquals($sExpectedPager, $aResultList['pager'], 'Der Pager ist falsch.');
+		$this->assertContains(
+			'<div class="pager">',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="10" selected="selected">10 Einträge</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="100">100 Einträge</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'</select>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<select name="SET[dummySearcherPagerdata_offset]"',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'<option value="0" selected="selected">Seite 0</option>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
+		$this->assertContains(
+			'</div>',
+			$aResultList['pager'],
+			'Der Pager ist falsch.'
+		);
 	}
 }
 
