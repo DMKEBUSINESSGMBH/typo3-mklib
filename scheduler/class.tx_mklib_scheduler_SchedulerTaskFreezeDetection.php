@@ -25,6 +25,7 @@
 require_once (t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_scheduler_Generic');
 tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  *
@@ -54,6 +55,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 
 		//wir brauchen alle laufenden Tasks die freezedeteceted=0 sind
 		$aPossiblyFrozenTasks = $this->getPossiblyFrozenTasks();
+
 		//nix zu tun
 		if(empty($aPossiblyFrozenTasks))
 			return 'keine hängengebliebene Scheduler entdeckt!';
@@ -71,7 +73,11 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		//Nachrichten für den error mail versand
 		$aMessages = $aUids = array();
 		foreach ($aPossiblyFrozenTasks as $aPossiblyFrozenTask) {
-			$aMessages[] = '"' . $aPossiblyFrozenTask['classname'] . ' (Task-Uid: ' . $aPossiblyFrozenTask['uid'] . ')"';
+			$classname = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
+				get_class(unserialize($aPossiblyFrozenTask['serialized_task_object'])) :
+				$aPossiblyFrozenTask['classname'];
+
+			$aMessages[] = '"' . $classname . ' (Task-Uid: ' . $aPossiblyFrozenTask['uid'] . ')"';
 			$aUids[] = $aPossiblyFrozenTask['uid'];
 		}
 
@@ -123,8 +129,11 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 	 * @return array
 	 */
 	protected function getPossiblyFrozenTasks() {
+		$selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
+			'uid,serialized_task_object' :
+			'uid,classname';
 		return tx_rnbase_util_DB::doSelect(
-			'uid,classname',
+			$selectFields,
 			'tx_scheduler_task',
 			array(
 				//hat keine TCA
