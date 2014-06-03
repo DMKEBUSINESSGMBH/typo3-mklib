@@ -56,7 +56,6 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$this->assertEquals( array(),$aNoEmptyValues['Array'], '4. wert falsch');
 		$this->assertEquals('Test',$aNoEmptyValues[6], '5. wert falsch');
 		$this->assertEquals(true,$aNoEmptyValues[7], '6. wert falsch');
-		$this->markTestSkipped('Test für Jenkins');
 	}
 
 	/**
