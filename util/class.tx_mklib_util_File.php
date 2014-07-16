@@ -264,27 +264,34 @@ class tx_mklib_util_File {
 	/**
 	 * Gibt einen relativen Pfad zurück.
 	 *
-	 * @param 	string 	$sPath
+	 * @param 	string 	$path
+	 * @param	boolean $removeStartingSlash
+	 *
 	 * @return 	string
 	 */
-	public static function getRelPath($sPath='/') {
-		if (!strcmp($sPath,'/')){
-			return $sPath;
+	public static function getRelPath($path='/', $removeStartingSlash = FALSE) {
+		if (!strcmp($path,'/')){
+			return $path;
 		}
 
-		$sPath = self::fixPath($sPath);
+		$path = self::fixPath($path);
 
 		// Web-Pfad abschneiden
-		if(self::isAbsWebPath($sPath) && strpos($sPath, self::getSiteUrl()) !== false) {
-			$sPath = str_replace(self::getSiteUrl(), '', $sPath);
+		if(self::isAbsWebPath($path) && strpos($path, self::getSiteUrl()) !== false) {
+			$path = str_replace(self::getSiteUrl(), '', $path);
 		}
 
 		// wir brauchen den server pfad, um verschiedene prüfungen zu machen
-		$sPath = self::getServerPath($sPath);
-		$sPath = str_replace(self::removeStartingSlash(self::getDocumentRoot()), '', $sPath);
+		$path = self::getServerPath($path);
+		$path = str_replace(self::removeStartingSlash(self::getDocumentRoot()), '', $path);
 
-		// gegebenenfals ein slash anfügen
-		return ($sPath{0} != '/' ? '/' : '') . $sPath;
+		// gegebenenfals ein slash anfügen wenn dieser nicht entfernt werden soll
+		if ($removeStartingSlash && $path{0} == '/') {
+			$path = substr($path, 1);
+		} elseif ($path{0} != '/') {
+			$path = '/' . $path;
+		}
+		return $path;
 	}
 
 	/**

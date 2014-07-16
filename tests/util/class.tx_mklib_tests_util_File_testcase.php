@@ -175,6 +175,29 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * getRelPath testen
+	 */
+	public function testGetRelPathWithRemovedStartingSlashSetToTrue(){
+		if(defined('TYPO3_cliMode') && TYPO3_cliMode){
+			$this->markTestSkipped('Geht leider nicht unter CLI.');
+		}
+		$pathSite = tx_mklib_util_File::getDocumentRoot();
+		$this->assertEquals('', tx_mklib_util_File::getRelPath('', TRUE));
+		$this->assertEquals(
+			'typo3conf/',
+			tx_mklib_util_File::getRelPath(tx_mklib_util_File::getSiteUrl().'\typo3conf', TRUE)
+		);
+		$this->assertEquals(
+			'typo3conf/',
+			tx_mklib_util_File::getRelPath($pathSite.'\typo3conf', TRUE)
+		);
+		$this->assertEquals(
+			'typo3conf/localconf.php',
+			tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php', TRUE)
+		);
+	}
+
+	/**
 	 * getWebPath testen
 	 */
 	public function testGetWebPath(){
