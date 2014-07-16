@@ -287,7 +287,7 @@ class tx_mklib_util_File {
 
 		// gegebenenfals ein slash anfügen wenn dieser nicht entfernt werden soll
 		if ($removeStartingSlash && $path{0} == '/') {
-			$path = substr($path, 1);
+			$path = self::removeStartingSlash($path);
 		} elseif ($path{0} != '/') {
 			$path = '/' . $path;
 		}
