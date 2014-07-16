@@ -223,6 +223,24 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($url, $newUrl);
 	}
 
+	/**
+	 * @dataProvider getFiles
+	 */
+	public function testIsValidFile($filepath, $expectedReturnValue) {
+		$this->assertEquals($expectedReturnValue, tx_mklib_util_File::isValidFile($filepath));
+	}
+
+	/**
+	 *
+	 * @return multitype:multitype:string  multitype:Ambigous <string, string, unknown>
+	 */
+	public function getFiles() {
+		return array(
+			array(tx_mklib_util_File::getServerPath(''), FALSE),
+			array(tx_mklib_util_File::getServerPath('EXT:mklib/tests'), FALSE),
+			array(tx_mklib_util_File::getServerPath('EXT:mklib/tests/phpunit.xml'), TRUE),
+		);
+	}
 
 }
 

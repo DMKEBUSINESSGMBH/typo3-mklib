@@ -423,6 +423,17 @@ class tx_mklib_util_File {
 		t3lib_div::writeFile($theFile, $content);
 		return @is_file($theFile);
 	}
+
+	/**
+	 * exisitiert die Datei und ist auch kein Ordner?
+	 *
+	 * @param string $filepath
+	 *
+	 * @return boolean
+	 */
+	public static function isValidFile($filepath) {
+		return file_exists($filepath) && is_file($filepath);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_File.php']) {
