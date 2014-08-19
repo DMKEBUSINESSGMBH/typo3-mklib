@@ -132,13 +132,16 @@ class tx_mklib_treelib_Config {
 	}
 
 	public function getMinItems(){
-		return t3lib_div::intInRange($this->get('minitems', 0), 0);
+		tx_rnbase::load('tx_rnbase_util_Math');
+		return tx_rnbase_util_Math::intInRange($this->get('minitems', 0), 0);
 	}
 	public function getMaxItems(){
-		return t3lib_div::intInRange($this->get('maxitems', 100000), 0);
+		tx_rnbase::load('tx_rnbase_util_Math');
+		return tx_rnbase_util_Math::intInRange($this->get('maxitems', 100000), 0);
 	}
 	public function getAutoSizeMax(){
-		return t3lib_div::intInRange($this->get('autoSizeMax', 1), 0);
+		tx_rnbase::load('tx_rnbase_util_Math');
+		return tx_rnbase_util_Math::intInRange($this->get('autoSizeMax', 1), 0);
 	}
 	public function getSize(){
 		return $this->get('size', 1);

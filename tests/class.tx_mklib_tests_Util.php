@@ -170,7 +170,11 @@ class tx_mklib_tests_Util {
 	public static function simulateFrontendEnviroment($extKey = 'mklib') {
 		//wenn phpunit mindestens in version 3.5.14 installiert ist, nutzen
 		//wir deren create frontend methode
-		if(t3lib_div::int_from_ver(t3lib_extMgm::getExtensionVersion('phpunit')) >= 3005014){
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if (tx_rnbase_util_TYPO3::convertVersionNumberToInteger(
+				t3lib_extMgm::getExtensionVersion('phpunit')
+			) >= 3005014
+		){
 			$oTestFramework = tx_rnbase::makeInstance('Tx_Phpunit_Framework',$extKey);
 			return $oTestFramework->createFakeFrontEnd();
 		}
