@@ -443,6 +443,7 @@ class tx_mklib_tests_Util {
 	 */
 	public static function setSysPageToTsfe() {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		self::prepareTSFE();
 		$GLOBALS['TSFE']->sys_page = tx_rnbase_util_TYPO3::getSysPage();
 	}
 
