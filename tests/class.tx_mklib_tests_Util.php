@@ -166,6 +166,7 @@ class tx_mklib_tests_Util {
 	 *
 	 * @see tx_phpunit_module1::simulateFrontendEnviroment
 	 * @todo in eigene Klasse auslagern, die von tx_phpunit_module1 erbt und simulateFrontendEnviroment public macht
+	 * @deprecated use self::prepareTSFE()
 	 */
 	public static function simulateFrontendEnviroment($extKey = 'mklib') {
 		//wenn phpunit mindestens in version 3.5.14 installiert ist, nutzen
