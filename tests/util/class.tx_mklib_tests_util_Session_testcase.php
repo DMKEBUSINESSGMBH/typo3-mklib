@@ -128,4 +128,17 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 
 		tx_mklib_util_Session::setSessionId(456);
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSetStoreAndFetchSessionData(){
+		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true, 'force' => TRUE));
+
+		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
+		tx_mklib_util_Session::storeSessionData();
+		$this->assertEquals(
+			'testValue', tx_mklib_util_Session::getSessionValue('mklibTest')
+		);
+	}
 }

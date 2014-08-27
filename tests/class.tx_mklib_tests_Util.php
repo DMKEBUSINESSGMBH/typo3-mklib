@@ -383,6 +383,9 @@ class tx_mklib_tests_Util {
 			self::disablePhpMyAdminLogging();
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] = 1;
 			$GLOBALS['TYPO3_CONF_VARS']['FE']['dontSetCookie'] = 1;
+			// sonst wird eine Exception in TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+			// Zeile 548 geworfen
+			$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] = 0;
 		}
 
 		tx_rnbase::load('tx_rnbase_util_Misc');
@@ -391,6 +394,9 @@ class tx_mklib_tests_Util {
 
 		if (isset($options['initFEuser'])) {
 			$GLOBALS['TSFE']->initFEuser();
+			// sonst wird eine Exception in TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+			// Zeile 548 geworfen
+			$GLOBALS['TSFE']->fe_user->newSessionID = FALSE;
 		}
 
 		if (isset($options['initCObject'])) {
