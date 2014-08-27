@@ -132,7 +132,7 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	/**
 	 * @group unit
 	 */
-	public function testSetStoreAndFetchSessionData(){
+	public function testSetStoreAndGetSessionValue(){
 		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true, 'force' => TRUE));
 
 		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
@@ -140,5 +140,34 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 		$this->assertEquals(
 			'testValue', tx_mklib_util_Session::getSessionValue('mklibTest')
 		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSetStoreAndGetSessionValueWhenSessionIdSet() {
+		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true, 'force' => TRUE));
+
+		$sessionIdBackup = tx_mklib_util_Session::getSessionId();
+		// erstmal Session ID wechseln und Wert setzen
+		$newSessionId = t3lib_div::getRandomHexString(32);
+		tx_mklib_util_Session::setSessionId($newSessionId);
+		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
+		tx_mklib_util_Session::storeSessionData();
+
+		// dann wir eigentliche Session ID Wert setzen
+		tx_mklib_util_Session::setSessionId($sessionIdBackup);
+		tx_mklib_util_Session::setSessionValue('mklibTest', 'initialTestValue');
+		tx_mklib_util_Session::storeSessionData();
+
+		// dann wieder auf neue Session ID wechseln und prüfen ob
+		// Werte korrekt geliefert wernde
+		tx_mklib_util_Session::setSessionId($newSessionId);
+
+		$this->assertEquals(
+			'testValue', tx_mklib_util_Session::getSessionValue('mklibTest')
+		);
+
+		tx_mklib_util_Session::setSessionId($sessionIdBackup);
 	}
 }

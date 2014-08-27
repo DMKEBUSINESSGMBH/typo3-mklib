@@ -130,7 +130,17 @@ class tx_mklib_util_Session {
 	 */
 	public static function setSessionId($sessionId) {
 		$GLOBALS['TSFE']->fe_user->id = $sessionId;
-		$GLOBALS['TSFE']->fe_user->sesData = array(); //sonst werden die Session Daten nicht neu geholt
+		//sonst werden die Session Daten nicht neu geholt
+		$GLOBALS['TSFE']->fe_user->sesData = array();
+		// wenn es für die ID keine Session Daten gibt, aber vorher welche vorhanden waren
+		// dann wird sessionDataTimestamp von der alten Session übernommen.
+		// das führt dazu dass die Session Daten nicht für die neue Session ID gespeichert werden.
+		$sessionDataTimestampProperty = new ReflectionProperty(
+			get_class($GLOBALS['TSFE']->fe_user), 'sessionDataTimestamp'
+		);
+		$sessionDataTimestampProperty->setAccessible(TRUE);
+		$sessionDataTimestampProperty->setValue($GLOBALS['TSFE']->fe_user, NULL);
+
 		$GLOBALS['TSFE']->fe_user->fetchSessionData();
 	}
 }
