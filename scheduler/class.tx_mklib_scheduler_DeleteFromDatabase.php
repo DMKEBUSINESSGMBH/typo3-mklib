@@ -44,10 +44,11 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 		$table = $options['table'];
 		$where = $options['where'];
 		$mode = $options['mode'];
+		$selectFields = $options['selectFields'] ? $options['selectFields'] : 'uid';
 		$dbUtil = $this->getDbUtil();
 
 		$affectedRows = $dbUtil::doSelect(
-			'uid', $table,
+			$selectFields, $table,
 			array('where' => $where, 'enablefieldsoff' => true)
 		);
 		$affectedNumberOfRows = $dbUtil::delete($table, $where, $mode);

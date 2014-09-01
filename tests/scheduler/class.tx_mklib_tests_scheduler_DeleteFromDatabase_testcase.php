@@ -89,6 +89,23 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	/**
 	 * @group unit
 	 */
+	public function testExecuteCallsDoSelectCorrectIfSelectFieldsConfigured() {
+		$dbUtil = $this->getDbUtil();
+		$this->options['selectFields'] = 'otherFields';
+		$dbUtil::staticExpects($this->once())
+			->method('doSelect')
+			->with(
+				$this->options['selectFields'], $this->options['table'],
+				array('where' => $this->options['where'], 'enablefieldsoff' => true)
+			);
+
+		$scheduler = $this->getSchedulerByDbUtil($dbUtil);
+		$scheduler->execute();
+	}
+
+	/**
+	 * @group unit
+	 */
 	public function testExecuteCallsDeleteCorrect() {
 		$dbUtil = $this->getDbUtil();
 		$dbUtil::staticExpects($this->once())
