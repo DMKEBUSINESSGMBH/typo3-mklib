@@ -36,6 +36,11 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
 abstract class tx_mklib_repository_Abstract
 	implements t3lib_Singleton {
 
+	// 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
+	const DELETION_MODE_HIDE = 0;
+	const DELETION_MODE_SOFTDELETE = 1;
+	const DELETION_MODE_REALLYDELETE = 2;
+
 	/**
 	 * Liefert den Namen der Suchklasse
 	 *
@@ -94,6 +99,19 @@ abstract class tx_mklib_repository_Abstract
 		$this->prepareFieldsAndOptions($fields, $options);
 		$items = $this->getSearcher()->search($fields, $options);
 		return $this->prepareItems($items, $options);
+	}
+
+	/**
+	 * Search the item for the given uid
+	 *
+	 * @TODO: das liefert immer ein moddel, auch wenn kein datensatz existiert!
+	 * 		  es sollte NULL zurückgegeben werden, wenn kein datensatz existiert!
+	 *
+	 * @param int $ct
+	 * @return tx_rnbase_model_base
+	 */
+	public function get($uid) {
+		return tx_rnbase::makeInstance($this->getWrapperClass(), $uid);
 	}
 
 	/**
@@ -225,6 +243,202 @@ abstract class tx_mklib_repository_Abstract
 		return $items;
 	}
 
+
+	/************************
+	 * Manipulation methods *
+	 ************************/
+
+	/**
+	 * Dummy model instance
+	 *
+	 * @var tx_rnbase_model_base
+	 */
+	protected $dummyModel;
+
+	/**
+	 * Return an instantiated dummy model without any content
+	 *
+	 * This is used only to access several model info methods like
+	 * getTableName(), getColumnNames() etc.
+	 *
+	 * @return tx_rnbase_model_base
+	 */
+	protected function getDummyModel() {
+		if (!$this->dummyModel) {
+			$this->dummyModel = tx_rnbase::makeInstance(
+				$this->getWrapperClass(), array('uid' => 0)
+			);
+		}
+		return $this->dummyModel;
+	}
+
+	/**
+	 * Liefert die PageId für diese Tabelle.
+	 * Dies kann überschrieben werden, um individuelle pid's zu setzen.
+	 *
+	 * @return 	int
+	 */
+	protected function getPid(){
+		tx_rnbase::load('tx_mklib_util_MiscTools');
+		return tx_mklib_util_MiscTools::getPortalPageId();
+	}
+
+	/**
+	 * Create a new record
+	 *
+	 * Note that the PID derived from the EXT:mklib constant "portalPageId"
+	 * is inserted.
+	 *
+	 * @param array		$data
+	 * @param string	$table
+	 * @return int	UID of just created record
+	 */
+	public function create(array $data) {
+		$model = $this->getDummyModel();
+		$table = $model->getTableName();
+
+		tx_rnbase::load('tx_mklib_util_TCA');
+		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
+		$data = $this->secureFromCrossSiteScripting($model, $data);
+
+		// setzen wir nur, wenn noch nicht gesetzt!
+		// Achtung: wird durch eleminateNonTcaColumns entfernt,
+		// wenn pid nicht in der tca steht.
+		if (empty($data['pid'])) {
+			$data['pid'] = $this->getPid();
+		}
+
+		tx_rnbase::load('tx_mklib_util_DB');
+		$uid = tx_mklib_util_DB::doInsert($table, $data/*, 1*/);
+
+		return $uid;
+	}
+
+	/**
+	 * Save model with new data
+	 *
+	 * Overwrite this method to specify a specialised method signature,
+	 * and just call THIS method via parent::handleUpdate().
+	 * Additionally, the deriving implementation may perform further checks etc.
+	 *
+	 * @param tx_rnbase_model_base	$model			This model is being updated.
+	 * @param array					$data			New data
+	 * @param string				$where			Override default restriction by defining an explicite where clause
+	 * @return tx_rnbase_model_base Updated model
+	 */
+	public function handleUpdate(tx_rnbase_model_base $model, array $data, $where='') {
+
+		$table = $model->getTableName(); $uid = $model->getUid();
+
+		if (!$where)
+		$where = '1=1 AND `'.$table . '`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+
+		// remove uid if exists
+		if(array_key_exists('uid',$data))
+		unset($data['uid']);
+
+		// Eleminate columns not in TCA
+		tx_rnbase::load('tx_mklib_util_TCA');
+		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
+		$data = $this->secureFromCrossSiteScripting($model, $data);
+
+		tx_rnbase::load('tx_mklib_util_DB');
+		tx_mklib_util_DB::doUpdate($table, $where, $data);
+
+		$model->reset();
+		return $model;
+	}
+
+	/**
+	 * Wrapper for actual deletion
+	 *
+	 * Delete records according to given ready-constructed "where" condition and deletion mode
+	 * @TODO: use tx_mklib_util_TCA::getEnableColumn to get enablecolumns!
+	 *
+	 * @param string	$table
+	 * @param string	$where		Ready-to-use where condition containing uid restriction
+	 * @param int		$mode		@see self::handleDelete()
+	 *
+	 * @return int anzahl der betroffenen zeilen
+	 */
+	public static function delete($table, $where, $mode) {
+		tx_rnbase::load('tx_mklib_util_DB');
+		return tx_mklib_util_DB::delete($table, $where, $mode);
+	}
+
+	/**
+	 * Delete one model
+	 *
+	 * Overwrite this method to specify a specialised method signature,
+	 * and just call THIS method via parent::handleDelete().
+	 * Additionally, the deriving implementation may perform further checks etc.
+	 *
+	 * @param tx_rnbase_model_base	$model		This model is being updated.
+	 * @param string				$where		Override default restriction by defining an explicite where clause
+	 * @param int					$mode		Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
+	 * @param int					$table		Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+	 * @return tx_rnbase_model_base				Updated (on success actually empty) model.
+	 */
+	public function handleDelete(tx_rnbase_model_base $model, $where='', $mode=0, $table=null) {
+		if(empty($table)) {
+			$table = $model->getTableName();
+		}
+
+		$uid = $model->getUid();
+
+		if (!$where) {
+			$where = '1=1 AND `'.$table.'`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+		}
+
+		$this->delete($table, $where, $mode);
+
+		$model->reset();
+		return $model;
+	}
+
+	/**
+	 * Einen Datensatz in der DB anlegen
+	 *
+	 * Diese Methode kann in Child-Klassen einfach überschrieben werden um zusätzliche Funktionen
+	 * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
+	 * aufzurufen ;)
+	 *
+	 * @param 	array 					$data
+	 * @return 	tx_rnbase_model_base				Created model.
+	 */
+	public function handleCreation(array $data){
+		// datensatz anlegen and model holen
+		$model = $this->get(
+			$this->create($data)
+		);
+		return $model;
+	}
+	/**
+	 * Clears the complete table.
+	 */
+	public function truncate() {
+		$table = $this->getDummyModel()->getTableName();
+		tx_rnbase::load('tx_mklib_util_DB');
+		return tx_mklib_util_DB::doQuery('TRUNCATE TABLE ' . $table);
+	}
+
+	/**
+	 * Schützt die Felder vor Cross-Site-Scripting
+	 *
+	 * @TODO: model has to implement interface!
+	 *
+	 * @param tx_rnbase_model_base $model
+	 * @param array $data
+	 * @return array
+	 */
+	private function secureFromCrossSiteScripting($model, array $data) {
+		if(!method_exists($model,'getFieldsToBeStripped')) return $data;
+		$tags = method_exists($model,'getTagsToBeIgnoredFromStripping') ? $model->getTagsToBeIgnoredFromStripping() : null;
+		foreach($model->getFieldsToBeStripped() as $field) {
+			if(isset($data[$field])) $data[$field] = strip_tags($data[$field],$tags);
+		}
+		return $data;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {

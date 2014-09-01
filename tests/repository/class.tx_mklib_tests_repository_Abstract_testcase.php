@@ -230,6 +230,79 @@ class tx_mklib_tests_repository_Abstract_testcase
 	}
 
 	/**
+	 * @group unit
+	 */
+	public function testHandleCreation() {
+		$repository = $this->getRepositoryMock(array('create'));
+
+		$data = array('field' => 'value');
+
+		$repository->expects($this->once())
+			->method('create')
+			->with($data)
+			->will($this->returnValue(array('created')));
+
+		$this->assertEquals(
+			array('created'),
+			$repository->create($data),
+			'not created'
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSecureFromCrossSiteScriptingReturnsDataIfNoFieldsToBeStrippedAreDefined() {
+		$model = $this->getModelMock(array(), array('secureFromCrossSiteScripting'));
+		$repository = $this->getRepositoryMock();
+
+		$data = array(
+			'field1' => 'value1', 'field2' => 'value2','field3' => 'value3'
+		);
+
+		$method = new ReflectionMethod(
+			'tx_mklib_repository_Abstract', 'secureFromCrossSiteScripting'
+		);
+		$method->setAccessible(true);
+
+		$returnArray = $method->invoke($repository, $model, $data);
+		$expectedReturnArray = $data;
+		$this->assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSecureFromCrossSiteScriptingReturnsStrippedData() {
+		$model = $this->getModelMock(array(),
+			array('getTagsToBeIgnoredFromStripping', 'getFieldsToBeStripped')
+		);
+		$repository = $this->getRepositoryMock();
+
+		$data = array(
+			'field1' => '<p>value1</p>', 'field2' => '<b>value2</b>','field3' => 'value3'
+		);
+
+		$model->expects($this->once())
+			->method('getTagsToBeIgnoredFromStripping')
+			->will($this->returnValue('<b>'));
+
+		$model->expects($this->once())
+			->method('getFieldsToBeStripped')
+			->will($this->returnValue(array('field1', 'field2')));
+
+
+		$method = new ReflectionMethod(
+			'tx_mklib_repository_Abstract', 'secureFromCrossSiteScripting'
+		);
+		$method->setAccessible(true);
+
+		$returnArray = $method->invoke($repository, $model, $data);
+		$expectedReturnArray = array('field1' => 'value1', 'field2' => '<b>value2</b>','field3' => 'value3');
+		$this->assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
+	}
+
+	/**
 	 * @param array $mockedMethods
 	 * @return tx_mklib_repository_Abstract
 	 */
@@ -238,9 +311,9 @@ class tx_mklib_tests_repository_Abstract_testcase
 			'tx_mklib_repository_Abstract',
 			array(),
 			'',
-			false,
-			false,
-			false,
+			FALSE,
+			FALSE,
+			FALSE,
 			$mockedMethods
 		);
 
@@ -249,5 +322,19 @@ class tx_mklib_tests_repository_Abstract_testcase
 			->will($this->returnValue('tx_mklib_search_Wordlist'));
 
 		return $repository;
+	}
+
+	/**
+	 * @param array $mockedMethods
+	 * @return tx_mklib_repository_Abstract
+	 */
+	private function getModelMock($rowOrUid = array(), $mockedMethods = array()) {
+		$model = $this->getMock(
+			'tx_rnbase_model_base',
+			$mockedMethods,
+			array($rowOrUid)
+		);
+
+		return $model;
 	}
 }
