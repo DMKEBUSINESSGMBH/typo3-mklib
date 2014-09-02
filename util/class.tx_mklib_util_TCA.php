@@ -78,6 +78,7 @@ class tx_mklib_util_TCA {
 		}
 		return $tca;
 	}
+
 	/**
 	 * Get DAM TCA for ONE picture
 	 *
@@ -501,6 +502,22 @@ class tx_mklib_util_TCA {
 		}
 
 		return $tcaFieldConfig;
+	}
+
+	/**
+	 * entweder DAM oder FAL
+	 *
+	 * @param array $ref
+	 * @param array $options	These options are merged into the resulting TCA
+	 * @return array
+	 */
+	public static function getMediaTCA($ref, $options = array()) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			tx_rnbase::load('tx_rnbase_util_TSFAL');
+			return tx_rnbase_util_TSFAL::getMediaTCA($ref, $options);
+		} else {
+			return static::getDamMediaTCA($ref, $options);
+		}
 	}
 }
 
