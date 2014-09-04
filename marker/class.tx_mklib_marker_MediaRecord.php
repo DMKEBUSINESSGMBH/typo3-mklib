@@ -32,6 +32,8 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
 /**
  * Diese Klasse ist für die Erstellung von Markerarrays der Section
  *
+ * Entweder für DAM oder für FAL
+ *
  * @package tx_mkdownloads
  * @subpackage tx_mkdownloads_marker
  * @author Michael Wagner
@@ -210,7 +212,9 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker {
 		$makeLink = $this->containsMarker($template, $linkMarker);
 		$makeUrl = $this->containsMarker($template, $linkMarker.'URL');
 		if($makeLink || $makeUrl) {
-			$url = $item->record['file_path_name'];
+			tx_rnbase::load('tx_rnbase_util_TYPO3');
+			$url = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				$item->record['url'] : $item->record['file_path_name'];
 			if($url) { // link erzeugen, wenn gesetzt
 				$token = self::getToken();
 				$linkObj = $configurations->createLink();
