@@ -104,17 +104,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 	/**
 	 * @group unit
 	 */
-	public function testGetReturnsModelIfModelValid() {
+	public function testFindByUidReturnsModelIfModelValid() {
 		$repository = $this->getRepositoryMock();
-
-		$method = new ReflectionMethod('tx_mklib_repository_Abstract', 'get');
-		$method->setAccessible(true);
 
 		$expectedModel = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 123));
 
 		$this->assertEquals(
 			$expectedModel,
-			$method->invoke($repository, array('uid' => 123)),
+			$repository->findByUid(array('uid' => 123)),
 			'model nicht zurück gegeben'
 		);
 	}
@@ -122,14 +119,11 @@ class tx_mklib_tests_repository_Abstract_testcase
 	/**
 	 * @group unit
 	 */
-	public function testGetReturnsNullIfModelInvalid() {
+	public function testFindByUidReturnsNullIfModelInvalid() {
 		$repository = $this->getRepositoryMock();
 
-		$method = new ReflectionMethod('tx_mklib_repository_Abstract', 'get');
-		$method->setAccessible(true);
-
 		$this->assertNull(
-			$method->invoke($repository, 0),
+			$repository->findByUid(0),
 			'NULL nicht zurück gegeben'
 		);
 	}

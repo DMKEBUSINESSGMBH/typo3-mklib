@@ -102,22 +102,6 @@ abstract class tx_mklib_repository_Abstract
 	}
 
 	/**
-	 * Search the item for the given uid
-	 *
-	 * @param int $ct
-	 * @return tx_rnbase_model_base || NULL
-	 */
-	public function get($uid) {
-		$model = tx_rnbase::makeInstance($this->getWrapperClass(), $uid);
-
-		if ($model->isValid()) {
-			return $model;
-		} else {
-			return NULL;
-		}
-	}
-
-	/**
 	 * @return array[tx_rnbase_model_base]
 	 */
 	public function findAll() {
