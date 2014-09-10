@@ -104,14 +104,17 @@ abstract class tx_mklib_repository_Abstract
 	/**
 	 * Search the item for the given uid
 	 *
-	 * @TODO: das liefert immer ein moddel, auch wenn kein datensatz existiert!
-	 * 		  es sollte NULL zurückgegeben werden, wenn kein datensatz existiert!
-	 *
 	 * @param int $ct
-	 * @return tx_rnbase_model_base
+	 * @return tx_rnbase_model_base || NULL
 	 */
 	public function get($uid) {
-		return tx_rnbase::makeInstance($this->getWrapperClass(), $uid);
+		$model = tx_rnbase::makeInstance($this->getWrapperClass(), $uid);
+
+		if ($model->isValid()) {
+			return $model;
+		} else {
+			return NULL;
+		}
 	}
 
 	/**
