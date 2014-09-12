@@ -31,18 +31,19 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_rnbase_util_Templates');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * Testklasse für Marker Klassen, die ihre Ausgabe über
  * tx_rnbase_util_Templates::substituteMarkerArrayCached erstellen.
- * 
+ *
  * Bei den Tests sollte der Cache NIE genutzt werden!
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_tests
  */
-class tx_mklib_tests_MarkerTestcase extends Tx_Phpunit_TestCase {
-	
+class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase {
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::setUp()
@@ -50,7 +51,7 @@ class tx_mklib_tests_MarkerTestcase extends Tx_Phpunit_TestCase {
 	protected function setUp() {
 		tx_rnbase_util_Templates::disableSubstCache();
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see PHPUnit_Framework_TestCase::tearDown()
