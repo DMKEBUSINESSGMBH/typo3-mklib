@@ -100,19 +100,21 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	public function testSetSessionIdSetsIdAndEmptiesSessionData(){
 		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true));
 
-		$GLOBALS['TSFE']->fe_user->id = 123;
+		$oldRandomSessionId = uniqid();
+		$GLOBALS['TSFE']->fe_user->id = $oldRandomSessionId;
 		$GLOBALS['TSFE']->fe_user->sesData = array('something');
 
-		tx_mklib_util_Session::setSessionId(456);
+		$newRandomSessionId = uniqid();
+		tx_mklib_util_Session::setSessionId($newRandomSessionId);
 
 		$this->assertEquals(
-			456, $GLOBALS['TSFE']->fe_user->id,
-			'falsche id'
+			$newRandomSessionId, $GLOBALS['TSFE']->fe_user->id,
+			'falsche neue session id'
 		);
 
 		$this->assertEquals(
 			array(), $GLOBALS['TSFE']->fe_user->sesData,
-			'session data nicht leer'
+			'session data für neue id nicht leer'
 		);
 	}
 
