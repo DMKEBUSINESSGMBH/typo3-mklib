@@ -350,9 +350,9 @@ class tx_mklib_util_File {
 	 *
 	 * @return void
 	 */
-	public static function writeDownloadHeaders($sFilename, $sContentType = 'application/download') {
+	public static function writeDownloadHeaders($sFilename, $sContentType = 'application/download', $sDisposition = 'attachment') {
 		header("Content-type: ".$sContentType);
-		header("Content-disposition: attachment; filename=".$sFilename);
+		header("Content-disposition: ".$sDisposition."; filename=".$sFilename);
 		// set special header for ssl requests (ie Problem)
 		header("Pragma: private");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
