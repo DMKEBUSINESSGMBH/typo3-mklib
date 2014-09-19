@@ -33,7 +33,7 @@
  * Folgendes muss in die ext_tables.php, um das Icon zu registrieren!
  * // Wizzard Icon
  * if (TYPO3_MODE=='BE') {
- * 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_mklib_util_WizIcon'] = t3lib_extMgm::extPath($_EXTKEY).'util/class.tx_mklib_util_WizIcon.php';	
+ * 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_mklib_util_WizIcon'] = t3lib_extMgm::extPath($_EXTKEY).'util/class.tx_mklib_util_WizIcon.php';
  * }
  * in der locallang_db.xml der Extension müssen/sollten folgende label gesetzt sein:
  * 		plugin.mklib.label
@@ -44,21 +44,21 @@
  * @author Michael Wagner
  */
 class tx_mklib_util_WizIcon {
-	
+
 	/**
 	 * Das muss von der Kindklasse überschrieben werden!!
-	 * 
+	 *
 	 * @var 	string
 	 */
 	protected $extKey = 'mklib';
 
 	/**
 	 * Der Pfad zum Icon, kann Überschrieben werden, wenn nötig.
-	 *  
+	 *
 	 * @var 	string
 	 */
 	protected $iconPath = '/ext_icon.gif';
-	
+
 	/**
 	 * Adds the plugin wizard icon
 	 *
@@ -76,19 +76,35 @@ class tx_mklib_util_WizIcon {
 			'description'	=>	$LANG->getLLL('plugin.' . $this->extKey . '.description', $LL),
 			'params'		=>	'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=tx_' . $this->extKey
 		);
-		
+
 		return $wizardItems;
 	}
-	
+
 	/**
 	 * Laden der Lokalisierung.
-	 * 
+	 *
 	 * @return 	array
 	 */
 	public function includeLocalLang()	{
-		$llFile = t3lib_extMgm::extPath($this->extKey) . 'locallang_db.xml';
-		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+		$llFile = $this->getLocalLangFilePath();
+		if (tx_rnbase_util_TYPO3::isTYPO47OrHigher()) {
+			$localizationParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
+			$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
+		} else {
+			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+		}
+
 		return $LOCAL_LANG;
+	}
+
+	/**
+	 * Der Pfad zur ll, kann Überschrieben werden, wenn nötig.
+	 *
+	 * @return string
+	 */
+	protected function getLocalLangFilePath()
+	{
+		return t3lib_extMgm::extPath($this->extKey) . 'locallang_db.xml';
 	}
 }
 
