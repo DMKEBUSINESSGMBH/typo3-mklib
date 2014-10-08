@@ -189,7 +189,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @param mixed $value
 	 * @return mixed Der gesetzte Wert.
 	 */
-	public function setOption($key, $value){
+	public function setOption($key, $value) {
 		return $this->options[$key] = $value;
 	}
 
@@ -199,7 +199,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function getOption($key){
+	public function getOption($key) {
 		return $this->options[$key];
 	}
 	/**
@@ -208,7 +208,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @param array $values
 	 * @return mixed Der gesetzte Wert.
 	 */
-	public function setOptions(array $values){
+	public function setOptions(array $values) {
 		return $this->options = $values;
 	}
 	/**
@@ -216,7 +216,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 *
 	 * @return 	array
 	 */
-	public function getOptions(){
+	public function getOptions() {
 		// wir brauchen per default ein array
 		return is_array($this->options) ? $this->options : array();
 	}
@@ -224,17 +224,22 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	/**
 	 * gets the last run time
 	 *
-	 * @return integer
+	 * @return DateTime|null
 	 */
-	protected function getLastRunTime() {
+	protected function getLastRunTime()
+	{
 		if ($this->lastRun === FALSE) {
 			$options = array();
 			$options['enablefieldsoff'] = 1;
 			$options['where'] = 'uid=' . (int) $this->getTaskUid();
 			$options['limit'] = 1;
-			$ret = tx_rnbase_util_DB::doSelect(
-				'tx_mklib_lastrun', 'tx_scheduler_task', $options
-			);
+			try {
+				$ret = @tx_rnbase_util_DB::doSelect(
+					'tx_mklib_lastrun', 'tx_scheduler_task', $options
+				);
+			} catch (Exception $e) {
+				$ret = NULL;
+			}
 			$this->lastRun = (
 					empty($ret)
 					|| empty($ret[0]['tx_mklib_lastrun'])
@@ -249,15 +254,21 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 *
 	 * @return integer
 	 */
-	protected function setLastRunTime() {
-		$lastRun = new DateTime();
-		return tx_rnbase_util_DB::doUpdate(
-			'tx_scheduler_task',
-			'uid=' . (int) $this->getTaskUid(),
-			array(
-				'tx_mklib_lastrun' => $lastRun->format('Y-m-d H:i:s')
-			)
-		);
+	protected function setLastRunTime()
+	{
+		try {
+			$lastRun = new DateTime();
+			$return = @tx_rnbase_util_DB::doUpdate(
+				'tx_scheduler_task',
+				'uid=' . (int) $this->getTaskUid(),
+				array(
+					'tx_mklib_lastrun' => $lastRun->format('Y-m-d H:i:s')
+				)
+			);
+		} catch (Exception $e) {
+			$return = 0;
+		}
+		return $return;
 	}
 
 
