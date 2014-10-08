@@ -22,18 +22,26 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once (t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
-require_once (t3lib_extMgm::extPath('scheduler', 'class.tx_scheduler_task.php'));
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+require_once t3lib_extMgm::extPath('scheduler', 'class.tx_scheduler_task.php');
 tx_rnbase::load('tx_rnbase_configurations');
 tx_rnbase::load('tx_rnbase_util_Logger');
 
 /**
+ * generic abstract scheduler
  *
  * @package tx_mklib
  * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
  */
 abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
+
+	/**
+	 * The DateTime Object with the last run time
+	 *
+	 * @var	DateTime
+	 */
+	protected $lastRun = FALSE;
 
 	/**
 	 * die verschiedenen optionen vom field provider
@@ -44,6 +52,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 
 	/**
 	 * Extension key, used for devlog.
+	 *
 	 * @return 	string
 	 */
 	protected function getExtKey() {
@@ -53,7 +62,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	/**
 	 * Function executed from the Scheduler.
 	 *
-	 * @return	void
+	 * @return boolean	Returns true on successful execution, false on error
 	 */
 	public function execute() {
 		/* beispiel für das logging array.
@@ -69,10 +78,14 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 		$devLog = array();
 		$options = $this->getOptions();
 
-		tx_rnbase_util_Logger::info('['.get_class($this).']: Scheduler starts', $this->getExtKey());
+		tx_rnbase_util_Logger::info(
+			'[' . get_class($this) . ']: Scheduler starts', $this->getExtKey()
+		);
 
 		try {
 			$message = $this->executeTask($options, $devLog);
+
+			$this->setLastRunTime();
 
 			// devlog
 			if (t3lib_extMgm::isLoaded('devlog')) {
@@ -90,7 +103,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 				foreach ($devLog as $logLevel => $logData) {
 					if (empty($logData['message'])) continue;
 					t3lib_div::devLog(
-							'['.get_class($this).']: '.$logData['message'],
+							'[' . get_class($this) . ']: ' . $logData['message'],
 							isset($logData['extKey']) ? $logData['extKey'] : $this->getExtKey(),
 							$logLevel,
 							isset($logData['dataVar']) ? $logData['dataVar'] : FALSE
@@ -103,78 +116,88 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 				'errormsg' => $exception->getMessage(),
 				'trace' => $exception->getTraceAsString(),
 				'options' => $options,
-				'devlog' => $devLog, // bisherige logs mitgeben
+				// bisherige logs mitgeben
+				'devlog' => $devLog,
 			);
 			if ($exception instanceof tx_rnbase_util_Exception) {
 				$dataVar['exception_data'] = $exception->getAdditional(FALSE);
 			}
 			if (tx_rnbase_util_Logger::isFatalEnabled())
 				tx_rnbase_util_Logger::fatal(
-					'Task ['.get_class($this).'] failed.'
-						.' Error('.$exception->getCode().'):'
-						.$exception->getMessage(),
+					'Task [' . get_class($this) . '] failed.' .
+						' Error(' . $exception->getCode() . '):' .
+						$exception->getMessage(),
 					$this->getExtKey(), $dataVar
 				);
 			// Exception Mail an die Entwicker senden
-			if($mail = tx_rnbase_configurations::getExtensionCfgValue('rn_base', 'sendEmailOnException')) {
+			$mail = tx_rnbase_configurations::getExtensionCfgValue(
+				'rn_base', 'sendEmailOnException'
+			);
+			if(!empty($mail)) {
 				$this->sendErrorMail(
 					$mail,
 					// Wir erstellen eine weitere Exception mit zusätzlichen Daten.
 					tx_rnbase::makeInstance(
 						'tx_rnbase_util_Exception',
-						get_class($exception).': '.$exception->getMessage(),
+						get_class($exception) . ': ' . $exception->getMessage(),
 						$exception->getCode(), $dataVar, $exception
 					)
 				);
 			}
-			//Wir geben die Exception weiter, damit der Scheduler eine entsprechende Meldung ausgeben kann.
+			// Wir geben die Exception weiter,
+			// damit der Scheduler eine entsprechende Meldung ausgeben kann.
 			throw $exception;
 		}
 
-		tx_rnbase_util_Logger::info('['.get_class($this).']: Scheduler ends successful ', $this->getExtKey());
+		tx_rnbase_util_Logger::info(
+			'[' . get_class($this) . ']: Scheduler ends successful ',
+			$this->getExtKey()
+		);
 
 		return true;
 	}
 
 	/**
+	 * This is the main method that is called when a task is executed
+	 * It MUST be implemented by all classes inheriting from this one
+	 * Note that there is no error handling, errors and failures are expected
+	 * to be handled and logged by the client implementations.
+	 * Should return true on successful execution, false on error.
 	 *
-	 * @param 	array 	$options
-	 * @param 	array 	$devLog	Put some informations for the logging here.
-	 * @return 	string
+	 * @param array $options
+	 * @param array &$devLog Put some informations for the logging here.
+	 * @return string
 	 */
 	abstract protected function executeTask(array $options, array &$devLog);
 
 	/**
 	 * Liefert die im Scheduler gesetzten Optionen.
 	 *
+	 * @param string $info
 	 * @return	string	Information to display
 	 */
-	public function getAdditionalInformation($info='') {
-		return $info.CRLF.' Options: '.t3lib_div::arrayToLogString($this->getOptions(), array(), 64);
-		/* old code
-		$options = array();
-		foreach($this->getOptions() as $key => $value){
-			$options [] = '\''.$key.'\' => \''.$value.'\'';
-		}
-		return $info.CRLF.' Options: '.implode(', ',$options);
-		*/
+	public function getAdditionalInformation($info = '') {
+		$info .= CRLF . ' Options: ';
+		$info .= t3lib_div::arrayToLogString($this->getOptions(), array(), 64);
+		return $info;
 	}
 
 	/**
 	 * Setzt eine Option
 	 *
-	 * @param 	string 	$key
-	 * @param 	mixed 	$value
-	 * @return 	mixed	Der gesetzte Wert.
+	 * @param string $key
+	 * @param mixed $value
+	 * @return mixed Der gesetzte Wert.
 	 */
 	public function setOption($key, $value){
 		return $this->options[$key] = $value;
 	}
+
 	/**
 	 * Liefert eine Option.
 	 *
-	 * @param 	string 	$key
-	 * @return 	mixed
+	 * @param string $key
+	 * @return mixed
 	 */
 	public function getOption($key){
 		return $this->options[$key];
@@ -182,8 +205,8 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	/**
 	 * Setzt alle Otionen.
 	 *
-	 * @param 	array 	$values
-	 * @return 	mixed 	Der gesetzte Wert.
+	 * @param array $values
+	 * @return mixed Der gesetzte Wert.
 	 */
 	public function setOptions(array $values){
 		return $this->options = $values;
@@ -194,10 +217,57 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 * @return 	array
 	 */
 	public function getOptions(){
-		//wir brauchen per default ein array
+		// wir brauchen per default ein array
 		return is_array($this->options) ? $this->options : array();
 	}
 
+	/**
+	 * gets the last run time
+	 *
+	 * @return integer
+	 */
+	protected function getLastRunTime() {
+		if ($this->lastRun === FALSE) {
+			$options = array();
+			$options['enablefieldsoff'] = 1;
+			$options['where'] = 'uid=' . (int) $this->getTaskUid();
+			$options['limit'] = 1;
+			$ret = tx_rnbase_util_DB::doSelect(
+				'tx_mklib_lastrun', 'tx_scheduler_task', $options
+			);
+			$this->lastRun = (
+					empty($ret)
+					|| empty($ret[0]['tx_mklib_lastrun'])
+					|| $ret[0]['tx_mklib_lastrun'] === '0000-00-00 00:00:00'
+				) ? NULL : new DateTime($ret[0]['tx_mklib_lastrun']);
+		}
+		return $this->lastRun;
+	}
+
+	/**
+	 * updates the lastrun time with the current time
+	 *
+	 * @return integer
+	 */
+	protected function setLastRunTime() {
+		$lastRun = new DateTime();
+		return tx_rnbase_util_DB::doUpdate(
+			'tx_scheduler_task',
+			'uid=' . (int) $this->getTaskUid(),
+			array(
+				'tx_mklib_lastrun' => $lastRun->format('Y-m-d H:i:s')
+			)
+		);
+	}
+
+
+	/**
+	 * sends a exception mail
+	 *
+	 * @param string $email
+	 * @param Exception $exception
+	 * @return void
+	 */
 	protected function sendErrorMail($email, Exception $exception) {
 		tx_rnbase::load('tx_rnbase_util_Misc');
 		$options = array('ignoremaillock' => true);

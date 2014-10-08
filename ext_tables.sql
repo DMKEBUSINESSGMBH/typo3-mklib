@@ -37,4 +37,5 @@ CREATE TABLE static_countries (
 #
 CREATE TABLE tx_scheduler_task (
 	freezedetected int(11) unsigned DEFAULT '0' NOT NULL,
+	tx_mklib_lastrun datetime DEFAULT '0000-00-00 00:00:00',
 );
