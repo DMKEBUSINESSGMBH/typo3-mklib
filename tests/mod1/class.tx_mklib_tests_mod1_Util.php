@@ -30,7 +30,9 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-require_once(PATH_site.'typo3/template.php');
+if (!class_exists('template')) {
+	require_once(PATH_site.'typo3/template.php');
+}
 
 /**
  * Statische Hilfsmethoden für Tests
@@ -39,7 +41,7 @@ require_once(PATH_site.'typo3/template.php');
  * @subpackage tx_mklib_tests
  */
 class tx_mklib_tests_mod1_Util {
-	
+
 	/**
 	 * Deaktiviert den Cache
 	 */
@@ -58,7 +60,7 @@ class tx_mklib_tests_mod1_Util {
 		}
 		return $sString;
 	}
-	
+
 	/**
 	 * Deaktiviert den Cache und den formtoken
 	 */
@@ -69,9 +71,11 @@ class tx_mklib_tests_mod1_Util {
 		//den formToken gibt es erst ab TYPO3 4.5
 		$sVcAndFormTokenRegex = (tx_rnbase_util_TYPO3::isTYPO45OrHigher()) ? '/&amp;vC=(.*?)&formToken=(.*?)\'\)/' : '/&amp;vC=(.*?)\'\)/';
 		$sString = preg_replace($sVcAndFormTokenRegex, '\')', $sString);
+		$moduleTokenRegex = (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) ? '/%26moduleToken%3D(.*?)&amp/' : '//';
+		$sString = preg_replace($moduleTokenRegex, '&amp', $sString);
 		$sString = str_replace('=1&amp;', '=1\'', $sString);
 	}
-	
+
 	/**
 	 * Löscht die gesetzten Sortierungsoptionen
 	 * Enter description here ...
@@ -86,6 +90,6 @@ class tx_mklib_tests_mod1_Util {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']);
 }

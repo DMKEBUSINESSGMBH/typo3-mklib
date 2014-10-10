@@ -307,8 +307,8 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 }
 
 if (defined('TYPO3_MODE')
-	&& $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']
+	&& $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
 		['ext/mklib/tests/util/class.tx_mklib_tests_util_Encoding_testcase.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
 		['ext/mklib/tests/util/class.tx_mklib_tests_util_Encoding_testcase.php']);
 }

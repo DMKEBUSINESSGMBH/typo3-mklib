@@ -46,6 +46,7 @@
 			<label index="scheduler_DeleteFromDatabase_field_mode_delete">Löschen</label>
 			<label index="scheduler_DeleteFromDatabase_field_mode_delete_hard">hart löschen</label>
 			<label index="scheduler_DeleteFromDatabase_field_table">Tabelle</label>
+			<label index="scheduler_DeleteFromDatabase_field_selectFields">selektierte Felder (hautpsächlich interessant fürs Logging)</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>

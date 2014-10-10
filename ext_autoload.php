@@ -32,6 +32,7 @@ return array(
 	// utils
 	'tx_mklib_util_array' => $extensionPath . 'util/class.tx_mklib_util_Array.php',
 	'tx_mklib_util_dam' => $extensionPath . 'util/class.tx_mklib_util_DAM.php',
+	'tx_mklib_util_media' => $extensionPath . 'util/class.tx_mklib_util_Media.php',
 	'tx_mklib_util_db' => $extensionPath . 'util/class.tx_mklib_util_DB.php',
 	'tx_mklib_util_date' => $extensionPath . 'util/class.tx_mklib_util_Date.php',
 	'tx_mklib_util_file' => $extensionPath . 'util/class.tx_mklib_util_File.php',

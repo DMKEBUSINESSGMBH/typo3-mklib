@@ -1,7 +1,7 @@
 <?php
 /**
  * 	@package tx_mklib
- *  @subpackage tx_mklib_exception
+ *  @subpackage tx_mklib_tests_util
  *  @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,20 +27,31 @@
  */
 
 /**
- * Exception "faulty params"
- *
- * @package tx_mklib
- * @subpackage tx_mklib_exception
+ * benötigte Klassen einbinden
  */
-class tx_mklib_exception_InvalidConfiguration extends t3lib_exception {
-  /**
-   * Error code
-   *
-   * @var int
-   */
-    protected $code = 1;
-}
+require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_mklib_util_TS');
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_InvalidConfiguration.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_InvalidConfiguration.php']);
+/**
+ * Generic form view test
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ */
+class tx_mklib_tests_util_TS_testcase extends tx_phpunit_testcase {
+
+	/**
+	 *
+	 */
+	public function testGetPagesTsConfigLoadsTsAlwaysNewIfTsAdded(){
+		$pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
+
+		$this->assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
+
+		t3lib_extMgm::addPageTSConfig(
+			'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mklib/static/basic/setup.txt">'
+		);
+
+		$pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
+		$this->assertTrue(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS nicht geladen');
+	}
 }

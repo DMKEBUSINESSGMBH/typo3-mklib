@@ -47,24 +47,6 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		tx_mklib_util_File::getSiteUrl();
 		tx_mklib_util_File::getDocumentRoot();
 	}
-	/*
-	public function testGetFileToolPerformance(){
-		tx_rnbase::load('tx_mklib_util_File');
-		$count=50000;
-		$start = time();
-		for($i=0;$i<$count;$i++)
-			tx_mklib_util_File::getFileTool();
-		$end = time();
-		t3lib_div::debug($end-$start, 'with static cache: '.__METHOD__.' Line: '.__LINE__); // @TODO: remove me
-
-		$start = time();
-		for($i=0;$i<$count;$i++)
-			tx_mklib_util_File::getFileTool(array('count'=>$i), array('count'=>$i));
-		$end = time();
-		t3lib_div::debug($end-$start, 'without static cache: '.__METHOD__.' Line: '.__LINE__); // @TODO: remove me
-
-	}
-	*/
 
 	public function setUp() {
 	}
@@ -267,6 +249,6 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_File_testcase.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_File_testcase.php']) {
+  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']);
 }

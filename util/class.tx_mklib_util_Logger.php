@@ -27,28 +27,22 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
- * 
+ *
  * @package TYPO3
  * @subpackage tx_mklib
  * @author Hannes Bochmann
  */
 class tx_mklib_util_Logger {
-	
+
 	/**
 	 * @return 	array
 	 */
 	public static function getDebugBacktrace() {
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		
-		if(tx_rnbase_util_TYPO3::isTYPO45OrHigher())
-			$debugBacktrace = t3lib_utility_Debug::debugTrail();
-		else
-			$debugBacktrace = t3lib_div::debug_trail();//deprecated since TYPO3 4.5
-		
-		return $debugBacktrace;
+		tx_rnbase::load('tx_rnbase_util_Debug');
+		return tx_rnbase_util_Debug::getDebugTrail();
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DB.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DB.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DB.php']) {
+  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DB.php']);
 }

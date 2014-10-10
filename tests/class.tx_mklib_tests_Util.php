@@ -166,11 +166,16 @@ class tx_mklib_tests_Util {
 	 *
 	 * @see tx_phpunit_module1::simulateFrontendEnviroment
 	 * @todo in eigene Klasse auslagern, die von tx_phpunit_module1 erbt und simulateFrontendEnviroment public macht
+	 * @deprecated use self::prepareTSFE()
 	 */
 	public static function simulateFrontendEnviroment($extKey = 'mklib') {
 		//wenn phpunit mindestens in version 3.5.14 installiert ist, nutzen
 		//wir deren create frontend methode
-		if(t3lib_div::int_from_ver(t3lib_extMgm::getExtensionVersion('phpunit')) >= 3005014){
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if (tx_rnbase_util_TYPO3::convertVersionNumberToInteger(
+				t3lib_extMgm::getExtensionVersion('phpunit')
+			) >= 3005014
+		){
 			$oTestFramework = tx_rnbase::makeInstance('Tx_Phpunit_Framework',$extKey);
 			return $oTestFramework->createFakeFrontEnd();
 		}
@@ -313,7 +318,9 @@ class tx_mklib_tests_Util {
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 
 		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
-		require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+		if (!class_exists('tslib_cObj')) {
+			require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+		}
 		$configurations->init(
 				$aConfig,
 				$configurations->getCObj(1),
@@ -377,6 +384,9 @@ class tx_mklib_tests_Util {
 			self::disablePhpMyAdminLogging();
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] = 1;
 			$GLOBALS['TYPO3_CONF_VARS']['FE']['dontSetCookie'] = 1;
+			// sonst wird eine Exception in TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+			// Zeile 548 geworfen
+			$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] = 0;
 		}
 
 		tx_rnbase::load('tx_rnbase_util_Misc');
@@ -385,6 +395,9 @@ class tx_mklib_tests_Util {
 
 		if (isset($options['initFEuser'])) {
 			$GLOBALS['TSFE']->initFEuser();
+			// sonst wird eine Exception in TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
+			// Zeile 548 geworfen
+			$GLOBALS['TSFE']->fe_user->newSessionID = FALSE;
 		}
 
 		if (isset($options['initCObject'])) {
@@ -437,6 +450,7 @@ class tx_mklib_tests_Util {
 	 */
 	public static function setSysPageToTsfe() {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		self::prepareTSFE();
 		$GLOBALS['TSFE']->sys_page = tx_rnbase_util_TYPO3::getSysPage();
 	}
 
@@ -477,6 +491,6 @@ class tx_mklib_tests_Util {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']);
 }

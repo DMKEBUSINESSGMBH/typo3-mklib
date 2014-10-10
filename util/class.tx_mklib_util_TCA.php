@@ -78,6 +78,7 @@ class tx_mklib_util_TCA {
 		}
 		return $tca;
 	}
+
 	/**
 	 * Get DAM TCA for ONE picture
 	 *
@@ -502,8 +503,27 @@ class tx_mklib_util_TCA {
 
 		return $tcaFieldConfig;
 	}
+
+	/**
+	 * entweder DAM oder FAL
+	 *
+	 * @param array $ref
+	 * @param array $options	These options are merged into the resulting TCA
+	 * @return array
+	 */
+	public static function getMediaTCA($ref, $options = array()) {
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			tx_rnbase::load('tx_rnbase_util_TSFAL');
+			// in DAM wurde immer noch _field beim Typ verlant, bei FAL nicht mehr
+			$options['type'] = str_replace('_field', '', $options['type']);
+			return tx_rnbase_util_TSFAL::getMediaTCA($ref, $options);
+		} else {
+			return static::getDamMediaTCA($ref, $options);
+		}
+	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']);
 }

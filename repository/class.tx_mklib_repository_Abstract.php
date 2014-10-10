@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
-tx_rnbase::load('tx_rnbase_util_SearchBase');
+tx_rnbase::load('tx_mklib_interface_Repository');
 
 /**
  * Abstracte Repository Klasse
@@ -34,7 +34,8 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  *          GNU Lesser General Public License, version 3 or later
  */
 abstract class tx_mklib_repository_Abstract
-	implements t3lib_Singleton {
+	implements tx_mklib_interface_Repository, t3lib_Singleton
+{
 
 	// 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
 	const DELETION_MODE_HIDE = 0;
@@ -54,6 +55,7 @@ abstract class tx_mklib_repository_Abstract
 	 * @return 	tx_rnbase_util_SearchBase
 	 */
 	protected function getSearcher() {
+		tx_rnbase::load('tx_rnbase_util_SearchBase');
 		$searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
 		if (!$searcher instanceof tx_rnbase_util_SearchBase) {
 			throw new Exception(
@@ -89,23 +91,23 @@ abstract class tx_mklib_repository_Abstract
 	}
 
 	/**
+	 * @return array[tx_rnbase_model_base]
+	 */
+	public function findAll() {
+		return $this->search(array(), array());
+	}
+
+	/**
 	 * Search database
 	 *
 	 * @param array $fields
 	 * @param array $options
 	 * @return array[tx_rnbase_model_base]
 	 */
-	public function search($fields, $options) {
+	public function search(array $fields, array $options) {
 		$this->prepareFieldsAndOptions($fields, $options);
 		$items = $this->getSearcher()->search($fields, $options);
 		return $this->prepareItems($items, $options);
-	}
-
-	/**
-	 * @return array[tx_rnbase_model_base]
-	 */
-	public function findAll() {
-		return $this->search(array(), array());
 	}
 
 	/**
@@ -428,6 +430,6 @@ abstract class tx_mklib_repository_Abstract
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
 }

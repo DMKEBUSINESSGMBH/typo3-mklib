@@ -65,7 +65,7 @@ config.admPanel = 0
   config.no_cache = 1
   page.includeCSS.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.css
   page.includeJS.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.js
-  page.headerData.5050 = HTML
+  page.headerData.5050 = TEXT
   page.headerData.5050.value (
 <script type="text/javascript">
 /*<![CDATA[*/

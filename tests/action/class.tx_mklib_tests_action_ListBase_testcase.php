@@ -43,7 +43,9 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 
 		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
-		require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+		if (!class_exists('tslib_cObj')) {
+			require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+		}
 		$configurations->init(
 			$aConfig,
 			$configurations->getCObj(1),
@@ -281,6 +283,6 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
 }

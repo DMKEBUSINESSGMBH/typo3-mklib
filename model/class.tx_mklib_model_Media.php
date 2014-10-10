@@ -27,7 +27,6 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_model_base');
-tx_rnbase::load('tx_mklib_model_Media');
 
 /**
  * Model eines DAM-Records
@@ -35,9 +34,45 @@ tx_rnbase::load('tx_mklib_model_Media');
  * @package tx_mklib
  * @subpackage tx_mklib_model
  *  @author Michael Wagner
- *  @deprecated use tx_mklib_model_Media
  */
-class tx_mklib_model_Dam extends tx_mklib_model_Media {
+class tx_mklib_model_Media extends tx_rnbase_model_base {
+	/**
+	 * Liefert den Namen der Datenbanktabelle
+	 *
+	 * @return String
+	 */
+	public function getTableName() {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			return 'sys_file';
+		} else {
+			return 'tx_dam';
+		}
+	}
+
+	/**
+	 * Befüllt den Record Pfaden
+	 *
+	 * @param string $sPath
+	 * @return tx_mklib_model_Dam
+	 */
+	public function fillPath($sPath = false){
+		// Pathname immer setzen!
+		if(!isset($this->record['file_webpath']))
+			$this->record['file_path_name'] = $this->record['file_path'].$this->record['file_name'];
+
+		tx_rnbase::load('tx_mklib_util_File');
+
+		if((!$sPath || $sPath == 'webpath') && !isset($this->record['file_webpath']))
+			$this->record['file_webpath'] = tx_mklib_util_File::getWebPath($this->record['file_path_name']);
+
+		if((!$sPath || $sPath == 'serverpath') && !isset($this->record['file_serverpath']))
+			$this->record['file_serverpath'] = tx_mklib_util_File::getServerPath($this->record['file_path_name']);
+
+		if((!$sPath || $sPath == 'relpath') && !isset($this->record['file_relpath']))
+			$this->record['file_relpath'] = tx_mklib_util_File::getRelPath($this->record['file_path_name']);
+
+		return $this;
+	}
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']) {

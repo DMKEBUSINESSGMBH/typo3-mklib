@@ -22,7 +22,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-require_once t3lib_extMgm::extPath('scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php');
+if (!interface_exists('tx_scheduler_AdditionalFieldProvider')) {
+	require_once t3lib_extMgm::extPath(
+		'scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php'
+	);
+}
 
 /**
  * Fügt Felder im scheduler task hinzu
@@ -232,6 +236,6 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php'])	{
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php']);
 }

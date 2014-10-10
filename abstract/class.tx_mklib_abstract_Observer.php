@@ -83,8 +83,8 @@ abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserve
 	abstract protected function execute(tx_mklib_interface_IObservable $oObservable);
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php'])	{
+  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']);
 }
 
 ?>

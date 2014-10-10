@@ -132,13 +132,16 @@ class tx_mklib_treelib_Config {
 	}
 
 	public function getMinItems(){
-		return t3lib_div::intInRange($this->get('minitems', 0), 0);
+		tx_rnbase::load('tx_rnbase_util_Math');
+		return tx_rnbase_util_Math::intInRange($this->get('minitems', 0), 0);
 	}
 	public function getMaxItems(){
-		return t3lib_div::intInRange($this->get('maxitems', 100000), 0);
+		tx_rnbase::load('tx_rnbase_util_Math');
+		return tx_rnbase_util_Math::intInRange($this->get('maxitems', 100000), 0);
 	}
 	public function getAutoSizeMax(){
-		return t3lib_div::intInRange($this->get('autoSizeMax', 1), 0);
+		tx_rnbase::load('tx_rnbase_util_Math');
+		return tx_rnbase_util_Math::intInRange($this->get('autoSizeMax', 1), 0);
 	}
 	public function getSize(){
 		return $this->get('size', 1);
@@ -182,6 +185,6 @@ class tx_mklib_treelib_Config {
 	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php'])	{
+  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php']);
 }

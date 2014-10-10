@@ -52,7 +52,7 @@ class tx_mklib_util_TS {
    	 * @param array $aConfig | zusätzliche Konfig, die die default Konfig überschreibt
    	 * @param boolean $resolveReferences | sollen referenzen die in lib. und plugin.tx_$extKeyTS stehen aufgelöst werden?
    	 * @param boolean $forceTsfePreparation
-   	 * 
+   	 *
    	 * @return tx_rnbase_configurations
    	 */
   	public static function loadConfig4BE(
@@ -62,9 +62,9 @@ class tx_mklib_util_TS {
   		$extKeyTS = is_null($extKeyTS) ? $extKey : $extKeyTS;
 
   		if(!$sStaticPath) {
-  			$sStaticPath = '/static/ts/setup.txt';	
+  			$sStaticPath = '/static/ts/setup.txt';
   		}
-  		
+
   		if(file_exists(t3lib_div::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
 	    	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
   		}
@@ -80,14 +80,14 @@ class tx_mklib_util_TS {
 	    $GLOBALS['TSFE']->config = array();
 	    $cObj = t3lib_div::makeInstance('tslib_cObj');
 
-	    $pageTSconfig = t3lib_BEfunc::getPagesTSconfig(0);
+	    $pageTSconfig = self::getPagesTSconfig(0);
 
 	    $tempConfig = $pageTSconfig['plugin.']['tx_'.$extKeyTS.'.'];
 	    $tempConfig['lib.'][$extKeyTS.'.'] = $pageTSconfig['lib.'][$extKeyTS.'.'];
 	    $tempConfig['lib.']['links.'] = $pageTSconfig['lib.']['links.'];
-	    
+
 	    if($resolveReferences) {
-	    	$GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTS . '.'] = 
+	    	$GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTS . '.'] =
 	    		$tempConfig['lib.'][$extKeyTS . '.'];
 	    	$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_'.$extKeyTS.'.'] =
 	    		$pageTSconfig['plugin.']['tx_'.$extKeyTS.'.'];
@@ -105,6 +105,23 @@ class tx_mklib_util_TS {
 
 	  	return $configurations;
   	}
+
+  	/**
+  	 * wrapper funktion
+  	 *
+  	 * @param number $pageId
+  	 *
+  	 * @return array
+  	 */
+	public static function getPagesTSconfig($pageId = 0) {
+		// ab TYPO3 6.2.x wird die TS config gecached wenn nicht direkt eine
+		// rootline ungleich NULL übergeben wird.
+		// wir müssen die rootline auf nicht NULL setzen und kein array damit
+		// die rootline korrekt geholt wird und nichts aus dem Cache. Sonst werde
+		// die gerade hinzugefügten TS Dateien nicht beachtet
+		$rootLine = 1;
+		return t3lib_BEfunc::getPagesTSconfig($pageId, $rootLine);
+	}
 
   	/**
   	 * @TODO: static caching integrieren!?
@@ -156,6 +173,6 @@ class tx_mklib_util_TS {
   	}
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php']) {
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php']) {
+  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php']);
 }

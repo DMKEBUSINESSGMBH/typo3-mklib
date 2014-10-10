@@ -155,6 +155,6 @@ class tx_mklib_mod1_linker_ShowDetails {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php'])	{
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php']);
 }
