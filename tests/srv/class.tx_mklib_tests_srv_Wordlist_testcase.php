@@ -37,6 +37,8 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * Generic form view test
  * @package tx_mklib
  * @subpackage tx_mklib_tests_srv
+ *
+ * @group integration
  */
 class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase {
 	protected $workspaceIdAtStart;
@@ -85,6 +87,7 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 	}
 	/**
 	 * Testen ob getWordlistEntryByWord null zurück gibt wenn nichts gefunden wurde
+	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturnsEmptyIfNoMatch(){
 		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
@@ -95,6 +98,7 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 
 	/**
 	 * Testen ob getWordlistEntryByWord mehrere Treffer zurück gibt im normale Modus
+	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturnsMatches() {
 		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
@@ -112,6 +116,7 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 
 	/**
 	 * Testen ob getWordlistEntryByWord einen Treffer zurück gibt im none greedy Modus
+	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturns1MatchIfInNoneGreedyMode() {
 		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
@@ -123,6 +128,7 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 
 	/**
 	 * Testen ob getWordlistEntryByWord einen Treffer zurück gibt wenn es einen gibt
+	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturnsMatchWithComplexString() {
 		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
@@ -130,11 +136,12 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 
 		$this->assertEquals(1,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
 		$this->assertEquals('blub',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
-		 
+
 	}
 
 	/**
 	 * Testen ob getWordlistEntryByWord einen Eintrag zurück liefert
+	 * @group integration
 	 */
 	public function testGetWordlistEntryByBlacklistedWordReturnsCorrectData(){
 		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
@@ -144,7 +151,7 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 		$this->assertEquals('fuck',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
 		$this->assertEquals('shit',$ret[1],'Das zurückgegebene Wort stimmt nicht!');
 		$this->assertEquals('ass',$ret[2],'Das zurückgegebene Wort stimmt nicht!');
-		 
+
 		$ret = $wordlistSrv->getBlacklistEntryByWord('some fuck bad shit words ass');
 
 		$this->assertEquals(3,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
@@ -155,6 +162,7 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 
 	/**
 	 * Testen ob getWordlistEntryByWord einen Eintrag zurück liefert
+	 * @group integration
 	 */
 	public function testGetWordlistEntryByWhitelistedWordReturnsCorrectData(){
 		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();

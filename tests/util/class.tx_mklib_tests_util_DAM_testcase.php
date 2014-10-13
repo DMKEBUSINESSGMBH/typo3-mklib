@@ -37,6 +37,8 @@ tx_rnbase::load('tx_mklib_util_DAM');
  * DB util tests
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
+ *
+ * @group integration
  */
 class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton {
 	protected $importExtensions = array('dam','mklib');
@@ -84,6 +86,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	}
 
 	/**
+	 * @group integration
 	 */
 	public function testDamRecordHasReferencesReturnsFalseIfDamIsNotLoaded(){
 		global $TYPO3_LOADED_EXT;
@@ -100,6 +103,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	}
 
 	/**
+	 * @group integration
 	 */
 	public function testDamRecordHasReferencesReturnsTrueIfReferencesFound(){
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -110,6 +114,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 * die referenz existiert nicht und daher darf auch nicht der dam record zurückgegeben werden
+	 * @group integration
 	 */
 	public function testDamRecordHasReferencesReturnsFalseIfNoReferencesFound(){
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -120,7 +125,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 *
-	 * Enter description here ...
+	 * @group integration
 	 */
 	public function testDeleteDamRecordReturnsFalseIfGivenDamRecordIsEmpty() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -130,6 +135,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 * nichts machen da es noch referenzen gibt
+	 * @group integration
 	 */
 	public function testDeleteDamRecordWorksCorrectWithDefaultSettingsAndExistingReferences() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -149,6 +155,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 * auf hidden setzen
+	 * @group integration
 	 */
 	public function testDeleteDamRecordWorksCorrectWithDefaultSettingsAndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
@@ -167,6 +174,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 * auf deleted setzen
+	 * @group integration
 	 */
 	public function testDeleteDamRecordWorksCorrectWithMode1AndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
@@ -185,6 +193,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 * ganz löschen
+	 * @group integration
 	 */
 	public function testDeleteDamRecordWorksCorrectWithMode2AndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
@@ -200,6 +209,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 * ganz löschen und bild löschen
+	 * @group integration
 	 */
 	public function testDeleteDamRecordWorksCorrectWithDeletingImageAndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
@@ -215,6 +225,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
 	/**
 	 * nichts machen da es noch referenzen gibt
+	 * @group integration
 	 */
 	public function testDeleteDamRecordWorksCorrectWithDeletingImageAndExistingReferences() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -235,6 +246,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	/**
 	 * prüfen ob alles gelöscht wird, auch die bilder da sie keine
 	 * verwendung mehr haben
+	 * @group integration
 	 */
 	public function testHandleDeleteWithDefaultSettings() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -268,6 +280,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	/**
 	 * prüfen ob alles gelöscht wird, auch die bilder da sie keine
 	 * verwendung mehr haben
+	 * @group integration
 	 */
 	public function testHandleDeleteWithMode1() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -301,6 +314,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	/**
 	 * prüfen ob alles gelöscht wird, auch die bilder da sie keine
 	 * verwendung mehr haben
+	 * @group integration
 	 */
 	public function testHandleDeleteWithMode2() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -331,6 +345,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	/**
 	 * prüfen ob alles gelöscht wird, auch die bilder da sie keine
 	 * verwendung mehr haben
+	 * @group integration
 	 */
 	public function testHandleDeleteWithMode2AndDeleteImage() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
@@ -361,6 +376,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	/**
 	 * prüfen ob alles gelöscht wird, auch die bilder da sie keine
 	 * verwendung mehr haben
+	 * @group integration
 	 */
 	public function testHandleDeleteWhenNoReference() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/wordlist.xml'));

@@ -33,6 +33,8 @@ tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
  * @author	 Michael Wagner <michael.wagner@das-medienkombinat.de>
  * @package tx_mklib
  * @subpackage tx_mklib_tests_validator
+ *
+ * @group integration
  */
 class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCaseSkeleton {
 
@@ -69,6 +71,9 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 		self::importStaticTables('mklib', array('ext_tables_static_update.sql'), 'UPDATE');
 	}
 
+	/**
+	 * @group integration
+	 */
 	public function testValidateDE(){
 		self::checkStaticCountries(true);
 
@@ -97,6 +102,8 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 	 * @param 	string		$sZip
 	 * @param 	int 		$iCountry
 	 * @param 	boolean		$bResult
+	 *
+	 * @group integration
 	 */
 	public function testValidatorRules($sZip, $iCountry, $bResult){
 		self::checkStaticCountries(true);

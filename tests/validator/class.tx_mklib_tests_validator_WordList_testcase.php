@@ -37,6 +37,8 @@ tx_rnbase::load('tx_mklib_validator_WordList');
  * @author hbochmann
  * @package tx_mklib
  * @subpackage tx_mklib_tests_validator
+ *
+ * @group integration
  */
 class tx_mklib_tests_validator_WordList_testcase extends tx_phpunit_database_testcase {
 
@@ -73,50 +75,54 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_phpunit_database_tes
 
   	/**
    	 * tearDown() = destroy DB etc.
-   	 */  
+   	 */
   	public function tearDown () {
 	    $this->cleanDatabase();
 	    $this->dropDatabase();
 	    $GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-	
+
 	    $GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
 	}
-  
+
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+   	 * @group integration
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsTrueIfNoWordGiven() {
   		$this->assertTrue(tx_mklib_validator_WordList::stringContainsNoBlacklistedWords(''),'Kein Wort gegeben und es wurde nicht true zurück gegeben!');
   	}
-  	
+
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+   	 * @group integration
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsTrueWhenWordNotBlacklsited() {
   		$this->assertTrue(tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('nice',false),'Kein Wort gegeben und es wurde nicht true zurück gegeben!');
   		$this->assertTrue(tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('alles sehr schön',false),'Kein Wort gegeben und es wurde nicht true zurück gegeben!');
   	}
-  	
+
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+   	 * @group integration
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsTrueInGreedyModeWhenWordNotBlacklsited() {
   		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('nice');
   		$this->assertTrue($ret,'Es wurde ein Treffer zurück gegeben!');
-		
+
   		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('alles sehr schön');
   		$this->assertTrue($ret,'Es wurde ein Treffer zurück gegeben!');
-  	}  	
-  	
+  	}
+
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+   	 * @group integration
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsMatchesIfWordsAreBlacklisted() {
   		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('sfuck fuck shit');
   		$this->assertEquals(2,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
   		$this->assertEquals('fuck',$ret[0],'Das geblacklisted Wort wurde nicht zurück gegeben!');
   		$this->assertEquals('shit',$ret[1],'Das geblacklisted Wort wurde nicht zurück gegeben!');
-  		
+
   		//non greedy
   		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('who the fuck is alice? shit',false);
   		$this->assertEquals('fuck',$ret,'Das geblacklisted Wort wurde nicht zurück gegeben!');

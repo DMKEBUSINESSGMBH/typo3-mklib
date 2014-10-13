@@ -42,6 +42,8 @@ class tx_mklib_util_testDB extends tx_mklib_util_DB {
  * DB util tests
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
+ *
+ * @group integration
  */
 class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testcase {
 	protected $workspaceIdAtStart;
@@ -112,6 +114,9 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		tx_mklib_tests_Util::restoreExtConf('devlog');
 	}
 
+	/**
+	 * @group integration
+	 */
 	public function testInsertTtContent(){
 		// logging deaktivieren
 		tx_mklib_tests_Util::setExtConfVar('logDbHandler', 0);
@@ -135,6 +140,10 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 
 		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
 	}
+
+	/**
+	 * @group integration
+	 */
 	public function testInsertTtContentWithDevLogAndIgnoreTable(){
 		// logging für tt_content deaktivieren
 		tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
@@ -159,6 +168,9 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
 	}
 
+	/**
+	 * @group integration
+	 */
 	public function testInsertTtContentWithDevLog(){
 		$aValues = array(
 				'uid' => 20,
@@ -187,6 +199,9 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		$this->assertEquals(128, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
 	}
 
+	/**
+	 * @group integration
+	 */
 	public function testUpdateTtContentWithDevLog(){
 		// Daten eintragen!
 		$this->testInsertTtContentWithDevLog();
@@ -214,8 +229,9 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		$this->assertEquals(256, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
 	}
 
-
-
+	/**
+	 * @group integration
+	 */
 	public function testUpdateTtContentWithIgnoreTables(){
 		// Daten eintragen!
 		$this->testInsertTtContentWithDevLog();
