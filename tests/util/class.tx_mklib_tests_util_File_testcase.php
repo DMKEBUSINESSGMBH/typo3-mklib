@@ -82,7 +82,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		// das aufräumen!
 		$count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
 			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
-			'lifetime' => -3600,
+			'lifetime' => -10800,
 			'recursive' => '0',
 			'filetypes' => 'zip, xml',
 		));
@@ -99,7 +99,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		// das aufräumen!
 		$count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
 			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
-			'lifetime' => -3600,
+			'lifetime' => -10800,
 			'recursive' => '0',
 			'filetypes' => 'zip, xml',
 			'skiptypo3tempcheck' => '1',
@@ -118,7 +118,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		// das aufräumen!
 		$count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
 			// die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
-			'lifetime' => -3600,
+			'lifetime' => -10800,
 			'recursive' => '1',
 			'filetypes' => 'zip, xml',
 			'skiptypo3tempcheck' => '1',
