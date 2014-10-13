@@ -123,7 +123,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			'filetypes' => 'zip, xml',
 			'skiptypo3tempcheck' => '1',
 		));
-		$this->assertEquals(4, $count, 'wrong deleted count.');
+		$this->assertEquals(4, $count, 'wrong deleted count. testfolder: ' . $testfolder);
 		// weider löschen
 		t3lib_div::rmdir($testfolder, true);
 	}
