@@ -397,7 +397,7 @@ abstract class tx_mklib_repository_Abstract
 	 */
 	public function handleCreation(array $data){
 		// datensatz anlegen and model holen
-		$model = $this->get(
+		$model = $this->findByUid(
 			$this->create($data)
 		);
 		return $model;
