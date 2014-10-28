@@ -53,7 +53,7 @@ class tx_mklib_tests_Util {
 	 * @return void
 	 */
 	public static function storeHooks($sExtKey) {
-		self::$aHooks[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey];
+		self::$aHooks[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey];
 	}
 	/**
 	 * Loads the RN_Base Hooks from the Cache
@@ -63,7 +63,7 @@ class tx_mklib_tests_Util {
 	 */
 	public static function loadHooks($sExtKey) {
 		if (isset(self::$aExtConf[$sExtKey])) {
-			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey] = self::$aHooks[$sExtKey];
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey] = self::$aHooks[$sExtKey];
 		}
 	}
 
@@ -76,10 +76,10 @@ class tx_mklib_tests_Util {
 	 */
 	public static function removeHooks($sExtKey, $sHookKey = NULL) {
 		if (! $sHookKey) {
-			unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey]);
+			unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey]);
 		} else {
-			if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey]) {
-				unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey][$sHookKey]);
+			if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey]) {
+				unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey][$sHookKey]);
 			}
 		}
 	}
