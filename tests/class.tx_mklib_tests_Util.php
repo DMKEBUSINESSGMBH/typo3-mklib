@@ -43,8 +43,46 @@ tx_rnbase::load('tx_rnbase_util_Spyc');
 class tx_mklib_tests_Util {
 
 	private static $aExtConf = array();
+	private static $aHooks = array();
 	private static $sCacheFile;
 
+	/**
+	 * Stores the RN_Base Hooks from the Extension/Hook
+	 *
+	 * @param unknown $sExtKey
+	 * @return void
+	 */
+	public static function storeHooks($sExtKey) {
+		self::$aHooks[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey];
+	}
+	/**
+	 * Loads the RN_Base Hooks from the Cache
+	 *
+	 * @param unknown $sExtKey
+	 * @return void
+	 */
+	public static function loadHooks($sExtKey) {
+		if (isset(self::$aExtConf[$sExtKey])) {
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey] = self::$aHooks[$sExtKey];
+		}
+	}
+
+	/**
+	 * Removes Extension Hooks from the Global Configuration
+	 *
+	 * @param string $sExtKey
+	 * @param string $sHookKey
+	 * @return void
+	 */
+	public static function removeHooks($sExtKey, $sHookKey = NULL) {
+		if (! $sHookKey) {
+			unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey]);
+		} else {
+			if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey]) {
+				unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extConf'][$sExtKey][$sHookKey]);
+			}
+		}
+	}
 	/**
 	 * Sichert eine Extension Konfiguration.
 	 * Wurde bereits eine Extension Konfiguration gesichert,
