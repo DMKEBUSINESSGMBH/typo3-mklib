@@ -94,17 +94,11 @@ class tx_mklib_mod1_export_Handler {
 	 * Prüft, ob ein Export durchgeführt werden soll und führt diesen durch.
 	 */
 	public function handleExport() {
-		$parameters = t3lib_div::_GPmerged('mklib');
-		if (empty($parameters['export'])) {
-			return ;
-		}
 
 		// den Typ des Exports auslesen;
-		$type = reset(array_keys($parameters['export']));
-		$types = $this->getExportTypes();
-
-		if (!in_array($type,$types)) {
-			return ;
+		$type = $this->getCurrentExportType();
+		if (!$type) {
+			return;
 		}
 
 		$template = $this->getExportTemplate($type);
@@ -147,6 +141,28 @@ class tx_mklib_mod1_export_Handler {
 
 		// done!
 		exit();
+	}
+
+	/**
+	 * Liefert den aktuell angeforderten ExportTyp (string) oder false (boolean)
+	 *
+	 * @return string|boolean
+	 */
+	public function getCurrentExportType() {
+		$parameters = t3lib_div::_GPmerged('mklib');
+		if (empty($parameters['export'])) {
+			return FALSE;
+		}
+
+		// den Typ des Exports auslesen;
+		$type = reset(array_keys($parameters['export']));
+		$types = $this->getExportTypes();
+
+		if (!in_array($type,$types)) {
+			return FALSE;
+		}
+
+		return $type;
 	}
 
 	/**
@@ -246,6 +262,10 @@ class tx_mklib_mod1_export_Handler {
 				' the interface "tx_mklib_mod1_export_ISearcher"',
 				1361174776
 			);
+		}
+		// wir setzen optional den export handler
+		if ($searcher instanceof tx_mklib_mod1_export_IInjectHandler) {
+			$searcher->setExportHandler($this);
 		}
 		return $searcher;
 	}
