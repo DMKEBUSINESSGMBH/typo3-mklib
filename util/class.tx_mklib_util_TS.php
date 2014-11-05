@@ -126,12 +126,14 @@ class tx_mklib_util_TS {
   	/**
   	 * @TODO: static caching integrieren!?
   	 *
-  	 * @param 	mixed 		$iPageUid		alias or uid
+	 * @param mixed $mPageUid alias or uid
+	 * @param string $sExtKey
+	 * @param string $sDomainKey
   	 * @return 	tx_rnbase_configurations
   	 *
 	 * @author Michael Wagner
   	 */
-  	public static function loadTSFromPage($mPageUid=0, $sExtKey='mklib'){
+	public static function loadTSFromPage($mPageUid=0, $sExtKey='mklib', $sDomainKey='plugin.'){
   		// rootlines der pid auslesen
   		/* @var $sysPageObj t3lib_pageSelect */
 		$sysPageObj = tx_rnbase::makeInstance('t3lib_pageSelect');
@@ -160,7 +162,7 @@ class tx_mklib_util_TS {
 
 
 	    // ts für die extension auslesen
-		$pageTSconfig = $TSObj->setup['plugin.']['tx_'.$sExtKey.'.'];
+		$pageTSconfig = $TSObj->setup[$sDomainKey]['tx_'.$sExtKey.'.'];
 	    $pageTSconfig['lib.'] = $pageTSconfig['lib.']; // libs mit nehmen
 	    $qualifier = $pageTSconfig['qualifier'] ? $pageTSconfig['qualifier'] : $sExtKey;
 
