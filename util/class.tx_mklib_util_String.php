@@ -241,6 +241,42 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 
 		return t3lib_div::removeXSS(html_entity_decode($text));
 	}
+
+	/**
+	 * Convert a telephone number into a full-featured RFC 3966 telephone number
+	 *
+	 * @param string $orig Original telephone number, may be partial
+	 * @param array  $conf Configuration. Keys:
+	 *   - "countryCode": default country code, "49" for Germany
+	 *   - "areaCode": default area code, without leading zero
+	 *
+	 * @return string Full RFC 3966-compatible telephone number
+	 *
+	 * @author Christian Weiske <cweiske@cweiske.de>
+	 */
+	public static function formatTelephoneNumberRfc3966($orig, $conf) {
+		if (!isset($conf['countryCode'])) {
+			$conf['countryCode'] = '49';//germany
+		}
+		$num = preg_replace('#[^+0-9]#', '', $orig);
+		if (substr($num, 0, 1) == '+') {
+			//full telephone number
+			$tel = $num;
+		}
+		else if (substr($num, 0, 2) == '00') {
+			//full number with country code, but 00 instead of +
+			$tel = '+' . substr($num, 2);
+		}
+		else if (substr($num, 0, 1) == '0') {
+			//full number without country code
+			$tel = '+' . $conf['countryCode'] . substr($num, 1);
+		}
+		else {
+			//partial number, no country or area code
+			$tel = '+' . $conf['countryCode'] . $conf['areaCode'] . $num;
+		}
+		return $tel;
+	}
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_String.php']) {
