@@ -49,6 +49,8 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 	protected $workspaceIdAtStart;
 	protected $db;
 
+	private static $hooks = array();
+
 	/**
 	 * Klassenkonstruktor
 	 *
@@ -94,6 +96,18 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		//systemeinstellungen nicht hereinspielen und alles geloggt wird
 		tx_mklib_tests_Util::storeExtConf('devlog');
 		tx_mklib_tests_Util::setExtConfVar('minLogLevel', -1, 'devlog');
+
+		// Hooks leer machen da die aus anderen extensions stören könnten
+		self::$hooks['rn_base']['util_db_do_insert_post'] =
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'];
+		self::$hooks['rn_base']['util_db_do_update_post'] =
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_update_post'];
+		self::$hooks['rn_base']['util_db_do_delete_pre'] =
+			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'];
+
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'] = array();
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_update_post'] = array();
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'] = array();
 	}
 
 	/**
@@ -112,6 +126,13 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		// ext conf zurückspielen aktivieren
 		tx_mklib_tests_Util::restoreExtConf();
 		tx_mklib_tests_Util::restoreExtConf('devlog');
+
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'] =
+			self::$hooks['rn_base']['util_db_do_insert_post'];
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_update_post'] =
+			self::$hooks['rn_base']['util_db_do_update_post'];
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'] =
+			self::$hooks['rn_base']['util_db_do_delete_pre'];
 	}
 
 	/**
