@@ -313,18 +313,25 @@ abstract class tx_mklib_repository_Abstract
 	 * @param tx_rnbase_model_base	$model			This model is being updated.
 	 * @param array					$data			New data
 	 * @param string				$where			Override default restriction by defining an explicite where clause
+	 * @param 	int 	$debug = 0 		Set to 1 to debug sql-String
+	 * @param 	mixed 	$noQuoteFields 	Array or commaseparated string with fieldnames
 	 * @return tx_rnbase_model_base Updated model
 	 */
-	public function handleUpdate(tx_rnbase_model_base $model, array $data, $where='') {
-
+	public function handleUpdate(
+		tx_rnbase_model_base $model, array $data, $where='',
+		$debug = 0, $noQuoteFields = ''
+	) {
 		$table = $model->getTableName(); $uid = $model->getUid();
 
-		if (!$where)
-		$where = '1=1 AND `'.$table . '`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+		if (!$where) {
+			$where = 	'1=1 AND `' . $table .
+						'`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+		}
 
 		// remove uid if exists
-		if(array_key_exists('uid',$data))
-		unset($data['uid']);
+		if(array_key_exists('uid',$data)) {
+			unset($data['uid']);
+		}
 
 		// Eleminate columns not in TCA
 		tx_rnbase::load('tx_mklib_util_TCA');
@@ -332,7 +339,7 @@ abstract class tx_mklib_repository_Abstract
 		$data = $this->secureFromCrossSiteScripting($model, $data);
 
 		tx_rnbase::load('tx_mklib_util_DB');
-		tx_mklib_util_DB::doUpdate($table, $where, $data);
+		tx_mklib_util_DB::doUpdate($table, $where, $data, $debug, $noQuoteFields);
 
 		$model->reset();
 		return $model;
