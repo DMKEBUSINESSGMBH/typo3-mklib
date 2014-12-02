@@ -321,7 +321,8 @@ abstract class tx_mklib_repository_Abstract
 		tx_rnbase_model_base $model, array $data, $where='',
 		$debug = 0, $noQuoteFields = ''
 	) {
-		$table = $model->getTableName(); $uid = $model->getUid();
+		$table = $model->getTableName();
+		$uid = $model->getUid();
 
 		if (!$where) {
 			$where = 	'1=1 AND `' . $table .
@@ -338,11 +339,19 @@ abstract class tx_mklib_repository_Abstract
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 		$data = $this->secureFromCrossSiteScripting($model, $data);
 
-		tx_rnbase::load('tx_mklib_util_DB');
-		tx_mklib_util_DB::doUpdate($table, $where, $data, $debug, $noQuoteFields);
+		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility::doUpdate($table, $where, $data, $debug, $noQuoteFields);
 
 		$model->reset();
 		return $model;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getDatabaseUtility() {
+		tx_rnbase::load('tx_mklib_util_DB');
+		return tx_mklib_util_DB;
 	}
 
 	/**
@@ -427,7 +436,7 @@ abstract class tx_mklib_repository_Abstract
 	 * @param array $data
 	 * @return array
 	 */
-	private function secureFromCrossSiteScripting($model, array $data) {
+	protected function secureFromCrossSiteScripting($model, array $data) {
 		if(!method_exists($model,'getFieldsToBeStripped')) return $data;
 		$tags = method_exists($model,'getTagsToBeIgnoredFromStripping') ? $model->getTagsToBeIgnoredFromStripping() : null;
 		foreach($model->getFieldsToBeStripped() as $field) {

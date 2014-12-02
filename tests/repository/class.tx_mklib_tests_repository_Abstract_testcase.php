@@ -330,6 +330,220 @@ class tx_mklib_tests_repository_Abstract_testcase
 	}
 
 	/**
+	 * @group unit
+	 */
+	public function testGetDatabaseUtility() {
+		$this->assertEquals(
+			'tx_mklib_util_DB',
+			$this->callInaccessibleMethod($this->getRepositoryMock(), 'getDatabaseUtility'),
+			'falscher Klassenname'
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleUpdateBuildsWhereClauseWhenNoneGiven() {
+		$model = $this->getModelMock(
+			array('uid' => 123),
+			array('getColumnNames', 'getTableName')
+		);
+		$model->expects($this->once())
+			->method('getColumnNames')
+			->will($this->returnValue(array('column_1')));
+		$model->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('unknown'));
+
+		$repository = $this->getRepositoryMock(
+			array('getSearchClass', 'getDatabaseUtility')
+		);
+
+		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
+		$databaseUtility::staticExpects($this->once())
+			->method('doUpdate')
+			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'');
+
+		$repository->expects($this->once())
+			->method('getDatabaseUtility')
+			->will($this->returnValue($databaseUtility));
+
+		$repository->handleUpdate($model, array());
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleUpdateEliminatesNonTcaColumns() {
+		$model = $this->getModelMock(
+			array('uid' => 123),
+			array('getColumnNames', 'getTableName')
+		);
+		$model->expects($this->once())
+			->method('getColumnNames')
+			->will($this->returnValue(array('column_1')));
+		$model->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('unknown'));
+
+		$repository = $this->getRepositoryMock(
+			array('getSearchClass', 'getDatabaseUtility')
+		);
+
+		$data = array('column_1' => 'new value', 'column_2' => 'new value');
+		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
+		$databaseUtility::staticExpects($this->once())
+			->method('doUpdate')
+			->with(
+				'unknown', '1=1 AND `unknown`.`uid`=\'123\'',
+				array('column_1' => 'new value')
+			);
+
+		$repository->expects($this->once())
+			->method('getDatabaseUtility')
+			->will($this->returnValue($databaseUtility));
+
+		$repository->handleUpdate($model, $data);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleUpdateCallsSecureFromCrossSiteScripting() {
+		$model = $this->getModelMock(
+			array('uid' => 123),
+			array('getColumnNames', 'getTableName')
+		);
+		$model->expects($this->once())
+			->method('getColumnNames')
+			->will($this->returnValue(array('column_1')));
+		$model->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('unknown'));
+
+		$repository = $this->getRepositoryMock(
+			array('getSearchClass', 'getDatabaseUtility', 'secureFromCrossSiteScripting')
+		);
+
+		$data = array('column_1' => 'new value');
+		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
+		$databaseUtility::staticExpects($this->once())
+			->method('doUpdate')
+			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'', array('secured'));
+
+		$repository->expects($this->once())
+			->method('getDatabaseUtility')
+			->will($this->returnValue($databaseUtility));
+
+		$repository->expects($this->once())
+			->method('secureFromCrossSiteScripting')
+			->with($model, $data)
+			->will($this->returnValue(array('secured')));
+
+		$repository->handleUpdate($model, $data);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleUpdateRemovesUidColumn() {
+		$model = $this->getModelMock(
+			array('uid' => 123),
+			array('getColumnNames', 'getTableName')
+		);
+		$model->expects($this->once())
+			->method('getColumnNames')
+			->will($this->returnValue(array('column_1')));
+		$model->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('unknown'));
+
+		$repository = $this->getRepositoryMock(
+			array('getSearchClass', 'getDatabaseUtility')
+		);
+
+		$data = array('column_1' => 'new value', 'uid' => 456);
+		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
+		$databaseUtility::staticExpects($this->once())
+			->method('doUpdate')
+			->with(
+				'unknown',
+				'1=1 AND `unknown`.`uid`=\'123\'',
+				array('column_1' => 'new value')
+			);
+
+		$repository->expects($this->once())
+			->method('getDatabaseUtility')
+			->will($this->returnValue($databaseUtility));
+
+		$repository->handleUpdate($model, $data);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleUpdateUsesGivenWhere() {
+		$model = $this->getModelMock(
+			array('uid' => 123),
+			array('getColumnNames', 'getTableName')
+		);
+		$model->expects($this->once())
+			->method('getColumnNames')
+			->will($this->returnValue(array('column_1')));
+		$model->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('unknown'));
+
+		$repository = $this->getRepositoryMock(
+			array('getSearchClass', 'getDatabaseUtility')
+		);
+
+		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
+		$databaseUtility::staticExpects($this->once())
+			->method('doUpdate')
+			->with('unknown', 'test where');
+
+		$repository->expects($this->once())
+			->method('getDatabaseUtility')
+			->will($this->returnValue($databaseUtility));
+
+		$repository->handleUpdate($model, array(), 'test where');
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleUpdateWhenDebugAndNoQuoteFieldsParametersGiven() {
+		$model = $this->getModelMock(
+			array('uid' => 123),
+			array('getColumnNames', 'getTableName')
+		);
+		$model->expects($this->once())
+			->method('getColumnNames')
+			->will($this->returnValue(array('column_1')));
+		$model->expects($this->any())
+			->method('getTableName')
+			->will($this->returnValue('unknown'));
+
+		$repository = $this->getRepositoryMock(
+			array('getSearchClass', 'getDatabaseUtility')
+		);
+
+		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
+		$databaseUtility::staticExpects($this->once())
+			->method('doUpdate')
+			->with('unknown', 'test where', array(), 987, 'commaSeparatedFields');
+
+		$repository->expects($this->once())
+			->method('getDatabaseUtility')
+			->will($this->returnValue($databaseUtility));
+
+		$repository->handleUpdate(
+			$model, array(), 'test where', 987, 'commaSeparatedFields'
+		);
+	}
+
+	/**
 	 * @param array $mockedMethods
 	 * @return tx_mklib_repository_Abstract
 	 */
@@ -349,6 +563,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 			->will($this->returnValue('tx_mklib_search_Wordlist'));
 
 		return $repository;
+	}
+
+	/**
+	 * @param array $mockedMethods
+	 * @return tx_mklib_util_DB
+	 */
+	private function getDatabaseUtilityMock(array $mockedMethods) {
+		return $this->getMockClass('tx_mklib_util_DB', $mockedMethods);
 	}
 
 	/**
