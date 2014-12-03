@@ -59,12 +59,12 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	/**
 	 * @group unit
 	 */
-	public function testDbUtil() {
+	public function testGetDatabaseUtility() {
 		$this->assertEquals(
 			'tx_mklib_util_DB',
 			$this->callInaccessibleMethod(
 				tx_rnbase::makeInstance('tx_mklib_scheduler_DeleteFromDatabase'),
-				'getDbUtil'
+				'getDatabaseUtility'
 			),
 			'falsche Klasse'
 		);
@@ -73,68 +73,97 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	/**
 	 * @group unit
 	 */
-	public function testExecuteCallsDoSelectCorrect() {
-		$dbUtil = $this->getDbUtil();
-		$dbUtil::staticExpects($this->once())
+	public function testExecuteCallsDoSelectOnDatabaseUtilityCorrect() {
+		$databaseUtility = $this->getDatabaseUtility();
+		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+
+		$databaseUtility::staticExpects($this->once())
 			->method('doSelect')
 			->with(
 				'uid', $this->options['table'],
-				array('where' => $this->options['where'], 'enablefieldsoff' => true)
+				array(
+					'where' => $this->options['where'], 'enablefieldsoff' => true,
+					'callback'	=> array($scheduler, 'deleteRow')
+				)
 			);
 
-		$scheduler = $this->getSchedulerByDbUtil($dbUtil);
 		$scheduler->execute();
 	}
 
 	/**
 	 * @group unit
 	 */
-	public function testExecuteCallsDoSelectCorrectIfSelectFieldsConfigured() {
-		$dbUtil = $this->getDbUtil();
+	public function testExecuteCallsDoSelectOnDatabaseUtilityCorrectIfSelectFieldsConfigured() {
+		$databaseUtility = $this->getDatabaseUtility();
 		$this->options['selectFields'] = 'otherFields';
-		$dbUtil::staticExpects($this->once())
+		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+
+		$databaseUtility::staticExpects($this->once())
 			->method('doSelect')
 			->with(
 				$this->options['selectFields'], $this->options['table'],
-				array('where' => $this->options['where'], 'enablefieldsoff' => true)
+				array(
+					'where' => $this->options['where'], 'enablefieldsoff' => true,
+					'callback'	=> array($scheduler, 'deleteRow')
+				)
 			);
 
-		$scheduler = $this->getSchedulerByDbUtil($dbUtil);
 		$scheduler->execute();
 	}
 
 	/**
 	 * @group unit
 	 */
-	public function testExecuteCallsDeleteCorrect() {
-		$dbUtil = $this->getDbUtil();
-		$dbUtil::staticExpects($this->once())
+	public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrect() {
+		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility::staticExpects($this->once())
 			->method('delete')
 			->with(
 				$this->options['table'],
-				$this->options['where'],
+				'uid = 123',
 				$this->options['mode']
 			);
 
-		$scheduler = $this->getSchedulerByDbUtil($dbUtil);
-		$scheduler->execute();
+		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$row = array('uid' => 123);
+		$scheduler->deleteRow($row);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDeleteRowSetsAffectedRowsPropertyCorrect() {
+		$databaseUtility = $this->getDatabaseUtility();
+		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+
+		$scheduler->deleteRow(array('uid' => 123));
+		$scheduler->deleteRow(array('uid' => 456));
+
+		$affectedRows = new ReflectionProperty(
+			'tx_mklib_scheduler_DeleteFromDatabase', 'affectedRows'
+		);
+		$affectedRows->setAccessible(TRUE);
+
+		$this->assertEquals(
+			array(array('uid' => 123), array('uid' => 456)),
+			$affectedRows->getValue($scheduler),
+			'affectedRows falsch gesetzt'
+		);
 	}
 
 	/**
 	 * @group unit
 	 */
 	public function testExecuteTaskSetsDevLogCorrect() {
-		$dbUtil = $this->getDbUtil();
+		$databaseUtility = $this->getDatabaseUtility();
+		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
 
-		$dbUtil::staticExpects($this->once())
-			->method('doSelect')
-			->will($this->returnValue(array('uid' => 1, 'uid' => 2)));
+		$affectedRows = new ReflectionProperty(
+			'tx_mklib_scheduler_DeleteFromDatabase', 'affectedRows'
+		);
+		$affectedRows->setAccessible(TRUE);
+		$affectedRows->setValue($scheduler, array(array('uid' => 1), array('uid' => 2)));
 
-		$dbUtil::staticExpects($this->once())
-			->method('delete')
-			->will($this->returnValue(2));
-
-		$scheduler = $this->getSchedulerByDbUtil($dbUtil);
 		$devLog = array();
 		$method = new ReflectionMethod('tx_mklib_scheduler_DeleteFromDatabase', 'executeTask');
 		$method->setAccessible(true);
@@ -145,28 +174,31 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 				'message' => 	'2 Datensätze wurden in ' .
 								'someTable mit der Bedingung ' .
 								'someWhereClause und dem Modus 0 entfernt',
-				'dataVar' => 	array('betroffene Datensätze' => array('uid' => 1, 'uid' => 2))
+				'dataVar' => 	array(
+					'betroffene Datensätze' => array(array('uid' => 1), array('uid' => 2))
+				)
 			)
 		);
+
 		$this->assertEquals(
 			$expectedDevLog, $devLog, 'falsches devlog'
 		);
 	}
 
 	/**
-	 * @param string $dbUtil
+	 * @param string $databaseUtility
 	 *
 	 * @return Tx_Mkdifu_Scheduler_MoveNewsletterRecipientsFromFeUsersToTtAddress
 	 */
-	private function getSchedulerByDbUtil($dbUtil) {
+	private function getSchedulerByDbUtil($databaseUtility) {
 		$scheduler = $this->getMock(
 			'tx_mklib_scheduler_DeleteFromDatabase',
-			array('getDbUtil')
+			array('getDatabaseUtility')
 		);
 
 		$scheduler->expects($this->any())
-			->method('getDbUtil')
-			->will($this->returnValue($dbUtil));
+			->method('getDatabaseUtility')
+			->will($this->returnValue($databaseUtility));
 
 		$scheduler->setOptions($this->options);
 
@@ -174,11 +206,9 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	}
 
 	/**
-	 * @param string $dbUtil
-	 *
 	 * @return tx_mklib_util_DB
 	 */
-	private function getDbUtil() {
+	private function getDatabaseUtility() {
 		return $this->getMockClass(
 			'tx_mklib_util_DB',
 			array('doSelect', 'delete')

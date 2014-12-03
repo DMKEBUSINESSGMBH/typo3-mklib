@@ -37,6 +37,11 @@ tx_rnbase::load('tx_mklib_util_DB');
 class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 
 	/**
+	 * @var array
+	 */
+	private $affectedRows = array();
+
+	/**
 	 * (non-PHPdoc)
 	 * @see tx_mklib_scheduler_Generic::executeTask()
 	 */
@@ -45,27 +50,40 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 		$where = $options['where'];
 		$mode = $options['mode'];
 		$selectFields = $options['selectFields'] ? $options['selectFields'] : 'uid';
-		$dbUtil = $this->getDbUtil();
+		$databaseUtility = $this->getDatabaseUtility();
 
-		$affectedRows = $dbUtil::doSelect(
+		$databaseUtility::doSelect(
 			$selectFields, $table,
-			array('where' => $where, 'enablefieldsoff' => true)
+			array(
+				'where' => $where, 'enablefieldsoff' => true,
+				'callback'	=> array($this, 'deleteRow')
+			)
 		);
-		$affectedNumberOfRows = $dbUtil::delete($table, $where, $mode);
 
 		$devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO] = array(
-			'message' => 	$affectedNumberOfRows . ' Datensätze wurden in ' .
+			'message' => 	count($this->affectedRows) . ' Datensätze wurden in ' .
 							$table . ' mit der Bedingung ' .
 							$where . ' und dem Modus ' . $mode . ' entfernt',
-			'dataVar' => 	array('betroffene Datensätze' => $affectedRows)
+			'dataVar' => 	array('betroffene Datensätze' => $this->affectedRows)
 		);
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getDbUtil() {
+	protected function getDatabaseUtility() {
 		return tx_mklib_util_DB;
+	}
+
+	/**
+	 * @param array $row
+	 */
+	public function deleteRow(array $row) {
+		$this->affectedRows[] = $row;
+		$databaseUtility = $this->getDatabaseUtility();
+		$where = 'uid = ' . $row['uid'];
+
+		$databaseUtility::delete($this->getOption('table'), $where, $this->getOption('mode'));
 	}
 
 	/**
