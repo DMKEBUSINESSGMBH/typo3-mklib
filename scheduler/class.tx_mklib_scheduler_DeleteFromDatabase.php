@@ -49,11 +49,10 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 		$table = $options['table'];
 		$where = $options['where'];
 		$mode = $options['mode'];
-		$selectFields = $options['selectFields'] ? $options['selectFields'] : 'uid';
 		$databaseUtility = $this->getDatabaseUtility();
 
 		$databaseUtility::doSelect(
-			$selectFields, $table,
+			$this->getSelectFields(), $table,
 			array(
 				'where' => $where, 'enablefieldsoff' => true,
 				'callback'	=> array($this, 'deleteRow')
@@ -71,6 +70,20 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 	/**
 	 * @return string
 	 */
+	private function getSelectFields() {
+		$selectFields =
+			$this->getOption('selectFields') ? $this->getOption('selectFields') : 'uid';
+
+		if (strpos($this->getUidField(), $selectFields) === FALSE) {
+			$selectFields .= ',' . $this->getUidField();
+		}
+
+		return $selectFields;
+	}
+
+	/**
+	 * @return string
+	 */
 	protected function getDatabaseUtility() {
 		return tx_mklib_util_DB;
 	}
@@ -81,9 +94,19 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 	public function deleteRow(array $row) {
 		$this->affectedRows[] = $row;
 		$databaseUtility = $this->getDatabaseUtility();
-		$where = 'uid = ' . $row['uid'];
+		$uidField = $this->getUidField();
+		$where = $uidField . ' = ' . $row[$uidField];
 
-		$databaseUtility::delete($this->getOption('table'), $where, $this->getOption('mode'));
+		$databaseUtility::delete(
+			$this->getOption('table'), $where, $this->getOption('mode')
+		);
+	}
+
+	/**
+	 * @return Ambigous <string, mixed, multitype:>
+	 */
+	private function getUidField() {
+		return $this->getOption('uidField') ? $this->getOption('uidField') : 'uid';
 	}
 
 	/**

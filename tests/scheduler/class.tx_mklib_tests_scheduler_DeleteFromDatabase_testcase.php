@@ -101,7 +101,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 		$databaseUtility::staticExpects($this->once())
 			->method('doSelect')
 			->with(
-				$this->options['selectFields'], $this->options['table'],
+				$this->options['selectFields'] . ',uid', $this->options['table'],
 				array(
 					'where' => $this->options['where'], 'enablefieldsoff' => true,
 					'callback'	=> array($scheduler, 'deleteRow')
@@ -126,6 +126,25 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 
 		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
 		$row = array('uid' => 123);
+		$scheduler->deleteRow($row);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrectWhenSelectFieldsDifferentToUid() {
+		$this->options['uidField'] = 'otherField';
+		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility::staticExpects($this->once())
+			->method('delete')
+			->with(
+				$this->options['table'],
+				$this->options['uidField'] . ' = 123',
+				$this->options['mode']
+			);
+
+		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$row = array($this->options['uidField'] => 123);
 		$scheduler->deleteRow($row);
 	}
 
