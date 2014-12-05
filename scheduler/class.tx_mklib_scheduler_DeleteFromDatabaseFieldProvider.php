@@ -49,25 +49,25 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider
 			'table' => array(
 				'type' => 'input',
 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_table',
-				'eval' => 'required',
+				'eval' => 'required,trim',
 			),
 			'selectFields' => array(
 				'type' => 'input',
 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_selectFields',
-				'eval' => 'required',
+				'eval' => 'trim',
 				'default' => 'uid'
 			),
 			'uidField' => array(
 				'type' => 'input',
 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_uid',
-				'eval' => 'required',
+				'eval' => 'required,trim',
 				'default' => 'uid'
 			),
 			'where' => array(
 				'type' => 'input',
 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_where',
 				'default' => "hidden = 1 AND tstamp < (UNIX_TIMESTAMP() - $twentyEightDaysInSeconds)",
-				'eval' => 'required',
+				'eval' => 'required,trim',
 			),
 			'mode' => array(
 				'type' => 'select',
