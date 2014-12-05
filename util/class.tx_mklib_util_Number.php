@@ -3,7 +3,7 @@
  * @package tx_mklib
  * @subpackage tx_mklib_util
  *
- * (c) 2013 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
+ * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@ require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_util
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_Number extends tx_mklib_util_Var {
 
@@ -41,7 +41,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var {
 	 *     Beispielsweise sollte sowetwas übergeben werden können:
 	 *     @SEE http://www.php.net/manual/de/function.floatval.php#84793
 	 *
-	 * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+	 * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
 	 *
 	 * @param string $number
 	 * @return float
@@ -69,7 +69,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var {
 	 * Wurde das beispielsweise auf Deutsch gesetzt, wird aus 5.45 > 5,45.
 	 * Das Komma macht dann Beispielsweise DB-Abfragen kaputt/fehlerhaft.
 	 *
-	 * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+	 * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
 	 *
 	 * @param string $number
 	 * @param array $config

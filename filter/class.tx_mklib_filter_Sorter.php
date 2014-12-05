@@ -2,11 +2,11 @@
 /**
  * 	@package TYPO3
  *  @subpackage tx_mkdifu
- *  @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
- *  (c) 2011 Michael Wagner <michael.wagner@das-medienkombinat.de>
+ *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -49,7 +49,7 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  *  Beispiel Template:
  *  	###SORT_TITLE_LINK###sortieren nach titel###SORT_TITLE_LINK###
  * 
- * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * 
  * @todo default sortierung per TypoScript konfigurierbar machen
  * @todo mehrfach sortierung unertsützen?

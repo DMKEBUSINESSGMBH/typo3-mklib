@@ -2,11 +2,11 @@
 /**
  * 	@package TYPO3
  *  @subpackage tx_mkdifu
- *  @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
- *  (c) 2011 Michael Wagner <michael.wagner@das-medienkombinat.de>
+ *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
 /**
- * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 abstract class tx_mklib_filter_SingleItem extends tx_rnbase_filter_BaseFilter {
 	

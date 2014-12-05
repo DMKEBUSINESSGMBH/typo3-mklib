@@ -17,7 +17,7 @@
  *
  * Copyright notice
  *
- * (c) 2013 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
+ * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -45,7 +45,7 @@ tx_rnbase::load('tx_mklib_util_httprequest_adapter_Interface');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_util
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_httprequest_adapter_Curl
 	implements tx_mklib_util_httprequest_adapter_Interface {

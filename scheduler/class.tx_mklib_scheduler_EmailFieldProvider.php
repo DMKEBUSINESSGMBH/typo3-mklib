@@ -2,7 +2,7 @@
 /**
  *  Copyright notice
  *
- *  (c) 2011 das MedienKombinat <kontakt@das-medienkombinat.de>
+ *  (c) 2011 das MedienKombinat <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
  *
  * @package TYPO3
  * @subpackage tx_mklib
- * @author Hannes Bochmann <hann.bochmann@das-medienkombinat.de>
+ * @author Hannes Bochmann <hann.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFieldProvider {
 

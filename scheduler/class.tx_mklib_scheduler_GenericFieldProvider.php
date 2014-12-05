@@ -2,7 +2,7 @@
 /**
  *  Copyright notice
  *
- *  (c) 2011 das MedienKombinat <kontakt@das-medienkombinat.de>
+ *  (c) 2011 das MedienKombinat <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +33,7 @@ if (!interface_exists('tx_scheduler_AdditionalFieldProvider')) {
  *
  * @package tx_mklib
  * @subpackage tx_mklib_scheduler
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_AdditionalFieldProvider {
 

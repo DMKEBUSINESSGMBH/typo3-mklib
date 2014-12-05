@@ -2,11 +2,11 @@
 /**
  * 	@package TYPO3
  *  @subpackage tx_mklib
- *  @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,7 +34,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 /**
  * @package TYPO3
  * @subpackage tx_mklib
- * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 

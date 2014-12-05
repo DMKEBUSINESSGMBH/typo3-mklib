@@ -5,7 +5,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2012 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
+ *  (c) 2012 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@ tx_rnbase::load('tx_mklib_mod1_export_Util');
 /**
  * Der Listbuilder erzeugt die ausgabe für den export.
  *
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_mod1_export_ListBuilder
 	extends tx_rnbase_util_ListBuilder {

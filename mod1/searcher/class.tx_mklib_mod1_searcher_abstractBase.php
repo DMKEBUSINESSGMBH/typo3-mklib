@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
+ *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@ tx_rnbase::load('tx_mklib_mod1_export_ISearcher');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 abstract class tx_mklib_mod1_searcher_abstractBase
 	implements tx_mklib_mod1_export_ISearcher {

@@ -5,7 +5,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2012 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
+ *  (c) 2012 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,8 +32,8 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
  * Die Klasse stellt Auswahlmenus zur Verfügung
- *  @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
- *  @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ *  @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ *  @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_mod1_util_Selector {
 	var $doc, $modName;

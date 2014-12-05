@@ -6,7 +6,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2011 michael Wagner <michael.wagner@das-medienkombinat.de>
+ *  (c) 2011 michael Wagner <michael.wagner@dmk-ebusiness.de>
  *  All rights reserved
  *
  * This library is free software; you can redistribute it and/or

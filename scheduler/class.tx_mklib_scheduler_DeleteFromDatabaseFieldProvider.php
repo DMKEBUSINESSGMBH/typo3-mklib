@@ -4,7 +4,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2014 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  (c) 2014 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@ tx_rnbase::load('tx_mklib_util_DB');
  *
  * @package TYPO3
  * @subpackage tx_mklib
- * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider
 	extends tx_mklib_scheduler_GenericFieldProvider

@@ -6,7 +6,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
+ *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -101,7 +101,7 @@ class tx_mklib_cli_main extends t3lib_cli {
 	      	'synopsis' => $this->extKey . ' command ###OPTIONS###',
 	      	'description' => 'Klasse mit Basisfunktionen um den Cache von Extensions zu löschen und selbige zu updaten!',
 	      	'examples' => 'typo3/cli_dispatch.phpsh mklib --flush-cache',
-	      	'author' => '(c) 2010 das MedienKombinat GmbH Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>',
+	      	'author' => '(c) 2010 DMK E-BUSINESS GmbH Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>',
 		));
 	}
 

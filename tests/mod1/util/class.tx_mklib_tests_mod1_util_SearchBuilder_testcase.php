@@ -6,7 +6,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2010 das MedienKombinat <kontakt@das-medienkombinat.de>
+ *  (c) 2010 das MedienKombinat <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,7 +33,7 @@ tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
  * 
  * @package tx_mklib
  * @subpackage tx_mklib_tests_mod1_util
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends tx_phpunit_testcase {
 

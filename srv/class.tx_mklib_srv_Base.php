@@ -5,7 +5,7 @@
  *
  *  Copyright notice
  *
- *  (c) 2010 - 2013 das MedienKombinat GmbH <kontakt@das-medienkombinat.de>
+ *  (c) 2010 - 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -37,8 +37,8 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_srv
- * @author Hannes Bochmann <hannes.bochmann@das-medienkombinat.de>
- * @author Michael Wagner <michael.wagner@das-medienkombinat.de>
+ * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 abstract class tx_mklib_srv_Base extends t3lib_svbase {
 
