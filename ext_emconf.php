@@ -28,7 +28,7 @@ $EM_CONF[$_EXTKEY] = array(
   'conflicts' => '',
   'priority' => '',
   'module' => '',
-  'state' => 'beta',
+  'state' => 'stable',
   'internal' => '',
   'uploadfolder' => 0,
   'createDirs' => '',
@@ -38,7 +38,7 @@ $EM_CONF[$_EXTKEY] = array(
   'constraints' => array(
     'depends' => array(
 		'rn_base' => '0.12.2-',
-		'typo3' => '4.3.0-',
+		'typo3' => '4.3.0-6.2.99',
     ),
     'conflicts' => array(
     ),
