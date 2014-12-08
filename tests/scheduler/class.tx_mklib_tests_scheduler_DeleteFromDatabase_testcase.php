@@ -120,7 +120,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 			->method('delete')
 			->with(
 				$this->options['table'],
-				'uid = 123',
+				'uid = \'123\'',
 				$this->options['mode']
 			);
 
@@ -139,7 +139,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 			->method('delete')
 			->with(
 				$this->options['table'],
-				$this->options['uidField'] . ' = 123',
+				$this->options['uidField'] . ' = \'123\'',
 				$this->options['mode']
 			);
 

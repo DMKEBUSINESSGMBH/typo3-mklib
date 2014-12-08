@@ -93,9 +93,10 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 	 */
 	public function deleteRow(array $row) {
 		$this->affectedRows[] = $row;
+		/* @var $databaseUtility tx_mklib_util_DB */
 		$databaseUtility = $this->getDatabaseUtility();
 		$uidField = $this->getUidField();
-		$where = $uidField . ' = ' . $row[$uidField];
+		$where = $uidField . ' = ' . $databaseUtility::fullQuoteStr($row[$uidField]);
 
 		$databaseUtility::delete(
 			$this->getOption('table'), $where, $this->getOption('mode')
