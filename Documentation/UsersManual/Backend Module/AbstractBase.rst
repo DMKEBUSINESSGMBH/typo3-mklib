@@ -25,6 +25,7 @@ For that the method tx_mklib_mod1_util_Selector::showDateRangeSelector exists.
 The output are two fields with from and until with a calendar.
 
 Example:
+
 .. code-block:: php
 
    $this->dateRange = $selector->showDateRangeSelector(
