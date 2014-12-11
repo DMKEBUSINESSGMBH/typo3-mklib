@@ -1,0 +1,25 @@
+{
+	"name" : "dmk/mklib",
+	"description" : "Utilities for extensions.",
+	"type" : "typo3-cms-extension",
+	"homepage" : "http://www.dmk-ebusiness.de/",
+	"license" : "GPL-3.0+",
+	"authors" : [
+		{
+			"name" : "DMK E-BUSINESS GmbH",
+			"email" : "dev@dmk-ebusiness.de",
+			"role" : "Developer"
+		}
+	],
+	"support": {
+		"email": "dev@dmk-ebusiness.de",
+		"source": "https://github.com/DMKEBUSINESSGMBH/typo3-mklib",
+		"issues": "https://forge.typo3.org/projects/extension-mklib"
+	},
+	"replace": {
+		"typo3-ter/mklib": "*"
+	}, 
+	"require" : {
+		"typo3-ter/rn-base" : "*"
+	}
+}
