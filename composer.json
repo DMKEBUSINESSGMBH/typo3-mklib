@@ -1,9 +1,11 @@
 {
 	"name" : "dmk/mklib",
 	"description" : "Utilities for extensions.",
+	"version" : "0.9.57",
 	"type" : "typo3-cms-extension",
+	"keywords" : ["TYPO3 CMS", "mvc"],
 	"homepage" : "http://www.dmk-ebusiness.de/",
-	"license" : "GPL-3.0+",
+	"license" : "GPL-2.0+",
 	"authors" : [
 		{
 			"name" : "DMK E-BUSINESS GmbH",
@@ -20,6 +22,6 @@
 		"typo3-ter/mklib": "*"
 	}, 
 	"require" : {
-		"typo3-ter/rn-base" : "*"
+		"typo3-ter/rn-base" : "~0.14"
 	}
 }
