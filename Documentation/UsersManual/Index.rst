@@ -23,7 +23,7 @@ Features
 * database repository base class to use in the rn_base search framework
 * rn_base markerclass for DAM and FAL files
 * Base for a rn_base Backendmodule with search, sorting etc.
-* rn_base models for DAM, FAL files, pages, tt_address und static_country
+* rn_base models for DAM, FAL files, pages, tt_address and static_country
 * scheduler to delete files in the filesystem, clean up the database and monitor other scheduler tasks if they are frozen
 * finance service
 * wordlist service for white- and blacklists
