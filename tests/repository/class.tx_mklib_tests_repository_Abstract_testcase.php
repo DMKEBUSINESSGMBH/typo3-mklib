@@ -346,7 +346,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testHandleUpdateBuildsWhereClauseWhenNoneGiven() {
 		$model = $this->getModelMock(
 			array('uid' => 123),
-			array('getColumnNames', 'getTableName')
+			array('getColumnNames', 'getTableName', 'reset')
 		);
 		$model->expects($this->once())
 			->method('getColumnNames')
@@ -354,6 +354,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$model->expects($this->any())
 			->method('getTableName')
 			->will($this->returnValue('unknown'));
+		$model->expects($this->once())
+			->method('reset');
 
 		$repository = $this->getRepositoryMock(
 			array('getSearchClass', 'getDatabaseUtility')
@@ -377,7 +379,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testHandleUpdateEliminatesNonTcaColumns() {
 		$model = $this->getModelMock(
 			array('uid' => 123),
-			array('getColumnNames', 'getTableName')
+			array('getColumnNames', 'getTableName', 'reset')
 		);
 		$model->expects($this->once())
 			->method('getColumnNames')
@@ -385,6 +387,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$model->expects($this->any())
 			->method('getTableName')
 			->will($this->returnValue('unknown'));
+		$model->expects($this->once())
+			->method('reset');
 
 		$repository = $this->getRepositoryMock(
 			array('getSearchClass', 'getDatabaseUtility')
@@ -412,7 +416,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testHandleUpdateCallsSecureFromCrossSiteScripting() {
 		$model = $this->getModelMock(
 			array('uid' => 123),
-			array('getColumnNames', 'getTableName')
+			array('getColumnNames', 'getTableName', 'reset')
 		);
 		$model->expects($this->once())
 			->method('getColumnNames')
@@ -420,6 +424,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$model->expects($this->any())
 			->method('getTableName')
 			->will($this->returnValue('unknown'));
+		$model->expects($this->once())
+			->method('reset');
 
 		$repository = $this->getRepositoryMock(
 			array('getSearchClass', 'getDatabaseUtility', 'secureFromCrossSiteScripting')
@@ -449,7 +455,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testHandleUpdateRemovesUidColumn() {
 		$model = $this->getModelMock(
 			array('uid' => 123),
-			array('getColumnNames', 'getTableName')
+			array('getColumnNames', 'getTableName', 'reset')
 		);
 		$model->expects($this->once())
 			->method('getColumnNames')
@@ -457,6 +463,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$model->expects($this->any())
 			->method('getTableName')
 			->will($this->returnValue('unknown'));
+		$model->expects($this->once())
+			->method('reset');
 
 		$repository = $this->getRepositoryMock(
 			array('getSearchClass', 'getDatabaseUtility')
@@ -485,7 +493,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testHandleUpdateUsesGivenWhere() {
 		$model = $this->getModelMock(
 			array('uid' => 123),
-			array('getColumnNames', 'getTableName')
+			array('getColumnNames', 'getTableName', 'reset')
 		);
 		$model->expects($this->once())
 			->method('getColumnNames')
@@ -493,6 +501,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$model->expects($this->any())
 			->method('getTableName')
 			->will($this->returnValue('unknown'));
+		$model->expects($this->once())
+			->method('reset');
 
 		$repository = $this->getRepositoryMock(
 			array('getSearchClass', 'getDatabaseUtility')
@@ -516,7 +526,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testHandleUpdateWhenDebugAndNoQuoteFieldsParametersGiven() {
 		$model = $this->getModelMock(
 			array('uid' => 123),
-			array('getColumnNames', 'getTableName')
+			array('getColumnNames', 'getTableName', 'reset')
 		);
 		$model->expects($this->once())
 			->method('getColumnNames')
@@ -524,6 +534,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$model->expects($this->any())
 			->method('getTableName')
 			->will($this->returnValue('unknown'));
+		$model->expects($this->once())
+			->method('reset');
 
 		$repository = $this->getRepositoryMock(
 			array('getSearchClass', 'getDatabaseUtility')
