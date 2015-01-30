@@ -44,19 +44,14 @@ class tx_mklib_mod1_export_Util {
 		$fileName = empty($options['filename']) ? 'export.dat' : $options['filename'];
 		$contentType = empty($options['contenttype']) ? 'application/octet-stream' : $options['contenttype'];
 
-		// Ausgabe-Puffer leeren und deaktivieren.
-		// Damit wird direkt der Download-Dialig geöffnet
-		// und direkt an den Client gestreamt.
-		ob_end_clean();
-
 		header('Pragma: public');
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		header('Cache-Control: public', false);
 		header('Content-Description: File Transfer');
-		header('Content-Type: '.$contentType.'');
+		header('Content-Type: ' . $contentType.'');
 		header('Accept-Ranges: bytes');
-		header('Content-Disposition: attachment; filename="'.$fileName.'"');
+		header('Content-Disposition: attachment; filename="' . $fileName . '"');
 		header('Content-Transfer-Encoding: binary');
 		// wissen wir vorher nicht!
 // 		$contentLength = strlen($template);
@@ -64,9 +59,17 @@ class tx_mklib_mod1_export_Util {
 
 		if (!empty($options['additional.']) && is_array($options['additional.'])) {
 			foreach ($options['additional.'] as $name => $value) {
-				header($name.': '.$value, NULL, NULL);
+				header($name . ': ' . $value, NULL, NULL);
 			}
 		}
+
+		// Ausgabe-Puffer leeren.
+		// Damit wird direkt der Download-Dialig geöffnet
+		// und direkt an den Client gestreamt.
+		// hier keinesfalls ob_end_clean nutzen,
+		// da sonnst der TYPO3 compression handler umgangen
+		// und der output zerstört wird
+		ob_flush();
 	}
 
 	/**
@@ -80,6 +83,9 @@ class tx_mklib_mod1_export_Util {
 // 			}
 			echo $out;
 		}
+
+		// Ausgabe-Puffer leeren und den inhalt direkt an den client senden.
+		ob_flush();
 	}
 
 }
