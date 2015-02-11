@@ -117,7 +117,7 @@ abstract class tx_mklib_repository_Abstract
 	 * @param array $options
 	 * @return tx_rnbase_model_base
 	 */
-	public function searchSingle(array $fields, array $options) {
+	public function searchSingle(array $fields = array(), array $options = array()) {
 		$options['limit'] = 1;
 		$items =  $this->search($fields, $options);
 		return !empty($items[0]) ? $items[0] : NULL;
