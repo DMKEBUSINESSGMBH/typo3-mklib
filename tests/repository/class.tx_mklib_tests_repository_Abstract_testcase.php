@@ -608,7 +608,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$expectedFields = array('fields');
-		$expectedOptions = array('options');
+		$expectedOptions = array('orderby' => array(), 'limit' => 1);
 
 		$repository->expects($this->once())
 			->method('search')
@@ -617,7 +617,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$this->assertEquals(
 			'test',
-			$repository->searchSingle($expectedFields, $expectedOptions)
+			$repository->searchSingle($expectedFields, array('orderby' => array()))
 		);
 	}
 
@@ -630,7 +630,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$expectedFields = array('fields');
-		$expectedOptions = array('options');
+		$expectedOptions = array('orderby' => array(), 'limit' => 1);
 
 		$repository->expects($this->once())
 			->method('search')
@@ -638,7 +638,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 			->will($this->returnValue(array()));
 
 		$this->assertNull(
-			$repository->searchSingle($expectedFields, $expectedOptions)
+			$repository->searchSingle($expectedFields, array('orderby' => array()))
 		);
 	}
 }
