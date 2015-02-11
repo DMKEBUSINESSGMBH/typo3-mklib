@@ -598,4 +598,47 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		return $model;
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSearchSingleIfItemsFound() {
+		$repository = $this->getRepositoryMock(
+			array('search')
+		);
+
+		$expectedFields = array('fields');
+		$expectedOptions = array('options');
+
+		$repository->expects($this->once())
+			->method('search')
+			->with($expectedFields, $expectedOptions)
+			->will($this->returnValue(array(0 => 'test')));
+
+		$this->assertEquals(
+			'test',
+			$repository->searchSingle($expectedFields, $expectedOptions)
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSearchSingleIfNoItemsFound() {
+		$repository = $this->getRepositoryMock(
+			array('search')
+		);
+
+		$expectedFields = array('fields');
+		$expectedOptions = array('options');
+
+		$repository->expects($this->once())
+			->method('search')
+			->with($expectedFields, $expectedOptions)
+			->will($this->returnValue(array()));
+
+		$this->assertNull(
+			$repository->searchSingle($expectedFields, $expectedOptions)
+		);
+	}
 }

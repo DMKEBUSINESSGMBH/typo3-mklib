@@ -111,6 +111,18 @@ abstract class tx_mklib_repository_Abstract
 	}
 
 	/**
+	 * Search database
+	 *
+	 * @param array $fields
+	 * @param array $options
+	 * @return tx_rnbase_model_base
+	 */
+	public function searchSingle(array $fields, array $options) {
+		$items =  $this->search($fields, $options);
+		return !empty($items[0]) ? $items[0] : NULL;
+	}
+
+	/**
 	 * On default, return hidden and deleted fields in backend
 	 *
 	 * @param array &$fields
