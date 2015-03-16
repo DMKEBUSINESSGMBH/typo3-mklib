@@ -35,23 +35,23 @@ tx_rnbase::load('tx_rnbase_mod_IDecorator');
 
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  */
 class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
-	
+
 	/**
-	 * 
+	 *
 	 * @param 	tx_rnbase_mod_IModule 	$mod
 	 */
 	public function __construct(tx_rnbase_mod_IModule $mod) {
 		$this->mod = $mod;
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param 	string 					$value
 	 * @param 	string 					$colName
 	 * @param 	array 					$record
@@ -59,13 +59,13 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	 */
 	public function format($value, $colName, $record, tx_rnbase_model_base $item) {
 		$ret = $value;
-		
+
 		switch ($colName) {
 			case 'uid':
 				$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($item->getTableName(),  'disabled', 'hidden');
 				//fallback
 				$mRecordValue = $item->record[$sHiddenColumn] ?
-									$item->record[$sHiddenColumn] : 
+									$item->record[$sHiddenColumn] :
 									$record[$sHiddenColumn];
 				// @TODO: hier nicht lieber <del></del> nutzen?
 				$wrap = $mRecordValue ? array('<strike>','</strike>') : array('','');
@@ -74,27 +74,27 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 				$dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
 				$dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
 				$ret = "<span title=\"Creation: ".$dates['crdate']." \nLast Change: ".$dates['tstamp']." \">".$ret .'</span>';
-				
+
 				break;
-				
+
 			case 'crdate':
 			case 'tstamp':
 				$ret = strftime('%d.%m.%y %H:%M:%S', intval($ret));
-				
+
 				break;
-				
+
 			case 'actions':
 				$ret .= $this->getActions($item, $this->getActionOptions($item));
 				break;
-				
+
 			default:
 				$ret = $ret;
 				break;
 		}
-		
-		return $ret;
+
+		return $this->wrapValue($ret, $value, $colName, $record, $item);
 	}
-	
+
 	/**
 	 * Liefert die möglichen Optionen für die actions
 	 * @param tx_rnbase_model_base $item
@@ -105,19 +105,19 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 			'edit' => '',
 			'hide' => '',
 		);
-		
+
 		$userIsAdmin = is_object($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->isAdmin() : 0;
 		//admins dürfen auch löschen
 		if ($userIsAdmin)
 			$cols['remove'] = '';
-		
+
 		return $cols;
 	}
-	
+
 	/**
 	 * @TODO: weitere links integrieren!
 	 * $options = array('hide'=>'ausblenden,'edit'=>'bearbeiten,'remove'=>'löschen','history'='history','info'=>'info','move'=>'verschieben');
-	 * 
+	 *
 	 * @param 	tx_rnbase_model_base 	$item
 	 * @param 	array 					$options
 	 * @return 	string
@@ -128,25 +128,53 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 			switch($sLinkId) {
 				case 'edit':
 					$ret .= $this->getFormTool()->createEditLink($item->getTableName(), $item->getUid(), $bTitle);
-					break; 
+					break;
 				case 'hide':
 					$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($item->getTableName(), 'disabled', 'hidden');
 					$ret .= $this->getFormTool()->createHideLink($item->getTableName(), $item->getUid(), $item->record[$sHiddenColumn]);
 					break;
 				case 'remove':
 					//Es wird immer ein Bestätigungsdialog ausgegeben!!! Dieser steht
-					//in der BE-Modul locallang.xml der jeweiligen Extension im Schlüssel 
-					//'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein 
+					//in der BE-Modul locallang.xml der jeweiligen Extension im Schlüssel
+					//'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein
 					//Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
 					$ret .= $this->getFormTool()->createDeleteLink($item->getTableName(), $item->getUid(), $bTitle,array('confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')));
-					break; 
+					break;
 				default:
 					break;
 			}
 		}
 		return $ret;
 	}
-	
+
+	/**
+	 *
+	 * @param string $output
+	 * @return string
+	 */
+	protected function wrapValue(
+		$output,
+		$value,
+		$colName,
+		$record,
+		tx_rnbase_model_base $item
+	) {
+		$stateClass = array();
+
+		if ($item->isHidden()) {
+			$stateClass[] = 'ef-hidden';
+		}
+		if ($item->isDeleted()) {
+			$stateClass[] = 'ef-deleted';
+		}
+
+		if (!empty($stateClass)) {
+			$output = '<div class="' . implode(' ', $stateClass) . '">' . $output . '</div>';
+		}
+
+		return $output;
+	}
+
 
 
 	/**
@@ -159,7 +187,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_util_FormTool
 	 */
 	protected function getFormTool() {
