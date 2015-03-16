@@ -206,7 +206,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		for($i=1; $i<6; $i++) {
 			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
-		$this->assertRegExp('/"><strike>6<\/strike><\/span>/', $result, 'versteckter Wert 6 fehlt in Tabelle');
+		$this->assertRegExp('/"><del>6<\/del><\/span>/', $result, 'versteckter Wert 6 fehlt in Tabelle');
 
 		$this->assertEquals(6, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 	}

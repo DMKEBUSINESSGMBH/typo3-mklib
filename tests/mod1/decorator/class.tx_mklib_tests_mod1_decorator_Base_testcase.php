@@ -82,13 +82,13 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$record = array('uid' => 1, 'disable' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertRegExp('/<strike>1<\/strike>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
+		$this->assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 
 		//jetzt mit versteckt und ohne record fallback
 		$record = array('uid' => 1, 'disable' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertRegExp('/<strike>1<\/strike>/', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
+		$this->assertRegExp('/<del>1<\/del>/', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
 	}
 
 	public function testFormatWithUidColumnAndNoEnableColumnsConfig() {
@@ -115,7 +115,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$record = array('uid' => 1, 'hidden' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
-		$this->assertRegExp('/<strike>1<\/strike>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
+		$this->assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 	}
 
 	public function testFormatWithActionsColumnBeingAdminDoesReturnDeleteLink() {
@@ -138,11 +138,14 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$record = array('uid' => 1, 'disable' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
-		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0\');" href="#"><img src="sysext/t3skin/icons/gfx/button_hide.gif" width="16" height="16" title="Show UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 1" border="0" alt="" /></a>';
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpected);
-		$this->assertEquals($sExpected, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 2');
+		$this->assertContains('alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/edit2.gif"', $result);
+		$this->assertContains('tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/button_hide.gif"', $result);
+		$this->assertContains('tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/deletedok.gif"', $result);
+
 	}
 
 	public function testFormatWithActionsColumnBeingNoAdminDoesNotReturnDeleteLink() {
@@ -164,11 +167,11 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$record = array('uid' => 1, 'disable' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
-		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0\');" href="#"><img src="sysext/t3skin/icons/gfx/button_hide.gif" width="16" height="16" title="Show UID: 1" border="0" alt="" /></a>';
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpected);
-		$this->assertEquals($sExpected, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 2');
+		$this->assertContains('alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/edit2.gif"', $result);
+		$this->assertContains('tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/button_hide.gif"', $result);
 	}
 
 	public function testFormatWithActionsColumnAndNoEnableColumnConfigBeingAdmin() {
@@ -180,21 +183,25 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$record = array('uid' => 1, 'hidden' => 0);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
-		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 1" border="0" alt="" /></a>';
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpected);
-		$this->assertEquals($sExpected, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 1');
+		$this->assertContains('alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/edit2.gif"', $result);
+		$this->assertContains('tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=1', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/button_unhide.gif"', $result);
+		$this->assertContains('tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/deletedok.gif"', $result);
 
 		//schon versteckt
 		$record = array('uid' => 1, 'hidden' => 1);
 		$this->oModel->record = $record;
 		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
-		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=0\');" href="#"><img src="sysext/t3skin/icons/gfx/button_hide.gif" width="16" height="16" title="Show UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 1" border="0" alt="" /></a>';
-		tx_mklib_tests_mod1_Util::replaceForCli($sExpected);
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($sExpected);
-		$this->assertEquals($sExpected, $result, 'es wurde nicht der korrekte Wert zurück geliefert. 2');
+		$this->assertContains('alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/edit2.gif"', $result);
+		$this->assertContains('tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=0', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/button_hide.gif"', $result);
+		$this->assertContains('tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1', $result);
+		$this->assertContains('<img src="sysext/t3skin/icons/gfx/deletedok.gif"', $result);
 	}
 }
 
