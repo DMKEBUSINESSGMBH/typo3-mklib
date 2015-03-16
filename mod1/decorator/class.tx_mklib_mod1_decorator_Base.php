@@ -62,13 +62,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 
 		switch ($colName) {
 			case 'uid':
-				$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($item->getTableName(),  'disabled', 'hidden');
-				//fallback
-				$mRecordValue = $item->record[$sHiddenColumn] ?
-									$item->record[$sHiddenColumn] :
-									$record[$sHiddenColumn];
-				// @TODO: hier nicht lieber <del></del> nutzen?
-				$wrap = $mRecordValue ? array('<strike>','</strike>') : array('','');
+				$wrap = $item->isHidden() ? array('<del>','</del>') : array('','');
 				$ret = $wrap[0].$value.$wrap[1];
 				$dates = array();
 				$dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
