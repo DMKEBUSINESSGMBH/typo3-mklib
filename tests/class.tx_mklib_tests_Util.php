@@ -275,8 +275,17 @@ class tx_mklib_tests_Util {
 	 */
 	public static function setFeUserObject($oFeUser=null, $bForce=false) {
 		if(!($GLOBALS['TSFE']->fe_user instanceof tslib_feuserauth) || $bForce) {
-			$GLOBALS['TSFE']->fe_user = is_object($oFeUser) ?
-						$oFeUser : tx_rnbase::makeInstance('tslib_feuserauth');
+			if (!is_object($oFeUser)) {
+				if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+					$oFeUser = new  \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication();
+				} else {
+					$oFeUser = new tslib_feuserauth();
+				}
+			}
+			if (!is_object($GLOBALS['TSFE'])) {
+				$GLOBALS['TSFE'] = new stdClass();
+			}
+			$GLOBALS['TSFE']->fe_user = $oFeUser;
 		}
 	}
 	/**
