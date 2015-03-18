@@ -397,9 +397,9 @@ class tx_mklib_tests_Util {
 			 * Dort wird t3lib_userauth->logoff aufgerufen, da keine session vorhanden ist.
 			 * phpmyadmin klingt sich da ein und schreibt daten in die session.
 			 */
-			if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])){
-				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $k=>$v){
-					if($v = 'tx_phpmyadmin_utilities->pmaLogOff'){
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $k => $v) {
+					if ($v == 'tx_phpmyadmin_utilities->pmaLogOff') {
 						unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'][$k]);
 					}
 				}
