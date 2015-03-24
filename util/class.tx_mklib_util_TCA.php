@@ -516,7 +516,9 @@ class tx_mklib_util_TCA {
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			tx_rnbase::load('tx_rnbase_util_TSFAL');
 			// in DAM wurde immer noch _field beim Typ verlant, bei FAL nicht mehr
-			$options['type'] = str_replace('_field', '', $options['type']);
+			if (isset($options['type'])) {
+				$options['type'] = str_replace('_field', '', $options['type']);
+			}
 			return tx_rnbase_util_TSFAL::getMediaTCA($ref, $options);
 		} else {
 			return static::getDamMediaTCA($ref, $options);
