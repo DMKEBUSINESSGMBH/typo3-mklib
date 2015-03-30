@@ -168,8 +168,7 @@ abstract class tx_mklib_repository_Abstract
 			&& !isset($options['ignorei18n'])
 			&& !isset($options['enablefieldsoff'])
 		) {
-			$model = tx_rnbase::makeInstance($this->getWrapperClass(), array('uid' => 0));
-			$tableName = $model->getTableName();
+			$tableName = $this->getEmptyModel()->getTableName();
 			$languageField = tx_mklib_util_TCA::getLanguageField($tableName);
 			// Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
 			if (!empty($languageField)) {
@@ -251,11 +250,18 @@ abstract class tx_mklib_repository_Abstract
 	 ************************/
 
 	/**
-	 * Dummy model instance
+	 * Return an instantiated dummy model without any content
 	 *
-	 * @var tx_rnbase_model_base
+	 * This is used only to access several model info methods like
+	 * getTableName(), getColumnNames() etc.
+	 *
+	 * @deprecated
+	 * @return tx_rnbase_model_base
 	 */
-	protected $dummyModel;
+	protected function getDummyModel() {
+		t3lib_div::logDeprecatedFunction();
+		return $this->getEmptyModel();
+	}
 
 	/**
 	 * Return an instantiated dummy model without any content
@@ -265,13 +271,8 @@ abstract class tx_mklib_repository_Abstract
 	 *
 	 * @return tx_rnbase_model_base
 	 */
-	protected function getDummyModel() {
-		if (!$this->dummyModel) {
-			$this->dummyModel = tx_rnbase::makeInstance(
-				$this->getWrapperClass(), array('uid' => 0)
-			);
-		}
-		return $this->dummyModel;
+	protected function getEmptyModel() {
+		return tx_rnbase::makeInstance($this->getWrapperClass());
 	}
 
 	/**
@@ -296,7 +297,7 @@ abstract class tx_mklib_repository_Abstract
 	 * @return int	UID of just created record
 	 */
 	public function create(array $data) {
-		$model = $this->getDummyModel();
+		$model = $this->getEmptyModel();
 		$table = $model->getTableName();
 
 		tx_rnbase::load('tx_mklib_util_TCA');
@@ -435,7 +436,7 @@ abstract class tx_mklib_repository_Abstract
 	 * Clears the complete table.
 	 */
 	public function truncate() {
-		$table = $this->getDummyModel()->getTableName();
+		$table = $this->getEmptyModel()->getTableName();
 		tx_rnbase::load('tx_mklib_util_DB');
 		return tx_mklib_util_DB::doQuery('TRUNCATE TABLE ' . $table);
 	}

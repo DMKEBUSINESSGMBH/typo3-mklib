@@ -120,6 +120,25 @@ class tx_mklib_util_MiscTools {
 		$remoteAddress = trim(strcmp($remoteAddress, '') ? $remoteAddress : t3lib_div::getIndpEnv('REMOTE_ADDR'));
 		return t3lib_div::cmpIP($remoteAddress, $devIPmask);
 	}
+
+	/**
+	 * workaround for HTTP authorization in CGI environment
+	 *
+	 * Requires Redirect in .htaccess:
+	 *   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+	 *
+	 */
+	public static function enableHttpAuthForCgi(){
+		if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+			list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
+				explode(
+					':' ,
+					base64_decode(
+						substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)
+					)
+				);
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php']) {
