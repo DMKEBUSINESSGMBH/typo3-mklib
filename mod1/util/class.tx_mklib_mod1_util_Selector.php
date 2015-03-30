@@ -29,6 +29,7 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Die Klasse stellt Auswahlmenus zur Verfügung
@@ -276,7 +277,7 @@ class tx_mklib_mod1_util_Selector {
 		}
 		return $out;
 	}
-	
+
 	/**
 	 * @param 	array 	$out 				HTML string
 	 * @param 	string 	$key 				mod key
@@ -284,19 +285,19 @@ class tx_mklib_mod1_util_Selector {
 	 */
 	public function showDateRangeSelector (&$out, $key) {
 		$this->loadAdditionalJsForDatePicker();
-		
+
 		$fromValue = $this->getDateFieldByKey($key . '_from', $out);
 		$toValue = $this->getDateFieldByKey($key . '_to', $out);
 		$out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_daterange');
-		
+
 		$this->setValueToModuleData(
 			$this->getMod()->getName(),
 			array($key . '_from' => $fromValue, $key . '_to' => $toValue)
 		);
-		
+
 		return $this->getCrDateReturnArray($fromValue, $toValue);
 	}
-	
+
 	/**
 	 * @return void
 	 */
@@ -305,25 +306,35 @@ class tx_mklib_mod1_util_Selector {
 		$this->getMod()->getDoc()->getPageRenderer()->loadExtJS();
 		$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
 		$this->getFormTool()->getTCEForm()->loadJavascriptLib('jsfunc.tbe_editor.js');
-		
+
 		$typo3Settings = array(
 			'datePickerUSmode' => 0,
 			'dateFormat' => array('d-m-Y', 'G:i j-n-Y'),
 			'dateFormatUS' => array('n-j-Y', 'G:i n-j-Y'),
 		);
 		$this->getMod()->getDoc()->getPageRenderer()->addInlineSettingArray('', $typo3Settings);
-		$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
-		$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
+
+		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+			$this->getMod()->getDoc()->getPageRenderer()->addJsFile(
+				"sysext/backend/Resources/Public/JavaScript/tceforms.js"
+			);
+			$this->getMod()->getDoc()->getPageRenderer()->addJsFile(
+				"js/extjs/ux/Ext.ux.DateTimePicker.js"
+			);
+		} else {
+			$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/js/extjs/ux/Ext.ux.DateTimePicker.js');
+			$this->getFormTool()->getTCEForm()->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
+		}
 	}
-	
+
 	/**
 	 * @param string $key
-	 * 
+	 *
 	 * @return string gewählte zeit in d-m-Y
 	 */
 	private function getDateFieldByKey($key, &$out) {
 		$value = isset($_POST[$key]) ? t3lib_div::_GP($key) : $this->getValueFromModuleData($key);
-		 
+
 		$out['field'] .= '<input name="' . $key . '" type="text" id="tceforms-datefield-' . $key . '" value="' . $value . '" />' .
 			t3lib_iconWorks::getSpriteIcon(
 				'actions-edit-pick-date',
@@ -332,14 +343,14 @@ class tx_mklib_mod1_util_Selector {
 					'id' => 'picker-tceforms-datefield-' . $key
 				)
 			);
-		
+
 		return $value;
 	}
-	
+
 	/**
 	 * @param string $fromValue d-m-Y
 	 * @param string $toValue d-m-Y
-	 * 
+	 *
 	 * @return array[to => int, from => int]
 	 */
 	private function getCrDateReturnArray($fromValue, $toValue) {
@@ -347,21 +358,21 @@ class tx_mklib_mod1_util_Selector {
 		$fromTimestamp = tx_rnbase_util_Dates::date_mysql2tstamp(
 			tx_rnbase_util_Dates::date_german2mysql($fromValue)
 		);
-		
+
 		$toTimestamp = tx_rnbase_util_Dates::date_mysql2tstamp(
 			tx_rnbase_util_Dates::date_german2mysql($toValue)
 		);
-		
+
 		if($toTimestamp) {
 			$toTimestamp = $this->moveTimestampToTheEndOfTheDay($toTimestamp);
 		}
-		
+
 		return array('from' => $fromTimestamp, 'to' => $toTimestamp);
 	}
-	
+
 	/**
 	 * @param int $timestamp
-	 * 
+	 *
 	 * @return int
 	 */
 	private function moveTimestampToTheEndOfTheDay($timestamp) {
