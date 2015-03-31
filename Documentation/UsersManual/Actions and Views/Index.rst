@@ -24,3 +24,4 @@ Base Frontend Plugins for the rn_base framework. Don't forget to include the sta
    List Base
    Abstract List
    Generic List
+   Show Single Item

@@ -76,7 +76,8 @@ TypoScript example configuration
           itempath = dataset
           markerclass = Tx_Myext_Marker_Dataset
           ### alternative HTML marker subpart. 
-          ### if not configured the action configuration ID is used
+          ### if not configured the action configuration ID is used. In this
+          ### case ###LISTDATASETS###
           #subpart = ###PROJECTLIST###
       }
       ### the TypoScript configuration for every dataset
