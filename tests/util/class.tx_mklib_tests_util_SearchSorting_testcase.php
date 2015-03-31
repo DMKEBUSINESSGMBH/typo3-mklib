@@ -36,7 +36,7 @@ tx_rnbase::load('tx_mklib_util_SearchSorting');
 class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting {
 	private static $test = false;
 	public static $data = array(
-				'tableAliases' => '', 'joinedFields' => '', 
+				'tableAliases' => '', 'joinedFields' => '',
 				'customFields' => '', 'options' => '',
 			);
 	public static function registerSortingAliases(array $tableAliases){
@@ -67,9 +67,9 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting {
  * @subpackage tx_mklib_tests_util
  */
 class tx_mklib_tests_util_SearchSorting_testcase extends tx_phpunit_testcase {
-	
+
 	private static $hooks = array();
-	
+
 	public function setUp() {
 		// alle vorherigen hooks löschen
 		self::$hooks = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'];
@@ -80,7 +80,7 @@ class tx_mklib_tests_util_SearchSorting_testcase extends tx_phpunit_testcase {
 	public function tearDown () {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'] = self::$hooks;
 	}
-	
+
 	/**
 	 * Testen ob der Hook richtig registriert wurde und ordenltich aufgerufen wird.
 	 */
@@ -89,26 +89,49 @@ class tx_mklib_tests_util_SearchSorting_testcase extends tx_phpunit_testcase {
 		$isHook = tx_mklib_util_testSearchSorting::callHook(true);
 		$this->assertTrue($isHook, 'Der Hook wurde nicht richtig registriert oder aufgerufen.');
 	}
-	
+
 	/**
 	 * Füllt der Hook die options richtig?
 	 */
 	public function testAddSorting(){
-		$tableAliases = array('TESTALIAS'=>array(), 'ALIAS3'=>array());
+		$tableAliases = array('TESTALIAS'=>array(), 'ALIAS3'=>array(), 'ALIAS4'=>array());
 		$options = array();
+		$tableMappings = array(
+			'table1' => 'ALIAS4'
+		);
 		tx_mklib_util_testSearchSorting::$data = array(
-				'tableAliases' => &$tableAliases, 'joinedFields' => '', 
+				'tableAliases' => &$tableAliases, 'joinedFields' => '',
 				'customFields' => '', 'options' => &$options,
+				'tableMappings' => $tableMappings
 			);
-		tx_mklib_util_testSearchSorting::registerSortingAliases(array('TESTALIAS', 'ALIAS2', 'ALIAS3' => 'title'));
+		tx_mklib_util_testSearchSorting::registerSortingAliases(
+			array(
+				'TESTALIAS', 'ALIAS2', 'ALIAS3' => 'title',
+				'ALIAS4.table1' => 'sorting', 'ALIAS4.table2' => 'sorting2'
+			)
+		);
 		tx_mklib_util_testSearchSorting::callHook();
-		
+
 		$this->assertTrue(is_array($options['orderby']), 'orderby wurde nicht gesetzt.');
-		$this->assertTrue(count($options['orderby']) === 2, 'Falsche anzahl an orderbys.');
-		$this->assertTrue(array_key_exists('TESTALIAS.sorting', $options['orderby']), 'orderby TESTALIAS.sorting wurde nicht gesetzt.');
-		$this->assertTrue(array_key_exists('ALIAS3.title', $options['orderby']), 'orderby ALIAS3.title wurde nicht gesetzt.');
+		$this->assertCount(3, $options['orderby'], 'Falsche anzahl an orderbys.');
+		$this->assertArrayHasKey(
+			'TESTALIAS.sorting', $options['orderby'],
+			'orderby TESTALIAS.sorting wurde nicht gesetzt.'
+		);
+		$this->assertArrayHasKey(
+			'ALIAS3.title', $options['orderby'],
+			'orderby ALIAS3.title wurde nicht gesetzt.'
+		);
+		$this->assertArrayHasKey(
+			'ALIAS4.sorting', $options['orderby'],
+			'orderby ALIAS4.sorting wurde nicht gesetzt.'
+		);
+		$this->assertArrayNotHasKey(
+			'ALIAS4.sorting2', $options['orderby'],
+			'orderby ALIAS4.sorting2 wurde doch gesetzt.'
+		);
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_SearchSorting_testcase.php']) {
