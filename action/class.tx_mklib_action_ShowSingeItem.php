@@ -36,12 +36,16 @@ tx_rnbase::load('tx_rnbase_action_BaseIOC');
 abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_action_BaseIOC::handleRequest()
+	 * Do the magic!
+	 *
+	 * @param tx_rnbase_IParameters &$parameters
+	 * @param tx_rnbase_configurations &$configurations
+	 * @param ArrayObject &$viewdata
+	 * @return string Errorstring or NULL
 	 */
 	protected function handleRequest(&$parameters, &$configurations, &$viewdata) {
 		$itemParameterKey = $this->getSingleItemUidParameterKey();
-		if(!$itemUid = $parameters->getInt($itemParameterKey)) {
+		if (!($itemUid = $parameters->getInt($itemParameterKey))) {
 			$this->throwItemNotFound404Exception();
 		}
 
@@ -53,16 +57,19 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 			);
 		}
 
-		if (!($recipe = $singleItemRepository->findByUid($itemUid))) {
+		if (!($item = $singleItemRepository->findByUid($itemUid))) {
 			$this->throwItemNotFound404Exception();
 		}
 
-		$viewdata->offsetSet('item', $recipe);
+		$viewdata->offsetSet('item', $item);
+
+		return NULL;
 	}
 
 	/**
 	 * der Parameter Name für die Item UID.
 	 * default ist uid, bei Bedarf überschreiben!
+	 *
 	 * @return string
 	 */
 	protected function getSingleItemUidParameterKey() {
@@ -85,15 +92,23 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 	}
 
 	/**
+	 * The message cann be stored at
+	 * typoscript: "plugin.tx_myext.myaction.notfound"
+	 * or locallang: "myaction_notfound"
+	 *
 	 * @return string
 	 */
 	protected function getItemNotFound404Message() {
-		return 'Datensatz nicht gefunden.';
+		$msg = $this->getConfigurations()->getCfgOrLL(
+			$this->getConfId() . 'notfound'
+		);
+		return empty($msg) ? 'Datensatz nicht gefunden.' : $msg;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_action_BaseIOC::getViewClassName()
+	 * Liefert den Namen der View-Klasse
+	 *
+	 * @return string
 	 */
 	protected function getViewClassName() {
 		return 'tx_rnbase_view_Single';
