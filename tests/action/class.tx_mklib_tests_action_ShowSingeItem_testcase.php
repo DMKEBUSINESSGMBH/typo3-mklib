@@ -39,8 +39,11 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 	/**
 	 * @group unit
 	 */
-	public function testGetSingleItemUidParameterKey() {
+	public function testGetSingleItemUidParameterKeyIfNoneConfigured() {
 		$action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
+		$configurations = $this->createConfigurations(array(), 'mklib');
+		$action->setConfigurations($configurations);
+
 		$this->assertEquals(
 			'uid',
 			$this->callInaccessibleMethod(
@@ -53,10 +56,65 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 	/**
 	 * @group unit
 	 */
-	public function testGetItemNotFound404Message() {
+	public function testGetSingleItemUidParameterKeyIfOneConfigured() {
+		$action = $this->getMockForAbstractClass(
+			'tx_mklib_action_ShowSingeItem',
+			array(), '', TRUE, TRUE, TRUE,
+			array('getConfId')
+		);
+		$action->expects($this->once())
+			->method('getConfId')
+			->will($this->returnValue('myAction.'));
+		$configurations = $this->createConfigurations(
+			array('myAction.' => array('uidParameterKey' => 'item')), 'mklib'
+		);
+		$action->setConfigurations($configurations);
+
+		$this->assertEquals(
+			'item',
+			$this->callInaccessibleMethod(
+				$action,
+				'getSingleItemUidParameterKey'
+			)
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetItemNotFound404MessageIfNoMessageConfiguredInConfigurations() {
 		$action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
+		$configurations = $this->createConfigurations(array(), 'mklib');
+		$action->setConfigurations($configurations);
+
 		$this->assertEquals(
 			'Datensatz nicht gefunden.',
+			$this->callInaccessibleMethod(
+				$action,
+				'getItemNotFound404Message'
+			)
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetItemNotFound404MessageIfMessageConfiguredInConfigurations() {
+		$action = $this->getMockForAbstractClass(
+			'tx_mklib_action_ShowSingeItem',
+			array(), '', TRUE, TRUE, TRUE,
+			array('getConfId')
+		);
+		$action->expects($this->once())
+			->method('getConfId')
+			->will($this->returnValue('myAction.'));
+		$configurations = $this->createConfigurations(
+			array('myAction.' => array('notfound' => 'Model nicht gefunden.')), 'mklib'
+		);
+		$action->setConfigurations($configurations);
+
+		$this->assertEquals(
+			'Model nicht gefunden.',
 			$this->callInaccessibleMethod(
 				$action,
 				'getItemNotFound404Message'
@@ -71,6 +129,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 	 */
 	public function testThrowItemNotFound404Exception() {
 		$action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
+		$configurations = $this->createConfigurations(array(), 'mklib');
+		$action->setConfigurations($configurations);
 		$this->callInaccessibleMethod($action, 'throwItemNotFound404Exception');
 	}
 
@@ -203,6 +263,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			array(), 'mklib', 'mklib', $parameters
 		);
 		$viewData = $configurations->getViewData();
+		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
 			$action, 'handleRequest', $parameters, $configurations, $viewData

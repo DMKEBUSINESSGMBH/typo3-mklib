@@ -12,7 +12,7 @@ Show Single Item
 ================
 
 This abstract base class offers the possibility to have a rn_base single view on base of the
-mklib abstract repository class to display a single database records. 
+mklib abstract repository class to display a single database records.
 The following methods have to be implemented in deriving actions.
 
 getSingleItemRepository
@@ -29,12 +29,17 @@ The message when the item could not be found.
 
 Defaults to "Datensatz nicht gefunden."
 
+Can be configured with TypoScript in the path "plugin.tx_myext.myActionConfId.notfound"
+or in the loaded locallang with the key "myActionConfId_notfound".
+
 getSingleItemUidParameterKey
 ----------------------------
 
-The parameter key with the uid to show. 
+The parameter key with the uid to show.
 
 Defaults to "uid" in the qualifier namespace, for example myext[uid]
+
+Can be configured with TypoScript in the path "plugin.tx_myext.myActionConfId.uidParameterKey"
 
 deriving class example
 ----------------------
@@ -80,6 +85,9 @@ TypoScript example configuration
       ### is configured with template.itempath 
       dataset{
       }
+      
+      uidParameterKey = myOwnParameterKey
+      notfound = Dataset could not be found.
    }
    
 Example temlpate

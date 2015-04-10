@@ -67,13 +67,17 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 	}
 
 	/**
-	 * der Parameter Name für die Item UID.
-	 * default ist uid, bei Bedarf überschreiben!
+	 * The parameter key can be stored at
+	 * typoscript: "plugin.tx_myext.myActionConfId.uidParameterKey"
+	 * default is: uid
 	 *
 	 * @return string
 	 */
 	protected function getSingleItemUidParameterKey() {
-		return 'uid';
+		$uidParameterKey = $this->getConfigurations()->get(
+			$this->getConfId() . 'uidParameterKey'
+		);
+		return empty($uidParameterKey) ? 'uid' : $uidParameterKey;
 	}
 
 	/**
@@ -92,22 +96,22 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 	}
 
 	/**
-	 * The message cann be stored at
-	 * typoscript: "plugin.tx_myext.myaction.notfound"
-	 * or locallang: "myaction_notfound"
+	 * The message can be stored at
+	 * typoscript: "plugin.tx_myext.myActionConfId.notfound"
+	 * or locallang: "myActionConfId_notfound"
+	 *
+	 * default is: Datensatz nicht gefunden.
 	 *
 	 * @return string
 	 */
 	protected function getItemNotFound404Message() {
-		$msg = $this->getConfigurations()->getCfgOrLL(
+		$message = $this->getConfigurations()->getCfgOrLL(
 			$this->getConfId() . 'notfound'
 		);
-		return empty($msg) ? 'Datensatz nicht gefunden.' : $msg;
+		return empty($message) ? 'Datensatz nicht gefunden.' : $message;
 	}
 
 	/**
-	 * Liefert den Namen der View-Klasse
-	 *
 	 * @return string
 	 */
 	protected function getViewClassName() {
