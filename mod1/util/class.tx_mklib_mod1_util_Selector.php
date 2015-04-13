@@ -281,9 +281,10 @@ class tx_mklib_mod1_util_Selector {
 	/**
 	 * @param 	array 	$out 				HTML string
 	 * @param 	string 	$key 				mod key
+	 * @param 	array 	$options 			some options like label
 	 * @return 	array[to => int, from => int]
 	 */
-	public function showDateRangeSelector (&$out, $key) {
+	public function showDateRangeSelector (&$out, $key, $options = array()) {
 		$this->loadAdditionalJsForDatePicker();
 
 		$fromValue = $this->getDateFieldByKey($key . '_from', $out);
