@@ -358,6 +358,40 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals($expectedLinkWizard, $linkWizard, 'link wizard nicht korrekt');
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetWizardsReturnsWizardsWithCorrectScriptOrModuleKey() {
+		$wizards = tx_mklib_util_TCA::getWizards(
+			'', array(
+				'add' => 1,
+				'edit' => 1,
+				'list' => 1,
+				'RTE' => 1
+			)
+		);
+
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$this->assertArrayNotHasKey('script', $wizards['add']);
+			$this->assertArrayNotHasKey('script', $wizards['edit']);
+			$this->assertArrayNotHasKey('script', $wizards['list']);
+			$this->assertArrayNotHasKey('script', $wizards['RTE']);
+			$this->assertEquals('wizard_add', $wizards['add']['module']['name']);
+			$this->assertEquals('wizard_edit', $wizards['edit']['module']['name']);
+			$this->assertEquals('wizard_list', $wizards['list']['module']['name']);
+			$this->assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
+		} else {
+			$this->assertArrayNotHasKey('module', $wizards['add']);
+			$this->assertArrayNotHasKey('module', $wizards['edit']);
+			$this->assertArrayNotHasKey('module', $wizards['list']);
+			$this->assertArrayNotHasKey('module', $wizards['RTE']);
+			$this->assertEquals('wizard_add.php', $wizards['add']['script']);
+			$this->assertEquals('wizard_edit.php', $wizards['edit']['script']);
+			$this->assertEquals('wizard_list.php', $wizards['list']['script']);
+			$this->assertEquals('wizard_rte.php', $wizards['RTE']['script']);
+		}
+	}
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']) {

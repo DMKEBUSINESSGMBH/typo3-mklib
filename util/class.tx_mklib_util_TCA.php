@@ -30,6 +30,7 @@
  * benötigte Klassen einbinden
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Util Methoden für die TCA.
@@ -301,10 +302,10 @@ class tx_mklib_util_TCA {
 				'type' => 'popup',
 				'title' => 'Edit entry', // LLL:EXT:mketernit/locallang.
 				'icon' => 'edit2.gif',
-				'script' => 'wizard_edit.php',
 				'popup_onlyOpenIfSelected' => 1,
 				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
 			);
+			$wizards['edit'] = self::addWizardScriptForTypo3Version('edit', $wizards['edit']);
 			if (is_array($options['edit'])) {
 				$wizards['edit'] =
 					t3lib_div::array_merge_recursive_overrule(
@@ -323,8 +324,8 @@ class tx_mklib_util_TCA {
 					'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
 					'setValue' => 'prepend',
 				),
-				'script' => 'wizard_add.php',
 			);
+			$wizards['add'] = self::addWizardScriptForTypo3Version('add', $wizards['add']);
 			if (is_array($options['add'])) {
 				$wizards['add'] =
 					t3lib_div::array_merge_recursive_overrule(
@@ -342,9 +343,9 @@ class tx_mklib_util_TCA {
 					'table' => $sTable,
 					'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
 				),
-				'script' => 'wizard_list.php',
 				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
 			);
+			$wizards['list'] = self::addWizardScriptForTypo3Version('list', $wizards['list']);
 			if (is_array($options['list'])) {
 				$wizards['list'] =
 					t3lib_div::array_merge_recursive_overrule(
@@ -376,8 +377,8 @@ class tx_mklib_util_TCA {
 				'type' => 'script',
 				'title' => 'Full screen Rich Text Editing',
 				'icon' => 'wizard_rte2.gif',
-				'script' => 'wizard_rte.php',
 			);
+			$wizards['RTE'] = self::addWizardScriptForTypo3Version('rte', $wizards['RTE']);
 		}
 
 		if(isset($options['link'])) {
@@ -400,6 +401,22 @@ class tx_mklib_util_TCA {
 		}
 
 		return $wizards;
+	}
+
+	/**
+	 * @param string $wizardType
+	 * @param array $wizardConfig
+	 * @return array
+	 */
+	private static function addWizardScriptForTypo3Version($wizardType, array $wizardConfig) {
+		$completeWizardName = 'wizard_' . $wizardType;
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$wizardConfig['module']['name'] = $completeWizardName;
+		} else {
+			$wizardConfig['script'] = $completeWizardName . '.php';
+		}
+
+		return $wizardConfig;
 	}
 
 	/**
