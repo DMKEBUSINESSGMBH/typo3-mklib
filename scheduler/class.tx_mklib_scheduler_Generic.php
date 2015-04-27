@@ -79,6 +79,8 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 		*/
 		$devLog = array();
 		$options = $this->getOptions();
+		$startTime = microtime(TRUE);
+		$memoryUsageAtStart = memory_get_usage();
 
 		tx_rnbase_util_Logger::info(
 			'[' . get_class($this) . ']: Scheduler starts', $this->getExtKey()
@@ -151,9 +153,16 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			throw $exception;
 		}
 
+		$memoryUsageAtEnd = memory_get_usage();
 		tx_rnbase_util_Logger::info(
 			'[' . get_class($this) . ']: Scheduler ends successful ',
-			$this->getExtKey()
+			$this->getExtKey(),
+			array(
+				'Execution Time' => (microtime(TRUE) - $startTime) . ' ms',
+				'Memory Start' => $memoryUsageAtStart . ' Bytes',
+				'Memory End' => $memoryUsageAtEnd . ' Bytes',
+				'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart) . ' Bytes',
+			)
 		);
 
 		return true;
