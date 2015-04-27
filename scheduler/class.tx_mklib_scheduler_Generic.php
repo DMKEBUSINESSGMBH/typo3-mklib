@@ -79,7 +79,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 		*/
 		$devLog = array();
 		$options = $this->getOptions();
-		$startTime = microtime(TRUE);
+		$startTimeInMilliseconds = t3lib_div::milliseconds();
 		$memoryUsageAtStart = memory_get_usage();
 
 		tx_rnbase_util_Logger::info(
@@ -158,7 +158,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			'[' . get_class($this) . ']: Scheduler ends successful ',
 			$this->getExtKey(),
 			array(
-				'Execution Time' => (microtime(TRUE) - $startTime) . ' ms',
+				'Execution Time' => (t3lib_div::milliseconds() - $startTimeInMilliseconds) . ' ms',
 				'Memory Start' => $memoryUsageAtStart . ' Bytes',
 				'Memory End' => $memoryUsageAtEnd . ' Bytes',
 				'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart) . ' Bytes',
