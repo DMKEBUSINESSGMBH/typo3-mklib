@@ -48,7 +48,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider
 				'type' => 'input',
  				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
 				'default' => $GLOBALS['BE_USER']->user['email'], // default is 7 days
-				'eval' => 'email',
+				'eval' => 'email,required',
 			),
 			'threshold' => array(
 				'type' => 'input',
