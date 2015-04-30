@@ -202,7 +202,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 
 					// wir generieren nur eine meldung pro feld!
 					if($bMessage) {
-						continue;
+						break;
 					}
 				}
 			}
