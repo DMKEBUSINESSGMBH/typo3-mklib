@@ -61,6 +61,8 @@ return array(
 	'tx_mklib_scheduler_genericfieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php',
 	'tx_mklib_scheduler_schedulertaskfreezedetection' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetection.php',
 	'tx_mklib_scheduler_schedulertaskfreezedetectionfieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php',
+	'tx_mklib_scheduler_schedulertaskfaildetection' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_SchedulerTaskFailDetection.php',
+	'tx_mklib_scheduler_schedulertaskfaildetectionfieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_SchedulerTaskFailDetectionFieldProvider.php',
 	'tx_mklib_scheduler_deletefromdatabase' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_DeleteFromDatabase.php',
 	'tx_mklib_scheduler_deletefromdatabasefieldprovider' => $extensionPath . 'scheduler/class.tx_mklib_scheduler_DeleteFromDatabaseFieldProvider.php',
 );

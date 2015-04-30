@@ -25,6 +25,7 @@
 			<label index="scheduler_SchedulerTaskFreezeDetection_taskinfo">Prüft ob aktuell Scheduler Tasks laufen, die schon seit längerer Zeit laufen und somit scheinbar hängen geblieben sind.</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_receiver">Empfänger der Meldungen</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_receiver_eval_email">Bitte eine korrekte Mail Addresse eintragen</label>
+			<label index="scheduler_SchedulerTaskFreezeDetection_field_receiver_eval_required">Bitte eine Mail Addresse eintragen</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_threshold">maximal erlaubte Tasklaufdauer bis Freeze Detection</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_int">Bitte eine Zahl (Sekunden), als Tasklaufdauer bis Freeze Detection eintritt, eintragen</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold">Die maximal erlaubte Tasklaufdauer darf nicht kleiner als 10 Sekunden sein.</label>
@@ -48,6 +49,9 @@
 			<label index="scheduler_DeleteFromDatabase_field_table">Tabelle</label>
 			<label index="scheduler_DeleteFromDatabase_field_selectFields">selektierte Felder (falls nicht nur UID Feld; hautpsächlich interessant fürs Logging)</label>
 			<label index="scheduler_DeleteFromDatabase_field_uid">Feld der UID (falls abweichend - wird benötigt zum löschen)</label>
+			
+			<label index="scheduler_SchedulerTaskFailDetection_name">Fehlgeschlagene Scheduler Tasks melden</label>
+			<label index="scheduler_SchedulerTaskFailDetection_taskinfo">Prüft ob aktuell Scheduler Tasks fehlgeschlagen sind, die schon seit längerer Zeit laufen und somit scheinbar hängen geblieben sind.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 		</languageKey>
