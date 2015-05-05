@@ -26,6 +26,7 @@ require_once (t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_scheduler_Generic');
 tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_mklib_util_Scheduler');
 
 /**
  *
@@ -172,34 +173,12 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 
 		foreach($this->aOptionsToFormat as $sOption) {
 			if(isset($aOptions[$sOption]))
-				$aOptions[$sOption] = $this->getFormattedTime($aOptions[$sOption]);
+				$aOptions[$sOption] = tx_mklib_util_Scheduler::getFormattedTime(
+					$aOptions[$sOption]
+				);
 		}
 
 		return $aOptions;
-	}
-
-	/**
-	 * formatiert die sekunden als eine leserliche ausgabe
-	 * wie 1 minute 30 sekunden
-	 *
-	 * @param integer $iSeconds
-	 */
-	protected function getFormattedTime($iSeconds) {
-		$aTime = array();
-		$aTime['hours'] = floor($iSeconds/3600);
-		$aTime['minutes'] = floor(($iSeconds-$aTime['hours']*3600)/60);
-		$aTime['seconds'] = $iSeconds-$aTime['hours']*3600-$aTime['minutes'] *60;
-
-		$sFormattedTime = '';
-		foreach ($aTime as $sTimePart => $iValue) {
-			if($iValue < 1) continue; //null wollen wir nicht sehen
-			//else
-			$sLabelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_' .
-									$sTimePart . '_' . (($iValue > 1) ? 'plural' : 'singular');
-			$sFormattedTime .= sprintf('%01d', $iValue) . ' ' . $GLOBALS['LANG']->sL($sLabelKey) . ' ';
-		}
-
-		return $sFormattedTime;
 	}
 }
 
