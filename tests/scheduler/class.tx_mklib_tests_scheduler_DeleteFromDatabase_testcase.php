@@ -207,7 +207,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	/**
 	 * @param string $databaseUtility
 	 *
-	 * @return Tx_Mkdifu_Scheduler_MoveNewsletterRecipientsFromFeUsersToTtAddress
+	 * @return tx_mklib_scheduler_DeleteFromDatabase
 	 */
 	private function getSchedulerByDbUtil($databaseUtility) {
 		$scheduler = $this->getMock(
