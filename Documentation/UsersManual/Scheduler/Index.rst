@@ -15,5 +15,6 @@ Scheduler
 
    CleanUpTempFiles
    SchedulerTaskFreezeDetection
+   SchedulerTaskFailDetection
    DeleteFromDatabase
    Generic
