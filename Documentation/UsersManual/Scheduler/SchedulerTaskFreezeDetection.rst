@@ -3,10 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../Includes.txt
 
-
-.. _users-manual:
 
 Check for frozen scheduler tasks
 ================================

@@ -3,10 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../Includes.txt
 
-
-.. _users-manual:
 
 tx_mklib_filter_SingleItem
 ==========================

@@ -3,10 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../Includes.txt
 
-
-.. _users-manual:
 
 Export handler
 ==============
@@ -157,6 +154,6 @@ Performance
 -----------
 To hit memory limits not during large exports a special list builder was developed. This
 one doesn't render the complete template and than sents it to the browser. Instead the data is
- directly sent to the browser and memory is freed up.
+directly sent to the browser and memory is freed up.
 Nothing the less script execution timeouts can happen. But this depends on the marker classes and the
 complexity of data. For the export the limit should be deactivated or raised.

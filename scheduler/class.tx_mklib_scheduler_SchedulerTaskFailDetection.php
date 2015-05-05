@@ -25,6 +25,7 @@
 require_once (t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_scheduler_Generic');
 tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('tx_mklib_util_Scheduler');
 
 /**
  * tx_mklib_scheduler_SchedulerTaskFailDetection
@@ -43,7 +44,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 	 *
 	 * @var array
 	 */
-	protected $optionsToFormat = array('rememberAfter');
+	protected $optionsToFormat = array('failDetectionRememberAfter');
 
 	/**
 	 * (non-PHPdoc)
@@ -65,11 +66,19 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 	 * @return void
 	 */
 	protected function resetFailedTasksDetection() {
-		tx_rnbase_util_DB::doUpdate(
+		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility::doUpdate(
 			'tx_scheduler_task',
 			'faildetected < ' . ($GLOBALS['EXEC_TIME'] - $this->getOption('failDetectionRememberAfter')),
 			array('faildetected' => 0)
 		);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getDatabaseUtility() {
+		return tx_mklib_util_DB;
 	}
 
 	/**
@@ -89,15 +98,14 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 		}
 
 		//wir bauen eine exception damit die error mail von rnbase gebaut werden kann
-		$message = '
-			Die folgenden Scheduler Tasks sind fehlgeschlagen : ' .
-			implode(', ', $messages);
+		$message = 	'Die folgenden Scheduler Tasks sind fehlgeschlagen : ' .
+					implode(', ', $messages);
 
 		$exception = new Exception($message, 0);
-		tx_rnbase::load('tx_rnbase_util_Misc');
 		//die Mail soll immer geschickt werden
-		$options = array('ignoremaillock' => true);
-		tx_rnbase_util_Misc::sendErrorMail(
+		$options = array('ignoremaillock' => TRUE);
+		$miscUtility = $this->getMiscUtility();
+		$miscUtility::sendErrorMail(
 			$this->getOption('failDetectionReceiver'),
 			'tx_mklib_scheduler_SchedulerTaskFailDetection',
 			$exception,
@@ -106,14 +114,24 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 
 		$this->setFailDetected($uids);
 
-		return $sMsg;
+		return $message;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getMiscUtility() {
+		tx_rnbase::load('tx_rnbase_util_Misc');
+		return tx_rnbase_util_Misc;
 	}
 
 	/**
 	 * @param array $uids
+	 * @return void
 	 */
-	protected function setFailDetected($uids) {
-		tx_rnbase_util_DB::doUpdate(
+	protected function setFailDetected(array $uids) {
+		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility::doUpdate(
 			'tx_scheduler_task',
 			'uid IN (' . implode(',',$uids) . ')',
 			array('faildetected' => $GLOBALS['EXEC_TIME'])
@@ -128,17 +146,17 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 		$selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
 			'uid,serialized_task_object' :
 			'uid,classname';
-		return tx_rnbase_util_DB::doSelect(
+		$databaseUtility = $this->getDatabaseUtility();
+		return $databaseUtility::doSelect(
 			$selectFields,
 			'tx_scheduler_task',
 			array(
 				//hat keine TCA
-				'enablefieldsoff' => true,
+				'enablefieldsoff' => TRUE,
 				//nicht unser eigener Task und alle mit Fehler
-				'where' => '
-					uid != ' . intval($this->taskUid) . ' AND
-					faildetected = 0 AND
-					lastexecution_failure != ""'
+				'where' => 	'uid != ' . intval($this->taskUid) . ' AND ' .
+							'faildetected = 0 AND' .
+							'lastexecution_failure != ""'
 			)
 		);
 	}
@@ -154,34 +172,12 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 
 		foreach($this->optionsToFormat as $option) {
 			if(isset($options[$option]))
-				$options[$option] = $this->getFormattedTime($options[$option]);
+				$options[$option] = tx_mklib_util_Scheduler::getFormattedTime(
+					$options[$option]
+				);
 		}
 
 		return $options;
-	}
-
-	/**
-	 * formatiert die sekunden als eine leserliche ausgabe
-	 * wie 1 minute 30 sekunden
-	 *
-	 * @param integer $iSeconds
-	 */
-	protected function getFormattedTime($iSeconds) {
-		$aTime = array();
-		$aTime['hours'] = floor($iSeconds/3600);
-		$aTime['minutes'] = floor(($iSeconds-$aTime['hours']*3600)/60);
-		$aTime['seconds'] = $iSeconds-$aTime['hours']*3600-$aTime['minutes'] *60;
-
-		$sFormattedTime = '';
-		foreach ($aTime as $sTimePart => $iValue) {
-			if($iValue < 1) continue; //null wollen wir nicht sehen
-			//else
-			$sLabelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_' .
-									$sTimePart . '_' . (($iValue > 1) ? 'plural' : 'singular');
-			$sFormattedTime .= sprintf('%01d', $iValue) . ' ' . $GLOBALS['LANG']->sL($sLabelKey) . ' ';
-		}
-
-		return $sFormattedTime;
 	}
 }
 
