@@ -123,7 +123,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 				array(
 					'enablefieldsoff' => TRUE,
 					'where' => 	'uid != 123 AND ' .
-								'faildetected = 0 AND' .
+								'faildetected = 0 AND ' .
 								'lastexecution_failure != ""'
 				)
 			)

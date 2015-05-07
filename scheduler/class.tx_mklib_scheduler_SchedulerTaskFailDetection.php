@@ -156,7 +156,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 				'enablefieldsoff' => TRUE,
 				//nicht unser eigener Task und alle mit Fehler
 				'where' => 	'uid != ' . intval($this->taskUid) . ' AND ' .
-							'faildetected = 0 AND' .
+							'faildetected = 0 AND ' .
 							'lastexecution_failure != ""'
 			)
 		);
