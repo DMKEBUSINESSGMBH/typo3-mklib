@@ -271,4 +271,39 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 
 		$this->assertEquals($model, $viewData->offsetGet('item'));
 	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleRequestPrefersConfiguredUidOverParameter() {
+		$repository = $this->getMockForAbstractClass(
+			'tx_mklib_repository_Abstract',
+			array(), '', FALSE, FALSE, FALSE, array('findByUid')
+		);
+		$repository->expects($this->once())
+			->method('findByUid')
+			->with(123456789)
+			->will($this->returnValue('model'));
+		$action = $this->getMockForAbstractClass(
+			'tx_mklib_action_ShowSingeItem',
+			array(), '', TRUE, TRUE, TRUE,
+			array('getSingleItemRepository')
+		);
+		$action->expects($this->once())
+			->method('getSingleItemRepository')
+			->will($this->returnValue($repository));
+
+		$parameters = tx_rnbase::makeInstance(
+			'tx_rnbase_parameters', array('uid' => 987654321)
+		);
+		$configurations = $this->createConfigurations(
+			array('.' => array('uid' => 123456789)), 'mklib', 'mklib', $parameters
+		);
+		$viewData = $configurations->getViewData();
+		$action->setConfigurations($configurations);
+
+		$this->callInaccessibleMethod(
+			$action, 'handleRequest', $parameters, $configurations, $viewData
+		);
+	}
 }

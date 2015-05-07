@@ -44,8 +44,13 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 	 * @return string Errorstring or NULL
 	 */
 	protected function handleRequest(&$parameters, &$configurations, &$viewdata) {
+		$itemUid = $this->getSingleItemUidFromConfigurations();
+
 		$itemParameterKey = $this->getSingleItemUidParameterKey();
-		if (!($itemUid = $parameters->getInt($itemParameterKey))) {
+		if (
+			!$itemUid &&
+			!($itemUid = $parameters->getInt($itemParameterKey))
+		) {
 			$this->throwItemNotFound404Exception();
 		}
 
@@ -64,6 +69,13 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 		$viewdata->offsetSet('item', $item);
 
 		return NULL;
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function getSingleItemUidFromConfigurations() {
+		return $this->getConfigurations()->get($this->getConfId() . 'uid');
 	}
 
 	/**

@@ -85,6 +85,10 @@ TypoScript example configuration
       
       uidParameterKey = myOwnParameterKey
       notfound = Dataset could not be found.
+      
+      ### you can also configure a uid to show.
+      ### this is preferred over parameters
+      #uid = 123
    }
    
 Example temlpate
