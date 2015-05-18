@@ -24,6 +24,7 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_action_ShowSingeItem');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+tx_rnbase::load('tx_mklib_repository_Abstract');
 
 /**
  * tx_mklib_tests_action_ShowSingeItem_testcase
