@@ -91,7 +91,10 @@ abstract class tx_mklib_action_AbstractList
 
 		$fields = $options = array();
 		// let the filter fill the fields end options
-		if($filter->init($fields, $options)) {
+		if (
+			$this->prepareFieldsAndOptions($fields, $options)
+			&& $filter->init($fields, $options)
+		) {
 			// we search for the items
 			$items = $repo->search($fields, $options);
 		}
@@ -101,6 +104,19 @@ abstract class tx_mklib_action_AbstractList
 		}
 
 		return empty($items) ? array() : $items;
+	}
+
+	/**
+	 *
+	 * @param array &$fields
+	 * @param array &$options
+	 * @return boolean
+	 */
+	protected function prepareFieldsAndOptions(
+		array &$fields,
+		array &$options
+	) {
+		return TRUE;
 	}
 
 	/**
