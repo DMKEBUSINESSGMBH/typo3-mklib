@@ -85,7 +85,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
 		//wir bauen eine exception damit die error mail von rnbase gebaut werden kann
 		$sMsg = '
 			Die folgenden Scheduler Tasks hängen seit mindestens ' .
-			$this->getFormattedTime($this->getOption('threshold')) . ' : ' . implode(', ', $aMessages)
+			tx_mklib_util_Scheduler::getFormattedTime($this->getOption('threshold')) . ' : ' . implode(', ', $aMessages)
 		;
 		$oException = new Exception($sMsg, 0);
 		tx_rnbase::load('tx_rnbase_util_Misc');
