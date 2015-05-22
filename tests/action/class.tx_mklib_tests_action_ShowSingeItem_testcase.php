@@ -25,6 +25,7 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_action_ShowSingeItem');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_repository_Abstract');
+tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * tx_mklib_tests_action_ShowSingeItem_testcase
@@ -36,6 +37,19 @@ tx_rnbase::load('tx_mklib_repository_Abstract');
  * 					GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseTestCase {
+
+	/**
+	 * @var string
+	 */
+	private $defaultSubstitutedPageTitle = 'please provide the method getPageTitle in your action returning the desired page title';
+
+	/**
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+	protected function setUp() {
+		tx_mklib_tests_Util::prepareTSFE(array('force' => TRUE));
+	}
 
 	/**
 	 * @group unit
@@ -201,7 +215,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 	 * @expectedException tx_rnbase_exception_ItemNotFound404
 	 * @expectedExceptionMessage Datensatz nicht gefunden.
 	 */
-	public function testHandleRequestThrowsItemNotFound404ExceptionIfRecipeNotFound() {
+	public function testHandleRequestThrowsItemNotFound404ExceptionIfItemNotFound() {
 		$repository = $this->getMockForAbstractClass(
 			'tx_mklib_repository_Abstract',
 			array(), '', FALSE, FALSE, FALSE, array('findByUid')
@@ -236,7 +250,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 	/**
 	 * @group unit
 	 */
-	public function testHandleRequestSetsFoundRecipeToViewData() {
+	public function testHandleRequestSetsFoundItemToViewData() {
 		$repository = $this->getMockForAbstractClass(
 			'tx_mklib_repository_Abstract',
 			array(), '', FALSE, FALSE, FALSE, array('findByUid')
@@ -305,6 +319,111 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 
 		$this->callInaccessibleMethod(
 			$action, 'handleRequest', $parameters, $configurations, $viewData
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleRequestSubstitutesPageTitleNotIfNotConfigured() {
+		tx_rnbase_util_TYPO3::getTSFE()->getPageAndRootline();
+
+		$repository = $this->getMockForAbstractClass(
+			'tx_mklib_repository_Abstract',
+			array(), '', FALSE, FALSE, FALSE, array('findByUid')
+		);
+		$model = tx_rnbase::makeInstance(
+			'tx_mklib_model_Page', array('uid' => 987654321)
+		);
+		$repository->expects($this->once())
+			->method('findByUid')
+			->will($this->returnValue($model));
+		$action = $this->getMockForAbstractClass(
+			'tx_mklib_action_ShowSingeItem',
+			array(), '', TRUE, TRUE, TRUE,
+			array('getSingleItemRepository')
+		);
+		$action->expects($this->once())
+			->method('getSingleItemRepository')
+			->will($this->returnValue($repository));
+
+		$parameters = tx_rnbase::makeInstance(
+			'tx_rnbase_parameters', array('uid' => 987654321)
+		);
+		$configurations = $this->createConfigurations(
+			array(), 'mklib', 'mklib', $parameters
+		);
+		$viewData = $configurations->getViewData();
+		$action->setConfigurations($configurations);
+
+		$this->callInaccessibleMethod(
+			$action, 'handleRequest', $parameters, $configurations, $viewData
+		);
+
+		$this->assertNotEquals(
+			$this->defaultSubstitutedPageTitle,
+			tx_rnbase_util_TYPO3::getTSFE()->page['title'],
+			'tx_rnbase_util_TYPO3::getTSFE()->page[\'title\'] doch ersetzt'
+		);
+		$this->assertNotEquals(
+			$this->defaultSubstitutedPageTitle,
+			tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle,
+			'tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle doch ersetzt'
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testHandleRequestSubstitutesPageTitleIfConfigured() {
+		tx_rnbase_util_TYPO3::getTSFE()->getPageAndRootline();
+
+		$repository = $this->getMockForAbstractClass(
+			'tx_mklib_repository_Abstract',
+			array(), '', FALSE, FALSE, FALSE, array('findByUid')
+		);
+		$model = tx_rnbase::makeInstance(
+			'tx_mklib_model_Page', array('uid' => 987654321)
+		);
+		$repository->expects($this->once())
+			->method('findByUid')
+			->will($this->returnValue($model));
+
+		$action = $this->getMockForAbstractClass(
+			'tx_mklib_action_ShowSingeItem',
+			array(), '', TRUE, TRUE, TRUE,
+			array('getSingleItemRepository', 'getConfId')
+		);
+		$action->expects($this->once())
+			->method('getSingleItemRepository')
+			->will($this->returnValue($repository));
+
+		$action->expects($this->any())
+			->method('getConfId')
+			->will($this->returnValue('myAction.'));
+
+		$parameters = tx_rnbase::makeInstance(
+			'tx_rnbase_parameters', array('uid' => 987654321)
+		);
+		$configurations = $this->createConfigurations(
+			array('myAction.' => array('substitutePageTitle' => TRUE)), 'mklib', 'mklib', $parameters
+		);
+		$viewData = $configurations->getViewData();
+		$action->setConfigurations($configurations);
+
+		$this->callInaccessibleMethod(
+			$action, 'handleRequest', $parameters, $configurations, $viewData
+		);
+
+		$this->assertEquals(
+			$this->defaultSubstitutedPageTitle,
+			tx_rnbase_util_TYPO3::getTSFE()->page['title'],
+			'tx_rnbase_util_TYPO3::getTSFE()->page[\'title\'] falsch ersetzt'
+		);
+		$this->assertEquals(
+			$this->defaultSubstitutedPageTitle,
+			tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle,
+			'tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle falsch ersetzt'
 		);
 	}
 }

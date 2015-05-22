@@ -68,6 +68,8 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 
 		$viewdata->offsetSet('item', $item);
 
+		$this->substitutePageTitle();
+
 		return NULL;
 	}
 
@@ -128,5 +130,23 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 	 */
 	protected function getViewClassName() {
 		return 'tx_rnbase_view_Single';
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function substitutePageTitle() {
+		if ($this->getConfigurations()->get($this->getConfId() . 'substitutePageTitle')) {
+			$pageTitle = $this->getPageTitle();
+			tx_rnbase_util_TYPO3::getTSFE()->page['title'] = $pageTitle;
+			tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle = $pageTitle;
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getPageTitle() {
+		return 'please provide the method getPageTitle in your action returning the desired page title';
 	}
 }

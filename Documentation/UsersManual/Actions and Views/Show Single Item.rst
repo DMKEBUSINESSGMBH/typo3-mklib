@@ -38,6 +38,15 @@ Defaults to "uid" in the qualifier namespace, for example myext[uid]
 
 Can be configured with TypoScript in the path "plugin.tx_myext.myActionConfId.uidParameterKey"
 
+getPageTitle
+------------
+
+The value with that the page title is substituted. It is not abstract so it has not necessarily to be provided.
+Only if "plugin.tx_myext.myActionConfId.substitutePageTitle" is enabled.
+
+No default value. So take care of it when "plugin.tx_myext.myActionConfId.substitutePageTitle"
+is enabled.
+
 deriving class example
 ----------------------
 .. code-block:: php
@@ -57,6 +66,13 @@ deriving class example
        */
       protected function getSingleItemRepository() {
           return tx_rnbase::makeInstance("tx_mkdemo_repository_Model");
+      }
+      
+      /**
+       * @return string
+       */
+      protected function getPageTitle() {
+           return $this->getConfigurations()->getViewData()->offsetGet('item')->getTitle();
       }
    }
    
@@ -85,6 +101,10 @@ TypoScript example configuration
       
       uidParameterKey = myOwnParameterKey
       notfound = Dataset could not be found.
+      
+      ### should the page title be substituted?
+      ### if so the method getPageTitle has to provide the page title
+      substitutePageTitle = 1
       
       ### you can also configure a uid to show.
       ### this is preferred over parameters
