@@ -44,14 +44,6 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 	private $defaultSubstitutedPageTitle = 'please provide the method getPageTitle in your action returning the desired page title';
 
 	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		tx_mklib_tests_Util::prepareTSFE(array('force' => TRUE));
-	}
-
-	/**
 	 * @group unit
 	 */
 	public function testGetSingleItemUidParameterKeyIfNoneConfigured() {
