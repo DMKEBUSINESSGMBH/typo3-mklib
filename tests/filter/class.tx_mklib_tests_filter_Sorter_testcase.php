@@ -44,7 +44,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 	 */
 	protected function setUp() {
 		tx_rnbase::load('tx_rnbase_util_Misc');
-		tx_rnbase_util_Misc::prepareTSFE();
+		tx_rnbase_util_Misc::prepareTSFE(array('force' => TRUE));
 
 		//tq_seo extension hat einen hook der auf das folgende feld zugreift.
 		//wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
