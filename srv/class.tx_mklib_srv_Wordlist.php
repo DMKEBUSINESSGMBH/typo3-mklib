@@ -92,7 +92,7 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 	 * @param array $fields
 	 * @return array
 	 */
-	private function getWordlist(array $fields = array()){
+	protected function getWordlist(array $fields = array()){
 	    $options = array(/*'debug' => 1*/);
 
 	    $foo = $this->search($fields, $options);
@@ -111,17 +111,20 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 	 *
 	 * @return null || array || string
 	 */
-	private function checkForWordInWordlist($word,$aWordlist, $greedy = true, $sanitizeWord = true){
+	private function checkForWordInWordlist($word,$wordlist, $greedy = true, $sanitizeWord = true){
+		//wenn es kein array ist, dann is die wordlist leer
+		if (!is_array($wordlist)) {
+			return NULL;
+		}
+
 		if($sanitizeWord){//alle Sondzeichen entfernen
 			$utilString = tx_rnbase::makeInstance('tx_mklib_util_String');
 			$word = $utilString->html2plain($word);
 			$word = $utilString->removeNoneLetters($word);
 		}
-			
-		//wenn es kein array ist, dann is die wordlist leer
-		if(!is_array($aWordlist)) return null;
+
 		//die einzelnen Wörter prüfen
-		foreach($aWordlist as $entry){
+		foreach($wordlist as $entry){
 			//damit in DB nicht für jedes Wort ein Eintrag angelegt werden muss,
 			//werden komma-separierte Wörterlisten innerhalb des Wort-Feldes
 			//ebenfalls unterstützt --> str_replace
@@ -142,7 +145,7 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 		//kein Treffer!!!
 		return null;
 	}
-	
+
 	/**
 	 * @return array
 	 */

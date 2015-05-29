@@ -32,6 +32,8 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 tx_rnbase::load('tx_mklib_tests_Util');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+tx_rnbase::load('tx_mklib_srv_Wordlist');
 
 /**
  * Generic form view test
@@ -40,57 +42,48 @@ tx_rnbase::load('tx_mklib_tests_Util');
  *
  * @group integration
  */
-class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase {
-	protected $workspaceIdAtStart;
-	protected $db;
+class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
-	 * Klassenkonstruktor - BE-Workspace setzen
-	 *
-	 * @param unknown_type $name
+	 * @group unit
 	 */
-	public function __construct ($name=null) {
-		global $TYPO3_DB, $BE_USER;
+	public function testGetWordlistIfNoResult(){
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('search'));
+		$fields = array('some fields');
+		$wordlistSrv->expects($this->once())
+			->method('search')
+			->with($fields, array())
+			->will($this->returnValue(array()));
 
-		parent::__construct ($name);
-		$TYPO3_DB->debugOutput = TRUE;
-
-		$this->workspaceIdAtStart = $BE_USER->workspace;
-		$BE_USER->setWorkspace(0);
-
-		// devlog deaktivieren
-		tx_mklib_tests_Util::disableDevlog();
+		$this->assertNull($this->callInaccessibleMethod($wordlistSrv, 'getWordlist', $fields));
 	}
 
 	/**
-	 * setUp() = init DB etc.
+	 * @group unit
 	 */
-	public function setUp() {
-		$this->createDatabase();
-		// assuming that test-database can be created otherwise PHPUnit will skip the test
-		$this->db = $this->useTestDatabase();
-		$this->importStdDB();
-		$this->importExtensions(array('cms','static_info_tables','mklib'));
-		$fixturePath = tx_mklib_tests_Util::getFixturePath('db/wordlist.xml');
-		$this->importDataSet($fixturePath);
+	public function testGetWordlistIfResult(){
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('search'));
+		$fields = array('some fields');
+		$wordlistSrv->expects($this->once())
+			->method('search')
+			->with($fields, array())
+			->will($this->returnValue(array('result')));
+
+		$this->assertEquals(
+			array('result'), $this->callInaccessibleMethod($wordlistSrv, 'getWordlist', $fields)
+		);
 	}
 
-	/**
-	 * tearDown() = destroy DB etc.
-	 */
-	public function tearDown () {
-		$this->cleanDatabase();
-		$this->dropDatabase();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-
-		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
-	}
 	/**
 	 * Testen ob getWordlistEntryByWord null zurück gibt wenn nichts gefunden wurde
 	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturnsEmptyIfNoMatch(){
-		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+		$wordlistSrv->expects($this->once())
+			->method('getWordlist')
+			->will($this->returnValue($this->getTestWordlist()));
+
 		$ret = $wordlistSrv->getWordlistEntryByWord('nothing');
 
 		$this->assertTrue(empty($ret),'Es wurden Treffer zurück gegeben!');
@@ -101,7 +94,10 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturnsMatches() {
-		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+		$wordlistSrv->expects($this->exactly(2))
+			->method('getWordlist')
+			->will($this->returnValue($this->getTestWordlist()));
 
 		$ret = $wordlistSrv->getWordlistEntryByWord('fuck shit sfuck');
 		$this->assertEquals(2,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
@@ -119,7 +115,11 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturns1MatchIfInNoneGreedyMode() {
-		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+		$wordlistSrv->expects($this->exactly(2))
+			->method('getWordlist')
+			->will($this->returnValue($this->getTestWordlist()));
+
 		$ret = $wordlistSrv->getWordlistEntryByWord('fuck shit',false);
 		$this->assertEquals('fuck',$ret,'Das gefundene Wort ist nicht korrekt!');
 		$ret = $wordlistSrv->getWordlistEntryByWord('who the fuck is alice? shit',false);
@@ -131,7 +131,10 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 	 * @group integration
 	 */
 	public function testGetWordlistEntryByWordReturnsMatchWithComplexString() {
-		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+		$wordlistSrv->expects($this->once())
+			->method('getWordlist')
+			->will($this->returnValue($this->getTestWordlist()));
 		$ret = $wordlistSrv->getWordlistEntryByWord('Einige Worte, blub, da war es!');
 
 		$this->assertEquals(1,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
@@ -144,7 +147,21 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 	 * @group integration
 	 */
 	public function testGetWordlistEntryByBlacklistedWordReturnsCorrectData(){
-		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+		$testWordList = $this->getTestWordlist();
+		foreach ($testWordList as $index => $entry) {
+			if (!$entry->getBlacklisted()) {
+				unset($testWordList[$index]);
+			}
+		}
+		$wordlistSrv->expects($this->exactly(2))
+			->method('getWordlist')
+			->with(array(
+				'WORDLIST.blacklisted' => array(OP_EQ_INT => 1),
+				'WORDLIST.whitelisted' => array(OP_EQ_INT => 0),
+			))
+			->will($this->returnValue($testWordList));
+
 		$ret = $wordlistSrv->getBlacklistEntryByWord('fuck shit ass');
 
 		$this->assertEquals(3,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
@@ -165,11 +182,53 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_phpunit_database_testcase 
 	 * @group integration
 	 */
 	public function testGetWordlistEntryByWhitelistedWordReturnsCorrectData(){
-		$wordlistSrv = tx_mklib_util_ServiceRegistry::getWordlistService();
+		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+		$testWordList = $this->getTestWordlist();
+		foreach ($testWordList as $index => $entry) {
+			if (!$entry->getWhitelisted()) {
+				unset($testWordList[$index]);
+			}
+		}
+		$wordlistSrv->expects($this->once())
+			->method('getWordlist')
+			->with(array(
+				'WORDLIST.blacklisted' => array(OP_EQ_INT => 0),
+				'WORDLIST.whitelisted' => array(OP_EQ_INT => 1),
+			))
+			->will($this->returnValue($testWordList));
+
 		$ret = $wordlistSrv->getWhitelistEntryByWord('nice');
 
 		$this->assertEquals(1,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
 		$this->assertEquals('nice',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
+	}
+
+	/**
+	 * @return multitype:object Ambigous <object, boolean, mixed, \TYPO3\CMS\Core\Utility\array<\TYPO3\CMS\Core\SingletonInterface>, \TYPO3\CMS\Core\SingletonInterface, \TYPO3\CMS\Core\Utility\mixed>
+	 */
+	protected function getTestWordlist() {
+		return array(
+			0 => tx_rnbase::makeInstance(
+				'tx_mklib_model_WordlistEntry',
+				array('uid' => 1, 'word' => 'some')
+			),
+			1 => tx_rnbase::makeInstance(
+				'tx_mklib_model_WordlistEntry',
+				array('uid' => 2, 'word' => 'fuck,ass', 'blacklisted' => 1)
+			),
+			2 => tx_rnbase::makeInstance(
+				'tx_mklib_model_WordlistEntry',
+				array('uid' => 3, 'word' => 'nice', 'whitelisted' => 1)
+			),
+			3 => tx_rnbase::makeInstance(
+				'tx_mklib_model_WordlistEntry',
+				array('uid' => 4, 'word' => 'bla,blub', 'whitelisted' => 1)
+			),
+			4 => tx_rnbase::makeInstance(
+				'tx_mklib_model_WordlistEntry',
+				array('uid' => 5, 'word' => 'shit', 'blacklisted' => 1)
+			)
+		);
 	}
 }
 
