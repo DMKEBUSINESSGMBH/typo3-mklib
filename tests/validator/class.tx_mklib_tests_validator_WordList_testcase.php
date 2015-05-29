@@ -31,6 +31,7 @@
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_validator_WordList');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 /**
  * Testfälle für tx_mklib_validator_WordList
  *
@@ -38,94 +39,133 @@ tx_rnbase::load('tx_mklib_validator_WordList');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_validator
  *
- * @group integration
+ * @group unit
  */
-class tx_mklib_tests_validator_WordList_testcase extends tx_phpunit_database_testcase {
-
-	protected $workspaceIdAtStart;
-	protected $db;
+class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
-	 * Klassenkonstruktor - BE-Workspace setzen
-   	 *
-   	 * @param unknown_type $name
-   	 */
-  	public function __construct ($name=null) {
-    	global $TYPO3_DB, $BE_USER;
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::tearDown()
+	 */
+	protected function tearDown() {
+		$property = new ReflectionProperty('tx_mklib_validator_WordList', 'wordlistService');
+		$property->setAccessible(TRUE);
+		$property->setValue(NULL, NULL);
+	}
 
-    	parent::__construct ($name);
-    	$TYPO3_DB->debugOutput = TRUE;
+	/**
+	 * @group unit
+	 */
+	public function testGetWordlistServiceIfPropertyNotAlreadySet() {
+		$method = new ReflectionMethod('tx_mklib_validator_WordList', 'getWordlistService');
+		$method->setAccessible(TRUE);
+		$this->assertInstanceOf(
+			'tx_mklib_srv_Wordlist',
+			$method->invoke(NULL)
+		);
+	}
 
-    	$this->workspaceIdAtStart = $BE_USER->workspace;
-    	$BE_USER->setWorkspace(0);
-  	}
-
-  	/**
-   	 * setUp() = init DB etc.
-   	 */
-  	public function setUp() {
-    	$this->createDatabase();
-	    // assuming that test-database can be created otherwise PHPUnit will skip the test
-	    $this->db = $this->useTestDatabase();
-	    $this->importStdDB();
-	   	$this->importExtensions(array('cms','static_info_tables','mklib'));
-    	$fixturePath = tx_mklib_tests_Util::getFixturePath('db/wordlist.xml');
-	    $this->importDataSet($fixturePath);
-  	}
-
-  	/**
-   	 * tearDown() = destroy DB etc.
-   	 */
-  	public function tearDown () {
-	    $this->cleanDatabase();
-	    $this->dropDatabase();
-	    $GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-
-	    $GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
+	/**
+	 * @group unit
+	 */
+	public function testGetWordlistServiceIfPropertyAlreadySet() {
+		$method = new ReflectionMethod('tx_mklib_validator_WordList', 'getWordlistService');
+		$method->setAccessible(TRUE);
+		$property = new ReflectionProperty('tx_mklib_validator_WordList', 'wordlistService');
+		$property->setAccessible(TRUE);
+		$property->setValue(NULL, $this);
+		$this->assertInstanceOf(
+			'tx_mklib_tests_validator_WordList_testcase',
+			$method->invoke(NULL)
+		);
 	}
 
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
-   	 * @group integration
+   	 * @group unit
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsTrueIfNoWordGiven() {
-  		$this->assertTrue(tx_mklib_validator_WordList::stringContainsNoBlacklistedWords(''),'Kein Wort gegeben und es wurde nicht true zurück gegeben!');
+  		$this->setWordlistService(NULL, '');
+  		$this->assertTrue(
+  			tx_mklib_validator_WordList::stringContainsNoBlacklistedWords(''),
+  			'Kein Wort gegeben und es wurde nicht true zurück gegeben!'
+  		);
   	}
 
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
-   	 * @group integration
+   	 * @group unit
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsTrueWhenWordNotBlacklsited() {
-  		$this->assertTrue(tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('nice',false),'Kein Wort gegeben und es wurde nicht true zurück gegeben!');
-  		$this->assertTrue(tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('alles sehr schön',false),'Kein Wort gegeben und es wurde nicht true zurück gegeben!');
+  		$this->setWordlistService('', 'nice', FALSE);
+  		$this->assertTrue(
+  			tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('nice',false),
+  			'Kein Wort gegeben und es wurde nicht true zurück gegeben!'
+  		);
+  		$this->setWordlistService('', 'alles sehr schön', FALSE);
+  		$this->assertTrue(
+  			tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('alles sehr schön',false),
+  			'Kein Wort gegeben und es wurde nicht true zurück gegeben!'
+  		);
   	}
 
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
-   	 * @group integration
+   	 * @group unit
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsTrueInGreedyModeWhenWordNotBlacklsited() {
+  		$this->setWordlistService('', 'nice');
   		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('nice');
   		$this->assertTrue($ret,'Es wurde ein Treffer zurück gegeben!');
 
+  		$this->setWordlistService('', 'alles sehr schön');
   		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('alles sehr schön');
   		$this->assertTrue($ret,'Es wurde ein Treffer zurück gegeben!');
   	}
 
   	/**
    	 * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
-   	 * @group integration
+   	 * @group unit
    	 */
   	public function testStringContainsNoBlacklistedWordsRetrunsMatchesIfWordsAreBlacklisted() {
+  		$this->setWordlistService(array('fuck', 'shit'), 'sfuck fuck shit');
   		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('sfuck fuck shit');
+
   		$this->assertEquals(2,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
   		$this->assertEquals('fuck',$ret[0],'Das geblacklisted Wort wurde nicht zurück gegeben!');
   		$this->assertEquals('shit',$ret[1],'Das geblacklisted Wort wurde nicht zurück gegeben!');
 
   		//non greedy
-  		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('who the fuck is alice? shit',false);
+  		$this->setWordlistService('fuck', 'who the fuck is alice? shit', FALSE);
+  		$ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('who the fuck is alice? shit', FALSE);
   		$this->assertEquals('fuck',$ret,'Das geblacklisted Wort wurde nicht zurück gegeben!');
+  	}
+
+  	/**
+  	 * @param array $returnValue
+  	 * @param string $word
+  	 * @param boolean $greedy
+  	 * @param boolean $sanitizeWord
+  	 *
+  	 * @return void
+  	 */
+  	protected function setWordlistService($returnValue, $word, $greedy = TRUE, $sanitizeWord = TRUE) {
+  		$wordlistServiceMock = $this->getMock(
+  			'tx_mklib_srv_Wordlist', array('getBlacklistEntryByWord')
+  		);
+  		if ($returnValue === NULL) {
+  			$wordlistServiceMock->expects($this->never())
+  				->method('getBlacklistEntryByWord');
+  		} else {
+  			$wordlistServiceMock->expects($this->once())
+	  			->method('getBlacklistEntryByWord')
+	  			->with($word,$greedy,$sanitizeWord)
+	  			->will($this->returnValue($returnValue));
+  		}
+
+  		$property = new ReflectionProperty('tx_mklib_validator_WordList', 'wordlistService');
+  		$property->setAccessible(TRUE);
+  		$property->setValue(NULL, $wordlistServiceMock);
   	}
 }
 
