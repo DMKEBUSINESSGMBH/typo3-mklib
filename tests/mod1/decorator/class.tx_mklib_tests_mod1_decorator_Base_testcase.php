@@ -118,6 +118,54 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$this->assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 	}
 
+	public function testFormatWithLabelColumn() {
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 57,
+				'header' => 'Home',
+				'crdate' => 1433158465,
+				'tstamp' => 1434158465,
+			)
+		)->setTablename('tt_content');
+		$result = $this->oDecorator->format('Content', 'label', $model->getRecord(), $model);
+
+		$this->assertContains('>Home</span>', $result, 'Falsches Label erzeugt');
+		$this->assertContains('<span title="UID: 57', $result, 'UID fehlt.');
+		$this->assertContains('Creation: 2015-06-01T11:34:25+00:00', $result, 'CRDATE fehlt.');
+		$this->assertContains('Last Change: 2015-06-13T01:21:05+00:00', $result, 'TSTAMP fehlt.');
+	}
+
+	public function testFormatWithSysLanguageUidColumn() {
+		/* @var $model tx_rnbase_model_base */
+		$model = tx_rnbase::makeInstance(
+			'tx_rnbase_model_base',
+			array(
+				'uid' => 57,
+				'header' => 'Home',
+				'sys_language_uid' => '0',
+			)
+		)->setTableName('tt_content');
+		$result = $this->oDecorator->format('0', 'sys_language_uid', $model->getRecord(), $model);
+
+		$this->assertSame(
+			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>  Default',
+			$result,
+			'Falsches oder fehlendes Icon erzeugt.'
+		);
+
+		$model->setProperty('sys_language_uid', '-1');
+		$result = $this->oDecorator->format('0', 'sys_language_uid', $model->getRecord(), $model);
+
+		$this->assertContains(
+			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>  [All]',
+			$result,
+			'Falsches oder fehlendes Icon erzeugt.'
+		);
+
+		// @TODO: write test for syslang uid > 0 !!!
+	}
+
 	public function testFormatWithActionsColumnBeingAdminDoesReturnDeleteLink() {
 		$GLOBALS['BE_USER']->user['admin']=1;
 		//base model liefert als table name immer 0

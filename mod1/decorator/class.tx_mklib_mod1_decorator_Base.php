@@ -25,13 +25,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-tx_rnbase::load('tx_mklib_util_TCA');
+require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_mod_IDecorator');
+tx_rnbase::load('tx_mklib_util_TCA');
+tx_rnbase::load('tx_rnbase_mod_Util');
 
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
@@ -59,7 +56,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	 */
 	public function format($value, $colName, $record, tx_rnbase_model_base $item) {
 		$ret = $value;
-
 		switch ($colName) {
 			case 'uid':
 				$wrap = $item->isHidden() ? array('<del>','</del>') : array('','');
@@ -71,10 +67,28 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 
 				break;
 
+			case 'label':
+				$lastModifyDateTime = $item->getLastModifyDateTime();
+				$creationDateTime = $item->getCreationDateTime();
+				$ret = sprintf(
+					'<span title="UID: %3$d %1$sCreation: %4$s %1$sLast Change: %5$s">%2$s</span>',
+					CRLF,
+					$item->getLabel(),
+					$item->getUid(),
+					$creationDateTime ? $creationDateTime->format(DateTime::ATOM) : '-',
+					$lastModifyDateTime ? $lastModifyDateTime->format(DateTime::ATOM) : '-'
+				);
+
+				break;
+
 			case 'crdate':
 			case 'tstamp':
 				$ret = strftime('%d.%m.%y %H:%M:%S', intval($ret));
 
+				break;
+
+			case 'sys_language_uid':
+				$ret = $this->getSysLanguageFlag($item);
 				break;
 
 			case 'actions':
@@ -82,11 +96,50 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 				break;
 
 			default:
-				$ret = $ret;
 				break;
 		}
 
 		return $this->wrapValue($ret, $value, $colName, $record, $item);
+	}
+
+	/**
+	 * checks if the current column are the sys language
+	 * and renders the flag and the title of the sys language record.
+	 *
+	 * @param tx_rnbase_model_base $item
+	 * @return string
+	 */
+	protected function getSysLanguageFlag(tx_rnbase_model_base $item) {
+		if ($item->getTableName()) {
+			tx_rnbase::load('tx_rnbase_util_TCA');
+			$sysLanguageUid = $item->getSysLanguageUid();
+			$language = array();
+			$spriteIconName = 'flags-multiple';
+			if ($sysLanguageUid > 0) {
+				$language = tx_rnbase_util_DB::getRecord('sys_language', $sysLanguageUid);
+				$spriteIconName = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconName(
+					'sys_language',
+					$language
+				);
+			}
+			$langTitle = 'N/A';
+			if ($sysLanguageUid === -1) {
+				$langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.allLanguages';
+			}
+			elseif ($sysLanguageUid === 0) {
+				$langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.default_value';
+			}
+			elseif (!empty($language['title'])) {
+				$langTitle = $language['title'];
+			}
+			$ret = tx_rnbase_mod_Util::getSpriteIcon(
+				$spriteIconName/*,
+				array('title' => htmlspecialchars($GLOBALS['LANG']->sL($langTitle)))*/
+			);
+			$ret .= '  ' . $GLOBALS['LANG']->sL($langTitle);
+		}
+
+		return empty($ret) ? FALSE : $ret;
 	}
 
 	/**

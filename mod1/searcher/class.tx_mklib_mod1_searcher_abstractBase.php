@@ -92,6 +92,11 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 		}
 		$this->setOptions($options);
 		$this->mod = $mod;
+
+		// set the baseTable for this searcher. required by language column!
+		if (!isset($this->options['baseTableName'])) {
+			$this->options['baseTableName'] = $this->getService()->get(NULL)->getTableName();
+		}
 	}
 	/**
 	 * Bietet die Möglichkeit die Optionen nach der Erstellung noch zu ändern
@@ -385,16 +390,101 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 * @return 	array
 	 */
 	protected function getDecoratorColumns(&$oDecorator) {
-		return array(
-			'uid' => array(
-				'title' => 'label_tableheader_uid',
-				'decorator' => &$oDecorator,
-			),
-			'actions' => array(
-				'title' => 'label_tableheader_actions',
-				'decorator' => &$oDecorator,
-			)
+		$columns = array();
+		$this
+			->addDecoratorColumnLabel($columns, $oDecorator)
+			->addDecoratorColumnLanguage($columns, $oDecorator)
+			->addDecoratorColumnActions($columns, $oDecorator)
+		;
+		return $columns;
+	}
+
+	/**
+	 * Adds the column 'uid' to the be list.
+	 *
+	 * @param array $columns
+	 * @param tx_rnbase_mod_IDecorator $oDecorator
+	 * @return tx_mklib_mod1_searcher_abstractBase
+	 */
+	protected function addDecoratorColumnUid(
+		array &$columns,
+		tx_rnbase_mod_IDecorator &$oDecorator = NULL
+	) {
+		$columns['uid'] = array(
+			'title' => 'label_tableheader_uid',
+			'decorator' => &$oDecorator,
 		);
+		return $this;
+	}
+	/**
+	 * Adds the column 'uid' to the be list.
+	 *
+	 * @param array $columns
+	 * @param tx_rnbase_mod_IDecorator $oDecorator
+	 * @return tx_mklib_mod1_searcher_abstractBase
+	 */
+	protected function addDecoratorColumnLabel(
+		array &$columns,
+		tx_rnbase_mod_IDecorator &$oDecorator = NULL
+	) {
+		if (!empty($this->options['baseTableName'])) {
+			tx_rnbase::load('tx_rnbase_util_TCA');
+			$labelField = tx_rnbase_util_TCA::getLabelFieldForTable($this->options['baseTableName']);
+			if (!empty($labelField)) {
+				$columns['label'] = array(
+					'title' => 'label_tableheader_title',
+					'decorator' => &$oDecorator,
+				);
+			}
+		}
+		// fallback, the uid column
+		if (!isset($columns['label']) && !isset($columns['uid'])) {
+			$this->addDecoratorColumnUid($columns, $oDecorator);
+		}
+		return $this;
+	}
+
+	/**
+	 * Adds the column 'sys_language_uid' to the be list.
+	 *
+	 * @param array $columns
+	 * @param tx_rnbase_mod_IDecorator $oDecorator
+	 * @return tx_mklib_mod1_searcher_abstractBase
+	 */
+	protected function addDecoratorColumnLanguage(
+		array &$columns,
+		tx_rnbase_mod_IDecorator &$oDecorator = NULL
+	) {
+		if (!empty($this->options['baseTableName'])) {
+			tx_rnbase::load('tx_rnbase_util_TCA');
+			$sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($this->options['baseTableName']);
+			if (!empty($sysLanguageUidField)) {
+				$columns['sys_language_uid'] = array(
+					'title' => 'label_tableheader_language',
+					'decorator' => &$oDecorator,
+				);
+			}
+		}
+		return $this;
+	}
+
+	/**
+	 * Adds the column 'actions' to the be list.
+	 * this column contains the edit, hide, remove, ... actions.
+	 *
+	 * @param array $columns
+	 * @param tx_rnbase_mod_IDecorator $oDecorator
+	 * @return tx_mklib_mod1_searcher_abstractBase
+	 */
+	protected function addDecoratorColumnActions(
+		array &$columns,
+		tx_rnbase_mod_IDecorator &$oDecorator = NULL
+	) {
+		$columns['actions'] = array(
+			'title' => 'label_tableheader_actions',
+			'decorator' => &$oDecorator,
+		);
+		return $this;
 	}
 
 	/**

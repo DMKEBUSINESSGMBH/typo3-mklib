@@ -9,6 +9,7 @@
 			<label index="label_tableheader_uid">Uid</label>
 			<label index="label_tableheader_title">Title</label>
 			<label index="label_tableheader_actions">Actions</label>
+			<label index="label_tableheader_language">Language</label>
 			<label index="label_button_update">Update</label>
 			<label index="label_button_search">search</label>
 			
