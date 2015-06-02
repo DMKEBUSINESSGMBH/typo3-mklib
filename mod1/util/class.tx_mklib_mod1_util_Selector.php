@@ -234,10 +234,16 @@ class tx_mklib_mod1_util_Selector {
 	 */
 	public function getValueFromModuleData($key) {
 		// Fetch selected company trade
-		$modData = t3lib_BEfunc::getModuleData(array ($key => ''),t3lib_div::_GP('SET'),$this->getMod()->getName());
-		if (isset($modData[$key])) return $modData[$key];
-		// else
-		return null;
+		$modData = t3lib_BEfunc::getModuleData(
+			array($key => ''),
+			t3lib_div::_GP('SET'),
+			$this->getMod()->getName()
+		);
+		if (isset($modData[$key])) {
+			return $modData[$key];
+		}
+
+		return NULL;
 	}
 
 	/**

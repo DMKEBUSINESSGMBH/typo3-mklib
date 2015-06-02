@@ -329,17 +329,24 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 		//die fields nun mit dem Suchbegriff und den Spalten,
 		//in denen gesucht werden soll, füllen
 		tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
-		tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, $this->currentSearchWord, $this->getCols());
+		tx_mklib_mod1_util_SearchBuilder::buildFreeText(
+			$fields,
+			$this->currentSearchWord,
+			$this->getSearchColumns()
+		);
 
 		// das muss die kindklasse auswerten (oder eigene methode?)
-//		if($this->currentSearchWord){}
 //		if(isset($this->options['pid'])){}
 	}
 
 	/**
-	 * @deprecated Bitte getSearchColumns nutzen!
+	 * @deprecated Use getSearchColumns instead!
 	 */
 	protected function getCols() {
+		t3lib_div::deprecationLog(
+			'tx_mklib_mod1_searcher_abstractBase::getCols is deprecated'
+			. 'use getSearchColumns instead!'
+		);
 		return $this->getSearchColumns();
 	}
 
@@ -495,10 +502,20 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 */
 	protected function getSelector() {
 		if(!$this->selector) {
-			$this->selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+			$this->selector = tx_rnbase::makeInstance($this->getSelectorClass());
 			$this->selector->init($this->getModule());
 		}
 		return $this->selector;
+	}
+
+	/**
+	 * liefert die klasse für den selector.
+	 * kann von der kindklasse überschrieben werden.
+	 *
+	 * @return string
+	 */
+	protected function getSelectorClass() {
+		return 'tx_mklib_mod1_util_Selector';
 	}
 
 	/**
