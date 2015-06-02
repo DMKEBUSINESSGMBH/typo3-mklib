@@ -95,7 +95,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 
 		// set the baseTable for this searcher. required by language column!
 		if (!isset($this->options['baseTableName'])) {
-			$this->options['baseTableName'] = $this->getService()->get(NULL)->getTableName();
+			// @TODO: find a way to get the basetable from old services and new repositories!
+			if ($this->getService() instanceof tx_mklib_srv_Base) {
+				$this->options['baseTableName'] = $this->getService()->get(NULL)->getTableName();
+			}
+			if ($this->getService() instanceof tx_mklib_repository_Abstract) {
+				// $this->options['baseTableName'] = $this->getService()->getTableName();
+			}
 		}
 	}
 	/**
@@ -382,8 +388,15 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 * @return 	tx_mklib_mod1_decorator_Base
 	 */
 	protected function getDecorator(&$mod){
-		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
+		return tx_rnbase::makeInstance($this->getDecoratorClass(), $mod);
 	}
+	/**
+	 * @return string
+	 */
+	protected function getDecoratorClass(){
+		return 'tx_mklib_mod1_decorator_Base';
+	}
+
 	/**
 	 * @deprecated bitte getDecoratorColumns nutzen
 	 */
