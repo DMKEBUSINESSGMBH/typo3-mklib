@@ -71,7 +71,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 				$lastModifyDateTime = $item->getLastModifyDateTime();
 				$creationDateTime = $item->getCreationDateTime();
 				$ret = sprintf(
-					'<span title="UID: %3$d %1$sCreation: %4$s %1$sLast Change: %5$s">%2$s</span>',
+					'<span title="UID: %3$d %1$sLabel: %2$s %1$sCreation: %4$s %1$sLast Change: %5$s">%2$s</span>',
 					CRLF,
 					$item->getLabel(),
 					$item->getUid(),
