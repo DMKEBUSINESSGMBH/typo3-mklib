@@ -46,7 +46,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 		$this->mod = $mod;
 	}
 
-
 	/**
 	 *
 	 * @param 	string 					$value
@@ -111,32 +110,15 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	 */
 	protected function getSysLanguageFlag(tx_rnbase_model_base $item) {
 		if ($item->getTableName()) {
-			tx_rnbase::load('tx_rnbase_util_TCA');
-			$sysLanguageUid = $item->getSysLanguageUid();
-			$language = array();
-			$spriteIconName = 'flags-multiple';
-			if ($sysLanguageUid > 0) {
-				$language = tx_rnbase_util_DB::getRecord('sys_language', $sysLanguageUid);
-				$spriteIconName = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconName(
-					'sys_language',
-					$language
-				);
-			}
-			$langTitle = 'N/A';
-			if ($sysLanguageUid === -1) {
-				$langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.allLanguages';
-			}
-			elseif ($sysLanguageUid === 0) {
-				$langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.default_value';
-			}
-			elseif (!empty($language['title'])) {
-				$langTitle = $language['title'];
-			}
-			$ret = tx_rnbase_mod_Util::getSpriteIcon(
-				$spriteIconName/*,
-				array('title' => htmlspecialchars($GLOBALS['LANG']->sL($langTitle)))*/
+			tx_rnbase::load('tx_mklib_mod1_util_Language');
+			$ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
+				$item->getSysLanguageUid(),
+				array('show_title' => TRUE)
 			);
-			$ret .= '  ' . $GLOBALS['LANG']->sL($langTitle);
+			$new = tx_mklib_mod1_util_Language::getAddLocalizationLinks($item);
+			if (!empty($new)) {
+				$ret .= ' (Localize to: ' . $new . ')';
+			}
 		}
 
 		return empty($ret) ? FALSE : $ret;
