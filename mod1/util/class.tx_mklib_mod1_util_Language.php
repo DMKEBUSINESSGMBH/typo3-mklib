@@ -39,6 +39,7 @@ class tx_mklib_mod1_util_Language {
 	 * @var array
 	 */
 	private static $sysLanguageRecords = array();
+	private static $sysLanguageRecordAll = FALSE;
 
 	/**
 	 *
@@ -62,12 +63,13 @@ class tx_mklib_mod1_util_Language {
 	 * @return array
 	 */
 	public static function getLangRecords($pageId) {
-		// @TODO: get only records for a give pageid!
-		// GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TranslationConfigurationProvider')->getSystemLanguages($this->id, $this->backPath);
-		tx_rnbase::load('tx_rnbase_util_DB');
-		$records = tx_rnbase_util_DB::doSelect('*', 'sys_language', array());
-		foreach ($records as $record) {
-			static::$sysLanguageRecords[(int) $record['uid']] = $record;
+		if (!static::$sysLanguageRecordAll) {
+			static::$sysLanguageRecordAll = TRUE;
+			tx_rnbase::load('tx_rnbase_util_DB');
+			$records = tx_rnbase_util_DB::doSelect('*', 'sys_language', array());
+			foreach ($records as $record) {
+				static::$sysLanguageRecords[(int) $record['uid']] = $record;
+			}
 		}
 		$records = static::$sysLanguageRecords;
 
@@ -104,13 +106,17 @@ class tx_mklib_mod1_util_Language {
 		$options = tx_rnbase_model_data::getInstance($options);
 
 		if (!is_array($recordOrUid)) {
-			$recordOrUid = self::getLangRecord($recordOrUid);
+			$langUid = (int) $recordOrUid;
+			$record = self::getLangRecord($recordOrUid);
+		} else {
+			$langUid = (int) $recordOrUid['uid'];
+			$record = $recordOrUid;
 		}
 		$spriteIconName = 'flags-multiple';
 		if (!empty($recordOrUid)) {
 			$spriteIconName = t3lib_iconWorks::mapRecordTypeToSpriteIconName(
 				'sys_language',
-				$recordOrUid
+				$record
 			);
 		}
 		$out = tx_rnbase_mod_Util::getSpriteIcon(
@@ -119,14 +125,14 @@ class tx_mklib_mod1_util_Language {
 		// add title per default (typo3 equivalent)!
 		if ($options->getShowTitle() !== FALSE) {
 			$langTitle = 'N/A';
-			if ($recordOrUid['uid'] == -1) {
+			if ($langUid === -1) {
 				$langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.allLanguages';
 			}
-			elseif ($recordOrUid['uid'] == 0) {
+			elseif ($langUid === 0) {
 				$langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.default_value';
 			}
-			elseif (!empty($recordOrUid['title'])) {
-				$langTitle = $recordOrUid['title'];
+			elseif (!empty($record['title'])) {
+				$langTitle = $record['title'];
 			}
 
 			$out .= '&nbsp;' . htmlspecialchars($GLOBALS['LANG']->sL($langTitle));
@@ -134,7 +140,10 @@ class tx_mklib_mod1_util_Language {
 		return $out;
 	}
 
-	public static function getAddLocalizationLinks(tx_rnbase_model_base $item) {
+	public static function getAddLocalizationLinks(
+		tx_rnbase_model_base $item,
+		tx_rnbase_mod_BaseModule $mod = NULL
+	) {
 		// the item already are an translated item!
 		if ($item->getUid() != $item->getProperty('uid')) {
 			return '';
@@ -170,7 +179,9 @@ class tx_mklib_mod1_util_Language {
 			}
 
 			/* @var $mod tx_rnbase_mod_BaseModule */
-			$mod = $GLOBALS['SOBE'];
+			if (!$mod instanceof tx_rnbase_mod_BaseModule) {
+				$mod = $GLOBALS['SOBE'];
+			}
 
 			$onclick = $mod->getDoc()->issueCommand(
 				'&cmd[' . $item->getTableName() . '][' . $item->getUid() . '][localize]=' . $lang['uid']

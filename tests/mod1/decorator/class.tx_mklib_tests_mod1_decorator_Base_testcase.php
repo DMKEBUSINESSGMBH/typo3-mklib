@@ -52,7 +52,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 
 	public function setUp() {
 		$oMod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
-		$this->oDecorator = tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base',$oMod);
+		$this->oDecorator = tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $oMod);
 		$this->oModel = tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 0));
 		$this->oModel->uid = 1;
 
@@ -148,8 +148,8 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		)->setTableName('tt_content');
 		$result = $this->oDecorator->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
-		$this->assertSame(
-			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>  Default',
+		$this->assertContains(
+			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;Default',
 			$result,
 			'Falsches oder fehlendes Icon erzeugt.'
 		);
@@ -158,7 +158,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$result = $this->oDecorator->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
 		$this->assertContains(
-			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>  [All]',
+			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;[All]',
 			$result,
 			'Falsches oder fehlendes Icon erzeugt.'
 		);
