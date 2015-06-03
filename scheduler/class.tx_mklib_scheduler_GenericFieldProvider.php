@@ -184,6 +184,14 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_A
 							$bMessage = !@is_dir($sPath);
 							if (!$bMessage) $mValue = $sPath;
 							break;
+						case 'file':
+							tx_rnbase::load('tx_mklib_util_File');
+							$sPath = tx_mklib_util_File::getServerPath($mValue);
+							$bMessage = !@file_exists($sPath);
+							if (!$bMessage) {
+								$mValue = $sPath;
+							}
+							break;
 						case 'url':
 							$bMessage = !t3lib_div::isValidUrl($mValue);
 							break;
