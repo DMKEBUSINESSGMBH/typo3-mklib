@@ -376,10 +376,15 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			return;//stop
 		}
 		// else
-		$aColumns = $this->getColumns( $this->getDecorator( $this->getModule() ) );
+		$columns = $this->getColumns( $this->getDecorator( $this->getModule() ) );
 		tx_rnbase::load('tx_rnbase_mod_Tables');
-		$arr = tx_rnbase_mod_Tables::prepareTable($items, $aColumns, $this->getFormTool(), $this->getOptions());
-		$out = $this->getModule()->getDoc()->table($arr[0]);
+		list ($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
+			$items,
+			$columns,
+			$this->getFormTool(),
+			$this->getOptions()
+		);
+		$out = $this->getModule()->getDoc()->table($tableData, $tableLayout);
 		$content .= $out;
 		return $out;
 	}
@@ -575,7 +580,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 * @return 	string
 	 */
 	protected function getNoItemsFoundMsg() {
-		return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';;
+		return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';
 	}
 }
 
