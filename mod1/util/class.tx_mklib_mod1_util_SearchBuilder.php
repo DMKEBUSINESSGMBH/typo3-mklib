@@ -37,24 +37,24 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 class tx_mklib_mod1_util_SearchBuilder {
 	/**
 	 * Suche nach einem Freitext bei der Wordlist-Suche. Wird ein leerer String
-	 * übergeben, dann wird nicht gesucht. 
+	 * übergeben, dann wird nicht gesucht.
 	 *
 	 * @param array $fields
 	 * @param string $searchword
 	 */
 	public static function buildFeUserFreeText(&$fields, $searchword) {
 		$result = false;
-	  	if(strlen(trim($searchword))) {
-	   		$joined['value'] = trim($searchword);
-	   		$joined['cols'] = array('FEUSER.uid', 'FEUSER.LAST_NAME', 'FEUSER.FIRST_NAME', 'FEUSER.username', 'FEUSER.email');
-	   		$joined['operator'] = OP_LIKE;
-	   		$fields[SEARCH_FIELD_JOINED][] = $joined;
-	   		$result = true;
-	  	} 
-	  	return $result;
+		if(strlen(trim($searchword))) {
+			$joined['value'] = trim($searchword);
+			$joined['cols'] = array('FEUSER.uid', 'FEUSER.LAST_NAME', 'FEUSER.FIRST_NAME', 'FEUSER.username', 'FEUSER.email');
+			$joined['operator'] = OP_LIKE;
+			$fields[SEARCH_FIELD_JOINED][] = $joined;
+			$result = true;
+		}
+		return $result;
 	}
 
-	
+
 	/**
 	 * Build a wildcard query. Support for phrases:
 	 * "bad ar" will be turned into "+field:bad* +field:ar*"
@@ -71,7 +71,7 @@ class tx_mklib_mod1_util_SearchBuilder {
 		//wir brauchen 3 backslashes (\\\) um einen einfachen zu entwerten.
 		//der erste entwertet den zweiten für die hochkommas. der zweite
 		//entwertet den dritten für regex.
-		//ansonsten sind das alle Zeichen, die in Solr nicht auftauchen 
+		//ansonsten sind das alle Zeichen, die in Solr nicht auftauchen
 		//dürfen da sie zur such-syntax gehören
 		//genau dürfen nicht auftauchen: + - & | ! ( ) { } [ ] ^ " ~ * ? : \
 		//außerdem nehmen wir folgende raus um die Suche zu verfeinern:
@@ -93,11 +93,11 @@ class tx_mklib_mod1_util_SearchBuilder {
 		}
 		return implode(' ', $terms);
 	}
-	
+
 	/**
 	 * Returns the complete search form
 	 * enthält Suchefeld und Dropdown für versteckte Items
-	 * 
+	 *
 	 * @param string $funcId
 	 * @param string $currentSearchWord
 	 * @param string $currentShowHidden
@@ -113,10 +113,10 @@ class tx_mklib_mod1_util_SearchBuilder {
 		$out .= '<div>Suche: ' . $data['field']. $data['selector'] . $data['misc'] . $data['button'] .'</div>';
 		return $out;
 	}
-	
+
 	/**
 	 * Fügt allgemeine Spalten ein
-	 * 
+	 *
 	 * @param array $columns
 	 * @param tx_mklib_mod1_decorator_Base $decorator
 	 * @deprecated tx_mklib_mod1_searcher_abstractBase nutzen
@@ -124,10 +124,10 @@ class tx_mklib_mod1_util_SearchBuilder {
 	public static function addMiscColumns(&$columns,tx_mklib_mod1_decorator_Base $decorator) {
 		$columns['actions'] = array('title' => 'label_tableheader_actions', 'decorator' => $decorator, 'width' => 90);
 	}
-	
+
 	/**
 	 * Suche nach einem Freitext. Wird ein leerer String
-	 * übergeben, dann wird nicht gesucht. 
+	 * übergeben, dann wird nicht gesucht.
 	 *
 	 * @param array $fields
 	 * @param string $searchword
@@ -135,19 +135,19 @@ class tx_mklib_mod1_util_SearchBuilder {
 	 */
 	public static function buildFreeText(&$fields, $searchword, array $cols = array()) {
 		$result = false;
-	  	if(strlen(trim($searchword))) {
-	   		$joined['value'] = trim($searchword);
-	   		$joined['cols'] = $cols;
-	   		$joined['operator'] = OP_LIKE;
-	   		$fields[SEARCH_FIELD_JOINED][] = $joined;
-	   		$result = true;
-	  	}  
-	  	return $result;
+		if(strlen(trim($searchword))) {
+			$joined['value'] = trim($searchword);
+			$joined['cols'] = $cols;
+			$joined['operator'] = OP_LIKE;
+			$fields[SEARCH_FIELD_JOINED][] = $joined;
+			$result = true;
+		}
+		return $result;
 	}
-	
+
 	/**
 	 * Bildet die Resultliste mit Pageer
-	 * 
+	 *
 	 * @param tx_mklib_mod1_searcher_Base $callingClass
 	 * @param object $srv
 	 * @param array $fields
@@ -161,10 +161,10 @@ class tx_mklib_mod1_util_SearchBuilder {
 
 		$options['distinct'] = 1;
 		$callingClass->prepareFieldsAndOptions($fields, $options);
-			
+
 		// Get counted data
 		$cnt = $callingClass->getCount($srv, $fields, $options);
-		
+
 		$pager->setListSize($cnt);
 		$pager->setOptions($options);
 
@@ -180,10 +180,10 @@ class tx_mklib_mod1_util_SearchBuilder {
 		$ret['pager'] .= '<div class="pager">' . $pagerData['limits'] . ' - ' .$pagerData['pages'] .'</div>';
 		return $ret;
 	}
-	
+
 	/**
 	 * Start creation of result list
-	 * 
+	 *
 	 * @param string $content
 	 * @param array $items
 	 * @param tx_mklib_mod1_decorator_Base $decorator
@@ -192,6 +192,7 @@ class tx_mklib_mod1_util_SearchBuilder {
 	 * @deprecated tx_mklib_mod1_searcher_abstractBase nutzen
 	 */
 	public static function showItems(&$content, $items, tx_mklib_mod1_decorator_Base $decorator, tx_mklib_mod1_searcher_Base $callingClass, $columns, $bAddMiscColumns = true) {
+		t3lib_div::logDeprecatedFunction();
 		$funcId = $callingClass->getFuncId();
 		//allgmeine Spalten hinzufügen
 		if($bAddMiscColumns)
@@ -212,4 +213,3 @@ class tx_mklib_mod1_util_SearchBuilder {
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_mod1_util_SearchBuilder.php']) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_mod1_util_SearchBuilder.php']);
 }
-?>
