@@ -113,7 +113,7 @@ class tx_mklib_mod1_util_Language {
 			$record = $recordOrUid;
 		}
 		$spriteIconName = 'flags-multiple';
-		if (!empty($recordOrUid)) {
+		if (!empty($record)) {
 			$spriteIconName = t3lib_iconWorks::mapRecordTypeToSpriteIconName(
 				'sys_language',
 				$record
