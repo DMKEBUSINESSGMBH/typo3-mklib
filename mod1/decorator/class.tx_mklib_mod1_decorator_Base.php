@@ -112,7 +112,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 			'<span title="UID: %3$d %1$sLabel: %2$s %1$sCreation: %4$s %1$sLast Change: %5$s">%2$s</span>',
 			CRLF,
 			$item->getTcaLabel(),
-			$item->getUid(),
+			$item->getProperty('uid'),
 			$creationDateTime ? $creationDateTime->format(DateTime::ATOM) : '-',
 			$lastModifyDateTime ? $lastModifyDateTime->format(DateTime::ATOM) : '-'
 		);
@@ -178,21 +178,24 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	 */
 	protected function getActions(tx_rnbase_model_base $item, array $options) {
 		$ret = '';
+		$tableName = $item->getTableName();
+		// we use the real uid, not the uid of the parent!
+		$uid = $item->getProperty('uid');
 		foreach($options as $sLinkId => $bTitle){
 			switch($sLinkId) {
 				case 'edit':
-					$ret .= $this->getFormTool()->createEditLink($item->getTableName(), $item->getUid(), $bTitle);
+					$ret .= $this->getFormTool()->createEditLink($tableName, $uid, $bTitle);
 					break;
 				case 'hide':
-					$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($item->getTableName(), 'disabled', 'hidden');
-					$ret .= $this->getFormTool()->createHideLink($item->getTableName(), $item->getUid(), $item->record[$sHiddenColumn]);
+					$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($tableName, 'disabled', 'hidden');
+					$ret .= $this->getFormTool()->createHideLink($tableName, $uid, $item->record[$sHiddenColumn]);
 					break;
 				case 'remove':
 					//Es wird immer ein Bestätigungsdialog ausgegeben!!! Dieser steht
 					//in der BE-Modul locallang.xml der jeweiligen Extension im Schlüssel
 					//'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein
 					//Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
-					$ret .= $this->getFormTool()->createDeleteLink($item->getTableName(), $item->getUid(), $bTitle,array('confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')));
+					$ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle,array('confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')));
 					break;
 				default:
 					break;
