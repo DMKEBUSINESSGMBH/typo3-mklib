@@ -57,37 +57,20 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 		$ret = $value;
 		switch ($colName) {
 			case 'uid':
-				$wrap = $item->isHidden() ? array('<del>','</del>') : array('','');
-				$ret = $wrap[0].$value.$wrap[1];
-				$dates = array();
-				$dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
-				$dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
-				$ret = "<span title=\"Creation: ".$dates['crdate']." \nLast Change: ".$dates['tstamp']." \">".$ret .'</span>';
-
+				$ret = $this->getUidColumn($item);
 				break;
 
 			case 'label':
-				$lastModifyDateTime = $item->getLastModifyDateTime();
-				$creationDateTime = $item->getCreationDateTime();
-				$ret = sprintf(
-					'<span title="UID: %3$d %1$sLabel: %2$s %1$sCreation: %4$s %1$sLast Change: %5$s">%2$s</span>',
-					CRLF,
-					$item->getLabel(),
-					$item->getUid(),
-					$creationDateTime ? $creationDateTime->format(DateTime::ATOM) : '-',
-					$lastModifyDateTime ? $lastModifyDateTime->format(DateTime::ATOM) : '-'
-				);
-
+				$ret = $this->getLabelColumn($item);
 				break;
 
 			case 'crdate':
 			case 'tstamp':
-				$ret = strftime('%d.%m.%y %H:%M:%S', intval($ret));
-
+				$ret = strftime('%d.%m.%y %H:%M:%S', (int) $ret);
 				break;
 
 			case 'sys_language_uid':
-				$ret = $this->getSysLanguageFlag($item);
+				$ret = $this->getSysLanguageColumn($item);
 				break;
 
 			case 'actions':
@@ -102,22 +85,64 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
 	}
 
 	/**
-	 * checks if the current column are the sys language
-	 * and renders the flag and the title of the sys language record.
+	 * renders the uid column.
 	 *
 	 * @param tx_rnbase_model_base $item
 	 * @return string
 	 */
-	protected function getSysLanguageFlag(tx_rnbase_model_base $item) {
+	protected function getUidColumn(tx_rnbase_model_base $item) {
+		$wrap = $item->isHidden() ? array('<del>','</del>') : array('','');
+		$ret = $wrap[0] . $item->getProperty('uid') . $wrap[1];
+		$dates = array();
+		$dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
+		$dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
+		return "<span title=\"Creation: ".$dates['crdate']." \nLast Change: ".$dates['tstamp']." \">".$ret .'</span>';
+	}
+
+	/**
+	 * renders the label column.
+	 *
+	 * @param tx_rnbase_model_base $item
+	 * @return string
+	 */
+	protected function getLabelColumn(tx_rnbase_model_base $item) {
+		$lastModifyDateTime = $item->getLastModifyDateTime();
+		$creationDateTime = $item->getCreationDateTime();
+		return sprintf(
+			'<span title="UID: %3$d %1$sLabel: %2$s %1$sCreation: %4$s %1$sLast Change: %5$s">%2$s</span>',
+			CRLF,
+			$item->getTcaLabel(),
+			$item->getUid(),
+			$creationDateTime ? $creationDateTime->format(DateTime::ATOM) : '-',
+			$lastModifyDateTime ? $lastModifyDateTime->format(DateTime::ATOM) : '-'
+		);
+	}
+
+	/**
+	 * Renders the language column.
+	 * Renders the flag and the title of the sys language record.
+	 * Renders some links to create the overlay too.
+	 *
+	 * @param tx_rnbase_model_base $item
+	 * @return string
+	 */
+	protected function getSysLanguageColumn(tx_rnbase_model_base $item) {
 		if ($item->getTableName()) {
 			tx_rnbase::load('tx_mklib_mod1_util_Language');
 			$ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
 				$item->getSysLanguageUid(),
 				array('show_title' => TRUE)
 			);
-			$new = tx_mklib_mod1_util_Language::getAddLocalizationLinks($item);
+			$new = tx_mklib_mod1_util_Language::getAddLocalizationLinks(
+				$item,
+				$this->getModule()
+			);
 			if (!empty($new)) {
-				$ret .= ' (Localize to: ' . $new . ')';
+				$ret .= ' ('
+					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:Localize')
+					. ' ' . $new
+					. ')'
+				;
 			}
 		}
 
