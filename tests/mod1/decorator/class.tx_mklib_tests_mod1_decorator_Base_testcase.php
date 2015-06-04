@@ -25,8 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_mod1_decorator_Base');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 
@@ -36,14 +35,20 @@ tx_rnbase::load('tx_mklib_tests_mod1_Util');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
-
-	/**
-	 * @var tx_mklib_mod1_decorator_Base
-	 */
-	protected $oDecorator;
+class tx_mklib_tests_mod1_decorator_Base_testcase
+	extends tx_rnbase_tests_BaseTestCase {
 
 	protected $beUserAdminState;
+
+	/**
+	 * @return tx_mklib_mod1_decorator_Base
+	 */
+	protected function getDecoratorMock() {
+		$mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
+		//zurücksetzen aus anderen Tests
+		tx_mklib_tests_mod1_Util::unsetSorting($mod);
+		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
+	}
 
 	/**
 	 * @var tx_rnbase_model_base
@@ -51,14 +56,6 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 	protected $oModel;
 
 	public function setUp() {
-		$oMod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
-		$this->oDecorator = tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $oMod);
-		$this->oModel = tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 0));
-		$this->oModel->uid = 1;
-
-		//zurücksetzen aus anderen Tests
-		tx_mklib_tests_mod1_Util::unsetSorting($oMod);
-
 		$this->beUserAdminState = $GLOBALS['BE_USER']->user['admin'];
 	}
 
@@ -72,22 +69,19 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = 'disable';
 
 		$record = array('uid' => 1, 'disable' => 0);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		// Achtung: Das Ergebnis ist Multiline. Leider wird der Modifikator nicht akzeptiert...
 		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 
 
 		//jetzt mit versteckt und record fallback
 		$record = array('uid' => 1, 'disable' => 1);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		$this->assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 
 		//jetzt mit versteckt und ohne record fallback
 		$record = array('uid' => 1, 'disable' => 1);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		$this->assertRegExp('/<del>1<\/del>/', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
 	}
 
@@ -96,31 +90,26 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null;//konfig löschen
 
 		$record = array('uid' => 1, 'disable' => 0);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 
 		//jetzt mit versteckt im falschen feld
 		$record = array('uid' => 1, 'disable' => 1);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 2');
 
 		//jetzt mit versteckt im fallback feld
 		$record = array('uid' => 1, 'hidden' => 0);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 3');
 
 		$record = array('uid' => 1, 'hidden' => 1);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format(1,'uid',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		$this->assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 	}
 
 	public function testFormatWithLabelColumn() {
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base',
+		$model = $this->getModel(
 			array(
 				'uid' => 57,
 				'header' => 'Home',
@@ -128,7 +117,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 				'tstamp' => 1434158465,
 			)
 		)->setTablename('tt_content');
-		$result = $this->oDecorator->format('Content', 'label', $model->getRecord(), $model);
+		$result = $this->getDecoratorMock()->format('Content', 'label', $model->getRecord(), $model);
 
 		$this->assertContains('>Home</span>', $result, 'Falsches Label erzeugt');
 		$this->assertContains('<span title="UID: 57', $result, 'UID fehlt.');
@@ -137,16 +126,15 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 	}
 
 	public function testFormatWithSysLanguageUidColumn() {
-		/* @var $model tx_rnbase_model_base */
-		$model = tx_rnbase::makeInstance(
-			'tx_rnbase_model_base',
+		$model = $this->getModel(
 			array(
 				'uid' => 57,
 				'header' => 'Home',
 				'sys_language_uid' => '0',
 			)
-		)->setTableName('tt_content');
-		$result = $this->oDecorator->format('0', 'sys_language_uid', $model->getRecord(), $model);
+		)->setTablename('tt_content');
+
+		$result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
 		$this->assertContains(
 			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;Default',
@@ -155,7 +143,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		);
 
 		$model->setProperty('sys_language_uid', '-1');
-		$result = $this->oDecorator->format('0', 'sys_language_uid', $model->getRecord(), $model);
+		$result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
 		$this->assertContains(
 			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;[All]',
@@ -173,8 +161,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = 'disable';
 
 		$record = array('uid' => 1, 'disable' => 0);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 1" border="0" alt="" /></a>';
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 
@@ -186,8 +173,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 
 		//schon versteckt
 		$record = array('uid' => 1, 'disable' => 1);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 		$this->assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
@@ -235,8 +221,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = 'disable';
 
 		$record = array('uid' => 1, 'disable' => 0);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a>';
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 		$this->assertEquals(
@@ -247,8 +232,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 
 		//schon versteckt
 		$record = array('uid' => 1, 'disable' => 1);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 		$this->assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
@@ -283,8 +267,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null;//konfig löschen
 
 		$record = array('uid' => 1, 'hidden' => 0);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 		$this->assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
@@ -325,8 +308,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_phpunit_testcase {
 
 		//schon versteckt
 		$record = array('uid' => 1, 'hidden' => 1);
-		$this->oModel->record = $record;
-		$result = $this->oDecorator->format('','actions',$record,$this->oModel);
+		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 		$this->assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
