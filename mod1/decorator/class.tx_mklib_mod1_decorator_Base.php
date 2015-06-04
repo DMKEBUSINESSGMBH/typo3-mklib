@@ -36,7 +36,13 @@ tx_rnbase::load('tx_rnbase_mod_Util');
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  */
-class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator{
+class tx_mklib_mod1_decorator_Base
+	implements tx_rnbase_mod_IDecorator {
+
+	/**
+	 * @var tx_rnbase_mod_IModule
+	 */
+	private $mod = NULL;
 
 	/**
 	 *

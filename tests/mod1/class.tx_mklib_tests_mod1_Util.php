@@ -79,10 +79,10 @@ class tx_mklib_tests_mod1_Util {
 	/**
 	 * Löscht die gesetzten Sortierungsoptionen
 	 * Enter description here ...
-	 * @param unknown_type $oMod
+	 * @param tx_rnbase_mod_BaseModule $mod
 	 */
-	public static function unsetSorting($oMod) {
-		unset($GLOBALS['BE_USER']->uc['moduleData'][$oMod->getName()]['dummySearcherorderby']);
+	public static function unsetSorting(tx_rnbase_mod_BaseModule $mod) {
+		unset($GLOBALS['BE_USER']->uc['moduleData'][$mod->getName()]['dummySearcherorderby']);
 		if(isset($_GET['sortField']))
 			unset($_GET['sortField']);
 		if(isset($_GET['sortRev']))
