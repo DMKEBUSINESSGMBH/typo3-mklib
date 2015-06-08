@@ -236,9 +236,11 @@ abstract class tx_mklib_repository_Abstract
 			}
 			// merge master and overlays and keep the order!
 			$new = array();
+			// uniquemode can be master or overlay!
+			$preferOverlay = empty($options['uniquemode']) || strtolower($options['uniquemode']) !== 'master';
 			foreach ($items as $item) {
 				$uid = (int) $item->getUid();
-				$new[$uid] = !empty($overlay[$uid]) ? $overlay[$uid] : $master[$uid];
+				$new[$uid] = !empty($overlay[$uid]) && $preferOverlay ? $overlay[$uid] : $master[$uid];
 			}
 			$items = array_values($new);
 		}
