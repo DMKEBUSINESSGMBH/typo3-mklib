@@ -144,8 +144,11 @@ class tx_mklib_mod1_util_Language {
 		tx_rnbase_model_base $item,
 		tx_rnbase_mod_BaseModule $mod = NULL
 	) {
-		// the item already are an translated item!
-		if ($item->getUid() != $item->getProperty('uid')) {
+		if (
+			// the item already are an translated item!
+			$item->getUid() != $item->getProperty('uid')
+			|| $item->getSysLanguageUid() !== 0
+		) {
 			return '';
 		}
 
