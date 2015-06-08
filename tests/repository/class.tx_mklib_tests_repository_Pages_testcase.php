@@ -150,38 +150,39 @@ class tx_mklib_tests_repository_Pages_testcase
 			$repo,
 			'getSearcher'
 		);
+		$that = $this; // workaround for php 5.3
 		$searcher
 			->expects($this->once())
 			->method('search')
 			->with(
 				$this->callback(
-					function($f) {
-						$this->assertTrue(is_array($f));
-						$this->assertArrayHasKey('NEWALIAS.uid', $f);
-						$this->assertTrue(is_array($f['NEWALIAS.uid']));
-						$this->assertArrayHasKey(OP_EQ, $f['NEWALIAS.uid']);
-						$this->assertSame(57, $f['NEWALIAS.uid'][OP_EQ]);
+					function($f) use($that) {
+						$that->assertTrue(is_array($f));
+						$that->assertArrayHasKey('NEWALIAS.uid', $f);
+						$that->assertTrue(is_array($f['NEWALIAS.uid']));
+						$that->assertArrayHasKey(OP_EQ, $f['NEWALIAS.uid']);
+						$that->assertSame(57, $f['NEWALIAS.uid'][OP_EQ]);
 						return TRUE;
 					}
 				),
 				$this->callback(
-					function($o) {
-						$this->assertTrue(is_array($o));
-						$this->assertArrayHasKey('sqlonly', $o);
-						$this->assertTrue($o['sqlonly']);
-						$this->assertArrayHasKey('searchdef', $o);
+					function($o) use($that) {
+						$that->assertTrue(is_array($o));
+						$that->assertArrayHasKey('sqlonly', $o);
+						$that->assertTrue($o['sqlonly']);
+						$that->assertArrayHasKey('searchdef', $o);
 						$searchdef = &$o['searchdef'];
-						$this->assertSearchDef($searchdef);
+						$that->assertSearchDef($searchdef);
 
 						// test the search dev overrule
-						$this->assertArrayHasKey('alias', $searchdef);
-						$this->assertTrue(is_array($searchdef['alias']));
-						$this->assertArrayHasKey('NEWALIAS', $searchdef['alias']);
-						$this->assertTrue(is_array($searchdef['alias']['NEWALIAS']));
-						$this->assertArrayHasKey('table', $searchdef['alias']['NEWALIAS']);
-						$this->assertEquals('tx_new_table', $searchdef['alias']['NEWALIAS']['table']);
-						$this->assertArrayHasKey('join', $searchdef['alias']['NEWALIAS']);
-						$this->assertEquals('JOIN tx_new_table AS NEWALIAS ON PAGES.new_field = NEWALIAS.uid', $searchdef['alias']['NEWALIAS']['join']);
+						$that->assertArrayHasKey('alias', $searchdef);
+						$that->assertTrue(is_array($searchdef['alias']));
+						$that->assertArrayHasKey('NEWALIAS', $searchdef['alias']);
+						$that->assertTrue(is_array($searchdef['alias']['NEWALIAS']));
+						$that->assertArrayHasKey('table', $searchdef['alias']['NEWALIAS']);
+						$that->assertEquals('tx_new_table', $searchdef['alias']['NEWALIAS']['table']);
+						$that->assertArrayHasKey('join', $searchdef['alias']['NEWALIAS']);
+						$that->assertEquals('JOIN tx_new_table AS NEWALIAS ON PAGES.new_field = NEWALIAS.uid', $searchdef['alias']['NEWALIAS']['join']);
 
 						return TRUE;
 					}
@@ -199,8 +200,9 @@ class tx_mklib_tests_repository_Pages_testcase
 	 * checks the searchdev options.
 	 *
 	 * @param array $searchdef
+	 * @access protected only public for php5.3 and missing $this usage in closures.
 	 */
-	protected function assertSearchDef($searchdef) {
+	public function assertSearchDef($searchdef) {
 		$this->assertTrue(is_array($searchdef));
 		$this->assertArrayHasKey('alias', $searchdef);
 		$this->assertTrue(is_array($searchdef['alias']));
