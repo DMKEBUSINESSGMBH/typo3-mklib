@@ -222,24 +222,25 @@ abstract class tx_mklib_repository_Abstract
 			&& isset($options['distinct'])
 			&& $options['distinct']
 		) {
+			// seperate master and overlays
 			$master = $overlay = array();
 			/* @var $item tx_rnbase_model_base */
 			foreach ($items as $item) {
-				$uid = $item->getUid();
-				if ($uid === $item->uid) {
+				$uid = (int) $item->getUid();
+				$realUid = (int) $item->getProperty('uid');
+				if ($uid === $realUid) {
 					$master[$uid] = $item;
 				} else {
 					$overlay[$uid] = $item;
 				}
 			}
-			// array_merge doesnt work, it resets the numerical keys.
-			// so twoe models with the same master uid in both arrays
-			// are both existance in the merged array
-			// the + array union operator doesnt overide exiting keys
-			// and adds only new keys
-			$items = ($overlay + $master);
-			// we put back the keys
-			$items = array_values($items);
+			// merge master and overlays and keep the order!
+			$new = array();
+			foreach ($items as $item) {
+				$uid = (int) $item->getUid();
+				$new[$uid] = !empty($overlay[$uid]) ? $overlay[$uid] : $master[$uid];
+			}
+			$items = array_values($new);
 		}
 		return $items;
 	}
