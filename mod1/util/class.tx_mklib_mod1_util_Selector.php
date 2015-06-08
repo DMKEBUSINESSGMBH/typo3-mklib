@@ -96,6 +96,30 @@ class tx_mklib_mod1_util_Selector {
 		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
 		return $this->showSelectorByArray($items,'showhidden',$data, $options);
 	}
+
+	/**
+	 * Returns a delete select box. All data is stored in array $data.
+	 * @param 	array 	$data
+	 * @param 	array 	$options
+	 * @return 	boolean
+	 */
+	public function showLanguageSelector(&$data, $options=array()) {
+		$items = array(
+			'' => '',
+			-1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages'),
+			0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value'),
+		);
+
+		tx_rnbase::load('tx_mklib_mod1_util_Language');
+		$langs = tx_mklib_mod1_util_Language::getLangRecords($options['pid']);
+		foreach ($langs as $lang) {
+			$items[(int) $lang['uid']] = $lang['title'];
+		}
+
+		$options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_language');
+		return $this->showSelectorByArray($items, 'language', $data, $options);
+	}
+
 	/**
 	 * Zeigt eine Datumsauswahl mit einzelnen Selects für Tag, Monat und Jahr.
 	 * @param array $aItems Array mit den werten der Auswahlbox

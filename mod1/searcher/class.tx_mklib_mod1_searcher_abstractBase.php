@@ -67,6 +67,11 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 */
 	protected $currentShowHidden = 1;
 
+	/**
+	 * @var int
+	 */
+	protected $currentLanguage = NULL;
+
 
 	/**
 	 * Constructor
@@ -153,6 +158,12 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			$data['search'],
 			$this->getSearcherId().'Search',
 			array_merge(array('submit' => 1), $options)
+		);
+
+		// @TODO: check, if the table is internationalable!
+		$this->currentLanguage = $selector->showLanguageSelector(
+			$data['language'],
+			$options
 		);
 
 		$this->currentShowHidden = $selector->showHiddenSelector(
@@ -340,6 +351,14 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			$this->currentSearchWord,
 			$this->getSearchColumns()
 		);
+
+		if ($this->currentLanguage) {
+			$options['i18n'] = $this->currentLanguage;
+		} else {
+			$options['ignorei18n'] = TRUE;
+		}
+		// prefer the master record instead of the overlay!
+		$options['uniquemode'] = 'master';
 
 		// das muss die kindklasse auswerten (oder eigene methode?)
 //		if(isset($this->options['pid'])){}
