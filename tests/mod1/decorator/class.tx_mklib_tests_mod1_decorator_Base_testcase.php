@@ -38,29 +38,19 @@ tx_rnbase::load('tx_mklib_tests_mod1_Util');
 class tx_mklib_tests_mod1_decorator_Base_testcase
 	extends tx_rnbase_tests_BaseTestCase {
 
-	protected $beUserAdminState;
-
-	/**
-	 * @return tx_mklib_mod1_decorator_Base
-	 */
-	protected function getDecoratorMock() {
-		$mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
-		//zurücksetzen aus anderen Tests
-		tx_mklib_tests_mod1_Util::unsetSorting($mod);
-		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
-	}
-
-	/**
-	 * @var tx_rnbase_model_base
-	 */
-	protected $oModel;
+	protected $backup = array();
 
 	public function setUp() {
-		$this->beUserAdminState = $GLOBALS['BE_USER']->user['admin'];
+		$this->backup['beUserAdminState'] = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
+		if (!is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+			$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = array();
+		}
+		$this->backup['beUserAdminState'] = $GLOBALS['BE_USER']->user['admin'];
 	}
 
 	public function tearDown() {
-		$GLOBALS['BE_USER']->user['admin'] = $this->beUserAdminState;
+		$GLOBALS['BE_USER']->user['admin'] = $this->backup['beUserAdminState'];
+		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $this->backup['beUserAdminState'];
 	}
 
 	public function testFormatWithUidColumn() {
@@ -126,6 +116,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 	}
 
 	public function testFormatWithSysLanguageUidColumn() {
+		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'][] = 'flags-multiple';
 		$model = $this->getModel(
 			array(
 				'uid' => 57,
@@ -346,6 +337,16 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 			),
 			$result
 		);
+	}
+
+	/**
+	 * @return tx_mklib_mod1_decorator_Base
+	 */
+	protected function getDecoratorMock() {
+		$mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
+		//zurücksetzen aus anderen Tests
+		tx_mklib_tests_mod1_Util::unsetSorting($mod);
+		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
 	}
 
 	protected function replaceForCliAndremoveVcAndFormToken($string) {
