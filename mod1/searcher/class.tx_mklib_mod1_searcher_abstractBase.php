@@ -160,11 +160,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			array_merge(array('submit' => 1), $options)
 		);
 
-		// @TODO: check, if the table is internationalable!
-		$this->currentLanguage = $selector->showLanguageSelector(
-			$data['language'],
-			$options
-		);
+		// @TODO: check, if the table is internationalable and remove the option!
+		if (!empty($options['add_language_filter'])) {
+			$this->currentLanguage = $selector->showLanguageSelector(
+				$data['language'],
+				$options
+			);
+		}
 
 		$this->currentShowHidden = $selector->showHiddenSelector(
 			$data['hidden'],
