@@ -76,7 +76,11 @@ class tx_mklib_util_Encoding {
 			$toEncoding = self::getTypo3Encoding();
 		}
 		// convert array recursive
-		if (is_array($var) || (is_object($var) && $var instanceof Traversable)) {
+		if ($var instanceof tx_rnbase_model_data) {
+			$var->record = self::convertEncoding(
+					$var->record, $toEncoding, $fromEncoding);
+		}
+		elseif (is_array($var) || (is_object($var) && $var instanceof Traversable)) {
 			foreach ($var as &$value) {
 				$value = self::convertEncoding(
 					$value, $toEncoding, $fromEncoding);
@@ -84,18 +88,12 @@ class tx_mklib_util_Encoding {
 		}
 		// convert models record
 		elseif (is_object($var)){
-			if ($var instanceof tx_rnbase_model_base) {
-				$var->record = self::convertEncoding(
-						$var->record, $toEncoding, $fromEncoding);
-			}
-			else {
-				throw new InvalidArgumentException(
-					'Object "'.get_class($var).'" was not supportet for convertEncoding.'.
-					'Possible types are string, array or an object '.
-					'(instanceof "Traversable" or "tx_rnbase_model_base").',
-					$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5'
-				);
-			}
+			throw new InvalidArgumentException(
+				'Object "'.get_class($var).'" was not supportet for convertEncoding.'.
+				'Possible types are string, array or an object '.
+				'(instanceof "Traversable" or "tx_rnbase_model_base").',
+				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5'
+			);
 		}
 		// do nothing, if we have an empty sting or a number
 		elseif(empty($var) || is_numeric($var)) {
