@@ -3,7 +3,7 @@ config.admPanel = 0
 
 ### Werte für eingeloggte BE-User setzen zur Entwicklung
 
-### Admintool aktivieren 
+### Admintool aktivieren
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:admin = 1]
 	config.admPanel = 1
 	config.linkVars := addToList(admin)
@@ -30,11 +30,23 @@ config.admPanel = 0
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:sm = 1]
 	### Scriptmerger_configurieren
 	#plugin.tx_scriptmerger >
-	config.linkVars := addToList(sm)
+	config {
+		linkVars := addToList(sm)
+		compressCss = 1
+		concatenateCss = 1
+		compressJs = 1
+		concatenateJs = 1
+	}
 [global]
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nsm = 1]
 	plugin.tx_scriptmerger >
-	config.linkVars := addToList(sm)
+	config {
+		linkVars := addToList(sm)
+		compressCss = 0
+		concatenateCss = 0
+		compressJs = 0
+		concatenateJs = 0
+	}
 [global]
 
 ### php-ids
@@ -69,9 +81,9 @@ config.admPanel = 0
 	page.headerData.5050.value (
 <script type="text/javascript">
 /*<![CDATA[*/
-<!-- 
+<!--
 (function($) {
-	$(document).ready(function() {			
+	$(document).ready(function() {
 		pageUnits = '{$GRID.units}';
 		colUnits = '{$GRID.units}';
 		pagewidth = {$GRID.pagewidth};
