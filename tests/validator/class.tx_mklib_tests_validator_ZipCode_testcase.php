@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * Testfälle für tx_mklib_validator_ZipCode
@@ -36,85 +36,81 @@ tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
  *
  * @group integration
  */
-class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCaseSkeleton {
-
-	protected $importExtensions = array('static_info_tables', 'mklib');
-	protected $importStaticTables = true;
+class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
-	 * Wurden die ZipRules geladen?
-	 *
-	 * @return boolean
+	 * (non-PHPdoc)
+	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
-	private static function checkStaticCountries($skip=false){
-		$cnt = tx_rnbase_util_DB::doSelect('COUNT(uid) as cnt','static_countries', array('enablefieldsoff'=>1,/*'debug'=>1,*/ 'where'=>'zipcode_rule > 0'));
-		$loaded = intval($cnt[0]['cnt']) > 0;
-		if(!$loaded && $skip) {
-			self::markTestSkipped('Zip code rules not found in database');
-		}
-		return $loaded;
-	}
-
-	/**
-	 * @param 	mixed $rowOrUid
-	 * @return tx_mklib_model_StaticCountry
-	 */
-	private static function getStaticCountryModel($rowOrUid){
-//		tx_rnbase::load('tx_mklib_model_StaticCountry');
-//		return tx_mklib_model_StaticCountry::getInstance($rowOrUid);
-		return tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
-	}
-
 	protected function setUp(){
-		parent::setUp();
-		// ziprules in die db schreiben
-		self::importStaticTables('mklib', array('ext_tables_static_update.sql'), 'UPDATE');
+		if (!t3lib_extMgm::isLoaded('static_info_tables')) {
+			$this->markTestSkipped('static_info_tables nicht installiert');
+		}
+
+		// zur Sicherheit die Zip Code Rules einfügen
+		$sqlFilename = t3lib_div::getFileAbsFileName(t3lib_extMgm::extPath('mklib', 'ext_tables_static_update.sql'));
+		if(@is_file($sqlFilename)) {
+			tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
+		}
 	}
 
 	/**
 	 * @group integration
 	 */
-	public function testValidateDE(){
-		self::checkStaticCountries(true);
+	public function testValidateGermanZips(){
+		self::checkStaticCountries();
 
-		$oCountry = self::getStaticCountryModel(54 /*DE*/);
+		$country = self::getStaticCountryModel(54 /*DE*/);
 
-		$this->assertTrue(is_object($oCountry), 'No model given.');
-		$this->assertTrue($oCountry->isValid(), 'No valid model given.');
-		$this->assertEquals('DE', $oCountry->getISO2(), 'No or wrong iso 2 given.');
-		$this->assertEquals(5, $oCountry->getZipLength(), 'No or wrong  zip length given.');
-		$this->assertEquals(4, $oCountry->getZipRule(), 'No or wrong  zip rule given.');
+		$this->assertTrue(is_object($country), 'No model given.');
+		$this->assertTrue($country->isValid(), 'No valid model given.');
+		$this->assertEquals('DE', $country->getISO2(), 'No or wrong iso 2 given.');
+		$this->assertEquals(5, $country->getZipLength(), 'No or wrong  zip length given.');
+		$this->assertEquals(4, $country->getZipRule(), 'No or wrong  zip rule given.');
 
 		$validator = tx_mklib_validator_ZipCode::getInstance();
 
 		$zips = array('09113', '14482');
 		foreach($zips as $zip) {
-			$this->assertTrue($validator->validate($oCountry, $zip), $zip.' -> '.$validator->getFormatInfo($oCountry));
+			$this->assertTrue(
+				$validator->validate($country, $zip),
+				$zip.' -> '.$validator->getFormatInfo($country)
+			);
 		}
 		$zips = array('9120', 'O9113');
 		foreach($zips as $zip) {
-			$this->assertFalse($validator->validate($oCountry, $zip), $zip.' -> '.$validator->getFormatInfo($oCountry));
+			$this->assertFalse(
+				$validator->validate($country, $zip),
+				$zip.' -> '.$validator->getFormatInfo($country)
+			);
 		}
 	}
 
 	/**
 	 * @dataProvider providerValidatorRules
-	 * @param 	string		$sZip
-	 * @param 	int 		$iCountry
-	 * @param 	boolean		$bResult
+	 * @param 	string		$zip
+	 * @param 	int 		$countryUid
+	 * @param 	boolean		$result
 	 *
 	 * @group integration
 	 */
-	public function testValidatorRules($sZip, $iCountry, $bResult){
-		self::checkStaticCountries(true);
-		$oCountry = self::getStaticCountryModel($iCountry);
-		$oValidator = tx_mklib_validator_ZipCode::getInstance();
-		$this->assertEquals($bResult, $oValidator->validate($oCountry, $sZip), $sZip.' -> '.$oValidator->getFormatInfo($oCountry));
+	public function testValidatorRules($zip, $countryUid, $result){
+		self::checkStaticCountries();
+		$country = self::getStaticCountryModel($countryUid);
+		$validator = tx_mklib_validator_ZipCode::getInstance();
+		$this->assertEquals(
+			$result, $validator->validate($country, $zip),
+			$zip.' -> '.$validator->getFormatInfo($country)
+		);
 	}
+
+	/**
+	 * @return multitype:multitype:string number boolean
+	 */
 	public function providerValidatorRules(){
 		$return = array();
 		foreach(array(
-//				array($iZip, $oCountry, $bResult),
+//				array($iZip, $country, $result),
 				__LINE__ => array('09113', (54 /*DE*/), true),
 				__LINE__ => array('9120', (54 /*DE*/), false),
 				__LINE__ => array('föllig egal, keine rules!', (130 /*MA*/), true),
@@ -148,10 +144,28 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_mklib_tests_DBTestCas
 		}
 		return $return;
 	}
-}
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/validator/class.tx_mklib_tests_validator_ZipCode_testcase.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/validator/class.tx_mklib_tests_validator_ZipCode_testcase.php']);
-}
+	/**
+	 * Wurden die ZipRules geladen?
+	 */
+	private static function checkStaticCountries(){
+		$cnt = tx_rnbase_util_DB::doSelect('COUNT(uid) as cnt','static_countries', array('enablefieldsoff'=>1,/*'debug'=>1,*/ 'where'=>'zipcode_rule > 0'));
+		$loaded = intval($cnt[0]['cnt']) > 0;
 
-?>
+		if (!$loaded) {
+			// zur Sicherheit die Zip Code Rules einfügen
+			$sqlFilename = t3lib_div::getFileAbsFileName(t3lib_extMgm::extPath('mklib', 'ext_tables_static_update.sql'));
+			if(@is_file($sqlFilename)) {
+				tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
+			}
+		}
+	}
+
+	/**
+	 * @param 	mixed $rowOrUid
+	 * @return tx_mklib_model_StaticCountry
+	 */
+	private static function getStaticCountryModel($rowOrUid){
+		return tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
+	}
+}
