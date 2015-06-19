@@ -30,7 +30,7 @@ require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 
 /**
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_tests_mod1_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
@@ -44,7 +44,7 @@ class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends tx_phpunit_testcas
 		$result = tx_mklib_mod1_util_SearchBuilder::makeWildcardTerm($term, $field, $leadingWC);
 		$this->assertEquals($expected, $result);
 	}
-	
+
 	public function providerMakeWildcardTerm() {
 		return array(
 			'ds 01' => array('test', '', false, '+"test"*'),
@@ -59,32 +59,32 @@ class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends tx_phpunit_testcas
 			'ds 10' => array('c # sharp', 'testfield', false, '+testfield:"c"* +testfield:"sharp"*'),
 		);
 	}
-	
+
 	public function testBuildFreeTextWithSearchWordAndNoCols() {
 		$fields = array();
 		$result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test');
-		
+
 		$this->assertTrue($result,'es wurde trotz Suchbegriff nicht true zurück gegeben.');
 		$this->assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
 		$this->assertEmpty($fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
 		$this->assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
 	}
-	
+
 	public function testBuildFreeTextWithSearchWordAndCols() {
 		$fields = array();
 		$result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test', array('TEST1.col1','TEST1.col2','TEST2.col1'));
-		
+
 		$this->assertTrue($result,'es wurde trotz Suchbegriff nicht true zurück gegeben.');
 		$this->assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
 		$aExpectedCols = array('TEST1.col1','TEST1.col2','TEST2.col1');
 		$this->assertEquals($aExpectedCols,$fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
 		$this->assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
 	}
-	
+
 	public function testBuildFreeTextWithoutSearchWord() {
 		$fields = array();
 		$result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, '');
-		
+
 		$this->assertFalse($result,'es wurde trotz Suchbegriff nicht true zurück gegeben.');
 		$this->assertEmpty($fields, 'fields ist nicht korrekt');
 	}

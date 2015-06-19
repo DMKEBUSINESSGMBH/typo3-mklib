@@ -30,19 +30,19 @@ require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummyLinker');
 
 /**
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_tests_mod1_linker_Base_testcase extends tx_phpunit_testcase {
-	
+
 	public function testMakeLink() {
 		$oLinker = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyLinker');
 		$oModel = tx_rnbase::makeInstance('tx_rnbase_model_base',1);
 		$oModel->uid = 1;
 		$oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
-		
+
 		$this->assertEquals('<input type="submit" name="showTest[tx_rnbase_model_base|1]" value="" />', $oLinker->makeLink($oModel,$oFormTool), 'Fsclher Link.');
 	}
 }

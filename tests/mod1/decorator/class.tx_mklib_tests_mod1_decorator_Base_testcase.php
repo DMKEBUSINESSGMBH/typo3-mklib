@@ -41,7 +41,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 	protected $backup = array();
 
 	public function setUp() {
-		$this->backup['beUserAdminState'] = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
+		$this->backup['iconsAvailable'] = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
 		if (!is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
 			$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = array();
 		}
@@ -50,7 +50,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 
 	public function tearDown() {
 		$GLOBALS['BE_USER']->user['admin'] = $this->backup['beUserAdminState'];
-		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $this->backup['beUserAdminState'];
+		$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $this->backup['iconsAvailable'];
 	}
 
 	public function testFormatWithUidColumn() {
