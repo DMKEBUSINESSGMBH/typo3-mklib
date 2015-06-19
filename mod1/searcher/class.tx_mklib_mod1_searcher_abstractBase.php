@@ -358,9 +358,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			$options['i18n'] = $this->currentLanguage;
 		} else {
 			$options['ignorei18n'] = TRUE;
+			// prefer the master record instead of the overlay, if no language is filtered!
+			$options['uniquemode'] = 'master';
 		}
-		// prefer the master record instead of the overlay!
-		$options['uniquemode'] = 'master';
 
 		// das muss die kindklasse auswerten (oder eigene methode?)
 //		if(isset($this->options['pid'])){}
