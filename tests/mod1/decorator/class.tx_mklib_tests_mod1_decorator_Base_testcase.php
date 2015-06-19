@@ -46,6 +46,8 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 			$GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = array();
 		}
 		$this->backup['beUserAdminState'] = $GLOBALS['BE_USER']->user['admin'];
+
+		$GLOBALS['LANG']->lang = 'default';
 	}
 
 	public function tearDown() {
