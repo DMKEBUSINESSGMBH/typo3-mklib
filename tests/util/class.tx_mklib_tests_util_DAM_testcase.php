@@ -67,6 +67,9 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 * @see tx_mklib_tests_DBTestCaseSkeleton::setUp()
 	 */
 	public function setUp() {
+		if (!t3lib_extMgm::isLoaded('dam')) {
+			$this->markTestSkipped('DAM ist nicht installiert');
+		}
 		parent::setUp();
 
 		$this->sTempFolder = t3lib_extMgm::extPath('mklib').'tests/typo3temp';
