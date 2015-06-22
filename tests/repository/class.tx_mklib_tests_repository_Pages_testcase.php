@@ -102,6 +102,61 @@ class tx_mklib_tests_repository_Pages_testcase
 	}
 
 	/**
+	 * Test the getChildren method.
+	 *
+	 * @return void
+	 *
+	 * @group unit
+	 * @test
+	 */
+	public function testGetChildren() {
+
+		$repo = $this->getRepository();
+		$searcher = $this->callInaccessibleMethod(
+			$repo,
+			'getSearcher'
+		);
+		$that = $this; // workaround for php 5.3
+		$searcher
+			->expects($this->once())
+			->method('search')
+			->with(
+				// check, if only (count:1) the page field is set
+				$this->callback(
+					function($f) use($that) {
+						$that->assertTrue(is_array($f));
+						$that->assertCount(1, $f);
+						$that->assertSame(57, $f['PAGES.pid'][OP_EQ_INT]);
+						return TRUE;
+					}
+				),
+				// check, if only (count:1) the searchdef
+				$this->callback(
+					function($o) use($that) {
+						$that->assertTrue(is_array($o));
+						// if the test rans in be, the enablefieldsbe option will be set
+						if (TYPO3_MODE === 'BE') {
+							$that->assertCount(2, $o);
+							$that->assertArrayHasKey('enablefieldsbe', $o);
+						} else {
+							$that->assertCount(1, $o);
+						}
+						$that->assertArrayHasKey('searchdef', $o);
+
+						return TRUE;
+					}
+				)
+			)
+			->will($this->returnValue(array()))
+		;
+
+
+		$page = $this->getModel(array('uid'=> 57), 'tx_mklib_model_Page');
+
+		$this->assertTrue(is_array($repo->getChildren($page)));
+	}
+
+	/**
 	 * Test the getSearchdef method.
 	 *
 	 * @return void

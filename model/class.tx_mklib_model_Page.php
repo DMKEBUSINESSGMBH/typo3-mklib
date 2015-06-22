@@ -1,13 +1,9 @@
 <?php
-/**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_model
- *  @author Hannes Bochmann
- *
+/***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * (c) 2011 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
+ * All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
@@ -24,17 +20,25 @@
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- */
+ ***************************************************************/
 
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_model_base');
-
 /**
  *
- * @author Hannes Bochmann <hannes.bochmann@dmk-business.de>
- *
+ * @package TYPO3
+ * @subpackage tx_mklib
+ * @author Hannes Bochmann
+ * @author Michael Wagner
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_model_Page extends tx_rnbase_model_base {
+
+	/**
+	 * @var array[tx_mklib_model_Page]
+	 */
+	private $children = NULL;
 
 	/**
 	 * Liefert den Namen der Datenbanktabelle
@@ -44,4 +48,26 @@ class tx_mklib_model_Page extends tx_rnbase_model_base {
 	public function getTableName() {
 		return 'pages';
 	}
+
+	/**
+	 * returns all subpages of a page on first level.
+	 *
+	 * @return array[tx_mklib_model_Page]
+	 */
+	public function getChildren() {
+		if ($this->children === NULL) {
+			$this->children = $this->getRepository()->getChildren($this);
+		}
+		return $this->children;
+	}
+
+	/**
+	 * the repo for the pages
+	 *
+	 * @return tx_mklib_repository_Pages
+	 */
+	protected function getRepository() {
+		return tx_rnbase::makeInstance('tx_mklib_repository_Pages');
+	}
+
 }

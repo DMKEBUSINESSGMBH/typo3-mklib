@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- * (c) 2014 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
+ * (c) 2015 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
  * All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,11 +26,11 @@ tx_rnbase::load('tx_mklib_repository_Abstract');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
- * Abstracte Repository Klasse
+ * Page Repository
  *
  * @package tx_mklib
  * @subpackage tx_mklib_repository
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
@@ -52,7 +52,7 @@ class tx_mklib_repository_Pages
 	 * @return 	string
 	 */
 	protected function getWrapperClass() {
-		return 'tx_rnbase_model_base';
+		return 'tx_mklib_model_Page';
 	}
 
 	/**
@@ -65,6 +65,21 @@ class tx_mklib_repository_Pages
 	 */
 	protected function getEmptyModel() {
 		return parent::getEmptyModel()->setTablename('pages');
+	}
+
+	/**
+	 * returns all subpages of a page on first level.
+	 *
+	 * @param tx_mklib_model_Page $page
+	 * @return array[tx_mklib_model_Page]
+	 */
+	public function getChildren(
+		tx_mklib_model_Page $page
+	) {
+		$fields = $options = array();
+		$fields['PAGES.pid'][OP_EQ_INT] = $page->getUid();
+
+		return $this->search($fields, $options);
 	}
 
 	/**
