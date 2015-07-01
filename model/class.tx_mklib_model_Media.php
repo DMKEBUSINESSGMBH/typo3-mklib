@@ -57,19 +57,55 @@ class tx_mklib_model_Media extends tx_rnbase_model_base {
 	 */
 	public function fillPath($sPath = false){
 		// Pathname immer setzen!
-		if(!isset($this->record['file_webpath']))
-			$this->record['file_path_name'] = $this->record['file_path'].$this->record['file_name'];
+		if (!$this->hasFilePath()) {
+			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+				$this->setFilePathName(
+					$this->getUrl()
+				);
+			} else {
+				$this->setFilePathName(
+					$this->getFilePath() . $this->getFileName()
+				);
+			}
+		}
 
 		tx_rnbase::load('tx_mklib_util_File');
 
-		if((!$sPath || $sPath == 'webpath') && !isset($this->record['file_webpath']))
-			$this->record['file_webpath'] = tx_mklib_util_File::getWebPath($this->record['file_path_name']);
+		// webpath setzen
+		if (
+			(!$sPath || $sPath == 'webpath')
+			&& !$this->hasFileWebpath()
+		) {
+			$this->setFileWebpath(
+				tx_mklib_util_File::getWebPath(
+					$this->getFilePathName()
+				)
+			);
+		}
 
-		if((!$sPath || $sPath == 'serverpath') && !isset($this->record['file_serverpath']))
-			$this->record['file_serverpath'] = tx_mklib_util_File::getServerPath($this->record['file_path_name']);
+		// serverpath setzen
+		if (
+			(!$sPath || $sPath == 'serverpath')
+			&& !$this->hasFileServerpath()
+		) {
+			$this->setFileServerpath(
+				tx_mklib_util_File::getServerPath(
+					$this->getFilePathName()
+				)
+			);
+		}
 
-		if((!$sPath || $sPath == 'relpath') && !isset($this->record['file_relpath']))
-			$this->record['file_relpath'] = tx_mklib_util_File::getRelPath($this->record['file_path_name']);
+		// relpath setzen
+		if (
+			(!$sPath || $sPath == 'relpath')
+			&& !$this->hasFileRelpath()
+		) {
+			$this->setFileRelpath(
+				tx_mklib_util_File::getRelPath(
+					$this->getFilePathName()
+				)
+			);
+		}
 
 		return $this;
 	}
