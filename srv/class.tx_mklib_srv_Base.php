@@ -253,16 +253,25 @@ abstract class tx_mklib_srv_Base extends t3lib_svbase {
 	}
 
 	/**
-	 * Search the item for the given uid
-	 *
-	 * @TODO: das liefert immer ein moddel, auch wenn kein datensatz existiert!
-	 * 		  es sollte NULL zurückgegeben werden, wenn kein datensatz existiert!
+	 * Search the item for the given uid.
+	 * liefert immer ein model, auch wenn kein datensatz zur uid existiert.
 	 *
 	 * @param int $ct
 	 * @return tx_rnbase_model_base
 	 */
 	public function get($uid) {
 		return tx_rnbase::makeInstance($this->getWrapperClass(), $uid);
+	}
+
+	/**
+	 * Holt einen bestimmten Datensatz aus dem Repo.
+	 *
+	 * @param integer|array $rowOrUid
+	 * @return tx_rnbase_model_base|null
+	 */
+	public function findByUid($rowOrUid) {
+		$model = $this->get($rowOrUid);
+		return $model->isPersisted() && $model->isValid() ? $model : NULL;
 	}
 
 	/**
