@@ -532,7 +532,7 @@ class tx_mklib_util_TCA {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			tx_rnbase::load('tx_rnbase_util_TSFAL');
-			// in DAM wurde immer noch _field beim Typ verlant, bei FAL nicht mehr
+			// in DAM wurde immer noch _field beim Typ verlangt, bei FAL nicht mehr
 			if (isset($options['type'])) {
 				$options['type'] = str_replace('_field', '', $options['type']);
 			}
