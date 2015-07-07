@@ -212,15 +212,14 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker {
 		$makeLink = $this->containsMarker($template, $linkMarker);
 		$makeUrl = $this->containsMarker($template, $linkMarker.'URL');
 		if($makeLink || $makeUrl) {
-			tx_rnbase::load('tx_rnbase_util_TYPO3');
-			$url = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				$item->record['url'] : $item->record['file_path_name'];
-			if($url) { // link erzeugen, wenn gesetzt
+			// fill the relative path of the file (dam and fal comform!)
+			$url = $item->fillPath('relpath')->getFileRelpath();
+			if ($url) { // link erzeugen, wenn gesetzt
 				$token = self::getToken();
 				$linkObj = $configurations->createLink();
 				$linkObj->label($token);
 				$linkObj->initByTS($configurations, $confId.'link.', array());
-				$linkObj->destination( $url );
+				$linkObj->destination($url);
 				// extTarget setzen, wenn im TS. rnbase macht das leider nicht.
 				if(($extTarget = $configurations->get($confId.'link.extTarget'))) {
 					$linkObj->externalTargetAttribute($extTarget);
