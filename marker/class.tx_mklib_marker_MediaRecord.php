@@ -112,7 +112,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker {
 
 		$this->prepareLinks($item, $marker, $markerArray, $subpartArray, $wrappedSubpartArray, $confId, $formatter, $template);
 
-		$out = $formatter->cObj->substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+		$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 		return $out;
 	}
 
