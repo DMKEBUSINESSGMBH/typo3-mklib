@@ -90,16 +90,15 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker {
 			$item = self::getEmptyInstance('tx_mklib_model_Dam');
 		}
 
-		$item->record['file_path_name'] = isset($item->record['file_path_name']) ?
-				$item->record['file_path_name'] : $item->record['file_path'].$item->record['file_name'];
+		$item->fillPath('file_path_name');
 
-		if($this->containsMarker($template, $marker.'_FILE_WEBPATH'))
+		if ($this->containsMarker($template, $marker.'_FILE_WEBPATH'))
 			$item->fillPath('webpath');
 
-		if($this->containsMarker($template, $marker.'_FILE_SERVERPATH'))
+		if ($this->containsMarker($template, $marker.'_FILE_SERVERPATH'))
 			$item->fillPath('serverpath');
 
-		if($this->containsMarker($template, $marker.'_FILE_RELPATH'))
+		if ($this->containsMarker($template, $marker.'_FILE_RELPATH'))
 			$item->fillPath('relpath');
 
 		$template = $this->addIcon($template, $item, $formatter, $confId, $marker);
