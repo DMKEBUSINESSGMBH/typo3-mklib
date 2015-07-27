@@ -18,5 +18,5 @@ The following is a very high level overview of the changes in this extension.
 =========  ===========================================================================
 Version    Changes
 =========  ===========================================================================
-1.0.0      - Initial Release
+0.9.89     [TASK] file path name in media model for fal fixed
 =========  ===========================================================================
