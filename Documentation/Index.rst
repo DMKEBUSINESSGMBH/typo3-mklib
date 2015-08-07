@@ -17,7 +17,7 @@ MK LIB
 .. only:: html
 
 	:Classification:
-		mklin
+		mklib
 
 	:Version:
 		|release|
@@ -26,13 +26,13 @@ MK LIB
 		de
 
 	:Description:
-		
+
 
 	:Keywords:
 		forAdmins, forIntermediate, forDevelopers, forEditors, library
 
 	:Copyright:
-		2013-2014 DMK E-Business GmbH
+		2013-2015 DMK E-Business GmbH
 
 	:Author:
 		Hannes Bochmann, Michael Wagner
@@ -43,8 +43,8 @@ MK LIB
 	:License:
 		This document is published under the Open Content License
 		available from http://www.opencontent.org/opl.shtml
-		
-		The content of this document is related to TYPO3 
+
+		The content of this document is related to TYPO3
 		- a GNU/GPL CMS/Framework available from www.typo3.org
 
 	:Rendered:
