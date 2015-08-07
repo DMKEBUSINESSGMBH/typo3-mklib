@@ -143,13 +143,11 @@ class tx_mklib_mod1_decorator_Base
 				$item,
 				$this->getModule()
 			);
-			
-			/** 
-			 * @TODO: compatibility with Typo3 4.x? xml files instead of xlf files
-			 */
+
 			if (!empty($new)) {
+				$fileExt = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ? 'xlf' : 'xml';
 				$ret .= ' ('
-					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xlf:Localize')
+					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.' . $fileExt . ':Localize')
 					. ' ' . $new
 					. ')'
 				;
