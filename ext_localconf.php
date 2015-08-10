@@ -16,7 +16,12 @@ $_EXTKEY = 'mklib';
 
 if (TYPO3_MODE=='BE')    {
     // Setting up scripts that can be run from the cli_dispatch.phpsh script.
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:'.$_EXTKEY.'/cli/class.tx_mklib_cli_main.php','_CLI_'.$_EXTKEY);
+    if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+    	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']['mklib_find_unused_locallang_labels'] =
+    		array('EXT:'.$_EXTKEY.'/Classes/Cli/FindUnusedLocallangLabels.php','_CLI_mklib_find_unused_locallang_labels');
+    } else {
+    	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:'.$_EXTKEY.'/cli/class.tx_mklib_cli_main.php','_CLI_'.$_EXTKEY);
+    }
 }
 
 require_once(t3lib_extMgm::extPath($_EXTKEY).'scheduler/ext_localconf.php');

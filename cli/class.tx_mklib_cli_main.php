@@ -54,16 +54,6 @@ class tx_mklib_cli_main extends t3lib_cli {
                   'name' => '--flush-cache',
 			),
 		),
-      	'update' => array(
-            'short' => array(
-                  'desc' => 'Das gleiche wie --update-ext',
-                  'name' => '-up',
-			),
-            'long' => array(
-                  'desc' => 'Eine bestimmte Extension innerhalb von TYPO3 updaten.',
-                  'name' => '--update-ext',
-			),
-		),
       	'help' => array(
             'short' => array(
                   'desc' => 'Das gleiche wie --help',
@@ -91,8 +81,6 @@ class tx_mklib_cli_main extends t3lib_cli {
 
 		$this->cli_options[] = array($this->commands['flush']['long']['name'], $this->commands['flush']['long']['desc']);
 		$this->cli_options[] = array($this->commands['flush']['short']['name'], $this->commands['flush']['short']['desc']);
-		//        $this->cli_options[] = array($this->commands['update']['long']['name'], $this->commands['update']['long']['desc']);
-		//        $this->cli_options[] = array($this->commands['update']['short']['name'], $this->commands['update']['short']['desc']);
 		$this->cli_options[] = array($this->commands['help']['long']['name'], $this->commands['help']['long']['desc']);
 		$this->cli_options[] = array($this->commands['help']['short']['name'], $this->commands['help']['short']['desc']);
 
