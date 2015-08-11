@@ -23,4 +23,3 @@ You just have to create the Backend User with the name _cli_mklib.
    :glob:
 
    Clear Cache
-   Find unused locallang labels
