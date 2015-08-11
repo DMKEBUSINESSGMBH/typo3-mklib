@@ -1,7 +1,4 @@
 <?php
-if (!defined('TYPO3_cliMode')) {
-	die('You cannot run this script directly!');
-}
 /***************************************************************
  *  Copyright notice
  *
@@ -64,36 +61,29 @@ class Tx_Mklib_Cli_FindUnusedLocallangLabels extends \TYPO3\CMS\Core\Controller\
 	}
 
 	/**
-	 * CLI engine
-	 *
-	 * @param array $argv Command line arguments
-	 * @return string
-	 * @todo Define visibility
+	 * @return void
 	 */
-	public function cli_main($argv) {
-		$this->cli_setArguments($argv);
-
+	public function showUnusedLocallangLabels() {
 		if (!isset($this->cli_args['--locallangFile']) || !isset($this->cli_args['--searchFolder'])) {
 			$this->cli_help();
-			exit;
-		}
-
-		$languageService = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Lang\\LanguageService');
-		foreach ($this->cli_args['--locallangFile'] as $locallangFile) {
-			$locallangFile = GeneralUtility::getFileAbsFileName($locallangFile);
-			$labels = $languageService->includeLLFile($locallangFile, FALSE);
-			foreach ($this->cli_args['--searchFolder'] as $folders) {
-				foreach (GeneralUtility::trimExplode(',', $folders) as $folder) {
-					$this->getLabelsUsageInFolder(
-						$labels, GeneralUtility::getFileAbsFileName($folder), array($locallangFile)
-					);
+		} else {
+			$languageService = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Lang\\LanguageService');
+			foreach ($this->cli_args['--locallangFile'] as $locallangFile) {
+				$locallangFile = GeneralUtility::getFileAbsFileName($locallangFile);
+				$labels = $languageService->includeLLFile($locallangFile, FALSE);
+				foreach ($this->cli_args['--searchFolder'] as $folders) {
+					foreach (GeneralUtility::trimExplode(',', $folders) as $folder) {
+						$this->getLabelsUsageInFolder(
+							$labels, GeneralUtility::getFileAbsFileName($folder), array($locallangFile)
+						);
+					}
 				}
 			}
-		}
 
-		foreach ($this->labelsUsage as $labelKey => $usage) {
-			if (!$usage) {
-				$this->cli_echo($labelKey . " wird nicht verwendet\n");
+			foreach ($this->labelsUsage as $labelKey => $usage) {
+				if (!$usage) {
+					$this->cli_echo($labelKey . " wird nicht verwendet\n");
+				}
 			}
 		}
 	}
@@ -121,7 +111,6 @@ class Tx_Mklib_Cli_FindUnusedLocallangLabels extends \TYPO3\CMS\Core\Controller\
 	 */
 	protected function getLabelsUsageInFile(array $labels, $file) {
 		$fileContents = strtolower(file_get_contents($file));
-
 		foreach ($labels as $labelsByLanguage) {
 			foreach ($labelsByLanguage as $labelKey => $label) {
 				if (!isset($this->labelsUsage[$labelKey])) {
@@ -135,6 +124,8 @@ class Tx_Mklib_Cli_FindUnusedLocallangLabels extends \TYPO3\CMS\Core\Controller\
 	}
 }
 
-// Call the functionality
-$cleanerObj = tx_rnbase::makeInstance('Tx_Mklib_Cli_FindUnusedLocallangLabels');
-$cleanerObj->cli_main($_SERVER['argv']);
+if (defined('TYPO3_cliMode')) {
+	$cleanerObj = tx_rnbase::makeInstance('Tx_Mklib_Cli_FindUnusedLocallangLabels');
+	$cleanerObj->showUnusedLocallangLabels();
+}
+
