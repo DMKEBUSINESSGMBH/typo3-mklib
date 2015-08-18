@@ -38,12 +38,26 @@ tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummyLinker');
 class tx_mklib_tests_mod1_linker_Base_testcase extends tx_phpunit_testcase {
 
 	public function testMakeLink() {
+		//sprache auf default setzen damit wir die richtigen labels haben
+		$GLOBALS['LANG']->lang = 'default';
+		//damit labels geladen sind
+		global $LOCAL_LANG;
+		$label = 'Details';
+		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()){
+			$LOCAL_LANG['default']['label_show_details'][0]['target'] = $label;
+		}else{
+			$LOCAL_LANG['default']['label_show_details'] = $label;
+		}
 		$oLinker = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyLinker');
 		$oModel = tx_rnbase::makeInstance('tx_rnbase_model_base',1);
 		$oModel->uid = 1;
 		$oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
 
-		$this->assertEquals('<input type="submit" name="showTest[tx_rnbase_model_base|1]" value="" />', $oLinker->makeLink($oModel,$oFormTool), 'Fsclher Link.');
+		$this->assertEquals(
+			'<input type="submit" name="showTest[tx_rnbase_model_base|1]" value="' . $label . '" />',
+			$oLinker->makeLink($oModel,$oFormTool),
+			'Falscher Link.'
+		);
 	}
 }
 
