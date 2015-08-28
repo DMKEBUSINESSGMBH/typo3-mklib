@@ -63,7 +63,7 @@ class tx_mklib_repository_Pages
 	 *
 	 * @return tx_rnbase_model_base
 	 */
-	protected function getEmptyModel() {
+	public function getEmptyModel() {
 		return parent::getEmptyModel()->setTablename('pages');
 	}
 

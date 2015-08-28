@@ -274,7 +274,7 @@ abstract class tx_mklib_repository_Abstract
 	 *
 	 * @return tx_rnbase_model_base
 	 */
-	protected function getEmptyModel() {
+	public function getEmptyModel() {
 		return tx_rnbase::makeInstance($this->getWrapperClass());
 	}
 
