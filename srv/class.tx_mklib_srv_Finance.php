@@ -227,7 +227,7 @@ class tx_mklib_srv_Finance extends t3lib_svbase {
 		}
 		// get iso from model
 		if ($country instanceof tx_mklib_model_StaticCountry) {
-			$country = $country->getCnIso2();
+			$country = $country->getCnIso_2();
 		}
 
 		$result = true;
