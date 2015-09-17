@@ -27,6 +27,7 @@
 
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_mod1_export_Util');
+tx_rnbase::load('tx_rnbase_mod_Util');
 
 /**
  * Handelt die über Typoscript definierte Exportfunktionalität.
