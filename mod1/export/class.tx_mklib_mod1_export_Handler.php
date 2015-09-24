@@ -304,7 +304,7 @@ class tx_mklib_mod1_export_Handler {
 	 * @param string $type
 	 * @return string
 	 */
-	private function getExportTemplate($type) {
+	protected function getExportTemplate($type) {
 		$configuration = $this->getConfigurations();
 		$confId = $this->getConfId().'types.'.$type.'.template.';
 
