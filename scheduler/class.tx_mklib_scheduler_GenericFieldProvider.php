@@ -22,17 +22,32 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_mklib_scheduler_AbstractFieldProviderBase');
+tx_rnbase::load('tx_rnbase_util_TYPO3');
+if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+	tx_rnbase::load('tx_mklib_scheduler_AbstractFieldProvider60');
+	/**
+	 * Fügt Felder im scheduler task hinzu
+	 *
+	 * @package TYPO3
+	 * @subpackage tx_mklib
+	 * @author Michael Wagner
+	 */
+	abstract class tx_mklib_scheduler_GenericFieldProvider
+		extends tx_mklib_scheduler_AbstractFieldProvider60 {
+	}
+} else {
+	tx_rnbase::load('tx_mklib_scheduler_AbstractFieldProvider45');
 
-/**
- * Fügt Felder im scheduler task hinzu
- *
- * @package TYPO3
- * @subpackage tx_mklib
- * @author Michael Wagner
- */
-abstract class tx_mklib_scheduler_GenericFieldProvider
-	extends tx_mklib_scheduler_AbstractFieldProviderBase {
+	/**
+	 * Fügt Felder im scheduler task hinzu
+	 *
+	 * @package TYPO3
+	 * @subpackage tx_mklib
+	 * @author Michael Wagner
+	 */
+	abstract class tx_mklib_scheduler_GenericFieldProvider
+		extends tx_mklib_scheduler_AbstractFieldProvider45 {
+	}
 }
 
 

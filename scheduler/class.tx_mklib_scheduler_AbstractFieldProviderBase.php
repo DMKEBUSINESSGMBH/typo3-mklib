@@ -2,7 +2,7 @@
 /**
  *  Copyright notice
  *
- *  (c) 2011 DMK E-BUSINESS GmbH  <dev@dmk-ebusiness.de>
+ *  (c) 2015 DMK E-BUSINESS GmbH  <dev@dmk-ebusiness.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,22 +21,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
-if (!interface_exists('tx_scheduler_AdditionalFieldProvider')) {
-	require_once t3lib_extMgm::extPath(
-		'scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php'
-	);
-}
 
 /**
  * Fügt Felder im scheduler task hinzu
  *
- * @package tx_mklib
- * @subpackage tx_mklib_scheduler
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mklib
+ * @author Michael Wagner
  */
-abstract class tx_mklib_scheduler_AbstractFieldProviderBase
-	implements tx_scheduler_AdditionalFieldProvider {
+abstract class tx_mklib_scheduler_AbstractFieldProviderBase {
 
 	protected $taskInfo;
 	protected $task;
@@ -48,44 +41,41 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase
 	 * ACHTUNG!!!
 	 * Die Feldnamen sollten eindeutig und einzigartig sein aus folgendem Grund.
 	 * Damit das Anlegen eines Scheduler schneller geht, werden die addtionalFields
-	 * von allen vorhandenen Schedulern vorgeladen. Dadurch kann es zu Überschreibungen
-	 * kommen wenn 2 Felder den gleichen Namen haben. Ein gutes Beispiel dafür ist der EmailFieldProvider.
+	 * von allen vorhandenen Schedulern vorgeladen.
+	 * Dadurch kann es zu Überschreibungen kommen
+	 * wenn 2 Felder den gleichen Namen haben.
+	 * Ein gutes Beispiel dafür ist der EmailFieldProvider.
 	 *
 	 * @return 	array
 	 */
 	abstract protected function getAdditionalFieldConfig();
-// 	{
-// 		return array(
-// 			'lifetime' => array(
-				// sollte immer ein LLL sein, da fehlermeldungen aus der ll geladen werden $label.'_required'
-// 				'label' => 'LLL:EXT:mklib/locallang_db.xml:label_key', // Label für dieses Feld.
-//				'type' => 'input'
-// 				'cshKey' => '_MOD_tools_txschedulerM1',
-// 				'cshLabel' => 'label_key_csh', // key aus der ssh locallang zu cshKey
-// 				'default' => '', // wird genjutzt, wenn kein Wert angegeben wurde
-// 				'eval' => 'trim',
-// 			),
-// 		);
-// 	}
+	/*{
+		return array(
+			'lifetime' => array(
+				// sollte immer ein LLL sein,
+				// da fehlermeldungen aus der ll geladen werden $label.'_required'
+				'label' => 'LLL:EXT:mklib/locallang_db.xml:label_key',
+				'type' => 'input'
+				'cshKey' => '_MOD_tools_txschedulerM1',
+				'cshLabel' => 'label_key_csh', // key aus der ssh locallang zu cshKey
+				'default' => '', // wird genjutzt, wenn kein Wert angegeben wurde
+				'eval' => 'trim',
+			),
+		);
+	}*/
 
 	/**
-	 * This method is used to define new fields for adding or editing a task
+	 * Gets additional fields to render in the form to add/edit a task
 	 *
-	 * @param	array						$taskInfo: reference to the array containing the info used in the add/edit form
-	 * @param	tx_scheduler_Task			$task: when editing, reference to the current task object. Null when adding.
-	 * @param	tx_mklib_scheduler_Generic	$parentObject: reference to the calling object (Scheduler's BE module)
-	 * @return	array						Array containg all the information pertaining to the additional fields
-	 *										The array is multidimensional, keyed to the task class name and each field's id
-	 *										For each field it provides an associative sub-array with the following:
-	 *											['code']		=> The HTML code for the field
-	 *											['label']		=> The label of the field (possibly localized)
-	 *											['cshKey']		=> The CSH key for the field
-	 *											['cshLabel']	=> The code of the CSH label
+	 * @param array &$taskInfo Values of the fields from the add/edit task form
+	 * @param tx_scheduler_Task $task The task object being edited. Null when adding a task!
+	 * @param tx_mklib_scheduler_Generic $schedulerModule Reference to the scheduler backend module
+	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
 	 */
-	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
-		$this->taskInfo =& $taskInfo;
-		$this->task =& $task;
-		$this->schedulerModule =& $schedulerModule;
+	protected function _getAdditionalFields(array &$taskInfo, $task, $schedulerModule) {
+		$this->taskInfo = &$taskInfo;
+		$this->task = &$task;
+		$this->schedulerModule = &$schedulerModule;
 
 		$additionalFields = array();
 		foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions){
@@ -120,10 +110,10 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase
 					break;
 			}
 			$additionalFields[$fieldID] = array(
-							'code'     => $fieldCode,
-							'label'    => $aOptions['label'] ? $aOptions['label'] : $sKey,
-							'cshKey'   => $aOptions['cshKey'] ? $aOptions ['cshKey'] : 'tx_mklib_scheduler_cleanupTempFiles',
-							'cshLabel' => ($aOptions['cshLabel'] ? $aOptions['cshLabel'] : $sKey).'_csh'
+				'code' => $fieldCode,
+				'label' => $aOptions['label'] ? $aOptions['label'] : $sKey,
+				'cshKey' => $aOptions['cshKey'] ? $aOptions ['cshKey'] : 'tx_mklib_scheduler_cleanupTempFiles',
+				'cshLabel' => ($aOptions['cshLabel'] ? $aOptions['cshLabel'] : $sKey).'_csh'
 			);
 		}
 
@@ -131,14 +121,13 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase
 	}
 
 	/**
-	 * This method checks any additional data that is relevant to the specific task
-	 * If the task class is not relevant, the method is expected to return true
+	 * Validates the additional fields' values
 	 *
-	 * @param	array					$submittedData: reference to the array containing the data submitted by the user
-	 * @param	tx_scheduler_Module		$parentObject: reference to the calling object (Scheduler's BE module)
-	 * @return	boolean					True if validation was ok (or selected class is not relevant), false otherwise
+	 * @param array $submittedData An array containing the data submitted by the add/edit task form
+	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
+	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
-	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $parentObject) {
+	protected function _validateAdditionalFields(array &$submittedData, $schedulerModule) {
 		$bError = false;
 		foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
 			$mValue = & $submittedData[$sKey];
@@ -168,7 +157,7 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase
 							$mValue = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $mValue);
 							break;
 						case 'email':
-							//wir unterstützen kommaseparierte listen von email andressen
+							// wir unterstützen kommaseparierte listen von email adressen
 							if(!empty($mValue)) {
 								$aEmails = explode(',', $mValue);
 								$bMessage = false;
@@ -220,7 +209,7 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase
 			if($bMessage) {
 				$sMessage = $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
 				$sMessage = $sMessage ? $sMessage : ucfirst($sKey) . ' has to eval ' . $sEval.'.';
-				$parentObject->addMessage($sMessage, t3lib_FlashMessage::ERROR);
+				$schedulerModule->addMessage($sMessage, t3lib_FlashMessage::ERROR);
 				$bError = true;
 				continue;
 			}
@@ -231,20 +220,19 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase
 	}
 
 	/**
-	 * This method is used to save any additional input into the current task object
-	 * if the task class matches
+	 * Takes care of saving the additional fields' values in the task's object
 	 *
-	 * @param	array				$submittedData: array containing the data submitted by the user
-	 * @param	tx_scheduler_Task	$task: reference to the current task object
-	 * @return	void
+	 * @param array $submittedData An array containing the data submitted by the add/edit task form
+	 * @param tx_scheduler_Task $task Reference to the scheduler backend module
+	 * @return void
 	 */
-	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
+	protected function _saveAdditionalFields(array $submittedData, $task) {
 		foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
 			$task->setOption($sKey, $submittedData[$sKey]);
 		}
 	}
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_AbstractFieldProviderBase.php'])	{
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_AbstractFieldProviderBase.php']);
 }
