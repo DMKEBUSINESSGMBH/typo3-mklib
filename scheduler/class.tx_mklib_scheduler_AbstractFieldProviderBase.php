@@ -35,7 +35,8 @@ if (!interface_exists('tx_scheduler_AdditionalFieldProvider')) {
  * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-abstract class tx_mklib_scheduler_GenericFieldProvider implements tx_scheduler_AdditionalFieldProvider {
+abstract class tx_mklib_scheduler_AbstractFieldProviderBase
+	implements tx_scheduler_AdditionalFieldProvider {
 
 	protected $taskInfo;
 	protected $task;
