@@ -18,7 +18,7 @@ The following is a very high level overview of the changes in this extension.
 =========  ===========================================================================
 Version    Changes
 =========  ===========================================================================
-1.0.4      | new vat registration number validation in tx_mklib_srv_Finance
+1.0.5      | new vat registration number validation in tx_mklib_srv_Finance
            | [BUGFIX] load tx_rnbase_mod_Util in tx_mklib_mod1_export_Handler
            | [TASK] refactoring of generic scheduler field provider to support different TYPO3 versions
 1.0.0      | [TASK] make getEmptyModel public
