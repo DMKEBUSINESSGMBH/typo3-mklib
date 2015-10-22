@@ -63,11 +63,11 @@ class tx_mklib_tests_util_HttpRequest_testcase extends tx_phpunit_testcase {
 		$request->addParameter('httprequest', array('time' => $time, 'return' => 'time'));
 		$request->setAuth('mwagner', 'mk17');
 		$request->setMethod($request::METHOD_POST);
-		$responce = $request->request();
+		$response = $request->request();
 
-		$this->assertEquals(200, $responce->getStatus());
-		$this->assertEquals('OK', $responce->getMessage());
-		$this->assertEquals($time, $responce->getBody());
+		$this->assertEquals(200, $response->getStatus());
+		$this->assertEquals('OK', $response->getMessage());
+		$this->assertEquals($time, $response->getBody());
 
 	}
 

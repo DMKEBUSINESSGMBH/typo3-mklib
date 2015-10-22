@@ -283,7 +283,7 @@ class tx_mklib_util_HttpRequest {
 	 * Send the HTTP request and return an HTTP response object
 	 *
 	 * @param string $method
-	 * @return tx_mklib_util_httprequest_Responce
+	 * @return tx_mklib_util_httprequest_Response
 	 */
 	public function request($method = NULL) {
 		if (empty($this->uri)) {
@@ -327,8 +327,8 @@ class tx_mklib_util_HttpRequest {
 			throw new Exception('Unable to read response, or response is empty');
 		}
 
-		tx_rnbase::load('tx_mklib_util_httprequest_Responce');
-		$response = tx_mklib_util_httprequest_Responce::fromString($response);
+		tx_rnbase::load('tx_mklib_util_httprequest_Response');
+		$response = tx_mklib_util_httprequest_Response::fromString($response);
 
 		// @TODO: redirect prüfen.
 		//$response->isRedirect()

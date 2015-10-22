@@ -20,7 +20,7 @@ is partly taken from Zend_Http_Client.
 Here a little example for a request with HTTPS, post parameters and SSL certificate:
 
 .. code-block:: php
-    
+
    $url = 'https://example.de/tests/';
    $config = array(
       'sslcainfo' => t3lib_div::getFileAbsFileName('EXT:mkmyext/Resources/Private/example.de.crt'),
@@ -29,17 +29,17 @@ Here a little example for a request with HTTPS, post parameters and SSL certific
    $request->addParameter('_POST', $_POST);
    $request->setAuth('user', 'pass');
    $request->setMethod($request::METHOD_POST);
-   $responce = $request->request();
-   if ($responce->isSuccessful()) {
-      return $responce->getBody();
+   $response = $request->request();
+   if ($response->isSuccessful()) {
+      return $response->getBody();
    }
    // else,  error handling
 
 Classes:
 
 * mklib_util_HttpRequest
-   * Responce
-      * tx_mklib_util_httprequest_Responce
+   * Response
+      * tx_mklib_util_httprequest_Response
    * Adapter
       * tx_mklib_util_httprequest_adapter_Interface
       * tx_mklib_util_httprequest_adapter_Curl
