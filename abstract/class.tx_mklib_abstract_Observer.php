@@ -86,5 +86,3 @@ abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserve
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php'])	{
   include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']);
 }
-
-?>

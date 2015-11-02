@@ -31,7 +31,7 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 /**
  * Class to search constants from database
- * 
+ *
  */
 abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase {
 
@@ -42,7 +42,7 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase {
 	protected function getTableMappings() {
 		$tableMapping['CONSTANT'] = $this->getBaseTable();
 		$tableMapping['CONSTANTTYPE'] = $this->getConstantTypesTable();
-				
+
 		return $tableMapping;
 	}
 
@@ -53,7 +53,7 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase {
 	protected function useAlias() {
 		return true;
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see tx_rnbase_util_SearchBase::getBaseTableAlias()
@@ -61,13 +61,13 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase {
 	public function getBaseTableAlias() {
 		return 'CONSTANT';
 	}
-	
+
 	/**
 	 * Liefert die Tabelle, welche die Konstantentypen enthält
 	 * @return string
 	 */
 	abstract protected function getConstantTypesTable();
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see tx_rnbase_util_SearchBase::getJoins()
@@ -78,7 +78,7 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase {
 		if (isset($tableAliases['CONSTANTTYPE'])) {
 			$join .= ' JOIN '.$this->getConstantTypesTable().' AS CONSTANTTYPE ON CONSTANT.type = CONSTANTTYPE.uid';
 		}
-		
+
 		return $join;
 	}
 }
@@ -86,5 +86,3 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase {
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/search/class.tx_mktegut_search_Constant.php']) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/search/class.tx_mktegut_search_Constant.php']);
 }
-
-?>

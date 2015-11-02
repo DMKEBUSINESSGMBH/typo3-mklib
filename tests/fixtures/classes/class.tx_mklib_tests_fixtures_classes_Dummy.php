@@ -47,7 +47,7 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base {
 	public function search($fields, $options){
 		if($GLOBALS['emptyTestResult'])
 			$aResults = array();
-		else 
+		else
 			$aResults = array(
 				0 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 1)),
 				1 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 2)),
@@ -58,11 +58,11 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base {
 		//sortieren?
 		if(!empty($options['orderby']))
 			rsort($aResults);//reicht um zu sehen ob die Sortierung anspringt
-		
+
 		//versteckte zurück geben?
 		if($GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden'] == 1)
 			$aResults[5] = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 6, 'hidden' => 1));
-		
+
 		if($options['count'])
 			return count($aResults);
 		return $aResults;
@@ -79,5 +79,3 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base {
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'])	{
   include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
 }
-
-?>

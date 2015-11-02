@@ -29,21 +29,21 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
  * Model eine Währung
- * 
+ *
  * @TODO: 	Die verschiedenen Währungen müssen irgendwo hinterlegt und Konfiguriert werden.
  * 			Ideal wäre wahrscheinlich eine eigene Currency-Extension.
  * 			Alternativ könnte dies auch über Typoscript oder eine Konfigurationsdatei (XML!?) geschehen.
  * 			Die könnte eine Tabelle mit den benötigten Daten bereitstellen.
  * 			Ein Scheduler, welcher die aktuellen Kurse aktualisiert,
  * 			um zwischen Währungen umzurechnen wäre denkbar.
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_model
  */
 class tx_mklib_model_Currency {
 	private $instances = array();
 	private $record = array();
-	
+
 	public function tx_mklib_model_Currency(array $options=array()){
 		$data = array();
 		$data['symbol'] = $options['symbol'] ? $options['symbol'] : '';
@@ -56,7 +56,7 @@ class tx_mklib_model_Currency {
 		$data['thousands'] = $options['thousands'] ? $options['thousands'] : '';
 		$this->record = $data;
 	}
-	
+
 	/**
 	 * @param 	array 		$options
 	 * @return 	tx_mklib_model_Currency
@@ -70,7 +70,7 @@ class tx_mklib_model_Currency {
 		}
 		return $instances[$key];
 	}
-	
+
 	/**
 	 * @see 	http://en.wikipedia.org/wiki/ISO_3166-1
 	 * @param 	string 		$country  	Country in ISO 3166 Alpha 2 code
@@ -89,7 +89,7 @@ class tx_mklib_model_Currency {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @TODO	konzept, wo die currencys konfigurieren/die daten holen?
 	 * @see 	http://www.xe.com/symbols.php
@@ -114,9 +114,9 @@ class tx_mklib_model_Currency {
 		}
 		return self::makeInstance($options);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param 	double 		$value
 	 * @return 	string
 	 */
@@ -128,10 +128,10 @@ class tx_mklib_model_Currency {
 //		}
 		return $value;
 	}
-	
+
 	/**
 	 * Formatiert einen Wert anhand der aktuellen Wärung/Konfiguration
-	 * 
+	 *
 	 * @param 	double 		$value
 	 * @param 	boolean 	$htmlEntities
 	 * @return 	string
@@ -139,15 +139,15 @@ class tx_mklib_model_Currency {
 	public function getFormatted($value, $htmlEntities=true){
 		$neg = doubleval($value) < 0;
 		$value = $this->numberFormat( abs($value) );
-		
+
 		$replaceArray = array(
 				'{sign}' => '%1$s', // string
 				'{value}' => '%2$s', // string
 				'{currency}' => '%3$s', // string
 			);
-		
+
 		$format = str_replace(array_keys($replaceArray), array_values($replaceArray), $this->record['format']);
-		
+
 		return sprintf(
 				$format,
 				// {sign}
@@ -172,4 +172,3 @@ class tx_mklib_model_Currency {
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Currency.php']) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Currency.php']);
 }
-?>

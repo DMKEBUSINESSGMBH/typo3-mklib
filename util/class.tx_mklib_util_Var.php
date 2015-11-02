@@ -32,7 +32,7 @@
 require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
 
 /**
- * Klasse enthält allgemeine Funktionen für Variablen 
+ * Klasse enthält allgemeine Funktionen für Variablen
  *
  * @author mwagner
  * @package tx_mklib
@@ -68,5 +68,3 @@ class tx_mklib_util_Var {
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php']) {
   include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php']);
 }
-
-?>

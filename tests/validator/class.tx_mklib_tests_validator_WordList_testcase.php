@@ -172,5 +172,3 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/validator/class.tx_mklib_tests_validator_WordList_testcase.php']) {
   include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/validator/class.tx_mklib_tests_validator_WordList_testcase.php']);
 }
-
-?>

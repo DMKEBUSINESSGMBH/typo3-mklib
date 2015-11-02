@@ -176,5 +176,3 @@ class tx_mklib_cli_main extends t3lib_cli {
 // Call the functionality
 $cleanerObj = t3lib_div::makeInstance('tx_mklib_cli_main');
 $cleanerObj->cli_main($_SERVER['argv']);
-
-?>

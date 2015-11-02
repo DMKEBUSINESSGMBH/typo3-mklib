@@ -36,35 +36,35 @@ require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
  * Basisklasse für Suchfunktionen in BE-Modulen
  */
 class tx_mklib_mod1_searcher_Base {
-	
+
 	private $mod;
 	private $dates = array();
-	
+
 	/**
-	 * Current search term 
-	 * 
+	 * Current search term
+	 *
 	 * @var 	string
 	 */
 	private $currentSearchWord;
-	
+
 	/**
-	 * Current hidden option 
-	 * 
+	 * Current hidden option
+	 *
 	 * @var 	string
 	 */
 	private $currentShowHidden;
-	
+
 	protected $selector;
-	
+
 	protected $options;
 	protected $formTool;#
-	
+
 	protected $uid;
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param 	tx_rnbase_mod_IModule $mod
 	 * @param 	unknown_type $options
 	 * @param 	string $sSelector
@@ -89,9 +89,9 @@ class tx_mklib_mod1_searcher_Base {
 		$this->selector = tx_rnbase::makeInstance($sSelector);
 		$this->selector->init($mod);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param unknown_type $srv
 	 * @param unknown_type $fields
 	 * @param unknown_type $options
@@ -101,57 +101,57 @@ class tx_mklib_mod1_searcher_Base {
 		$options['count'] = 1;
 		return $srv->search($fields, $options);
 	}
-	
+
 	/**
 	 * Returns an instance of tx_mkhoga_beutil_Selector
-	 * 
+	 *
 	 * @return 	tx_mkhoga_beutil_Selector
 	 */
 	protected function getSelector() {
 		return $this->selector;
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	public function getModule() {
 		return $this->mod;
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	public function getOptions() {
 		return $this->options;
 	}
-	
+
 	/**
 	 * Returns an instance of tx_rnbase_mod_IModule
-	 * 
+	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
 	public function getFormTool() {
 		return $this->formTool;
 	}
-	
+
 	/**
 	 * Liefert die Funktions-Id
 	 */
 	public function getFuncId() {
 		return '';
 	}
-	
+
 	/**
 	 * Setzte die Uid des Objekts
 	 */
 	public function setUid($uid) {
 		$this->uid = $uid;
 	}
-	
+
 	/**
 	 * Gibt die Uid des Objekts
 	 */
@@ -163,4 +163,3 @@ class tx_mklib_mod1_searcher_Base {
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php'])	{
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php']);
 }
-?>

@@ -29,7 +29,7 @@ tx_rnbase::load('tx_rnbase_model_base');
 
 /**
  * Model eins Landes
- * 
+ *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  * @package tx_mklib
  * @subpackage tx_mklib_model
@@ -37,10 +37,10 @@ tx_rnbase::load('tx_rnbase_model_base');
 class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mklib_interface_IZipCountry {
 
 	private static $instances = array();
-	
+
 	/**
 	 * @TODO: prüfen, ob die felder zipcode_rule, zipcode_length existieren!!!
-	 * 
+	 *
 	 * @param 	mixed $rowOrUid
 	 * @return tx_mklib_model_StaticCountry
 	 */
@@ -57,7 +57,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
 		}
 		return self::$instances[$rowOrUid];
 	}
-	
+
 	/**
 	 * Liefert den Namen der Tabelle
 	 * @return Tabellenname als String
@@ -65,41 +65,41 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
 	function getTableName() {
 		return 'static_countries';
 	}
-	
+
 	/**
 	 * Liefert den ISO2 Code des Landes. DE,CZ,PL usw.
-	 * 
+	 *
 	 * @return String
 	 */
 	public function getISO2(){
 		return $this->record['cn_iso_2'];
 	}
-	
+
 	/**
 	 * ID der Regel für die PLZ-Validierung
-	 * 
+	 *
 	 * @return int 1-9
 	 */
 	public function getZipRule() {
 		return intval($this->record['zipcode_rule']);
 	}
-	
+
 	/**
 	 * Erlaubte Anzahl Zeichen der PLZ
-	 * 
-	 * @return int 
+	 *
+	 * @return int
 	 */
 	public function getZipLength() {
 		return intval($this->record['zipcode_length']);
 	}
-	
+
 	/**
 	 * @return String
 	 */
 	public function getGermanShortName(){
 		return $this->record['cn_short_de'];
 	}
-	
+
 	/**
 	 * @return int
 	 */
@@ -111,4 +111,3 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_StaticCountry.php']) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_StaticCountry.php']);
 }
-?>

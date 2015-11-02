@@ -58,4 +58,3 @@ $TCA['tx_mklib_wordlist'] = Array (
     '1' => array('showitem' => '')
   )
 );
-?>

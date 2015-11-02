@@ -259,5 +259,3 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkhoga/tests/class.tx_mkhoga_tests_FacetBuilder_testcase.php']) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkhoga/tests/class.tx_mkhoga_tests_FacetBuilder_testcase.php']);
 }
-
-?>

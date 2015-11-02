@@ -41,14 +41,14 @@ class tx_mklib_tests_fixtures_classes_DummyFilter extends tx_rnbase_filter_BaseF
 		$fields['test'] = 'value';
 		return TRUE;
 	}
-	
+
 	public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = array()) {
 		//damit wir im test sehen ob alles korrekt übergeben wurde
 		$viewdata->offsetSet('pageBrowserConfig',array(
-			'config' => $configurations, 
-			'confid' => $confid, 
-			'fields' => $fields, 
-			'options' => $options, 
+			'config' => $configurations,
+			'confid' => $confid,
+			'fields' => $fields,
+			'options' => $options,
 			'cfg' => $cfg
 		));
 	}
@@ -57,4 +57,3 @@ class tx_mklib_tests_fixtures_classes_DummyFilter extends tx_rnbase_filter_BaseF
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php']) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php']);
 }
-?>

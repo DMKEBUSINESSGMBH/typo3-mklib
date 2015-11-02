@@ -45,7 +45,7 @@ class tx_mklib_model_WordlistEntry extends tx_rnbase_model_base {
 	public function getWord(){
 		return $this->record['word'];
 	}
-	
+
   	/**
    	 * Gibt den Namen der DB-Tabelle zurück
    	 */
@@ -57,4 +57,3 @@ class tx_mklib_model_WordlistEntry extends tx_rnbase_model_base {
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_WordlistEntry.php']) {
   include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_WordlistEntry.php']);
 }
-?>
