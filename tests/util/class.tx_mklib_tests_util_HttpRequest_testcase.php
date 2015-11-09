@@ -42,26 +42,19 @@ class tx_mklib_tests_util_HttpRequest_testcase extends tx_phpunit_testcase {
 
 
 	/**
-	 *
+	 * @group integration
 	 */
 	public function testHttpRequestWithCurlAndSllAndServerAuth(){
 		$time = time();
 
-		$url = 'https://mwagner.project.dmknet.de/tests/httprequest.php?method=POST';
-		#$url = 'https://api.broadmail.de/';
+		$url = 'https://phpunit.project.dmknet.de/tests/httprequest.php?method=POST';
 		$config = array(
 			'sslcainfo' => tx_mklib_tests_Util::getFixturePath('project.dmknet.de.crt'),
-			#'sslcainfo' => tx_mklib_tests_Util::getFixturePath('broadmail.crt'),
-			#'curloptions' => array(
-			#	CURLOPT_SSL_VERIFYPEER => FALSE,
-			#),
 		);
-
 
 		$request = new tx_mklib_util_HttpRequest($url, $config);
 
 		$request->addParameter('httprequest', array('time' => $time, 'return' => 'time'));
-		$request->setAuth('mwagner', 'mk17');
 		$request->setMethod($request::METHOD_POST);
 		$response = $request->request();
 
@@ -72,7 +65,6 @@ class tx_mklib_tests_util_HttpRequest_testcase extends tx_phpunit_testcase {
 	}
 
 }
-
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php']) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php']);
