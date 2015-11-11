@@ -61,6 +61,14 @@ tx_rnbase::load('tx_rnbase_mod_Util');
 						headers {
 							### der Dateiname
 							filename = companies.xls
+							### es kann auch eine USER Func oder sonstiges TypoScript verwendet werden.
+							### Bei einer userFunc muss man sich nur selbst darum kümmern die Klasse
+							### zu laden da ein filename.includeLibs = EXT:myext/Classes/Utility/Backend.php nicht
+							### funktioniert. Das kann mit autoload gemacht werden oder man ruft
+							### tx_rnbase::load('Tx_Myext_Utility_Backend') auf, bevor die PageTS Config Datei,
+							### welche dieses TypoScript enthält, geladen wird.
+							#filename = USER
+							#filename.userFunc = Tx_Myext_Utility_Backend->getFileNameForExport
 							### der contenttype
 							contenttype = application/vnd.ms-excel
 							### zusätzliche Headerdaten ($key: $value)
@@ -363,7 +371,8 @@ class tx_mklib_mod1_export_Handler {
 	 */
 	protected function getHeaderConfig($type) {
 		$headers = $this->getConfigurations()->get(
-			$this->getConfId().'types.'.$type.'.headers.');
+			$this->getConfId().'types.'.$type.'.headers.', TRUE
+		);
 		return is_array($headers) ? $headers : array();
 	}
 

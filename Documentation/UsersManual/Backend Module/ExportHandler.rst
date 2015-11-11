@@ -10,7 +10,7 @@ Export handler
 
 .. figure:: Images/ExportHandler.png
    :alt: backend module.
-   
+
 The export handler can be included in every backend module. It offers export function
 for the current view indluding the configured filters.
 
@@ -55,7 +55,7 @@ Example implementation
       $exportHandler->handleExport();
       // parse template
       $template = $exportHandler->parseTemplate($template);
-    
+
       $searcher = $this->getSearcher();
       $markerArray['###SEARCHFORM###'] = $searcher->getSearchForm();
       $data = $searcher->getResultList();
@@ -65,7 +65,7 @@ Example implementation
       $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray);
       return $out;
    }
-         
+
 Don't forget to include the marker ###EXPORT_BUTTONS### in your module template.
 
 Configuration through TypoScript
@@ -92,9 +92,17 @@ module as Excel and CSV file.
                   template {
                      ### path to template
                      template = EXT:mkextension/mod1/templates/export/data.xls
+                     ### you can also use a USER Func or every other TypoScript.
+                     ### When using a userFunc you have to take care yourself to load the class
+                     ### as filename.includeLibs = EXT:myext/Classes/Utility/Backend.php works not
+                     ### in the backend. You can do this via autoload or just call
+                     ### tx_rnbase::load('Tx_Myext_Utility_Backend') before the PageTS Config file
+                     ### which includes this TypoScript is loaded.
+                     #filename = USER
+                     #filename.userFunc = Tx_Myext_Utility_Backend->getFileNameForExport
                      ### marker for the subpart
                      subpart = ###DATALIST###
-                     ### item path Pfad. user for the configuration ID (lowercase) 
+                     ### item path Pfad. user for the configuration ID (lowercase)
                      ### and the marker name (uppercase). Default is item
                      itempath = data
                      ### marker class, which renders the data. Default is tx_rnbase_util_SimpleMarker
@@ -126,8 +134,8 @@ module as Excel and CSV file.
          }
       }
    }
-      
-      
+
+
 The TypoScript configuration ID to configure the marker class is in this case funcmodule.data
 
 Debugging
@@ -140,7 +148,7 @@ Example:
 .. code-block:: html
 
    <!-- ###DEBUG### -->
-   <!-- 
+   <!--
       Date:            ###DEBUG_DATE###         > 2013-02-22T16:22:14+01:00
       Item Count:      ###DEBUG_ITEMCOUNT###    > 2553
       Execution Time:  ###DEBUG_PARSETIME###    > 270.1039788723
@@ -149,7 +157,7 @@ Example:
       Memory End:      ###DEBUG_MEMEND###       > 41306192
     -->
    <!-- ###DEBUG### -->
-   
+
 Performance
 -----------
 To hit memory limits not during large exports a special list builder was developed. This
