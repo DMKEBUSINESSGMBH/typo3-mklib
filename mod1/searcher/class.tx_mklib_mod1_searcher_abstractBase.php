@@ -1,4 +1,5 @@
 <?php
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -38,7 +39,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 * Wurde die ll bereits geladen?
 	 * @var boolean
 	 */
-	private static $llLoaded = false;
+	private static $localLangLoaded = false;
 	/**
 	 * Selector Klasse
 	 * @var tx_rnbase_mod_IModule
@@ -91,9 +92,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 */
 	protected function init(tx_rnbase_mod_IModule $mod, $options) {
 		// locallang einlesen
-		if(!self::$llLoaded) {
-			$GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml');
-			self::$llLoaded = true;
+		if(!self::$localLangLoaded) {
+			$this->loadOwnLocalLangNotOverwritingExistingLabels();
+			self::$localLangLoaded = true;
 		}
 		$this->setOptions($options);
 		$this->mod = $mod;
@@ -109,6 +110,25 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			}
 		}
 	}
+
+	/**
+	 * Es kann sein dass schon vorm aufrufen des tatsächlichen Searchers
+	 * eine locallang Datei eingebunden wurde, welche Vorrang hat da sie vom konkreten
+	 * BE Modul stammt und die Labels enthält die auch in EXT:mklib/mod1/locallang.xml vorhanden sind.
+	 * Wenn wir dann EXT:mklib/mod1/locallang.xml ganz normal einbinden, würden
+	 * diese überschrieben werden, obwohl diese Vorrang haben sollten.
+	 * Also überschreiben wir die Labels aus mklib mit vorhandenen aus
+	 * $GLOBALS['LOCAL_LANG'] und schreiben das dann zurück nach $GLOBALS['LOCAL_LANG'],
+	 * damit die mklib Lables nur eine Ergänzung sind.
+	 *
+	 * @return void
+	 */
+	protected function loadOwnLocalLangNotOverwritingExistingLabels() {
+		$labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml', FALSE);
+		ArrayUtility::mergeRecursiveWithOverrule($labelsFromMklib, $GLOBALS['LOCAL_LANG']);
+		$GLOBALS['LOCAL_LANG'] = $labelsFromMklib;
+	}
+
 	/**
 	 * Bietet die Möglichkeit die Optionen nach der Erstellung noch zu ändern
 	 * @param array $options

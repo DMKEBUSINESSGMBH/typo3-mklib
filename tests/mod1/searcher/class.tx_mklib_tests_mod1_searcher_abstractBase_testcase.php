@@ -33,6 +33,7 @@ if (!class_exists('template')) {
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  *
@@ -40,17 +41,17 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
 	 * @var tx_mklib_tests_fixtures_classes_DummySearcher
 	 */
-	protected $oSearcher;
+	protected $searcher;
 
 	/**
 	 * @var tx_mklib_tests_fixtures_classes_DummyMod
 	 */
-	protected $oMod;
+	protected $mod;
 
 	public function setUp() {
 		//sprache auf default setzen damit wir die richtigen labels haben
@@ -78,8 +79,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 			),
 		);
 
-		$this->oMod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
-		$this->oSearcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher',$this->oMod);
+		$this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
+		$this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher',$this->mod);
 		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
 		$GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
@@ -87,16 +88,21 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 
 		//immer wieder löschen
 		$_GET['SET'] = null;
-		tx_mklib_tests_mod1_Util::unsetSorting($this->oMod);
-		if(isset($GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['showhidden']))
-			unset($GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['showhidden']);
+		tx_mklib_tests_mod1_Util::unsetSorting($this->mod);
+		if(isset($GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['showhidden']))
+			unset($GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['showhidden']);
+
+		// zurücksetzen
+		$localLangLoadedProperty = new ReflectionProperty('tx_mklib_mod1_searcher_abstractBase', 'localLangLoaded');
+		$localLangLoadedProperty->setAccessible(TRUE);
+		$localLangLoadedProperty->setValue(NULL, FALSE);
 	}
 
 	public function testGetSearchForm() {
-		$searchForm = $this->oSearcher->getSearchForm();
+		$searchForm = $this->searcher->getSearchForm();
 
 		$this->assertContains(
-			'<table class="filters"><tr><td>Free text search: </td><td><input type="text" name="SET[dummySearcherSearch]" style="width:96px;" value="" /> <input type="submit" name="dummySearcherSearch" value="search" /></td></tr><tr><td>Hidden entries:</td><td>',
+			'<table class="filters"><tr><td>Search term</td><td><input type="text" name="SET[dummySearcherSearch]" style="width:96px;" value="" /> <input type="submit" name="dummySearcherSearch" value="search" /></td></tr><tr><td>Hidden entries:</td><td>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
@@ -106,12 +112,12 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 			'das suchformular ist falsch.'
 		);
 		$this->assertContains(
-			'<option value="0">Hide</option>',
+			'<option value="0">hide</option>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
 		$this->assertContains(
-			'<option value="1">Show</option>',
+			'<option value="1">show</option>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
@@ -129,7 +135,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 
 	public function testGetResultListReturnsNoPagerAndEmptyMsgIfResultEmpty() {
 		$GLOBALS['emptyTestResult'] = true;
-		$aResultList = $this->oSearcher->getResultList();
+		$aResultList = $this->searcher->getResultList();
 
 		$this->assertEquals('<p><strong>###LABEL_NO_DUMMYSEARCHER_FOUND###</strong></p><br/>', $aResultList['table'], 'Die Tabelle ist falsch.');
 
@@ -139,8 +145,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 
 	public function testGetResultListReturnsCorrectTableAndPagerIfResults() {
 		//damit currenShowHidden gesetzt wird
-		$this->oSearcher->getSearchForm();
-		$aResultList = $this->oSearcher->getResultList();
+		$this->searcher->getSearchForm();
+		$aResultList = $this->searcher->getResultList();
 
 		$result = $aResultList['table'];
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
@@ -194,10 +200,10 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 	}
 
 	public function testGetResultReturnsCorrectResultsDependendOnHiddenSettings() {
-		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['showhidden'] = 1;
+		$GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['showhidden'] = 1;
 		//damit currenShowHidden gesetzt wird
-		$this->oSearcher->getSearchForm();
-		$aResultList = $this->oSearcher->getResultList();
+		$this->searcher->getSearchForm();
+		$aResultList = $this->searcher->getResultList();
 
 		$result = $aResultList['table'];
 		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
@@ -211,16 +217,16 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 		$this->assertEquals(6, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 	}
 
-	public function testGetResultListReturnsCorrectTableAndPagerIfSortLinkIsClickedAndSetsSortOptionToModuleData() {
+	public function testGetResultListReturnsCorrectTableAndPagerIfSortLinkIsClickedAndSetsSortOptionTmoduleData() {
 		$_GET['sortField'] = 'uid';
 		$_GET['sortRev'] = 'asc';
 
 		//damit currenShowHidden gesetzt wird
-		$this->oSearcher->getSearchForm();
-		$aResultList = $this->oSearcher->getResultList();
+		$this->searcher->getSearchForm();
+		$aResultList = $this->searcher->getResultList();
 
 		//Daten im Modul korrekt?
-		$aModuleData = t3lib_BEfunc::getModuleData(array (),t3lib_div::_GP('SET'),$this->oMod->getName());
+		$aModuleData = t3lib_BEfunc::getModuleData(array (),t3lib_div::_GP('SET'),$this->mod->getName());
 		$this->assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
 		$result = $aResultList['table'];
@@ -278,11 +284,11 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 
 	public function testGetResultListReturnsCorrectTableAndPagerIfSortingFromModuleDataAndSetsSortOptionToGetParams() {
 		//daten fürs modul setzen
-		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()]['dummySearcherorderby'] = array('uid' => 'asc');
+		$GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['dummySearcherorderby'] = array('uid' => 'asc');
 
 		//damit currenShowHidden gesetzt wird
-		$this->oSearcher->getSearchForm();
-		$aResultList = $this->oSearcher->getResultList();
+		$this->searcher->getSearchForm();
+		$aResultList = $this->searcher->getResultList();
 
 		//Daten in $_GET korrekt?
 		$this->assertEquals('uid', $_GET['sortField'], '$_GET[\'sortField\'] nicht korrekt gesetzt.');
@@ -339,6 +345,23 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_phpunit_test
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testInitLoadsOwnLocalLangNotOverwritingExistingLabels() {
+		// ist zwar in der mklib locallang Datei aber sollte nicht überschrieben werden
+		$GLOBALS['LOCAL_LANG']['default']['label_button_search'][0]['target'] = 'test search button';
+		// gibt es noch nicht
+		$GLOBALS['LOCAL_LANG']['default']['my_test_label'][0]['target'] = 'my test label';
+		$this->callInaccessibleMethod($this->searcher, 'init', $this->mod, array());
+
+		self::assertEquals('test search button', $GLOBALS['LOCAL_LANG']['default']['label_button_search'][0]['target']);
+		self::assertEquals('my test label', $GLOBALS['LOCAL_LANG']['default']['my_test_label'][0]['target']);
+		// ist in der mklib locallang Datei und war vorher noch nicht da, sollte also
+		// aus lollang Datei geladen werden
+		self::assertEquals('Actions', $GLOBALS['LOCAL_LANG']['default']['label_tableheader_actions'][0]['target']);
 	}
 }
 
