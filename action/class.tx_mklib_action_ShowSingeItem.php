@@ -106,6 +106,9 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 
 	/**
 	 * @throws tx_rnbase_exception_ItemNotFound404
+	 * @todo wenn Kompatibilität zu TYPO3 7.6 hergestellt wird auf
+	 * TYPO3\CMS\Core\Error\Http\PageNotFoundException umsteigen statt
+	 * tx_rnbase_exception_ItemNotFound404
 	 */
 	protected function throwItemNotFound404Exception() {
 		throw tx_rnbase::makeInstance(
