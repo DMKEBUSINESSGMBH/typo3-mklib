@@ -18,7 +18,8 @@ The following is a very high level overview of the changes in this extension.
 =========  ===========================================================================
 Version    Changes
 =========  ===========================================================================
-1.0.9      | bugfix: existing locallang lables are not longer overwritten in BE modules which use tx_mklib_mod1_searcher_abstractBase
+1.0.9      | existing locallang lables are not longer overwritten in BE modules which use tx_mklib_mod1_searcher_abstractBase
+           | added possibility to use full TypoScript support for export headers in the export handler of BE modules
 1.0.8      | some cleanup
 1.0.7      | bugfix for a typo
 1.0.5      | new vat registration number validation in tx_mklib_srv_Finance
