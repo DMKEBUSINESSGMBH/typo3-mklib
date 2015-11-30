@@ -1,5 +1,4 @@
 <?php
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +23,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  ***************************************************************/
 require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_mod1_export_ISearcher');
+tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
  * Basisklasse für Suchfunktionen in BE-Modulen
@@ -125,7 +125,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 */
 	protected function loadOwnLocalLangNotOverwritingExistingLabels() {
 		$labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml', FALSE);
-		ArrayUtility::mergeRecursiveWithOverrule($labelsFromMklib, $GLOBALS['LOCAL_LANG']);
+		$labelsFromMklib = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($labelsFromMklib, $GLOBALS['LOCAL_LANG']);
 		$GLOBALS['LOCAL_LANG'] = $labelsFromMklib;
 	}
 
