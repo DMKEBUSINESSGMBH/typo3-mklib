@@ -125,7 +125,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 */
 	protected function loadOwnLocalLangNotOverwritingExistingLabels() {
 		$labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml', FALSE);
-		$labelsFromMklib = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($labelsFromMklib, $GLOBALS['LOCAL_LANG']);
+		$labelsFromMklib = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+			$labelsFromMklib, (array) $GLOBALS['LOCAL_LANG']
+		);
 		$GLOBALS['LOCAL_LANG'] = $labelsFromMklib;
 	}
 
