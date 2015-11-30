@@ -102,7 +102,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 		$searchForm = $this->searcher->getSearchForm();
 
 		$this->assertContains(
-			'<table class="filters"><tr><td>Search term</td><td><input type="text" name="SET[dummySearcherSearch]" style="width:96px;" value="" /> <input type="submit" name="dummySearcherSearch" value="search" /></td></tr><tr><td>Hidden entries:</td><td>',
+			'<table class="filters"><tr><td>' . $GLOBALS['LANG']->getLL('label_search') .
+			'</td><td><input type="text" name="SET[dummySearcherSearch]" style="width:96px;" value="" /> <input type="submit" name="dummySearcherSearch" value="search" /></td></tr><tr><td>Hidden entries:</td><td>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
@@ -112,12 +113,12 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 			'das suchformular ist falsch.'
 		);
 		$this->assertContains(
-			'<option value="0">hide</option>',
+			'<option value="0">' . $GLOBALS['LANG']->getLL('label_select_hide_hidden') . '</option>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
 		$this->assertContains(
-			'<option value="1">show</option>',
+			'<option value="1">' . $GLOBALS['LANG']->getLL('label_select_show_hidden') . '</option>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
