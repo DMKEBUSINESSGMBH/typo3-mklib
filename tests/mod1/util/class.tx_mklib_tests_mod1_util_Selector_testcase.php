@@ -291,8 +291,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 
 		$returnArray = $method->invoke($selector, '', '');
 		$expectedReturnArray = array(
-			'from'	=> '',
-			'to'	=> ''
+			'from'	=> 0,
+			'to'	=> 0
 		);
 		$this->assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
 	}
@@ -457,8 +457,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$timestampArray = $selector->showDateRangeSelector($out, $key);
 
 		$expectedReturnArray = array(
-			'from'	=> '',
-			'to'	=> ''
+			'from'	=> 0,
+			'to'	=> 0
 		);
 		$this->assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
 	}
