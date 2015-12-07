@@ -216,7 +216,13 @@ class tx_mklib_tests_Util {
 	 * @return 	void
 	 */
 	public static function setFeUserObject($oFeUser=null, $bForce=false) {
-		if(!($GLOBALS['TSFE']->fe_user instanceof tslib_feuserauth) || $bForce) {
+		if(
+			!(
+				($GLOBALS['TSFE']->fe_user instanceof tslib_feuserauth) ||
+				($GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication)
+			) ||
+			$bForce
+		) {
 			if (!is_object($oFeUser)) {
 				if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 					$oFeUser = new  \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication();

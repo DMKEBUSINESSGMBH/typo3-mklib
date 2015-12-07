@@ -34,7 +34,7 @@ tx_rnbase::load('tx_mklib_interface_Repository');
  *          GNU Lesser General Public License, version 3 or later
  */
 abstract class tx_mklib_repository_Abstract
-	implements tx_mklib_interface_Repository, t3lib_Singleton
+	implements tx_mklib_interface_Repository, Tx_Rnbase_Interface_Singleton
 {
 
 	// 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE

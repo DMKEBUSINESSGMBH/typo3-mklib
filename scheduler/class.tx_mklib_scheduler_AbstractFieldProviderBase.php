@@ -22,6 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('tx_rnbase_util_Network');
 
 /**
  * Fügt Felder im scheduler task hinzu
@@ -163,8 +164,9 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase {
 								$aEmails = explode(',', $mValue);
 								$bMessage = false;
 								foreach ($aEmails as $sEmail) {
-									if(!t3lib_div::validEmail($sEmail))
+									if (!tx_rnbase_util_Strings::validEmail($sEmail)) {
 										$bMessage = true;
+									}
 								}
 							}
 
@@ -184,7 +186,7 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase {
 							}
 							break;
 						case 'url':
-							$bMessage = !t3lib_div::isValidUrl($mValue);
+							$bMessage = !tx_rnbase_util_Network::isValidUrl($mValue);
 							break;
 						default:
 							// wir prüfen auf eine eigene validator methode in der Kindklasse.
@@ -210,7 +212,9 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase {
 			if($bMessage) {
 				$sMessage = $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
 				$sMessage = $sMessage ? $sMessage : ucfirst($sKey) . ' has to eval ' . $sEval.'.';
-				$schedulerModule->addMessage($sMessage, t3lib_FlashMessage::ERROR);
+				$errorCode = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR ? t3lib_FlashMessage::ERROR;
+				$schedulerModule->addMessage($sMessage, $errorCode);
 				$bError = true;
 				continue;
 			}

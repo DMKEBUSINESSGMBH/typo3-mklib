@@ -25,11 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-
+tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * Hilfsklasse für Suchen im BE
@@ -192,7 +188,7 @@ class tx_mklib_mod1_util_SearchBuilder {
 	 * @deprecated tx_mklib_mod1_searcher_abstractBase nutzen
 	 */
 	public static function showItems(&$content, $items, tx_mklib_mod1_decorator_Base $decorator, tx_mklib_mod1_searcher_Base $callingClass, $columns, $bAddMiscColumns = true) {
-		t3lib_div::logDeprecatedFunction();
+		tx_rnbase_util_Misc::logDeprecatedFunction();
 		$funcId = $callingClass->getFuncId();
 		//allgmeine Spalten hinzufügen
 		if($bAddMiscColumns)

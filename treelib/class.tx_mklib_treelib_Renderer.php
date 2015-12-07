@@ -36,7 +36,7 @@
 class tx_mklib_treelib_Renderer {
 	/**
 	 *
-	 * @var t3lib_TCEforms
+	 * @var \TYPO3\CMS\Backend\Form\FormEngine
 	 */
 	private $oTceForm = null;
 
@@ -44,7 +44,7 @@ class tx_mklib_treelib_Renderer {
 	 * Liefert eine Instans des Treeviews
 	 *
 	 * @param 	array 			$PA
-	 * @param 	t3lib_TCEforms 	$fObj
+	 * @param 	\TYPO3\CMS\Backend\Form\FormEngine 	$fObj
 	 * @return 	tx_mklib_treelib_Renderer
 	 */
 	public static function makeInstance($PA, &$fObj){
@@ -56,7 +56,7 @@ class tx_mklib_treelib_Renderer {
 	 * Initialisiert den Treeview
 	 *
 	 * @param 	array 			$PA
-	 * @param 	t3lib_TCEforms 	$fObj
+	 * @param 	\TYPO3\CMS\Backend\Form\FormEngine 	$fObj
 	 * @return 	string
 	 *
 	 * @return	void

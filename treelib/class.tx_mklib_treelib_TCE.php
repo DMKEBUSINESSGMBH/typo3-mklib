@@ -25,6 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+tx_rnbase::load('tx_rnbase_parameters');
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
@@ -36,7 +37,7 @@
 class tx_mklib_treelib_TCE {
 	/**
 	 *
-	 * @var t3lib_TCEforms
+	 * @var \TYPO3\CMS\Backend\Form\FormEngine
 	 */
 	private $oTceForm = null;
 	/**
@@ -47,7 +48,7 @@ class tx_mklib_treelib_TCE {
 	/**
 	 *
 	 * @param 	array 			$PA
-	 * @param 	t3lib_TCEforms 	$fObj
+	 * @param 	\TYPO3\CMS\Backend\Form\FormEngine 	$fObj
 	 * @return 	string
 	 */
 	public function getSelectTree(&$PA, &$pObj){
@@ -74,7 +75,7 @@ class tx_mklib_treelib_TCE {
 	 */
 	public function sendXajaxResponse($cmd) {
 
-		t3lib_div::_GETset($cmd, 'PM');
+		tx_rnbase_parameters::setGetParameter($cmd, 'PM');
 
 		//@TODO: ist $this->PA immer gleich? mehrere treeviews beachten
 		tx_rnbase::load('tx_mklib_treelib_TreeView');

@@ -28,6 +28,8 @@ if (!class_exists('tx_scheduler_Task')) {
 }
 tx_rnbase::load('tx_rnbase_configurations');
 tx_rnbase::load('tx_rnbase_util_Logger');
+tx_rnbase::load('tx_rnbase_util_Misc');
+tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
  * generic abstract scheduler
@@ -79,7 +81,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 		*/
 		$devLog = array();
 		$options = $this->getOptions();
-		$startTimeInMilliseconds = t3lib_div::milliseconds();
+		$startTimeInMilliseconds = tx_rnbase_util_Misc::milliseconds();
 		$memoryUsageAtStart = memory_get_usage();
 
 		tx_rnbase_util_Logger::info(
@@ -106,7 +108,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 
 				foreach ($devLog as $logLevel => $logData) {
 					if (empty($logData['message'])) continue;
-					t3lib_div::devLog(
+					tx_rnbase_util_Logger::devLog(
 							'[' . get_class($this) . ']: ' . $logData['message'],
 							isset($logData['extKey']) ? $logData['extKey'] : $this->getExtKey(),
 							$logLevel,
@@ -158,7 +160,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			'[' . get_class($this) . ']: Scheduler ends successful ',
 			$this->getExtKey(),
 			array(
-				'Execution Time' => (t3lib_div::milliseconds() - $startTimeInMilliseconds) . ' ms',
+				'Execution Time' => (tx_rnbase_util_Misc::milliseconds() - $startTimeInMilliseconds) . ' ms',
 				'Memory Start' => $memoryUsageAtStart . ' Bytes',
 				'Memory End' => $memoryUsageAtEnd . ' Bytes',
 				'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart) . ' Bytes',
@@ -189,7 +191,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 	 */
 	public function getAdditionalInformation($info = '') {
 		$info .= CRLF . ' Options: ';
-		$info .= t3lib_div::arrayToLogString($this->getOptions(), array(), 64);
+		$info .= tx_rnbase_util_Arrays::arrayToLogString($this->getOptions(), array(), 64);
 		return $info;
 	}
 

@@ -30,6 +30,7 @@
  */
 
 tx_rnbase::load('tx_rnbase_util_TYPO3');
+tx_rnbase::load('tx_rnbase_mod_Util');
 
 /**
  * Die Klasse stellt Auswahlmenus zur Verfügung
@@ -366,7 +367,7 @@ class tx_mklib_mod1_util_Selector {
 		$value = isset($_POST[$key]) ? tx_rnbase_parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
 
 		$out['field'] .= '<input name="' . $key . '" type="text" id="tceforms-datefield-' . $key . '" value="' . $value . '" />' .
-			t3lib_iconWorks::getSpriteIcon(
+			tx_rnbase_mod_Util::getSpriteIcon(
 				'actions-edit-pick-date',
 				array(
 					'style' => 'cursor:pointer;',

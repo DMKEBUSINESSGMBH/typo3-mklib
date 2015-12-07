@@ -88,7 +88,12 @@ class tx_mklib_util_WizIcon {
 	public function includeLocalLang()	{
 		$llFile = $this->getLocalLangFilePath();
 		if (tx_rnbase_util_TYPO3::isTYPO47OrHigher()) {
-			$localizationParser = tx_rnbase::makeInstance('t3lib_l10n_parser_Llxml');
+			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+				$localizationParserClass = '\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser';
+			} else {
+				$localizationParserClass = 't3lib_l10n_parser_Llxml';
+			}
+			$localizationParser = tx_rnbase::makeInstance($localizationParserClass);
 			$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
 		} else {
 			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);

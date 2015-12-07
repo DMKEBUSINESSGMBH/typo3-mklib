@@ -28,6 +28,11 @@
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Misc');
+if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+	require_once('class.tx_mklib_treelib_TreeView_SinceTypo6.php');
+} else {
+	require_once('class.tx_mklib_treelib_TreeView_TillTypo6.php');
+}
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
@@ -36,9 +41,9 @@ tx_rnbase::load('tx_rnbase_util_Misc');
  * @subpackage tx_mklib_treelib
  * @author Michael Wagner
  */
-class tx_mklib_treelib_TreeView extends t3lib_treeview {
+class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView {
 	/**
-	 * @var t3lib_TCEforms
+	 * @var \TYPO3\CMS\Backend\Form\FormEngine
 	 */
 	private $oTceForm = null;
 	/**
@@ -74,7 +79,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	 * Liefert eine Instans des Treeviews
 	 *
 	 * @param 	array 					$PA
-	 * @param 	t3lib_TCEforms 			$fObj
+	 * @param 	\TYPO3\CMS\Backend\Form\FormEngine 			$fObj
 	 * @return 	tx_mklib_treelib_TreeView
 	 */
 	public static function makeInstance($PA, &$fObj){
@@ -86,7 +91,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	 * Initialisiert den Treeview
 	 *
 	 * @param 	array 					$PA
-	 * @param 	t3lib_TCEforms 			$fObj
+	 * @param 	\TYPO3\CMS\Backend\Form\FormEngine 			$fObj
 	 * @return 	string
 	 * @return	void
 	 */
@@ -431,7 +436,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 	/**
 	 * @workaround - siehe Wiki von mklib und mkdownloads
 	 * (non-PHPdoc)
-	 * @see t3lib_treeView::getBrowsableTree()
+	 * @see \TYPO3\CMS\Backend\Tree\View\AbstractTreeView::getBrowsableTree()
 	 */
 	function getBrowsableTree() {
 		if($this->getConfig()->forceAdminRootRecord())

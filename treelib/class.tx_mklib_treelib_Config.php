@@ -37,7 +37,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
 class tx_mklib_treelib_Config {
 	/**
 	 *
-	 * @var t3lib_TCEforms
+	 * @var \TYPO3\CMS\Backend\Form\FormEngine
 	 */
 	private $oTceForm = null;
 	/**
@@ -49,7 +49,7 @@ class tx_mklib_treelib_Config {
 	 * Liefert eine Instans des Treeviews
 	 *
 	 * @param 	array 			$PA
-	 * @param 	t3lib_TCEforms 	$fObj
+	 * @param 	\TYPO3\CMS\Backend\Form\FormEngine 	$fObj
 	 * @return 	void
 	 */
 	public function tx_mklib_treelib_Config(&$PA, &$pObj){
@@ -61,7 +61,7 @@ class tx_mklib_treelib_Config {
 	 * Liefert eine Instans der Konfiguration
 	 *
 	 * @param 	array 			$PA
-	 * @param 	t3lib_TCEforms 	$fObj
+	 * @param 	\TYPO3\CMS\Backend\Form\FormEngine 	$fObj
 	 * @return 	tx_mklib_treelib_Config
 	 */
 	public static function &makeInstance(&$PA, &$pObj) {
@@ -69,7 +69,7 @@ class tx_mklib_treelib_Config {
 	}
 
 	/**
-	 * @return 	t3lib_TCEforms 	$fObj
+	 * @return 	\TYPO3\CMS\Backend\Form\FormEngine 	$fObj
 	 */
 	public function &getTceForm(){
 		return $this->oTceForm;
