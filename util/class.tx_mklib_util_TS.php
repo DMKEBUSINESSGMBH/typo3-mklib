@@ -24,7 +24,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 /**
  * Util Methoden für das TS, speziell im BE
@@ -121,7 +121,7 @@ class tx_mklib_util_TS {
 		// die rootline korrekt geholt wird und nichts aus dem Cache. Sonst werde
 		// die gerade hinzugefügten TS Dateien nicht beachtet
 		$rootLine = 1;
-		return t3lib_BEfunc::getPagesTSconfig($pageId, $rootLine);
+		return Tx_Rnbase_Backend_Utility::getPagesTSconfig($pageId, $rootLine);
 	}
 
 	/**

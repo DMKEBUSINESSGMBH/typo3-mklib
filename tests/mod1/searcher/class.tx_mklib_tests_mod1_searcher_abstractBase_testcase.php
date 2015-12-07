@@ -26,7 +26,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-require_once(tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php'));
 if (!class_exists('template')) {
 	require_once(PATH_site.'typo3/template.php');
 }
@@ -34,6 +33,7 @@ tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 /**
  *
@@ -227,7 +227,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 		$aResultList = $this->searcher->getResultList();
 
 		//Daten im Modul korrekt?
-		$aModuleData = t3lib_BEfunc::getModuleData(array (),t3lib_div::_GP('SET'),$this->mod->getName());
+		$aModuleData = Tx_Rnbase_Backend_Utility::getModuleData(array (),t3lib_div::_GP('SET'),$this->mod->getName());
 		$this->assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
 		$result = $aResultList['table'];

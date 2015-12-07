@@ -81,7 +81,7 @@ class tx_mklib_mod1_util_Language {
 				array(
 					'where' => 'pages_language_overlay.sys_language_uid=sys_language.uid'
 					. ' AND pages_language_overlay.pid=' . (int) $pageId
-					. t3lib_BEfunc::deleteClause('pages_language_overlay'),
+					. Tx_Rnbase_Backend_Utility::deleteClause('pages_language_overlay'),
 					'orderby' => 'sys_language.title ASC',
 				)
 			);

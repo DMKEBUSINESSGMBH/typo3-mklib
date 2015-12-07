@@ -25,7 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once (tx_rnbase_util_Extensions::extPath('rn_base').'class.tx_rnbase.php');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
@@ -277,7 +277,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 			$oConfig = $this->getConfig();
 			// den Titel mit label_alt fülen
 			if($oConfig->getTreeConfig('parseRecordTitle')) {
-				$row[$oConfig->getTitleField().'_alt'] = t3lib_befunc::getRecordTitle($oConfig->getForeignTable(), $row, $prep = TRUE, $forceResult = TRUE);
+				$row[$oConfig->getTitleField().'_alt'] = Tx_Rnbase_Backend_Utility::getRecordTitle($oConfig->getForeignTable(), $row, $prep = TRUE, $forceResult = TRUE);
 			}
 		}
 		return $row;

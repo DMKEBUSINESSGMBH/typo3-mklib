@@ -13,10 +13,10 @@ Load the TCA class in ext_tables.php
 
 .. code-block:: php
 
-   if (TYPO3_MODE == 'BE')	{	
+   if (TYPO3_MODE == 'BE')	{
       tx_rnbase::load('tx_mklib_treelib_TCE');
    }
-   
+
 In the 'ctrl' section of the TCA for the table, which entries should be displayed
 as a tree, the following has to be inserted.
 
@@ -27,11 +27,11 @@ as a tree, the following has to be inserted.
    // treeParentMM: if treeParentField is not the UID of the parent
    // and the entries are found with a MM table, this has to be configuired
    $TCA['tx_mkexample_categories']['ctrl']['treeParentMM'] = array(
-         'MM' => 'tx_mkexample_categories_mm',   
-         'MM_match_fields' => array('tablenames' => 'tx_mkexample_categories'),   
+         'MM' => 'tx_mkexample_categories_mm',
+         'MM_match_fields' => array('tablenames' => 'tx_mkexample_categories'),
          'MM_insert_fields' => array('tablenames' => 'tx_mkexample_categories'),
    );
-   
+
 The field configuration has to changed to display the tree view
 
 .. code-block:: php
@@ -40,20 +40,20 @@ The field configuration has to changed to display the tree view
       'form_type' => 'user',
       'userFunc' => 'tx_mklib_treelib_TCE->getSelectTree',
       'treeConfig' => array(
-         // not just the label but also the label_alt as title (@see t3lib_befunc::getRecordTitle)
+         // not just the label but also the label_alt as title (@see tx_rnbase::load('Tx_Rnbase_Backend_Utility');::getRecordTitle)
          'parseRecordTitle' => true,
          // use ajax for expand/collapse
          // Defaut is true
          // extension xajax is needed
          'useAjax' => false,
-                   // if the parent records should not be selectable 
+                   // if the parent records should not be selectable
                    // default: false
                    'dontLinkParentRecords' => true
       ),
       'autoSizeMax' => 30,
       'treeView' => 1,
    );
-   
+
 Known problems
 --------------
 Normal backend users sometimes have trouble with rights for the root mount.

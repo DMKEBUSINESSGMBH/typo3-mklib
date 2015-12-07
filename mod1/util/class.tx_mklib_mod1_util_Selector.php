@@ -206,7 +206,7 @@ class tx_mklib_mod1_util_Selector {
 		$pid = $aOptions['pid'] ? $aOptions['pid'] : 0;
 
 		// Build select box items
-		$aData['selector'] = t3lib_BEfunc::getFuncMenu(
+		$aData['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
 			$pid, 'SET['.$id.']', $selectedItem, $aItems
 		);
 
@@ -258,7 +258,7 @@ class tx_mklib_mod1_util_Selector {
 	 */
 	public function getValueFromModuleData($key) {
 		// Fetch selected company trade
-		$modData = t3lib_BEfunc::getModuleData(
+		$modData = Tx_Rnbase_Backend_Utility::getModuleData(
 			array($key => ''),
 			t3lib_div::_GP('SET'),
 			$this->getMod()->getName()

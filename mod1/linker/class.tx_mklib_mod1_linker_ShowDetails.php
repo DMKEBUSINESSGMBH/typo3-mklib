@@ -130,7 +130,7 @@ class tx_mklib_mod1_linker_ShowDetails {
 			!empty($uid)
 			&& $uid === 'clear'
 		){
-			t3lib_BEfunc::getModuleData(
+			Tx_Rnbase_Backend_Utility::getModuleData(
 				$modSettings,
 				$modSettings,
 				$mod->getName()
@@ -140,7 +140,7 @@ class tx_mklib_mod1_linker_ShowDetails {
 		// else
 
 		$uid = intval($uid);
-		$data = t3lib_BEfunc::getModuleData(
+		$data = Tx_Rnbase_Backend_Utility::getModuleData(
 			$modSettings,
 			$uid
 				? array(
