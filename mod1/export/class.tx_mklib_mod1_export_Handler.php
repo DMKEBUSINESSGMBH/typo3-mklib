@@ -319,7 +319,7 @@ class tx_mklib_mod1_export_Handler {
 
 		// template laden
 		$sAbsPath = tx_rnbase_util_Files::getFileAbsFileName( $configuration->get($confId.'template') );
-		$templateCode = t3lib_div::getURL($sAbsPath);
+		$templateCode = tx_rnbase_util_Network::getUrl($sAbsPath);
 		if(!$templateCode) {
 			$this->getModule()->addMessage(
 				'Could not find the template "'.$sAbsPath.'"  defined under '.$confId.'template'.'.',

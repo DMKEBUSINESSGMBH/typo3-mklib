@@ -157,7 +157,7 @@ class tx_mklib_tests_Util {
 	 */
 	public static function queryDB($sqlFile, $statementType = false, $bIgnoreStatementType = false) {
 //		$sql = file_get_contents($sqlFile);
-		$sql = t3lib_div::getUrl($sqlFile);
+		$sql = tx_rnbase_util_Network::getUrl($sqlFile);
 		if(empty($sql))
 			throw new Exception('SQL-Datei nicht gefunden');
 		if($statementType || $bIgnoreStatementType) {

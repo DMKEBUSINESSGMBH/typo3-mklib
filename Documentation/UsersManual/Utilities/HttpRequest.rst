@@ -10,7 +10,7 @@
 
 HTTP requests
 =============
-A HTTP request object to make HTTP requests. The advance over t3lib_div::getUrl/\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl is that you can have
+A HTTP request object to make HTTP requests. The advance over tx_rnbase_util_Network::getUrl/\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl is that you can have
 different adapters. So the request is theoretically possible with curl, socket, proxy and so one.
 Request are also possible wit SSL certificates, keys and pass phrases.
 

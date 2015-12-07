@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
+tx_rnbase::load('tx_rnbase_util_Network');
 /**
  * Class for updating the db
  *
@@ -48,7 +48,7 @@ abstract class abstract_ext_update  {
 		$fieldsets = array();
 		$fieldsets['Character encoding'] 	= $this->getDestEncodingSelect();
 		$fieldsets['Update Static Info Tables']	= $this->handleUpdateStaticInfoTables();
-		
+
 		$content  = '';
 		$content .= '<form action="'.htmlspecialchars(t3lib_div::linkThisScript()).'" method="post">';
 		foreach($fieldsets as $legend => $fieldset) {
@@ -60,7 +60,7 @@ abstract class abstract_ext_update  {
 			$content .= '</fieldset>';
 			$content .= '<p><br /></p>';
 		}
-		
+
 		$content .= '<p><input type="submit" /></p>';
 		$content .= '</form>';
 
@@ -82,25 +82,25 @@ abstract class abstract_ext_update  {
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	private function getDestEncoding(){
 		return t3lib_div::_GP('dest_encoding');
 	}
-	
+
 	/**
 	 * @TODO prüfen ob der import bereits durchgeführt wurde.
-	 * 
+	 *
 	 * @return 	string
 	 */
 	private function handleUpdateStaticInfoTables(){
 		$updateKey = $this->getStatementKey();
-		
+
 		$content  = '';
 		$content .= $this->getInfoMsg();
-		
+
 		if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
 			$content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
 		} else {
@@ -115,7 +115,7 @@ abstract class abstract_ext_update  {
 			}
 		}
 		return $content;
-		
+
 		// export von der dsag
 //		$sUpdate = 'UPDATE static_countries SET	zipcode_rule=\'%2$d\',	zipcode_length=\'%3$d\'	WHERE cn_iso_2=\'%1$s\';';
 //		tx_rnbase::load('tx_rnbase_util_DB');
@@ -126,9 +126,9 @@ abstract class abstract_ext_update  {
 //			$sSQL .= sprintf( $sUpdate, $aRecord['tx_dsagsap_iso_2'], $aRecord['prplz'], $aRecord['lnplz'] )."\n";
 //		}
 //		exit('<h1>Importierte Länder:</h1><ul><li>'.implode("</li>\r\n<li>", $aCountries).'</li></ul><h1>Import SQL für static_countries</h1><pre>'.$sSQL.'</pre>');
-		
+
 	}
-	
+
 	/**
 	 * Liefert das Label für die Checkbox
 	 * Enter description here ...
@@ -136,16 +136,16 @@ abstract class abstract_ext_update  {
 	protected function getCheckboxLabel() {
 		return 'import static info tables';
 	}
-	
+
 	private function queryDB($updateKey){
-	
+
 		$file = tx_rnbase_util_Extensions::extPath($this->getExtensionName(), $this->getSqlFileName());
-		$fileContent = explode("\n", t3lib_div::getURL($file));
+		$fileContent = explode("\n", tx_rnbase_util_Network::getUrl($file));
 		if(!$fileContent) {
 			return $this->getSqlFileName().' not found! ('.$file.')';
 		}
-		
-		$destEncoding = $this->getDestEncoding();		
+
+		$destEncoding = $this->getDestEncoding();
 		$querys = array();
 		$keyQuery = 0;
 		foreach($fileContent as $line)	{
@@ -169,7 +169,7 @@ abstract class abstract_ext_update  {
 				$querys[] = $this->getUpdateEncoded($line, $destEncoding);
 			}
 		}
-		
+
 		switch($keyQuery){
 			case 0:
 				return 'No '.strtolower($this->getSqlMode()).' key not found. ('.$updateKey.')';
@@ -178,7 +178,7 @@ abstract class abstract_ext_update  {
 			case 2:
 				// alles ok
 		}
-		
+
 		if(count($querys)===0) {
 			return 'No queries found. ('.$updateKey.')';
 		}
@@ -187,7 +187,7 @@ abstract class abstract_ext_update  {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Sollen Updates, Inserts ausgeführt werden?
 	 * @return string
@@ -195,7 +195,7 @@ abstract class abstract_ext_update  {
 	protected function getSqlMode() {
 		return 'UPDATE';
 	}
-	
+
 	/**
 	 * @return 	t3lib_cs
 	 */
@@ -205,7 +205,7 @@ abstract class abstract_ext_update  {
 		}
 		return $this->csconv;
 	}
-	
+
 	/**
 	 * Convert the values of a SQL update statement to a different encoding than UTF-8.
 	 *
@@ -239,7 +239,7 @@ abstract class abstract_ext_update  {
 	function access() {
 		return TRUE;
 	}
-	
+
 	/**
 	 * Liefert den Namen der Datei, welche die Update Statements beinhaltet
 	 * @return string
@@ -247,14 +247,14 @@ abstract class abstract_ext_update  {
 	protected function getSqlFileName() {
 		return 'ext_tables_static_update.sql';
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getStatementKey() {
 		return 'importStaticInfoTables';
 	}
-	
+
 	/**
 	 * Liefert den Namen der Extension für die
 	 * @return string
@@ -266,7 +266,7 @@ abstract class abstract_ext_update  {
 	 * @return string
 	 */
 	abstract protected function getInfoMsg();
-	
+
 	/**
 	 * Liefert die Nachricht für den Erfolgsfall
 	 * @return string
