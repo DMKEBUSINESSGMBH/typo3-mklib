@@ -26,7 +26,7 @@
  */
 
 
-require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
+
 
 /**
  * Interface für Ausgaben des Listbuilders
