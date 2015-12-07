@@ -32,7 +32,7 @@
  * @package tx_mklib
  * @subpackage tx_mklib_exception
  */
-class tx_mklib_exception_NoFeUser extends t3lib_exception {
+class tx_mklib_exception_NoFeUser extends Exception {
   /**
    * Error code
    *
