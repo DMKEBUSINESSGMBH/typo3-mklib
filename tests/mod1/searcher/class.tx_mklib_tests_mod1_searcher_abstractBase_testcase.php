@@ -353,16 +353,45 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 	 */
 	public function testInitLoadsOwnLocalLangNotOverwritingExistingLabels() {
 		// ist zwar in der mklib locallang Datei aber sollte nicht überschrieben werden
-		$GLOBALS['LOCAL_LANG']['default']['label_button_search'][0]['target'] = 'test search button';
+		$this->setLocallangLabel('label_button_search', 'test search button');
 		// gibt es noch nicht
-		$GLOBALS['LOCAL_LANG']['default']['my_test_label'][0]['target'] = 'my test label';
+		$this->setLocallangLabel('my_test_label', 'my test label');
 		$this->callInaccessibleMethod($this->searcher, 'init', $this->mod, array());
 
-		self::assertEquals('test search button', $GLOBALS['LOCAL_LANG']['default']['label_button_search'][0]['target']);
-		self::assertEquals('my test label', $GLOBALS['LOCAL_LANG']['default']['my_test_label'][0]['target']);
+		self::assertEquals('test search button', $this->getLocallangLabel('label_button_search'));
+		self::assertEquals('my test label', $this->getLocallangLabel('my_test_label'));
 		// ist in der mklib locallang Datei und war vorher noch nicht da, sollte also
 		// aus lollang Datei geladen werden
-		self::assertEquals('Actions', $GLOBALS['LOCAL_LANG']['default']['label_tableheader_actions'][0]['target']);
+		self::assertEquals('Actions',$this->getLocallangLabel('label_tableheader_actions'));
+	}
+
+	/**
+	 * @param string $labelKey
+	 * @param string $label
+	 * @return void
+	 */
+	protected function setLocallangLabel($labelKey, $label) {
+		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+			$GLOBALS['LOCAL_LANG']['default'][$labelKey][0]['target'] = $label;
+		}
+		else {
+			$GLOBALS['LOCAL_LANG']['default'][$labelKey] = $label;
+		}
+	}
+
+	/**
+	 * @param string $labelKey
+	 * @return string
+	 */
+	protected function getLocallangLabel($labelKey) {
+		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
+			$label = $GLOBALS['LOCAL_LANG']['default'][$labelKey][0]['target'];
+		}
+		else {
+			$label = $GLOBALS['LOCAL_LANG']['default'][$labelKey];
+		}
+
+		return $label;
 	}
 }
 
