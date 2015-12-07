@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 
 /**
@@ -46,7 +46,7 @@ class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFi
 		// siehe http://forge.typo3.org/issues/25805
 		$doc = $this->schedulerModule->doc;
 		if(is_object($doc))
-			$doc->getPageRenderer()->addJsFile(t3lib_extMgm::extRelPath('mklib').'res/js/emailFieldProvider.js');
+			$doc->getPageRenderer()->addJsFile(tx_rnbase_util_Extensions::extRelPath('mklib').'res/js/emailFieldProvider.js');
 
 		return array(
 			// wir brauchen einen eindeutigen namen da es das email

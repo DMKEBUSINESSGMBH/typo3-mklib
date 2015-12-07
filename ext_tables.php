@@ -15,10 +15,10 @@ if (!defined ('TYPO3_MODE')) {
 $_EXTKEY = 'mklib';
 
 //TCAs einbinden
-require t3lib_extMgm::extPath($_EXTKEY).'tca/ext_tables.php';
+require tx_rnbase_util_Extensions::extPath($_EXTKEY).'tca/ext_tables.php';
 
 // initalize 'context sensitive help' (csh)
-require_once t3lib_extMgm::extPath($_EXTKEY).'res/help/ext_csh.php';
+require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'res/help/ext_csh.php';
 
 
 
@@ -31,15 +31,15 @@ $TCA['tt_content']['types']['list']['subtypes_excludelist']['tx_mklib']='layout,
 // Das tt_content-Feld pi_flexform einblenden
 $TCA['tt_content']['types']['list']['subtypes_addlist']['tx_mklib'] = 'pi_flexform';
 
-t3lib_extMgm::addPiFlexFormValue('tx_mklib','FILE:EXT:'.$_EXTKEY.'/flexform_main.xml');
+tx_rnbase_util_Extensions::addPiFlexFormValue('tx_mklib','FILE:EXT:'.$_EXTKEY.'/flexform_main.xml');
 
-t3lib_extMgm::addPlugin(
+tx_rnbase_util_Extensions::addPlugin(
 	array(
 		'LLL:EXT:'.$_EXTKEY.'/locallang_db.php:plugin.mklib.label',
 		'tx_mklib',
-		t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif',
+		tx_rnbase_util_Extensions::extRelPath($_EXTKEY) . 'ext_icon.gif',
 	)
 );
 
-t3lib_extMgm::addStaticFile($_EXTKEY, 'static/basic/', 'MK Lib - Basics');
-t3lib_extMgm::addStaticFile($_EXTKEY, 'static/development/', 'MK Lib - Development');
+tx_rnbase_util_Extensions::addStaticFile($_EXTKEY, 'static/basic/', 'MK Lib - Basics');
+tx_rnbase_util_Extensions::addStaticFile($_EXTKEY, 'static/development/', 'MK Lib - Development');

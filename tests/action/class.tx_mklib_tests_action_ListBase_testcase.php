@@ -23,7 +23,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_action_ListBase');
 
 //in abstrakten klassen lassen sich keine nicht-abstrakten methoden mocken
@@ -44,7 +44,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 
 		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
 		if (!class_exists('tslib_cObj')) {
-			require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+			require_once(tx_rnbase_util_Extensions::extPath('cms', 'tslib/class.tslib_content.php'));
 		}
 		$configurations->init(
 			$aConfig,

@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_TS');
 
 /**
@@ -47,7 +47,7 @@ class tx_mklib_tests_util_TS_testcase extends tx_phpunit_testcase {
 
 		$this->assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
 
-		t3lib_extMgm::addPageTSConfig(
+		tx_rnbase_util_Extensions::addPageTSConfig(
 			'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mklib/static/basic/setup.txt">'
 		);
 

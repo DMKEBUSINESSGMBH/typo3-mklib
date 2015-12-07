@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_File');
 
 /**
@@ -76,7 +76,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 	public function testCleanupFilesNotInTypo3temp(){
 		//@TODO: lifetime testen
 		// testverzeichnis anlegen
-		$testfolder = t3lib_extMgm::extPath('mklib', 'tests/fixtures/toremove');
+		$testfolder = tx_rnbase_util_Extensions::extPath('mklib', 'tests/fixtures/toremove');
 		self::createTestfiles($testfolder);
 
 		// das aufräumen!
@@ -93,7 +93,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 	public function testCleanupFilesWithZipAndXml(){
 		//@TODO: lifetime testen
 		// testverzeichnis anlegen
-		$testfolder = t3lib_extMgm::extPath('mklib', 'tests/fixtures/toremove');
+		$testfolder = tx_rnbase_util_Extensions::extPath('mklib', 'tests/fixtures/toremove');
 		self::createTestfiles($testfolder);
 
 		// das aufräumen!
@@ -112,7 +112,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 	public function testCleanupFilesRecursiveWithZipAndXml(){
 		//@TODO: lifetime testen
 		// testverzeichnis anlegen
-		$testfolder = t3lib_extMgm::extPath('mklib', 'tests/fixtures/toremove');
+		$testfolder = tx_rnbase_util_Extensions::extPath('mklib', 'tests/fixtures/toremove');
 		self::createTestfiles($testfolder);
 
 		// das aufräumen!

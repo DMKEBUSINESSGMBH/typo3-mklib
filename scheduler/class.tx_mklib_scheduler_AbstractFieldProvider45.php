@@ -23,7 +23,7 @@
  */
 
 if (!interface_exists('tx_scheduler_AdditionalFieldProvider')) {
-	require_once t3lib_extMgm::extPath(
+	require_once tx_rnbase_util_Extensions::extPath(
 		'scheduler', '/interfaces/interface.tx_scheduler_additionalfieldprovider.php'
 	);
 }

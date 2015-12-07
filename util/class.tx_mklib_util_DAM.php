@@ -29,11 +29,11 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_DB');
 
-if(t3lib_extMgm::isLoaded('dam'))
-  require_once(t3lib_extMgm::extPath('dam').'tca_media_field.php');
+if(tx_rnbase_util_Extensions::isLoaded('dam'))
+  require_once(tx_rnbase_util_Extensions::extPath('dam').'tca_media_field.php');
 
 /**
  * Klasse für Basisfunktionalitäten mit der DAM Extension
@@ -54,7 +54,7 @@ class tx_mklib_util_DAM {
 	 * @return boolean
 	 */
 	public static function isLoaded(){
-		return t3lib_extMgm::isLoaded('dam');
+		return tx_rnbase_util_Extensions::isLoaded('dam');
 	}
 
 	/**
@@ -199,7 +199,7 @@ class tx_mklib_util_DAM {
 		if(!self::isLoaded()) {
 			return 0;
 		}
-		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+		require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
 
 		$ret = tx_dam_db::getReferencedFiles(
 					$sTableName, $iItemId, $sFieldName,
@@ -222,7 +222,7 @@ class tx_mklib_util_DAM {
 		if(!self::isLoaded()) {
 			return array('files' => array(), 'rows' => array());
 		}
-		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+		require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
 
 		$files = tx_dam_db::getReferencedFiles($sTableName, $iItemId, $sFieldName);
 
@@ -263,7 +263,7 @@ class tx_mklib_util_DAM {
 		if(!self::isLoaded()) {
 			return false;
 		}
-		require_once(t3lib_extMgm::extPath('dam') . 'lib/class.tx_dam_db.php');
+		require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
 
 		$fields = tx_dam_db::getMetaInfoFieldList();
 		$res = tx_dam_db::referencesQuery('tx_dam',$iLocalUid, $foreign_table, $foreign_uid, $MM_ident, $MM_table, $fields);
@@ -513,7 +513,7 @@ class tx_mklib_util_DAM {
 
 		if(!$GLOBALS['LANG']) {
 			// Bei Ajax-Calls fehlt das Objekt
-			require_once(t3lib_extMgm::extPath('lang').'lang.php');
+			require_once(tx_rnbase_util_Extensions::extPath('lang').'lang.php');
 			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 			$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 		}

@@ -27,7 +27,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 tx_rnbase::load('tx_mklib_tests_Util');
@@ -108,7 +108,7 @@ class tx_mklib_tests_srv_Finance_testcase
 	public function getValidateVatRegNoData() {
 		return array(
 			// test country by uid
-			__LINE__ => array('country' => t3lib_extMgm::isLoaded('static_info_tables') ? '54' : 'de', 'vatregno' => 'DE123456789', 'expected' => TRUE),
+			__LINE__ => array('country' => tx_rnbase_util_Extensions::isLoaded('static_info_tables') ? '54' : 'de', 'vatregno' => 'DE123456789', 'expected' => TRUE),
 			// test country model
 			__LINE__ => array('country' => $this->getModel(array('cn_iso_2' => 'DE')), 'vatregno' => 'DE123456789', 'expected' => TRUE),
 			// all the other static tests

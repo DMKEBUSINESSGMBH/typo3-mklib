@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
@@ -276,7 +276,7 @@ class tx_mklib_util_TCA {
 				if($force || !array_key_exists($ext_keys[$i], self::$tcaAdditionsLoaded)) {
 					//Include the ext_table
 					$_EXTKEY = $ext_keys[$i];
-					include(t3lib_extMgm::extPath($ext_keys[$i], 'ext_tables.php'));
+					include(tx_rnbase_util_Extensions::extPath($ext_keys[$i], 'ext_tables.php'));
 					self::$tcaAdditionsLoaded[$ext_keys[$i]] = 1;
 				}
 			}

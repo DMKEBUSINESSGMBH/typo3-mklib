@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_cache_Manager');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Spyc');
@@ -137,7 +137,7 @@ class tx_mklib_tests_Util {
 	 * @return string
 	 */
 	public static function getFixturePath($filename, $dir = 'tests/fixtures/', $extKey = 'mklib') {
-		return t3lib_extMgm::extPath($extKey).$dir.$filename;
+		return tx_rnbase_util_Extensions::extPath($extKey).$dir.$filename;
 	}
 
 	/**
@@ -211,7 +211,7 @@ class tx_mklib_tests_Util {
 		//wir deren create frontend methode
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if (tx_rnbase_util_TYPO3::convertVersionNumberToInteger(
-				t3lib_extMgm::getExtensionVersion('phpunit')
+				tx_rnbase_util_Extensions::getExtensionVersion('phpunit')
 			) >= 3005014
 		){
 			$oTestFramework = tx_rnbase::makeInstance('Tx_Phpunit_Framework',$extKey);
@@ -366,7 +366,7 @@ class tx_mklib_tests_Util {
 
 		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
 		if (!class_exists('tslib_cObj')) {
-			require_once(t3lib_extMgm::extPath('cms', 'tslib/class.tslib_content.php'));
+			require_once(tx_rnbase_util_Extensions::extPath('cms', 'tslib/class.tslib_content.php'));
 		}
 		$configurations->init(
 				$aConfig,

@@ -37,8 +37,8 @@
  * auf jeden fall sollte das umgestellt werden, das hier ist nur eine quick and dirty lösung!
  */
 // wenn mklib installiert wird, funktioniert der aufruf extPath natürlich nicht und wirft eine exception
-if(t3lib_extMgm::isLoaded('mklib')) {
-	require_once(t3lib_extMgm::extPath('mklib', 'class.abstract_ext_update.php'));
+if(tx_rnbase_util_Extensions::isLoaded('mklib')) {
+	require_once(tx_rnbase_util_Extensions::extPath('mklib', 'class.abstract_ext_update.php'));
 }
 // ist de pfad bereits gesetzt?
 elseif(isset($GLOBALS['absPath'])) {

@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
+require_once(tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php'));
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
@@ -60,7 +60,7 @@ class tx_mklib_tests_TCA_testcase extends tx_phpunit_testcase {
 	private static function loadExtTables(){
 		global $TCA;
 		unset($TCA['tx_mklib_wordlist']);
-		require(t3lib_extMgm::extPath('mklib', 'tca/ext_tables.php'));
+		require(tx_rnbase_util_Extensions::extPath('mklib', 'tca/ext_tables.php'));
 	}
 	
 	/**

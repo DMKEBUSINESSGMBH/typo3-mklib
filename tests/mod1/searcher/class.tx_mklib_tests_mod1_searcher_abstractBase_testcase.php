@@ -26,7 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-require_once(t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php'));
+require_once(tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php'));
 if (!class_exists('template')) {
 	require_once(PATH_site.'typo3/template.php');
 }
@@ -73,8 +73,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 				'enablecolumns' => array (
 					'disabled' => 'hidden',
 				),
-				'dynamicConfigFile' => t3lib_extMgm::extPath('mklib').'tca/tx_mklib_wordlist.php',
-				'iconfile'          => t3lib_extMgm::extRelPath('mklib').'icon/icon_tx_mklib_wordlist.gif',
+				'dynamicConfigFile' => tx_rnbase_util_Extensions::extPath('mklib').'tca/tx_mklib_wordlist.php',
+				'iconfile'          => tx_rnbase_util_Extensions::extRelPath('mklib').'icon/icon_tx_mklib_wordlist.gif',
 				'dividers2tabs'     => true,
 			),
 		);

@@ -12,7 +12,7 @@
  * Um die Datei automatisch generieren zu lassen, kann die Extension extdeveval genutzt werden.
  */
 
-$extensionPath = t3lib_extMgm::extPath('mklib');
+$extensionPath = tx_rnbase_util_Extensions::extPath('mklib');
 return array(
 	// exceptions
 	'tx_mklib_exception_invalidconfiguration' => $extensionPath . 'exception/class.tx_mklib_exception_InvalidConfiguration.php',

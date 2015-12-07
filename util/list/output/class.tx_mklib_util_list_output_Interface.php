@@ -26,7 +26,7 @@
  */
 
 
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 
 /**
  * Interface für Ausgaben des Listbuilders

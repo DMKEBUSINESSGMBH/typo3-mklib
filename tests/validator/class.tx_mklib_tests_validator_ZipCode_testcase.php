@@ -24,7 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
@@ -43,12 +43,12 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
 	protected function setUp(){
-		if (!t3lib_extMgm::isLoaded('static_info_tables')) {
+		if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
 			$this->markTestSkipped('static_info_tables nicht installiert');
 		}
 
 		// zur Sicherheit die Zip Code Rules einfügen
-		$sqlFilename = t3lib_div::getFileAbsFileName(t3lib_extMgm::extPath('mklib', 'ext_tables_static_update.sql'));
+		$sqlFilename = t3lib_div::getFileAbsFileName(tx_rnbase_util_Extensions::extPath('mklib', 'ext_tables_static_update.sql'));
 		if(@is_file($sqlFilename)) {
 			tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
 		}
@@ -154,7 +154,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
 
 		if (!$loaded) {
 			// zur Sicherheit die Zip Code Rules einfügen
-			$sqlFilename = t3lib_div::getFileAbsFileName(t3lib_extMgm::extPath('mklib', 'ext_tables_static_update.sql'));
+			$sqlFilename = t3lib_div::getFileAbsFileName(tx_rnbase_util_Extensions::extPath('mklib', 'ext_tables_static_update.sql'));
 			if(@is_file($sqlFilename)) {
 				tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
 			}

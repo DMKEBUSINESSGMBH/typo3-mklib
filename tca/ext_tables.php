@@ -25,7 +25,7 @@ if(is_array($_EXTCONF) && array_key_exists('tableWordlist', $_EXTCONF) && intval
 }
 
 // static_info_tables um PLZ regeln erweitern
-if(t3lib_extMgm::isLoaded('static_info_tables')) {
+if(tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
 	t3lib_div::loadTCA('static_countries');
 	$tempColumns = array(
 			'zipcode_rule' => array(
@@ -47,7 +47,7 @@ if(t3lib_extMgm::isLoaded('static_info_tables')) {
 				)
 			),
 		);
-	t3lib_extMgm::addTCAcolumns('static_countries', $tempColumns, 1);
-	t3lib_extMgm::addToAllTCAtypes('static_countries', 'zipcode_rule');
-	t3lib_extMgm::addToAllTCAtypes('static_countries', 'zipcode_length');
+	tx_rnbase_util_Extensions::addTCAcolumns('static_countries', $tempColumns, 1);
+	tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_rule');
+	tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_length');
 }

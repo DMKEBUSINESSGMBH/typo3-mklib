@@ -25,7 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once (t3lib_extMgm::extPath('rn_base').'class.tx_rnbase.php');
+require_once (tx_rnbase_util_Extensions::extPath('rn_base').'class.tx_rnbase.php');
 
 /**
  * Rendert die TreeViews
@@ -178,11 +178,11 @@ class tx_mklib_treelib_Renderer {
 		//@todo ajax funktionalitäten von typo3 nutzen wenn möglich
 		//damit nicht extra die xajax Extension installiert werden muss
 		if($oTreeView->useAjax() && is_object($oTtce)) {
-//		require_once(t3lib_extMgm::extPath( 'xajax', 'class.tx_xajax.php'));
+//		require_once(tx_rnbase_util_Extensions::extPath( 'xajax', 'class.tx_xajax.php'));
 			$xajax = tx_rnbase::makeInstance('tx_xajax');
 			$xajax->setWrapperPrefix($oTreeView->treeName.'_');
 			$xajax->registerFunction(array('sendXajaxResponse', &$oTtce, 'sendXajaxResponse'));
-			$js .= $xajax->getJavascript ( '../' . t3lib_extMgm::siteRelPath ( 'xajax' ) );
+			$js .= $xajax->getJavascript ( '../' . tx_rnbase_util_Extensions::siteRelPath ( 'xajax' ) );
 			$xajax->processRequests ();
 			$content .= $js;
 		}

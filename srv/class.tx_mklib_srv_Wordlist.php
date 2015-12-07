@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_srv_Base');
 
 /**
@@ -165,8 +165,8 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 		        'enablecolumns' => array (
 		            'disabled' => 'hidden',
 		        ),
-		        'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca/tx_mklib_wordlist.php',
-		        'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon/icon_tx_mklib_wordlist.gif',
+		        'dynamicConfigFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY).'tca/tx_mklib_wordlist.php',
+		        'iconfile'          => tx_rnbase_util_Extensions::extRelPath($_EXTKEY).'icon/icon_tx_mklib_wordlist.gif',
 		        'dividers2tabs'     => true,
 		    ),
 		);

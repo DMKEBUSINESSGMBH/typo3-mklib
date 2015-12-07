@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
 tx_rnbase::load('tx_mklib_util_DAM');
 
@@ -67,12 +67,12 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 * @see tx_mklib_tests_DBTestCaseSkeleton::setUp()
 	 */
 	public function setUp() {
-		if (!t3lib_extMgm::isLoaded('dam')) {
+		if (!tx_rnbase_util_Extensions::isLoaded('dam')) {
 			$this->markTestSkipped('DAM ist nicht installiert');
 		}
 		parent::setUp();
 
-		$this->sTempFolder = t3lib_extMgm::extPath('mklib').'tests/typo3temp';
+		$this->sTempFolder = tx_rnbase_util_Extensions::extPath('mklib').'tests/typo3temp';
 		t3lib_div::mkdir($this->sTempFolder);
 		$sImageFile = 'test.jpg';
 		$this->sAbsoluteImagePath = $this->sTempFolder.'/'.$sImageFile;

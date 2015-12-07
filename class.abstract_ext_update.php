@@ -72,7 +72,7 @@ abstract class abstract_ext_update  {
 	 * @return 	string
 	 */
 	private function getDestEncodingSelect(){
-		require_once(t3lib_extMgm::extPath('static_info_tables','class.tx_staticinfotables_encoding.php'));
+		require_once(tx_rnbase_util_Extensions::extPath('static_info_tables','class.tx_staticinfotables_encoding.php'));
 		$content  = '';
 		$content .= '<label>Destination character encoding:</label>';
 		$content .= tx_staticinfotables_encoding::getEncodingSelect('dest_encoding', '', 'utf-8');
@@ -101,7 +101,7 @@ abstract class abstract_ext_update  {
 		$content  = '';
 		$content .= $this->getInfoMsg();
 		
-		if (!t3lib_extMgm::isLoaded('static_info_tables')) {
+		if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
 			$content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
 		} else {
 			if(t3lib_div::_GP($updateKey)) {
@@ -139,7 +139,7 @@ abstract class abstract_ext_update  {
 	
 	private function queryDB($updateKey){
 	
-		$file = t3lib_extMgm::extPath($this->getExtensionName(), $this->getSqlFileName());
+		$file = tx_rnbase_util_Extensions::extPath($this->getExtensionName(), $this->getSqlFileName());
 		$fileContent = explode("\n", t3lib_div::getURL($file));
 		if(!$fileContent) {
 			return $this->getSqlFileName().' not found! ('.$file.')';

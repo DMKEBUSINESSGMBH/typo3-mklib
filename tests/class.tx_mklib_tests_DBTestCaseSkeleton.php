@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
@@ -97,7 +97,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 
 		foreach($files as $file) {
 			// read sql file content
-			$sqlFilename = t3lib_div::getFileAbsFileName(t3lib_extMgm::extPath($extKey, $file));
+			$sqlFilename = t3lib_div::getFileAbsFileName(tx_rnbase_util_Extensions::extPath($extKey, $file));
 			if(@is_file($sqlFilename)) {
 				tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
 			}

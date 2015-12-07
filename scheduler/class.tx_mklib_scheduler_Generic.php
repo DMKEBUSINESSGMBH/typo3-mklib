@@ -22,9 +22,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 if (!class_exists('tx_scheduler_Task')) {
-	require_once t3lib_extMgm::extPath('scheduler', 'class.tx_scheduler_task.php');
+	require_once tx_rnbase_util_Extensions::extPath('scheduler', 'class.tx_scheduler_task.php');
 }
 tx_rnbase::load('tx_rnbase_configurations');
 tx_rnbase::load('tx_rnbase_util_Logger');
@@ -92,7 +92,7 @@ abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
 			$this->setLastRunTime();
 
 			// devlog
-			if (t3lib_extMgm::isLoaded('devlog')) {
+			if (tx_rnbase_util_Extensions::isLoaded('devlog')) {
 				if(
 					// infolog setzen, wenn devlog leer
 					empty($devLog)

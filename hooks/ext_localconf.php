@@ -10,7 +10,7 @@
  */
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 
 // http://forge.typo3.org/issues/24925 wurden nach 3 Jahren in Typo3 6.1.8 Implementiert
 tx_rnbase::load('tx_rnbase_util_TYPO3');

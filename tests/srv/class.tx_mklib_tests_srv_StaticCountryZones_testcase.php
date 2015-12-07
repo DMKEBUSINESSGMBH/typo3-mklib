@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 tx_rnbase::load('tx_mklib_tests_Util');
 
@@ -45,7 +45,7 @@ class tx_mklib_tests_srv_StaticCountryZones_testcase extends tx_phpunit_testcase
 	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
 	protected function setUp() {
-		if(!t3lib_extMgm::isLoaded('static_info_tables')) {
+		if(!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
 			$this->markTestSkipped('static_info_tables nicht installiert.');
 		}
 	}

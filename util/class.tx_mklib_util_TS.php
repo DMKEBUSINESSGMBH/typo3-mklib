@@ -24,7 +24,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-require_once t3lib_extMgm::extPath('rn_base', 'class.tx_rnbase.php');
+require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 
 /**
  * Util Methoden für das TS, speziell im BE
@@ -65,7 +65,7 @@ class tx_mklib_util_TS {
 		}
 
 		if(file_exists(t3lib_div::getFileAbsFileName('EXT:' . $extKey . $sStaticPath))) {
-			t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $extKey . $sStaticPath . '">');
+			tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $extKey . $sStaticPath . '">');
 		}
 
 		tx_rnbase::load('tx_rnbase_configurations');

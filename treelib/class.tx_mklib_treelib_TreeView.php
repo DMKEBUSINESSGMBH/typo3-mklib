@@ -25,7 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once (t3lib_extMgm::extPath('rn_base').'class.tx_rnbase.php');
+require_once (tx_rnbase_util_Extensions::extPath('rn_base').'class.tx_rnbase.php');
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
@@ -135,7 +135,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 		$this->itemArray = t3lib_div::trimExplode (',', $this->PA['itemFormElValue'], 1);
 		$this->makeHTML = 1;
 
-		if (t3lib_extMgm::isLoaded('xajax') && $oConfig->get('useAjax', true)) {
+		if (tx_rnbase_util_Extensions::isLoaded('xajax') && $oConfig->get('useAjax', true)) {
 			$this->useAjax = 'xajax';
 
 			if (!defined('XAJAX_DEFAULT_CHAR_ENCODING')) {

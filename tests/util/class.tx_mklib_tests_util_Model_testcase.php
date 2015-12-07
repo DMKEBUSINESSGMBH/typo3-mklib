@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_Model');
 tx_rnbase::load('tx_mklib_tests_Util');
 	
@@ -115,7 +115,7 @@ class tx_mklib_tests_util_Model_testcase extends tx_phpunit_testcase {
 	public function testGetEmptyInstance() {
 		$this->markTestSkipped('@TODO: implement!');
 		// eine dummy tca erstellen und prüfen!
-		require_once(t3lib_extMgm::extPath('rn_base') . 'class.tx_rnbase.php');
+		require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 		tx_mklib_tests_Util::getFixturePath('dummyTCA.php');
 	}
 }

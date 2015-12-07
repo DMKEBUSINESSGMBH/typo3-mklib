@@ -33,7 +33,7 @@
  * Folgendes muss in die ext_tables.php, um das Icon zu registrieren!
  * // Wizzard Icon
  * if (TYPO3_MODE=='BE') {
- * 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_mklib_util_WizIcon'] = t3lib_extMgm::extPath($_EXTKEY).'util/class.tx_mklib_util_WizIcon.php';
+ * 	$TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_mklib_util_WizIcon'] = tx_rnbase_util_Extensions::extPath($_EXTKEY).'util/class.tx_mklib_util_WizIcon.php';
  * }
  * in der locallang_db.xml der Extension müssen/sollten folgende label gesetzt sein:
  * 		plugin.mklib.label
@@ -71,7 +71,7 @@ class tx_mklib_util_WizIcon {
 		$LL = $this->includeLocalLang();
 
 		$wizardItems['plugins_tx_' . $this->extKey] = array(
-			'icon'			=>	t3lib_extMgm::extRelPath($this->extKey) . $this->iconPath,
+			'icon'			=>	tx_rnbase_util_Extensions::extRelPath($this->extKey) . $this->iconPath,
 			'title'			=>	$LANG->getLLL('plugin.' . $this->extKey . '.label', $LL),
 			'description'	=>	$LANG->getLLL('plugin.' . $this->extKey . '.description', $LL),
 			'params'		=>	'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=tx_' . $this->extKey
@@ -104,7 +104,7 @@ class tx_mklib_util_WizIcon {
 	 */
 	protected function getLocalLangFilePath()
 	{
-		return t3lib_extMgm::extPath($this->extKey) . 'locallang_db.xml';
+		return tx_rnbase_util_Extensions::extPath($this->extKey) . 'locallang_db.xml';
 	}
 }
 
