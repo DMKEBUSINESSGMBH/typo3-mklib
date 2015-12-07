@@ -26,6 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Search Sorting.
@@ -83,7 +84,7 @@ class tx_mklib_util_SearchSorting {
 	public static function registerSortingAliases(array $tableAliases) {
 		if(count($tableAliases)) {
 			foreach($tableAliases as $tableAlias => $sortingCol) {
-				list($tableAlias, $tableName) = t3lib_div::trimExplode('.', $tableAlias);
+				list($tableAlias, $tableName) = tx_rnbase_util_Strings::trimExplode('.', $tableAlias);
 				// wenn der key numeric ist, wurde keine sorting col übergeben!
 				if(is_numeric($tableAlias) && $sortingCol) {
 					$tableAlias = $sortingCol;

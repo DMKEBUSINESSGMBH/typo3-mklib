@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
+tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_mklib_interface_Repository');
 
 /**
@@ -175,7 +175,7 @@ abstract class tx_mklib_repository_Abstract
 				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 				$languages = array();
 				if (isset($options['additionali18n'])) {
-					$languages = t3lib_div::trimExplode(',', $options['additionali18n'], TRUE);
+					$languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], TRUE);
 				}
 				$languages[] = '-1'; // for all languages
 				// Wenn eine bestimmte Sprache gesetzt ist,

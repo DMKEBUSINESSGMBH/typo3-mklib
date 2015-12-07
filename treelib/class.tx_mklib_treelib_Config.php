@@ -26,6 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once (tx_rnbase_util_Extensions::extPath('rn_base').'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Konfiguration für einen TreeView.
@@ -94,7 +95,7 @@ class tx_mklib_treelib_Config {
 		if($this->getTreeConfig('parseRecordTitle')) {
 			global $TCA;
 			if($TCA[$this->getForeignTable()]['ctrl']['label_alt_force']) {
-				$altFields = t3lib_div::trimExplode(',', $TCA[$this->getForeignTable()]['ctrl']['label_alt'], true);
+				$altFields = tx_rnbase_util_Strings::trimExplode(',', $TCA[$this->getForeignTable()]['ctrl']['label_alt'], true);
 				$fields = array_merge($altFields, $fields);
 			}
 		}

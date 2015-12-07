@@ -21,6 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Fügt Felder im scheduler task hinzu
@@ -140,7 +141,7 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase {
 
 			// Die Einzelnen validatoren anwenden.
 			if (!$bMessage) {
-				foreach(t3lib_div::trimExplode(',', $aOptions['eval']) as $sEval) {
+				foreach(tx_rnbase_util_Strings::trimExplode(',', $aOptions['eval']) as $sEval) {
 					$sLabelKey = ($aOptions['label'] ? $aOptions['label'] : $sKey).'_eval_'.$sEval;
 					switch($sEval){
 						case 'required':

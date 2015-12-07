@@ -31,6 +31,7 @@
 require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 tx_rnbase::load('tx_rnbase_util_SearchBase');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Base service class
@@ -124,7 +125,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 				$tsfe = tx_rnbase_util_TYPO3::getTSFE();
 				$languages = array();
 				if (isset($options['additionali18n'])) {
-					$languages = t3lib_div::trimExplode(',', $options['additionali18n'], TRUE);
+					$languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], TRUE);
 				}
 				$languages[] = '-1'; // for all languages
 				// Wenn eine bestimmte Sprache gesetzt ist,

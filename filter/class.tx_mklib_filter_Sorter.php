@@ -28,11 +28,12 @@
 
 require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- * BITTE INS WIKI SCHAUEN FÜR EINEN BEISPIEL TESTCASE, 
+ * BITTE INS WIKI SCHAUEN FÜR EINEN BEISPIEL TESTCASE,
  * DER FÜR ABGELEITETE KLASSEN GESCHRIEBEN WERDEN SOLLTE!
- * 
+ *
  *  Beispiel TS config:
  *  	myConfId.filter.sort{
  *  		fields = title, name
@@ -45,189 +46,189 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  *  			...
  *  		}
  *  	}
- *  
+ *
  *  Beispiel Template:
  *  	###SORT_TITLE_LINK###sortieren nach titel###SORT_TITLE_LINK###
- * 
+ *
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- * 
+ *
  * @todo default sortierung per TypoScript konfigurierbar machen
  * @todo mehrfach sortierung unertsützen?
  */
 class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
-	
+
 	/**
 	 * @var string
 	 */
 	protected $sortConfId = 'sort.';
-	
+
 	/**
 	 * ausgehend von $sortConfId
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $allowedFieldsConfId = 'fields';
-	
+
 	/**
 	 * ausgehend von $sortConfId
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $defaultConfigurationConfId = 'default.';
-	
+
 	/**
 	 * ausgehend von $defaultConfigurationConfId
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $defaultFieldConfId = 'field';
-	
+
 	/**
 	 * ausgehend von $defaultConfigurationConfId
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $defaultSortOrderConfId = 'sortOrder';
-	
+
 	/**
 	 * ausgehend von $sortConfId
-	 * 
+	 *
 	 * @var string
 	 */
-	protected $sortLinkConfId = 'link.';	
-	
+	protected $sortLinkConfId = 'link.';
+
 	/**
 	 * @var string
 	 */
 	protected $sortByParameterName = 'sortBy';
-	
+
 	/**
 	 * @var string
 	 */
 	protected $sortOrderParameterName = 'sortOrder';
-	
+
 	/**
 	 * @var string
 	 */
 	protected $markerPrefix = 'SORT';
-	
+
 	/**
 	 * @var string
 	 */
 	private $sortBy;
-	
+
 	/**
 	 * @var string
 	 */
 	private $sortOrder;
-	
-	
+
+
 	/**
 	 * @var null || boolean
 	 */
 	private $initiatedSorting = null;
-	
+
 	/**
 	 * setzt $this->sortBy und $this->sortOrder
-	 * 
+	 *
 	 * @param 	tx_rnbase_IParameters 	$parameters
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected function initSorting() {
 		if(!is_null($this->initiatedSorting)){
 			return $this->initiatedSorting;
 		}
-		
+
 		$sortBy = $this->getCurrentSortBy();
-		
+
 		if($sortBy && $this->sortByIsAllowed($sortBy)) {
 			$sortOrder = $this->getCurrentSortOrder();
 			$sortOrder = $this->assureSortOrderIsValid($sortOrder);
-			
+
 			$this->sortBy = $sortBy;
 			$this->sortOrder = $sortOrder;
 			$this->initiatedSorting = true;
-			
+
 			return true;
 		}
 		//else
-		
+
 		$this->initiatedSorting = false;
 		return false;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	private function getCurrentSortBy() {
 		$parameters = $this->getParameters();
-		
+
 		if(!$sortBy = trim($parameters->get($this->sortByParameterName))) {
 			$sortBy = $this->getDefaultValue($this->defaultFieldConfId);
 		}
-		
+
 		return $sortBy;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	private function getCurrentSortOrder() {
 		$parameters = $this->getParameters();
-		
+
 		if(!$sortOrder = trim($parameters->get($this->sortOrderParameterName))) {
 			$sortOrder = $this->getDefaultValue($this->defaultSortOrderConfId);
 		}
-		
+
 		return $sortOrder;
 	}
 
 	/**
 	 * @param string $defaultValue
-	 * 
+	 *
 	 * @return string
 	 */
 	private function getDefaultValue($confId) {
-		$defaultConfigurationConfId = 
+		$defaultConfigurationConfId =
 			$this->getConfId() . $this->sortConfId . $this->defaultConfigurationConfId;
 		$configurations = $this->getConfigurations();
 
 		return $configurations->get($defaultConfigurationConfId.$confId);
 	}
-	
+
 	/**
 	 * @param string $sortOrder
-	 * 
+	 *
 	 * @return string
 	 */
 	private function assureSortOrderIsValid($sortOrder) {
 		return ($sortOrder == 'desc') ? 'desc' : 'asc';
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getSortBy() {
 		return $this->sortBy;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	protected function getSortOrder() {
 		return $this->sortOrder;
 	}
-	
+
 	/**
 	 * @param string $sortField
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private function sortByIsAllowed($sortField) {
 		return in_array($sortField, $this->getAllowedSortFields());
 	}
-	
+
 	/**
 	 * @return array
 	 */
@@ -236,17 +237,17 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 		$configurations = $this->getConfigurations();
 
 		$sortFields = $configurations->get($confId.$this->allowedFieldsConfId);
-		$sortFields = $sortFields ? t3lib_div::trimExplode(',', $sortFields, true) : array();
-		
+		$sortFields = $sortFields ? tx_rnbase_util_Strings::trimExplode(',', $sortFields, true) : array();
+
 		return $sortFields;
 	}
-	
+
 	/**
 	 * @param string $template HTML template
 	 * @param tx_rnbase_util_FormatUtil $formatter
 	 * @param string $confId
 	 * @param string $marker
-	 * 
+	 *
 	 * @return string
 	 */
 	public function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER') {
@@ -258,7 +259,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 		);
 
 		$template = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
-		
+
 		return $template;
 	}
 
@@ -270,13 +271,13 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 	 * @param tx_rnbase_util_FormatUtil $formatter
 	 * @param string $confId
 	 * @param string $marker
-	 * 
+	 *
 	 * @return void
 	 */
 	private function insertMarkersForSorting($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$formatter, $confId) {
 		$confId = $this->getConfId().$this->sortConfId;
 		$configurations = $formatter->getConfigurations();
-		
+
 		$sortFields = $this->getAllowedSortFields();
 
 		if(!empty($sortFields)) {
@@ -301,8 +302,8 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter {
 					$link = $configurations->createLink();
 					$link->label($token);
 					$link->initByTS(
-						$configurations, 
-						$confId.$this->sortLinkConfId, 
+						$configurations,
+						$confId.$this->sortLinkConfId,
 						$params
 					);
 					if($makeLink)

@@ -27,6 +27,7 @@
 require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_mklib_util_TCA');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Beinhaltet Utility-Methoden für Datenbank handling
@@ -401,7 +402,7 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 		if(self::$log){
 			// ignore tables besorgen
 			if(!is_array(self::$ignoreTables)){
-				self::$ignoreTables = t3lib_div::trimExplode(',',
+				self::$ignoreTables = tx_rnbase_util_Strings::trimExplode(',',
 									tx_rnbase_configurations::getExtensionCfgValue('mklib', 'logDbIgnoreTables'),
 								true);
 			}

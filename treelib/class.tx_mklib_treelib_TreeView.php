@@ -26,6 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
@@ -132,7 +133,7 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 		$this->thisScript = 'alt_doc.php';
 
 		$this->hiddenField = '<input type="hidden" name="PM" value="">';
-		$this->itemArray = t3lib_div::trimExplode (',', $this->PA['itemFormElValue'], 1);
+		$this->itemArray = tx_rnbase_util_Strings::trimExplode (',', $this->PA['itemFormElValue'], 1);
 		$this->makeHTML = 1;
 
 		if (tx_rnbase_util_Extensions::isLoaded('xajax') && $oConfig->get('useAjax', true)) {

@@ -220,13 +220,13 @@ abstract class abstract_ext_update  {
 			$queryElements = explode('SET', $queryElements[0]);
 			$queryFields = $queryElements[1];
 
-			$queryElements = t3lib_div::trimExplode('UPDATE', $queryElements[0], 1);
+			$queryElements = tx_rnbase_util_Strings::trimExplode('UPDATE', $queryElements[0], 1);
 			$table = $queryElements[0];
 
 			$fields_values = array();
-			$queryFieldsArray = t3lib_div::trimExplode(',', $queryFields, 1);
+			$queryFieldsArray = tx_rnbase_util_Strings::trimExplode(',', $queryFields, 1);
 			foreach ($queryFieldsArray as $fieldsSet) {
-				$col = t3lib_div::trimExplode('=', $fieldsSet, 1);
+				$col = tx_rnbase_util_Strings::trimExplode('=', $fieldsSet, 1);
 				$value = stripslashes(substr($col[1], 1, strlen($col[1])-2));
 				$value = $this->getCharsetsConversion()->conv($value, 'utf-8', $destEncoding);
 				$fields_values[$col[0]] = $value;

@@ -30,6 +30,7 @@
  * benötigte Klassen einbinden
  */
 tx_rnbase::load('tx_rnbase_util_Files');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Util Methoden für Datei handling.
@@ -90,7 +91,7 @@ class tx_mklib_util_File {
 
 		// optionen sammeln.
 		$iLifetime = $aOptions['lifetime'] ? $aOptions['lifetime'] : 0;
-		$aFiletypes = $aOptions['filetypes'] ? t3lib_div::trimExplode(',', strtolower($aOptions['filetypes'])) : array();
+		$aFiletypes = $aOptions['filetypes'] ? tx_rnbase_util_Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : array();
 		$bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
 
 		$iCount = 0;
