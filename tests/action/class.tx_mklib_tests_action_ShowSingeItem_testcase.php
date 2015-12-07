@@ -132,11 +132,23 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 	/**
 	 * @group unit
 	 * @expectedException tx_rnbase_exception_ItemNotFound404
- 	 * @expectedExceptionMessage Datensatz nicht gefunden.
+	 * @expectedExceptionMessage Datensatz nicht gefunden.
 	 */
 	public function testThrowItemNotFound404Exception() {
 		$action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
 		$configurations = $this->createConfigurations(array(), 'mklib');
+		$action->setConfigurations($configurations);
+		$this->callInaccessibleMethod($action, 'throwItemNotFound404Exception');
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testThrowItemNotFound404ExceptionIfDisabled() {
+		$action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
+		$configurations = $this->createConfigurations(array(
+				'.' => array('disable404ExceptionIfNoItemFound' => TRUE)),
+				'mklib');
 		$action->setConfigurations($configurations);
 		$this->callInaccessibleMethod($action, 'throwItemNotFound404Exception');
 	}

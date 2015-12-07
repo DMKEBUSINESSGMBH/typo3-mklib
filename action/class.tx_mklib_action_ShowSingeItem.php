@@ -111,10 +111,12 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC {
 	 * tx_rnbase_exception_ItemNotFound404
 	 */
 	protected function throwItemNotFound404Exception() {
-		throw tx_rnbase::makeInstance(
-			'tx_rnbase_exception_ItemNotFound404',
-			$this->getItemNotFound404Message()
-		);
+		if (!$this->getConfigurations()->get($this->getConfId() . 'disable404ExceptionIfNoItemFound')) {
+			throw tx_rnbase::makeInstance(
+				'tx_rnbase_exception_ItemNotFound404',
+				$this->getItemNotFound404Message()
+			);
+		}
 	}
 
 	/**
