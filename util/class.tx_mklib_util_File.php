@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Util Methoden für Datei handling.
@@ -316,7 +316,7 @@ class tx_mklib_util_File {
 		// Nur in einen Absoluten Pfad umwandeln, wenn es noch keiner ist.
 		if(!self::isAbsServerPath($sPath)) {
 			// Absoluten Pfad generieren
-			$sPath = t3lib_div::getFileAbsFileName($sPath);
+			$sPath = tx_rnbase_util_Files::getFileAbsFileName($sPath);
 		}
 
 		return self::slashPath($sPath);

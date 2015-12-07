@@ -10,7 +10,7 @@
 
 HTTP requests
 =============
-A HTTP request object to make HTTP requests. The advance over t3lib_div::getUrl is that you can have
+A HTTP request object to make HTTP requests. The advance over t3lib_div::getUrl/\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl is that you can have
 different adapters. So the request is theoretically possible with curl, socket, proxy and so one.
 Request are also possible wit SSL certificates, keys and pass phrases.
 
@@ -23,7 +23,7 @@ Here a little example for a request with HTTPS, post parameters and SSL certific
 
    $url = 'https://example.de/tests/';
    $config = array(
-      'sslcainfo' => t3lib_div::getFileAbsFileName('EXT:mkmyext/Resources/Private/example.de.crt'),
+      'sslcainfo' => tx_rnbase_util_Files::getFileAbsFileName('EXT:mkmyext/Resources/Private/example.de.crt'),
    );
    $request = tx_rnbase::makeInstance('tx_mklib_util_HttpRequest', $url, $config);
    $request->addParameter('_POST', $_POST);

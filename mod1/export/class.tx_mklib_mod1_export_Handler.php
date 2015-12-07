@@ -28,6 +28,7 @@
 require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_mod1_export_Util');
 tx_rnbase::load('tx_rnbase_mod_Util');
+tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Handelt die über Typoscript definierte Exportfunktionalität.
@@ -317,7 +318,7 @@ class tx_mklib_mod1_export_Handler {
 		$confId = $this->getConfId().'types.'.$type.'.template.';
 
 		// template laden
-		$sAbsPath = t3lib_div::getFileAbsFileName( $configuration->get($confId.'template') );
+		$sAbsPath = tx_rnbase_util_Files::getFileAbsFileName( $configuration->get($confId.'template') );
 		$templateCode = t3lib_div::getURL($sAbsPath);
 		if(!$templateCode) {
 			$this->getModule()->addMessage(

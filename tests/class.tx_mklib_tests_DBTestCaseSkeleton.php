@@ -31,6 +31,7 @@
  */
 require_once tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_tests_Util');
+tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Model eines wordlist eintrages
@@ -97,7 +98,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 
 		foreach($files as $file) {
 			// read sql file content
-			$sqlFilename = t3lib_div::getFileAbsFileName(tx_rnbase_util_Extensions::extPath($extKey, $file));
+			$sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(tx_rnbase_util_Extensions::extPath($extKey, $file));
 			if(@is_file($sqlFilename)) {
 				tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
 			}
@@ -135,7 +136,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 		// fixtures laden
 		if(count($this->importDataSet)) {
 			foreach($this->importDataSet as $fixturePath) {
-	   			$this->importDataSet(t3lib_div::getFileAbsFileName($fixturePath));
+	   			$this->importDataSet(tx_rnbase_util_Files::getFileAbsFileName($fixturePath));
 			}
 		}
 	}

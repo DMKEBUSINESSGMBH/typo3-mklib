@@ -25,6 +25,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
+tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Util Methoden für das TS, speziell im BE
@@ -64,7 +65,7 @@ class tx_mklib_util_TS {
 			$sStaticPath = '/static/ts/setup.txt';
 		}
 
-		if(file_exists(t3lib_div::getFileAbsFileName('EXT:' . $extKey . $sStaticPath))) {
+		if(file_exists(tx_rnbase_util_Files::getFileAbsFileName('EXT:' . $extKey . $sStaticPath))) {
 			tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $extKey . $sStaticPath . '">');
 		}
 
