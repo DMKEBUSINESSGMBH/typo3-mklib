@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-
+tx_rnbase::load('tx_rnbase_util_Arrays');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
@@ -308,7 +308,7 @@ class tx_mklib_util_TCA {
 			$wizards['edit'] = self::addWizardScriptForTypo3Version('edit', $wizards['edit']);
 			if (is_array($options['edit'])) {
 				$wizards['edit'] =
-					t3lib_div::array_merge_recursive_overrule(
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
 						$wizards['edit'], $options['edit']
 					);
 			}
@@ -328,7 +328,7 @@ class tx_mklib_util_TCA {
 			$wizards['add'] = self::addWizardScriptForTypo3Version('add', $wizards['add']);
 			if (is_array($options['add'])) {
 				$wizards['add'] =
-					t3lib_div::array_merge_recursive_overrule(
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
 						$wizards['add'], $options['add']
 					);
 			}
@@ -348,7 +348,7 @@ class tx_mklib_util_TCA {
 			$wizards['list'] = self::addWizardScriptForTypo3Version('list', $wizards['list']);
 			if (is_array($options['list'])) {
 				$wizards['list'] =
-					t3lib_div::array_merge_recursive_overrule(
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
 						$wizards['list'], $options['list']
 					);
 			}
@@ -364,7 +364,7 @@ class tx_mklib_util_TCA {
 			);
 			if (is_array($options['suggest'])) {
 				$wizards['suggest'] =
-					t3lib_div::array_merge_recursive_overrule(
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
 						$wizards['suggest'], $options['suggest']
 					);
 			}
@@ -394,7 +394,7 @@ class tx_mklib_util_TCA {
 			);
 			if (is_array($options['link'])) {
 				$wizards['link'] =
-					t3lib_div::array_merge_recursive_overrule(
+					tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
 						$wizards['link'], $options['link']
 					);
 			}
@@ -442,7 +442,7 @@ class tx_mklib_util_TCA {
 		$parsedQueryParameters = array();
 
 		if(
-			($returnUrl = t3lib_div::_GET('returnUrl')) &&
+			($returnUrl = tx_rnbase_parameters::getPostOrGetParameter('returnUrl')) &&
 			($parsedUrl = parse_url($returnUrl)) &&
 			isset($parsedUrl['query'])
 		) {

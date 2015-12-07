@@ -152,7 +152,7 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 		$GLOBALS['BE_USER']->user['admin'] = 1;
 
 		//tceforms initialisieren
-		$this->oTceForms = t3lib_div::makeInstance('t3lib_tceforms');
+		$this->oTceForms = tx_rnbase::makeInstance('t3lib_tceforms');
 
 		// sonst Warning in typo3/sysext/backend/Classes/Utility/IconUtility.php line 594
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {

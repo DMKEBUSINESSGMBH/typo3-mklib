@@ -24,10 +24,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-
 tx_rnbase::load('tx_rnbase_util_ListBuilder');
 tx_rnbase::load('tx_mklib_mod1_export_Util');
+tx_rnbase::load('tx_rnbase_util_Templates');
 
 /**
  * Der Listbuilder erzeugt die ausgabe für den export.
@@ -71,9 +70,9 @@ class tx_mklib_mod1_export_ListBuilder
 			$this->info->getListMarkerInfo()
 		);
 
-		$templateList = t3lib_parsehtml::getSubpart($template, '###'.$outerMarker.'S###');
+		$templateList = tx_rnbase_util_Templates::getSubpart($template, '###'.$outerMarker.'S###');
 		list($listHeader, $listFooter) = $this->getWrapForSubpart($templateList, $marker);
-		$templateEntry = t3lib_parsehtml::getSubpart($templateList, '###'.$marker.'###');
+		$templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###'.$marker.'###');
 
 		tx_mklib_mod1_export_Util::doOutPut($listHeader);
 

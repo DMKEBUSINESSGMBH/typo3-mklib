@@ -27,6 +27,7 @@
  ***************************************************************/
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
@@ -364,9 +365,9 @@ class tx_mklib_treelib_TreeView extends t3lib_treeview {
 			}
 
 			// Den Query-String bis auf den PM Parameter übernehmen.
-			$queryString = t3lib_div::getIndpEnv('QUERY_STRING');
+			$queryString = tx_rnbase_util_Misc::getIndpEnv('QUERY_STRING');
 			// pm vom query string abschneiden!
-			if($pm = t3lib_div::_GET('PM')) {
+			if($pm = tx_rnbase_parameters::getPostOrGetParameter('PM')) {
 				$queryString = str_replace('PM='.$pm,'',$queryString);
 			}
 			// Erstes & Anfügen, wenn noch nicht vorhanden.

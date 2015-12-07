@@ -152,7 +152,7 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 
 		$sessionIdBackup = tx_mklib_util_Session::getSessionId();
 		// erstmal Session ID wechseln und Wert setzen
-		$newSessionId = t3lib_div::getRandomHexString(32);
+		$newSessionId = $this->getRandomHexString();
 		tx_mklib_util_Session::setSessionId($newSessionId);
 		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
 		tx_mklib_util_Session::storeSessionData();
@@ -171,5 +171,14 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 		);
 
 		tx_mklib_util_Session::setSessionId($sessionIdBackup);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getRandomHexString() {
+		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+			\TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32) :
+			t3lib_div::getRandomHexString(32);
 	}
 }

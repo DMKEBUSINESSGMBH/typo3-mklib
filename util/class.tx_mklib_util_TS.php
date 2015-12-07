@@ -26,6 +26,7 @@
  */
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Files');
+tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
  * Util Methoden für das TS, speziell im BE
@@ -81,7 +82,7 @@ class tx_mklib_util_TS {
 		tx_rnbase_util_Misc::prepareTSFE($tsfePreparationOptions);
 		$GLOBALS['TSFE']->config = array();
 
-		$cObj = t3lib_div::makeInstance('tslib_cObj');
+		$cObj = tx_rnbase::makeInstance('tslib_cObj');
 
 		$pageTsConfig = self::getPagesTSconfig(0);
 
@@ -101,7 +102,7 @@ class tx_mklib_util_TS {
 		$qualifier = $pageTsConfig['qualifier'] ? $pageTsConfig['qualifier'] : $extKeyTs;
 
 		// möglichkeit die default konfig zu überschreiben
-		$pageTsConfig = t3lib_div::array_merge_recursive_overrule($pageTsConfig, $aConfig);
+		$pageTsConfig = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($pageTsConfig, $aConfig);
 
 		$configurations = new tx_rnbase_configurations();
 		$configurations->init($pageTsConfig, $cObj, $extKeyTs, $qualifier);
@@ -139,16 +140,18 @@ class tx_mklib_util_TS {
 		$mPageUid = 0, $sExtKey = 'mklib', $sDomainKey = 'plugin.'
 	) {
 		// rootlines der pid auslesen
-		/* @var $sysPageObj t3lib_pageSelect */
-		$sysPageObj = tx_rnbase::makeInstance('t3lib_pageSelect');
+		$sysPageObj = tx_rnbase_util_TYPO3::getSysPage();
 		$aRootLine = $sysPageObj->getRootLine(
 			// wenn ein alias übergeben wurde, müssen wir uns die uid besorgen
 			is_numeric($mPageUid) ? intval($mPageUid) : $sysPageObj->getPageIdFromAlias($mPageUid)
 		);
 
 		// ts für die rootlines erzeugen
-		/* @var $tsObj t3lib_tsparser_ext */
-		$tsObj = tx_rnbase::makeInstance('t3lib_tsparser_ext');
+		/* @var $tsObj \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
+		$tsObj = tx_rnbase::makeInstance(
+			tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+			't3lib_tsparser_ext' : '\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService'
+		);
 		$tsObj->tt_track = 0;
 		$tsObj->init();
 		$tsObj->runThroughTemplates($aRootLine);

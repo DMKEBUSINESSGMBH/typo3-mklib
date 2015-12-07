@@ -49,7 +49,7 @@ class tx_mklib_mod1_util_Helper {
 	 */
 	public static function getCurrentItem($key, tx_rnbase_mod_IModule $module) {
 		$itemid = 0;
-		$data = t3lib_div::_GP('show' . $key);
+		$data = tx_rnbase_parameters::getPostOrGetParameter('show' . $key);
 		if($data) {
 			list($itemid, ) = each($data);
 		}

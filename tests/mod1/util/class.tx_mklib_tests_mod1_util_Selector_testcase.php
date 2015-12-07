@@ -69,7 +69,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$_GET['SET'] = null;
 
 		//für cli
-		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
+		$GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('template');
 		$GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
 		//sprache auf default setzen damit wir die richtigen labels haben

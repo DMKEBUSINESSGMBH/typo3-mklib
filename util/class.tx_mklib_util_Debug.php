@@ -24,7 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
+tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Debug Util.
@@ -108,7 +108,7 @@ class tx_mklib_util_Debug {
 		if (!$path) {
 			$path = 'typo3temp/mklib/';
 			if (!is_writable(PATH_site.$path)) {
-				t3lib_div::mkdir_deep(PATH_site, $path);
+				tx_rnbase_util_Files::mkdir_deep(PATH_site, $path);
 			}
 			$path = PATH_site.$path;
 		}

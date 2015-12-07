@@ -24,8 +24,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
+tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Network');
+tx_rnbase::load('tx_rnbase_util_Link');
+
 /**
  * Class for updating the db
  *
@@ -35,7 +37,7 @@ abstract class abstract_ext_update  {
 
 	/**
 	 *
-	 * @var t3lib_cs
+	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter or t3lib_cs
 	 */
 	private $csconv = false;
 
@@ -50,7 +52,7 @@ abstract class abstract_ext_update  {
 		$fieldsets['Update Static Info Tables']	= $this->handleUpdateStaticInfoTables();
 
 		$content  = '';
-		$content .= '<form action="'.htmlspecialchars(t3lib_div::linkThisScript()).'" method="post">';
+		$content .= '<form action="'.htmlspecialchars(tx_rnbase_util_Link::linkThisScript()).'" method="post">';
 		foreach($fieldsets as $legend => $fieldset) {
 			$content .= '<fieldset>';
 			if($legend && !is_numeric($legend)) {
@@ -87,7 +89,7 @@ abstract class abstract_ext_update  {
 	 * @return string
 	 */
 	private function getDestEncoding(){
-		return t3lib_div::_GP('dest_encoding');
+		return tx_rnbase_parameters::getPostOrGetParameter('dest_encoding');
 	}
 
 	/**
@@ -104,7 +106,7 @@ abstract class abstract_ext_update  {
 		if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
 			$content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
 		} else {
-			if(t3lib_div::_GP($updateKey)) {
+			if(tx_rnbase_parameters::getPostOrGetParameter($updateKey)) {
 				if(($ret = $this->queryDB($updateKey)) === true) {
 					$content .= $this->getSuccessMsg();
 				} else {
@@ -151,12 +153,12 @@ abstract class abstract_ext_update  {
 		foreach($fileContent as $line)	{
 			$line=trim($line);
 			// nach dem ende des update keys suchen
-			if($keyQuery && t3lib_div::isFirstPartOfStr($line,'#'.$updateKey)) {
+			if($keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line,'#'.$updateKey)) {
 				$keyQuery = 2;
 				break; // alle satements gefunden schleife nicht mehr durchlaufen
 			}
 			// nach dem anfang des update keys suchen
-			if(!$keyQuery && t3lib_div::isFirstPartOfStr($line, '#'.$updateKey)) {
+			if(!$keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
 				$keyQuery = 1; // key gefunden, jetzt folgen die statements
 				continue;
 			}
@@ -164,7 +166,7 @@ abstract class abstract_ext_update  {
 			if(!$keyQuery) {
 				continue;
 			}
-			if ($line && t3lib_div::isFirstPartOfStr($line, $this->getSqlMode())) {
+			if ($line && tx_rnbase_util_Strings::isFirstPartOfStr($line, $this->getSqlMode())) {
 				// ggf. das encoding ändern
 				$querys[] = $this->getUpdateEncoded($line, $destEncoding);
 			}
@@ -197,11 +199,16 @@ abstract class abstract_ext_update  {
 	}
 
 	/**
-	 * @return 	t3lib_cs
+	 * @return \TYPO3\CMS\Core\Charset\CharsetConverter or t3lib_cs
 	 */
 	private function getCharsetsConversion(){
 		if(!$this->csconv) {
-			$this->csconv = tx_rnbase::makeInstance('t3lib_cs');
+			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+				$charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter'
+			} else {
+				$charsetConverterClass = 't3lib_cs';
+			}
+			$this->csconv = tx_rnbase::makeInstance($charsetConverterClass);
 		}
 		return $this->csconv;
 	}

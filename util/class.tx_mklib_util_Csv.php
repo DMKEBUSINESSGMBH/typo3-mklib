@@ -25,11 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-
+tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Die Klasse ermöglicht direkt eine CSV Datei
@@ -64,19 +60,24 @@ class tx_mklib_util_Csv extends localRecordList {
 		}
 		$sCsvLines = implode(chr(13).chr(10),$aData);
 
-		if(t3lib_div::writeFile($sDir.$sFileName,$sCsvLines))
+		if(tx_rnbase_util_Files::writeFile($sDir.$sFileName,$sCsvLines))
 			return $sFileName;
 		else return false;
 	}
 
 	/**
-	 * Adds input row of values to the internal csvLines array as a CSV formatted line
-	 *
-	 * @param	array		Array with values to be listed.
-	 * @return	void
+	 * @param array $csvRow
+	 * @param string $delimiter
+	 * @param string $quote
+	 * @return void
 	 */
-	public function setCsvRow($aCsvRow, $sDelim = ',', $sQuote = '"')	{
-		$this->csvLines[] = t3lib_div::csvValues($aCsvRow,$sDelim ,$sQuote);
+	public function setCsvRow($csvRow, $delimiter = ',', $quote = '"')	{
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$csvLine = \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($csvRow, $delimiter, $quote);
+		} else {
+			$csvLine = t3lib_div::csvValues($csvRow, $delimiter, $quote);
+		}
+		$this->csvLines[] = $csvLine;
 	}
 }
 

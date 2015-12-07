@@ -53,7 +53,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 	public function tearDown() {
 	}
 	private static function createTestfiles($testfolder){
-		t3lib_div::mkdir($testfolder);
+		tx_rnbase_util_Files::mkdir_deep($testfolder);
 		$files = array(
 			array($testfolder.'/','test.zip'),
 			array($testfolder.'/','test.xml'),
@@ -66,7 +66,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		);
 		foreach ($files as $file) {
 			$path = $file[0]; $file = $file[1];
-			if (!is_dir($path)) t3lib_div::mkdir($path);
+			if (!is_dir($path)) tx_rnbase_util_Files::mkdir_deep($path);
 			$iH = fopen($path.$file, "w+");
 			fwrite($iH, 'This is an automatic generated testfile and can be removed.');
 			fclose($iH);
@@ -88,7 +88,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		));
 		$this->assertEquals(0, $count, 'wrong deleted count.');
 		// weider löschen
-		t3lib_div::rmdir($testfolder, true);
+		tx_rnbase_util_Files::rmdir($testfolder, true);
 	}
 	public function testCleanupFilesWithZipAndXml(){
 		//@TODO: lifetime testen
@@ -106,7 +106,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		));
 		$this->assertEquals(2, $count, 'wrong deleted count.');
 		// weider löschen
-		t3lib_div::rmdir($testfolder, true);
+		tx_rnbase_util_Files::rmdir($testfolder, true);
 	}
 
 	public function testCleanupFilesRecursiveWithZipAndXml(){
@@ -125,7 +125,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		));
 		$this->assertEquals(4, $count, 'wrong deleted count. testfolder: ' . $testfolder);
 		// weider löschen
-		t3lib_div::rmdir($testfolder, true);
+		tx_rnbase_util_Files::rmdir($testfolder, true);
 	}
 
 	/**

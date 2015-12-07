@@ -26,9 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * benötigte Klassen einbinden
- */
+tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Files');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
@@ -41,7 +39,7 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  */
 class tx_mklib_util_File {
 
-	/** @var 	array[t3lib_basicFileFunctions] */
+	/** @var 	array[\TYPO3\CMS\Core\Utility\File\BasicFileUtility] */
 	private static $ftInstances = array();
 	/** @var 	string 	cache*/
 	private static $siteUrl = false;
@@ -50,7 +48,7 @@ class tx_mklib_util_File {
 
 	/**
 	 * Liefert eine Instanz der basicFileFunctions von t3lib
-	 * @return 	t3lib_basicFileFunctions
+	 * @return 	\TYPO3\CMS\Core\Utility\File\BasicFileUtility
 	 */
 	public static function getFileTool($mounts=false, $f_ext=false){
 		$key = (!$mounts && !$f_ext) ? true : false;
@@ -62,7 +60,10 @@ class tx_mklib_util_File {
 		}
 		$key = $key ? 'base' : md5(serialize($mounts).serialize($f_ext));
 		if(!self::$ftInstances[$key]) {
-			self::$ftInstances[$key] = tx_rnbase::makeInstance('t3lib_basicFileFunctions');
+			self::$ftInstances[$key] = tx_rnbase::makeInstance(
+				tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				't3lib_basicFileFunctions' : '\TYPO3\CMS\Core\Utility\File\BasicFileUtility'
+			);
 			self::$ftInstances[$key]->init($mounts, $f_ext);
 		}
 		return self::$ftInstances[$key];
@@ -141,7 +142,7 @@ class tx_mklib_util_File {
 	 */
 	public static function getSiteUrl(){
 		if(self::$siteUrl===false){
-			self::$siteUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+			self::$siteUrl = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL');
 		}
 		return self::$siteUrl;
 	}
@@ -152,7 +153,7 @@ class tx_mklib_util_File {
 	public static function getDocumentRoot($slashPath=true){
 //		return PATH_site;
 		if(self::$documentRoot===false){
-			self::$documentRoot = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+			self::$documentRoot = tx_rnbase_util_Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT');
 		}
 		if($slashPath) {
 			return self::slashPath(self::$documentRoot, false);
@@ -208,7 +209,6 @@ class tx_mklib_util_File {
 	public static function fixPath($sPath, $slashPath=true){
 
 		// stellt sicher, das keine backslashes vorhanden sind.
-//		$sPath = t3lib_div::fixWindowsFilePath($sPath);
 		$sPath = str_replace('\\','/', $sPath);
 
 		// entfernt überflüssige slashes
@@ -428,7 +428,7 @@ class tx_mklib_util_File {
 				// da der LoadBallancer die Anfragen intern weiterleitet!
 // 				'allow from 192.168'.PHP_EOL
 			;
-		t3lib_div::writeFile($theFile, $content);
+		tx_rnbase_util_Files::writeFile($theFile, $content);
 		return @is_file($theFile);
 	}
 

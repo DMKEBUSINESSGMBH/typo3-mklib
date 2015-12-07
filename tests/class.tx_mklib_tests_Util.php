@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-
+tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_cache_Manager');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Spyc');
@@ -163,7 +163,7 @@ class tx_mklib_tests_Util {
 		if($statementType || $bIgnoreStatementType) {
 			$statements = self::getSqlStatementArrayDependendOnTypo3Version($sql);
 			foreach($statements as $statement){
-				if(!$bIgnoreStatementType && t3lib_div::isFirstPartOfStr($statement, $statementType)) {
+				if(!$bIgnoreStatementType && tx_rnbase_util_Strings::isFirstPartOfStr($statement, $statementType)) {
 					$GLOBALS['TYPO3_DB']->admin_query($statement);
 				}elseif($bIgnoreStatementType){//alle gefundenen statements ausführen
 					$GLOBALS['TYPO3_DB']->admin_query($statement);
@@ -181,7 +181,9 @@ class tx_mklib_tests_Util {
 	 */
 	private static function getSqlStatementArrayDependendOnTypo3Version($sql) {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if(tx_rnbase_util_TYPO3::isTYPO46OrHigher()){
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$dbHandler = tx_rnbase::makeInstance('\TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
+		} elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
 			$dbHandler = tx_rnbase::makeInstance('t3lib_install_Sql');
 		} else {
 			$dbHandler = tx_rnbase::makeInstance('t3lib_install');
@@ -231,15 +233,15 @@ class tx_mklib_tests_Util {
 			$GLOBALS['TT'] = NULL;
 		}
 
-		$GLOBALS['TT'] = t3lib_div::makeInstance('t3lib_TimeTrackNull');
-		$frontEnd = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
+		$GLOBALS['TT'] = tx_rnbase::makeInstance('t3lib_TimeTrackNull');
+		$frontEnd = tx_rnbase::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
 
 		// simulates a normal FE without any logged-in FE or BE user
 		$frontEnd->beUserLogin = FALSE;
 		$frontEnd->workspacePreview = '';
 		$frontEnd->gr_list = '0,-1';
 
-		$frontEnd->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$frontEnd->sys_page = tx_rnbase::makeInstance('t3lib_pageSelect');
 		$frontEnd->sys_page->init(TRUE);
 		$frontEnd->initTemplate();
 

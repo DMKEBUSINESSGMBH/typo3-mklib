@@ -168,7 +168,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 		tx_rnbase_util_Misc::prepareTSFE();
 
 		$configurations = new tx_rnbase_configurations();
-		$cObj = t3lib_div::makeInstance('tslib_cObj');
+		$cObj = tx_rnbase::makeInstance('tslib_cObj');
 		$config = array(
 			'myConfId.' => array(
 				'filter.' => array(

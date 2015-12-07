@@ -25,11 +25,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-
+tx_rnbase::load('tx_rnbase_util_Network');
+tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * Miscellaneous common methods
@@ -117,8 +114,8 @@ class tx_mklib_util_MiscTools {
 	 */
 	public static function isDevIpMask($remoteAddress='',$devIPmask=''){
 		$devIPmask = trim(strcmp($devIPmask, '') ? $devIPmask : $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
-		$remoteAddress = trim(strcmp($remoteAddress, '') ? $remoteAddress : t3lib_div::getIndpEnv('REMOTE_ADDR'));
-		return t3lib_div::cmpIP($remoteAddress, $devIPmask);
+		$remoteAddress = trim(strcmp($remoteAddress, '') ? $remoteAddress : tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'));
+		return tx_rnbase_util_Network::cmpIP($remoteAddress, $devIPmask);
 	}
 
 	/**

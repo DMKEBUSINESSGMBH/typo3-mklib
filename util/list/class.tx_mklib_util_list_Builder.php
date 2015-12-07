@@ -24,8 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-
+tx_rnbase::load('tx_rnbase_util_Templates');
 tx_rnbase::load('tx_rnbase_util_ListBuilder');
 
 /**
@@ -43,7 +42,7 @@ class tx_mklib_util_list_Builder
 	 * @var tx_mklib_util_list_output_Interface
 	 */
 	private $output = NULL;
-	
+
 	/**
 	 * @param tx_mklib_util_list_output_Interface $outputHandler
 	 * @param array $data
@@ -54,9 +53,9 @@ class tx_mklib_util_list_Builder
 		$info = (is_array($data) && array_key_exists('info', $data)) ? $data['info'] : null;
 		parent::__construct($info);
 	}
-	
+
 	/**
-	
+
 	/**
 	 * Add a visitor callback. It is called for each item before rendering
 	 * @param array $callback
@@ -64,7 +63,7 @@ class tx_mklib_util_list_Builder
 	public function addVisitor(array $callback) {
 		$this->callbacks[] = $callback;
 	}
-	
+
 	public function renderEach(
 		tx_rnbase_util_IListProvider $provider,
 		$viewData, $template,
@@ -81,23 +80,23 @@ class tx_mklib_util_list_Builder
 		list($header, $footer) = $this->getWrapForSubpart($template, $outerMarker.'S');
 
 		$this->handleOutput($header);
-		
+
 		/* @var $listMarker tx_mklib_util_list_Marker */
 		$listMarker = tx_rnbase::makeInstance(
 			'tx_mklib_util_list_Marker',
 			$this->info->getListMarkerInfo(), $this->output
 		);
 
-		$templateList = t3lib_parsehtml::getSubpart($template, '###'.$outerMarker.'S###');
+		$templateList = tx_rnbase_util_Templates::getSubpart($template, '###'.$outerMarker.'S###');
 		list($listHeader, $listFooter) = $this->getWrapForSubpart($templateList, $marker);
-		$templateEntry = t3lib_parsehtml::getSubpart($templateList, '###'.$marker.'###');
+		$templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###'.$marker.'###');
 
 		$this->handleOutput($listHeader);
 
 		$listMarker->addVisitors($this->callbacks);
 		$ret = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
 				$confId, $marker, $formatter, $markerParams, $offset);
-		
+
 		$this->handleOutput($listFooter);
 		$this->handleOutput($footer);
 
@@ -124,7 +123,7 @@ class tx_mklib_util_list_Builder
 		$out = parent::render($dataArr, $viewData, $template, $markerClassname, $confId, $marker, $formatter);
 		$this->handleOutput($out);
 	}
-	
+
 	/**
 	 * Handle output
 	 * @param string $out

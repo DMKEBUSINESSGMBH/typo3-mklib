@@ -25,12 +25,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-/**
- * benötigte Klassen einbinden
- */
-
+tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 if(tx_rnbase_util_Extensions::isLoaded('dam'))
   require_once(tx_rnbase_util_Extensions::extPath('dam').'tca_media_field.php');
@@ -141,7 +138,7 @@ class tx_mklib_util_DAM {
 		if(!empty($iItemId)){
 			$sWhere = 'tablenames=\'' . $sTableName . '\' AND ident=\'' . $sFieldName .'\' AND uid_foreign=' . $iItemId;
 			if(strlen(trim($mUid))) {
-				$mUid = implode(',',t3lib_div::intExplode(',',$mUid));
+				$mUid = implode(',',tx_rnbase_util_Strings::intExplode(',',$mUid));
 				$sWhere .= ' AND uid_local IN (' . $mUid .') ';
 			}
 			tx_rnbase_util_DB::doDelete('tx_dam_mm_ref',$sWhere);
@@ -379,7 +376,7 @@ class tx_mklib_util_DAM {
 				if (isset($aRows['files'][$uid])) {
 					$aFileInfo['file_path_name'] = $aRows['files'][$uid];
 				}
-				$aFileInfo['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $aFileInfo['file_path_name'];
+				$aFileInfo['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $aFileInfo['file_path_name'];
 				$aRes[$uid] = $aFileInfo;
 			}
 			return $aRes;
@@ -450,7 +447,7 @@ class tx_mklib_util_DAM {
 				$res = self::getFileInfo($ref['rows'][$firstKey]);
 				if (isset($ref['files'][$firstKey]))
 				$res['file_path_name'] = $ref['files'][$firstKey];
-				$res['file_abs_url'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . $res['file_path_name'];
+				$res['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $res['file_path_name'];
 				$res['file_uid'] = $ref['rows'][$firstKey]['uid'];
 			}
 			return $res ? $res : null;
@@ -501,7 +498,10 @@ class tx_mklib_util_DAM {
 				);
 			}
 			unset($BE_USER);
-			$BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth');
+			$BE_USER = tx_rnbase::makeInstance(
+				tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+				't3lib_tsfeBeUserAuth' : '\TYPO3\CMS\Backend\FrontendBackendUserAuthentication'
+			);
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($beUserId);
 			$BE_USER->fetchGroupData();
@@ -514,7 +514,7 @@ class tx_mklib_util_DAM {
 		if(!$GLOBALS['LANG']) {
 			// Bei Ajax-Calls fehlt das Objekt
 			require_once(tx_rnbase_util_Extensions::extPath('lang').'lang.php');
-			$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
+			$GLOBALS['LANG'] = tx_rnbase::makeInstance('language');
 			$GLOBALS['LANG']->init($BE_USER->uc['lang']);
 		}
 

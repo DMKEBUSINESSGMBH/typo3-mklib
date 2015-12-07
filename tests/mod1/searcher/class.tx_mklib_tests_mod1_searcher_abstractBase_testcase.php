@@ -81,7 +81,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 
 		$this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
 		$this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher',$this->mod);
-		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
+		$GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('template');
 		$GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
 		$GLOBALS['emptyTestResult'] = false;
@@ -227,7 +227,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 		$aResultList = $this->searcher->getResultList();
 
 		//Daten im Modul korrekt?
-		$aModuleData = Tx_Rnbase_Backend_Utility::getModuleData(array (),t3lib_div::_GP('SET'),$this->mod->getName());
+		$aModuleData = Tx_Rnbase_Backend_Utility::getModuleData(array (),tx_rnbase_parameters::getPostOrGetParameter('SET'),$this->mod->getName());
 		$this->assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
 		$result = $aResultList['table'];

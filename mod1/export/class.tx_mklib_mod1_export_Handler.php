@@ -159,7 +159,7 @@ class tx_mklib_mod1_export_Handler {
 	 * @return string|boolean
 	 */
 	public function getCurrentExportType() {
-		$parameters = t3lib_div::_GPmerged('mklib');
+		$parameters = tx_rnbase_parameters::getPostAndGetParametersMerged('mklib');
 		if (empty($parameters['export'])) {
 			return FALSE;
 		}

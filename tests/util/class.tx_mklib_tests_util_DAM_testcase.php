@@ -73,7 +73,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		parent::setUp();
 
 		$this->sTempFolder = tx_rnbase_util_Extensions::extPath('mklib').'tests/typo3temp';
-		t3lib_div::mkdir($this->sTempFolder);
+		tx_rnbase_util_Files::mkdir_deep($this->sTempFolder);
 		$sImageFile = 'test.jpg';
 		$this->sAbsoluteImagePath = $this->sTempFolder.'/'.$sImageFile;
 		touch($this->sAbsoluteImagePath);
@@ -85,7 +85,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 * @see tx_mklib_tests_DBTestCaseSkeleton::tearDown()
 	 */
 	public function tearDown() {
-		t3lib_div::rmdir($this->sTempFolder,true);
+		tx_rnbase_util_Files::rmdir($this->sTempFolder,true);
 	}
 
 	/**

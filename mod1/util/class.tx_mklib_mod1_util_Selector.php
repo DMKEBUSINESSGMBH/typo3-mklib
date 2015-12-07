@@ -260,7 +260,7 @@ class tx_mklib_mod1_util_Selector {
 		// Fetch selected company trade
 		$modData = Tx_Rnbase_Backend_Utility::getModuleData(
 			array($key => ''),
-			t3lib_div::_GP('SET'),
+			tx_rnbase_parameters::getPostOrGetParameter('SET'),
 			$this->getMod()->getName()
 		);
 		if (isset($modData[$key])) {
@@ -364,7 +364,7 @@ class tx_mklib_mod1_util_Selector {
 	 * @return string gewählte zeit in d-m-Y
 	 */
 	private function getDateFieldByKey($key, &$out) {
-		$value = isset($_POST[$key]) ? t3lib_div::_GP($key) : $this->getValueFromModuleData($key);
+		$value = isset($_POST[$key]) ? tx_rnbase_parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
 
 		$out['field'] .= '<input name="' . $key . '" type="text" id="tceforms-datefield-' . $key . '" value="' . $value . '" />' .
 			t3lib_iconWorks::getSpriteIcon(

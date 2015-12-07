@@ -31,6 +31,7 @@
  */
 
 tx_rnbase::load('tx_mklib_util_Var');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * String Utilities
@@ -239,7 +240,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 		$text= preg_replace("$patternPrefix([\w]*?)((www|ftp)\.$patternSuffix)/is", "$1$2&lt;a $aTagParams href=\"http://$3\" &gt;$3&lt;/a&gt;", $text);
 		$text= preg_replace("$patternPrefix([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i", "$1&lt;a href=\"mailto:$2@$3\"&gt;$2@$3&lt;/a&gt;", $text);
 
-		return t3lib_div::removeXSS(html_entity_decode($text));
+		return tx_rnbase_util_Strings::removeXSS(html_entity_decode($text));
 	}
 
 	/**

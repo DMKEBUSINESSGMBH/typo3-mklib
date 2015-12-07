@@ -320,8 +320,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 */
 	private function prepareSorting(&$options) {
 		$sortedCols = array();
-		if(t3lib_div::_GET('sortField') && t3lib_div::_GET('sortRev')) {
-			$sortedCols = array(t3lib_div::_GET('sortField') => t3lib_div::_GET('sortRev'));
+		if(tx_rnbase_parameters::getPostOrGetParameter('sortField') && tx_rnbase_parameters::getPostOrGetParameter('sortRev')) {
+			$sortedCols = array(tx_rnbase_parameters::getPostOrGetParameter('sortField') => tx_rnbase_parameters::getPostOrGetParameter('sortRev'));
 			//wir setzen die daten noch für das Modul um bei einem seiten wechsel
 			//weiterhin die richtige sortierung zu haben
 			$this->getSelector()->setValueToModuleData(

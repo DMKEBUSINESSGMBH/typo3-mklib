@@ -119,7 +119,7 @@ class tx_mklib_mod1_linker_ShowDetails {
 			$this->identifier => '0',
 		);
 
-		$params = t3lib_div::_GP('showDetails');
+		$params = tx_rnbase_parameters::getPostOrGetParameter('showDetails');
 		$params = is_array($params) ? $params : array();
 		list($model, $uid) = each($params);
 		if (is_array($uid)) {
