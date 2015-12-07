@@ -28,6 +28,7 @@
 
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
+tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Diese Klasse ist für die Erstellung von Markerarrays der Section
@@ -181,7 +182,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker {
 		$icon = $default.'.'.$fileExt;
 		if(is_array($mapping)){
 			foreach($mapping as $key => $value) {
-				if(t3lib_div::inList($value, $type)){
+				if(tx_rnbase_util_Strings::inList($value, $type)){
 					$icon = $key.'.'.$fileExt;
 					break;
 				}
