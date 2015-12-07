@@ -14,7 +14,7 @@ This way you can use the ###...EMPTYLIST### marker if the element could not be f
 
 .. code-block:: php
 
-   require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+   
    tx_rnbase::load('tx_mklib_filter_SingleItem');
     
    class Tx_Mkexample_Filter_ShowCompany extends tx_mklib_filter_SingleItem {

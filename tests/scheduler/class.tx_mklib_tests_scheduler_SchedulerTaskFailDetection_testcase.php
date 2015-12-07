@@ -27,7 +27,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+
 tx_rnbase::load('tx_mklib_scheduler_SchedulerTaskFailDetection');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_tests_Util');

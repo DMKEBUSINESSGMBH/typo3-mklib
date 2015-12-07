@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+
 tx_rnbase::load('tx_rnbase_cache_Manager');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_util_Spyc');

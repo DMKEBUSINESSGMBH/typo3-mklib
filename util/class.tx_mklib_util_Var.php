@@ -29,7 +29,7 @@
 /**
  * benötigte Klassen einbinden
  */
-require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+
 
 /**
  * Klasse enthält allgemeine Funktionen für Variablen

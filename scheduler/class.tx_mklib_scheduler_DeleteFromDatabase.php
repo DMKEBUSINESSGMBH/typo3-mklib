@@ -24,7 +24,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-require_once (tx_rnbase_util_Extensions::extPath('rn_base', 'class.tx_rnbase.php'));
+
 tx_rnbase::load('tx_mklib_scheduler_Generic');
 tx_rnbase::load('tx_mklib_util_DB');
 

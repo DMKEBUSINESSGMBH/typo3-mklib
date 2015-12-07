@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+
 tx_rnbase::load('tx_mklib_action_ShowSingeItem');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_repository_Abstract');

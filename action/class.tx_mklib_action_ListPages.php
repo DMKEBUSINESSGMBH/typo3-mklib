@@ -21,9 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
-	'rn_base', 'class.tx_rnbase.php'
-);
 tx_rnbase::load('tx_mklib_action_AbstractList');
 
 /**

@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+
 
 
 class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends tx_phpunit_testcase {

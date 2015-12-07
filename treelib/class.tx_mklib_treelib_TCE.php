@@ -25,18 +25,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once (tx_rnbase_util_Extensions::extPath('rn_base').'class.tx_rnbase.php');
 
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_treelib
  * @author Michael Wagner
  */
 class tx_mklib_treelib_TCE {
 	/**
-	 * 
+	 *
 	 * @var t3lib_TCEforms
 	 */
 	private $oTceForm = null;
@@ -44,29 +43,29 @@ class tx_mklib_treelib_TCE {
 	 * @var array
 	 */
 	private $PA = array();
-	
+
 	/**
-	 * 
+	 *
 	 * @param 	array 			$PA
 	 * @param 	t3lib_TCEforms 	$fObj
 	 * @return 	string
 	 */
 	public function getSelectTree(&$PA, &$pObj){
-		
+
 		$this->oTceForm = &$PA['pObj'];
 		$this->PA = &$PA;
-		
+
 		tx_rnbase::load('tx_mklib_treelib_TreeView');
 		$oTreeView = tx_mklib_treelib_TreeView::makeInstance($PA, $pObj);
-		
+
 		tx_rnbase::load('tx_mklib_treelib_Renderer');
 		$oRenderer = tx_mklib_treelib_Renderer::makeInstance($PA, $pObj);
-		
+
 		$sContent = $oRenderer->renderTreeView($oTreeView, $this);
-		
+
 		return $sContent;
 	}
-	
+
 	/**
 	 * Liefert
 	 *
@@ -74,27 +73,27 @@ class tx_mklib_treelib_TCE {
 	 * @return 	tx_xajax_response
 	 */
 	public function sendXajaxResponse($cmd) {
-		
-		t3lib_div::_GETset($cmd, 'PM');		
-		
-		//@TODO: ist $this->PA immer gleich? mehrere treeviews beachten 
+
+		t3lib_div::_GETset($cmd, 'PM');
+
+		//@TODO: ist $this->PA immer gleich? mehrere treeviews beachten
 		tx_rnbase::load('tx_mklib_treelib_TreeView');
 		$oTreeView = tx_mklib_treelib_TreeView::makeInstance($this->PA, $this->oTceForm);
-		
+
 		tx_rnbase::load('tx_mklib_treelib_Renderer');
 		$oRenderer = tx_mklib_treelib_Renderer::makeInstance($this->PA, $this->oTceForm);
-		
+
 		$sContent = $oRenderer->getBrowsableTree($oTreeView);
-		
+
 		// ajax response erstellen
 		/* @var $objResponse tx_xajax_response */
 		$objResponse = tx_rnbase::makeInstance('tx_xajax_response');
 
 		$objResponse->addAssign ( $oTreeView->treeName.'-tree-div' , 'innerHTML', $sContent );
-		
+
 		return $objResponse;
 	}
-			
+
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TCE.php'])	{

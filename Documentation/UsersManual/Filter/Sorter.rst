@@ -47,7 +47,7 @@ Example filter class
 
 .. code-block:: ts
 
-   require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
+   
    tx_rnbase::load('tx_mklib_filter_Sorter');
     
    class Tx_Mkexample_Filter_Projects extends tx_mklib_filter_Sorter {
