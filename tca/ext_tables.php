@@ -26,7 +26,6 @@ if(is_array($_EXTCONF) && array_key_exists('tableWordlist', $_EXTCONF) && intval
 
 // static_info_tables um PLZ regeln erweitern
 if(tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
-	t3lib_div::loadTCA('static_countries');
 	$tempColumns = array(
 			'zipcode_rule' => array(
 				'exclude' => '0',

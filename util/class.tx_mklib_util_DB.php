@@ -219,12 +219,9 @@ class tx_mklib_util_DB extends tx_rnbase_util_DB {
 	 * @param 	string 	$sTable
 	 * @param 	string 	$sField		False if no field check is needed.
 	 * @return 	boolean				Returns true if field exists.
+	 * @deprecated Wird nicht mehr benötigt
 	 */
 	private static function loadTCA($sTable, $sField = false){
-		if(!isset(self::$aTCACache[$sTable]))
-			t3lib_div::loadTCA($sTable);
-		self::$aTCACache[$sTable] = true;
-
 		return (!$sField || ($sField && is_array($GLOBALS['TCA'][$sTable]['columns'][$sField]['config'])))
 					? true : false;
 	}

@@ -158,7 +158,7 @@ class tx_mklib_util_TCA {
 	 * @return 	array					Data now containing only TCA-defined columns
 	 */
 	public static function eleminateNonTcaColumnsByTable($table, array $data) {
-		global $TCA; t3lib_div::loadTCA($table);
+		global $TCA;
 		tx_rnbase::load('tx_mklib_util_Array');
 		return tx_mklib_util_Array::removeNotIn(
 				$data,
@@ -206,7 +206,7 @@ class tx_mklib_util_TCA {
 	 * @return 	string
 	 */
 	private static function getCtrlField($tableName, $field, $default = null){
-		global $TCA; t3lib_div::loadTCA($tableName);
+		global $TCA;
 		if(!isset($TCA[$tableName])){
 			if ($default !== null) {
 				return $default;

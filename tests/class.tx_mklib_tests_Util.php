@@ -192,66 +192,6 @@ class tx_mklib_tests_Util {
 		return $dbHandler->getStatementArray($sql, 1);
 	}
 
-	/**
-	 * Simuliert ein einfaches FE zur testausführung
-	 * Wurde tx_phpunit_module1 entnommen da die Methode protected ist
-	 * und nicht bei der Ausführung auf dem CLI aufgerufen wird. Das
-	 * kann in manchen Fällen aber notwendig sein
-	 *
-	 * ACHTUNG bei Datenbank Testfällen!!!
-	 * Dann muss diese Funktion immer vor dem erstellen der Datenbank etc. ausgeführt
-	 * werden da sonst extra eine Seite in "pages" eingefügt werden muss.
-	 * In einem normalen TYPO3 gibt es bereits Seiten womit das vor dem
-	 * Aufsetzen der Testdatenbank ausgenutzt werden kann!!!
-	 *
-	 * @see tx_phpunit_module1::simulateFrontendEnviroment
-	 * @todo in eigene Klasse auslagern, die von tx_phpunit_module1 erbt und simulateFrontendEnviroment public macht
-	 * @deprecated use self::prepareTSFE()
-	 */
-	public static function simulateFrontendEnviroment($extKey = 'mklib') {
-		//wenn phpunit mindestens in version 3.5.14 installiert ist, nutzen
-		//wir deren create frontend methode
-		tx_rnbase::load('tx_rnbase_util_TYPO3');
-		if (tx_rnbase_util_TYPO3::convertVersionNumberToInteger(
-				tx_rnbase_util_Extensions::getExtensionVersion('phpunit')
-			) >= 3005014
-		){
-			$oTestFramework = tx_rnbase::makeInstance('Tx_Phpunit_Framework',$extKey);
-			return $oTestFramework->createFakeFrontEnd();
-		}
-
-
-		if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
-			// avoids some memory leaks
-			unset(
-				$GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, $GLOBALS['TSFE']->fe_user,
-				$GLOBALS['TSFE']->TYPO3_CONF_VARS, $GLOBALS['TSFE']->config, $GLOBALS['TSFE']->TCAcachedExtras,
-				$GLOBALS['TSFE']->imagesOnPage, $GLOBALS['TSFE']->cObj, $GLOBALS['TSFE']->csConvObj,
-				$GLOBALS['TSFE']->pagesection_lockObj, $GLOBALS['TSFE']->pages_lockObj
-			);
-			$GLOBALS['TSFE'] = NULL;
-			$GLOBALS['TT'] = NULL;
-		}
-
-		$GLOBALS['TT'] = tx_rnbase::makeInstance('t3lib_TimeTrackNull');
-		$frontEnd = tx_rnbase::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
-
-		// simulates a normal FE without any logged-in FE or BE user
-		$frontEnd->beUserLogin = FALSE;
-		$frontEnd->workspacePreview = '';
-		$frontEnd->gr_list = '0,-1';
-
-		$frontEnd->sys_page = tx_rnbase::makeInstance('t3lib_pageSelect');
-		$frontEnd->sys_page->init(TRUE);
-		$frontEnd->initTemplate();
-
-		// $frontEnd->getConfigArray() doesn't work here because the dummy FE
-		// is not required to have a template.
-		$frontEnd->config = array();
-
-		$GLOBALS['TSFE'] = $frontEnd;
-	}
-
  	/**
    	 * Lädt den Inhalt einer Datei
    	 * @param string $filename

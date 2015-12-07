@@ -226,7 +226,6 @@ class tx_mklib_mod1_util_Selector {
 		if(is_array($aOptions['additionalItems'])) {
 			$items = $aOptions['additionalItems'];
 		}
-		t3lib_div::loadTCA($table);
 		if(is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items']))
 			foreach($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] As $item){
 				$items[$item[1]] = $GLOBALS['LANG']->sL($item[0]);

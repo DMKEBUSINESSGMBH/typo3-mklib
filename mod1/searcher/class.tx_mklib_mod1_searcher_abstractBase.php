@@ -389,17 +389,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	}
 
 	/**
-	 * @deprecated Use getSearchColumns instead!
-	 */
-	protected function getCols() {
-		t3lib_div::deprecationLog(
-			'tx_mklib_mod1_searcher_abstractBase::getCols is deprecated'
-			. 'use getSearchColumns instead!'
-		);
-		return $this->getSearchColumns();
-	}
-
-	/**
 	 * Liefert die Spalten, in denen gesucht werden soll
 	 * @return array
 	 */
