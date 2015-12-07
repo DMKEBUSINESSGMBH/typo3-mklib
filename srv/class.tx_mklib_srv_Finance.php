@@ -38,7 +38,7 @@ require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.ph
  * @subpackage tx_mklib_srv
  * @author Michael Wagner
  */
-class tx_mklib_srv_Finance extends t3lib_svbase {
+class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base {
 
 	/**
 	 * @return 	tx_mklib_model_Currency

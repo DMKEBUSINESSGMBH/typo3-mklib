@@ -40,7 +40,7 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-abstract class tx_mklib_srv_Base extends t3lib_svbase {
+abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 
 	// 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
 	const DELETION_MODE_HIDE = 0;

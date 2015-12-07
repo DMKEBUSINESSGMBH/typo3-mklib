@@ -25,18 +25,18 @@
 
 require_once(tx_rnbase_util_Extensions::extPath('rn_base') . 'class.tx_rnbase.php');
 tx_rnbase::load('tx_mklib_interface_IObservable');
-tx_rnbase::load('t3lib_svbase');
+tx_rnbase::load('Tx_Rnbase_Service_Base');
 
 /**
  * Interface für ein Subject Objekt bei Verwendung des Subject/Observer Patterns
  *
- * erbt von t3lib_svbase um die klasse in services nutzen zu können
+ * erbt von Tx_Rnbase_Service_Base um die klasse in services nutzen zu können
  *
  * @package tx_mklib
  * @subpackage tx_mklib_model
  * @author René Nitzsche
  */
-abstract class tx_mklib_abstract_ObservableT3Service extends t3lib_svbase implements tx_mklib_interface_IObservable{
+abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_Base implements tx_mklib_interface_IObservable{
 
 	/**
 	 * alle registrierten Observer
