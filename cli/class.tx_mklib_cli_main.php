@@ -106,7 +106,6 @@ class tx_mklib_cli_main extends \TYPO3\CMS\Core\Controller\CommandLineController
 	public function exitWithError($error = 'Unknown Task!'){
 		$this->cli_echo("ERROR:\t" . $error . chr(10) . 'Show help with [-h] or [--help]' . chr(10));
 		$this->cli_validateArgs();
-		//$this->cli_help();
 		exit;
 	}
 
@@ -148,8 +147,7 @@ class tx_mklib_cli_main extends \TYPO3\CMS\Core\Controller\CommandLineController
 	}
 
 	/**
-	 * flushCache was über CLI aufgerufen werden kann
-	 *
+	 * @return void
 	 */
 	public function flushCache(){
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCaches();
