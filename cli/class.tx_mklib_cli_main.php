@@ -1,81 +1,86 @@
 <?php
 /**
  * 	@package tx_mklib
- *  @subpackage tx_mklib_cli
- *  @author Hannes Bochmann
+ *	@subpackage tx_mklib_cli
+ *	@author Hannes Bochmann
  *
- *  Copyright notice
+ *	Copyright notice
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ *	(c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ *	All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ *	This script is part of the TYPO3 project. The TYPO3 project is
+ *	free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ *	The GNU General Public License can be found at
+ *	http://www.gnu.org/copyleft/gpl.html.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *	This script is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+ *	GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ *	This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
  * benötigte Klassen einbinden
  */
-if (!defined('TYPO3_cliMode'))  die('You cannot run this script directly!');
+if (!defined('TYPO3_cliMode'))	die('You cannot run this script directly!');
 
 // Defining PATH_thisScript here: Must be the ABSOLUTE path of this script in the right context:
 // This will work as long as the script is called by it's absolute path!
 //define('PATH_thisScript',$_ENV['_']?$_ENV['_']:$_SERVER['_']);
 
 /**
- * Basis-klasse für Funktionalitäten auf dem CLI
- * @author	Hannes Bochmann
- * @package tx_mklib
- * @subpackage tx_mklib_cli
+ * tx_mklib_cli_main
+ *
+ * @package 		TYPO3
+ * @subpackage	 	mklib
+ * @author 			Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license 		http://www.gnu.org/licenses/lgpl.html
+ * 					GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_cli_main extends t3lib_cli {
+class tx_mklib_cli_main extends \TYPO3\CMS\Core\Controller\CommandLineController {
 
+	/**
+	 * @var array $commands
+	 */
 	protected $commands = array(
 		'flush' => array(
 			'short' => array(
-                  'desc' => 'Das gleiche wie --flush-cache',
-                  'name' => '-fc',
+				'desc' => 'The same as --flush-cache',
+				'name' => '-fc',
 			),
-            'long' => array(
-                  'desc' => 'Den gesamten TYPO3-Cache löschen.',
-                  'name' => '--flush-cache',
+			'long' => array(
+				'desc' => 'Clear the whole TYPO3 Cache',
+				'name' => '--flush-cache',
 			),
 		),
-      	'help' => array(
-            'short' => array(
-                  'desc' => 'Das gleiche wie --help',
-                  'name' => '-h',
+		'help' => array(
+			'short' => array(
+				'desc' => 'The same as --help',
+				'name' => '-h',
 			),
-            'long' => array(
-                  'desc' => 'Die möglichen Optionen anzeigen.',
-                  'name' => '--help',
+			'long' => array(
+				'desc' => 'Show possible options',
+				'name' => '--help',
 			),
 		)
 	);
 
 	/**
-	 * Constructor
+	 * @return tx_mklib_cli_main
 	 */
-	public function tx_mklib_cli_main () {
-		//dreckiger Hack; der CLI-User darf kein Admin sein aber es werden Adminrechte benötigt
+	public function __construct() {
+		//der CLI-User darf kein Admin sein aber es werden Adminrechte benötigt
 		//um den Cache zu leeren --> also setzen wir hart dass wir Admin sind
-		$GLOBALS['BE_USER']->user['admin'] = true;
+		$GLOBALS['BE_USER']->user['admin'] = TRUE;
 
-		// Running parent class constructor
-		parent::t3lib_cli();
+		parent::__construct();
 
 		$this->cli_options = array_merge($this->cli_options, array());
 
@@ -86,10 +91,10 @@ class tx_mklib_cli_main extends t3lib_cli {
 
 		$this->cli_help = array_merge($this->cli_help, array(
 			'name' => 'MKLib CLI',
-	      	'synopsis' => $this->extKey . ' command ###OPTIONS###',
-	      	'description' => 'Klasse mit Basisfunktionen um den Cache von Extensions zu löschen und selbige zu updaten!',
-	      	'examples' => 'typo3/cli_dispatch.phpsh mklib --flush-cache',
-	      	'author' => '(c) 2010 DMK E-BUSINESS GmbH Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>',
+				'synopsis' => $this->extKey . ' command ###OPTIONS###',
+				'description' => 'Classes with several functions. Check the --help or documentation which are available.',
+				'examples' => 'typo3/cli_dispatch.phpsh mklib --flush-cache',
+				'author' => '(c) 2015 DMK E-BUSINESS GmbH Hannes Bochmann <dev@dmk-ebusiness.de>',
 		));
 	}
 
@@ -98,8 +103,8 @@ class tx_mklib_cli_main extends t3lib_cli {
 	 *
 	 * @param string $error
 	 */
-	public function exitWithError($error = 'Unbekannter Task!'){
-		$this->cli_echo("ERROR:\t".$error.chr(10).'Hilfe mit [-h] oder [--help] anzeigen lassen'.chr(10));
+	public function exitWithError($error = 'Unknown Task!'){
+		$this->cli_echo("ERROR:\t" . $error . chr(10) . 'Show help with [-h] or [--help]' . chr(10));
 		$this->cli_validateArgs();
 		//$this->cli_help();
 		exit;
@@ -108,32 +113,35 @@ class tx_mklib_cli_main extends t3lib_cli {
 	/**
 	 * CLI engine
 	 *
-	 * @param    array        Command line arguments
-	 * @return    string
+	 * @param	array		Command line arguments
+	 * @return	string
 	 */
-	public function cli_main($argv) {
-		$commandFound = false;
+	public function main($argv) {
+		$commandFound = FALSE;
 
-		if ($this->cli_isArg($this->commands['flush']['short']['name']) || $this->cli_isArg($this->commands['flush']['long']['name'])){
+		if (
+			$this->cli_isArg($this->commands['flush']['short']['name']) ||
+			$this->cli_isArg($this->commands['flush']['long']['name'])
+		){
 			$this->flushCache();
-			$commandFound = true;
+			$commandFound = TRUE;
+			$commandDescription = $this->commands['flush']['long']['desc'];
 		}
 
-		if ($this->cli_isArg($this->commands['update']['short']['name']) || $this->cli_isArg($this->commands['update']['long']['name'])){
-			$this->updateExtension($this->cli_isArg($this->commands['update']['short']['name']),$this->cli_isArg($this->commands['update']['long']['name']));
-			$commandFound = true;
-		}
-
-		if ($this->cli_isArg($this->commands['help']['short']['name']) || $this->cli_isArg($this->commands['help']['long']['name'])){
+		if (
+			$this->cli_isArg($this->commands['help']['short']['name']) ||
+			$this->cli_isArg($this->commands['help']['long']['name'])
+		){
 			$this->cli_help();
-			$commandFound = true;
+			$commandFound = TRUE;
+			$commandDescription = $this->commands['help']['long']['desc'];
 		}
 
-		if(!$commandFound){
+		if (!$commandFound){
 			$this->exitWithError();
 		} else {
 			$this->cli_echo(utf8_decode(
-				"Befehl '".$this->commands['flush']['long']['desc']."' erfolgreich ausgeführt.\n"
+				"Command '" . $commandDescription . "' executed successfully.\n"
 			));
 		}
 
@@ -144,35 +152,14 @@ class tx_mklib_cli_main extends t3lib_cli {
 	 *
 	 */
 	public function flushCache(){
-		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-
-		$tce->start(Array(),Array());
-		$tce->clear_cacheCmd('all');
-		$tce->clear_cacheCmd('temp_CACHED');
-	}
-
-	/**
-	 * updateExtension was über CLI aufgerufen werden kann
-	 * TODO: funktioniert so noch nicht
-	 */
-	public function updateExtension($short,$long){
-		$this->exitWithError('Update von Extensions nocht nicht implementiert und nicht zwangsläufig notwendig!');
-		//@TODO notwendig extensions zu updaten?
-		if($short)$command = 'short';
-		elseif($long) $command = 'long';
-
-		$extensions =  $this->cli_argValue($this->commands['update'][$command]['name']);
-
-		if(!$extensions) $this->exitWithError('Bitte gib eine Extension an, die geupdatet werden soll!');
-
-		require_once(PATH_typo3.'init.php');
-
-		// Make instance:
-		$SOBE = t3lib_div::makeInstance('SC_mod_tools_em_index');
-		$SOBE->init();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCaches();
+		if (function_exists('apc_clear_cache')) {
+			apc_clear_cache("user");
+			apc_clear_cache();
+		}
 	}
 }
 
-// Call the functionality
-$cleanerObj = t3lib_div::makeInstance('tx_mklib_cli_main');
-$cleanerObj->cli_main($_SERVER['argv']);
+if (defined('TYPO3_cliMode')) {
+	tx_rnbase::makeInstance('tx_mklib_cli_main')->main();
+}

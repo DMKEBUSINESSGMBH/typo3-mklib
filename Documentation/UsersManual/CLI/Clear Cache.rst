@@ -8,7 +8,7 @@
 Clear Cache
 ===========
 
-Just needed for TYPO3 lower 6.x. In 6.x you can just delete the folder typotemp/Cache.
+Clears the complete TYPO3 Cache.
 
 Call it like:
 
