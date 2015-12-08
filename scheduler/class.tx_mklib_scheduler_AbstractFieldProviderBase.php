@@ -23,6 +23,7 @@
  */
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Network');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Fügt Felder im scheduler task hinzu
@@ -212,9 +213,8 @@ abstract class tx_mklib_scheduler_AbstractFieldProviderBase {
 			if($bMessage) {
 				$sMessage = $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
 				$sMessage = $sMessage ? $sMessage : ucfirst($sKey) . ' has to eval ' . $sEval.'.';
-				$errorCode = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-					\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR ? t3lib_FlashMessage::ERROR;
-				$schedulerModule->addMessage($sMessage, $errorCode);
+				$flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageClass();
+				$schedulerModule->addMessage($sMessage, $flashMessageClass::ERROR);
 				$bError = true;
 				continue;
 			}

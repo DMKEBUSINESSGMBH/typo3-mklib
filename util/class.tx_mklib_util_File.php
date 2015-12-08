@@ -29,6 +29,7 @@
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Files');
 tx_rnbase::load('tx_rnbase_util_Strings');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Util Methoden für Datei handling.
@@ -60,10 +61,7 @@ class tx_mklib_util_File {
 		}
 		$key = $key ? 'base' : md5(serialize($mounts).serialize($f_ext));
 		if(!self::$ftInstances[$key]) {
-			self::$ftInstances[$key] = tx_rnbase::makeInstance(
-				tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				't3lib_basicFileFunctions' : '\TYPO3\CMS\Core\Utility\File\BasicFileUtility'
-			);
+			self::$ftInstances[$key] = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBasicFileUtilityClass());
 			self::$ftInstances[$key]->init($mounts, $f_ext);
 		}
 		return self::$ftInstances[$key];

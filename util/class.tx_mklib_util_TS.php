@@ -27,6 +27,7 @@
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Files');
 tx_rnbase::load('tx_rnbase_util_Arrays');
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * Util Methoden für das TS, speziell im BE
@@ -148,10 +149,7 @@ class tx_mklib_util_TS {
 
 		// ts für die rootlines erzeugen
 		/* @var $tsObj \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
-		$tsObj = tx_rnbase::makeInstance(
-			tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-			't3lib_tsparser_ext' : '\TYPO3\CMS\Core\TypoScript\ExtendedTemplateService'
-		);
+		$tsObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getExtendedTypoScriptTemplateServiceClass());
 		$tsObj->tt_track = 0;
 		$tsObj->init();
 		$tsObj->runThroughTemplates($aRootLine);

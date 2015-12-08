@@ -498,10 +498,7 @@ class tx_mklib_util_DAM {
 				);
 			}
 			unset($BE_USER);
-			$BE_USER = tx_rnbase::makeInstance(
-				tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-				't3lib_tsfeBeUserAuth' : '\TYPO3\CMS\Backend\FrontendBackendUserAuthentication'
-			);
+			$BE_USER = tx_rnbase::makeInstance('t3lib_tsfeBeUserAuth');
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($beUserId);
 			$BE_USER->fetchGroupData();

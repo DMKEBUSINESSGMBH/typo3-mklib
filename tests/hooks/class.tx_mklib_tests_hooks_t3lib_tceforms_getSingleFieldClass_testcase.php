@@ -21,10 +21,17 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+tx_rnbase::load('tx_rnbase_util_Typo3Classes'):
 
-
-
-
+/**
+ * tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase
+ *
+ * @package 		TYPO3
+ * @subpackage	 	mklib
+ * @author 			Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license 		http://www.gnu.org/licenses/lgpl.html
+ * 					GNU Lesser General Public License, version 3 or later
+ */
 class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends tx_phpunit_testcase {
 
 	protected $oTceForms;
@@ -152,10 +159,7 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 		$GLOBALS['BE_USER']->user['admin'] = 1;
 
 		//tceforms initialisieren
-		$this->oTceForms = tx_rnbase::makeInstance(
-			tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-			't3lib_tceforms' : '\TYPO3\CMS\Backend\Form\FormEngine'
-		);
+		$this->oTceForms = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBackendFormEngineClass());
 
 		// sonst Warning in typo3/sysext/backend/Classes/Utility/IconUtility.php line 594
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
