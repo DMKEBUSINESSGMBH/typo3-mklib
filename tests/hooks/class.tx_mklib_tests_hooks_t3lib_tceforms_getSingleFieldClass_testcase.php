@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-tx_rnbase::load('tx_rnbase_util_Typo3Classes'):
+tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
  * tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase
