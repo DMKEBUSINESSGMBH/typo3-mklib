@@ -216,12 +216,13 @@ class tx_mklib_tests_Util {
 	 * @return 	void
 	 */
 	public static function setFeUserObject($oFeUser=null, $bForce=false) {
+		$frontendUserAuthenticationClass = tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass();
 		if(
-			!$GLOBALS['TSFE']->fe_user instanceof tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass ||
+			!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass ||
 			$bForce
 		) {
 			if (!is_object($oFeUser)) {
-				$oFeUser = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass());
+				$oFeUser = tx_rnbase::makeInstance($frontendUserAuthenticationClass);
 			}
 			if (!is_object($GLOBALS['TSFE'])) {
 				$GLOBALS['TSFE'] = new stdClass();

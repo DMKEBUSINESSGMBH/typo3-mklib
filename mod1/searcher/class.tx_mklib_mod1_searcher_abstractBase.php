@@ -545,9 +545,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	}
 
 	/**
-	 * Returns an instance of tx_mkhoga_beutil_Selector.
-	 * Der Selector wird erst erzeugt, wenn er benötigt wird
-	 *
 	 * @return 	tx_mklib_mod1_util_Selector
 	 */
 	protected function getSelector() {
