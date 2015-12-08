@@ -25,11 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-
+tx_rnbase::load('Tx_Rnbase_Service_Base');
 
 /**
  * Service für alles rund um Finanzen

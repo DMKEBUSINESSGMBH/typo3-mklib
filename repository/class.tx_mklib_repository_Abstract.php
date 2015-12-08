@@ -23,6 +23,7 @@
  ***************************************************************/
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_mklib_interface_Repository');
+tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
  * Abstracte Repository Klasse
