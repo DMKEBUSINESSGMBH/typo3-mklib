@@ -204,7 +204,7 @@ abstract class abstract_ext_update  {
 	private function getCharsetsConversion(){
 		if(!$this->csconv) {
 			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-				$charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter'
+				$charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
 			} else {
 				$charsetConverterClass = 't3lib_cs';
 			}
