@@ -217,18 +217,11 @@ class tx_mklib_tests_Util {
 	 */
 	public static function setFeUserObject($oFeUser=null, $bForce=false) {
 		if(
-			!(
-				($GLOBALS['TSFE']->fe_user instanceof tslib_feuserauth) ||
-				($GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication)
-			) ||
+			!$GLOBALS['TSFE']->fe_user instanceof tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass ||
 			$bForce
 		) {
 			if (!is_object($oFeUser)) {
-				if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-					$oFeUser = new  \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication();
-				} else {
-					$oFeUser = new tslib_feuserauth();
-				}
+				$oFeUser = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass());
 			}
 			if (!is_object($GLOBALS['TSFE'])) {
 				$GLOBALS['TSFE'] = new stdClass();
@@ -312,10 +305,6 @@ class tx_mklib_tests_Util {
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
 
-		//@TODO: warum wird die klasse tslib_cObj nicht gefunden!? (mw: eternit local)
-		if (!class_exists('tslib_cObj')) {
-			require_once(tx_rnbase_util_Extensions::extPath('cms', 'tslib/class.tslib_content.php'));
-		}
 		$configurations->init(
 				$aConfig,
 				$configurations->getCObj(1),

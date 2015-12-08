@@ -167,8 +167,8 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 	private function getConfigurations($defaultConfig = false) {
 		tx_rnbase_util_Misc::prepareTSFE();
 
-		$configurations = new tx_rnbase_configurations();
-		$cObj = tx_rnbase::makeInstance('tslib_cObj');
+		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+		$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 		$config = array(
 			'myConfId.' => array(
 				'filter.' => array(

@@ -124,7 +124,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	public function testSetSessionIdCallsFetchSessionDataOnFeUser(){
 		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true));
 
-		$GLOBALS['TSFE']->fe_user = $this->getMock('tslib_feUserAuth', array('fetchSessionData'));
+		$GLOBALS['TSFE']->fe_user = $this->getMock(
+			tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(), array('fetchSessionData')
+		);
 		$GLOBALS['TSFE']->fe_user->expects($this->once())
 			->method('fetchSessionData');
 

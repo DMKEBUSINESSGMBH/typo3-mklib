@@ -83,7 +83,7 @@ class tx_mklib_util_TS {
 		tx_rnbase_util_Misc::prepareTSFE($tsfePreparationOptions);
 		$GLOBALS['TSFE']->config = array();
 
-		$cObj = tx_rnbase::makeInstance('tslib_cObj');
+		$cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 
 		$pageTsConfig = self::getPagesTSconfig(0);
 

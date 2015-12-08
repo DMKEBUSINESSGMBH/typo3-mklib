@@ -166,9 +166,9 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 	public static function obfusicateEmail($emailParts) {
 		static $cObj;
 
-		if(!$cObj)
-			/* @var $cObj tslib_cObj */
+		if (!$cObj) {
 			$cObj = tx_rnbase::makeInstance('tx_rnbase_configurations')->getCObj();
+		}
 
 		$emailMailTo = $cObj->getMailTo($emailParts[0],$emailParts[0]);
 
