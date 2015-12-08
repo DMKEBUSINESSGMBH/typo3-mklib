@@ -30,10 +30,7 @@
  * benötigte Klassen einbinden
  */
 if (!defined('TYPO3_cliMode'))	die('You cannot run this script directly!');
-
-// Defining PATH_thisScript here: Must be the ABSOLUTE path of this script in the right context:
-// This will work as long as the script is called by it's absolute path!
-//define('PATH_thisScript',$_ENV['_']?$_ENV['_']:$_SERVER['_']);
+tx_rnbase::load('Tx_Rnbase_CommandLine_Controller');
 
 /**
  * tx_mklib_cli_main
@@ -44,7 +41,7 @@ if (!defined('TYPO3_cliMode'))	die('You cannot run this script directly!');
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_cli_main extends \TYPO3\CMS\Core\Controller\CommandLineController {
+class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller {
 
 	/**
 	 * @var array $commands
@@ -112,10 +109,9 @@ class tx_mklib_cli_main extends \TYPO3\CMS\Core\Controller\CommandLineController
 	/**
 	 * CLI engine
 	 *
-	 * @param	array		Command line arguments
 	 * @return	string
 	 */
-	public function main($argv) {
+	public function main() {
 		$commandFound = FALSE;
 
 		if (
@@ -150,11 +146,39 @@ class tx_mklib_cli_main extends \TYPO3\CMS\Core\Controller\CommandLineController
 	 * @return void
 	 */
 	public function flushCache(){
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->flushCaches();
-		if (function_exists('apc_clear_cache')) {
-			apc_clear_cache("user");
-			apc_clear_cache();
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$this->flushCacheForTypo6AndHigher();
+		} else {
+			$this->flushCacheForTypo4AndLower();
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	private function flushCacheForTypo6AndHigher() {
+		$clearCacheService = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Install\\Service\\ClearCacheService');
+		$objectManager = tx_rnbase::makeInstance('\\TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManagerProperty = new ReflectionProperty(
+			'\\TYPO3\\CMS\\Install\\Service\\ClearCacheService', 'objectManager'
+		);
+		$objectManagerProperty->setAccessible(TRUE);
+		$objectManagerProperty->setValue($clearCacheService, $objectManager);
+		$clearCacheService->clearAll();
+
+		\TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive();
+	}
+
+	/**
+	 * @return void
+	 */
+	private function flushCacheForTypo4AndLower() {
+		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
+
+		$tce->start(Array(),Array());
+		$tce->clear_cacheCmd('all');
+		$tce->clear_cacheCmd('temp_CACHED');
 	}
 }
 

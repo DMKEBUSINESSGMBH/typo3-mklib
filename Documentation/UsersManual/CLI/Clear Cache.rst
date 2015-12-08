@@ -8,7 +8,7 @@
 Clear Cache
 ===========
 
-Clears the complete TYPO3 Cache.
+Clears the complete TYPO3 Cache. Since TYPO3 6.x including OpCode Cache just like the Install Tool.
 
 Call it like:
 
