@@ -230,6 +230,7 @@ class tx_mklib_tests_Util {
 			$GLOBALS['TSFE']->fe_user = $oFeUser;
 		}
 	}
+
 	/**
 	 * Setzt Sprach-Labels
 	 *
@@ -472,7 +473,14 @@ class tx_mklib_tests_Util {
 		$GLOBALS['TSFE']->initTemplate();
 
 		$GLOBALS['TSFE']->id = $pageId;
+	}
 
+	/**
+	 * @param string $extKey
+	 * @deprecated use self::prepareTSFE()
+	 */
+	public static function simulateFrontendEnviroment($extKey = 'mklib') {
+		self::prepareTSFE(array('force' => TRUE));
 	}
 }
 
