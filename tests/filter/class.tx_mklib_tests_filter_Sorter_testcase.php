@@ -96,7 +96,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 			$expectedParsedTemplate = str_replace('" >', '">', $expectedParsedTemplate);
 		}
 
-		$this->assertEquals($expectedParsedTemplate, $parsedTemplate, 'link falsch');
+		self::assertRegExp($expectedParsedTemplate, $parsedTemplate, 'link falsch');
 	}
 
 	/**
@@ -107,42 +107,42 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 			// auf grund der default config sollte das orderBy nicht auf asc sondern auf desc stehen
 			array(
 				'###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
-				'<a href="?id=1&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc" >link</a>',
+				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D\=desc"\>link\<\/a\>)/',
 				'',
 				''
 			),
 			// da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
 			array(
 				'###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
-				'<a href="?id=1&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc" >link</a>',
+				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D\=desc"\>link\<\/a\>)/',
 				'firstField',
 				'asc'
 			),
 			//normaler Link mit asc wenn anderes sortBy gewählt
 			array(
 				'###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
-				'<a href="?id=1&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=asc" >link</a>',
+				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D\=asc"\>link\<\/a\>)/',
 				'unknownField',
 				'asc'
 			),
 			// Links werden ohne default config immer asc sortiert
 			array(
 				'###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
-				'<a href="?id=1&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=asc" >link</a>',
+				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D\=asc"\>link\<\/a\>)/',
 				'',
 				''
 			),
 			// da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
 			array(
 				'###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
-				'<a href="?id=1&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=desc" >link</a>',
+				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D\=desc"\>link\<\/a\>)/',
 				'secondField',
 				'asc'
 			),
 			// unbekannte Felder werden nicht geparsed
 			array(
 				'###SORT_UNKNOWN_LINK###link###SORT_UNKNOWN_LINK###',
-				'###SORT_UNKNOWN_LINK###link###SORT_UNKNOWN_LINK###',
+				'/(###SORT_UNKNOWN_LINK###link###SORT_UNKNOWN_LINK###)/',
 				'',
 				''
 			),
