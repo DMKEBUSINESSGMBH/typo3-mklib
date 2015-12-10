@@ -114,28 +114,28 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 			// da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
 			array(
 				'###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
-				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
+				'/(\<a href="\?id=)[a-z0-9].+(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
 				'firstField',
 				'asc'
 			),
 			//normaler Link mit asc wenn anderes sortBy gewählt
 			array(
 				'###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
-				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
+				'/(\<a href="\?id=)[a-z0-9].+(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
 				'unknownField',
 				'asc'
 			),
 			// Links werden ohne default config immer asc sortiert
 			array(
 				'###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
-				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
+				'/(\<a href="\?id=)[a-z0-9].+(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
 				'',
 				''
 			),
 			// da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
 			array(
 				'###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
-				'/(\<a href="\?)[a-z0-9].+(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
+				'/(\<a href="\?id=)[a-z0-9].+(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
 				'secondField',
 				'asc'
 			),
