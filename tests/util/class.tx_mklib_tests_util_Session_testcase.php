@@ -25,11 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-
 tx_rnbase::load('tx_mklib_util_Session');
 
 /**
@@ -56,6 +51,8 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	protected function setUp() {
 		$this->cookiesBackup = $_COOKIE;
 		$this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
+
+		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => TRUE, 'force' => TRUE));
 	}
 
 	/**
@@ -64,21 +61,24 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 */
 	protected function tearDown() {
 		$_COOKIE = $this->cookiesBackup;
+		tx_mklib_util_Session::removeSessionValue('checkCookieIsSet');
 		if(isset($GLOBALS['TSFE']->fe_user)) {
 			$GLOBALS['TSFE']->fe_user = $this->feserBackUp;
 		}
+
 	}
 
 	/**
 	 * @group unit
 	 * @dataProvider getCookies
 	 */
-	public function testAreCookiesActivatedInFrontend(
-		$cookies, $expectedReturnValue
-	){
+	public function testAreCookiesActivated($cookies, $expectedReturnValue, $setCheckCookieSetSessionValue){
+		if ($setCheckCookieSetSessionValue) {
+			tx_mklib_util_Session::setSessionValue('checkCookieIsSet', TRUE);
+		}
 		$_COOKIE = $cookies;
 		$this->assertEquals(
-			$expectedReturnValue, tx_mklib_util_Session::areCookiesActivatedInFrontend(),
+			$expectedReturnValue, tx_mklib_util_Session::areCookiesActivated(),
 			'falscher return'
 		);
 	}
@@ -88,9 +88,10 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 */
 	public function getCookies(){
 		return array(
-			array(array('fe_typo_user' => ''), true),
-			array(array('fe_typo_user' => '123'), true),
-			array(array(), false)
+			array(array('fe_typo_user' => ''), TRUE, FALSE),
+			array(array('fe_typo_user' => '123'), TRUE, FALSE),
+			array(array(), FALSE, TRUE),
+			array(array('fe_typo_user' => '123'), TRUE, TRUE),
 		);
 	}
 
@@ -98,8 +99,6 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testSetSessionIdSetsIdAndEmptiesSessionData(){
-		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true));
-
 		$oldRandomSessionId = uniqid();
 		$GLOBALS['TSFE']->fe_user->id = $oldRandomSessionId;
 		$GLOBALS['TSFE']->fe_user->sesData = array('something');
@@ -122,8 +121,6 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testSetSessionIdCallsFetchSessionDataOnFeUser(){
-		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true));
-
 		$GLOBALS['TSFE']->fe_user = $this->getMock(
 			tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(), array('fetchSessionData')
 		);
@@ -137,8 +134,6 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testSetStoreAndGetSessionValue(){
-		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true, 'force' => TRUE));
-
 		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
 		tx_mklib_util_Session::storeSessionData();
 		$this->assertEquals(
@@ -150,8 +145,6 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testSetStoreAndGetSessionValueWhenSessionIdSet() {
-		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true, 'force' => TRUE));
-
 		$sessionIdBackup = tx_mklib_util_Session::getSessionId();
 		// erstmal Session ID wechseln und Wert setzen
 		$newSessionId = $this->getRandomHexString();

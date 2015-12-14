@@ -115,12 +115,45 @@ class tx_mklib_util_Session {
 	}
 
 	/**
+	 * @deprecated use tx_mklib_util_Session::areCookiesActivated
 	 * @return boolean
 	 */
 	public static function areCookiesActivatedInFrontend() {
-		// fe_typo_user ist im FE immer gesetzt. Außer beim aller ersten Aufruf
-		// der Seite
-		return isset($_COOKIE['fe_typo_user']);
+		return tx_mklib_util_Session::areCookiesActivated();
+	}
+
+	/**
+	 * Diese Methode funktioniert nur wenn der aktuelle Request kein POST
+	 * Request ist. Wenn es ein POST Request ist, dann einfach vor dem
+	 * absenden mit JS einen Cookie setzen und ggf. noch checkedIfCookiesAreActivated=1
+	 * in den Parametern übermitteln. Oder das Formular wird gar nicht erst
+	 * gerendered wenn diese Methode FALSE liefert.
+	 *
+	 * @return boolean
+	 */
+	public static function areCookiesActivated() {
+		$cookiesActivated = FALSE;
+		if (!empty($_COOKIE) || tx_rnbase_parameters::getPostOrGetParameter('checkedIfCookiesAreActivated')) {
+			$cookiesActivated = !empty($_COOKIE);
+		} else {
+			// @TODO diesen Abschnitt testen, aber wie (vor allem auf CLI)?
+			// Wir versuchen selbst einen Cookie zu setzen.
+			setcookie('cookiesActivated', 1, time() + 3600);
+			// Wir setzen einen Parameter für den Reload,
+			// um einen Infinite Redirect zu verhindern
+			// falls keine Cookies erlaubt sind.
+			$parsedUrl = parse_url(tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_SCRIPT'));
+			$checkedIfCookiesAreActivatedParameter = ($parsedUrl['query'] ? '&' : '?') . 'checkedIfCookiesAreActivated=1';
+			// Und machen einen Reload um zu sehen ob Cookies gesetzt werden konnten.
+			header(
+				'Location: /' .
+				tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_SCRIPT') .
+				$checkedIfCookiesAreActivatedParameter
+			);
+			exit;
+		}
+
+		return $cookiesActivated;
 	}
 
 	/**
