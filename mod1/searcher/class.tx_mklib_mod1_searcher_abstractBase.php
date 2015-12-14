@@ -1,26 +1,26 @@
 <?php
-/***************************************************************
- *  Copyright notice
+/**
+ * Copyright notice
  *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * (c) 2011 - 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 tx_rnbase::load('tx_mklib_mod1_export_ISearcher');
 tx_rnbase::load('tx_rnbase_util_Arrays');
@@ -28,9 +28,9 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
 /**
  * Basisklasse für Suchfunktionen in BE-Modulen
  *
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mklib
+ * @author Michael Wagner
  */
 abstract class tx_mklib_mod1_searcher_abstractBase
 	implements tx_mklib_mod1_export_ISearcher {
@@ -237,16 +237,17 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 * @return string
 	 */
 	public function getResultList() {
-		$srv = $this->getService();
 		/* @var $pager tx_rnbase_util_BEPager */
 		$pager = $this->usePager()
 			? tx_rnbase::makeInstance(
 				'tx_rnbase_util_BEPager',
-				$this->getSearcherId().'Pager',
+				$this->getSearcherId() . 'Pager',
 				$this->getModule()->getName(),
-				$pid = 0 //@TODO: die PageId solle noch konfigurierbar gemacht werden.
+				// @TODO: die PageId solle noch konfigurierbar gemacht werden.
+				$pid = 0
 			)
-		: null;
+			: null
+		;
 
 		list($fields, $options) = $this->getFieldsAndOptions();
 
@@ -259,9 +260,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 		}
 
 		// Get data
-		$items = $srv->search($fields, $options);
+		$search = $this->searchItems($fields, $options);
+		$items = &$search['items'];
 		$content = '';
-		$this->showItems($content, $items);
+		$this->showItems($content, $items, array('items_map' => $search['map']));
 
 		$data = array(
 			'table' 	=> $content,
@@ -272,15 +274,92 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 		if ($pager) {
 			$pagerData = $pager->render();
 
-			//der zusammengeführte Pager für die Ausgabe
-			//nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
+			// der zusammengeführte Pager für die Ausgabe
+			// nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
 			$sPagerData = '';
-			if($cnt)
-				$sPagerData = $pagerData['limits'] . ' - ' .$pagerData['pages'];
-			$data['pager'] = '<div class="pager">' . $sPagerData .'</div>';
+			if($cnt) {
+				$sPagerData = $pagerData['limits'] . ' - ' . $pagerData['pages'];
+			}
+			$data['pager'] = '<div class="pager">' . $sPagerData . '</div>';
 		}
 
 		return $data;
+	}
+
+	/**
+	 * searches for te items to list.
+	 *
+	 * TODO make more abstract!?
+	 *
+	 * @param array $fields
+	 * @param array $options
+	 * @return array
+	 */
+	protected function searchItems(array $fields, array $options)
+	{
+		$firstPrev = $lastNext = FALSE;
+		if (
+			$this->options['baseTableName']
+			&& tx_rnbase::load('tx_rnbase_util_TCA')
+			&& tx_rnbase_util_TCA::getSortbyFieldForTable($this->options['baseTableName'])
+			&& ($options['limit'] || $options['offset'])
+		) {
+			// normalize limit and offset values to int
+			array_key_exists('offset', $options) ? $options['offset'] = (int) $options['offset'] : NULL;
+			array_key_exists('limit', $options) ? $options['limit'] = (int) $options['limit'] : NULL;
+			// wir haben ein offset und benötigen die beiden elemente element davor.
+			if (!empty($options['offset'])) {
+				$firstPrev = TRUE;
+				$downStep = $options['offset'] > 2 ? 2 : 1;
+				$options['offset'] -= $downStep;
+				// das limit um eins erhöhen um das negative offset zu korrigieren
+				if (isset($options['limit'])) {
+					$options['limit'] += $downStep;
+				}
+			}
+			// wir haben ein limit und benötigen das element danach.
+			if (!empty($options['limit'])) {
+				$lastNext = TRUE;
+				$options['limit']++;
+			}
+		}
+
+		$items = $this->getService()->search($fields, $options);
+
+		if ($firstPrev || $lastNext) {
+			// das letzte entfernen, aber nur wenn genügend elemente im result sind
+			if ($lastNext && count($items) >= $options['limit']) {
+				$lastNext = array_pop($items);
+			}
+			// das erste entfernen, wenn der offset reduziert wurde.
+			if ($firstPrev) {
+				$firstPrev = array_shift($items);
+				// das zweite entfernen, wenn der offset um 2 reduziert wurde
+				if ($downStep > 1) {
+					$secondPrev = array_shift($items);
+				}
+			}
+		}
+
+		// build uidmap
+		$map = array();
+		if ($firstPrev instanceof tx_rnbase_model_base) {
+			$map[$firstPrev->getUid()] = array();
+		}
+		if ($secondPrev instanceof tx_rnbase_model_base) {
+			$map[$secondPrev->getUid()] = array();
+		}
+		foreach ($items as $item) {
+			$map[$item->getUid()] = array();
+		}
+		if ($lastNext instanceof tx_rnbase_model_base) {
+			$map[$lastNext->getUid()] = array();
+		}
+
+		return array(
+			'items' => $items,
+			'map' => $map,
+		);
 	}
 
 	protected function usePager() {
@@ -398,17 +477,18 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 
 	/**
 	 * Start creation of result list.
-	 * @param 	string 	$content
-	 * @param 	array 	$items
-	 * @return 	string
+	 *
+	 * @param string &$content
+	 * @param array $items
+	 * @param array $options
+	 * @return string
 	 */
-	protected function showItems(&$content, array $items) {
-		if(empty($items)) {
+	protected function showItems(&$content, array $items, array $options = array()) {
+		if (empty($items)) {
 			$content = $this->getNoItemsFoundMsg();
-			return;//stop
+			return '';
 		}
-		// else
-		$columns = $this->getColumns( $this->getDecorator( $this->getModule() ) );
+		$columns = $this->getColumns($this->getDecorator($this->getModule(), $options));
 		tx_rnbase::load('tx_rnbase_mod_Tables');
 		list ($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
 			$items,
@@ -416,16 +496,26 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			$this->getFormTool(),
 			$this->getOptions()
 		);
+
 		$out = $this->getModule()->getDoc()->table($tableData, $tableLayout);
 		$content .= $out;
+
 		return $out;
 	}
 
 	/**
-	 * @return 	tx_mklib_mod1_decorator_Base
+	 * the decorator instace.
+	 *
+	 * @param tx_rnbase_mod_IModule &$mod
+	 * @param array $options
+	 * @return tx_mklib_mod1_decorator_Base
 	 */
-	protected function getDecorator(&$mod){
-		return tx_rnbase::makeInstance($this->getDecoratorClass(), $mod);
+	protected function getDecorator(&$mod, array $options = array()){
+		return tx_rnbase::makeInstance(
+			$this->getDecoratorClass(),
+			$mod,
+			$options
+		);
 	}
 	/**
 	 * @return string

@@ -41,7 +41,9 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests_BaseTestCase {
+class tx_mklib_tests_mod1_searcher_abstractBase_testcase
+	extends tx_rnbase_tests_BaseTestCase
+{
 
 	/**
 	 * @var tx_mklib_tests_fixtures_classes_DummySearcher
@@ -346,6 +348,190 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSearchItemsWithoutOptions()
+	{
+		$res = $this->callInaccessibleMethod(
+			$this->getSearchItemsSearcherMock(),
+			'searchItems',
+			array(),
+			array()
+		);
+
+		// alle 5 items müssen da sein
+		self::assertTrue(is_array($res));
+		self::assertArrayHasKey('items', $res);
+		self::assertTrue(is_array($res['items']));
+		self::assertCount(5, $res['items']);
+		self::assertSame(1, reset($res['items'])->getUid());
+		self::assertSame(5, end ($res['items'])->getUid());
+		self::assertArrayHasKey('map', $res);
+		self::assertTrue(is_array($res['map']));
+		self::assertCount(5, $res['map']);
+	}
+	/**
+	 * @group unit
+	 */
+	public function testSearchItemsWithLimit()
+	{
+		$res = $this->callInaccessibleMethod(
+			$this->getSearchItemsSearcherMock(
+				array(),
+				array('limit' => 5)
+			),
+			'searchItems',
+			array(),
+			array('limit' => 4)
+		);
+
+		// das letzte item muss fehlen!
+		self::assertTrue(is_array($res));
+		self::assertArrayHasKey('items', $res);
+		self::assertTrue(is_array($res['items']));
+		self::assertCount(4, $res['items']);
+		self::assertSame(1, reset($res['items'])->getUid());
+		self::assertSame(4, end ($res['items'])->getUid());
+		self::assertArrayHasKey('map', $res);
+		self::assertTrue(is_array($res['map']));
+		self::assertCount(5, $res['map']);
+	}
+	/**
+	 * @group unit
+	 */
+	public function testSearchItemsWithOffset()
+	{
+		$res = $this->callInaccessibleMethod(
+			$this->getSearchItemsSearcherMock(
+				array(),
+				array('offset' => 1)
+			),
+			'searchItems',
+			array(),
+			array('offset' => 3)
+		);
+
+		// die ersten zwei items müssen fehlen!
+		self::assertTrue(is_array($res));
+		self::assertArrayHasKey('items', $res);
+		self::assertTrue(is_array($res['items']));
+		self::assertCount(3, $res['items']);
+		self::assertSame(3, reset($res['items'])->getUid());
+		self::assertSame(5, end ($res['items'])->getUid());
+		self::assertArrayHasKey('map', $res);
+		self::assertTrue(is_array($res['map']));
+		self::assertCount(5, $res['map']);
+	}
+	/**
+	 * @group unit
+	 */
+	public function testSearchItemsWithLimitAndOffset()
+	{
+		$res = $this->callInaccessibleMethod(
+			$this->getSearchItemsSearcherMock(
+				array(),
+				array('limit' => 5, 'offset' => 0)
+			),
+			'searchItems',
+			array(),
+			array('limit' => 3,'offset' => 1)
+		);
+
+		// das erste und letzte item muss fehlen!
+		self::assertTrue(is_array($res));
+		self::assertArrayHasKey('items', $res);
+		self::assertTrue(is_array($res['items']));
+		self::assertCount(3, $res['items']);
+		self::assertSame(2, reset($res['items'])->getUid());
+		self::assertSame(4, end ($res['items'])->getUid());
+		self::assertArrayHasKey('map', $res);
+		self::assertTrue(is_array($res['map']));
+		self::assertCount(5, $res['map']);
+	}
+	/**
+	 * wenn weniger daten als limit in der db vorhanden sind,
+	 * dann darf der array_pop auf die items nicht durchgeführt werden!
+	 *
+	 * @group unit
+	 */
+	public function testSearchItemsWithLimitAndOffsetAndFewResults()
+	{
+		$res = $this->callInaccessibleMethod(
+			$this->getSearchItemsSearcherMock(
+				array(),
+				array('limit' => 11, 'offset' => 0)
+			),
+			'searchItems',
+			array(),
+			array('limit' => 10,'offset' => 0)
+		);
+
+		self::assertTrue(is_array($res));
+		self::assertArrayHasKey('items', $res);
+		self::assertTrue(is_array($res['items']));
+		self::assertCount(5, $res['items']);
+		self::assertSame(1, reset($res['items'])->getUid());
+		self::assertSame(5, end ($res['items'])->getUid());
+		self::assertArrayHasKey('map', $res);
+		self::assertTrue(is_array($res['map']));
+		self::assertCount(5, $res['map']);
+	}
+
+	/**
+	 */
+	protected function getSearchItemsSearcherMock(
+		array $expectedFields = array(),
+		array $expectedOptions = array(),
+		array $items = NULL
+	) {
+		$service = $this->getMockForAbstractClass(
+			'tx_mklib_repository_Abstract',
+			array(),
+			'',
+			TRUE,
+			TRUE,
+			TRUE,
+			array('search')
+		);
+		$service
+			->expects($this->atLeastOnce())
+			->method('search')
+			->with(
+				$expectedFields,
+				$expectedOptions
+			)
+			->will(
+				$this->returnValue(
+					is_array($items) ? $items : array(
+						$this->getModel(array('uid' => 1)),
+						$this->getModel(array('uid' => 2)),
+						$this->getModel(array('uid' => 3)),
+						$this->getModel(array('uid' => 4)),
+						$this->getModel(array('uid' => 5)),
+					)
+				)
+			)
+		;
+
+		$searcher = $this->getMockForAbstractClass(
+			'tx_mklib_mod1_searcher_abstractBase',
+			array($this->mod, array('baseTableName' => 'pages')),
+			'',
+			TRUE,
+			TRUE,
+			TRUE,
+			array('getService')
+		);
+		$searcher
+			->expects($this->atLeastOnce())
+			->method('getService')
+			->will($this->returnValue($service))
+		;
+
+		return $searcher;
 	}
 
 	/**

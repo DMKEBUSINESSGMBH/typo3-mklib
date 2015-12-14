@@ -1,40 +1,36 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
- *  @author Hannes Bochmann
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) 2011 - 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 tx_rnbase::load('tx_rnbase_mod_IDecorator');
-tx_rnbase::load('tx_mklib_util_TCA');
-tx_rnbase::load('tx_rnbase_mod_Util');
 
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
+ * @package TYPO3
+ * @subpackage tx_mklib
+ * @author Hannes Bochmann
+ * @author Michael Wagner
  */
 class tx_mklib_mod1_decorator_Base
 	implements tx_rnbase_mod_IDecorator {
@@ -43,13 +39,18 @@ class tx_mklib_mod1_decorator_Base
 	 * @var tx_rnbase_mod_IModule
 	 */
 	private $mod = NULL;
+	/**
+	 * @var array
+	 */
+	private $options = NULL;
 
 	/**
 	 *
 	 * @param 	tx_rnbase_mod_IModule 	$mod
 	 */
-	public function __construct(tx_rnbase_mod_IModule $mod) {
+	public function __construct(tx_rnbase_mod_IModule $mod, array $options = array()) {
 		$this->mod = $mod;
+		$this->options = $options;
 	}
 
 	/**
@@ -168,6 +169,11 @@ class tx_mklib_mod1_decorator_Base
 			'hide' => '',
 		);
 
+		if ($item && tx_rnbase_util_TCA::getSortbyFieldForTable($item->getTableName())) {
+			$cols['moveup'] = '';
+			$cols['movedown'] = '';
+		}
+
 		$userIsAdmin = is_object($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->isAdmin() : 0;
 		//admins dürfen auch löschen
 		if ($userIsAdmin)
@@ -195,6 +201,7 @@ class tx_mklib_mod1_decorator_Base
 					$ret .= $this->getFormTool()->createEditLink($tableName, $uid, $bTitle);
 					break;
 				case 'hide':
+					tx_rnbase::load('tx_mklib_util_TCA');
 					$sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($tableName, 'disabled', 'hidden');
 					$ret .= $this->getFormTool()->createHideLink($tableName, $uid, $item->record[$sHiddenColumn]);
 					break;
@@ -204,6 +211,36 @@ class tx_mklib_mod1_decorator_Base
 					//'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein
 					//Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
 					$ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle,array('confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')));
+					break;
+				case 'moveup':
+					$uidMap = $this->getItemsMap($item);
+					// zwei schritte in der map zurück,
+					// denn wir wollen das aktuelle element vor das vorherige.
+					// typo3 verschiebt aber immer hinter elemente, also muss es hinter das vorvorletzte.
+					// wenn es kein vorvorletztes gibt, benötigt typo3 die pid, um es an erster stelle zuplatzieren.
+					prev($uidMap);
+					$prevId = key($uidMap);
+					if ($prevId) {
+						prev($uidMap);
+						$prevId = key($uidMap) ?: $item->getPid();
+					}
+					if ($prevId) {
+						$ret .= $this->getFormTool()->createMoveUpLink($tableName, $uid, $prevId, array('label' => ''));
+					} else {
+						tx_rnbase::load('tx_rnbase_mod_Util');
+						$ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+					}
+					break;
+				case 'movedown':
+					$uidMap = $this->getItemsMap($item);
+					// einen schritt in der map nach vorne, denn wir wollen das aktuelle hinder dem nächsten platzieren.
+					next($uidMap);
+					if (key($uidMap)) {
+						$ret .= $this->getFormTool()->createMoveDownLink($tableName, $uid, key($uidMap), array('label' => ''));
+					} else {
+						tx_rnbase::load('tx_rnbase_mod_Util');
+						$ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+					}
 					break;
 				default:
 					break;
@@ -240,7 +277,24 @@ class tx_mklib_mod1_decorator_Base
 		return $output;
 	}
 
+	/**
+	 * liefert die items map und setzten den pointer auf das aktuelle element
+	 *
+	 * @param tx_rnbase_model_base $item
+	 * @return array
+	 */
+	protected function getItemsMap(tx_rnbase_model_base $item)
+	{
+		if (empty($this->options['items_map'])) {
+			return array();
+		}
+		$currentId = $item->getUid();
+		$map = $this->options['items_map'];
 
+		while (key($map) !== NULL && key($map) != $currentId) next($map);
+
+		return $map;
+	}
 
 	/**
 	 * Returns the module
