@@ -72,9 +72,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 * @dataProvider getCookies
 	 */
-	public function testAreCookiesActivated($cookies, $expectedReturnValue, $setCheckCookieSetSessionValue){
-		if ($setCheckCookieSetSessionValue) {
-			tx_mklib_util_Session::setSessionValue('checkCookieIsSet', TRUE);
+	public function testAreCookiesActivated($cookies, $expectedReturnValue, $setCheckedIfCookiesAreActivatedGetParameter){
+		if ($setCheckedIfCookiesAreActivatedGetParameter) {
+			$_GET['checkedIfCookiesAreActivated'] = TRUE;
 		}
 		$_COOKIE = $cookies;
 		$this->assertEquals(
