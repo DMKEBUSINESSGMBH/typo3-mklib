@@ -53,8 +53,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		//es kann sein dass die TCA von der wordlist nicht geladen wurde.
 		//also stellen wir die TCA hier bereit
 		tx_rnbase::load('tx_mklib_srv_Wordlist');
-		global $TCA;
-		$TCA['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
+		tx_mklib_srv_Wordlist::loadTca();
 
 		$this->returnUrlBackup = $_GET['returnUrl'];
 	}

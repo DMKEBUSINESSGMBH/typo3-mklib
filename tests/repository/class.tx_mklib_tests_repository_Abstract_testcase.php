@@ -45,7 +45,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	protected function setUp() {
 		if (empty($GLOBALS['TCA']['tx_mklib_wordlist'])) {
 			tx_rnbase::load('tx_mklib_srv_Wordlist');
-			$GLOBALS['TCA']['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
+			tx_mklib_srv_Wordlist::loadTca();
 			$GLOBALS['TCA']['tx_mklib_wordlist']['test'] = TRUE;
 		}
 	}

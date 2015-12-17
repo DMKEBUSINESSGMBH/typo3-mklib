@@ -21,7 +21,7 @@ $_EXTCONF = is_array($_EXTCONF) ? $_EXTCONF : unserialize($_EXTCONF);
 // tca integrieren für tx_mklib_wordlist einbinden, wenn gesetzt.
 if(is_array($_EXTCONF) && array_key_exists('tableWordlist', $_EXTCONF) && intval($_EXTCONF['tableWordlist'])) {
 	tx_rnbase::load('tx_mklib_srv_Wordlist');
-	$TCA['tx_mklib_wordlist'] = tx_mklib_srv_Wordlist::getTca();
+	tx_mklib_srv_Wordlist::loadTca();
 }
 
 // static_info_tables um PLZ regeln erweitern
