@@ -77,7 +77,7 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 			$_GET['checkedIfCookiesAreActivated'] = TRUE;
 		}
 		$_COOKIE = $cookies;
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedReturnValue, tx_mklib_util_Session::areCookiesActivated(),
 			'falscher return'
 		);
@@ -106,12 +106,12 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 		$newRandomSessionId = uniqid();
 		tx_mklib_util_Session::setSessionId($newRandomSessionId);
 
-		$this->assertEquals(
+		self::assertEquals(
 			$newRandomSessionId, $GLOBALS['TSFE']->fe_user->id,
 			'falsche neue session id'
 		);
 
-		$this->assertEquals(
+		self::assertEquals(
 			array(), $GLOBALS['TSFE']->fe_user->sesData,
 			'session data für neue id nicht leer'
 		);
@@ -124,7 +124,7 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TSFE']->fe_user = $this->getMock(
 			tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(), array('fetchSessionData')
 		);
-		$GLOBALS['TSFE']->fe_user->expects($this->once())
+		$GLOBALS['TSFE']->fe_user->expects(self::once())
 			->method('fetchSessionData');
 
 		tx_mklib_util_Session::setSessionId(456);
@@ -136,7 +136,7 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 	public function testSetStoreAndGetSessionValue(){
 		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
 		tx_mklib_util_Session::storeSessionData();
-		$this->assertEquals(
+		self::assertEquals(
 			'testValue', tx_mklib_util_Session::getSessionValue('mklibTest')
 		);
 	}
@@ -161,7 +161,7 @@ class tx_mklib_tests_util_Session_testcase extends tx_phpunit_testcase {
 		// Werte korrekt geliefert wernde
 		tx_mklib_util_Session::setSessionId($newSessionId);
 
-		$this->assertEquals(
+		self::assertEquals(
 			'testValue', tx_mklib_util_Session::getSessionValue('mklibTest')
 		);
 

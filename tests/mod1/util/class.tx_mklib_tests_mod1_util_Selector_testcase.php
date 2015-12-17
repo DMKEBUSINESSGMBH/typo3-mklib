@@ -115,7 +115,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 
 	public function testBuildFilerTableWithoutData() {
 		$aData = array();
-		$this->assertEmpty($this->oSelector->buildFilterTable($aData), 'return nicht leer.');
+		self::assertEmpty($this->oSelector->buildFilterTable($aData), 'return nicht leer.');
 	}
 
 	public function testBuildFilerTableWithData() {
@@ -132,7 +132,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$sResult = $this->oSelector->buildFilterTable($aData);
 		$sExpected = '<table class="filters"><tr><td>testLabel 1</td><td>testField 1 testButton 1</td></tr><tr><td>hidden</td><td>testField 2 testButton 2</td></tr></table>';
-		$this->assertEquals($sExpected, $sResult, 'return nicht korrekt.');
+		self::assertEquals($sExpected, $sResult, 'return nicht korrekt.');
 	}
 
 	public function testShowFreeTextSearchFormWithEmptySearchString() {
@@ -145,10 +145,10 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$sSearchString = $this->oSelector->showFreeTextSearchForm($out, $this->sModuleKey, $options);
 
-		$this->assertEmpty($sSearchString,'suchstring ist nicht leer');
-		$this->assertEquals('<input type="text" name="SET[testSearch]" style="width:96px;" value="" />', $out['field'], 'field nicht korrekt.');
-		$this->assertEquals('<input type="submit" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
-		$this->assertEquals('testLabel', $out['label'], 'label nicht korrekt.');
+		self::assertEmpty($sSearchString,'suchstring ist nicht leer');
+		self::assertEquals('<input type="text" name="SET[testSearch]" style="width:96px;" value="" />', $out['field'], 'field nicht korrekt.');
+		self::assertEquals('<input type="submit" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
+		self::assertEquals('testLabel', $out['label'], 'label nicht korrekt.');
 	}
 
 	public function testShowFreeTextSearchFormWithSearchString() {
@@ -164,21 +164,21 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 
 		$sSearchString = $this->oSelector->showFreeTextSearchForm($out, $this->sModuleKey, $options);
 
-		$this->assertEquals('joh316',$sSearchString,'suchstring ist falsch');
-		$this->assertEquals('<input type="text" name="SET[testSearch]" style="width:96px;" value="joh316" />', $out['field'], 'field nicht korrekt.');
-		$this->assertEquals('<input type="submit" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
-		$this->assertEquals('testLabel', $out['label'], 'label nicht korrekt.');
+		self::assertEquals('joh316',$sSearchString,'suchstring ist falsch');
+		self::assertEquals('<input type="text" name="SET[testSearch]" style="width:96px;" value="joh316" />', $out['field'], 'field nicht korrekt.');
+		self::assertEquals('<input type="submit" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
+		self::assertEquals('testLabel', $out['label'], 'label nicht korrekt.');
 	}
 
 	public function testGetValueFromModuleDataWithExistingKey() {
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
 		//key exists
-		$this->assertEquals('joh316', $this->oSelector->getValueFromModuleData($this->sModuleKey),'falscher Wert. 1');
+		self::assertEquals('joh316', $this->oSelector->getValueFromModuleData($this->sModuleKey),'falscher Wert. 1');
 	}
 
 	public function testGetValueFromModuleDataWithoutExistingKey() {
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
-		$this->assertEmpty($this->oSelector->getValueFromModuleData('someotherkey'),'falscher Wert. 2');
+		self::assertEmpty($this->oSelector->getValueFromModuleData('someotherkey'),'falscher Wert. 2');
 	}
 
 	public function testGetValueFromModuleDataWithNewValue() {
@@ -186,7 +186,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$_POST = null;
 		$_GET['SET'][$this->sModuleKey] = 'john doe';
 
-		$this->assertEquals('john doe', $this->oSelector->getValueFromModuleData($this->sModuleKey),'falscher Wert. 3');
+		self::assertEquals('john doe', $this->oSelector->getValueFromModuleData($this->sModuleKey),'falscher Wert. 3');
 	}
 
 	public function testSetValueToModuleDataWithEmptyData() {
@@ -194,7 +194,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
 		$aModuleData = $this->oSelector->setValueToModuleData($this->oMod->getName());
 		//es sollten unr die vorhandenen Daten zurück kommen
-		$this->assertEquals(array('testSearch' => 'joh316'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
+		self::assertEquals(array('testSearch' => 'joh316'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
 	}
 
 	public function testSetValueToModuleDataWithData() {
@@ -202,34 +202,34 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
 		$aModuleData = $this->oSelector->setValueToModuleData($this->oMod->getName(),array('newTestSearch' => 'john doe'));
 		//es sollten auch die neuen Daten da sein
-		$this->assertEquals(array('testSearch' => 'joh316','newTestSearch' => 'john doe'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
+		self::assertEquals(array('testSearch' => 'joh316','newTestSearch' => 'john doe'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
 	}
 
 	public function testShowHiddenSelectorWithDefaultId() {
 		$data = array();
 		$return = $this->oSelector->showHiddenSelector($data);
 
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[showhidden]" onchange="jumpToUrl',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="0">Hide hidden entries</option>',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="1">Show hidden entries</option>',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</select>',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertNull($return,'falscher return value');
+		self::assertNull($return,'falscher return value');
 	}
 
 	public function testShowHiddenSelectorWithOneSelected() {
@@ -239,27 +239,27 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$options = array('id' => $this->sModuleKey);
 		$return = $this->oSelector->showHiddenSelector($data,$options);
 
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[testSearch]" onchange="jumpToUrl',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="0">Hide hidden entries</option>',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="1" selected="selected">Show hidden entries</option>',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</select>',
 			$data['selector'],
 			'falscher selector'
 		);
-		$this->assertEquals(1, $return,'falscher return value');
+		self::assertEquals(1, $return,'falscher return value');
 	}
 
 
@@ -277,7 +277,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'from'	=> 1373234400,
 			'to'	=> 1373407200
 		);
-		$this->assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
+		self::assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
 	}
 
 	/**
@@ -294,7 +294,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'from'	=> 0,
 			'to'	=> 0
 		);
-		$this->assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
+		self::assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
 	}
 
 	/**
@@ -311,7 +311,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
-		$this->assertEmpty($returnValue, 'doch ein return value');
+		self::assertEmpty($returnValue, 'doch ein return value');
 	}
 
 	/**
@@ -329,7 +329,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
-		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
+		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
 
 	/**
@@ -347,7 +347,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
 		$expectedInput = 'test<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
-		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
+		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
 
 	/**
@@ -365,7 +365,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
-		$this->assertEquals(123, $returnValue, 'return value falsch');
+		self::assertEquals(123, $returnValue, 'return value falsch');
 	}
 
 	/**
@@ -384,7 +384,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="123" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
-		$this->assertEquals($expectedInput, $out['field'], 'input feld falsch');
+		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
 
 	/**
@@ -399,7 +399,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$selector->init($this->oMod);
 
 		$key = 'test';
-		$selector->expects($this->never())
+		$selector->expects(self::never())
 			->method('getValueFromModuleData');
 
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
@@ -409,7 +409,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
-		$this->assertEquals(123, $returnValue, 'return value falsch');
+		self::assertEquals(123, $returnValue, 'return value falsch');
 	}
 
 	/**
@@ -423,10 +423,10 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$selector->init($this->oMod);
 
 		$key = 'test';
-		$selector->expects($this->once())
+		$selector->expects(self::once())
 			->method('getValueFromModuleData')
 			->with($key)
-			->will($this->returnValue('test'));
+			->will(self::returnValue('test'));
 
 		$method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
 		$method->setAccessible(true);
@@ -435,7 +435,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
-		$this->assertEquals('test', $returnValue, 'return value falsch');
+		self::assertEquals('test', $returnValue, 'return value falsch');
 	}
 
 	/**
@@ -448,9 +448,9 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$selector->init($this->oMod);
 
-		$selector->expects($this->any())
+		$selector->expects(self::any())
 			->method('getFormTool')
-			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+			->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
 
 		$key = 'test';
 		$out = array('field' => '');
@@ -460,7 +460,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'from'	=> 0,
 			'to'	=> 0
 		);
-		$this->assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
+		self::assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
 	}
 
 	/**
@@ -476,9 +476,9 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$selector->init($this->oMod);
 
-		$selector->expects($this->any())
+		$selector->expects(self::any())
 			->method('getFormTool')
-			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+			->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
 
 		$key = 'test';
 		$out = array('field' => '');
@@ -488,7 +488,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 			'from'	=> 1373234400 ,
 			'to'	=> 1373407200
 		);
-		$this->assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
+		self::assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
 	}
 
 	/**
@@ -501,16 +501,16 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$selector->init($this->oMod);
 
-		$selector->expects($this->any())
+		$selector->expects(self::any())
 			->method('getFormTool')
-			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+			->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
 
 		$key = 'test';
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
 
 		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span><input name="test_to" type="text" id="tceforms-datefield-test_to" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
-		$this->assertEquals($expectedOut, $out['field'], 'out falsch');
+		self::assertEquals($expectedOut, $out['field'], 'out falsch');
 	}
 
 	/**
@@ -526,16 +526,16 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$selector->init($this->oMod);
 
-		$selector->expects($this->any())
+		$selector->expects(self::any())
 			->method('getFormTool')
-			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+			->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
 
 		$key = 'test';
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
 
 		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="08-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span><input name="test_to" type="text" id="tceforms-datefield-test_to" value="09-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
-		$this->assertEquals($expectedOut, $out['field'], 'out falsch');
+		self::assertEquals($expectedOut, $out['field'], 'out falsch');
 	}
 
 	/**
@@ -551,12 +551,12 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		);
 		$selector->init($this->oMod);
 
-		$selector->expects($this->any())
+		$selector->expects(self::any())
 			->method('getFormTool')
-			->will($this->returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+			->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
 
 		$key = 'test';
-		$selector->expects($this->any())
+		$selector->expects(self::any())
 			->method('setValueToModuleData')
 			->with('dummyMod', array($key . '_from' => $_POST['test_from'], $key . '_to' => $_POST['test_to']));
 

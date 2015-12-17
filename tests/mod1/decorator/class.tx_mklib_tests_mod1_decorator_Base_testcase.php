@@ -63,18 +63,18 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$record = array('uid' => 1, 'disable' => 0);
 		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
 		// Achtung: Das Ergebnis ist Multiline. Leider wird der Modifikator nicht akzeptiert...
-		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
+		self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 
 
 		//jetzt mit versteckt und record fallback
 		$record = array('uid' => 1, 'disable' => 1);
 		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
-		$this->assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
+		self::assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 
 		//jetzt mit versteckt und ohne record fallback
 		$record = array('uid' => 1, 'disable' => 1);
 		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
-		$this->assertRegExp('/<del>1<\/del>/', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
+		self::assertRegExp('/<del>1<\/del>/', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
 	}
 
 	public function testFormatWithUidColumnAndNoEnableColumnsConfig() {
@@ -83,21 +83,21 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 
 		$record = array('uid' => 1, 'disable' => 0);
 		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
-		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
+		self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 
 		//jetzt mit versteckt im falschen feld
 		$record = array('uid' => 1, 'disable' => 1);
 		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
-		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 2');
+		self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 2');
 
 		//jetzt mit versteckt im fallback feld
 		$record = array('uid' => 1, 'hidden' => 0);
 		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
-		$this->assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 3');
+		self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 3');
 
 		$record = array('uid' => 1, 'hidden' => 1);
 		$result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
-		$this->assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
+		self::assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 	}
 
 	public function testFormatWithLabelColumn() {
@@ -111,10 +111,10 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		)->setTablename('tt_content');
 		$result = $this->getDecoratorMock()->format('Content', 'label', $model->getRecord(), $model);
 
-		$this->assertContains('>Home</span>', $result, 'Falsches Label erzeugt');
-		$this->assertContains('<span title="UID: 57', $result, 'UID fehlt.');
-		$this->assertContains('Creation: 2015-06-01T11:34:25+00:00', $result, 'CRDATE fehlt.');
-		$this->assertContains('Last Change: 2015-06-13T01:21:05+00:00', $result, 'TSTAMP fehlt.');
+		self::assertContains('>Home</span>', $result, 'Falsches Label erzeugt');
+		self::assertContains('<span title="UID: 57', $result, 'UID fehlt.');
+		self::assertContains('Creation: 2015-06-01T11:34:25+00:00', $result, 'CRDATE fehlt.');
+		self::assertContains('Last Change: 2015-06-13T01:21:05+00:00', $result, 'TSTAMP fehlt.');
 	}
 
 	public function testFormatWithSysLanguageUidColumn() {
@@ -129,7 +129,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 
 		$result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
-		$this->assertContains(
+		self::assertContains(
 			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;Default',
 			$result,
 			'Falsches oder fehlendes Icon erzeugt.'
@@ -138,7 +138,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$model->setProperty('sys_language_uid', '-1');
 		$result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
-		$this->assertContains(
+		self::assertContains(
 			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;[All]',
 			$result,
 			'Falsches oder fehlendes Icon erzeugt.'
@@ -158,7 +158,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 1" border="0" alt="" /></a>';
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 
-		$this->assertEquals(
+		self::assertEquals(
 			$this->replaceForCliAndremoveVcAndFormToken($sExpected),
 			$result,
 			'es wurde nicht der korrekte Wert zurück geliefert. 1'
@@ -168,37 +168,37 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$record = array('uid' => 1, 'disable' => 1);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/button_hide.gif"'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/deletedok.gif"'
 			),
@@ -217,7 +217,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a>';
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		$this->assertEquals(
+		self::assertEquals(
 			$this->replaceForCliAndremoveVcAndFormToken($sExpected),
 			$result,
 			'es wurde nicht der korrekte Wert zurück geliefert. 1'
@@ -227,25 +227,25 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$record = array('uid' => 1, 'disable' => 1);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/button_hide.gif"'
 			),
@@ -262,37 +262,37 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$record = array('uid' => 1, 'hidden' => 0);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=1'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/button_unhide.gif"'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/deletedok.gif"'
 			),
@@ -303,37 +303,37 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$record = array('uid' => 1, 'hidden' => 1);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=0'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/button_hide.gif"'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1'
 			),
 			$result
 		);
-		$this->assertContains(
+		self::assertContains(
 			$this->replaceForCliAndremoveVcAndFormToken(
 				'<img src="sysext/t3skin/icons/gfx/deletedok.gif"'
 			),

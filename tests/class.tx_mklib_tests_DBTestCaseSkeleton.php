@@ -165,7 +165,7 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 	 */
 	public function testCheckConnection() {
 		$dbs = $GLOBALS['TYPO3_DB']->admin_get_dbs();
-		$this->assertTrue(in_array($this->testDatabase, $dbs));
+		self::assertTrue(in_array($this->testDatabase, $dbs));
 	}
 }
 

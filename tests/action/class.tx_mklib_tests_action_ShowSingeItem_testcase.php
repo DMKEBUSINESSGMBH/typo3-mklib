@@ -51,7 +51,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$configurations = $this->createConfigurations(array(), 'mklib');
 		$action->setConfigurations($configurations);
 
-		$this->assertEquals(
+		self::assertEquals(
 			'uid',
 			$this->callInaccessibleMethod(
 				$action,
@@ -69,15 +69,15 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			array(), '', TRUE, TRUE, TRUE,
 			array('getConfId')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getConfId')
-			->will($this->returnValue('myAction.'));
+			->will(self::returnValue('myAction.'));
 		$configurations = $this->createConfigurations(
 			array('myAction.' => array('uidParameterKey' => 'item')), 'mklib'
 		);
 		$action->setConfigurations($configurations);
 
-		$this->assertEquals(
+		self::assertEquals(
 			'item',
 			$this->callInaccessibleMethod(
 				$action,
@@ -94,7 +94,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$configurations = $this->createConfigurations(array(), 'mklib');
 		$action->setConfigurations($configurations);
 
-		$this->assertEquals(
+		self::assertEquals(
 			'Datensatz nicht gefunden.',
 			$this->callInaccessibleMethod(
 				$action,
@@ -112,15 +112,15 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			array(), '', TRUE, TRUE, TRUE,
 			array('getConfId')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getConfId')
-			->will($this->returnValue('myAction.'));
+			->will(self::returnValue('myAction.'));
 		$configurations = $this->createConfigurations(
 			array('myAction.' => array('notfound' => 'Model nicht gefunden.')), 'mklib'
 		);
 		$action->setConfigurations($configurations);
 
-		$this->assertEquals(
+		self::assertEquals(
 			'Model nicht gefunden.',
 			$this->callInaccessibleMethod(
 				$action,
@@ -165,7 +165,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			array(), '', TRUE, TRUE, TRUE,
 			array('getSingleItemRepository')
 		);
-		$action->expects($this->never())->method('getSingleItemRepository');
+		$action->expects(self::never())->method('getSingleItemRepository');
 
 		$parameters = tx_rnbase::makeInstance('tx_rnbase_parameters', array());
 		$configurations = $this->createConfigurations(
@@ -195,9 +195,9 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			array(), '', TRUE, TRUE, TRUE,
 			array('getSingleItemRepository')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getSingleItemRepository')
-			->will($this->returnValue($repository));
+			->will(self::returnValue($repository));
 
 		$parameters = tx_rnbase::makeInstance(
 			'tx_rnbase_parameters', array('uid' => 987654321)
@@ -224,18 +224,18 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			'tx_mklib_repository_Abstract',
 			array(), '', FALSE, FALSE, FALSE, array('findByUid')
 		);
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('findByUid')
 			->with(987654321)
-			->will($this->returnValue(NULL));
+			->will(self::returnValue(NULL));
 		$action = $this->getMockForAbstractClass(
 			'tx_mklib_action_ShowSingeItem',
 			array(), '', TRUE, TRUE, TRUE,
 			array('getSingleItemRepository')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getSingleItemRepository')
-			->will($this->returnValue($repository));
+			->will(self::returnValue($repository));
 
 		$parameters = tx_rnbase::makeInstance(
 			'tx_rnbase_parameters', array('uid' => 987654321)
@@ -262,18 +262,18 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$model = tx_rnbase::makeInstance(
 			'tx_mklib_model_Page', array('uid' => 987654321)
 		);
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('findByUid')
 			->with(987654321)
-			->will($this->returnValue($model));
+			->will(self::returnValue($model));
 		$action = $this->getMockForAbstractClass(
 			'tx_mklib_action_ShowSingeItem',
 			array(), '', TRUE, TRUE, TRUE,
 			array('getSingleItemRepository')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getSingleItemRepository')
-			->will($this->returnValue($repository));
+			->will(self::returnValue($repository));
 
 		$parameters = tx_rnbase::makeInstance(
 			'tx_rnbase_parameters', array('uid' => 987654321)
@@ -288,7 +288,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			$action, 'handleRequest', $parameters, $configurations, $viewData
 		);
 
-		$this->assertEquals($model, $viewData->offsetGet('item'));
+		self::assertEquals($model, $viewData->offsetGet('item'));
 	}
 
 	/**
@@ -299,18 +299,18 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			'tx_mklib_repository_Abstract',
 			array(), '', FALSE, FALSE, FALSE, array('findByUid')
 		);
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('findByUid')
 			->with(123456789)
-			->will($this->returnValue('model'));
+			->will(self::returnValue('model'));
 		$action = $this->getMockForAbstractClass(
 			'tx_mklib_action_ShowSingeItem',
 			array(), '', TRUE, TRUE, TRUE,
 			array('getSingleItemRepository')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getSingleItemRepository')
-			->will($this->returnValue($repository));
+			->will(self::returnValue($repository));
 
 		$parameters = tx_rnbase::makeInstance(
 			'tx_rnbase_parameters', array('uid' => 987654321)
@@ -339,17 +339,17 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$model = tx_rnbase::makeInstance(
 			'tx_mklib_model_Page', array('uid' => 987654321)
 		);
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('findByUid')
-			->will($this->returnValue($model));
+			->will(self::returnValue($model));
 		$action = $this->getMockForAbstractClass(
 			'tx_mklib_action_ShowSingeItem',
 			array(), '', TRUE, TRUE, TRUE,
 			array('getSingleItemRepository')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getSingleItemRepository')
-			->will($this->returnValue($repository));
+			->will(self::returnValue($repository));
 
 		$parameters = tx_rnbase::makeInstance(
 			'tx_rnbase_parameters', array('uid' => 987654321)
@@ -364,12 +364,12 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			$action, 'handleRequest', $parameters, $configurations, $viewData
 		);
 
-		$this->assertNotEquals(
+		self::assertNotEquals(
 			$this->defaultSubstitutedPageTitle,
 			tx_rnbase_util_TYPO3::getTSFE()->page['title'],
 			'tx_rnbase_util_TYPO3::getTSFE()->page[\'title\'] doch ersetzt'
 		);
-		$this->assertNotEquals(
+		self::assertNotEquals(
 			$this->defaultSubstitutedPageTitle,
 			tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle,
 			'tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle doch ersetzt'
@@ -389,22 +389,22 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$model = tx_rnbase::makeInstance(
 			'tx_mklib_model_Page', array('uid' => 987654321)
 		);
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('findByUid')
-			->will($this->returnValue($model));
+			->will(self::returnValue($model));
 
 		$action = $this->getMockForAbstractClass(
 			'tx_mklib_action_ShowSingeItem',
 			array(), '', TRUE, TRUE, TRUE,
 			array('getSingleItemRepository', 'getConfId')
 		);
-		$action->expects($this->once())
+		$action->expects(self::once())
 			->method('getSingleItemRepository')
-			->will($this->returnValue($repository));
+			->will(self::returnValue($repository));
 
-		$action->expects($this->any())
+		$action->expects(self::any())
 			->method('getConfId')
-			->will($this->returnValue('myAction.'));
+			->will(self::returnValue('myAction.'));
 
 		$parameters = tx_rnbase::makeInstance(
 			'tx_rnbase_parameters', array('uid' => 987654321)
@@ -419,12 +419,12 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 			$action, 'handleRequest', $parameters, $configurations, $viewData
 		);
 
-		$this->assertEquals(
+		self::assertEquals(
 			$this->defaultSubstitutedPageTitle,
 			tx_rnbase_util_TYPO3::getTSFE()->page['title'],
 			'tx_rnbase_util_TYPO3::getTSFE()->page[\'title\'] falsch ersetzt'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			$this->defaultSubstitutedPageTitle,
 			tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle,
 			'tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle falsch ersetzt'

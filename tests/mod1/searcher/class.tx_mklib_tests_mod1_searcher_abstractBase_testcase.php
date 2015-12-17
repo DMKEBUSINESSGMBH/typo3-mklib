@@ -103,33 +103,33 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 	public function testGetSearchForm() {
 		$searchForm = $this->searcher->getSearchForm();
 
-		$this->assertContains(
+		self::assertContains(
 			'<table class="filters"><tr><td>' . $GLOBALS['LANG']->getLL('label_search') .
 			'</td><td><input type="text" name="SET[dummySearcherSearch]" style="width:96px;" value="" /> <input type="submit" name="dummySearcherSearch" value="search" /></td></tr><tr><td>Hidden entries:</td><td>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[showhidden]" onchange="jumpToUrl',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="0">' . $GLOBALS['LANG']->getLL('label_select_hide_hidden') . '</option>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="1">' . $GLOBALS['LANG']->getLL('label_select_show_hidden') . '</option>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</select>',
 			$searchForm,
 			'das suchformular ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</td></tr><tr><td></td><td><input type="submit" name="dummySearcherSearch" value="Update" /></td></tr></table>',
 			$searchForm,
 			'das suchformular ist falsch.'
@@ -140,10 +140,10 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$GLOBALS['emptyTestResult'] = true;
 		$aResultList = $this->searcher->getResultList();
 
-		$this->assertEquals('<p><strong>###LABEL_NO_DUMMYSEARCHER_FOUND###</strong></p><br/>', $aResultList['table'], 'Die Tabelle ist falsch.');
+		self::assertEquals('<p><strong>###LABEL_NO_DUMMYSEARCHER_FOUND###</strong></p><br/>', $aResultList['table'], 'Die Tabelle ist falsch.');
 
-		$this->assertEquals(0, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-		$this->assertEquals('<div class="pager"></div>', $aResultList['pager'], 'Der Pager ist falsch.');
+		self::assertEquals(0, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
+		self::assertEquals('<div class="pager"></div>', $aResultList['pager'], 'Der Pager ist falsch.');
 	}
 
 	public function testGetResultListReturnsCorrectTableAndPagerIfResults() {
@@ -152,50 +152,50 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$aResultList = $this->searcher->getResultList();
 
 		$result = $aResultList['table'];
-		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
 
 		for($i=1; $i<6; $i++) {
-			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+			self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
 
-		$this->assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-		$this->assertContains(
+		self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
+		self::assertContains(
 			'<div class="pager">',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="10" selected="selected">10 Einträge</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="100">100 Einträge</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</select>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[dummySearcherPagerdata_offset]"',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="0" selected="selected">Seite 0</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</div>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
@@ -209,15 +209,15 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$aResultList = $this->searcher->getResultList();
 
 		$result = $aResultList['table'];
-		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
 
 		for($i=1; $i<6; $i++) {
-			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+			self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
-		$this->assertRegExp('/"><del>6<\/del><\/span>/', $result, 'versteckter Wert 6 fehlt in Tabelle');
+		self::assertRegExp('/"><del>6<\/del><\/span>/', $result, 'versteckter Wert 6 fehlt in Tabelle');
 
-		$this->assertEquals(6, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
+		self::assertEquals(6, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 	}
 
 	public function testGetResultListReturnsCorrectTableAndPagerIfSortLinkIsClickedAndSetsSortOptionTmoduleData() {
@@ -230,55 +230,55 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 
 		//Daten im Modul korrekt?
 		$aModuleData = Tx_Rnbase_Backend_Utility::getModuleData(array (),tx_rnbase_parameters::getPostOrGetParameter('SET'),$this->mod->getName());
-		$this->assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
+		self::assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
 		$result = $aResultList['table'];
-		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
 
 		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
 		for($i=1; $i<6; $i++) {
-			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+			self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
 
-		$this->assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
+		self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 		//unberührt?
-		$this->assertContains(
+		self::assertContains(
 			'<div class="pager">',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="10" selected="selected">10 Einträge</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="100">100 Einträge</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</select>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[dummySearcherPagerdata_offset]"',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="0" selected="selected">Seite 0</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</div>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
@@ -294,56 +294,56 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$aResultList = $this->searcher->getResultList();
 
 		//Daten in $_GET korrekt?
-		$this->assertEquals('uid', $_GET['sortField'], '$_GET[\'sortField\'] nicht korrekt gesetzt.');
-		$this->assertEquals('asc', $_GET['sortRev'], '$_GET[\'sortRev\'] nicht korrekt gesetzt.');
+		self::assertEquals('uid', $_GET['sortField'], '$_GET[\'sortField\'] nicht korrekt gesetzt.');
+		self::assertEquals('asc', $_GET['sortRev'], '$_GET[\'sortRev\'] nicht korrekt gesetzt.');
 
 		$result = $aResultList['table'];
-		$this->assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		$this->assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
 
 		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
 		for($i=1; $i<6; $i++) {
-			$this->assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+			self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
 		}
 
-		$this->assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
+		self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
 		//unberührt?
-		$this->assertContains(
+		self::assertContains(
 			'<div class="pager">',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="10" selected="selected">10 Einträge</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="100">100 Einträge</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</select>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<select name="SET[dummySearcherPagerdata_offset]"',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'<option value="0" selected="selected">Seite 0</option>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		$this->assertContains(
+		self::assertContains(
 			'</div>',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
@@ -497,14 +497,14 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 			array('search')
 		);
 		$service
-			->expects($this->atLeastOnce())
+			->expects(self::atLeastOnce())
 			->method('search')
 			->with(
 				$expectedFields,
 				$expectedOptions
 			)
 			->will(
-				$this->returnValue(
+				self::returnValue(
 					is_array($items) ? $items : array(
 						$this->getModel(array('uid' => 1)),
 						$this->getModel(array('uid' => 2)),
@@ -526,9 +526,9 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 			array('getService')
 		);
 		$searcher
-			->expects($this->atLeastOnce())
+			->expects(self::atLeastOnce())
 			->method('getService')
-			->will($this->returnValue($service))
+			->will(self::returnValue($service))
 		;
 
 		return $searcher;

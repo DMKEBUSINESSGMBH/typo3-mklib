@@ -50,12 +50,12 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 	public function testGetWordlistIfNoResult(){
 		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('search'));
 		$fields = array('some fields');
-		$wordlistSrv->expects($this->once())
+		$wordlistSrv->expects(self::once())
 			->method('search')
 			->with($fields, array())
-			->will($this->returnValue(array()));
+			->will(self::returnValue(array()));
 
-		$this->assertNull($this->callInaccessibleMethod($wordlistSrv, 'getWordlist', $fields));
+		self::assertNull($this->callInaccessibleMethod($wordlistSrv, 'getWordlist', $fields));
 	}
 
 	/**
@@ -64,12 +64,12 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 	public function testGetWordlistIfResult(){
 		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('search'));
 		$fields = array('some fields');
-		$wordlistSrv->expects($this->once())
+		$wordlistSrv->expects(self::once())
 			->method('search')
 			->with($fields, array())
-			->will($this->returnValue(array('result')));
+			->will(self::returnValue(array('result')));
 
-		$this->assertEquals(
+		self::assertEquals(
 			array('result'), $this->callInaccessibleMethod($wordlistSrv, 'getWordlist', $fields)
 		);
 	}
@@ -80,13 +80,13 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 	 */
 	public function testGetWordlistEntryByWordReturnsEmptyIfNoMatch(){
 		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
-		$wordlistSrv->expects($this->once())
+		$wordlistSrv->expects(self::once())
 			->method('getWordlist')
-			->will($this->returnValue($this->getTestWordlist()));
+			->will(self::returnValue($this->getTestWordlist()));
 
 		$ret = $wordlistSrv->getWordlistEntryByWord('nothing');
 
-		$this->assertTrue(empty($ret),'Es wurden Treffer zurück gegeben!');
+		self::assertTrue(empty($ret),'Es wurden Treffer zurück gegeben!');
 	}
 
 	/**
@@ -95,19 +95,19 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 	 */
 	public function testGetWordlistEntryByWordReturnsMatches() {
 		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
-		$wordlistSrv->expects($this->exactly(2))
+		$wordlistSrv->expects(self::exactly(2))
 			->method('getWordlist')
-			->will($this->returnValue($this->getTestWordlist()));
+			->will(self::returnValue($this->getTestWordlist()));
 
 		$ret = $wordlistSrv->getWordlistEntryByWord('fuck shit sfuck');
-		$this->assertEquals(2,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
-		$this->assertEquals('fuck',$ret[0],'Das gefundene Wort ist nicht korrekt!');
-		$this->assertEquals('shit',$ret[1],'Das gefundene Wort ist nicht korrekt!');
+		self::assertEquals(2,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
+		self::assertEquals('fuck',$ret[0],'Das gefundene Wort ist nicht korrekt!');
+		self::assertEquals('shit',$ret[1],'Das gefundene Wort ist nicht korrekt!');
 
 		$ret = $wordlistSrv->getWordlistEntryByWord('who the fuck is alice? shit haha sfuck');
-		$this->assertEquals(2,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
-		$this->assertEquals('fuck',$ret[0],'Das gefundene Wort ist nicht korrekt!');
-		$this->assertEquals('shit',$ret[1],'Das gefundene Wort ist nicht korrekt!');
+		self::assertEquals(2,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
+		self::assertEquals('fuck',$ret[0],'Das gefundene Wort ist nicht korrekt!');
+		self::assertEquals('shit',$ret[1],'Das gefundene Wort ist nicht korrekt!');
 	}
 
 	/**
@@ -116,14 +116,14 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 	 */
 	public function testGetWordlistEntryByWordReturns1MatchIfInNoneGreedyMode() {
 		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
-		$wordlistSrv->expects($this->exactly(2))
+		$wordlistSrv->expects(self::exactly(2))
 			->method('getWordlist')
-			->will($this->returnValue($this->getTestWordlist()));
+			->will(self::returnValue($this->getTestWordlist()));
 
 		$ret = $wordlistSrv->getWordlistEntryByWord('fuck shit',false);
-		$this->assertEquals('fuck',$ret,'Das gefundene Wort ist nicht korrekt!');
+		self::assertEquals('fuck',$ret,'Das gefundene Wort ist nicht korrekt!');
 		$ret = $wordlistSrv->getWordlistEntryByWord('who the fuck is alice? shit',false);
-		$this->assertEquals('fuck',$ret,'Das gefundene Wort ist nicht korrekt!');
+		self::assertEquals('fuck',$ret,'Das gefundene Wort ist nicht korrekt!');
 	}
 
 	/**
@@ -132,13 +132,13 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 	 */
 	public function testGetWordlistEntryByWordReturnsMatchWithComplexString() {
 		$wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
-		$wordlistSrv->expects($this->once())
+		$wordlistSrv->expects(self::once())
 			->method('getWordlist')
-			->will($this->returnValue($this->getTestWordlist()));
+			->will(self::returnValue($this->getTestWordlist()));
 		$ret = $wordlistSrv->getWordlistEntryByWord('Einige Worte, blub, da war es!');
 
-		$this->assertEquals(1,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
-		$this->assertEquals('blub',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals(1,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
+		self::assertEquals('blub',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
 
 	}
 
@@ -154,27 +154,27 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 				unset($testWordList[$index]);
 			}
 		}
-		$wordlistSrv->expects($this->exactly(2))
+		$wordlistSrv->expects(self::exactly(2))
 			->method('getWordlist')
 			->with(array(
 				'WORDLIST.blacklisted' => array(OP_EQ_INT => 1),
 				'WORDLIST.whitelisted' => array(OP_EQ_INT => 0),
 			))
-			->will($this->returnValue($testWordList));
+			->will(self::returnValue($testWordList));
 
 		$ret = $wordlistSrv->getBlacklistEntryByWord('fuck shit ass');
 
-		$this->assertEquals(3,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
-		$this->assertEquals('fuck',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
-		$this->assertEquals('shit',$ret[1],'Das zurückgegebene Wort stimmt nicht!');
-		$this->assertEquals('ass',$ret[2],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals(3,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
+		self::assertEquals('fuck',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals('shit',$ret[1],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals('ass',$ret[2],'Das zurückgegebene Wort stimmt nicht!');
 
 		$ret = $wordlistSrv->getBlacklistEntryByWord('some fuck bad shit words ass');
 
-		$this->assertEquals(3,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
-		$this->assertEquals('fuck',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
-		$this->assertEquals('shit',$ret[1],'Das zurückgegebene Wort stimmt nicht!');
-		$this->assertEquals('ass',$ret[2],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals(3,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
+		self::assertEquals('fuck',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals('shit',$ret[1],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals('ass',$ret[2],'Das zurückgegebene Wort stimmt nicht!');
 	}
 
 	/**
@@ -189,18 +189,18 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase 
 				unset($testWordList[$index]);
 			}
 		}
-		$wordlistSrv->expects($this->once())
+		$wordlistSrv->expects(self::once())
 			->method('getWordlist')
 			->with(array(
 				'WORDLIST.blacklisted' => array(OP_EQ_INT => 0),
 				'WORDLIST.whitelisted' => array(OP_EQ_INT => 1),
 			))
-			->will($this->returnValue($testWordList));
+			->will(self::returnValue($testWordList));
 
 		$ret = $wordlistSrv->getWhitelistEntryByWord('nice');
 
-		$this->assertEquals(1,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
-		$this->assertEquals('nice',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
+		self::assertEquals(1,count($ret),'Das Treffer Array hat nicht die korrekte Größe!');
+		self::assertEquals('nice',$ret[0],'Das zurückgegebene Wort stimmt nicht!');
 	}
 
 	/**

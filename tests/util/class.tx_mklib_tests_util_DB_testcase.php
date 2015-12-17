@@ -76,10 +76,10 @@ class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase {
 	 */
 	public function testDeleteWithModeHiddenCallsDoUpdateCorrect(){
 		$util = $this->getUtilMock();
-		$util::staticExpects($this->never())
+		$util::staticExpects(self::never())
 			->method('doDelete');
 
-		$util::staticExpects($this->once())
+		$util::staticExpects(self::once())
 			->method('doUpdate')
 			->with('pages', 'someWhereClause', array('hidden' => 1));
 
@@ -91,10 +91,10 @@ class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase {
 	 */
 	public function testDeleteWithModeSoftDeleteCallsDoUpdateCorrect(){
 		$util = $this->getUtilMock();
-		$util::staticExpects($this->never())
+		$util::staticExpects(self::never())
 			->method('doDelete');
 
-		$util::staticExpects($this->once())
+		$util::staticExpects(self::once())
 			->method('doUpdate')
 			->with('pages', 'someWhereClause', array('deleted' => 1));
 
@@ -106,10 +106,10 @@ class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase {
 	 */
 	public function testDeleteWithModeHardDeleteCallsDoDeleteCorrect(){
 		$util = $this->getUtilMock();
-		$util::staticExpects($this->never())
+		$util::staticExpects(self::never())
 			->method('doUpdate');
 
-		$util::staticExpects($this->once())
+		$util::staticExpects(self::once())
 			->method('doDelete')
 			->with('pages', 'someWhereClause');
 

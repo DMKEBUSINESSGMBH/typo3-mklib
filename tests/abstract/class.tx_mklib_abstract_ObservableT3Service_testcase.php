@@ -57,7 +57,7 @@ class tx_mklib_tests_abstract_ObservableT3Service_testcase extends tx_phpunit_te
 		$this->oObservable->doSomething(array('secondTestData' => 'fran doe'));
 
 		//richtige observer registiert?
-		$this->assertEquals(array(
+		self::assertEquals(array(
 			'tx_mklib_tests_fixtures_classes_FirstObserver' => $oFirstObserver,
 			'tx_mklib_tests_fixtures_classes_SecondObserver' => $oSecondObserver,
 		), $this->oObservable->getObservers(), 'Falsche Observer registiert!');
@@ -67,25 +67,25 @@ class tx_mklib_tests_abstract_ObservableT3Service_testcase extends tx_phpunit_te
 		$this->oObservable->unregisterObserver($oSecondObserver);
 
 		//richtige observer registiert?
-		$this->assertEquals(array(
+		self::assertEquals(array(
 			'tx_mklib_tests_fixtures_classes_FirstObserver' => $oFirstObserver
 		), $this->oObservable->getObservers(), 'Falsche Observer registiert!');
 
 		$this->oObservable->doSomething(array('thirdTestData' => 'jimmy doe'));
 
 		//richtige Daten in notify angekommen?
-		$this->assertEquals(array(
+		self::assertEquals(array(
 			array('firstTestData' => 'john doe'),
 			array('secondTestData' => 'fran doe'),
 			array('thirdTestData' => 'jimmy doe')
 		), $oFirstObserver->aNotified, 'Die daten wurden nicht korrekt an den ersten observer übergeben!');
-		$this->assertEquals(3,$oFirstObserver->iNotified, 'notify wurde beim ersten Observer nicht oft genug aufgerufen!');
+		self::assertEquals(3,$oFirstObserver->iNotified, 'notify wurde beim ersten Observer nicht oft genug aufgerufen!');
 
-		$this->assertEquals(array(
+		self::assertEquals(array(
 			array('firstTestData' => 'john doe'),
 			array('secondTestData' => 'fran doe')
 		), $oSecondObserver->aNotified, 'Die daten wurden nicht korrekt an den zweiten observer übergeben!');
-		$this->assertEquals(2,$oSecondObserver->iNotified, 'notify wurde beim zweiten Observer nicht oft genug aufgerufen!');
+		self::assertEquals(2,$oSecondObserver->iNotified, 'notify wurde beim zweiten Observer nicht oft genug aufgerufen!');
 	}
 }
 

@@ -58,11 +58,11 @@ class tx_mklib_tests_srv_StaticCountryZones_testcase extends tx_phpunit_testcase
 		$models = $service->getByZnCode('al');//Alabama
 		$model = $models[0];
 
-		$this->assertInstanceOf(
+		self::assertInstanceOf(
 			'tx_mklib_model_StaticCountryZone', $model,
 			'Statemodel hat falsche Klasse'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'Alabama',
 			$model->getZnNameLocal(), 
 			'Bundesland falsch.'

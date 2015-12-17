@@ -48,19 +48,19 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr'
 		);
 
-		$this->assertEquals(
+		self::assertEquals(
 				'ein ganz langer text mit vielen worten und noch viel',
 				tx_mklib_util_String::crop($aRecord['othertext'], 50),
 				'Nicht korrekt gekürtzt!'
 			);
 
-		$this->assertEquals(
+		self::assertEquals(
 				'ein ganz langer text mit vielen worten und noch viel...',
 				tx_mklib_util_String::crop($aRecord['othertext'], 50, str_repeat('.', 3)),
 				'Nicht korrekt gekürtzt!'
 			);
 
-		$this->assertEquals(
+		self::assertEquals(
 				'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
 				tx_mklib_util_String::crop($aRecord['text']),
 				'Nicht korrekt gekürtzt!'
@@ -72,48 +72,48 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	 * Testen ob removeNoneLetters nur Buchstaben und Leerzeichen überlässt
 	 */
 	public function testRemoveNoneLetters(){
-		$this->assertEquals('abcdef ghiäöüß',tx_mklib_util_String::removeNoneLetters('a<>|,b;.:-_c!"\'\\d/&%e$§()f =?´`+*~g#{[]}h^°@µ€i0123456789äöüß'),'Der zurückgegebene String wurde nicht korrekt bereingt.');
+		self::assertEquals('abcdef ghiäöüß',tx_mklib_util_String::removeNoneLetters('a<>|,b;.:-_c!"\'\\d/&%e$§()f =?´`+*~g#{[]}h^°@µ€i0123456789äöüß'),'Der zurückgegebene String wurde nicht korrekt bereingt.');
 	}
 
 	/**
 	 * Testen ob html2plain sonderzeichen etc entfernt bzw umwandelt
 	 */
 	public function testHtml2Plain(){
-		$this->assertEquals(' alert("ohoh") ""\' äö',tx_mklib_util_String::html2plain('<script>alert("ohoh")</script>""\'<!-- my comment -->äö'),'Der zurückgegebene String wurde nicht korrekt bereingt bzw. umgewandelt.');
+		self::assertEquals(' alert("ohoh") ""\' äö',tx_mklib_util_String::html2plain('<script>alert("ohoh")</script>""\'<!-- my comment -->äö'),'Der zurückgegebene String wurde nicht korrekt bereingt bzw. umgewandelt.');
 	}
 	/**
 	 * isTrueVal testen
 	 */
 	public function testIsTrueVal(){
-		$this->assertTrue(tx_mklib_util_String::isTrueVal(true));
-		$this->assertTrue(tx_mklib_util_String::isTrueVal('true'));
-		$this->assertTrue(tx_mklib_util_String::isTrueVal('TrUe'));
-		$this->assertTrue(tx_mklib_util_String::isTrueVal('1'));
-		$this->assertTrue(tx_mklib_util_String::isTrueVal(1));
-		$this->assertFalse(tx_mklib_util_String::isTrueVal(false));
-		$this->assertFalse(tx_mklib_util_String::isTrueVal('false'));
-		$this->assertFalse(tx_mklib_util_String::isTrueVal('0'));
-		$this->assertFalse(tx_mklib_util_String::isTrueVal(0));
+		self::assertTrue(tx_mklib_util_String::isTrueVal(true));
+		self::assertTrue(tx_mklib_util_String::isTrueVal('true'));
+		self::assertTrue(tx_mklib_util_String::isTrueVal('TrUe'));
+		self::assertTrue(tx_mklib_util_String::isTrueVal('1'));
+		self::assertTrue(tx_mklib_util_String::isTrueVal(1));
+		self::assertFalse(tx_mklib_util_String::isTrueVal(false));
+		self::assertFalse(tx_mklib_util_String::isTrueVal('false'));
+		self::assertFalse(tx_mklib_util_String::isTrueVal('0'));
+		self::assertFalse(tx_mklib_util_String::isTrueVal(0));
 	}
 	/**
 	 * isFalseVal testen
 	 */
 	public function testIsFalseVal(){
-		$this->assertTrue(tx_mklib_util_String::isFalseVal(false));
-		$this->assertTrue(tx_mklib_util_String::isFalseVal('false'));
-		$this->assertTrue(tx_mklib_util_String::isFalseVal('0'));
-		$this->assertTrue(tx_mklib_util_String::isFalseVal(0));
-		$this->assertFalse(tx_mklib_util_String::isFalseVal(true));
-		$this->assertFalse(tx_mklib_util_String::isFalseVal('true'));
-		$this->assertFalse(tx_mklib_util_String::isFalseVal('TrUe'));
-		$this->assertFalse(tx_mklib_util_String::isFalseVal('1'));
-		$this->assertFalse(tx_mklib_util_String::isFalseVal(1));
+		self::assertTrue(tx_mklib_util_String::isFalseVal(false));
+		self::assertTrue(tx_mklib_util_String::isFalseVal('false'));
+		self::assertTrue(tx_mklib_util_String::isFalseVal('0'));
+		self::assertTrue(tx_mklib_util_String::isFalseVal(0));
+		self::assertFalse(tx_mklib_util_String::isFalseVal(true));
+		self::assertFalse(tx_mklib_util_String::isFalseVal('true'));
+		self::assertFalse(tx_mklib_util_String::isFalseVal('TrUe'));
+		self::assertFalse(tx_mklib_util_String::isFalseVal('1'));
+		self::assertFalse(tx_mklib_util_String::isFalseVal(1));
 	}
 	/**
 	 * removeRepeatedlyOccurrings testen
 	 */
 	public function testRemoveRepeatedlyOccurrings() {
-		$this->assertEquals(
+		self::assertEquals(
 				'Hallo String,'.LF.'Du wurdest bereinigt!',
 				tx_mklib_util_String::removeRepeatedlyOccurrings(
 					'Hallo  String,'.LF.LF.LF.'Du  wurdest    bereinigt!'
@@ -124,15 +124,15 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	 * toCamelCase testen
 	 */
 	public function testToCamelCase(){
-		$this->assertEquals('feUsers',tx_mklib_util_String::toCamelCase('fe_users'));
-		$this->assertEquals('txMklibWordlist',tx_mklib_util_String::toCamelCase('tx_mklib_wordlist'));
-		$this->assertEquals('txMklibTestsUtilStringTestcase',tx_mklib_util_String::toCamelCase('tx_mklib_tests_util_String_testcase'));
+		self::assertEquals('feUsers',tx_mklib_util_String::toCamelCase('fe_users'));
+		self::assertEquals('txMklibWordlist',tx_mklib_util_String::toCamelCase('tx_mklib_wordlist'));
+		self::assertEquals('txMklibTestsUtilStringTestcase',tx_mklib_util_String::toCamelCase('tx_mklib_tests_util_String_testcase'));
 	}
 
 	public function testObfusicateEmail() {
 		$this->initSpamProtectionConfig();
 
-		$this->assertEquals(
+		self::assertEquals(
 			'test.mail&#8203;(at)&#8203ein-host.de',
 			tx_mklib_util_String::obfusicateEmail(array(0=>'test.mail@ein-host.de')),
 			'Mail falsch verschleiert'
@@ -142,7 +142,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	public function testObfusicateContainedEmails() {
 		$this->initSpamProtectionConfig();
 
-		$this->assertEquals(
+		self::assertEquals(
 			'ein text mit einer mail mail&#8203;(at)&#8203host.de und noch einer anothermail&#8203;(at)&#8203host.de',
 			tx_mklib_util_String::obfusicateContainedEmails(
 				'ein text mit einer mail mail@host.de und noch einer anothermail@host.de'
@@ -154,7 +154,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	public function testObfusicateContainedEmailsIfNoContained() {
 		$this->initSpamProtectionConfig();
 
-		$this->assertEquals(
+		self::assertEquals(
 			'ein text mit keiner mail.',
 			tx_mklib_util_String::obfusicateContainedEmails(
 				'ein text mit keiner mail.'
@@ -171,7 +171,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 			$expectedLink = str_replace('" >', '">', $expectedLink);
 		}
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedLink,
 			tx_mklib_util_String::convertEmailToMailToLink(array(0=>'test.mail@ein-host.de')),
 			'Mailto Link falsch'
@@ -186,7 +186,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 			$expectedLink = str_replace('" >', '">', $expectedLink);
 		}
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedLink,
 			tx_mklib_util_String::convertContainedEmailsToMailToLinks(
 				'ein text mit einer mail mail@host.de und noch einer anothermail@host.de'
@@ -198,7 +198,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	public function testConvertContainedEmailsToMailToLinksIfNoContained() {
 		$this->initSpamProtectionConfig();
 
-		$this->assertEquals(
+		self::assertEquals(
 			'ein text mit keiner mail.',
 			tx_mklib_util_String::convertContainedEmailsToMailToLinks(
 				'ein text mit keiner mail.'
@@ -229,12 +229,12 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	public function testRemoveLineBreaks() {
 		$testString = "test1\ntest2\r\n";
 
-		$this->assertEquals(
+		self::assertEquals(
 			"test1test2",
 			tx_mklib_util_String::removeLineBreaks($testString),
 			'Line breaks nicht enfernt'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			"test1 test2 ",
 			tx_mklib_util_String::removeLineBreaks($testString, ' '),
 			'Line breaks nicht enfernt'
@@ -248,7 +248,7 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	public function testConvertUrlsinTextToLinks(
 		$text, $aTagParams, $expectedParsedText
 	) {
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedParsedText,
 			tx_mklib_util_String::convertUrlsInTextToLinks($text, $aTagParams),
 			'Text falsch geparsed'

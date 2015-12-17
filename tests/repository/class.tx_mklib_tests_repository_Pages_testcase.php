@@ -52,9 +52,9 @@ class tx_mklib_tests_repository_Pages_testcase
 		);
 
 		$repo
-			->expects($this->any())
+			->expects(self::any())
 			->method('getSearcher')
-			->will($this->returnValue($searcher))
+			->will(self::returnValue($searcher))
 		;
 
 		return $repo;
@@ -69,7 +69,7 @@ class tx_mklib_tests_repository_Pages_testcase
 	 * @test
 	 */
 	public function testGetSearchClassShouldBeGeneric() {
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_rnbase_util_SearchGeneric',
 			$this->callInaccessibleMethod(
 				$this->getRepository(),
@@ -91,11 +91,11 @@ class tx_mklib_tests_repository_Pages_testcase
 			$this->getRepository(),
 			'getEmptyModel'
 		);
-		$this->assertInstanceOf(
+		self::assertInstanceOf(
 			'tx_rnbase_model_base',
 			$model
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'pages',
 			$model->getTablename()
 		);
@@ -118,42 +118,42 @@ class tx_mklib_tests_repository_Pages_testcase
 		);
 		$that = $this; // workaround for php 5.3
 		$searcher
-			->expects($this->once())
+			->expects(self::once())
 			->method('search')
 			->with(
 				// check, if only (count:1) the page field is set
-				$this->callback(
+				self::callback(
 					function($f) use($that) {
-						$that->assertTrue(is_array($f));
-						$that->assertCount(1, $f);
-						$that->assertSame(57, $f['PAGES.pid'][OP_EQ_INT]);
+						$that::assertTrue(is_array($f));
+						$that::assertCount(1, $f);
+						$that::assertSame(57, $f['PAGES.pid'][OP_EQ_INT]);
 						return TRUE;
 					}
 				),
 				// check, if only (count:1) the searchdef
-				$this->callback(
+				self::callback(
 					function($o) use($that) {
-						$that->assertTrue(is_array($o));
+						$that::assertTrue(is_array($o));
 						// if the test rans in be, the enablefieldsbe option will be set
 						if (TYPO3_MODE === 'BE') {
-							$that->assertCount(2, $o);
-							$that->assertArrayHasKey('enablefieldsbe', $o);
+							$that::assertCount(2, $o);
+							$that::assertArrayHasKey('enablefieldsbe', $o);
 						} else {
-							$that->assertCount(1, $o);
+							$that::assertCount(1, $o);
 						}
-						$that->assertArrayHasKey('searchdef', $o);
+						$that::assertArrayHasKey('searchdef', $o);
 
 						return TRUE;
 					}
 				)
 			)
-			->will($this->returnValue(array()))
+			->will(self::returnValue(array()))
 		;
 
 
 		$page = $this->getModel(array('uid'=> 57), 'tx_mklib_model_Page');
 
-		$this->assertTrue(is_array($repo->getChildren($page)));
+		self::assertTrue(is_array($repo->getChildren($page)));
 	}
 
 	/**
@@ -169,10 +169,10 @@ class tx_mklib_tests_repository_Pages_testcase
 			$this->getRepository(),
 			'getSearchdef'
 		);
-		$this->assertArrayHasKey('basetable', $searchdef);
-		$this->assertEquals('pages', $searchdef['basetable']);
-		$this->assertArrayHasKey('wrapperclass', $searchdef);
-		$this->assertInstanceOf(
+		self::assertArrayHasKey('basetable', $searchdef);
+		self::assertEquals('pages', $searchdef['basetable']);
+		self::assertArrayHasKey('wrapperclass', $searchdef);
+		self::assertInstanceOf(
 			'tx_rnbase_model_base',
 			tx_rnbase::makeInstance($searchdef['wrapperclass'])
 		);
@@ -207,46 +207,46 @@ class tx_mklib_tests_repository_Pages_testcase
 		);
 		$that = $this; // workaround for php 5.3
 		$searcher
-			->expects($this->once())
+			->expects(self::once())
 			->method('search')
 			->with(
-				$this->callback(
+				self::callback(
 					function($f) use($that) {
-						$that->assertTrue(is_array($f));
-						$that->assertArrayHasKey('NEWALIAS.uid', $f);
-						$that->assertTrue(is_array($f['NEWALIAS.uid']));
-						$that->assertArrayHasKey(OP_EQ, $f['NEWALIAS.uid']);
-						$that->assertSame(57, $f['NEWALIAS.uid'][OP_EQ]);
+						$that::assertTrue(is_array($f));
+						$that::assertArrayHasKey('NEWALIAS.uid', $f);
+						$that::assertTrue(is_array($f['NEWALIAS.uid']));
+						$that::assertArrayHasKey(OP_EQ, $f['NEWALIAS.uid']);
+						$that::assertSame(57, $f['NEWALIAS.uid'][OP_EQ]);
 						return TRUE;
 					}
 				),
-				$this->callback(
+				self::callback(
 					function($o) use($that) {
-						$that->assertTrue(is_array($o));
-						$that->assertArrayHasKey('sqlonly', $o);
-						$that->assertTrue($o['sqlonly']);
-						$that->assertArrayHasKey('searchdef', $o);
+						$that::assertTrue(is_array($o));
+						$that::assertArrayHasKey('sqlonly', $o);
+						$that::assertTrue($o['sqlonly']);
+						$that::assertArrayHasKey('searchdef', $o);
 						$searchdef = &$o['searchdef'];
-						$that->assertSearchDef($searchdef);
+						$that::assertSearchDef($searchdef);
 
 						// test the search dev overrule
-						$that->assertArrayHasKey('alias', $searchdef);
-						$that->assertTrue(is_array($searchdef['alias']));
-						$that->assertArrayHasKey('NEWALIAS', $searchdef['alias']);
-						$that->assertTrue(is_array($searchdef['alias']['NEWALIAS']));
-						$that->assertArrayHasKey('table', $searchdef['alias']['NEWALIAS']);
-						$that->assertEquals('tx_new_table', $searchdef['alias']['NEWALIAS']['table']);
-						$that->assertArrayHasKey('join', $searchdef['alias']['NEWALIAS']);
-						$that->assertEquals('JOIN tx_new_table AS NEWALIAS ON PAGES.new_field = NEWALIAS.uid', $searchdef['alias']['NEWALIAS']['join']);
+						$that::assertArrayHasKey('alias', $searchdef);
+						$that::assertTrue(is_array($searchdef['alias']));
+						$that::assertArrayHasKey('NEWALIAS', $searchdef['alias']);
+						$that::assertTrue(is_array($searchdef['alias']['NEWALIAS']));
+						$that::assertArrayHasKey('table', $searchdef['alias']['NEWALIAS']);
+						$that::assertEquals('tx_new_table', $searchdef['alias']['NEWALIAS']['table']);
+						$that::assertArrayHasKey('join', $searchdef['alias']['NEWALIAS']);
+						$that::assertEquals('JOIN tx_new_table AS NEWALIAS ON PAGES.new_field = NEWALIAS.uid', $searchdef['alias']['NEWALIAS']['join']);
 
 						return TRUE;
 					}
 				)
 			)
-			->will($this->returnValue(array()))
+			->will(self::returnValue(array()))
 		;
 
-		$this->assertTrue(is_array($repo->search($fields, $options)));
+		self::assertTrue(is_array($repo->search($fields, $options)));
 	}
 
 
@@ -257,13 +257,13 @@ class tx_mklib_tests_repository_Pages_testcase
 	 * @param array $searchdef
 	 * @access protected only public for php5.3 and missing $this usage in closures.
 	 */
-	public function assertSearchDef($searchdef) {
-		$this->assertTrue(is_array($searchdef));
-		$this->assertArrayHasKey('alias', $searchdef);
-		$this->assertTrue(is_array($searchdef['alias']));
-		$this->assertArrayHasKey('PAGES', $searchdef['alias']);
-		$this->assertTrue(is_array($searchdef['alias']['PAGES']));
-		$this->assertArrayHasKey('table', $searchdef['alias']['PAGES']);
-		$this->assertEquals('pages', $searchdef['alias']['PAGES']['table']);
+	public static function assertSearchDef($searchdef) {
+		self::assertTrue(is_array($searchdef));
+		self::assertArrayHasKey('alias', $searchdef);
+		self::assertTrue(is_array($searchdef['alias']));
+		self::assertArrayHasKey('PAGES', $searchdef['alias']);
+		self::assertTrue(is_array($searchdef['alias']['PAGES']));
+		self::assertArrayHasKey('table', $searchdef['alias']['PAGES']);
+		self::assertEquals('pages', $searchdef['alias']['PAGES']['table']);
 	}
 }

@@ -60,7 +60,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 * @group unit
 	 */
 	public function testGetDatabaseUtility() {
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_mklib_util_DB',
 			$this->callInaccessibleMethod(
 				tx_rnbase::makeInstance('tx_mklib_scheduler_DeleteFromDatabase'),
@@ -77,7 +77,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 		$databaseUtility = $this->getDatabaseUtility();
 		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
 
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doSelect')
 			->with(
 				'uid', $this->options['table'],
@@ -98,7 +98,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 		$this->options['selectFields'] = 'otherFields';
 		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
 
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doSelect')
 			->with(
 				$this->options['selectFields'] . ',uid', $this->options['table'],
@@ -116,7 +116,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 */
 	public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrect() {
 		$databaseUtility = $this->getDatabaseUtility();
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('delete')
 			->with(
 				$this->options['table'],
@@ -135,7 +135,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrectWhenSelectFieldsDifferentToUid() {
 		$this->options['uidField'] = 'otherField';
 		$databaseUtility = $this->getDatabaseUtility();
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('delete')
 			->with(
 				$this->options['table'],
@@ -163,7 +163,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 		);
 		$affectedRows->setAccessible(TRUE);
 
-		$this->assertEquals(
+		self::assertEquals(
 			array(array('uid' => 123), array('uid' => 456)),
 			$affectedRows->getValue($scheduler),
 			'affectedRows falsch gesetzt'
@@ -199,7 +199,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 			)
 		);
 
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedDevLog, $devLog, 'falsches devlog'
 		);
 	}
@@ -215,9 +215,9 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 			array('getDatabaseUtility')
 		);
 
-		$scheduler->expects($this->any())
+		$scheduler->expects(self::any())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
 		$scheduler->setOptions($this->options);
 

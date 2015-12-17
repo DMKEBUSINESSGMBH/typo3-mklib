@@ -86,7 +86,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			'recursive' => '0',
 			'filetypes' => 'zip, xml',
 		));
-		$this->assertEquals(0, $count, 'wrong deleted count.');
+		self::assertEquals(0, $count, 'wrong deleted count.');
 		// weider löschen
 		tx_rnbase_util_Files::rmdir($testfolder, true);
 	}
@@ -104,7 +104,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			'filetypes' => 'zip, xml',
 			'skiptypo3tempcheck' => '1',
 		));
-		$this->assertEquals(2, $count, 'wrong deleted count.');
+		self::assertEquals(2, $count, 'wrong deleted count.');
 		// weider löschen
 		tx_rnbase_util_Files::rmdir($testfolder, true);
 	}
@@ -123,7 +123,7 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			'filetypes' => 'zip, xml',
 			'skiptypo3tempcheck' => '1',
 		));
-		$this->assertEquals(4, $count, 'wrong deleted count. testfolder: ' . $testfolder);
+		self::assertEquals(4, $count, 'wrong deleted count. testfolder: ' . $testfolder);
 		// weider löschen
 		tx_rnbase_util_Files::rmdir($testfolder, true);
 	}
@@ -136,10 +136,10 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			$this->markTestSkipped('Geht leider nicht unter CLI.');
 		}
 		$pathSite = tx_mklib_util_File::getDocumentRoot();
-		$this->assertEquals($pathSite, tx_mklib_util_File::getServerPath());
-		$this->assertEquals($pathSite.'typo3conf/', tx_mklib_util_File::getServerPath(tx_mklib_util_File::getSiteUrl().'/typo3conf'));
-		$this->assertEquals($pathSite.'typo3conf/', tx_mklib_util_File::getServerPath('\typo3conf'));
-		$this->assertEquals($pathSite.'typo3conf/localconf.php', tx_mklib_util_File::getServerPath('/typo3conf\localconf.php'));
+		self::assertEquals($pathSite, tx_mklib_util_File::getServerPath());
+		self::assertEquals($pathSite.'typo3conf/', tx_mklib_util_File::getServerPath(tx_mklib_util_File::getSiteUrl().'/typo3conf'));
+		self::assertEquals($pathSite.'typo3conf/', tx_mklib_util_File::getServerPath('\typo3conf'));
+		self::assertEquals($pathSite.'typo3conf/localconf.php', tx_mklib_util_File::getServerPath('/typo3conf\localconf.php'));
 	}
 
 	/**
@@ -150,10 +150,10 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			$this->markTestSkipped('Geht leider nicht unter CLI.');
 		}
 		$pathSite = tx_mklib_util_File::getDocumentRoot();
-		$this->assertEquals('/', tx_mklib_util_File::getRelPath());
-		$this->assertEquals('/typo3conf/', tx_mklib_util_File::getRelPath(tx_mklib_util_File::getSiteUrl().'\typo3conf'));
-		$this->assertEquals('/typo3conf/', tx_mklib_util_File::getRelPath($pathSite.'\typo3conf'));
-		$this->assertEquals('/typo3conf/localconf.php', tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php'));
+		self::assertEquals('/', tx_mklib_util_File::getRelPath());
+		self::assertEquals('/typo3conf/', tx_mklib_util_File::getRelPath(tx_mklib_util_File::getSiteUrl().'\typo3conf'));
+		self::assertEquals('/typo3conf/', tx_mklib_util_File::getRelPath($pathSite.'\typo3conf'));
+		self::assertEquals('/typo3conf/localconf.php', tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php'));
 	}
 
 	/**
@@ -164,16 +164,16 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 			$this->markTestSkipped('Geht leider nicht unter CLI.');
 		}
 		$pathSite = tx_mklib_util_File::getDocumentRoot();
-		$this->assertEquals('', tx_mklib_util_File::getRelPath('', TRUE));
-		$this->assertEquals(
+		self::assertEquals('', tx_mklib_util_File::getRelPath('', TRUE));
+		self::assertEquals(
 			'typo3conf/',
 			tx_mklib_util_File::getRelPath(tx_mklib_util_File::getSiteUrl().'\typo3conf', TRUE)
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'typo3conf/',
 			tx_mklib_util_File::getRelPath($pathSite.'\typo3conf', TRUE)
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'typo3conf/localconf.php',
 			tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php', TRUE)
 		);
@@ -188,51 +188,51 @@ class tx_mklib_tests_util_File_testcase extends tx_phpunit_testcase {
 		}
 		$pathSite = tx_mklib_util_File::getDocumentRoot();
 		$siteUrl = tx_mklib_util_File::getSiteUrl();
-		$this->assertEquals($siteUrl, tx_mklib_util_File::getWebPath());
-		$this->assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath($siteUrl.'/typo3conf'));
-		$this->assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath($pathSite.'\typo3conf'));
-		$this->assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath('/typo3conf'));
-		$this->assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath($pathSite.'/typo3conf\localconf.php'));
-		$this->assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath('typo3conf\localconf.php'));
+		self::assertEquals($siteUrl, tx_mklib_util_File::getWebPath());
+		self::assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath($siteUrl.'/typo3conf'));
+		self::assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath($pathSite.'\typo3conf'));
+		self::assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath('/typo3conf'));
+		self::assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath($pathSite.'/typo3conf\localconf.php'));
+		self::assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath('typo3conf\localconf.php'));
 	}
 
 	public function testParseUrlFromParts() {
 		$url = 'https://kunde:mk17@jenkins.project.dmknet.de:80/jenkins?test=param#anchor';
 		$parts = parse_url($url);
 		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
-		$this->assertEquals($url, $newUrl);
+		self::assertEquals($url, $newUrl);
 
 		unset($parts['pass']);
 		$url = 'https://kunde@jenkins.project.dmknet.de:80/jenkins?test=param#anchor';
 		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
-		$this->assertEquals($url, $newUrl);
+		self::assertEquals($url, $newUrl);
 
 		unset($parts['user']);
 		$url = 'https://jenkins.project.dmknet.de:80/jenkins?test=param#anchor';
 		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
-		$this->assertEquals($url, $newUrl);
+		self::assertEquals($url, $newUrl);
 
 		unset($parts['port']);
 		$url = 'https://jenkins.project.dmknet.de/jenkins?test=param#anchor';
 		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
-		$this->assertEquals($url, $newUrl);
+		self::assertEquals($url, $newUrl);
 
 		unset($parts['query']);
 		$url = 'https://jenkins.project.dmknet.de/jenkins#anchor';
 		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
-		$this->assertEquals($url, $newUrl);
+		self::assertEquals($url, $newUrl);
 
 		unset($parts['fragment']);
 		$url = 'https://jenkins.project.dmknet.de/jenkins';
 		$newUrl = tx_mklib_util_File::parseUrlFromParts($parts);
-		$this->assertEquals($url, $newUrl);
+		self::assertEquals($url, $newUrl);
 	}
 
 	/**
 	 * @dataProvider getFiles
 	 */
 	public function testIsValidFile($filepath, $expectedReturnValue) {
-		$this->assertEquals($expectedReturnValue, tx_mklib_util_File::isValidFile($filepath));
+		self::assertEquals($expectedReturnValue, tx_mklib_util_File::isValidFile($filepath));
 	}
 
 	/**

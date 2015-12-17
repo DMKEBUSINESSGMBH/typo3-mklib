@@ -70,7 +70,7 @@ class tx_mklib_tests_util_Scheduler_testcase
 	 * @group unit
 	 */
 	public function testGetFormattedTime() {
-		$this->assertEquals(
+		self::assertEquals(
 			'1 Stunde ',
 			tx_mklib_util_Scheduler::getFormattedTime(3600)
 		);

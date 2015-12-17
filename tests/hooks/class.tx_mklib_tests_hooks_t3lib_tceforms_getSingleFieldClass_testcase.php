@@ -215,47 +215,47 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 		);
 
 		//test
-		$this->assertFalse(
+		self::assertFalse(
 			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['inputNotRequiredField']]),
 			$this->fieldMappings['inputNotRequiredField']. ' ist required!'
 		);
-		$this->assertFalse(
+		self::assertFalse(
 			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired1Field']]),
 			$this->fieldMappings['selectNotRequired1Field']. ' ist required!'
 		);
-		$this->assertFalse(
+		self::assertFalse(
 			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired2Field']]),
 			$this->fieldMappings['selectNotRequired2Field']. ' ist required!'
 		);
-		$this->assertFalse(
+		self::assertFalse(
 			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired3Field']]),
 			$this->fieldMappings['selectNotRequired3Field']. ' ist required!'
 		);
-		$this->assertFalse(
+		self::assertFalse(
 			isset($this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectNotRequired4Field']]),
 			$this->fieldMappings['selectNotRequired4Field']. ' ist required!'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'data[pages][1][t3ver_state]',
 			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired6Field']],
 			$this->fieldMappings['selectRequired6Field']. ' ist nicht required!'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'data[pages][1][t3ver_tstamp]',
 			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired1Field']],
 			$this->fieldMappings['selectRequired1Field']. ' ist nicht required!'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'data[pages][1][t3ver_swapmode]',
 			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired2Field']],
 			$this->fieldMappings['selectRequired2Field']. ' ist nicht required!'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'data[pages][1][t3ver_move_id]',
 			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired3Field']],
 			$this->fieldMappings['selectRequired3Field']. ' ist nicht required!'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'data[pages][1][t3_origuid]',
 			$this->oTceForms->requiredFields[$this->testTable . '_1_' . $this->fieldMappings['selectRequired4Field']],
 			$this->fieldMappings['selectRequired4Field']. 'ist nicht required!'

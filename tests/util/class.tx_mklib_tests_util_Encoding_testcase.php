@@ -87,20 +87,20 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 				'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__
 			),true).'</pre>'; // @TODO: remove me
 
-		$this->assertTrue(
+		self::assertTrue(
 			tx_mklib_util_Encoding::isEncoding($strIso88591, 'ISO-8859-1'),
 			'$strIso88591 ist NICHT ISO-8859-1'
 		);
-		$this->assertFalse(
+		self::assertFalse(
 			tx_mklib_util_Encoding::isEncoding($strIso88591, 'UTF-8'),
 			'$strIso88591 IST UTF-8'
 		);
 
-		$this->assertTrue(
+		self::assertTrue(
 			tx_mklib_util_Encoding::isEncoding($strUtf8, 'UTF-8'),
 			'$strUtf8 ist NICHT UTF-8'
 		);
-		$this->assertFalse(
+		self::assertFalse(
 			tx_mklib_util_Encoding::isEncoding($strUtf8, 'ISO-8859-1'),
 			'$strUtf8 IST ISO-8859-1'
 		);
@@ -114,15 +114,15 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 	public function test_convert_string_from_ISO_8859_1_to_UTF_8() {
 		$string = pack("H*", self::$hexIso88591);
 
-		$this->assertEquals(7, strlen($string),
+		self::assertEquals(7, strlen($string),
 				'$string ist nicht mit ISO-8859-1 codiert.');
 
 		$string = tx_mklib_util_Encoding::convertEncoding(
 				$string, 'UTF-8', 'ISO-8859-1');
 
-		$this->assertEquals(14, strlen($string),
+		self::assertEquals(14, strlen($string),
 				'$string wurde nicht nach UTF-8 codiert.');
-		$this->assertEquals(self::$hexUtf8, bin2hex($string),
+		self::assertEquals(self::$hexUtf8, bin2hex($string),
 				'Der HEX-Wert von $string stimmt nach der codierung nicht.');
 	}
 
@@ -133,15 +133,15 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 	public function test_convert_string_from_UTF_8_to_ISO_8859_1() {
 		$string = pack("H*", self::$hexUtf8);
 
-		$this->assertEquals(14, strlen($string),
+		self::assertEquals(14, strlen($string),
 				'$string ist nicht mit ISO-8859-1 codiert.');
 
 		$string = tx_mklib_util_Encoding::convertEncoding(
 				$string, 'ISO-8859-1', 'UTF-8');
 
-		$this->assertEquals(7, strlen($string),
+		self::assertEquals(7, strlen($string),
 				'$string wurde nicht nach UTF-8 codiert.');
-		$this->assertEquals(self::$hexIso88591, bin2hex($string),
+		self::assertEquals(self::$hexIso88591, bin2hex($string),
 				'Der HEX-Wert von $string stimmt nach der codierung nicht.');
 	}
 
@@ -178,7 +178,7 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 		$arrayFrom = tx_mklib_util_Encoding::convertEncoding(
 				$arrayFrom, 'UTF-8', 'ISO-8859-1');
 
-		$this->assertEquals($arrayTo, $arrayFrom,
+		self::assertEquals($arrayTo, $arrayFrom,
 				'$array wurde nicht richtig nach UTF-8 codiert.');
 	}
 
@@ -209,7 +209,7 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 		$modelFrom = tx_mklib_util_Encoding::convertEncoding(
 				$modelFrom, 'UTF-8', 'ISO-8859-1');
 
-		$this->assertEquals($modelTo->getArrayCopy(), $modelFrom->getArrayCopy(),
+		self::assertEquals($modelTo->getArrayCopy(), $modelFrom->getArrayCopy(),
 				'$array wurde nicht richtig nach UTF-8 codiert.');
 	}
 
@@ -242,7 +242,7 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 		$modelFrom = tx_mklib_util_Encoding::convertEncoding(
 				$modelFrom, 'UTF-8', 'ISO-8859-1');
 
-		$this->assertEquals($modelTo->record, $modelFrom->record,
+		self::assertEquals($modelTo->record, $modelFrom->record,
 				'$array wurde nicht richtig nach UTF-8 codiert.');
 	}
 
@@ -285,9 +285,9 @@ class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
 		$data = tx_mklib_util_Encoding::convertEncoding(
 				$data, 'UTF-8', 'ISO-8859-1');
 
-		$this->assertEquals($modelTo->record, $data['one']->record,
+		self::assertEquals($modelTo->record, $data['one']->record,
 				'$array wurde nicht richtig nach UTF-8 codiert.');
-		$this->assertEquals($modelTo->record, $data['twoe']->record,
+		self::assertEquals($modelTo->record, $data['twoe']->record,
 				'$array wurde nicht richtig nach UTF-8 codiert.');
 	}
 

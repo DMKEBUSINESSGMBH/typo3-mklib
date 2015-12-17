@@ -97,7 +97,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		unset($TYPO3_LOADED_EXT['dam']);
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
 
-		$this->assertFalse(
+		self::assertFalse(
 			tx_mklib_util_DAM::damRecordHasReferences(1),
 			'Es wurde nicht false zurück geben obwohl DAM nicht geladen ist.');
 
@@ -110,7 +110,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 */
 	public function testDamRecordHasReferencesReturnsTrueIfReferencesFound(){
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
-		$this->assertTrue(
+		self::assertTrue(
 			tx_mklib_util_DAM::damRecordHasReferences(1),
 			'Es wurde nicht das richtige Array zurückgegeben.');
 	}
@@ -121,7 +121,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 */
 	public function testDamRecordHasReferencesReturnsFalseIfNoReferencesFound(){
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
-		$this->assertFalse(
+		self::assertFalse(
 			tx_mklib_util_DAM::damRecordHasReferences(1,'tx_does_not_matter'),
 			'Es wurde kein leeres Array zurück geben.');
 	}
@@ -133,7 +133,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	public function testDeleteDamRecordReturnsFalseIfGivenDamRecordIsEmpty() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
 		$aDamRecords = array('rows' => array(),'files' => array());
-		$this->assertFalse(tx_mklib_util_DAM::deleteDamRecord($aDamRecords),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
+		self::assertFalse(tx_mklib_util_DAM::deleteDamRecord($aDamRecords),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 	}
 
 	/**
@@ -143,17 +143,17 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	public function testDeleteDamRecordWorksCorrectWithDefaultSettingsAndExistingReferences() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
-		$this->assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
+		self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
 		//dam record nicht auf hidden und deleted da noch referenzen da?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
-		$this->assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
-		$this->assertEquals(0,$res[0]['hidden'],'hidden falsch!');
-		$this->assertEquals(0,$res[0]['deleted'],'deleted falsch!');
+		self::assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
+		self::assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
+		self::assertEquals(0,$res[0]['hidden'],'hidden falsch!');
+		self::assertEquals(0,$res[0]['deleted'],'deleted falsch!');
 
 		//bild noch da?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
 	}
 
 	/**
@@ -162,17 +162,17 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 */
 	public function testDeleteDamRecordWorksCorrectWithDefaultSettingsAndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
-		$this->assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
+		self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
 		//dam record nicht auf hidden und deleted da noch referenzen da?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
-		$this->assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
-		$this->assertEquals(1,$res[0]['hidden'],'hidden falsch!');
-		$this->assertEquals(0,$res[0]['deleted'],'deleted falsch!');
+		self::assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
+		self::assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
+		self::assertEquals(1,$res[0]['hidden'],'hidden falsch!');
+		self::assertEquals(0,$res[0]['deleted'],'deleted falsch!');
 
 		//bild noch da?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
 	}
 
 	/**
@@ -181,17 +181,17 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 */
 	public function testDeleteDamRecordWorksCorrectWithMode1AndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
-		$this->assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,1),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
+		self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,1),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
 		//dam record nicht auf hidden und deleted da noch referenzen da?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
-		$this->assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
-		$this->assertEquals(0,$res[0]['hidden'],'hidden falsch!');
-		$this->assertEquals(1,$res[0]['deleted'],'deleted falsch!');
+		self::assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
+		self::assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
+		self::assertEquals(0,$res[0]['hidden'],'hidden falsch!');
+		self::assertEquals(1,$res[0]['deleted'],'deleted falsch!');
 
 		//bild noch da?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
 	}
 
 	/**
@@ -200,14 +200,14 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 */
 	public function testDeleteDamRecordWorksCorrectWithMode2AndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
-		$this->assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,2),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
+		self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,2),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
 		//dam record nicht auf hidden und deleted da noch referenzen da?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
 
 		//bild noch da?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde doch gelöscht!');
 	}
 
 	/**
@@ -216,14 +216,14 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	 */
 	public function testDeleteDamRecordWorksCorrectWithDeletingImageAndNoneExistingReferences() {
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
-		$this->assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,2,true),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
+		self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,2,true),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
 		//dam record nicht auf hidden und deleted da noch referenzen da?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
 
 		//bild gelöscht?
-		$this->assertFileNotExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
+		self::assertFileNotExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
 	}
 
 	/**
@@ -233,17 +233,17 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 	public function testDeleteDamRecordWorksCorrectWithDeletingImageAndExistingReferences() {
 		$this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
 		$aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
-		$this->assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,2,true),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
+		self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords,2,true),'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
 		//dam record nicht auf hidden und deleted da noch referenzen da?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
-		$this->assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
-		$this->assertEquals(0,$res[0]['hidden'],'hidden falsch!');
-		$this->assertEquals(0,$res[0]['deleted'],'deleted falsch!');
+		self::assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
+		self::assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
+		self::assertEquals(0,$res[0]['hidden'],'hidden falsch!');
+		self::assertEquals(0,$res[0]['deleted'],'deleted falsch!');
 
 		//bild noch da?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild wurde nicht gelöscht!');
 	}
 
 	/**
@@ -262,22 +262,22 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted');
 
 		//richtige Anzahl gelöscht?
-		$this->assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
-		$this->assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
+		self::assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
+		self::assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
 
 		//bild nicht gelöscht?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
 
 		//eintrag in dam auf hidden gesetzt?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
-		$this->assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
-		$this->assertEquals(1,$res[0]['hidden'],'hidden falsch!');
-		$this->assertEquals(0,$res[0]['deleted'],'deleted falsch!');
+		self::assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
+		self::assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
+		self::assertEquals(1,$res[0]['hidden'],'hidden falsch!');
+		self::assertEquals(0,$res[0]['deleted'],'deleted falsch!');
 
 		//dam referenz gelöscht?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam_mm_ref',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
 	}
 
 	/**
@@ -296,22 +296,22 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted',1);
 
 		//richtige Anzahl gelöscht?
-		$this->assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
-		$this->assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
+		self::assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
+		self::assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
 
 		//bild nicht gelöscht?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
 
 		//eintrag in dam auf hidden gesetzt?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
-		$this->assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
-		$this->assertEquals(0,$res[0]['hidden'],'hidden falsch!');
-		$this->assertEquals(1,$res[0]['deleted'],'deleted falsch!');
+		self::assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
+		self::assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
+		self::assertEquals(0,$res[0]['hidden'],'hidden falsch!');
+		self::assertEquals(1,$res[0]['deleted'],'deleted falsch!');
 
 		//dam referenz gelöscht?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam_mm_ref',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
 	}
 
 	/**
@@ -330,19 +330,19 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted',2);
 
 		//richtige Anzahl gelöscht?
-		$this->assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
-		$this->assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
+		self::assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
+		self::assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
 
 		//bild nicht gelöscht?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
 
 		//eintrag in dam auf hidden gesetzt?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
 
 		//dam referenz gelöscht?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam_mm_ref',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
 	}
 
 	/**
@@ -361,19 +361,19 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted',2, true);
 
 		//richtige Anzahl gelöscht?
-		$this->assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
-		$this->assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
+		self::assertEquals(1,$result['deletedReferences'],'deletedReferences ist falsch!');
+		self::assertEquals(1,$result['deletedRecords'],'deletedRecords ist falsch!');
 
 		//bild nicht gelöscht?
-		$this->assertFileNotExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
+		self::assertFileNotExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
 
 		//eintrag in dam auf hidden gesetzt?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Einträge wurden nicht gelöscht!');
 
 		//dam referenz gelöscht?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam_mm_ref',array('enablefieldsoff' => true));
-		$this->assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
+		self::assertEmpty($res,'Die DAM Referenzen wurden nicht gelöscht!');
 	}
 
 	/**
@@ -391,17 +391,17 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 		$result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 2, 'blacklisted',1, true);
 
 		//richtige Anzahl gelöscht?
-		$this->assertEquals(0,$result['deletedReferences'],'deletedReferences ist falsch!');
-		$this->assertEquals(0,$result['deletedRecords'],'deletedRecords ist falsch!');
+		self::assertEquals(0,$result['deletedReferences'],'deletedReferences ist falsch!');
+		self::assertEquals(0,$result['deletedRecords'],'deletedRecords ist falsch!');
 
 		//bild nicht gelöscht?
-		$this->assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
+		self::assertFileExists($this->sAbsoluteImagePath,'Das Bild der tempoäreren Anzeigen 4 und 20 wurde nicht gelöscht!');
 
 		//eintrag in dam auf hidden gesetzt?
 		$res = tx_rnbase_util_DB::doSelect('*', 'tx_dam',array('enablefieldsoff' => true));
-		$this->assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
-		$this->assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
-		$this->assertEquals(0,$res[0]['hidden'],'hidden falsch!');
-		$this->assertEquals(0,$res[0]['deleted'],'deleted falsch!');
+		self::assertEquals(1,count($res),'Es wurde nicht die korrekte Anzahl von DAM Einträgen gefunden!');
+		self::assertEquals(1,$res[0]['uid'],'Es wurde scheinbar eine falscher DAM Eintrag gelöscht!!');
+		self::assertEquals(0,$res[0]['hidden'],'hidden falsch!');
+		self::assertEquals(0,$res[0]['deleted'],'deleted falsch!');
 	}
 }

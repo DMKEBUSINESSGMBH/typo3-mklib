@@ -49,23 +49,23 @@ class tx_mklib_tests_util_Model_testcase extends tx_phpunit_testcase {
 		$model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', $aRecord);
 		tx_mklib_util_Model::splitTextIntoTitleAndRest($model,'text',2);
 		
-		$this->assertEquals('ein ganz',$model->record['titletext'], 'field:titletext nicht korrekt');
-		$this->assertEquals('langer text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+		self::assertEquals('ein ganz',$model->record['titletext'], 'field:titletext nicht korrekt');
+		self::assertEquals('langer text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
 		
 		tx_mklib_util_Model::splitTextIntoTitleAndRest($model,'text',3);
 		
-		$this->assertEquals('ein ganz langer',$model->record['titletext'], 'field:titletext nicht korrekt');
-		$this->assertEquals('text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+		self::assertEquals('ein ganz langer',$model->record['titletext'], 'field:titletext nicht korrekt');
+		self::assertEquals('text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
 		
 		tx_mklib_util_Model::splitTextIntoTitleAndRest($model,'htmltext',3,false);
 		
-		$this->assertEquals('ein <span> ganz',$model->record['titletext'], 'field:titletext nicht korrekt');
-		$this->assertEquals('</span> langer text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+		self::assertEquals('ein <span> ganz',$model->record['titletext'], 'field:titletext nicht korrekt');
+		self::assertEquals('</span> langer text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
 		
 		tx_mklib_util_Model::splitTextIntoTitleAndRest($model,'htmltext',3,true);
 		
-		$this->assertEquals('ein ganz langer',$model->record['titletext'], 'field:titletext nicht korrekt');
-		$this->assertEquals('text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+		self::assertEquals('ein ganz langer',$model->record['titletext'], 'field:titletext nicht korrekt');
+		self::assertEquals('text mit vielen worten',$model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
 	}
 	
 	/**
@@ -80,19 +80,19 @@ class tx_mklib_tests_util_Model_testcase extends tx_phpunit_testcase {
 		);
 		$model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', $aRecord);
 		tx_mklib_util_Model::getShortenedText($model,'othertext',50);
-		$this->assertEquals('ein ganz langer text mit vielen worten und noch viel',$model->record['othertextshortened'], 'field:othertextshortened nicht korrekt');
+		self::assertEquals('ein ganz langer text mit vielen worten und noch viel',$model->record['othertextshortened'], 'field:othertextshortened nicht korrekt');
 		
 		tx_mklib_util_Model::getShortenedText($model);
 		
-		$this->assertEquals('ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',$model->record['textshortened'], 'field:textshortened nicht korrekt');
+		self::assertEquals('ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',$model->record['textshortened'], 'field:textshortened nicht korrekt');
 		
 		tx_mklib_util_Model::getShortenedText($model,'htmltext',50,false);
 		
-		$this->assertEquals('ein ganz langer text mit vielen worten und <span>noch',$model->record['htmltextshortened'], 'field:htmltextshortened nicht korrekt');
+		self::assertEquals('ein ganz langer text mit vielen worten und <span>noch',$model->record['htmltextshortened'], 'field:htmltextshortened nicht korrekt');
 		
 		tx_mklib_util_Model::getShortenedText($model,'htmltext',50,true);
 		
-		$this->assertEquals('ein ganz langer text mit vielen worten und noch viel',$model->record['htmltextshortened'], 'field:htmltextshortened nicht korrekt');
+		self::assertEquals('ein ganz langer text mit vielen worten und noch viel',$model->record['htmltextshortened'], 'field:htmltextshortened nicht korrekt');
 	}
 	
 
@@ -105,11 +105,11 @@ class tx_mklib_tests_util_Model_testcase extends tx_phpunit_testcase {
 						tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid'=>2,'name'=>'Model Nr. 2')),
 					);
 		$aUnique = tx_mklib_util_Model::uniqueModels($aArray);
-		$this->assertTrue(is_array($aUnique), 'No array given.');
-		$this->assertEquals(count($aUnique), 3, 'Array has a wrong count of entries.');
-		$this->assertArrayHasKey(2, $aUnique, 'Model with uid 2 not found');
-		$this->assertArrayHasKey(5, $aUnique, 'Model with uid 5 not found');
-		$this->assertArrayHasKey(6, $aUnique, 'Model with uid 6 not found');
+		self::assertTrue(is_array($aUnique), 'No array given.');
+		self::assertEquals(count($aUnique), 3, 'Array has a wrong count of entries.');
+		self::assertArrayHasKey(2, $aUnique, 'Model with uid 2 not found');
+		self::assertArrayHasKey(5, $aUnique, 'Model with uid 5 not found');
+		self::assertArrayHasKey(6, $aUnique, 'Model with uid 6 not found');
 	}
 	
 	public function testGetEmptyInstance() {

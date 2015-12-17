@@ -58,27 +58,27 @@ class tx_mklib_tests_srv_Finance_testcase
 		$oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
 		$oCurrency = $oSrv->getCurrency();
 
-		$this->assertTrue(is_object($oCurrency));
-		$this->assertEquals('tx_mklib_model_Currency', get_class($oCurrency));
+		self::assertTrue(is_object($oCurrency));
+		self::assertEquals('tx_mklib_model_Currency', get_class($oCurrency));
 	}
 
 	public function testGetFormattedCurrency(){
 		$oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
 
-		$this->assertEquals('54.587,96 €', $oSrv->getFormattedCurrency('54587.957', false));
-		$this->assertEquals('5,78 &euro;', $oSrv->getFormattedCurrency('5.7825', true));
-		$this->assertEquals('6,00 €', $oSrv->getFormattedCurrency('6', false));
-		$this->assertEquals('-3,60 &euro;', $oSrv->getFormattedCurrency('-3.6'));
+		self::assertEquals('54.587,96 €', $oSrv->getFormattedCurrency('54587.957', false));
+		self::assertEquals('5,78 &euro;', $oSrv->getFormattedCurrency('5.7825', true));
+		self::assertEquals('6,00 €', $oSrv->getFormattedCurrency('6', false));
+		self::assertEquals('-3,60 &euro;', $oSrv->getFormattedCurrency('-3.6'));
 	}
 	/**
 	 * Prüft ob richtig gerundet wird
 	 */
 	public function testRoundDouble(){
 		$srv = tx_mklib_util_ServiceRegistry::getFinanceService();
-		$this->assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5316,2,false),'Die Zahl wurde nicht korrekt gerundet!');
-		$this->assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5356,2,false),'Die Zahl wurde nicht korrekt gerundet!');
-		$this->assertEquals(2.536,$this->oFinanceSrv->roundUpDouble(2.5356,3,false),'Die Zahl wurde nicht korrekt gerundet!');
-		$this->assertEquals('2,20',$this->oFinanceSrv->roundUpDouble('2.2000',2, true, ','),'Die Zahl wurde nicht korrekt gerundet!');
+		self::assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5316,2,false),'Die Zahl wurde nicht korrekt gerundet!');
+		self::assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5356,2,false),'Die Zahl wurde nicht korrekt gerundet!');
+		self::assertEquals(2.536,$this->oFinanceSrv->roundUpDouble(2.5356,3,false),'Die Zahl wurde nicht korrekt gerundet!');
+		self::assertEquals('2,20',$this->oFinanceSrv->roundUpDouble('2.2000',2, true, ','),'Die Zahl wurde nicht korrekt gerundet!');
 	}
 
 	/**

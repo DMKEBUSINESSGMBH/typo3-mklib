@@ -87,7 +87,7 @@ class tx_mklib_tests_util_SearchSorting_testcase extends tx_phpunit_testcase {
 	public function testRegisterHook(){
 		tx_mklib_util_testSearchSorting::registerSortingAliases(array('TESTALIAS'));
 		$isHook = tx_mklib_util_testSearchSorting::callHook(true);
-		$this->assertTrue($isHook, 'Der Hook wurde nicht richtig registriert oder aufgerufen.');
+		self::assertTrue($isHook, 'Der Hook wurde nicht richtig registriert oder aufgerufen.');
 	}
 
 	/**
@@ -112,21 +112,21 @@ class tx_mklib_tests_util_SearchSorting_testcase extends tx_phpunit_testcase {
 		);
 		tx_mklib_util_testSearchSorting::callHook();
 
-		$this->assertTrue(is_array($options['orderby']), 'orderby wurde nicht gesetzt.');
-		$this->assertCount(3, $options['orderby'], 'Falsche anzahl an orderbys.');
-		$this->assertArrayHasKey(
+		self::assertTrue(is_array($options['orderby']), 'orderby wurde nicht gesetzt.');
+		self::assertCount(3, $options['orderby'], 'Falsche anzahl an orderbys.');
+		self::assertArrayHasKey(
 			'TESTALIAS.sorting', $options['orderby'],
 			'orderby TESTALIAS.sorting wurde nicht gesetzt.'
 		);
-		$this->assertArrayHasKey(
+		self::assertArrayHasKey(
 			'ALIAS3.title', $options['orderby'],
 			'orderby ALIAS3.title wurde nicht gesetzt.'
 		);
-		$this->assertArrayHasKey(
+		self::assertArrayHasKey(
 			'ALIAS4.sorting', $options['orderby'],
 			'orderby ALIAS4.sorting wurde nicht gesetzt.'
 		);
-		$this->assertArrayNotHasKey(
+		self::assertArrayNotHasKey(
 			'ALIAS4.sorting2', $options['orderby'],
 			'orderby ALIAS4.sorting2 wurde doch gesetzt.'
 		);

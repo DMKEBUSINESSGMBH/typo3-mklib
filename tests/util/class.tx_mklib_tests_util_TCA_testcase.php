@@ -83,11 +83,11 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	  		'ich-auch' => false,
 		);
 		$res = tx_mklib_util_TCA::eleminateNonTcaColumns($model,$data);
-		$this->assertEquals(2,count($res),'falsche array größe');
-		$this->assertTrue($res['blacklisted'],'blacklsited Feld ist nicht korrekt!');
-		$this->assertEquals(0,$res['whitelisted'],'whitelisted Feld ist nicht korrekt!');
-		$this->assertTrue(empty($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
-		$this->assertTrue(empty($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
+		self::assertEquals(2,count($res),'falsche array größe');
+		self::assertTrue($res['blacklisted'],'blacklsited Feld ist nicht korrekt!');
+		self::assertEquals(0,$res['whitelisted'],'whitelisted Feld ist nicht korrekt!');
+		self::assertTrue(empty($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
+		self::assertTrue(empty($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
 	}
 	/**
 	 *
@@ -103,11 +103,11 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	  		'ich-auch' => false,
 		);
 		$res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('tx_mklib_wordlist',$data);
-		$this->assertEquals(2,count($res),'falsche array größe');
-		$this->assertTrue($res['blacklisted'],'blacklsited Feld ist nicht korrekt!');
-		$this->assertEquals(0,$res['whitelisted'],'whitelisted Feld ist nicht korrekt!');
-		$this->assertFalse(isset($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
-		$this->assertFalse(isset($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
+		self::assertEquals(2,count($res),'falsche array größe');
+		self::assertTrue($res['blacklisted'],'blacklsited Feld ist nicht korrekt!');
+		self::assertEquals(0,$res['whitelisted'],'whitelisted Feld ist nicht korrekt!');
+		self::assertFalse(isset($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
+		self::assertFalse(isset($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
 	}
 
 	/**
@@ -117,7 +117,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		$expected = 'deleted';
 		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns']['disabled'] = $expected;
 		$actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
-		$this->assertEquals($expected, $actual);
+		self::assertEquals($expected, $actual);
 	}
 	/**
 	 * @group unit
@@ -142,7 +142,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	public function testGetEnableColumnReturnsDefaultValueForDisabled() {
 		$expected = 'removed';
 		$actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled', $expected);
-		$this->assertEquals($expected, $actual);
+		self::assertEquals($expected, $actual);
 	}
 	/**
 	 * @group unit
@@ -151,7 +151,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		$expected = 'sys_language_identifier';
 		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['languageField'] = $expected;
 		$actual = tx_mklib_util_TCA::getLanguageField('tt_mktest_table');
-		$this->assertEquals($expected, $actual);
+		self::assertEquals($expected, $actual);
 	}
 	/**
 	 * @group unit
@@ -165,7 +165,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	 * @group unit
 	 */
 	public function testGetParentUidFromReturnUrlReturnsNullIfNoReturnUrl(){
-		$this->assertNull(
+		self::assertNull(
 			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
 		);
 	}
@@ -176,7 +176,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotExistentInReturnUrl(){
 		$_GET['returnUrl'] = 'typo3/wizard_add.php';
 
-		$this->assertNull(
+		self::assertNull(
 			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
 		);
 	}
@@ -187,7 +187,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotSetInReturnUrl(){
 		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=';
 
-		$this->assertNull(
+		self::assertNull(
 			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
 		);
 	}
@@ -198,7 +198,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 	public function testGetParentUidFromReturnUrlReturnsCorrectParentUid(){
 		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=2';
 
-		$this->assertEquals(
+		self::assertEquals(
 			2, tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid nicht korrekt'
 		);
 	}
@@ -213,7 +213,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
 		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
-		$this->assertEquals(
+		self::assertEquals(
 			$labelWith80CharsAnd3Dots,
 			$tcaTableInformation['items'][0][0],
 			'Label nicht richtig gekürzt'
@@ -243,7 +243,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
 		$labelWith40CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur s...';
-		$this->assertEquals(
+		self::assertEquals(
 			$labelWith40CharsAnd3Dots,
 			$tcaTableInformation['items'][0][0],
 			'Label nicht richtig gekürzt'
@@ -263,7 +263,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
 		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
-		$this->assertEquals(
+		self::assertEquals(
 			$labelWith80CharsAnd3Dots,
 			$tcaTableInformation['items'][0][0],
 			'Label nicht richtig gekürzt'
@@ -290,7 +290,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 
 		$germanStatesField = tx_mklib_util_TCA::getGermanStatesField();
 
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedGermanStatesField,
 			$germanStatesField,
 			'TCA Feld falsch'
@@ -320,7 +320,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 
 		$germanStatesField = tx_mklib_util_TCA::getGermanStatesField(true);
 
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedGermanStatesField,
 			$germanStatesField,
 			'TCA Feld falsch'
@@ -356,7 +356,7 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			)
 		);
 
-		$this->assertEquals($expectedLinkWizard, $linkWizard, 'link wizard nicht korrekt');
+		self::assertEquals($expectedLinkWizard, $linkWizard, 'link wizard nicht korrekt');
 	}
 
 	/**
@@ -373,23 +373,23 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 		);
 
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$this->assertArrayNotHasKey('script', $wizards['add']);
-			$this->assertArrayNotHasKey('script', $wizards['edit']);
-			$this->assertArrayNotHasKey('script', $wizards['list']);
-			$this->assertArrayNotHasKey('script', $wizards['RTE']);
-			$this->assertEquals('wizard_add', $wizards['add']['module']['name']);
-			$this->assertEquals('wizard_edit', $wizards['edit']['module']['name']);
-			$this->assertEquals('wizard_list', $wizards['list']['module']['name']);
-			$this->assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
+			self::assertArrayNotHasKey('script', $wizards['add']);
+			self::assertArrayNotHasKey('script', $wizards['edit']);
+			self::assertArrayNotHasKey('script', $wizards['list']);
+			self::assertArrayNotHasKey('script', $wizards['RTE']);
+			self::assertEquals('wizard_add', $wizards['add']['module']['name']);
+			self::assertEquals('wizard_edit', $wizards['edit']['module']['name']);
+			self::assertEquals('wizard_list', $wizards['list']['module']['name']);
+			self::assertEquals('wizard_rte', $wizards['RTE']['module']['name']);
 		} else {
-			$this->assertArrayNotHasKey('module', $wizards['add']);
-			$this->assertArrayNotHasKey('module', $wizards['edit']);
-			$this->assertArrayNotHasKey('module', $wizards['list']);
-			$this->assertArrayNotHasKey('module', $wizards['RTE']);
-			$this->assertEquals('wizard_add.php', $wizards['add']['script']);
-			$this->assertEquals('wizard_edit.php', $wizards['edit']['script']);
-			$this->assertEquals('wizard_list.php', $wizards['list']['script']);
-			$this->assertEquals('wizard_rte.php', $wizards['RTE']['script']);
+			self::assertArrayNotHasKey('module', $wizards['add']);
+			self::assertArrayNotHasKey('module', $wizards['edit']);
+			self::assertArrayNotHasKey('module', $wizards['list']);
+			self::assertArrayNotHasKey('module', $wizards['RTE']);
+			self::assertEquals('wizard_add.php', $wizards['add']['script']);
+			self::assertEquals('wizard_edit.php', $wizards['edit']['script']);
+			self::assertEquals('wizard_list.php', $wizards['list']['script']);
+			self::assertEquals('wizard_rte.php', $wizards['RTE']['script']);
 		}
 	}
 }

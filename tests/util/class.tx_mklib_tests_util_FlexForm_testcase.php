@@ -52,15 +52,15 @@ class tx_mklib_tests_util_FlexForm_testcase
 	public function testFlexForm() {
 		$util = tx_mklib_util_FlexForm::getInstance($this->getFlexFormFixture());
 
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_mklib_action_AbstractList',
 			$util->get('action')
 		);
-		$this->assertContains(
+		self::assertContains(
 			'notfound = 404 Not Found',
 			$util->get('flexformTS', 's_tssetup')
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_mklib_filter_SingleItem',
 			$util->get('abstractlist.filter', 's_abstractlist')
 		);

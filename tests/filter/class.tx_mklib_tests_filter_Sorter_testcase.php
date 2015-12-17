@@ -210,7 +210,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
-		$this->assertEquals('0  ',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
+		self::assertEquals('0  ',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
 	}
 
 	/**
@@ -232,7 +232,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
-		$this->assertEquals('1 firstField desc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
+		self::assertEquals('1 firstField desc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
 	}
 
 	/**
@@ -251,7 +251,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
-		$this->assertEquals('1 firstField asc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
+		self::assertEquals('1 firstField asc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
 	}
 
 	/**
@@ -273,6 +273,6 @@ class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
-		$this->assertEquals('1 firstField desc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
+		self::assertEquals('1 firstField desc',$filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
 	}
 }

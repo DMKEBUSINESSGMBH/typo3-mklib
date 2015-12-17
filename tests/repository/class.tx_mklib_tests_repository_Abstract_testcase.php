@@ -70,7 +70,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$fields = array();
 		$method->invokeArgs($repository, array(&$fields, &$options));
 
-		$this->assertEquals($expectedOptions, $options, 'options falsch');
+		self::assertEquals($expectedOptions, $options, 'options falsch');
 	}
 
 	/**
@@ -94,7 +94,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$method = new ReflectionMethod('tx_mklib_repository_Abstract', 'getSearcher');
 		$method->setAccessible(true);
 
-		$this->assertInstanceOf(
+		self::assertInstanceOf(
 				'tx_mklib_search_Wordlist',
 				$method->invoke($repository),
 				'falsche wrapper Klasse'
@@ -109,7 +109,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$expectedModel = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 123));
 
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedModel,
 			$repository->findByUid(array('uid' => 123)),
 			'model nicht zurück gegeben'
@@ -122,7 +122,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testFindByUidReturnsNullIfModelInvalid() {
 		$repository = $this->getRepositoryMock();
 
-		$this->assertNull(
+		self::assertNull(
 			$repository->findByUid(0),
 			'NULL nicht zurück gegeben'
 		);
@@ -139,7 +139,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$fields = array();
 
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_mklib_model_WordlistEntry',
 			$method->invoke($repository),
 			'falsche wrapper Klasse'
@@ -160,16 +160,16 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('search')
 		);
 
-		$searcher->expects($this->once())
+		$searcher->expects(self::once())
 			->method('search')
 			->with($fields, $options)
-			->will($this->returnValue(array('searched')));
+			->will(self::returnValue(array('searched')));
 
-		$repository->expects($this->any())
+		$repository->expects(self::any())
 			->method('getSearcher')
-			->will($this->returnValue($searcher));
+			->will(self::returnValue($searcher));
 
-		$this->assertEquals(
+		self::assertEquals(
 			array('searched'),
 			$repository->search($fields, $options),
 			'falsch gesucht'
@@ -186,24 +186,24 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('getTableName'),
 			array(array('uid' => 123))
 		);
-		$master->expects($this->any())
+		$master->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('tt_content'));
+			->will(self::returnValue('tt_content'));
 
 		$overlay = $this->getMock(
 			'tx_rnbase_model_base',
 			array('getTableName'),
 			array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
 		);
-		$overlay->expects($this->any())
+		$overlay->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('tt_content'));
+			->will(self::returnValue('tt_content'));
 
 		$items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array('distinct' => TRUE));
 
-		$this->assertCount(1, $items);
-		$this->assertArrayHasKey(0, $items);
-		$this->assertEquals($overlay, $items[0]);
+		self::assertCount(1, $items);
+		self::assertArrayHasKey(0, $items);
+		self::assertEquals($overlay, $items[0]);
 	}
 
 	/**
@@ -216,26 +216,26 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('getTableName'),
 			array(array('uid' => 123))
 		);
-		$master->expects($this->any())
+		$master->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('tt_content'));
+			->will(self::returnValue('tt_content'));
 
 		$overlay = $this->getMock(
 			'tx_rnbase_model_base',
 			array('getTableName'),
 			array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
 		);
-		$overlay->expects($this->any())
+		$overlay->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('tt_content'));
+			->will(self::returnValue('tt_content'));
 
 		$items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array());
 
-		$this->assertCount(2, $items);
-		$this->assertArrayHasKey(0, $items);
-		$this->assertEquals($master, $items[0]);
-		$this->assertArrayHasKey(1, $items);
-		$this->assertEquals($overlay, $items[1]);
+		self::assertCount(2, $items);
+		self::assertArrayHasKey(0, $items);
+		self::assertEquals($master, $items[0]);
+		self::assertArrayHasKey(1, $items);
+		self::assertEquals($overlay, $items[1]);
 	}
 
 	/**
@@ -244,12 +244,12 @@ class tx_mklib_tests_repository_Abstract_testcase
 	public function testFindAll() {
 		$repository = $this->getRepositoryMock(array('search'));
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('search')
 			->with(array(), array())
-			->will($this->returnValue(array('searched')));
+			->will(self::returnValue(array('searched')));
 
-		$this->assertEquals(
+		self::assertEquals(
 			array('searched'),
 			$repository->findAll(),
 			'falsch gesucht'
@@ -264,12 +264,12 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$data = array('field' => 'value');
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('create')
 			->with($data)
-			->will($this->returnValue(array('created')));
+			->will(self::returnValue(array('created')));
 
-		$this->assertEquals(
+		self::assertEquals(
 			array('created'),
 			$repository->create($data),
 			'not created'
@@ -294,7 +294,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$returnArray = $method->invoke($repository, $model, $data);
 		$expectedReturnArray = $data;
-		$this->assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
+		self::assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
 	}
 
 	/**
@@ -310,13 +310,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 			'field1' => '<p>value1</p>', 'field2' => '<b>value2</b>','field3' => 'value3'
 		);
 
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getTagsToBeIgnoredFromStripping')
-			->will($this->returnValue('<b>'));
+			->will(self::returnValue('<b>'));
 
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getFieldsToBeStripped')
-			->will($this->returnValue(array('field1', 'field2')));
+			->will(self::returnValue(array('field1', 'field2')));
 
 
 		$method = new ReflectionMethod(
@@ -326,14 +326,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$returnArray = $method->invoke($repository, $model, $data);
 		$expectedReturnArray = array('field1' => 'value1', 'field2' => '<b>value2</b>','field3' => 'value3');
-		$this->assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
+		self::assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
 	}
 
 	/**
 	 * @group unit
 	 */
 	public function testGetDatabaseUtility() {
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_mklib_util_DB',
 			$this->callInaccessibleMethod($this->getRepositoryMock(), 'getDatabaseUtility'),
 			'falscher Klassenname'
@@ -348,13 +348,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('uid' => 123),
 			array('getColumnNames', 'getTableName', 'reset')
 		);
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getColumnNames')
-			->will($this->returnValue(array('column_1')));
-		$model->expects($this->any())
+			->will(self::returnValue(array('column_1')));
+		$model->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('unknown'));
-		$model->expects($this->once())
+			->will(self::returnValue('unknown'));
+		$model->expects(self::once())
 			->method('reset');
 
 		$repository = $this->getRepositoryMock(
@@ -362,13 +362,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'');
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
 		$repository->handleUpdate($model, array());
 	}
@@ -381,13 +381,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('uid' => 123),
 			array('getColumnNames', 'getTableName', 'reset')
 		);
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getColumnNames')
-			->will($this->returnValue(array('column_1')));
-		$model->expects($this->any())
+			->will(self::returnValue(array('column_1')));
+		$model->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('unknown'));
-		$model->expects($this->once())
+			->will(self::returnValue('unknown'));
+		$model->expects(self::once())
 			->method('reset');
 
 		$repository = $this->getRepositoryMock(
@@ -396,16 +396,16 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$data = array('column_1' => 'new value', 'column_2' => 'new value');
 		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with(
 				'unknown', '1=1 AND `unknown`.`uid`=\'123\'',
 				array('column_1' => 'new value')
 			);
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
 		$repository->handleUpdate($model, $data);
 	}
@@ -418,13 +418,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('uid' => 123),
 			array('getColumnNames', 'getTableName', 'reset')
 		);
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getColumnNames')
-			->will($this->returnValue(array('column_1')));
-		$model->expects($this->any())
+			->will(self::returnValue(array('column_1')));
+		$model->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('unknown'));
-		$model->expects($this->once())
+			->will(self::returnValue('unknown'));
+		$model->expects(self::once())
 			->method('reset');
 
 		$repository = $this->getRepositoryMock(
@@ -433,18 +433,18 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$data = array('column_1' => 'new value');
 		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'', array('secured'));
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('secureFromCrossSiteScripting')
 			->with($model, $data)
-			->will($this->returnValue(array('secured')));
+			->will(self::returnValue(array('secured')));
 
 		$repository->handleUpdate($model, $data);
 	}
@@ -457,13 +457,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('uid' => 123),
 			array('getColumnNames', 'getTableName', 'reset')
 		);
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getColumnNames')
-			->will($this->returnValue(array('column_1')));
-		$model->expects($this->any())
+			->will(self::returnValue(array('column_1')));
+		$model->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('unknown'));
-		$model->expects($this->once())
+			->will(self::returnValue('unknown'));
+		$model->expects(self::once())
 			->method('reset');
 
 		$repository = $this->getRepositoryMock(
@@ -472,7 +472,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$data = array('column_1' => 'new value', 'uid' => 456);
 		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with(
 				'unknown',
@@ -480,9 +480,9 @@ class tx_mklib_tests_repository_Abstract_testcase
 				array('column_1' => 'new value')
 			);
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
 		$repository->handleUpdate($model, $data);
 	}
@@ -495,13 +495,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('uid' => 123),
 			array('getColumnNames', 'getTableName', 'reset')
 		);
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getColumnNames')
-			->will($this->returnValue(array('column_1')));
-		$model->expects($this->any())
+			->will(self::returnValue(array('column_1')));
+		$model->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('unknown'));
-		$model->expects($this->once())
+			->will(self::returnValue('unknown'));
+		$model->expects(self::once())
 			->method('reset');
 
 		$repository = $this->getRepositoryMock(
@@ -509,13 +509,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with('unknown', 'test where');
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
 		$repository->handleUpdate($model, array(), 'test where');
 	}
@@ -528,13 +528,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('uid' => 123),
 			array('getColumnNames', 'getTableName', 'reset')
 		);
-		$model->expects($this->once())
+		$model->expects(self::once())
 			->method('getColumnNames')
-			->will($this->returnValue(array('column_1')));
-		$model->expects($this->any())
+			->will(self::returnValue(array('column_1')));
+		$model->expects(self::any())
 			->method('getTableName')
-			->will($this->returnValue('unknown'));
-		$model->expects($this->once())
+			->will(self::returnValue('unknown'));
+		$model->expects(self::once())
 			->method('reset');
 
 		$repository = $this->getRepositoryMock(
@@ -542,13 +542,13 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with('unknown', 'test where', array(), 987, 'commaSeparatedFields');
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
 		$repository->handleUpdate(
 			$model, array(), 'test where', 987, 'commaSeparatedFields'
@@ -570,9 +570,9 @@ class tx_mklib_tests_repository_Abstract_testcase
 			$mockedMethods
 		);
 
-		$repository->expects($this->any())
+		$repository->expects(self::any())
 			->method('getSearchClass')
-			->will($this->returnValue('tx_mklib_search_Wordlist'));
+			->will(self::returnValue('tx_mklib_search_Wordlist'));
 
 		return $repository;
 	}
@@ -610,12 +610,12 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$expectedFields = array('fields');
 		$expectedOptions = array('orderby' => array(), 'limit' => 1);
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('search')
 			->with($expectedFields, $expectedOptions)
-			->will($this->returnValue(array(0 => 'test')));
+			->will(self::returnValue(array(0 => 'test')));
 
-		$this->assertEquals(
+		self::assertEquals(
 			'test',
 			$repository->searchSingle($expectedFields, array('orderby' => array()))
 		);
@@ -632,12 +632,12 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$expectedFields = array('fields');
 		$expectedOptions = array('orderby' => array(), 'limit' => 1);
 
-		$repository->expects($this->once())
+		$repository->expects(self::once())
 			->method('search')
 			->with($expectedFields, $expectedOptions)
-			->will($this->returnValue(array()));
+			->will(self::returnValue(array()));
 
-		$this->assertNull(
+		self::assertNull(
 			$repository->searchSingle($expectedFields, array('orderby' => array()))
 		);
 	}

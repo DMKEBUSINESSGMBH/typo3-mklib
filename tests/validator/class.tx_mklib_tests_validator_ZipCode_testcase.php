@@ -63,24 +63,24 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
 
 		$country = self::getStaticCountryModel(54 /*DE*/);
 
-		$this->assertTrue(is_object($country), 'No model given.');
-		$this->assertTrue($country->isValid(), 'No valid model given.');
-		$this->assertEquals('DE', $country->getISO2(), 'No or wrong iso 2 given.');
-		$this->assertEquals(5, $country->getZipLength(), 'No or wrong  zip length given.');
-		$this->assertEquals(4, $country->getZipRule(), 'No or wrong  zip rule given.');
+		self::assertTrue(is_object($country), 'No model given.');
+		self::assertTrue($country->isValid(), 'No valid model given.');
+		self::assertEquals('DE', $country->getISO2(), 'No or wrong iso 2 given.');
+		self::assertEquals(5, $country->getZipLength(), 'No or wrong  zip length given.');
+		self::assertEquals(4, $country->getZipRule(), 'No or wrong  zip rule given.');
 
 		$validator = tx_mklib_validator_ZipCode::getInstance();
 
 		$zips = array('09113', '14482');
 		foreach($zips as $zip) {
-			$this->assertTrue(
+			self::assertTrue(
 				$validator->validate($country, $zip),
 				$zip.' -> '.$validator->getFormatInfo($country)
 			);
 		}
 		$zips = array('9120', 'O9113');
 		foreach($zips as $zip) {
-			$this->assertFalse(
+			self::assertFalse(
 				$validator->validate($country, $zip),
 				$zip.' -> '.$validator->getFormatInfo($country)
 			);
@@ -99,7 +99,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
 		self::checkStaticCountries();
 		$country = self::getStaticCountryModel($countryUid);
 		$validator = tx_mklib_validator_ZipCode::getInstance();
-		$this->assertEquals(
+		self::assertEquals(
 			$result, $validator->validate($country, $zip),
 			$zip.' -> '.$validator->getFormatInfo($country)
 		);

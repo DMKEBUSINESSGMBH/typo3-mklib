@@ -79,7 +79,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	 * @group unit
 	 */
 	public function testGetDatabaseUtility() {
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_mklib_util_DB',
 			$this->callInaccessibleMethod(
 				tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection'),
@@ -97,7 +97,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 		$scheduler->setOptions($this->options);
 		$options = $scheduler->getOptions();
 
-		$this->assertEquals(
+		self::assertEquals(
 			array(
 				'failDetectionRememberAfter' => '1 Stunde ',
 				'failDetectionReceiver' => 'dev@dmk-ebusiness.de'
@@ -115,7 +115,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 		$selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
 			'uid,serialized_task_object' :
 			'uid,classname';
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doSelect')
 			->with(
 				$selectFields,
@@ -127,11 +127,11 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 								'lastexecution_failure != ""'
 				)
 			)
-			->will($this->returnValue(array('failedTasks')));
+			->will(self::returnValue(array('failedTasks')));
 		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
 		$scheduler->setTaskUid(123);
 
-		$this->assertEquals(
+		self::assertEquals(
 			array('failedTasks'),
 			$this->callInaccessibleMethod(
 				$scheduler,
@@ -146,7 +146,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	public function testSetFailDetected() {
 		$databaseUtility = $this->getDatabaseUtility();
 
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with(
 				'tx_scheduler_task',
@@ -166,7 +166,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	 * @group unit
 	 */
 	public function testGetMiscUtility() {
-		$this->assertEquals(
+		self::assertEquals(
 			'tx_rnbase_util_Misc',
 			$this->callInaccessibleMethod(
 				tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection'),
@@ -206,7 +206,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 			'tx_rnbase_util_Misc',
 			array('sendErrorMail')
 		);
-		$miscUtility::staticExpects($this->once())
+		$miscUtility::staticExpects(self::once())
 			->method('sendErrorMail')
 			->with(
 				'dev@dmk-ebusiness.de',
@@ -214,15 +214,15 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 				$expectedException,
 				array('ignoremaillock' => true)
 			);
-		$scheduler->expects($this->once())
+		$scheduler->expects(self::once())
 			->method('getMiscUtility')
-			->will($this->returnValue($miscUtility));
+			->will(self::returnValue($miscUtility));
 
-		$scheduler->expects($this->once())
+		$scheduler->expects(self::once())
 			->method('setFailDetected')
 			->with(array(123, 456));
 
-		$this->assertEquals(
+		self::assertEquals(
 			$expectedMessage,
 			$this->callInaccessibleMethod(
 				$scheduler,
@@ -238,7 +238,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	public function testResetFailedTasksDetection() {
 		$databaseUtility = $this->getDatabaseUtility();
 
-		$databaseUtility::staticExpects($this->once())
+		$databaseUtility::staticExpects(self::once())
 			->method('doUpdate')
 			->with(
 				'tx_scheduler_task',
@@ -262,13 +262,13 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 			array('resetFailedTasksDetection', 'getFailedTasks', 'handleFailedTasks')
 		);
 
-		$scheduler->expects($this->once())
+		$scheduler->expects(self::once())
 			->method('resetFailedTasksDetection');
 
-		$scheduler->expects($this->once())
+		$scheduler->expects(self::once())
 			->method('getFailedTasks');
 
-		$scheduler->expects($this->never())
+		$scheduler->expects(self::never())
 			->method('handleFailedTasks');
 
 		$devLog = array();
@@ -276,11 +276,11 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 			'tx_mklib_scheduler_SchedulerTaskFailDetection', 'executeTask'
 		);
 		$method->setAccessible(TRUE);
-		$this->assertEquals(
+		self::assertEquals(
 			'keine fehlgeschlagenen Scheduler entdeckt!',
 			$method->invokeArgs($scheduler, array(array(), &$devLog))
 		);
-		$this->assertEmpty($devLog);
+		self::assertEmpty($devLog);
 	}
 
 	/**
@@ -292,17 +292,17 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 			array('resetFailedTasksDetection', 'getFailedTasks', 'handleFailedTasks')
 		);
 
-		$scheduler->expects($this->once())
+		$scheduler->expects(self::once())
 			->method('resetFailedTasksDetection');
 
-		$scheduler->expects($this->once())
+		$scheduler->expects(self::once())
 			->method('getFailedTasks')
-			->will($this->returnValue('failedTasks'));
+			->will(self::returnValue('failedTasks'));
 
-		$scheduler->expects($this->once())
+		$scheduler->expects(self::once())
 			->method('handleFailedTasks')
 			->with('failedTasks')
-			->will($this->returnValue('tasks failed'));
+			->will(self::returnValue('tasks failed'));
 
 
 		$devLog = array();
@@ -310,11 +310,11 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 				'tx_mklib_scheduler_SchedulerTaskFailDetection', 'executeTask'
 		);
 		$method->setAccessible(TRUE);
-		$this->assertEquals(
+		self::assertEquals(
 			'tasks failed',
 			$method->invokeArgs($scheduler, array(array(), &$devLog))
 		);
-		$this->assertEmpty($devLog);
+		self::assertEmpty($devLog);
 	}
 
 	/**
@@ -331,9 +331,9 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 			$methods
 		);
 
-		$scheduler->expects($this->any())
+		$scheduler->expects(self::any())
 			->method('getDatabaseUtility')
-			->will($this->returnValue($databaseUtility));
+			->will(self::returnValue($databaseUtility));
 
 		$scheduler->setOptions($this->options);
 

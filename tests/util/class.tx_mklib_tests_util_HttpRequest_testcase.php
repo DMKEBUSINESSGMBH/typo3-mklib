@@ -58,9 +58,9 @@ class tx_mklib_tests_util_HttpRequest_testcase extends tx_phpunit_testcase {
 		$request->setMethod($request::METHOD_POST);
 		$response = $request->request();
 
-		$this->assertEquals(200, $response->getStatus());
-		$this->assertEquals('OK', $response->getMessage());
-		$this->assertEquals($time, $response->getBody());
+		self::assertEquals(200, $response->getStatus());
+		self::assertEquals('OK', $response->getMessage());
+		self::assertEquals($time, $response->getBody());
 
 	}
 

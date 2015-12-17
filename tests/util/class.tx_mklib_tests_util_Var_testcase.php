@@ -43,29 +43,29 @@ class tx_mklib_tests_util_Var_testcase extends tx_phpunit_testcase {
 	 * isTrue testen
 	 */
 	public function testIsTrueVal(){
-		$this->assertTrue(tx_mklib_util_Var::isTrueVal(true));
-		$this->assertTrue(tx_mklib_util_Var::isTrueVal('true'));
-		$this->assertTrue(tx_mklib_util_Var::isTrueVal('TrUe'));
-		$this->assertTrue(tx_mklib_util_Var::isTrueVal('1'));
-		$this->assertTrue(tx_mklib_util_Var::isTrueVal(1));
-		$this->assertFalse(tx_mklib_util_Var::isTrueVal(false));
-		$this->assertFalse(tx_mklib_util_Var::isTrueVal('false'));
-		$this->assertFalse(tx_mklib_util_Var::isTrueVal('0'));
-		$this->assertFalse(tx_mklib_util_Var::isTrueVal(0));
+		self::assertTrue(tx_mklib_util_Var::isTrueVal(true));
+		self::assertTrue(tx_mklib_util_Var::isTrueVal('true'));
+		self::assertTrue(tx_mklib_util_Var::isTrueVal('TrUe'));
+		self::assertTrue(tx_mklib_util_Var::isTrueVal('1'));
+		self::assertTrue(tx_mklib_util_Var::isTrueVal(1));
+		self::assertFalse(tx_mklib_util_Var::isTrueVal(false));
+		self::assertFalse(tx_mklib_util_Var::isTrueVal('false'));
+		self::assertFalse(tx_mklib_util_Var::isTrueVal('0'));
+		self::assertFalse(tx_mklib_util_Var::isTrueVal(0));
 	}
 	/**
 	 * isFalseVal testen
 	 */
 	public function testIsFalseVal(){
-		$this->assertTrue(tx_mklib_util_Var::isFalseVal(false));
-		$this->assertTrue(tx_mklib_util_Var::isFalseVal('false'));
-		$this->assertTrue(tx_mklib_util_Var::isFalseVal('0'));
-		$this->assertTrue(tx_mklib_util_Var::isFalseVal(0));
-		$this->assertFalse(tx_mklib_util_Var::isFalseVal(true));
-		$this->assertFalse(tx_mklib_util_Var::isFalseVal('true'));
-		$this->assertFalse(tx_mklib_util_Var::isFalseVal('TrUe'));
-		$this->assertFalse(tx_mklib_util_Var::isFalseVal('1'));
-		$this->assertFalse(tx_mklib_util_Var::isFalseVal(1));
+		self::assertTrue(tx_mklib_util_Var::isFalseVal(false));
+		self::assertTrue(tx_mklib_util_Var::isFalseVal('false'));
+		self::assertTrue(tx_mklib_util_Var::isFalseVal('0'));
+		self::assertTrue(tx_mklib_util_Var::isFalseVal(0));
+		self::assertFalse(tx_mklib_util_Var::isFalseVal(true));
+		self::assertFalse(tx_mklib_util_Var::isFalseVal('true'));
+		self::assertFalse(tx_mklib_util_Var::isFalseVal('TrUe'));
+		self::assertFalse(tx_mklib_util_Var::isFalseVal('1'));
+		self::assertFalse(tx_mklib_util_Var::isFalseVal(1));
 	}
 }
 

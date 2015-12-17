@@ -74,8 +74,8 @@ class tx_mklib_tests_TCA_testcase extends tx_phpunit_testcase {
 		
 		$tableWordlist = tx_mklib_util_MiscTools::getExtensionValue('tableWordlist');
 		
-		$this->assertEquals(0, intval($tableWordlist), 'Die Extension Konfiguration tableWordlist ist falsch gesetzt.');
-		$this->assertFalse(array_key_exists('tx_mklib_wordlist',$TCA), 'Die TCA für die Wordlist Tabelle wurde geladen.');
+		self::assertEquals(0, intval($tableWordlist), 'Die Extension Konfiguration tableWordlist ist falsch gesetzt.');
+		self::assertFalse(array_key_exists('tx_mklib_wordlist',$TCA), 'Die TCA für die Wordlist Tabelle wurde geladen.');
 	}
 	/**
 	 *	Testen, ob die Wordlist Tabelle in der TCA gesetzt wurde.
@@ -88,9 +88,9 @@ class tx_mklib_tests_TCA_testcase extends tx_phpunit_testcase {
 		
 		$tableWordlist = tx_mklib_util_MiscTools::getExtensionValue('tableWordlist');
 		
-		$this->assertEquals(1, intval($tableWordlist), 'Die Extension Konfiguration tableWordlist ist falsch gesetzt');
-		$this->assertTrue(array_key_exists('tx_mklib_wordlist',$TCA), 'Die TCA für die Wordlist Tabelle wurde nicht geladen.');
-		$this->assertTrue(array_key_exists('ctrl',$TCA['tx_mklib_wordlist']), 'Die TCA für die Wordlist Tabelle wurde nicht richtig geladen.');
+		self::assertEquals(1, intval($tableWordlist), 'Die Extension Konfiguration tableWordlist ist falsch gesetzt');
+		self::assertTrue(array_key_exists('tx_mklib_wordlist',$TCA), 'Die TCA für die Wordlist Tabelle wurde nicht geladen.');
+		self::assertTrue(array_key_exists('ctrl',$TCA['tx_mklib_wordlist']), 'Die TCA für die Wordlist Tabelle wurde nicht richtig geladen.');
 	}
 	
 }

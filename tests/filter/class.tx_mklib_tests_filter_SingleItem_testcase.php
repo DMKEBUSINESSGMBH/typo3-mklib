@@ -51,17 +51,17 @@ class tx_mklib_tests_filter_SingleItem_testcase extends tx_phpunit_testcase{
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
-		$this->assertTrue($filterReturn, 'filter gibt nicht true zurück.');
+		self::assertTrue($filterReturn, 'filter gibt nicht true zurück.');
 		
 		$expectedFields = array(
 			$this->testSearchAlias . '.uid' => array(OP_EQ_INT => 0)
 		);
-		$this->assertEquals($expectedFields, $fields, 'fields nicht leer');
+		self::assertEquals($expectedFields, $fields, 'fields nicht leer');
 		
 		$expectedOptions = array(
 			'limit' 	=> 1,
 		);
-		$this->assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
+		self::assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
 	}
 	
 	/**
@@ -76,17 +76,17 @@ class tx_mklib_tests_filter_SingleItem_testcase extends tx_phpunit_testcase{
 		$fields = array();
 		$options = array();
 		$filterReturn = $filter->init($fields,$options);
-		$this->assertTrue($filterReturn, 'filter gibt nicht true zurück.');
+		self::assertTrue($filterReturn, 'filter gibt nicht true zurück.');
 		
 		$expectedFields = array(
 			$this->testSearchAlias . '.uid' => array(OP_EQ_INT => $itemUid)
 		);
-		$this->assertEquals($expectedFields, $fields, 'fields nicht leer');
+		self::assertEquals($expectedFields, $fields, 'fields nicht leer');
 		
 		$expectedOptions = array(
 			'limit' 	=> 1,
 		);
-		$this->assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
+		self::assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
 	}
 	
 	/**
@@ -99,12 +99,12 @@ class tx_mklib_tests_filter_SingleItem_testcase extends tx_phpunit_testcase{
 		$filter = $this->getMockForAbstractClass(
 			'tx_mklib_filter_SingleItem', array(&$parameters, &$configurations, $confId)
 		);
-		$filter->expects($this->once())
+		$filter->expects(self::once())
 			->method('getParameterName')
-			->will($this->returnValue($this->testParamName));
-		$filter->expects($this->once())
+			->will(self::returnValue($this->testParamName));
+		$filter->expects(self::once())
 			->method('getSearchAlias')
-			->will($this->returnValue($this->testSearchAlias));
+			->will(self::returnValue($this->testSearchAlias));
 			
 		return $filter;
 	}

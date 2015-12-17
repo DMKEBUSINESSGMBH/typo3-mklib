@@ -155,11 +155,11 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 //		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
+		self::assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
 	}
 
 	/**
@@ -182,11 +182,11 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 //		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		$this->assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
+		self::assertEquals(0, count($aDevLog), 'tx_devlog wurde in die Datenbank geschrieben!');
 	}
 
 	/**
@@ -206,18 +206,18 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 //		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		$this->assertEquals(1, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals('mklib', $aDevLog[0]['extkey'], 'Falscher extkey in tx_devlog!');
-		$this->assertEquals('doInsert(tt_content)', $aDevLog[0]['msg'], 'Falsche msg in tx_devlog!');
-		$this->assertEquals(true, !empty($aDevLog[0]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
+		self::assertEquals(1, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals('mklib', $aDevLog[0]['extkey'], 'Falscher extkey in tx_devlog!');
+		self::assertEquals('doInsert(tt_content)', $aDevLog[0]['msg'], 'Falsche msg in tx_devlog!');
+		self::assertEquals(true, !empty($aDevLog[0]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
 
 		$aDevLogData = unserialize($aDevLog[0]['data_var']);
-		$this->assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
-		$this->assertEquals(128, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
+		self::assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
+		self::assertEquals(128, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
 	}
 
 	/**
@@ -236,18 +236,18 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		$this->assertEquals(2, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals('mklib', $aDevLog[1]['extkey'], 'Falscher extkey in tx_devlog!');
-		$this->assertEquals('doUpdate(tt_content)', $aDevLog[1]['msg'], 'Falsche msg in tx_devlog!');
-		$this->assertEquals(true, !empty($aDevLog[1]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
+		self::assertEquals(2, count($aDevLog), 'tx_devlog wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals('mklib', $aDevLog[1]['extkey'], 'Falscher extkey in tx_devlog!');
+		self::assertEquals('doUpdate(tt_content)', $aDevLog[1]['msg'], 'Falsche msg in tx_devlog!');
+		self::assertEquals(true, !empty($aDevLog[1]['data_var']), 'data_var in tx_devlog nicht gesetzt!');
 
 		$aDevLogData = unserialize($aDevLog[1]['data_var']);
-		$this->assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
-		$this->assertEquals(256, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
+		self::assertEquals('tt_content', $aDevLogData['tablename'], 'data_var: tablename falsch!');
+		self::assertEquals(256, $aDevLogData['values']['pid'], 'data_var: values|pid falsch!');
 	}
 
 	/**
@@ -270,11 +270,11 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
 		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		$this->assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		$this->assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		$this->assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		$this->assertEquals(1, count($aDevLog), 'tx_devlog wurde in die Datenbank eingefügt!');
+		self::assertEquals(1, count($aDevLog), 'tx_devlog wurde in die Datenbank eingefügt!');
 	}
 
 }

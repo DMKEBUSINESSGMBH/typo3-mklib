@@ -62,12 +62,12 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 			$this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD'=>array(OP_EQ=>'anotherValue'),'test'=>'value');
 
 		$this->expectedOptions = array('orderby'=>'someOrderBy');
-		$oSrv->expects($this->once())
+		$oSrv->expects(self::once())
 		->method('search')
 		//damit testen wir ob search mit den daten aus dem filter aufgerufen wird
 		->with($this->expectedFields,$this->expectedOptions)
 		//kommt alles korrekt in den view daten an? test weiter unten!
-		->will($this->returnValue($returnValue));
+		->will(self::returnValue($returnValue));
 
 		return $oSrv;
 	}
@@ -80,25 +80,25 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 	protected function getActionMock($oSearchSrv,$sClassToMock = 'tx_mklib_action_ListBase') {
 		$oListBase = $this->getMockForAbstractClass($sClassToMock);
 		//abstrakte methoden mocken
-		$oListBase->expects($this->once())
+		$oListBase->expects(self::once())
 		->method('getService')
-		->will($this->returnValue($oSearchSrv));
+		->will(self::returnValue($oSearchSrv));
 
-		$oListBase->expects($this->any())
+		$oListBase->expects(self::any())
 		->method('getTsPathPageBrowser')
-		->will($this->returnValue('pagebrowser'));
+		->will(self::returnValue('pagebrowser'));
 
-		$oListBase->expects($this->once())
+		$oListBase->expects(self::once())
 		->method('getService');
 
 		//damit die konfig stimmt
-		$oListBase->expects($this->any())
+		$oListBase->expects(self::any())
 		->method('getTemplateName')
-		->will($this->returnValue('dummyconfig'));
+		->will(self::returnValue('dummyconfig'));
 
-		$oListBase->expects($this->any())
+		$oListBase->expects(self::any())
 		->method('isOldFilterMode')
-		->will($this->returnValue($bOldFilterMode));
+		->will(self::returnValue($bOldFilterMode));
 
 		return $oListBase;
 	}
@@ -130,18 +130,18 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$configurations = $this->getConfigurations($aConfig);
 
 		//handle request sollte nichts zurück geben
-		$this->assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
+		self::assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
 
 		//view daten mit den daten des searchers gefüllt?
-		$this->assertEquals(array('result' => array('firstItem')),$configurations->getViewData()->offsetGet('items'),'View daten falsch!');
+		self::assertEquals(array('result' => array('firstItem')),$configurations->getViewData()->offsetGet('items'),'View daten falsch!');
 
 		$pageBrowserConfig = $configurations->getViewData()->offsetGet('pageBrowserConfig');
 		//daten die dem pagebrowser übergeben wurden korrekt?
-		$this->assertEquals('dummyconfig.pagebrowser',$pageBrowserConfig['confid'],'daten für den page browser falsch: confid falsch!');
-		$this->assertEquals($configurations,$pageBrowserConfig['config'],'daten für den page browser falsch: config falsch!');
-		$this->assertEquals($this->expectedFields,$pageBrowserConfig['fields'],'daten für den page browser falsch: fields falsch!');
-		$this->assertEquals($this->expectedOptions,$pageBrowserConfig['options'],'daten für den page browser falsch: options falsch!');
-		$this->assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
+		self::assertEquals('dummyconfig.pagebrowser',$pageBrowserConfig['confid'],'daten für den page browser falsch: confid falsch!');
+		self::assertEquals($configurations,$pageBrowserConfig['config'],'daten für den page browser falsch: config falsch!');
+		self::assertEquals($this->expectedFields,$pageBrowserConfig['fields'],'daten für den page browser falsch: fields falsch!');
+		self::assertEquals($this->expectedOptions,$pageBrowserConfig['options'],'daten für den page browser falsch: options falsch!');
+		self::assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
 	}
 
 	public function testHandleRequestCallsFilterPageBrowserAndSearchServiceCorrectWithNewFilterMode() {
@@ -173,18 +173,18 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$configurations = $this->getConfigurations($aConfig);
 
 		//handle request sollte nichts zurück geben
-		$this->assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
+		self::assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
 
 		//view daten mit den daten des searchers gefüllt?
-		$this->assertEquals(array('result' => array('firstItem')),$configurations->getViewData()->offsetGet('items'),'View daten falsch!');
+		self::assertEquals(array('result' => array('firstItem')),$configurations->getViewData()->offsetGet('items'),'View daten falsch!');
 
 		$pageBrowserConfig = $configurations->getViewData()->offsetGet('pageBrowserConfig');
 		//daten die dem pagebrowser übergeben wurden korrekt?
-		$this->assertEquals('dummyconfig.pagebrowser',$pageBrowserConfig['confid'],'daten für den page browser falsch: confid falsch!');
-		$this->assertEquals($configurations,$pageBrowserConfig['config'],'daten für den page browser falsch: config falsch!');
-		$this->assertEquals($this->expectedFields,$pageBrowserConfig['fields'],'daten für den page browser falsch: fields falsch!');
-		$this->assertEquals($this->expectedOptions,$pageBrowserConfig['options'],'daten für den page browser falsch: options falsch!');
-		$this->assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
+		self::assertEquals('dummyconfig.pagebrowser',$pageBrowserConfig['confid'],'daten für den page browser falsch: confid falsch!');
+		self::assertEquals($configurations,$pageBrowserConfig['config'],'daten für den page browser falsch: config falsch!');
+		self::assertEquals($this->expectedFields,$pageBrowserConfig['fields'],'daten für den page browser falsch: fields falsch!');
+		self::assertEquals($this->expectedOptions,$pageBrowserConfig['options'],'daten für den page browser falsch: options falsch!');
+		self::assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
 	}
 
 	public function testHandleRequestSetsNoViewDataIfServiceReturnsNothing() {
@@ -214,18 +214,18 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$configurations = $this->getConfigurations($aConfig);
 
 		//handle request sollte nichts zurück geben
-		$this->assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
+		self::assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
 
 		//view daten mit den daten des searchers leer?
-		$this->assertEmpty($configurations->getViewData()->offsetGet('items'),'View daten falsch!');
+		self::assertEmpty($configurations->getViewData()->offsetGet('items'),'View daten falsch!');
 
 		$pageBrowserConfig = $configurations->getViewData()->offsetGet('pageBrowserConfig');
 		//daten die dem pagebrowser übergeben wurden korrekt?
-		$this->assertEquals('dummyconfig.pagebrowser',$pageBrowserConfig['confid'],'daten für den page browser falsch: confid falsch!');
-		$this->assertEquals($configurations,$pageBrowserConfig['config'],'daten für den page browser falsch: config falsch!');
-		$this->assertEquals($this->expectedFields,$pageBrowserConfig['fields'],'daten für den page browser falsch: fields falsch!');
-		$this->assertEquals($this->expectedOptions,$pageBrowserConfig['options'],'daten für den page browser falsch: options falsch!');
-		$this->assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
+		self::assertEquals('dummyconfig.pagebrowser',$pageBrowserConfig['confid'],'daten für den page browser falsch: confid falsch!');
+		self::assertEquals($configurations,$pageBrowserConfig['config'],'daten für den page browser falsch: config falsch!');
+		self::assertEquals($this->expectedFields,$pageBrowserConfig['fields'],'daten für den page browser falsch: fields falsch!');
+		self::assertEquals($this->expectedOptions,$pageBrowserConfig['options'],'daten für den page browser falsch: options falsch!');
+		self::assertEquals(array('searchcallback'=>array($oSrv, 'search')),$pageBrowserConfig['cfg'],'daten für den page browser falsch: cfg falsch!');
 	}
 
 	/**
@@ -236,17 +236,17 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 	public function testHandleRequestThrowsExceptionIfServiceDoesNotSupportSearchCallback() {
 		//mock für den searcher
 		$oSrv = $this->getMock('dummySrv',array('__toString'));
-		$oSrv->expects($this->once())
+		$oSrv->expects(self::once())
 		->method('__toString')
 		//kommt die exception message richtig ist
-		->will($this->returnValue('dummySrv'));
+		->will(self::returnValue('dummySrv'));
 
 		//mock für die zu testende action
 		$oListBase = $this->getMockForAbstractClass('tx_mklib_action_ListBase');
 		//abstrakte methoden mocken
-		$oListBase->expects($this->once())
+		$oListBase->expects(self::once())
 		->method('getService')
-		->will($this->returnValue($oSrv));
+		->will(self::returnValue($oSrv));
 
 		$configurations = $this->getConfigurations();
 
@@ -257,7 +257,7 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 	public function testHandleRequestCallsNotSearchIfFilterInitReturnedFalse() {
 		//mock für den searcher
 		$oSrv = $this->getMock('dummySrv',array('search'));
-		$oSrv->expects($this->never())
+		$oSrv->expects(self::never())
 			->method('search');
 
 		//mock für die zu testende action
@@ -272,10 +272,10 @@ class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
 		$configurations = $this->getConfigurations($aConfig);
 
 		//handle request sollte nichts zurück geben
-		$this->assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
+		self::assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()),'handleRequest hat doch etwas zurück gegeben!');
 
 		//view daten mit den daten des searchers leer?
-		$this->assertEmpty($configurations->getViewData()->offsetGet('items'),'View daten falsch!');
+		self::assertEmpty($configurations->getViewData()->offsetGet('items'),'View daten falsch!');
 	}
 }
 

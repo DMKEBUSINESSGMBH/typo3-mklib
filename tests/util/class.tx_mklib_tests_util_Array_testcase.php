@@ -47,15 +47,15 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$aArray = array('ich', 'bin', 1, '', 0, null, 'Array' => array(), 'Test', true, false);
 		$aNoEmptyValues = tx_mklib_util_Array::removeEmptyValues($aArray);
 
-		$this->assertTrue(is_array($aNoEmptyValues), 'No array given.');
-		$this->assertEquals(count($aNoEmptyValues), 6, 'Wrong count of entries.');
+		self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
+		self::assertEquals(count($aNoEmptyValues), 6, 'Wrong count of entries.');
 		//auf die keys im zurück gegebenen und initialen array achten!!!
-		$this->assertEquals('ich',$aNoEmptyValues[0], '1. wert falsch');
-		$this->assertEquals('bin',$aNoEmptyValues[1], '2. wert falsch');
-		$this->assertEquals(1,$aNoEmptyValues[2], '3. wert falsch');
-		$this->assertEquals( array(),$aNoEmptyValues['Array'], '4. wert falsch');
-		$this->assertEquals('Test',$aNoEmptyValues[6], '5. wert falsch');
-		$this->assertEquals(true,$aNoEmptyValues[7], '6. wert falsch');
+		self::assertEquals('ich',$aNoEmptyValues[0], '1. wert falsch');
+		self::assertEquals('bin',$aNoEmptyValues[1], '2. wert falsch');
+		self::assertEquals(1,$aNoEmptyValues[2], '3. wert falsch');
+		self::assertEquals( array(),$aNoEmptyValues['Array'], '4. wert falsch');
+		self::assertEquals('Test',$aNoEmptyValues[6], '5. wert falsch');
+		self::assertEquals(true,$aNoEmptyValues[7], '6. wert falsch');
 	}
 
 	/**
@@ -66,14 +66,14 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$aArray = array('ich', 'bin', 1, '', 0, null, 'Array' => array(), 'Test', true, false);
 		$aNoEmptyValues = tx_mklib_util_Array::removeEmptyArrayValuesSimple($aArray);
 
-		$this->assertTrue(is_array($aNoEmptyValues), 'No array given.');
-		$this->assertEquals(count($aNoEmptyValues), 5, 'Wrong count of entries.');
+		self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
+		self::assertEquals(count($aNoEmptyValues), 5, 'Wrong count of entries.');
 		//auf die keys im zurück gegebenen und initialen array achten!!!
-		$this->assertEquals('ich',$aNoEmptyValues[0], '1. wert falsch');
-		$this->assertEquals('bin',$aNoEmptyValues[1], '2. wert falsch');
-		$this->assertEquals(1,$aNoEmptyValues[2], '3. wert falsch');
-		$this->assertEquals('Test',$aNoEmptyValues[3], '4. wert falsch');
-		$this->assertEquals(true,$aNoEmptyValues[4], '5. wert falsch');
+		self::assertEquals('ich',$aNoEmptyValues[0], '1. wert falsch');
+		self::assertEquals('bin',$aNoEmptyValues[1], '2. wert falsch');
+		self::assertEquals(1,$aNoEmptyValues[2], '3. wert falsch');
+		self::assertEquals('Test',$aNoEmptyValues[3], '4. wert falsch');
+		self::assertEquals(true,$aNoEmptyValues[4], '5. wert falsch');
 	}
 
 	public function testFieldsToArray(){
@@ -83,36 +83,36 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 						tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid'=>6,'name'=>'Model Nr. 6')),
 					);
 		$aFields = tx_mklib_util_Array::fieldsToArray($aArray, 'name');
-		$this->assertTrue(is_array($aFields), 'No array given.');
-		$this->assertEquals(count($aFields), 3, 'Array has a wrong count of entries.');
-		$this->assertEquals('Model Nr. 2', $aFields[0], 'Wrong name in array key 0.');
-		$this->assertEquals('Model Nr. 5', $aFields[1], 'Wrong name in array key 1.');
-		$this->assertEquals('Model Nr. 6', $aFields[2], 'Wrong name in array key 2.');
+		self::assertTrue(is_array($aFields), 'No array given.');
+		self::assertEquals(count($aFields), 3, 'Array has a wrong count of entries.');
+		self::assertEquals('Model Nr. 2', $aFields[0], 'Wrong name in array key 0.');
+		self::assertEquals('Model Nr. 5', $aFields[1], 'Wrong name in array key 1.');
+		self::assertEquals('Model Nr. 6', $aFields[2], 'Wrong name in array key 2.');
 	}
 
 	public function testinArray(){
 		$aArray = array('wert1' => 1, 'zwei', 3, 'wert4' => 'vier', '5');
 		$sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
 
-		$this->assertTrue(tx_mklib_util_Array::inArray(1, $aArray), '1 wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray(1, $aArray, true), '1 wurde nicht gefunden.');
-		$this->assertFalse(tx_mklib_util_Array::inArray(2, $aArray), '2 wurde gefunden.');
-		$this->assertFalse(tx_mklib_util_Array::inArray(2, $aArray, true), '2 wurde gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray('zwei', $aArray), 'zwei wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray('zwei', $aArray, true), 'zwei wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray(3, $aArray), '3 wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray(3, $aArray, true), '3 wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray('3', $aArray), '3 wurde nicht gefunden.');
-		$this->assertFalse(tx_mklib_util_Array::inArray('3', $aArray, true), '3 wurde gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray('vier', $aArray), 'vier wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray('vier', $aArray, true), 'vier wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray('5', $aArray), '5 wurde nicht gefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray('5', $aArray, true), '5 wurde nichtgefunden.');
-		$this->assertTrue(tx_mklib_util_Array::inArray(5, $aArray), '5 wurde nicht gefunden.');
-		$this->assertFalse(tx_mklib_util_Array::inArray(5, $aArray, true), '5 wurde gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray), '1 wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray, true), '1 wurde nicht gefunden.');
+		self::assertFalse(tx_mklib_util_Array::inArray(2, $aArray), '2 wurde gefunden.');
+		self::assertFalse(tx_mklib_util_Array::inArray(2, $aArray, true), '2 wurde gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray('zwei', $aArray), 'zwei wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray('zwei', $aArray, true), 'zwei wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray(3, $aArray), '3 wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray(3, $aArray, true), '3 wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray('3', $aArray), '3 wurde nicht gefunden.');
+		self::assertFalse(tx_mklib_util_Array::inArray('3', $aArray, true), '3 wurde gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray('vier', $aArray), 'vier wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray('vier', $aArray, true), 'vier wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray('5', $aArray), '5 wurde nicht gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray('5', $aArray, true), '5 wurde nichtgefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray(5, $aArray), '5 wurde nicht gefunden.');
+		self::assertFalse(tx_mklib_util_Array::inArray(5, $aArray, true), '5 wurde gefunden.');
 
-		$this->assertTrue(tx_mklib_util_Array::inArray(array('zwei', 5), $aArray), 'zwei oder 5 wurde nicht gefunden.');
-		$this->assertFalse(tx_mklib_util_Array::inArray(array('3', 5), $aArray, true), '3 oder 5 wurde gefunden.');
+		self::assertTrue(tx_mklib_util_Array::inArray(array('zwei', 5), $aArray), 'zwei oder 5 wurde nicht gefunden.');
+		self::assertFalse(tx_mklib_util_Array::inArray(array('3', 5), $aArray, true), '3 oder 5 wurde gefunden.');
 	}
 	public function testFieldsToString(){
 		$aArray = array(
@@ -122,8 +122,8 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 					);
 		$sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
 
-		$this->assertTrue(is_string($sFields), 'No string given.');
-		$this->assertEquals($sFields, 'Model Nr. 2<>Model Nr. 5<>Model Nr. 6', 'Wrong string given.');
+		self::assertTrue(is_string($sFields), 'No string given.');
+		self::assertEquals($sFields, 'Model Nr. 2<>Model Nr. 5<>Model Nr. 6', 'Wrong string given.');
 	}
 
 	/**
@@ -134,25 +134,25 @@ class tx_mklib_tests_util_Array_testcase extends tx_phpunit_testcase {
 		$object->dynamicVariable = 'dynamicVariable';
 		$objectArray = tx_mklib_util_Array::castObjectToArray($object);
 
-		$this->assertEquals(
+		self::assertEquals(
 			'publicVariable',$objectArray['publicVariable'], 'publicVariable falsch gecastet'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'protectedVariable',$objectArray['protectedVariable'], 'protectedVariable falsch gecastet'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'privateVariable',$objectArray['privateVariable'], 'privateVariable falsch gecastet'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'publicStaticVariable',$objectArray['publicStaticVariable'], 'publicStaticVariable falsch gecastet'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'protectedStaticVariable',$objectArray['protectedStaticVariable'], 'protectedStaticVariable falsch gecastet'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'privateStaticVariable',$objectArray['privateStaticVariable'], 'privateStaticVariable falsch gecastet'
 		);
-		$this->assertEquals(
+		self::assertEquals(
 			'dynamicVariable',$objectArray['dynamicVariable'], 'dynamicVariable falsch gecastet'
 		);
 	}

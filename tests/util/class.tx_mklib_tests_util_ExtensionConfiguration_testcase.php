@@ -47,7 +47,7 @@ class tx_mklib_tests_util_ExtensionConfiguration_testcase extends tx_phpunit_tes
 			
 		$testConfigValue = $extensionConfiguration->getTestConfig();
 
-		$this->assertEquals('testConfigValue', $testConfigValue);
+		self::assertEquals('testConfigValue', $testConfigValue);
 	}
 }
 

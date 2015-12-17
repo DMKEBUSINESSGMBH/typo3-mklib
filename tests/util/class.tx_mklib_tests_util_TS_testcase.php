@@ -45,13 +45,13 @@ class tx_mklib_tests_util_TS_testcase extends tx_phpunit_testcase {
 	public function testGetPagesTsConfigLoadsTsAlwaysNewIfTsAdded(){
 		$pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
 
-		$this->assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
+		self::assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
 
 		tx_rnbase_util_Extensions::addPageTSConfig(
 			'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mklib/static/basic/setup.txt">'
 		);
 
 		$pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
-		$this->assertTrue(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS nicht geladen');
+		self::assertTrue(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS nicht geladen');
 	}
 }

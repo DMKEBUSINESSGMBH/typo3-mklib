@@ -53,9 +53,9 @@ class tx_mklib_tests_util_Number_testcase extends tx_phpunit_testcase {
 		if (!is_array($config)) $config = array();
 
 		// bei einem normalen float sollte nun eine Kommazahl herauskommen.
-// 		$this->assertEquals('5,43', (string) (float) '5.43');
+// 		self::assertEquals('5,43', (string) (float) '5.43');
 
-		$this->assertEquals($expected, tx_mklib_util_Number::floatVal($actual, $config));
+		self::assertEquals($expected, tx_mklib_util_Number::floatVal($actual, $config));
 	}
 	/**
 	 *
