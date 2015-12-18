@@ -152,23 +152,21 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 	public static function loadTca() {
 		$_EXTKEY = 'mklib';
 		global $TCA;
-		$TCA['tx_mklib_wordlist'] = array (
-		    'ctrl' => array (
-		        'title'     => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist',
-		        'label'     => 'word',
-		    	'label_alt' => 'uid',
-		    	'label_alt_force' => false,
-		        'tstamp'    => 'tstamp',
-		        'crdate'    => 'crdate',
-		        'cruser_id' => 'cruser_id',
-		        'default_sortby' => 'ORDER BY crdate',
-		        'delete' => 'deleted',
-		        'enablecolumns' => array (
-		            'disabled' => 'hidden',
-		        ),
-		        'iconfile'          => tx_rnbase_util_Extensions::extRelPath($_EXTKEY).'icon/icon_tx_mklib_wordlist.gif',
-		        'dividers2tabs'     => true,
-		    ),
+		$TCA['tx_mklib_wordlist']['ctrl'] = array (
+	        'title'     => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist',
+	        'label'     => 'word',
+	    	'label_alt' => 'uid',
+	    	'label_alt_force' => false,
+	        'tstamp'    => 'tstamp',
+	        'crdate'    => 'crdate',
+	        'cruser_id' => 'cruser_id',
+	        'default_sortby' => 'ORDER BY crdate',
+	        'delete' => 'deleted',
+	        'enablecolumns' => array (
+	            'disabled' => 'hidden',
+	        ),
+	        'iconfile'          => tx_rnbase_util_Extensions::extRelPath($_EXTKEY).'icon/icon_tx_mklib_wordlist.gif',
+	        'dividers2tabs'     => true,
 		);
 
 		include_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'tca/tx_mklib_wordlist.php';
