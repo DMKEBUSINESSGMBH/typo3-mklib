@@ -22,7 +22,6 @@
 		"typo3-ter/mklib": "*"
 	},
 	"require" : {
-		"typo3/cms-core" : ">=6.1.99 <=7.6.99",
-		"digedag/rn-base" : ">=0.15.19"
+		"typo3/cms-core" : ">=6.1.99 <=7.6.99"
 	}
 }
