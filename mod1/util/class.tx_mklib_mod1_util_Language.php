@@ -23,6 +23,7 @@
  */
 
 tx_rnbase::load('tx_rnbase_mod_Util');
+tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
  *
@@ -114,7 +115,7 @@ class tx_mklib_mod1_util_Language {
 		}
 		$spriteIconName = 'flags-multiple';
 		if (!empty($record)) {
-			$spriteIconName = tx_rnbase_mod_Util::mapRecordTypeToSpriteIconName(
+			$spriteIconName = Tx_Rnbase_Backend_Utility_Icons::mapRecordTypeToSpriteIconName(
 				'sys_language',
 				$record
 			);
