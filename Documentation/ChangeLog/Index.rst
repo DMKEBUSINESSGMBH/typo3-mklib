@@ -20,6 +20,7 @@ Version    Changes
 =========  ===========================================================================
 ?.?.?      | compatibility to TYPO3 7.6
            | fixed CLI clear cache command for >= TYPO3 6.x
+           | removed some deprecated methods
 1.0.10     | bugfix in tx_mklib_mod1_searcher_abstractBase for TYPO3 4.x
 1.0.9      | existing locallang lables are not longer overwritten in BE modules which use tx_mklib_mod1_searcher_abstractBase
            | added possibility to use full TypoScript support for export headers in the export handler of BE modules
