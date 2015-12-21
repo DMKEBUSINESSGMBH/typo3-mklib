@@ -38,7 +38,7 @@ tx_rnbase::load('tx_rnbase_util_Files');
  * @package tx_mklib
  * @subpackage tx_mklib_tests
  */
-class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
+abstract class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 
 	protected $workspaceIdAtStart;
 	/**
@@ -152,20 +152,6 @@ class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
 		$this->dropDatabase();
 		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
-	}
-
-	/**
-	 * Auf der CLI wird die Klasse als Test betrachtet. Da sie
-	 * eigentlich keine Tests hat, kommt ein Fehler zu Stande.
-	 *
-	 * Da wir einen Datenbank testcase bereitstellen,
-	 * können wir wenigstens die Verbindung zur DB prüfen.
-	 *
-	 * @group dummytest
-	 */
-	public function testCheckConnection() {
-		$dbs = $GLOBALS['TYPO3_DB']->admin_get_dbs();
-		self::assertTrue(in_array($this->testDatabase, $dbs));
 	}
 }
 
