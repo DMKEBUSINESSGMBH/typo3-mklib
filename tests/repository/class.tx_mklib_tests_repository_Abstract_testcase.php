@@ -51,7 +51,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 	}
 	protected function tearDown() {
 		if (!empty($GLOBALS['TCA']['tx_mklib_wordlist']['test'])) {
-			unset($GLOBALS['TCA']['tx_mklib_wordlist']);
+			unset($GLOBALS['TCA']['tx_mklib_wordlist']['test']);
 		}
 	}
 

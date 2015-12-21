@@ -152,7 +152,7 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 	public static function loadTca() {
 		$_EXTKEY = 'mklib';
 		global $TCA;
-		$TCA['tx_mklib_wordlist']['ctrl'] = array (
+		$TCA['tx_mklib_wordlist']['ctrl'] = array(
 	        'title'     => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist',
 	        'label'     => 'word',
 	    	'label_alt' => 'uid',

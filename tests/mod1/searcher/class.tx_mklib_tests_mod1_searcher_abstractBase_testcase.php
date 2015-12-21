@@ -59,27 +59,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		//sprache auf default setzen damit wir die richtigen labels haben
 		$GLOBALS['LANG']->lang = 'default';
 
-		//wir müssen noch die TCA für die Wordlist laden
-		global $TCA;
-		$TCA['tx_mklib_wordlist'] = array (
-			'ctrl' => array (
-				'title'     => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist',
-				'label'     => 'word',
-				'label_alt' => 'uid',
-				'label_alt_force' => false,
-				'tstamp'    => 'tstamp',
-				'crdate'    => 'crdate',
-				'cruser_id' => 'cruser_id',
-				'default_sortby' => 'ORDER BY crdate',
-				'delete' => 'deleted',
-				'enablecolumns' => array (
-					'disabled' => 'hidden',
-				),
-				'dynamicConfigFile' => tx_rnbase_util_Extensions::extPath('mklib').'tca/tx_mklib_wordlist.php',
-				'iconfile'          => tx_rnbase_util_Extensions::extRelPath('mklib').'icon/icon_tx_mklib_wordlist.gif',
-				'dividers2tabs'     => true,
-			),
-		);
+		tx_rnbase::load('tx_mklib_srv_Wordlist');
+		tx_mklib_srv_Wordlist::loadTca();
 
 		$this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
 		$this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher',$this->mod);
