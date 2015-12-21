@@ -41,9 +41,4 @@ $EM_CONF [$_EXTKEY] = array (
 		)
 	),
 	'suggests' => array (),
-	'autoload' => array (
-		'classmap' => array (
-			'scheduler/'
-		)
-	)
 );
