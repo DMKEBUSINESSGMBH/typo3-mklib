@@ -35,8 +35,7 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
  * 					GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_scheduler_SchedulerTaskFailDetectionFieldProvider
-	extends tx_mklib_scheduler_GenericFieldProvider
-	implements tx_scheduler_AdditionalFieldProvider {
+	extends tx_mklib_scheduler_GenericFieldProvider {
 
 	/**
 	 *

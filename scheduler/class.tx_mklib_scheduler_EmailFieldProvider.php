@@ -61,7 +61,3 @@ class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFi
 		);
 	}
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/examples/class.tx_scheduler_testtask_additionalfieldprovider.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/scheduler/examples/class.tx_scheduler_testtask_additionalfieldprovider.php']);
-}

@@ -34,8 +34,7 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider
-	extends tx_mklib_scheduler_GenericFieldProvider
-	implements tx_scheduler_AdditionalFieldProvider {
+	extends tx_mklib_scheduler_GenericFieldProvider {
 
 	/**
 	 *

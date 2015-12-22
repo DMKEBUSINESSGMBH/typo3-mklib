@@ -35,8 +35,7 @@ tx_rnbase::load('tx_mklib_util_DB');
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider
-	extends tx_mklib_scheduler_GenericFieldProvider
-	implements tx_scheduler_AdditionalFieldProvider {
+	extends tx_mklib_scheduler_GenericFieldProvider {
 
 	/**
 	 *

@@ -22,14 +22,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-if (!class_exists('tx_scheduler_Task')) {
-	require_once tx_rnbase_util_Extensions::extPath('scheduler', 'class.tx_scheduler_task.php');
-}
 tx_rnbase::load('tx_rnbase_configurations');
 tx_rnbase::load('tx_rnbase_util_Logger');
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Arrays');
+tx_rnbase::load('Tx_Rnbase_Scheduler_Task');
 
 /**
  * generic abstract scheduler
@@ -38,7 +35,7 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
  * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-abstract class tx_mklib_scheduler_Generic extends tx_scheduler_Task {
+abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task {
 
 	/**
 	 * The DateTime Object with the last run time

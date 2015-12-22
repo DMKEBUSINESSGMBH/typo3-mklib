@@ -24,7 +24,7 @@
 
 
 tx_rnbase::load('tx_mklib_scheduler_Generic');
-tx_rnbase::load('tx_rnbase_util_DB');
+tx_rnbase::load('tx_mklib_util_DB');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_mklib_util_Scheduler');
 

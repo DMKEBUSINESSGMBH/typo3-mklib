@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
+tx_rnbase::load('tx_mklib_util_File');
 tx_rnbase::load('tx_mklib_scheduler_Generic');
 
 /**
@@ -32,7 +32,7 @@ tx_rnbase::load('tx_mklib_scheduler_Generic');
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_cleanupTempFiles extends tx_mklib_scheduler_Generic {
-	
+
 
 	/**
 	 *

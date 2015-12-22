@@ -6,7 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			
+
 			<!-- scheduler -->
 			<label index="scheduler_cleanupTempFiles_name">Cleanup tempfiles</label>
 			<label index="scheduler_cleanupTempFiles_taskinfo">Cleans up files in an directory.</label>
@@ -14,7 +14,7 @@
 			<label index="scheduler_cleanupTempFiles_field_lifetime_eval_int">Lifetime must be an Integer</label>
 			<label index="scheduler_cleanupTempFiles_field_directorycheckdir">Folder*</label>
 			<label index="scheduler_cleanupTempFiles_field_directorycheckdir_eval_required">The directoryCheckDir was ot set.</label>
-			<label index="scheduler_cleanupTempFiles_field_folder">Folder Path*</label>
+			<label index="scheduler_cleanupTempFiles_field_folder">Folder Path* (relative from the webroot including typo3temp etc.)</label>
 			<label index="scheduler_cleanupTempFiles_field_folder_eval_folder">The folder does not exist.</label>
 			<label index="scheduler_cleanupTempFiles_field_folder_eval_typo3temp">The folder must be in the typo3temp dir.</label>
 			<label index="scheduler_cleanupTempFiles_field_folder_eval_uploads">The folder must be in the uploads dir.</label>
@@ -31,14 +31,14 @@
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold">Die maximal erlaubte Tasklaufdauer darf nicht kleiner als 10 Sekunden sein.</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter">Zeit nach der erneut eine Mail versendet wird</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter_eval_int">Bitte eine Zahl (Sekunden) als Zeit nach der erneut eine Mail versendet wird</label>
-			
+
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_singular">Stunde</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_plural">Stunden</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_singular">Minute</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_plural">Minuten</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_singular">Sekunde</label>
 			<label index="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_plural">Sekunden</label>
-			
+
 			<label index="scheduler_DeleteFromDatabase_name">Datensätze in der Datenbank löschen</label>
 			<label index="scheduler_DeleteFromDatabase_taskinfo">Vorsicht: Die where Bedingung, der Modus und die Tabelle sollten korrekt sein!</label>
 			<label index="scheduler_DeleteFromDatabase_field_where">where Bedingung</label>
@@ -49,7 +49,7 @@
 			<label index="scheduler_DeleteFromDatabase_field_table">Tabelle</label>
 			<label index="scheduler_DeleteFromDatabase_field_selectFields">selektierte Felder (falls nicht nur UID Feld; hautpsächlich interessant fürs Logging)</label>
 			<label index="scheduler_DeleteFromDatabase_field_uid">Feld der UID (falls abweichend - wird benötigt zum löschen)</label>
-			
+
 			<label index="scheduler_SchedulerTaskFailDetection_name">Fehlgeschlagene Scheduler Tasks melden</label>
 			<label index="scheduler_SchedulerTaskFailDetection_taskinfo">Prüft ob aktuell Scheduler Tasks fehlgeschlagen sind, die schon seit längerer Zeit laufen und somit scheinbar hängen geblieben sind.</label>
 		</languageKey>
