@@ -346,14 +346,19 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			'link' => array(
 				'type' => 'popup',
 				'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
-				'icon' => 'link_popup.gif',
-				'script' => 'browse_links.php?mode=wizard',
 				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
 				'params' => Array(
 						'blindLinkOptions' => 'file,page,mail,spec,folder',
 				)
 			)
 		);
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			$expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
+			$expectedLinkWizard['link']['module']['name'] = 'wizard_link';
+		} else {
+			$expectedLinkWizard['link']['icon'] = 'link_popup.gif';
+			$expectedLinkWizard['link']['script'] = 'browse_links.php?mode=wizard';
+		}
 
 		self::assertEquals($expectedLinkWizard, $linkWizard, 'link wizard nicht korrekt');
 	}
@@ -389,6 +394,44 @@ class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
 			self::assertEquals('wizard_edit.php', $wizards['edit']['script']);
 			self::assertEquals('wizard_list.php', $wizards['list']['script']);
 			self::assertEquals('wizard_rte.php', $wizards['RTE']['script']);
+		}
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testGetWizardsReturnsWizardsWithCorrectIcons() {
+		$wizards = tx_mklib_util_TCA::getWizards(
+			'', array(
+				'add' => 1,
+				'edit' => 1,
+				'list' => 1,
+				'RTE' => 1
+			)
+		);
+
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+				$wizards['add']['icon']
+			);
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+				$wizards['edit']['icon']
+			);
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif',
+				$wizards['list']['icon']
+			);
+			self::assertEquals(
+				'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif',
+				$wizards['RTE']['icon']
+			);
+		} else {
+			self::assertEquals('edit2.gif', $wizards['add']['icon']);
+			self::assertEquals('add.gif', $wizards['edit']['icon']);
+			self::assertEquals('list.gif', $wizards['list']['icon']);
+			self::assertEquals('wizard_rte2.gif', $wizards['RTE']['icon']);
 		}
 	}
 }

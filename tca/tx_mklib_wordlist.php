@@ -15,7 +15,7 @@ $TCA['tx_mklib_wordlist'] = Array (
   'interface' => Array (
     'showRecordFieldList' => 'hidden,blacklisted,whitelisted,word'
   ),
-  'feInterface' => $TCA['tx_mklib_branches']['feInterface'],
+  'feInterface' => $TCA['tx_mklib_wordlist']['feInterface'],
   'columns' => Array (
     'hidden' => array (
       'exclude' => 1,

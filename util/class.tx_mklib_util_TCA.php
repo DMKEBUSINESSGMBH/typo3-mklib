@@ -289,6 +289,7 @@ class tx_mklib_util_TCA {
 	 * @param 	string 	$sTable
 	 * @param 	array 	$options
 	 * @return 	array
+	 * @todo refactoring the method has too many lines
 	 */
 	public static function getWizards($sTable, array $options = array()) {
 		$bGlobalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
@@ -301,7 +302,9 @@ class tx_mklib_util_TCA {
 			$wizards['edit'] = array (
 				'type' => 'popup',
 				'title' => 'Edit entry', // LLL:EXT:mketernit/locallang.
-				'icon' => 'edit2.gif',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+							'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif' :
+							'edit2.gif',
 				'popup_onlyOpenIfSelected' => 1,
 				'JSopenParams' => 'height=576,width=720,status=0,menubar=0,scrollbars=1',
 			);
@@ -318,7 +321,9 @@ class tx_mklib_util_TCA {
 			$wizards['add'] = array (
 				'type' => 'script',
 				'title' => 'Create new entry',
-				'icon' => 'add.gif',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+							'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif' :
+							'add.gif',
 				'params' => array (
 					'table' => $sTable,
 					'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
@@ -338,7 +343,9 @@ class tx_mklib_util_TCA {
 			$wizards['list'] = array (
 				'type' => 'popup',
 				'title' => 'List entries',
-				'icon' => 'list.gif',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+							'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_list.gif' :
+							'list.gif',
 				'params' => array (
 					'table' => $sTable,
 					'pid' => ($bGlobalPid ? '###STORAGE_PID###' : '###CURRENT_PID###'),
@@ -376,7 +383,9 @@ class tx_mklib_util_TCA {
 				'RTEonly' => 1,
 				'type' => 'script',
 				'title' => 'Full screen Rich Text Editing',
-				'icon' => 'wizard_rte2.gif',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+							'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_rte.gif' :
+							'wizard_rte2.gif',
 			);
 			$wizards['RTE'] = self::addWizardScriptForTypo3Version('rte', $wizards['RTE']);
 		}
@@ -385,7 +394,9 @@ class tx_mklib_util_TCA {
 			$wizards['link'] = Array(
 				'type' => 'popup',
 				'title' => 'LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel',
-				'icon' => 'link_popup.gif',
+				'icon' => tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+							'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif' :
+							'link_popup.gif',
 				'script' => 'browse_links.php?mode=wizard',
 				'JSopenParams' => 'height=300,width=500,status=0,menubar=0,scrollbars=1',
 				'params' => Array(
@@ -398,6 +409,8 @@ class tx_mklib_util_TCA {
 						$wizards['link'], $options['link']
 					);
 			}
+
+			$wizards['link'] = self::addWizardScriptForTypo3Version('link', $wizards['link']);
 		}
 
 		return $wizards;
@@ -412,8 +425,13 @@ class tx_mklib_util_TCA {
 		$completeWizardName = 'wizard_' . $wizardType;
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			$wizardConfig['module']['name'] = $completeWizardName;
+			if (isset($wizardConfig['script'])) {
+				unset($wizardConfig['script']);
+			}
 		} else {
-			$wizardConfig['script'] = $completeWizardName . '.php';
+			if (!isset($wizardConfig['script'])) {
+				$wizardConfig['script'] = $completeWizardName . '.php';
+			}
 		}
 
 		return $wizardConfig;
