@@ -154,10 +154,11 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 			array(
 				//hat keine TCA
 				'enablefieldsoff' => TRUE,
-				//nicht unser eigener Task und alle mit Fehler
+				//nicht unser eigener Task, keine deaktivierten und alle mit Fehler
 				'where' => 	'uid != ' . intval($this->taskUid) . ' AND ' .
 							'faildetected = 0 AND ' .
-							'lastexecution_failure != ""'
+							'lastexecution_failure != "" AND ' .
+							'disable = 0'
 			)
 		);
 	}

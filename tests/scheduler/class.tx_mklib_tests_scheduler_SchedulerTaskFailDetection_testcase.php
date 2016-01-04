@@ -124,7 +124,8 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 					'enablefieldsoff' => TRUE,
 					'where' => 	'uid != 123 AND ' .
 								'faildetected = 0 AND ' .
-								'lastexecution_failure != ""'
+								'lastexecution_failure != "" AND ' .
+								'disable = 0'
 				)
 			)
 			->will(self::returnValue(array('failedTasks')));
@@ -179,7 +180,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	/**
 	 * @group unit
 	 */
-	public function testhandleFailedTasks() {
+	public function testHandleFailedTasks() {
 		$scheduler = tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection');
 		$failedTasks = array(
 			0 => array(
