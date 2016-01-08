@@ -54,14 +54,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 	const DELETION_MODE_REALLYDELETE = 2;
 
 	/**
-	 * Enthält alle Tabellen, für welche die TCA
-	 * über Tx_Mklib_Database_Connection::loadTCA bereits geladen wurde.
-
-	 * @var array
-	 */
-	private $aTCACache = array();
-
-	/**
 	 * Is logging enabled? (protected für Tests)
 	 * @var 	boolean
 	 */
