@@ -24,7 +24,6 @@
 
 
 tx_rnbase::load('tx_mklib_scheduler_Generic');
-tx_rnbase::load('tx_mklib_util_DB');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_mklib_util_Scheduler');
 
@@ -67,8 +66,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 	 * @return void
 	 */
 	protected function resetFailedTasksDetection() {
-		$databaseUtility = $this->getDatabaseUtility();
-		$databaseUtility::doUpdate(
+		$this->getDatabaseConnection()->doUpdate(
 			'tx_scheduler_task',
 			'faildetected < ' . ($GLOBALS['EXEC_TIME'] - $this->getOption('failDetectionRememberAfter')),
 			array('faildetected' => 0)
@@ -76,10 +74,10 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 	}
 
 	/**
-	 * @return string
+	 * @return Tx_Mklib_Database_Connection
 	 */
-	protected function getDatabaseUtility() {
-		return tx_mklib_util_DB;
+	protected function getDatabaseConnection() {
+		return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection');
 	}
 
 	/**
@@ -131,8 +129,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 	 * @return void
 	 */
 	protected function setFailDetected(array $uids) {
-		$databaseUtility = $this->getDatabaseUtility();
-		$databaseUtility::doUpdate(
+		$this->getDatabaseConnection()->doUpdate(
 			'tx_scheduler_task',
 			'uid IN (' . implode(',',$uids) . ')',
 			array('faildetected' => $GLOBALS['EXEC_TIME'])
@@ -147,8 +144,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 		$selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
 			'uid,serialized_task_object' :
 			'uid,classname';
-		$databaseUtility = $this->getDatabaseUtility();
-		return $databaseUtility::doSelect(
+		return $this->getDatabaseConnection()->doSelect(
 			$selectFields,
 			'tx_scheduler_task',
 			array(

@@ -31,25 +31,26 @@
  */
 
 tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('tx_mklib_util_DB');
-
-/** Kindklasse der eigentlichen UtilDB, um die Variable $log von setzen zu können */
-class tx_mklib_util_testDB extends tx_mklib_util_DB {
-	public static function clearLogCache(){ self::$log = -1; self::$ignoreTables = -1; }
-}
+tx_rnbase::load('Tx_Mklib_Database_Connection');
 
 /**
- * DB util tests
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Tx_Mklib_Database_ConnectionDatabaseTest
  *
- * @group integration
+ * @package 		TYPO3
+ * @subpackage	 	mklib
+ * @author 			Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @license 		http://www.gnu.org/licenses/lgpl.html
+ * 					GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testcase {
+class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_phpunit_database_testcase {
 	protected $workspaceIdAtStart;
 	protected $db;
 
 	private static $hooks = array();
+
+	private $logBackup;
+
+	private $ignoreTablesBackup;
 
 	/**
 	 * Klassenkonstruktor
@@ -74,7 +75,7 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 	/**
 	 * setUp() = init DB etc.
 	 */
-	public function setUp() {
+	protected function setUp() {
 		$this->createDatabase();
 		// assuming that test-database can be created otherwise PHPUnit will skip the test
 		$this->db = $this->useTestDatabase();
@@ -88,9 +89,6 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		// logging aktivieren
 		tx_mklib_tests_Util::storeExtConf();
 		tx_mklib_tests_Util::setExtConfVar('logDbHandler', 1);
-
-		//logging zurücksetzen
-		tx_mklib_util_testDB::clearLogCache();
 
 		//wir setzen noch das min Log Level auf -1 damit
 		//systemeinstellungen nicht hereinspielen und alles geloggt wird
@@ -108,12 +106,20 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_update_post'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'] = array();
+
+		$property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'log');
+		$property->setAccessible(TRUE);
+		$this->logBackup = $property->getValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'));
+
+		$property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'ignoreTables');
+		$property->setAccessible(TRUE);
+		$this->ignoreTablesBackup = $property->getValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'));
 	}
 
 	/**
 	 * tearDown() = destroy DB etc.
 	 */
-	public function tearDown () {
+	protected function tearDown () {
 		$this->cleanDatabase();
 		$this->dropDatabase();
 		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
@@ -133,6 +139,21 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 			self::$hooks['rn_base']['util_db_do_update_post'];
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'] =
 			self::$hooks['rn_base']['util_db_do_delete_pre'];
+
+		$property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'log');
+		$property->setAccessible(TRUE);
+		$property->setValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'), $this->logBackup);
+
+		$this->restoreIgnoreTablesProperty();
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function restoreIgnoreTablesProperty() {
+		$property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'ignoreTables');
+		$property->setAccessible(TRUE);
+		$property->setValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'), $this->ignoreTablesBackup);
 	}
 
 	/**
@@ -149,11 +170,10 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 				'deleted' => 0,
 				'bodytext' => 'Test!'
 			);
-		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
+		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-//		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
+		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
 		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -176,11 +196,10 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 				'deleted' => 0,
 				'bodytext' => 'Test!'
 			);
-		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
+		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-//		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
+		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
 		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -200,11 +219,10 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 				'deleted' => 0,
 				'bodytext' => 'Test!'
 			);
-		tx_mklib_util_testDB::doInsert('tt_content', $aValues);
+		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-//		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('where' => 'uid=\'' . $aValues['uid'] . '\'','enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
+		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
 		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -231,10 +249,10 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 				'pid' => 256,
 				'bodytext' => 'geändert!'
 			);
-		tx_mklib_util_testDB::doUpdate('tt_content', 'uid=20', $aValues);
+		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
+		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
 		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -258,17 +276,17 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 		$this->testInsertTtContentWithDevLog();
 		// logging für tt_content deaktivieren
 		tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
-		// db cache löschen
-		tx_mklib_util_testDB::clearLogCache();
+
+		$this->restoreIgnoreTablesProperty();
 
 		$aValues = array(
 				'pid' => 256,
 				'bodytext' => 'geändert!'
 			);
-		tx_mklib_util_testDB::doUpdate('tt_content', 'uid=20', $aValues);
+		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
-		$aDevLog = tx_mklib_util_testDB::doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
-		$aTtContent = tx_mklib_util_testDB::doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tx_devlog', array('enablefieldsoff' => true));
+		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
 		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
 		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -276,9 +294,4 @@ class tx_mklib_tests_util_DB_database_testcase extends tx_phpunit_database_testc
 
 		self::assertEquals(1, count($aDevLog), 'tx_devlog wurde in die Datenbank eingefügt!');
 	}
-
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_DB_testcase.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_DB_testcase.php']);
 }

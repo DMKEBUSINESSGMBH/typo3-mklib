@@ -301,8 +301,7 @@ abstract class tx_mklib_repository_Abstract
 			$data['pid'] = $this->getPid();
 		}
 
-		tx_rnbase::load('tx_mklib_util_DB');
-		$uid = tx_mklib_util_DB::doInsert($table, $data/*, 1*/);
+		$uid = $this->getDatabaseUtility()->doInsert($table, $data/*, 1*/);
 
 		return $uid;
 	}
@@ -343,19 +342,17 @@ abstract class tx_mklib_repository_Abstract
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 		$data = $this->secureFromCrossSiteScripting($model, $data);
 
-		$databaseUtility = $this->getDatabaseUtility();
-		$databaseUtility::doUpdate($table, $where, $data, $debug, $noQuoteFields);
+		$this->getDatabaseUtility()->doUpdate($table, $where, $data, $debug, $noQuoteFields);
 
 		$model->reset();
 		return $model;
 	}
 
 	/**
-	 * @return string
+	 * @return Tx_Mklib_Database_Connection
 	 */
 	protected function getDatabaseUtility() {
-		tx_rnbase::load('tx_mklib_util_DB');
-		return tx_mklib_util_DB;
+		return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection');
 	}
 
 	/**
@@ -371,8 +368,7 @@ abstract class tx_mklib_repository_Abstract
 	 * @return int anzahl der betroffenen zeilen
 	 */
 	public static function delete($table, $where, $mode) {
-		tx_rnbase::load('tx_mklib_util_DB');
-		return tx_mklib_util_DB::delete($table, $where, $mode);
+		return $this->getDatabaseUtility()->delete($table, $where, $mode);
 	}
 
 	/**
@@ -427,8 +423,7 @@ abstract class tx_mklib_repository_Abstract
 	 */
 	public function truncate() {
 		$table = $this->getEmptyModel()->getTableName();
-		tx_rnbase::load('tx_mklib_util_DB');
-		return tx_mklib_util_DB::doQuery('TRUNCATE TABLE ' . $table);
+		return $this->getDatabaseUtility()->doQuery('TRUNCATE TABLE ' . $table);
 	}
 
 	/**

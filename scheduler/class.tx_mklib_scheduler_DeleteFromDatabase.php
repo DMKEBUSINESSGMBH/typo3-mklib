@@ -26,7 +26,6 @@
 
 
 tx_rnbase::load('tx_mklib_scheduler_Generic');
-tx_rnbase::load('tx_mklib_util_DB');
 
 /**
  *
@@ -49,9 +48,9 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 		$table = $options['table'];
 		$where = $options['where'];
 		$mode = $options['mode'];
-		$databaseUtility = $this->getDatabaseUtility();
+		$databaseConnection = $this->getDatabaseConnection();
 
-		$databaseUtility::doSelect(
+		$databaseConnection->doSelect(
 			$this->getSelectFields(), $table,
 			array(
 				'where' => $where, 'enablefieldsoff' => true,
@@ -84,8 +83,8 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 	/**
 	 * @return string
 	 */
-	protected function getDatabaseUtility() {
-		return tx_mklib_util_DB;
+	protected function getDatabaseConnection() {
+		return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection');
 	}
 
 	/**
@@ -93,12 +92,11 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic {
 	 */
 	public function deleteRow(array $row) {
 		$this->affectedRows[] = $row;
-		/* @var $databaseUtility tx_mklib_util_DB */
-		$databaseUtility = $this->getDatabaseUtility();
+		$databaseConnection = $this->getDatabaseConnection();
 		$uidField = $this->getUidField();
-		$where = $uidField . ' = ' . $databaseUtility::fullQuoteStr($row[$uidField]);
+		$where = $uidField . ' = ' . $databaseConnection->fullQuoteStr($row[$uidField]);
 
-		$databaseUtility::delete(
+		$databaseConnection->delete(
 			$this->getOption('table'), $where, $this->getOption('mode')
 		);
 	}

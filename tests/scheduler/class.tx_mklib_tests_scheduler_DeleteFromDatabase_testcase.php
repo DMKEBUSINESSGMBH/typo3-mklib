@@ -45,7 +45,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	private $options = array(
 		'table' => 'someTable',
 		'where' => 'someWhereClause',
-		'mode'  => tx_mklib_util_DB::DELETION_MODE_HIDE
+		'mode'  => Tx_Mklib_Database_Connection::DELETION_MODE_HIDE
 	);
 
 	/**
@@ -59,12 +59,12 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	/**
 	 * @group unit
 	 */
-	public function testGetDatabaseUtility() {
-		self::assertEquals(
-			'tx_mklib_util_DB',
+	public function testGetDatabaseConnection() {
+		self::assertInstanceOf(
+			'Tx_Mklib_Database_Connection',
 			$this->callInaccessibleMethod(
 				tx_rnbase::makeInstance('tx_mklib_scheduler_DeleteFromDatabase'),
-				'getDatabaseUtility'
+				'getDatabaseConnection'
 			),
 			'falsche Klasse'
 		);
@@ -74,10 +74,10 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 * @group unit
 	 */
 	public function testExecuteCallsDoSelectOnDatabaseUtilityCorrect() {
-		$databaseUtility = $this->getDatabaseUtility();
-		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$databaseConnection = $this->getDatabaseConnection();
+		$scheduler = $this->getSchedulerByDbUtil($databaseConnection);
 
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection->expects(self::once())
 			->method('doSelect')
 			->with(
 				'uid', $this->options['table'],
@@ -94,11 +94,11 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 * @group unit
 	 */
 	public function testExecuteCallsDoSelectOnDatabaseUtilityCorrectIfSelectFieldsConfigured() {
-		$databaseUtility = $this->getDatabaseUtility();
+		$databaseConnection = $this->getDatabaseConnection();
 		$this->options['selectFields'] = 'otherFields';
-		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$scheduler = $this->getSchedulerByDbUtil($databaseConnection);
 
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection->expects(self::once())
 			->method('doSelect')
 			->with(
 				$this->options['selectFields'] . ',uid', $this->options['table'],
@@ -115,8 +115,8 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 * @group unit
 	 */
 	public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrect() {
-		$databaseUtility = $this->getDatabaseUtility();
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnection();
+		$databaseConnection->expects(self::once())
 			->method('delete')
 			->with(
 				$this->options['table'],
@@ -124,7 +124,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 				$this->options['mode']
 			);
 
-		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$scheduler = $this->getSchedulerByDbUtil($databaseConnection);
 		$row = array('uid' => 123);
 		$scheduler->deleteRow($row);
 	}
@@ -134,8 +134,8 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 */
 	public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrectWhenSelectFieldsDifferentToUid() {
 		$this->options['uidField'] = 'otherField';
-		$databaseUtility = $this->getDatabaseUtility();
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnection();
+		$databaseConnection->expects(self::once())
 			->method('delete')
 			->with(
 				$this->options['table'],
@@ -143,7 +143,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 				$this->options['mode']
 			);
 
-		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$scheduler = $this->getSchedulerByDbUtil($databaseConnection);
 		$row = array($this->options['uidField'] => 123);
 		$scheduler->deleteRow($row);
 	}
@@ -152,8 +152,8 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 * @group unit
 	 */
 	public function testDeleteRowSetsAffectedRowsPropertyCorrect() {
-		$databaseUtility = $this->getDatabaseUtility();
-		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$databaseConnection = $this->getDatabaseConnection();
+		$scheduler = $this->getSchedulerByDbUtil($databaseConnection);
 
 		$scheduler->deleteRow(array('uid' => 123));
 		$scheduler->deleteRow(array('uid' => 456));
@@ -174,8 +174,8 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	 * @group unit
 	 */
 	public function testExecuteTaskSetsDevLogCorrect() {
-		$databaseUtility = $this->getDatabaseUtility();
-		$scheduler = $this->getSchedulerByDbUtil($databaseUtility);
+		$databaseConnection = $this->getDatabaseConnection();
+		$scheduler = $this->getSchedulerByDbUtil($databaseConnection);
 
 		$affectedRows = new ReflectionProperty(
 			'tx_mklib_scheduler_DeleteFromDatabase', 'affectedRows'
@@ -205,19 +205,19 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	}
 
 	/**
-	 * @param string $databaseUtility
+	 * @param string $databaseConnection
 	 *
 	 * @return tx_mklib_scheduler_DeleteFromDatabase
 	 */
-	private function getSchedulerByDbUtil($databaseUtility) {
+	private function getSchedulerByDbUtil($databaseConnection) {
 		$scheduler = $this->getMock(
 			'tx_mklib_scheduler_DeleteFromDatabase',
-			array('getDatabaseUtility')
+			array('getDatabaseConnection')
 		);
 
 		$scheduler->expects(self::any())
-			->method('getDatabaseUtility')
-			->will(self::returnValue($databaseUtility));
+			->method('getDatabaseConnection')
+			->will(self::returnValue($databaseConnection));
 
 		$scheduler->setOptions($this->options);
 
@@ -225,11 +225,11 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 	}
 
 	/**
-	 * @return tx_mklib_util_DB
+	 * @return Tx_Mklib_Database_Connection
 	 */
-	private function getDatabaseUtility() {
-		return $this->getMockClass(
-			'tx_mklib_util_DB',
+	private function getDatabaseConnection() {
+		return $this->getMock(
+			'Tx_Mklib_Database_Connection',
 			array('doSelect', 'delete')
 		);
 	}

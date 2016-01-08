@@ -78,12 +78,12 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	/**
 	 * @group unit
 	 */
-	public function testGetDatabaseUtility() {
-		self::assertEquals(
-			'tx_mklib_util_DB',
+	public function testGetDatabaseConnection() {
+		self::assertInstanceOf(
+			'Tx_Mklib_Database_Connection',
 			$this->callInaccessibleMethod(
 				tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection'),
-				'getDatabaseUtility'
+				'getDatabaseConnection'
 			),
 			'falsche Klasse'
 		);
@@ -110,12 +110,12 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	 * @group unit
 	 */
 	public function testGetFailedTasks() {
-		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility = $this->getDatabaseConnection();
 
 		$selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
 			'uid,serialized_task_object' :
 			'uid,classname';
-		$databaseUtility::staticExpects(self::once())
+		$databaseUtility->expects(self::once())
 			->method('doSelect')
 			->with(
 				$selectFields,
@@ -145,9 +145,9 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	 * @group unit
 	 */
 	public function testSetFailDetected() {
-		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility = $this->getDatabaseConnection();
 
-		$databaseUtility::staticExpects(self::once())
+		$databaseUtility->expects(self::once())
 			->method('doUpdate')
 			->with(
 				'tx_scheduler_task',
@@ -237,9 +237,9 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	 * @group unit
 	 */
 	public function testResetFailedTasksDetection() {
-		$databaseUtility = $this->getDatabaseUtility();
+		$databaseUtility = $this->getDatabaseConnection();
 
-		$databaseUtility::staticExpects(self::once())
+		$databaseUtility->expects(self::once())
 			->method('doUpdate')
 			->with(
 				'tx_scheduler_task',
@@ -325,7 +325,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	 * @return tx_mklib_scheduler_SchedulerTaskFailDetection
 	 */
 	private function getSchedulerByDbUtil(
-		$databaseUtility, $methods = array('getDatabaseUtility')
+		$databaseUtility, $methods = array('getDatabaseConnection')
 	) {
 		$scheduler = $this->getMock(
 			'tx_mklib_scheduler_SchedulerTaskFailDetection',
@@ -333,7 +333,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 		);
 
 		$scheduler->expects(self::any())
-			->method('getDatabaseUtility')
+			->method('getDatabaseConnection')
 			->will(self::returnValue($databaseUtility));
 
 		$scheduler->setOptions($this->options);
@@ -342,11 +342,11 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 	}
 
 	/**
-	 * @return tx_mklib_util_DB
+	 * @return Tx_Mklib_Database_Connection
 	 */
-	private function getDatabaseUtility() {
-		return $this->getMockClass(
-			'tx_mklib_util_DB',
+	private function getDatabaseConnection() {
+		return $this->getMock(
+			'Tx_Mklib_Database_Connection',
 			array('doSelect', 'doUpdate')
 		);
 	}

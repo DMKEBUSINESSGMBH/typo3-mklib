@@ -34,6 +34,7 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_repository_Abstract');
 tx_rnbase::load('tx_mklib_model_WordlistEntry');
 tx_rnbase::load('tx_mklib_search_Wordlist');
+tx_rnbase::load('Tx_Mklib_Database_Connection');
 
 /**
  * @package tx_mklib
@@ -333,8 +334,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 	 * @group unit
 	 */
 	public function testGetDatabaseUtility() {
-		self::assertEquals(
-			'tx_mklib_util_DB',
+		self::assertInstanceOf(
+			'Tx_Mklib_Database_Connection',
 			$this->callInaccessibleMethod($this->getRepositoryMock(), 'getDatabaseUtility'),
 			'falscher Klassenname'
 		);
@@ -361,14 +362,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('getSearchClass', 'getDatabaseUtility')
 		);
 
-		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'');
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will(self::returnValue($databaseUtility));
+			->will(self::returnValue($databaseConnection));
 
 		$repository->handleUpdate($model, array());
 	}
@@ -395,8 +396,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$data = array('column_1' => 'new value', 'column_2' => 'new value');
-		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with(
 				'unknown', '1=1 AND `unknown`.`uid`=\'123\'',
@@ -405,7 +406,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will(self::returnValue($databaseUtility));
+			->will(self::returnValue($databaseConnection));
 
 		$repository->handleUpdate($model, $data);
 	}
@@ -432,14 +433,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$data = array('column_1' => 'new value');
-		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'', array('secured'));
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will(self::returnValue($databaseUtility));
+			->will(self::returnValue($databaseConnection));
 
 		$repository->expects(self::once())
 			->method('secureFromCrossSiteScripting')
@@ -471,8 +472,8 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$data = array('column_1' => 'new value', 'uid' => 456);
-		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with(
 				'unknown',
@@ -482,7 +483,7 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will(self::returnValue($databaseUtility));
+			->will(self::returnValue($databaseConnection));
 
 		$repository->handleUpdate($model, $data);
 	}
@@ -508,14 +509,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('getSearchClass', 'getDatabaseUtility')
 		);
 
-		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with('unknown', 'test where');
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will(self::returnValue($databaseUtility));
+			->will(self::returnValue($databaseConnection));
 
 		$repository->handleUpdate($model, array(), 'test where');
 	}
@@ -541,14 +542,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('getSearchClass', 'getDatabaseUtility')
 		);
 
-		$databaseUtility = $this->getDatabaseUtilityMock(array('doUpdate'));
-		$databaseUtility::staticExpects(self::once())
+		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with('unknown', 'test where', array(), 987, 'commaSeparatedFields');
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
-			->will(self::returnValue($databaseUtility));
+			->will(self::returnValue($databaseConnection));
 
 		$repository->handleUpdate(
 			$model, array(), 'test where', 987, 'commaSeparatedFields'
@@ -579,10 +580,10 @@ class tx_mklib_tests_repository_Abstract_testcase
 
 	/**
 	 * @param array $mockedMethods
-	 * @return tx_mklib_util_DB
+	 * @return Tx_Mklib_Database_Connection
 	 */
-	private function getDatabaseUtilityMock(array $mockedMethods) {
-		return $this->getMockClass('tx_mklib_util_DB', $mockedMethods);
+	private function getDatabaseConnectionMock(array $mockedMethods) {
+		return $this->getMock('Tx_Mklib_Database_Connection', $mockedMethods);
 	}
 
 	/**

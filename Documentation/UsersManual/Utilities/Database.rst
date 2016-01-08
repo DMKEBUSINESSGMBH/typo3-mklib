@@ -30,4 +30,4 @@ The following data is logged:
 
 Classes:
 
-* tx_mklib_util_DB
+* Tx_Mklib_Database_Connection

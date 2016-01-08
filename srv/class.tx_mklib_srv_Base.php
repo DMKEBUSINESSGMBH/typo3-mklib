@@ -41,6 +41,8 @@ tx_rnbase::load('Tx_Rnbase_Service_Base');
  * @subpackage tx_mklib_srv
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ *
+ * @deprecated use tx_mklib_repository_Abstract instead
  */
 abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 
@@ -349,8 +351,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 			$data['pid'] = $this->getPid();
 		}
 
-		tx_rnbase::load('tx_mklib_util_DB');
-		$uid = tx_mklib_util_DB::doInsert($table, $data/*, 1*/);
+		$uid = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert($table, $data/*, 1*/);
 
 		return $uid;
 	}
@@ -383,8 +384,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 		$data = $this->secureFromCrossSiteScripting($model, $data);
 
-		tx_rnbase::load('tx_mklib_util_DB');
-		tx_mklib_util_DB::doUpdate($table, $where, $data);
+		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate($table, $where, $data);
 
 		$model->reset();
 		return $model;
@@ -403,8 +403,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * @return int anzahl der betroffenen zeilen
 	 */
 	public static function delete($table, $where, $mode) {
-		tx_rnbase::load('tx_mklib_util_DB');
-		return tx_mklib_util_DB::delete($table, $where, $mode);
+		return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->delete($table, $where, $mode);
 	}
 
 	/**
@@ -459,8 +458,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 */
 	public function truncate() {
 		$table = $this->getDummyModel()->getTableName();
-		tx_rnbase::load('tx_mklib_util_DB');
-		return tx_mklib_util_DB::doQuery('TRUNCATE TABLE ' . $table);
+		return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doQuery('TRUNCATE TABLE ' . $table);
 	}
 
 	/**

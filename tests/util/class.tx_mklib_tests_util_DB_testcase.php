@@ -42,84 +42,82 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
-	 * @expectedException Exception
-	 * @expectedExceptionMessage tx_mklib_util_DB::delete(): Unknown deletion mode (123)
+	 * @var string
+	 */
+	protected $databaseConnectionClassBackup = '';
+
+	/**
 	 *
-	 * @group unit
+	 * {@inheritDoc}
+	 * @see PHPUnit_Framework_TestCase::setUp()
 	 */
-	public function testDeleteWithUnknownModeThrowsException(){
-		tx_mklib_util_DB::delete('', '', 123);
+	protected function setUp() {
+		$this->databaseConnectionClassBackup = $this->getDatabaseConnectionClassReflectionProperty()->getValue(NULL);
 	}
 
 	/**
-	 * @expectedException Exception
-	 * @expectedExceptionMessage tx_mklib_util_DB::delete(): Cannot hide records in table unknown - no $TCA entry found!
+	 * @return $property
+	 */
+	protected function getDatabaseConnectionClassReflectionProperty() {
+		$property = new ReflectionProperty('tx_mklib_util_DB', 'databaseConnectionClass');
+		$property->setAccessible(TRUE);
+
+		return $property;
+	}
+
+	/**
 	 *
-	 * @group unit
+	 * {@inheritDoc}
+	 * @see PHPUnit_Framework_TestCase::tearDown()
 	 */
-	public function testDeleteWithModeHiddenThrowsExceptionIfNoDisableColumnInTca(){
-		tx_mklib_util_DB::delete('unknown', '', tx_mklib_util_DB::DELETION_MODE_HIDE);
+	protected function tearDown() {
+		$this->getDatabaseConnectionClassReflectionProperty()->setValue(NULL, $this->databaseConnectionClassBackup);
 	}
 
 	/**
-	 * @expectedException Exception
-	 * @expectedExceptionMessage tx_mklib_util_DB::delete(): Cannot soft-delete records in table unknown - no $TCA entry found!
+	 * @group unit
+	 */
+	public function testDefaultDatabaseConnectionClassProperty() {
+		self::assertEquals(
+			'Tx_Mklib_Database_Connection', $this->getDatabaseConnectionClassReflectionProperty()->getValue(NULL)
+		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testClassHasNoMoreMethodsExceptCallStatic() {
+		self::assertEquals(array('__callstatic'), get_class_methods('tx_mklib_util_DB'));
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testMethodClassAreRedirectedToDatabaseConnectionClass() {
+		$this->getDatabaseConnectionClassReflectionProperty()->setValue(NULL, 'Tx_Mklib_Database_ConnectionMock');
+
+		self::assertEquals(array('first', 'second'), tx_mklib_util_DB::nonStaticTestMethod('first', 'second'));
+	}
+}
+
+class Tx_Mklib_Database_ConnectionMock extends Tx_Mklib_Database_Connection {
+
+	/**
+	 * Zugriff darauf würde scheitern wenn die Methode doch
+	 * statisch aufgerufen wird
 	 *
-	 * @group unit
+	 * @var array
 	 */
-	public function testDeleteWithModeSoftDeleteThrowsExceptionIfNoDeleteColumnInTca(){
-		tx_mklib_util_DB::delete('unknown', '', tx_mklib_util_DB::DELETION_MODE_SOFTDELETE);
-	}
+	protected $returnProperty = array();
 
 	/**
-	 * @group unit
+	 * @param string $firstParameter
+	 * @param string $secondParameter
+	 *
+	 * @return array
 	 */
-	public function testDeleteWithModeHiddenCallsDoUpdateCorrect(){
-		$util = $this->getUtilMock();
-		$util::staticExpects(self::never())
-			->method('doDelete');
-
-		$util::staticExpects(self::once())
-			->method('doUpdate')
-			->with('pages', 'someWhereClause', array('hidden' => 1));
-
-		$util::delete('pages', 'someWhereClause', tx_mklib_util_DB::DELETION_MODE_HIDE);
-	}
-
-	/**
-	 * @group unit
-	 */
-	public function testDeleteWithModeSoftDeleteCallsDoUpdateCorrect(){
-		$util = $this->getUtilMock();
-		$util::staticExpects(self::never())
-			->method('doDelete');
-
-		$util::staticExpects(self::once())
-			->method('doUpdate')
-			->with('pages', 'someWhereClause', array('deleted' => 1));
-
-		$util::delete('pages', 'someWhereClause', tx_mklib_util_DB::DELETION_MODE_SOFTDELETE);
-	}
-
-	/**
-	 * @group unit
-	 */
-	public function testDeleteWithModeHardDeleteCallsDoDeleteCorrect(){
-		$util = $this->getUtilMock();
-		$util::staticExpects(self::never())
-			->method('doUpdate');
-
-		$util::staticExpects(self::once())
-			->method('doDelete')
-			->with('pages', 'someWhereClause');
-
-		$util::delete('pages', 'someWhereClause', tx_mklib_util_DB::DELETION_MODE_REALLYDELETE);
-	}
-
-	/**
-	 * @return tx_mklib_util_DB
-	 */
-	private function getUtilMock() {
-		return $this->getMockClass('tx_mklib_util_DB', array('doUpdate', 'doDelete'));
+	public function nonStaticTestMethod($firstParameter, $secondParameter) {
+		$this->returnProperty = array($firstParameter, $secondParameter);
+		return $this->returnProperty;
 	}
 }

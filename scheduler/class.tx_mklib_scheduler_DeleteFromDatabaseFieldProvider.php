@@ -25,7 +25,7 @@
  */
 
 tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
-tx_rnbase::load('tx_mklib_util_DB');
+tx_rnbase::load('Tx_Mklib_Database_Connection');
 
 /**
  * Fügt Felder im scheduler task hinzu
@@ -71,11 +71,11 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider
 			'mode' => array(
 				'type' => 'select',
 				'items'	=> array (
-					tx_mklib_util_DB::DELETION_MODE_HIDE =>
+					Tx_Mklib_Database_Connection::DELETION_MODE_HIDE =>
 						$GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_hidden'),
-					tx_mklib_util_DB::DELETION_MODE_SOFTDELETE
+					Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE
 						 => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete'),
-					tx_mklib_util_DB::DELETION_MODE_REALLYDELETE
+					Tx_Mklib_Database_Connection::DELETION_MODE_REALLYDELETE
 						 => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete_hard')
 				),
 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode',
