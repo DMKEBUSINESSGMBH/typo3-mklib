@@ -203,11 +203,11 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
 			NULL,
 			array('getMiscUtility', 'setFailDetected')
 		);
-		$miscUtility = $this->getMockClass(
-			'tx_rnbase_util_Misc',
+		$miscUtility = $this->getMock(
+			'stdClass',
 			array('sendErrorMail')
 		);
-		$miscUtility::staticExpects(self::once())
+		$miscUtility->expects(self::once())
 			->method('sendErrorMail')
 			->with(
 				'dev@dmk-ebusiness.de',

@@ -103,12 +103,14 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 		$exception = new Exception($message, 0);
 		//die Mail soll immer geschickt werden
 		$options = array('ignoremaillock' => TRUE);
-		$miscUtility = $this->getMiscUtility();
-		$miscUtility::sendErrorMail(
-			$this->getOption('failDetectionReceiver'),
-			'tx_mklib_scheduler_SchedulerTaskFailDetection',
-			$exception,
-			$options
+		call_user_func_array(
+			array($this->getMiscUtility(), 'sendErrorMail'),
+			array(
+				$this->getOption('failDetectionReceiver'),
+				'tx_mklib_scheduler_SchedulerTaskFailDetection',
+				$exception,
+				$options
+			)
 		);
 
 		$this->setFailDetected($uids);
