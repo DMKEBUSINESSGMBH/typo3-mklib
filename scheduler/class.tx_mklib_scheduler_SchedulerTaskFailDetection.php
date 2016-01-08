@@ -103,6 +103,8 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 		$exception = new Exception($message, 0);
 		//die Mail soll immer geschickt werden
 		$options = array('ignoremaillock' => TRUE);
+		// wir rufen die Methode mit call_user_func_array auf, da sie
+		// statisch ist, womit wir diese nicht mocken könnten
 		call_user_func_array(
 			array($this->getMiscUtility(), 'sendErrorMail'),
 			array(
