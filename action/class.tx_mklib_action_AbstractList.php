@@ -25,10 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * benötigte Klassen einbinden
- */
-
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
@@ -38,31 +34,44 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_action
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @author Michael Wagner
  */
 abstract class tx_mklib_action_AbstractList
 	extends tx_rnbase_action_BaseIOC {
 
 	/**
-	 * do the magic!
+	 * Do the magic!
 	 *
-	 * @param tx_rnbase_parameters $parameters
-	 * @param tx_rnbase_configurations $configurations
-	 * @param ArrayObject $viewData
-	 *
+	 * @param tx_rnbase_parameters &$parameters
+	 * @param tx_rnbase_configurations &$configurations
+	 * @param ArrayObject &$viewData
 	 * @return string error msg or null
 	 */
-	public function handleRequest(&$parameters,&$configurations, &$viewData)
+	public function handleRequest(&$parameters, &$configurations, &$viewData)
 	{
+		$out = $this->prepareRequest();
+		if ($out) {
+			return $out;
+		}
+
 		$items = $this->getItems();
 		$viewData->offsetSet('items', is_array($items) ? array_values($items) : array());
 		$viewData->offsetSet('searched', $items !== FALSE);
 
-		return;
+		return NULL;
 	}
 
 	/**
-	 * searches for the items to show in list
+	 * Childclass can override this method to prepare the request.
+	 *
+	 * @return string error msg or null
+	 */
+	protected function prepareRequest() {
+		return NULL;
+	}
+
+	/**
+	 * Searches for the items to show in list
 	 *
 	 * @throws RuntimeException
 	 * @return array|FALSE
@@ -107,6 +116,8 @@ abstract class tx_mklib_action_AbstractList
 	}
 
 	/**
+	 * Childclass can prepare the fields and options
+	 * for the search in the repository.
 	 *
 	 * @param array &$fields
 	 * @param array &$options
