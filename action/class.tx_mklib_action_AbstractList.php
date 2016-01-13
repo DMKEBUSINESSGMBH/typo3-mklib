@@ -50,7 +50,7 @@ abstract class tx_mklib_action_AbstractList
 	public function handleRequest(&$parameters, &$configurations, &$viewData)
 	{
 		$out = $this->prepareRequest();
-		if ($out) {
+		if ($out !== NULL) {
 			return $out;
 		}
 
