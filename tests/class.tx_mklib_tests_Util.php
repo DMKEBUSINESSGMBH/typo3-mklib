@@ -225,7 +225,7 @@ class tx_mklib_tests_Util {
 				$oFeUser = tx_rnbase::makeInstance($frontendUserAuthenticationClass);
 			}
 			if (!is_object($GLOBALS['TSFE'])) {
-				$GLOBALS['TSFE'] = new stdClass();
+				self::prepareTSFE(array('force' => TRUE));
 			}
 			$GLOBALS['TSFE']->fe_user = $oFeUser;
 		}
