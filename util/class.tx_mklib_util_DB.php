@@ -24,11 +24,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
-tx_rnbase::load('tx_rnbase_util_DB');
-tx_rnbase::load('tx_mklib_util_TCA');
-tx_rnbase::load('tx_rnbase_util_Strings');
-
 /**
  * @deprecated we dont want to use static methods anymore but keep backwards
  * compatibilty. So the only way is to move all code to a new class and keep
