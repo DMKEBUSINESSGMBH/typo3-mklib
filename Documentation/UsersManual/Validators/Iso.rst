@@ -19,6 +19,6 @@ Validating an IBAN:
 .. code-block:: php
 
 
-    tx_rnbase::load('Tx_Mklib_Domain_Model_Iban');
-    $model = Tx_Mklib_Domain_Model_Iban::getInstance($iban);
+    tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Iban');
+    $model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
     return $iban->validate();

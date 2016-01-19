@@ -32,7 +32,7 @@
  * @copyright 2013 Jan Schaedlich
  * @link https://github.com/jschaedl/Iban
  */
-class Tx_Mklib_Domain_Model_Iban {
+class Tx_Mklib_Domain_Model_Iso_Iban {
 
 	const LOCALECODE_OFFSET = 0;
 	const LOCALECODE_LENGTH = 2;
@@ -140,7 +140,7 @@ class Tx_Mklib_Domain_Model_Iban {
 	 */
 	public static function getInstance($iban)
 	{
-		return tx_rnbase::makeInstance('Tx_Mklib_Domain_Model_Iban', $iban);
+		return tx_rnbase::makeInstance('Tx_Mklib_Domain_Model_Iso_Iban', $iban);
 	}
 
 	public function __construct($iban)

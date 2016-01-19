@@ -18,4 +18,4 @@ Validators
    :glob:
 
    ZipCode
-   Iban
+   Iso

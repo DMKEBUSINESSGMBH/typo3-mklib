@@ -27,7 +27,7 @@
  */
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Mklib_Domain_Model_Iban');
+tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Iban');
 
 /**
  * iban tests
@@ -35,7 +35,7 @@ tx_rnbase::load('Tx_Mklib_Domain_Model_Iban');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class Tx_Mklib_Domain_Model_IbanTest
+class Tx_Mklib_Domain_Model_Iso_IbanTest
 	extends tx_rnbase_tests_BaseTestCase
 {
 
@@ -52,7 +52,7 @@ class Tx_Mklib_Domain_Model_IbanTest
 	 */
 	public function testValidate($iban, $valid)
 	{
-		$model = Tx_Mklib_Domain_Model_Iban::getInstance($iban);
+		$model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
 		$this->assertSame($model->validate(), $valid);
 	}
 
