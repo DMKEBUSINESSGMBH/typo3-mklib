@@ -23,10 +23,10 @@
  ***************************************************************/
 
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Iban');
+tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_SwiftBic');
 
 /**
- * iban tests
+ * iso tests
  *
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
@@ -34,14 +34,14 @@ tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Iban');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mklib_Domain_Model_Iso_IbanTest
+class Tx_Mklib_Domain_Model_Iso_SwiftBicTest
 	extends tx_rnbase_tests_BaseTestCase
 {
 
 	/**
 	 * Test the validate method
 	 *
-	 * @param string $iban
+	 * @param string $value
 	 * @param boolean $valid
 	 * @return void
 	 *
@@ -49,10 +49,10 @@ class Tx_Mklib_Domain_Model_Iso_IbanTest
 	 * @test
 	 * @dataProvider getValidateData
 	 */
-	public function testValidate($iban, $valid)
+	public function testValidate($value, $valid)
 	{
-		$model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
-		self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_Iban, $model);
+		$model = Tx_Mklib_Domain_Model_Iso_SwiftBic::getInstance($value);
+		self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_SwiftBic, $model);
 		self::assertSame($model->validate(), $valid);
 	}
 
@@ -64,74 +64,54 @@ class Tx_Mklib_Domain_Model_Iso_IbanTest
 	public function getValidateData()
 	{
 		return array(
-			// invalid ibans
+			// invalid SwiftBic
 			__LINE__ => array(
-				'iban' => 'AD1200012030200359100120',
+				'value' => 'CE1EL2LLFFF',
 				'valid' => FALSE,
 			),
 			__LINE__ => array(
-				'iban' => 'AT611904300234573221',
+				'value' => 'E31DCLLFFF',
 				'valid' => FALSE,
 			),
 			__LINE__ => array(
-				'iban' => 'BA39129007940028494',
+				'value' => '',
 				'valid' => FALSE,
 			),
 			__LINE__ => array(
-				'iban' => 'BE685390047034',
+				'value' => '  ',
 				'valid' => FALSE,
 			),
 			__LINE__ => array(
-				'iban' => 'AA611904300234573201',
+				'value' => NULL,
 				'valid' => FALSE,
 			),
-			// valid ibans
+			// valid SwiftBic
 			__LINE__ => array(
-				'iban' => 'AT611904300234573201',
+				'value' => 'RBOSGGSX',
 				'valid' => TRUE,
 			),
 			__LINE__ => array(
-				'iban' => ' HU42117730161111101800000000',
+				'value' => ' RZTIAT22263',
 				'valid' => TRUE,
 			),
 			__LINE__ => array(
-				'iban' => 'MK07250120000058984',
+				'value' => 'BCEELULL',
 				'valid' => TRUE,
 			),
 			__LINE__ => array(
-				'iban' => 'MT84MALT011000012345MTLCAST001S',
+				'value' => 'MARKDEFF',
 				'valid' => TRUE,
 			),
 			__LINE__ => array(
-				'iban' => 'BE68539007547034',
+				'value' => 'GENODEF1JEV',
 				'valid' => TRUE,
 			),
 			__LINE__ => array(
-				'iban' => 'NO9386011117947',
+				'value' => 'UBSWCHZH80A',
 				'valid' => TRUE,
 			),
 			__LINE__ => array(
-				'iban' => 'SM86U0322509800000000270100',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'LV80BANK0000435195001 ',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'GB29NWBK60161331926819',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'TR330006100519786457841326',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'IE29AIBK93115212345678',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'DE21301204000000015228',
+				'value' => 'CEDELULLXXX',
 				'valid' => TRUE,
 			),
 		);

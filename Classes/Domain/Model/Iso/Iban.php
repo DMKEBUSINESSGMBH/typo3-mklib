@@ -22,6 +22,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Base');
+
 /**
  * Iban Model and Validatort based on jschaedl/Iban
  *
@@ -32,7 +34,9 @@
  * @copyright 2013 Jan Schaedlich
  * @link https://github.com/jschaedl/Iban
  */
-class Tx_Mklib_Domain_Model_Iso_Iban {
+class Tx_Mklib_Domain_Model_Iso_Iban
+	extends Tx_Mklib_Domain_Model_Iso_Base
+{
 
 	const LOCALECODE_OFFSET = 0;
 	const LOCALECODE_LENGTH = 2;
@@ -131,23 +135,6 @@ class Tx_Mklib_Domain_Model_Iso_Iban {
 		'GB' => '[A-Z]{4}[0-9]{14}'
 	);
 
-	private $iban;
-
-	/**
-	 *
-	 * @param string $iban
-	 * @return Tx_Mklib_Domain_Model_Iban
-	 */
-	public static function getInstance($iban)
-	{
-		return tx_rnbase::makeInstance('Tx_Mklib_Domain_Model_Iso_Iban', $iban);
-	}
-
-	public function __construct($iban)
-	{
-		$this->iban = $this->normalize($iban);
-	}
-
 	public function validate()
 	{
 		if (!$this->isLengthValid()) {
@@ -198,32 +185,32 @@ class Tx_Mklib_Domain_Model_Iso_Iban {
 
 	public function getLocaleCode()
 	{
-		return substr($this->iban, self::LOCALECODE_OFFSET, self::LOCALECODE_LENGTH);
+		return substr($this->getValue(), self::LOCALECODE_OFFSET, self::LOCALECODE_LENGTH);
 	}
 
 	public function getChecksum()
 	{
-		return substr($this->iban, self::CHECKSUM_OFFSET, self::CHECKSUM_LENGTH);
+		return substr($this->getValue(), self::CHECKSUM_OFFSET, self::CHECKSUM_LENGTH);
 	}
 
 	public function getAccountIdentification()
 	{
-		return substr($this->iban, self::ACCOUNTIDENTIFICATION_OFFSET);
+		return substr($this->getValue(), self::ACCOUNTIDENTIFICATION_OFFSET);
 	}
 
 	public function getInstituteIdentification()
 	{
-		return substr($this->iban, self::INSTITUTEIDENTIFICATION_OFFSET, self::INSTITUTEIDENTIFICATION_LENGTH);
+		return substr($this->getValue(), self::INSTITUTEIDENTIFICATION_OFFSET, self::INSTITUTEIDENTIFICATION_LENGTH);
 	}
 
 	public function getBankAccountNumber()
 	{
-		return substr($this->iban, self::BANKACCOUNTNUMBER_OFFSET, self::BANKACCOUNTNUMBER_LENGTH);
+		return substr($this->getValue(), self::BANKACCOUNTNUMBER_OFFSET, self::BANKACCOUNTNUMBER_LENGTH);
 	}
 
 	private function isLengthValid()
 	{
-		return strlen($this->iban) < self::IBAN_MIN_LENGTH ? false : true;
+		return strlen($this->getValue()) < self::IBAN_MIN_LENGTH ? false : true;
 	}
 
 	private function isLocalCodeValid()
@@ -271,14 +258,6 @@ class Tx_Mklib_Domain_Model_Iso_Iban {
 			}
 		}
 		return $numericRepresentation;
-	}
-
-	private function normalize($iban)
-	{
-		$value = trim($iban);
-		$value = preg_replace('/\s+/', '', $value);
-
-		return $value;
 	}
 
 	private function local_bcmod($x, $y)

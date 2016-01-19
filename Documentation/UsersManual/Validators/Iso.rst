@@ -21,4 +21,19 @@ Validating an IBAN:
 
     tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Iban');
     $model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
-    return $iban->validate();
+    return $model->validate();
+
+
+Swift/Bic
+=========
+
+Validating an Swift/Bic:
+
+
+.. code-block:: php
+
+
+    tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_SwiftBic');
+    $model = Tx_Mklib_Domain_Model_Iso_SwiftBic::getInstance($swift);
+    return $model->validate();
+
