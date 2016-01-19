@@ -141,10 +141,13 @@ class tx_mklib_util_TCA {
 	 *
 	 * Doesn't do anything if no TCA columns are found.
 	 *
-	 * @param array					$data	Data to be filtered
-	 * @return array						Data now containing only TCA-defined columns
+	 * @param array $data Data to be filtered
+	 * @return array Data now containing only TCA-defined columns
 	 */
-	public static function eleminateNonTcaColumns(tx_rnbase_model_base $model, array $data) {
+	public static function eleminateNonTcaColumns(
+		Tx_Rnbase_Domain_Model_RecordInterface $model,
+		array $data
+	) {
 		tx_rnbase::load('tx_mklib_util_Array');
 		return tx_mklib_util_Array::removeNotIn($data, $model->getColumnNames());
 	}

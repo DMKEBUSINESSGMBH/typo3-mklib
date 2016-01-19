@@ -33,28 +33,28 @@
 
 /**
  * Basis Linker
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  */
 abstract class tx_mklib_mod1_linker_Base {
-	
+
 	/**
 	 * gibt den Namen des Links/der Action zurück
 	 * @return string
 	 */
 	abstract protected function getActionName();
-	
+
 	/**
 	 * Linker Html ausgeben
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @return string
 	 */
-	public function makeLink(tx_rnbase_model_base $oItem, $oFormTool) {
+	public function makeLink(Tx_Rnbase_Domain_Model_RecordInterface $oItem, $oFormTool) {
 		$sOut = $oFormTool->createSubmit(
-			$this->getActionName().'['.get_class($oItem).'|'.$oItem->getUid().']', 
+			$this->getActionName().'['.get_class($oItem).'|'.$oItem->getUid().']',
 			$GLOBALS['LANG']->getLL('label_show_details')
 		);
 		return $sOut;

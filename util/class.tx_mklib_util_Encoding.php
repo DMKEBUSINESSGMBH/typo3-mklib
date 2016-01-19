@@ -65,7 +65,7 @@ class tx_mklib_util_Encoding {
 	 * 		@see Supported Encodings http://www.php.net/manual/en/mbstring.supported-encodings.php
 	 * @param boolean $forceEncoding
 	 * 		Forces encoding, if mb_detect_encoding returns correct encoding.
-	 * @return Ambigous <mixed, Traversable, tx_rnbase_model_base, string>
+	 * @return Ambigous <mixed, Traversable, Tx_Rnbase_Domain_Model_RecordInterface, string>
 	 */
 	public static function convertEncoding(
 			$var, $toEncoding = null, $fromEncoding = null,
@@ -91,7 +91,7 @@ class tx_mklib_util_Encoding {
 			throw new InvalidArgumentException(
 				'Object "'.get_class($var).'" was not supportet for convertEncoding.'.
 				'Possible types are string, array or an object '.
-				'(instanceof "Traversable" or "tx_rnbase_model_base").',
+				'(instanceof "Traversable" or "Tx_Rnbase_Domain_Model_RecordInterface").',
 				$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5'
 			);
 		}

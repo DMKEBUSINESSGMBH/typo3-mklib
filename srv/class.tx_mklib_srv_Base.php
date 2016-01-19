@@ -81,7 +81,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 *
 	 * @param array $fields
 	 * @param array $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	public function search($fields, $options) {
 		$this->handleEnableFieldsOptions($fields, $options);
@@ -150,7 +150,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 *
 	 * @param array $items
 	 * @param array $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	protected function prepareItems($items, $options) {
 		if (!is_array($items)) {
@@ -166,17 +166,17 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 *
 	 * @param array $items
 	 * @param unknown_type $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	protected function uniqueItems(array $items, $options) {
 		// uniqueue, if there are models and the distinct option
 		if (
-			reset($items) instanceof tx_rnbase_model_base
+			reset($items) instanceof Tx_Rnbase_Domain_Model_RecordInterface
 			&& isset($options['distinct'])
 			&& $options['distinct']
 		) {
 			$master = $overlay = array();
-			/* @var $item tx_rnbase_model_base */
+			/* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
 			foreach ($items as $item) {
 				$uid = $item->getUid();
 				if ($uid === $item->uid) {
@@ -200,7 +200,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	/**
 	 * @param array $fields
 	 * @param array $options
-	 * @return null || tx_rnbase_model_base
+	 * @return null || Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	public function searchSingle($fields, $options) {
 		$options['limit'] = 1;
@@ -214,7 +214,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * wenn mehr als ein Element enthalten ist.
 	 *
 	 * @param array $items
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	protected function getFirstResult(array $items) {
 		$result = $this->limitResults($items, 1);
@@ -261,7 +261,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * liefert immer ein model, auch wenn kein datensatz zur uid existiert.
 	 *
 	 * @param int $ct
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	public function get($uid) {
 		return tx_rnbase::makeInstance($this->getWrapperClass(), $uid);
@@ -271,7 +271,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * Holt einen bestimmten Datensatz aus dem Repo.
 	 *
 	 * @param integer|array $rowOrUid
-	 * @return tx_rnbase_model_base|null
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface|null
 	 */
 	public function findByUid($rowOrUid) {
 		$model = $this->get($rowOrUid);
@@ -281,7 +281,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	/**
 	 * Find all records
 	 *
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	public function findAll(){
 		return $this->search(array(), array());
@@ -296,7 +296,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	/**
 	 * Dummy model instance
 	 *
-	 * @var tx_rnbase_model_base
+	 * @var Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	protected $dummyModel;
 
@@ -306,7 +306,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * This is used only to access several model info methods like
 	 * getTableName(), getColumnNames() etc.
 	 *
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	protected function getDummyModel() {
 		if (!$this->dummyModel) {
@@ -363,12 +363,12 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * and just call THIS method via parent::handleUpdate().
 	 * Additionally, the deriving implementation may perform further checks etc.
 	 *
-	 * @param tx_rnbase_model_base	$model			This model is being updated.
-	 * @param array					$data			New data
-	 * @param string				$where			Override default restriction by defining an explicite where clause
-	 * @return tx_rnbase_model_base Updated model
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
+	 * @param array $data New data
+	 * @param string $where Override default restriction by defining an explicite where clause
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface Updated model
 	 */
-	public function handleUpdate(tx_rnbase_model_base $model, array $data, $where='') {
+	public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where='') {
 
 		$table = $model->getTableName(); $uid = $model->getUid();
 
@@ -413,13 +413,13 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * and just call THIS method via parent::handleDelete().
 	 * Additionally, the deriving implementation may perform further checks etc.
 	 *
-	 * @param tx_rnbase_model_base	$model		This model is being updated.
-	 * @param string				$where		Override default restriction by defining an explicite where clause
-	 * @param int					$mode		Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
-	 * @param int					$table		Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
-	 * @return tx_rnbase_model_base				Updated (on success actually empty) model.
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
+	 * @param string $where Override default restriction by defining an explicite where clause
+	 * @param int $mode Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
+	 * @param int $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface Updated (on success actually empty) model.
 	 */
-	public function handleDelete(tx_rnbase_model_base $model, $where='', $mode=0, $table=null) {
+	public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where='', $mode=0, $table=null) {
 		if(empty($table)) {
 			$table = $model->getTableName();
 		}
@@ -443,8 +443,8 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
 	 * aufzurufen ;)
 	 *
-	 * @param 	array 					$data
-	 * @return 	tx_rnbase_model_base				Created model.
+	 * @param array $data
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface Created model.
 	 */
 	public function handleCreation(array $data){
 		// datensatz anlegen and model holen
@@ -466,7 +466,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	 *
 	 * @TODO: model has to implement interface!
 	 *
-	 * @param tx_rnbase_model_base $model
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model
 	 * @param array $data
 	 * @return array
 	 */

@@ -126,8 +126,8 @@ class tx_mklib_util_Array {
 	 *
 	 * @author 2011 mwagner
    	 *
-	 * @param tx_rnbase_model_base|array 	$objs
-	 * @param string 						$attr
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
+	 * @param string $attr
 	 * @return array
 	 */
 	public static function fieldsToArray($aObj, $sAttr = 'uid') {
@@ -146,9 +146,9 @@ class tx_mklib_util_Array {
 	 *
 	 * @author 2011 mwagner
 	 *
-	 * @param tx_rnbase_model_base|array 	$objs
-	 * @param string 						$attr
-	 * @param string 						$delimiter
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
+	 * @param string $attr
+	 * @param string $delimiter
 	 * @return string
 	 */
 	public static function fieldsToString($aObj, $sAttr='uid', $sDelimiter=',') {

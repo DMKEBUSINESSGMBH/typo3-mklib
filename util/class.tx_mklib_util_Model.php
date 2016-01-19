@@ -45,12 +45,12 @@ class tx_mklib_util_Model {
 	 *
 	 * @author 2011 hbochmann
 	 *
-	 * @param tx_rnbase_model_base $model
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model
 	 * @param string $textField | das feld, welches den text enthält
 	 * @param unknown_type $wordCount | die anzahl der worte nach denen abgeschnitten wird
 	 * @param bool $bStripTags Html vor dem Zerschneiden entfernen?
 	 */
-	public static function splitTextIntoTitleAndRest(tx_rnbase_model_base $model,$textField = 'text',$wordCount = 3, $bStripTags = false) {
+	public static function splitTextIntoTitleAndRest(Tx_Rnbase_Domain_Model_RecordInterface $model,$textField = 'text',$wordCount = 3, $bStripTags = false) {
 		//Html vorher entfernen? Wenn ja werden auch überflüssige Leerzeichen entfernt. aus "  " wird " "
 		$sText = ($bStripTags) ? preg_replace('/\s\s+/', ' ', strip_tags($model->record[$textField])) : $model->record[$textField];
 		//nur wenn der text noch nicht aufgesplittet wurde, sprich alles schon vorher einmal aufgerufen wurde
@@ -74,13 +74,13 @@ class tx_mklib_util_Model {
 	 *
 	 * @author 2011 hbochmann
 	 *
-	 * @param tx_rnbase_model_base $model
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $model
 	 * @param string $textField | das feld, welches den text enthält
 	 * @param int $charCount | die anzahl der Zeichen nach denen abgeschnitten wird
 	 * @param bool $bStripTags | Html vorher entfernen?
 	 * @param string $suffix für das neue Feld
 	 */
-	public static function getShortenedText(tx_rnbase_model_base $model, $textField = 'text', $charCount = 150, $bStripTags = false, $suffix = 'shortened') {
+	public static function getShortenedText(Tx_Rnbase_Domain_Model_RecordInterface $model, $textField = 'text', $charCount = 150, $bStripTags = false, $suffix = 'shortened') {
 		tx_rnbase::load('tx_mklib_util_String');
 		//Html vorher entfernen?
 		$sText = ($bStripTags) ? strip_tags($model->record[$textField]) : $model->record[$textField];
@@ -92,8 +92,8 @@ class tx_mklib_util_Model {
 	 *
 	 * @author 2011 mwagner
 	 *
-	 * @param array[tx_rnbase_model_base] $aModels
-	 * @return array[tx_rnbase_model_base]
+	 * @param array[Tx_Rnbase_Domain_Model_RecordInterface] $aModels
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	public static function uniqueModels($aModels) {
 		$aUniques = array();
@@ -114,15 +114,15 @@ class tx_mklib_util_Model {
 	 * Generiert eine leere Instanz eines Models.
 	 * Dabei werden aus der TCA alle Spalten ausgelesen und gesetzt.
 	 *
-	 * @param 	string 	$sClassName
-	 * @return 	tx_rnbase_model_base
+	 * @param string $sClassName
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	public static function getEmptyInstance($sClassName) {
-		
+
 		tx_rnbase::load('tx_mklib_util_StaticCache');
 		$key = 'empty_instance_'.$sClassName;
 		$oInstance = tx_mklib_util_StaticCache::get($key);
-		
+
 		if(!is_object($oInstance)) {
 			$oInstance = tx_rnbase::makeInstance($sClassName, array('uid' => 0));
 			$aColumns = $oInstance->getColumnNames();
@@ -131,7 +131,7 @@ class tx_mklib_util_Model {
 			}
 			tx_mklib_util_StaticCache::set($key, $oInstance);
 		}
-		
+
 		return $oInstance;
 	}
 

@@ -55,10 +55,10 @@ class tx_mklib_mod1_decorator_Base
 
 	/**
 	 *
-	 * @param 	string 					$value
-	 * @param 	string 					$colName
-	 * @param 	array 					$record
-	 * @param 	tx_rnbase_model_base 	$item
+	 * @param string $value
+	 * @param string $colName
+	 * @param array $record
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 */
 	public function format($value, $colName, $record, tx_rnbase_model_base $item) {
 		$ret = $value;
@@ -94,10 +94,10 @@ class tx_mklib_mod1_decorator_Base
 	/**
 	 * renders the uid column.
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @return string
 	 */
-	protected function getUidColumn(tx_rnbase_model_base $item) {
+	protected function getUidColumn(Tx_Rnbase_Domain_Model_RecordInterface $item) {
 		$wrap = $item->isHidden() ? array('<del>','</del>') : array('','');
 		$ret = $wrap[0] . $item->getProperty('uid') . $wrap[1];
 		$dates = array();
@@ -109,10 +109,10 @@ class tx_mklib_mod1_decorator_Base
 	/**
 	 * renders the label column.
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @return string
 	 */
-	protected function getLabelColumn(tx_rnbase_model_base $item) {
+	protected function getLabelColumn(Tx_Rnbase_Domain_Model_RecordInterface $item) {
 		$lastModifyDateTime = $item->getLastModifyDateTime();
 		$creationDateTime = $item->getCreationDateTime();
 		return sprintf(
@@ -130,10 +130,10 @@ class tx_mklib_mod1_decorator_Base
 	 * Renders the flag and the title of the sys language record.
 	 * Renders some links to create the overlay too.
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @return string
 	 */
-	protected function getSysLanguageColumn(tx_rnbase_model_base $item) {
+	protected function getSysLanguageColumn(Tx_Rnbase_Domain_Model_RecordInterface $item) {
 		if ($item->getTableName()) {
 			tx_rnbase::load('tx_mklib_mod1_util_Language');
 			$ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
@@ -160,7 +160,7 @@ class tx_mklib_mod1_decorator_Base
 
 	/**
 	 * Liefert die möglichen Optionen für die actions
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @return array
 	 */
 	protected function getActionOptions($item = null) {
@@ -186,11 +186,11 @@ class tx_mklib_mod1_decorator_Base
 	 * @TODO: weitere links integrieren!
 	 * $options = array('hide'=>'ausblenden,'edit'=>'bearbeiten,'remove'=>'löschen','history'='history','info'=>'info','move'=>'verschieben');
 	 *
-	 * @param 	tx_rnbase_model_base 	$item
-	 * @param 	array 					$options
-	 * @return 	string
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+	 * @param array $options
+	 * @return string
 	 */
-	protected function getActions(tx_rnbase_model_base $item, array $options) {
+	protected function getActions(Tx_Rnbase_Domain_Model_RecordInterface $item, array $options) {
 		$ret = '';
 		$tableName = $item->getTableName();
 		// we use the real uid, not the uid of the parent!
@@ -259,7 +259,7 @@ class tx_mklib_mod1_decorator_Base
 		$value,
 		$colName,
 		$record,
-		tx_rnbase_model_base $item
+		Tx_Rnbase_Domain_Model_RecordInterface $item
 	) {
 		$stateClass = array();
 
@@ -280,10 +280,10 @@ class tx_mklib_mod1_decorator_Base
 	/**
 	 * liefert die items map und setzten den pointer auf das aktuelle element
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @return array
 	 */
-	protected function getItemsMap(tx_rnbase_model_base $item)
+	protected function getItemsMap(Tx_Rnbase_Domain_Model_RecordInterface $item)
 	{
 		if (empty($this->options['items_map'])) {
 			return array();

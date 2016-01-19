@@ -39,7 +39,7 @@ on "PAGEPARENT" is just a demo.
             filter {
                ### alternativ filter class
                #class = tx_myext_filter_pages
-               ### where conditions for the rn_base search framework 
+               ### where conditions for the rn_base search framework
                fields {
                   PAGESPARENT.uid.OP_EQ_INT = 1
                }
@@ -50,7 +50,7 @@ on "PAGEPARENT" is just a demo.
                      usealias = 1
                      basetable = pages
                      basetablealias = PAGES
-                     wrapperclass = tx_rnbase_model_base
+                     wrapperclass = Tx_Rnbase_Domain_Model_Base
                      alias {
                         PAGES.table = pages
                         PAGESPARENT.table = pages
@@ -68,7 +68,7 @@ on "PAGEPARENT" is just a demo.
          }
       }
    }
-   
+
 The beloning HTML template in Template: EXT:myext/Ressources/Private/Html/Ext/mklib/genericlist.pages.html
 
 .. code-block:: html

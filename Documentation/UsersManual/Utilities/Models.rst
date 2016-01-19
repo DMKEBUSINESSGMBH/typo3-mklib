@@ -10,7 +10,7 @@
 
 Models
 ======
-This class contains methods to work with tx_rnbase_model_base models.
+This class contains methods to work with Tx_Rnbase_Domain_Model_RecordInterface models.
 
 uniqueModels
 ------------

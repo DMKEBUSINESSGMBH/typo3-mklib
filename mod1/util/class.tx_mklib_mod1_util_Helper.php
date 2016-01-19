@@ -38,14 +38,14 @@ class tx_mklib_mod1_util_Helper {
 	/**
 	 * Die dazu das aktuelle item für eine Detailseite zu holen bzw dieses zurückzusetzen.
 	 * Dazu muss den Linker einfach folgendes für den action namen liefern: "show" + den eigentlichen key.
-	 * 
+	 *
 	 * Dann brauch man in der Detailansicht noch einen Button nach folgendem Schema:
-	 * $markerArray['###NEWSEARCHBTN###'] = $formTool->createSubmit('showHowTo[clear]', '###LABEL_BUTTON_BACK###'); 
-	 * 
+	 * $markerArray['###NEWSEARCHBTN###'] = $formTool->createSubmit('showHowTo[clear]', '###LABEL_BUTTON_BACK###');
+	 *
 	 * @param string $key
 	 * @param tx_rnbase_mod_IModule $module
-	 * 
-	 * @return tx_rnbase_model_base
+	 *
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	public static function getCurrentItem($key, tx_rnbase_mod_IModule $module) {
 		$itemid = 0;
@@ -56,7 +56,7 @@ class tx_mklib_mod1_util_Helper {
 		$dataKey = 'current' . $key;
 		if($itemid === 'clear') {
 			$data = Tx_Rnbase_Backend_Utility::getModuleData(
-				array($dataKey => ''), array($dataKey => '0'),$module->getName() 
+				array($dataKey => ''), array($dataKey => '0'),$module->getName()
 			);
 			return false;
 		}
@@ -69,11 +69,11 @@ class tx_mklib_mod1_util_Helper {
 		}
 		$modelData = explode('|', $itemid);
 		$item = tx_rnbase::makeInstance($modelData[0], $modelData[1]);
-		
+
 		if(!$item->isValid()) {
 			$item = null; //auf null setzen damit die Suche wieder angezeigt wird
 		}
-		
+
 		return $item;
 	}
 }

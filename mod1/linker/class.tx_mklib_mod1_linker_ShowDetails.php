@@ -68,13 +68,13 @@ class tx_mklib_mod1_linker_ShowDetails {
 
 	/**
 	 *
-	 * @param tx_rnbase_model_base $item
+	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
 	 * @param tx_rnbase_util_FormTool $formTool
 	 * @param array $options
 	 * @return string
 	 */
 	public function makeLink(
-			tx_rnbase_model_base $item,
+			Tx_Rnbase_Domain_Model_RecordInterface $item,
 			tx_rnbase_util_FormTool $formTool,
 			$options=array()
 	) {
@@ -94,7 +94,8 @@ class tx_mklib_mod1_linker_ShowDetails {
 	 * @return string
 	 */
 	public function makeClearLink(
-			tx_rnbase_model_base $item, // wird eigentlich nicht benötigt.
+			// wird eigentlich nicht benötigt.
+			Tx_Rnbase_Domain_Model_RecordInterface $item,
 			tx_rnbase_util_FormTool $formTool,
 			$options=array()
 	) {

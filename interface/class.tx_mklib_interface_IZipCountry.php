@@ -23,26 +23,24 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_model_base');
-
 /**
  * Interface für PLZ-Validierung von Ländern
- * 
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_model
  * @author René Nitzsche
  */
 interface tx_mklib_interface_IZipCountry {
-	
+
 	/**
 	 * Liefert den ISO2 Code des Landes. DE,CZ,PL usw.
-	 * 
+	 *
 	 * @return String
 	 */
 	public function getISO2();
-	
+
 	/**
-	 * ID der Regel für die PLZ-Validierung 
+	 * ID der Regel für die PLZ-Validierung
 			1: maximum length without gaps
 			2: maximum length numerical without gaps
 			3: exact length without gaps
@@ -52,15 +50,15 @@ interface tx_mklib_interface_IZipCountry {
 			7: exact length with gaps
 			8: exact length numerical with gaps
 			9: special rules
-			
+
 	 * @return int 1-9
 	 */
 	public function getZipRule();
-	
+
 	/**
 	 * Erlaubte Anzahl Zeichen der PLZ
-	 * 
-	 * @return int 
+	 *
+	 * @return int
 	 */
 	public function getZipLength();
 }

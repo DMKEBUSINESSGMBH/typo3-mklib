@@ -343,16 +343,16 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 
 		// build uidmap
 		$map = array();
-		if ($firstPrev instanceof tx_rnbase_model_base) {
+		if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
 			$map[$firstPrev->getUid()] = array();
 		}
-		if ($secondPrev instanceof tx_rnbase_model_base) {
+		if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
 			$map[$secondPrev->getUid()] = array();
 		}
 		foreach ($items as $item) {
 			$map[$item->getUid()] = array();
 		}
-		if ($lastNext instanceof tx_rnbase_model_base) {
+		if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
 			$map[$lastNext->getUid()] = array();
 		}
 

@@ -61,7 +61,7 @@ class tx_mklib_repository_Pages
 	 * This is used only to access several model info methods like
 	 * getTableName(), getColumnNames() etc.
 	 *
-	 * @return tx_rnbase_model_base
+	 * @return Tx_Rnbase_Domain_Model_RecordInterface
 	 */
 	public function getEmptyModel() {
 		return parent::getEmptyModel()->setTablename('pages');
@@ -87,7 +87,7 @@ class tx_mklib_repository_Pages
 	 *
 	 * @param array $fields
 	 * @param array $options
-	 * @return array[tx_rnbase_model_base]
+	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
 	 */
 	public function search(array $fields, array $options) {
 		if (empty($options['searchdef']) || !is_array($options['searchdef'])) {

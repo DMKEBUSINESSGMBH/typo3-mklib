@@ -142,7 +142,7 @@ class tx_mklib_mod1_util_Language {
 	}
 
 	public static function getAddLocalizationLinks(
-		tx_rnbase_model_base $item,
+		Tx_Rnbase_Domain_Model_RecordInterface $item,
 		tx_rnbase_mod_BaseModule $mod = NULL
 	) {
 		if (
