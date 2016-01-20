@@ -263,16 +263,12 @@ class Tx_Mklib_Domain_Model_Iso_Iban
 	private function local_bcmod($x, $y)
 	{
 		if (!function_exists('bcmod')) {
-			$take = 5;
-			$mod = '';
-			do {
-				$a = (int)$mod . substr($x, 0, $take);
-				$x = substr($x, $take);
-				$mod = $a % $y;
-			} while (strlen($x));
-			return (int)$mod;
-		} else {
-			return bcmod($x, $y);
+			throw new Exception(
+				'BC-Math module not installed.' .
+				' BC-Math functions are required for IBAN validation.'
+			);
 		}
+
+		return bcmod($x, $y);
 	}
 }
