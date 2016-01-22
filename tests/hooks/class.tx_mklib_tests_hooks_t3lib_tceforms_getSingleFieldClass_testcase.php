@@ -32,7 +32,7 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends Tx_Phpunit_TestCase {
 
 	protected $oTceForms;
 
@@ -174,8 +174,10 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 	/**
 	 */
 	public function tearDown() {
-		global $TCA;
-		$TCA[$this->testTable] = $this->tcaBackup;
+		if ($this->tcaBackup) {
+			global $TCA;
+			$TCA[$this->testTable] = $this->tcaBackup;
+		}
 	}
 
 

@@ -35,7 +35,7 @@ tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @dataProvider providerMakeWildcardTerm

@@ -26,15 +26,15 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-if (!class_exists('template')) {
-	require_once(PATH_site.'typo3/template.php');
-}
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
+if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+	require_once(PATH_site.'typo3/template.php');
+}
 /**
  *
  * @package tx_mklib
@@ -64,7 +64,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 
 		$this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
 		$this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher',$this->mod);
-		$GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('template');
+		$GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
 		$GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
 		$GLOBALS['emptyTestResult'] = false;

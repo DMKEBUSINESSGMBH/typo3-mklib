@@ -26,6 +26,6 @@
 		"digedag/rn-base" : ">=0.16.1"
 	},
 	"autoload": {
-		"classmap": ["scheduler/", "exception/", "interface/", "model/", "treelib/", "util/", "validator/", "Classes/"]
+		"classmap": ["scheduler/", "exception/", "interface/", "model/", "treelib/", "util/", "validator/", "Classes/", "srv/"]
 	}
 }

@@ -36,7 +36,7 @@ tx_rnbase::load('tx_mklib_util_Encoding');
  * @subpackage tx_mklib_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_util_Encoding_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * Der für die Tests genutzte String

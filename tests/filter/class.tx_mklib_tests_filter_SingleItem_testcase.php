@@ -29,7 +29,7 @@ tx_rnbase::load('tx_mklib_filter_SingleItem');
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_filter_SingleItem_testcase extends tx_phpunit_testcase{
+class tx_mklib_tests_filter_SingleItem_testcase extends Tx_Phpunit_TestCase{
 
 	/**
 	 * @var string

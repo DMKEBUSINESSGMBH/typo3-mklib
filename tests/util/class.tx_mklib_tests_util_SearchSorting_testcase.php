@@ -66,7 +66,7 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting {
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_SearchSorting_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_util_SearchSorting_testcase extends Tx_Phpunit_TestCase {
 
 	private static $hooks = array();
 

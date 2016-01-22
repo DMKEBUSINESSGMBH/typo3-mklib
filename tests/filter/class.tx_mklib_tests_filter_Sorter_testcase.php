@@ -36,7 +36,7 @@
  * @subpackage tx_mklib
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_filter_Sorter_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * (non-PHPdoc)

@@ -38,7 +38,7 @@ tx_rnbase::load('tx_rnbase_util_Files');
  * @package tx_mklib
  * @subpackage tx_mklib_tests
  */
-abstract class tx_mklib_tests_DBTestCaseSkeleton extends tx_phpunit_database_testcase {
+abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_TestCase {
 
 	protected $workspaceIdAtStart;
 	/**

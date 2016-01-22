@@ -37,14 +37,20 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @package tx_mklib
  * @subpackage tx_mklib_tests
  */
-class tx_mklib_tests_TCA_testcase extends tx_phpunit_testcase {
-	
+class tx_mklib_tests_TCA_testcase extends Tx_Phpunit_TestCase {
+
+	/**
+	 * @var array
+	 */
+	private $tcaBackup;
+
 	/**
 	 * Wird vor jedem Test aufgerufen.
 	 */
 	public function setUp(){
 		//Die Extension Konfiguration sichern.
 		tx_mklib_tests_Util::storeExtConf();
+		$this->tcaBackup = $GLOBALS['TCA'];
 	}
 	/**
 	 * Wird nach jedem Test aufgerufen.
@@ -52,8 +58,9 @@ class tx_mklib_tests_TCA_testcase extends tx_phpunit_testcase {
 	public function tearDown(){
 		//Die Extension Konfiguration zurücksetzen.
 		tx_mklib_tests_Util::restoreExtConf();
+		$GLOBALS['TCA'] = $this->tcaBackup;
 	}
-	
+
 	/**
 	 * Setzt die TCA zurück und lädt die ext_tables.php erneut
 	 */
@@ -62,18 +69,18 @@ class tx_mklib_tests_TCA_testcase extends tx_phpunit_testcase {
 		unset($TCA['tx_mklib_wordlist']);
 		require(tx_rnbase_util_Extensions::extPath('mklib', 'tca/ext_tables.php'));
 	}
-	
+
 	/**
 	 *	Testen, ob die Wordlist Tabelle in der TCA gesetzt wurde.
 	 */
 	public function testSkipInkludingTableWordlist(){
 		global $TCA;
-		
+
 		tx_mklib_tests_Util::setExtConfVar('tableWordlist', 0);
 		self::loadExtTables();
-		
+
 		$tableWordlist = tx_mklib_util_MiscTools::getExtensionValue('tableWordlist');
-		
+
 		self::assertEquals(0, intval($tableWordlist), 'Die Extension Konfiguration tableWordlist ist falsch gesetzt.');
 		self::assertFalse(array_key_exists('tx_mklib_wordlist',$TCA), 'Die TCA für die Wordlist Tabelle wurde geladen.');
 	}
@@ -82,17 +89,17 @@ class tx_mklib_tests_TCA_testcase extends tx_phpunit_testcase {
 	 */
 	public function testIncludeTableWordlist(){
 		global $TCA;
-		
+
 		tx_mklib_tests_Util::setExtConfVar('tableWordlist', 1);
 		self::loadExtTables();
-		
+
 		$tableWordlist = tx_mklib_util_MiscTools::getExtensionValue('tableWordlist');
-		
+
 		self::assertEquals(1, intval($tableWordlist), 'Die Extension Konfiguration tableWordlist ist falsch gesetzt');
 		self::assertTrue(array_key_exists('tx_mklib_wordlist',$TCA), 'Die TCA für die Wordlist Tabelle wurde nicht geladen.');
 		self::assertTrue(array_key_exists('ctrl',$TCA['tx_mklib_wordlist']), 'Die TCA für die Wordlist Tabelle wurde nicht richtig geladen.');
 	}
-	
+
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_TCA_testcase.php']) {

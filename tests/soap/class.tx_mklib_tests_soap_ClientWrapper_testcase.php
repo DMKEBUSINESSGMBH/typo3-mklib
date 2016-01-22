@@ -30,7 +30,7 @@ tx_rnbase::load('tx_mklib_tests_Util');
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_phpunit_testcase{
+class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 	
 	const SOAP_TEST_METHOD = 'mySoapTestMethod';
 	const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';

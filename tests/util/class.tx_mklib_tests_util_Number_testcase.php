@@ -32,7 +32,7 @@ tx_rnbase::load('tx_mklib_util_Number');
  * @subpackage tx_mklib_tests_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_util_Number_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_util_Number_testcase extends Tx_Phpunit_TestCase {
 
 	private $oldLocal = NULL;
 

@@ -36,7 +36,7 @@ abstract class ListBaseWithNewFilterMode extends tx_mklib_action_ListBase {
  * Enter description here ...
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_action_ListBase_testcase extends tx_phpunit_testcase{
+class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase{
 
 	protected function getConfigurations($aConfig = array()) {
 		$configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');

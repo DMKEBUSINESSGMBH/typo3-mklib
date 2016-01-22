@@ -38,7 +38,7 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_TCA_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @var string

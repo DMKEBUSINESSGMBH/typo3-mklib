@@ -29,8 +29,8 @@
 /**
  * benötigte Klassen einbinden
  */
-
-if (!class_exists('template')) {
+tx_rnbase::load('tx_rnbase_util_TYPO3');
+if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 	require_once(PATH_site.'typo3/template.php');
 }
 

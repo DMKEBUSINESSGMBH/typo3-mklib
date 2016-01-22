@@ -37,7 +37,7 @@ tx_rnbase::load('tx_mklib_util_String');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_util_String_testcase extends Tx_Phpunit_TestCase {
 
 	/**
 	 * Testen ob crop nur richtig kürzt

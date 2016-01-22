@@ -37,7 +37,7 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 	/**
 	 * @var tx_mklib_mod1_decorator_Base
 	 */
@@ -56,6 +56,11 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 	/**
 	 * @var string
 	 */
+	private $whitespaceByTypo3Version;
+
+	/**
+	 * @var string
+	 */
 	protected $sModuleKey;
 
 	public function setUp() {
@@ -69,7 +74,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$_GET['SET'] = null;
 
 		//für cli
-		$GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('template');
+		$GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
 		$GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
 		//sprache auf default setzen damit wir die richtigen labels haben
@@ -92,6 +97,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 			\TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
 		}
+
+		$this->whitespaceByTypo3Version = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? ' ' : '&nbsp;';
 	}
 
 	/**
@@ -328,8 +335,12 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
-		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
-		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
+		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" ' .
+			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
+			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
+			$this->whitespaceByTypo3Version . '</span>';
+
+		self::assertEquals($expectedInput, tx_mklib_util_String::removeMultipleWhitespaces($out['field']), 'input feld falsch');
 	}
 
 	/**
@@ -346,7 +357,10 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
-		$expectedInput = 'test<input name="test" type="text" id="tceforms-datefield-test" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
+		$expectedInput = 'test<input name="test" type="text" id="tceforms-datefield-test" ' .
+			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
+			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
+			$this->whitespaceByTypo3Version . '</span>';
 		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
 
@@ -383,7 +397,10 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$arguments = array($key, &$out);
 		$returnValue = $method->invokeArgs($selector, $arguments);
 
-		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" value="123" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
+		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" ' .
+			'value="123" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
+			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
+			$this->whitespaceByTypo3Version . '</span>';
 		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
 	}
 
@@ -509,7 +526,14 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
 
-		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span><input name="test_to" type="text" id="tceforms-datefield-test_to" value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
+		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" ' .
+			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" ' .
+			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
+			$this->whitespaceByTypo3Version . '</span><input name="test_to" type="text" ' .
+			'id="tceforms-datefield-test_to" value="" /><span style="cursor:pointer;" ' .
+			'id="picker-tceforms-datefield-test_to" class="t3-icon ' .
+			't3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
+			$this->whitespaceByTypo3Version . '</span>';
 		self::assertEquals($expectedOut, $out['field'], 'out falsch');
 	}
 
@@ -534,7 +558,15 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_phpunit_testcase {
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
 
-		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="08-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span><input name="test_to" type="text" id="tceforms-datefield-test_to" value="09-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">&nbsp;</span>';
+		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" ' .
+			'value="08-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-' .
+			'datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit ' .
+			't3-icon-edit-pick-date">' . $this->whitespaceByTypo3Version . '</span><input ' .
+			'name="test_to" type="text" ' .
+			'id="tceforms-datefield-test_to" value="09-07-2013" /><span style="cursor:pointer;" ' .
+			'id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions ' .
+			't3-icon-actions-edit t3-icon-edit-pick-date">' .
+			$this->whitespaceByTypo3Version . '</span>';
 		self::assertEquals($expectedOut, $out['field'], 'out falsch');
 	}
 

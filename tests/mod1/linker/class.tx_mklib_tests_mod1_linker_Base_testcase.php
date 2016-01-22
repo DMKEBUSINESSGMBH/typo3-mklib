@@ -35,7 +35,7 @@ tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummyLinker');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_linker_Base_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_mod1_linker_Base_testcase extends Tx_Phpunit_TestCase {
 
 	public function testMakeLink() {
 		//sprache auf default setzen damit wir die richtigen labels haben

@@ -35,7 +35,7 @@
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_ExtensionConfiguration_testcase extends tx_phpunit_testcase {
+class tx_mklib_tests_util_ExtensionConfiguration_testcase extends Tx_Phpunit_TestCase {
 	
 	public function testGetExtensionCfgValue(){
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dummyExtension'] = serialize(

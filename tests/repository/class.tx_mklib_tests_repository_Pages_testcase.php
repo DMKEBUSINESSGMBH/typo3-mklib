@@ -36,7 +36,6 @@ tx_rnbase::load('tx_rnbase_model_base');
 class tx_mklib_tests_repository_Pages_testcase
 	extends tx_rnbase_tests_BaseTestCase {
 
-
 	/**
 	 *
 	 * @return PHPUnit_Framework_MockObject_MockObject
