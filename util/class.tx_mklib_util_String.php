@@ -278,6 +278,14 @@ class tx_mklib_util_String extends tx_mklib_util_Var{
 		}
 		return $tel;
 	}
+
+	/**
+	 * @param string $string
+	 * @return string
+	 */
+	public static function removeMultipleWhitespaces($string) {
+		return preg_replace('/\s+/', ' ', $string);
+	}
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_String.php']) {

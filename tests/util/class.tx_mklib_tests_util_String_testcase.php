@@ -166,12 +166,12 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 	public function testConvertEmailToMailToLink() {
 		$this->initSpamProtectionConfig();
 
-		$expectedLink = '<a href="javascript:linkTo_UnCryptMailto(\'ocknvq,vguv0ocknBgkp/jquv0fg\');" >test.mail&#8203;(at)&#8203ein-host.de</a>';
+		$expectedLink = '/\<a href="javascript:linkTo_UnCryptMailto\(\'(.*)\'\);" \>test.mail&#8203;\(at\)&#8203ein\-host.de\<\/a\>/';
 		// leerzeichen ab 6.2.3 nicht mehr vorhanden
 		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-			$expectedLink = str_replace('" >', '">', $expectedLink);
+			$expectedLink = str_replace('" \>', '"\>', $expectedLink);
 		}
-		self::assertEquals(
+		self::assertRegExp(
 			$expectedLink,
 			tx_mklib_util_String::convertEmailToMailToLink(array(0=>'test.mail@ein-host.de')),
 			'Mailto Link falsch'
@@ -282,6 +282,13 @@ class tx_mklib_tests_util_String_testcase extends tx_phpunit_testcase {
 			array('_www.difu.de?test_test', '', '_<a  href="http://www.difu.de?test_test" >www.difu.de?test_test</a>'),
 			array('*www.difu.de', '', '*<a  href="http://www.difu.de" >www.difu.de</a>'),
 		);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testRemoveMultipleWhitespaces() {
+		self::assertEquals(' ', tx_mklib_util_String::removeMultipleWhitespaces('   '));
 	}
 }
 
