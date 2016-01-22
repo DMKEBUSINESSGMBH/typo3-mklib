@@ -64,6 +64,9 @@ class tx_mklib_tests_hooks_t3lib_tceforms_getSingleFieldClass_testcase extends t
 	private $tcaBackup;
 
 	public function setUp() {
+		if (tx_rnbase_util_TYPO3::isTYPO3VersionOrHigher(6001008)) {
+			self::markTestSkipped('Ist nur für TYPO3 < 6.1.8 relevant.');
+		}
 		//wir nutzen hier die pages tabelle und überschreiben die TCA
 		//für ein paar felder. wir müssen das mit bestehenden feldern
 		//in einer echten tabelle testen da es sonst zu warnungen kommt.
