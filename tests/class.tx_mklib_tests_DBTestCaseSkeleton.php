@@ -150,8 +150,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
 	protected function tearDown () {
 		$this->cleanDatabase();
 		$this->dropDatabase();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
+		$this->switchToTypo3Database();
 	}
 }
 

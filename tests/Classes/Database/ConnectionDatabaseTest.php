@@ -32,6 +32,7 @@
 
 tx_rnbase::load('tx_mklib_tests_Util');
 tx_rnbase::load('Tx_Mklib_Database_Connection');
+tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
 
 /**
  * Tx_Mklib_Database_ConnectionDatabaseTest
@@ -42,9 +43,7 @@ tx_rnbase::load('Tx_Mklib_Database_Connection');
  * @license 		http://www.gnu.org/licenses/lgpl.html
  * 					GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_phpunit_database_testcase {
-	protected $workspaceIdAtStart;
-	protected $db;
+class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCaseSkeleton {
 
 	private static $hooks = array();
 
@@ -58,13 +57,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_phpunit_database_testc
 	 * @param string $name
 	 */
 	public function __construct ($name=null) {
-		global $TYPO3_DB, $BE_USER;
-
-		parent::__construct ($name);
-		$TYPO3_DB->debugOutput = TRUE;
-
-		$this->workspaceIdAtStart = $BE_USER->workspace;
-		$BE_USER->setWorkspace(0);
+		parent::__construct($name);
 
 		// devlog erstmal deaktivieren,
 		// da Prozesse auserhalb des Tests auch darauf zugreifen!
@@ -76,10 +69,8 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_phpunit_database_testc
 	 * setUp() = init DB etc.
 	 */
 	protected function setUp() {
-		$this->createDatabase();
-		// assuming that test-database can be created otherwise PHPUnit will skip the test
-		$this->db = $this->useTestDatabase();
-		$this->importStdDB();
+		parent::setUp();
+
 		$ttContentExtension = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ? 'frontend' : 'cms';
 		$this->importExtensions(array($ttContentExtension, 'devlog'));
 
@@ -120,11 +111,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_phpunit_database_testc
 	 * tearDown() = destroy DB etc.
 	 */
 	protected function tearDown () {
-		$this->cleanDatabase();
-		$this->dropDatabase();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
-
-		$GLOBALS['BE_USER']->setWorkspace($this->workspaceIdAtStart);
+		parent::tearDown();
 
 		// devlog wieder deaktivieren
 		tx_mklib_tests_Util::disableDevlog();
