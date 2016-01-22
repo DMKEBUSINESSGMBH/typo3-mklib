@@ -129,8 +129,10 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 
 		$result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
+		$whitespaceByTypo3Version = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? ' ' : '&nbsp;';
 		self::assertContains(
-			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;Default',
+			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">' .
+			$whitespaceByTypo3Version . '</span>&nbsp;Default',
 			$result,
 			'Falsches oder fehlendes Icon erzeugt.'
 		);
@@ -139,7 +141,8 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 		$result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
 		self::assertContains(
-			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">&nbsp;</span>&nbsp;[All]',
+			'<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">' .
+			$whitespaceByTypo3Version . '</span>&nbsp;[All]',
 			$result,
 			'Falsches oder fehlendes Icon erzeugt.'
 		);
@@ -155,56 +158,15 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 
 		$record = array('uid' => 1, 'disable' => 0);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
-		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="Edit" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/deletedok.gif" width="16" height="16" title="Delete UID: 1" border="0" alt="" /></a>';
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
 
-		self::assertEquals(
-			$this->replaceForCliAndremoveVcAndFormToken($sExpected),
-			$result,
-			'es wurde nicht der korrekte Wert zurück geliefert. 1'
-		);
+		self::assertContains('data[0][1][disable]=1', $result);
+		self::assertContains('cmd[0][1][delete]=1', $result);
 
 		//schon versteckt
 		$record = array('uid' => 1, 'disable' => 1);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/button_hide.gif"'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/deletedok.gif"'
-			),
-			$result
-		);
-
+		self::assertContains('data[0][1][disable]=0', $result);
+		self::assertContains('cmd[0][1][delete]=1', $result);
 	}
 
 	public function testFormatWithActionsColumnBeingNoAdminDoesNotReturnDeleteLink() {
@@ -215,42 +177,16 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 
 		$record = array('uid' => 1, 'disable' => 0);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
-		$sExpected = '<a href="#" onclick="window.location.href=\'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit\'; return false;"><img src="sysext/t3skin/icons/gfx/edit2.gif" width="16" height="16" title="Edit UID: 1" border="0" alt="Edit" /></a><a onclick="return jumpToUrl(\'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=1\');" href="#"><img src="sysext/t3skin/icons/gfx/button_unhide.gif" width="16" height="16" title="Hide UID: 1" border="0" alt="" /></a>';
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		self::assertEquals(
-			$this->replaceForCliAndremoveVcAndFormToken($sExpected),
-			$result,
-			'es wurde nicht der korrekte Wert zurück geliefert. 1'
-		);
+
+		self::assertContains('data[0][1][disable]=1', $result);
+		self::assertNotContains('cmd[0][1][delete]=1', $result);
 
 		//schon versteckt
 		$record = array('uid' => 1, 'disable' => 1);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][disable]=0'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/button_hide.gif"'
-			),
-			$result
-		);
+
+		self::assertContains('data[0][1][disable]=0', $result);
+		self::assertNotContains('cmd[0][1][delete]=1', $result);
 	}
 
 	public function testFormatWithActionsColumnAndNoEnableColumnConfigBeingAdmin() {
@@ -261,84 +197,18 @@ class tx_mklib_tests_mod1_decorator_Base_testcase
 
 		$record = array('uid' => 1, 'hidden' => 0);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=1'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/button_unhide.gif"'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/deletedok.gif"'
-			),
-			$result
-		);
+
+		self::assertNotContains('data[0][1][disable]', $result);
+		self::assertContains('data[0][1][hidden]=1', $result);
+		self::assertContains('cmd[0][1][delete]=1', $result);
 
 		//schon versteckt
 		$record = array('uid' => 1, 'hidden' => 1);
 		$result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
-		tx_mklib_tests_mod1_Util::removeVcAndFormToken($result);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'alt_doc.php?returnUrl=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;edit[0][1]=edit'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/edit2.gif"'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;data[0][1][hidden]=0'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/button_hide.gif"'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'tce_db.php?redirect=%2Ftypo3%2Fmod.php%3FM%3Dtools_txphpunitbeM1&amp;cmd[0][1][delete]=1'
-			),
-			$result
-		);
-		self::assertContains(
-			$this->replaceForCliAndremoveVcAndFormToken(
-				'<img src="sysext/t3skin/icons/gfx/deletedok.gif"'
-			),
-			$result
-		);
+
+		self::assertNotContains('data[0][1][disable]', $result);
+		self::assertContains('data[0][1][hidden]=0', $result);
+		self::assertContains('cmd[0][1][delete]=1', $result);
 	}
 
 	/**
