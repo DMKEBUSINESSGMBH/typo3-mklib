@@ -50,7 +50,9 @@ class tx_mklib_tests_TCA_testcase extends Tx_Phpunit_TestCase {
 	public function setUp(){
 		//Die Extension Konfiguration sichern.
 		tx_mklib_tests_Util::storeExtConf();
-		$this->tcaBackup = $GLOBALS['TCA'];
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			$this->tcaBackup = $GLOBALS['TCA'];
+		}
 	}
 	/**
 	 * Wird nach jedem Test aufgerufen.
@@ -58,7 +60,9 @@ class tx_mklib_tests_TCA_testcase extends Tx_Phpunit_TestCase {
 	public function tearDown(){
 		//Die Extension Konfiguration zurücksetzen.
 		tx_mklib_tests_Util::restoreExtConf();
-		$GLOBALS['TCA'] = $this->tcaBackup;
+		if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+			$GLOBALS['TCA'] = $this->tcaBackup;
+		}
 	}
 
 	/**
