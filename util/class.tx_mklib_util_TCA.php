@@ -292,7 +292,7 @@ class tx_mklib_util_TCA {
 	 * @param 	string 	$sTable
 	 * @param 	array 	$options
 	 * @return 	array
-	 * @todo refactoring the method has too many lines
+	 * @deprecated use Tx_Rnbase_Utility_TcaTool::getWizards
 	 */
 	public static function getWizards($sTable, array $options = array()) {
 		$bGlobalPid = isset($options['globalPid']) ? $options['globalPid'] : false;
@@ -417,27 +417,6 @@ class tx_mklib_util_TCA {
 		}
 
 		return $wizards;
-	}
-
-	/**
-	 * @param string $wizardType
-	 * @param array $wizardConfig
-	 * @return array
-	 */
-	private static function addWizardScriptForTypo3Version($wizardType, array $wizardConfig) {
-		$completeWizardName = 'wizard_' . $wizardType;
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$wizardConfig['module']['name'] = $completeWizardName;
-			if (isset($wizardConfig['script'])) {
-				unset($wizardConfig['script']);
-			}
-		} else {
-			if (!isset($wizardConfig['script'])) {
-				$wizardConfig['script'] = $completeWizardName . '.php';
-			}
-		}
-
-		return $wizardConfig;
 	}
 
 	/**
