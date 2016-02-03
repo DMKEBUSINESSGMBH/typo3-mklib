@@ -29,9 +29,11 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Strings');
 tx_rnbase::load('tx_rnbase_util_Misc');
 if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-	require_once('class.tx_mklib_treelib_TreeView_SinceTypo6.php');
+	class tx_mklib_treelib_BaseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
+	}
 } else {
-	require_once('class.tx_mklib_treelib_TreeView_TillTypo6.php');
+	class tx_mklib_treelib_BaseTreeView extends t3lib_treeview {
+	}
 }
 
 /**
