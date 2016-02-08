@@ -111,11 +111,10 @@ class tx_mklib_util_MiscTools {
 	 * @param 	string 		$remoteAddress
 	 * @param 	string 		$devIPmask
 	 * @return 	boolean
+	 * @deprecated use tx_rnbase_util_Network::isDevelopmentIp
 	 */
 	public static function isDevIpMask($remoteAddress='',$devIPmask=''){
-		$devIPmask = trim(strcmp($devIPmask, '') ? $devIPmask : $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
-		$remoteAddress = trim(strcmp($remoteAddress, '') ? $remoteAddress : tx_rnbase_util_Misc::getIndpEnv('REMOTE_ADDR'));
-		return tx_rnbase_util_Network::cmpIP($remoteAddress, $devIPmask);
+		return tx_rnbase_util_Network::isDevelopmentIp($remoteAddress, $devIPmask);
 	}
 
 	/**
