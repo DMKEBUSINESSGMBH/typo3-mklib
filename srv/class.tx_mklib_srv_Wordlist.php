@@ -165,7 +165,7 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 	        'enablecolumns' => array (
 	            'disabled' => 'hidden',
 	        ),
-	        'iconfile'          => tx_rnbase_util_Extensions::extRelPath($_EXTKEY).'icon/icon_tx_mklib_wordlist.gif',
+	        'iconfile'          => 'EXT:mklib/icon/icon_tx_mklib_wordlist.gif',
 	        'dividers2tabs'     => true,
 		);
 
