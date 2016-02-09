@@ -27,6 +27,7 @@ tx_rnbase::load('tx_rnbase_util_Logger');
 tx_rnbase::load('tx_rnbase_util_Misc');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 tx_rnbase::load('Tx_Rnbase_Scheduler_Task');
+tx_rnbase::load('tx_rnbase_util_DB');
 
 /**
  * generic abstract scheduler
