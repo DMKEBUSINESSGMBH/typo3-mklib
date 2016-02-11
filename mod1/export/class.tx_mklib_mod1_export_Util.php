@@ -77,15 +77,20 @@ class tx_mklib_mod1_export_Util {
 	 * @param string $content
 	 */
 	public static function doOutPut($content) {
+		$doFlush = FALSE;
 		foreach (func_get_args() as $out) {
 // 			if (tx_rnbase_util_BaseMarker::containsMarker($out, '')) {
 // 				// @TODO: es sind noch Marker enthalten
 // 			}
-			echo $out;
+			if($out) {
+				$doFlush = TRUE;
+				echo $out;
+			}
 		}
 
 		// Ausgabe-Puffer leeren und den inhalt direkt an den client senden.
-		ob_flush();
+		if($doFlush)
+			ob_flush();
 	}
 
 }

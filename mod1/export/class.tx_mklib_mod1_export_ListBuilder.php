@@ -61,9 +61,9 @@ class tx_mklib_mod1_export_ListBuilder
 
 		// wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
 		list($header, $footer) = $this->getWrapForSubpart($template, $outerMarker.'S');
-
+		
 		tx_mklib_mod1_export_Util::doOutPut($header);
-
+		
 		/* @var $listMarker tx_mklib_mod1_export_ListMarker */
 		$listMarker = tx_rnbase::makeInstance(
 			'tx_mklib_mod1_export_ListMarker',
@@ -73,12 +73,12 @@ class tx_mklib_mod1_export_ListBuilder
 		$templateList = tx_rnbase_util_Templates::getSubpart($template, '###'.$outerMarker.'S###');
 		list($listHeader, $listFooter) = $this->getWrapForSubpart($templateList, $marker);
 		$templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###'.$marker.'###');
-
+		
 		tx_mklib_mod1_export_Util::doOutPut($listHeader);
 
 		$listMarker->addVisitors($this->callbacks);
-		$ret = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
-				$confId, $marker, $formatter, $markerParams, $offset);
+		$listMarker->renderEach($provider, $templateEntry, $markerClassname,
+				$confId, $marker, $formatter, $markerParams);
 
 		tx_mklib_mod1_export_Util::doOutPut($listFooter);
 		tx_mklib_mod1_export_Util::doOutPut($footer);
