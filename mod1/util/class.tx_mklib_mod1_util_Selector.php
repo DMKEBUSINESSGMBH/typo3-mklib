@@ -1,58 +1,49 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) 2012 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2012 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_mod_Util');
 
 /**
  * Die Klasse stellt Auswahlmenus zur Verfügung
- *  @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ *
+ * @package TYPO3
+ * @subpackage tx_mklib
+ * @author Michael Wagner
+ * @author Hannes Bochmann
  */
 class tx_mklib_mod1_util_Selector {
+	// @TODO: whats this? can be removed?
 	var $doc, $modName;
 
 	/**
-	 *  @var tx_rnbase_mod_IModule
+	 * @var tx_rnbase_mod_IModule
 	 */
 	private $mod;
-
-	private $formTool;
 
 	/**
 	 * Initialisiert das Objekt mit dem Template und der Modul-Config.
 	 */
-	public function init(tx_rnbase_mod_IModule $module){
+	public function init(tx_rnbase_mod_IModule $module) {
 		$this->mod = $module;
-		$this->formTool = $this->mod->getFormTool();
 	}
 
 	/**
@@ -72,8 +63,8 @@ class tx_mklib_mod1_util_Selector {
 		$searchstring = $this->getValueFromModuleData($key);
 
 		// Erst das Suchfeld, danach der Button.
-		$out['field'] 	= $this->formTool->createTxtInput('SET['.$key.']',$searchstring,10);
-		$out['button'] 	= empty($options['submit']) ? '' : $this->formTool->createSubmit(
+		$out['field'] 	= $this->getFormTool()->createTxtInput('SET['.$key.']',$searchstring,10);
+		$out['button'] 	= empty($options['submit']) ? '' : $this->getFormTool()->createSubmit(
 				$options['buttonName'] ? $options['buttonName'] : $key,
 				$options['buttonValue'] ? $options['buttonValue'] : $GLOBALS['LANG']->getLL('label_button_search')
 			);
@@ -191,6 +182,60 @@ class tx_mklib_mod1_util_Selector {
 		return $ret;
 	}
 
+
+
+	/**
+	 * Gibt einen selector mit den models im gegebenen array zurück
+	 *
+	 * @param array $items
+	 * @param array $data enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
+	 * @param array $options zusätzliche Optionen: label, id
+	 * @return string selected item
+	 */
+	protected function showSelectorByModels(
+		array $items,
+		array &$data,
+		array $options = array()
+	) {
+		$id = $options['id'];
+		if (empty($id)) {
+			throw new Exception('No ID for widget given!');
+		}
+
+		$pid = $options['pid'] ? $options['pid'] : 0;
+
+		$itemMenu = array();
+		if (isset($options['entryall'])) {
+			$itemMenu['0'] = is_string($options['entryall'])
+				? $options['entryall']
+				: $GLOBALS['LANG']->getLL('label_select_all_entries')
+			;
+		}
+
+		$titleMethod = $options['titlemethod'] ? $options['titlemethod'] : 'getTcaLabel';
+		$idMethod = $options['idmethod'] ? $options['idmethod'] : 'getUid';
+		$titleField = $options['titlefield'] ? $options['titlefield'] : 'title';
+		$idField = $options['idfield'] ? $options['idfield'] : 'uid';
+
+		foreach($items as $item) {
+			$uid = is_object($item) ? $item->{$idMethod}() : $item[$idField];
+			$title = is_object($item) ? $item->{$titleMethod}() : $item[$titleField];
+			$itemMenu[$uid] = $title;
+		}
+
+		$selectedItem = $this->getValueFromModuleData($id);
+
+		// Build select box items
+		$data['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
+			$pid,
+			'SET[' . $id . ']',
+			$selectedItem,
+			$itemMenu
+		);
+
+		return $selectedItem;
+	}
+
 	/**
 	 * Gibt einen selector mit den elementen im gegebenen array zurück
 	 * @param array $aItems Array mit den werten der Auswahlbox
@@ -218,6 +263,7 @@ class tx_mklib_mod1_util_Selector {
 		//@todo wozu die alte abfrage? return $defId==$id ? false : $selectedItem;
 		return $selectedItem;
 	}
+
 	/**
 	 * Gibt einen selector mit den elementen im gegebenen array zurück
 	 * @return string selected item
@@ -345,6 +391,7 @@ class tx_mklib_mod1_util_Selector {
 		);
 		$this->getMod()->getDoc()->getPageRenderer()->addInlineSettingArray('', $typo3Settings);
 
+		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
 			$this->getMod()->getDoc()->getPageRenderer()->addJsFile(
 				"sysext/backend/Resources/Public/JavaScript/tceforms.js"
