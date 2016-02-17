@@ -48,7 +48,7 @@ tx_rnbase::load('tx_rnbase_util_Files');
 						### ein für Typo3 bekanntes Sprite Icon. Siehe tx_rnbase_mod_Util::debugSprites
 						spriteIcon = mimetypes-excel
 						### Wenn gesetzt, wird das BOM an den Anfang der Ausgabe gesetzt
-						bom = 0
+						BOM = 0
 						### konfiguration für das template
 						template {
 							### Pfad zum Template
