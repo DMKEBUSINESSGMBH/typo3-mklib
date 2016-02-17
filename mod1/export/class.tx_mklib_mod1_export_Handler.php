@@ -394,9 +394,8 @@ class tx_mklib_mod1_export_Handler {
 	protected function isBomRequired($type) {
 		$configuration = $this->getConfigurations();
 		$confId = $this->getConfId().'types.';
-		$bom = $configuration->get($confId.$type.'.BOM');
 
-		return (bool) $bom;
+		return $configuration->getBool($confId.$type.'.BOM');
 	}
 
 	/**
