@@ -47,6 +47,8 @@ tx_rnbase::load('tx_rnbase_util_Files');
 						description = Firmen mit Hauptkontakt und Anzahl geschaltener Anzeigen
 						### ein für Typo3 bekanntes Sprite Icon. Siehe tx_rnbase_mod_Util::debugSprites
 						spriteIcon = mimetypes-excel
+						### Wenn gesetzt, wird das BOM an den Anfang der Ausgabe gesetzt
+						bom = 0
 						### konfiguration für das template
 						template {
 							### Pfad zum Template
@@ -94,6 +96,9 @@ class tx_mklib_mod1_export_Handler {
 
 	private $modFunc = NULL;
 
+	/** Byte Order Mark */
+	public static function BOM() { return ( chr(0xEF) . chr(0xBB) . chr(0xBF) ); }
+
 	public function tx_mklib_mod1_export_Handler(
 		tx_mklib_mod1_export_IModFunc $modFunc
 	) {
@@ -135,6 +140,9 @@ class tx_mklib_mod1_export_Handler {
 		}
 
 		tx_mklib_mod1_export_Util::sendHeaders($this->getHeaderConfig($type));
+
+		if ($this->isBomRequired($type))
+			echo self::BOM();
 
 		/* @var $listBuilder tx_mklib_mod1_export_ListBuilder */
 		$listBuilder = tx_rnbase::makeInstance('tx_mklib_mod1_export_ListBuilder');
@@ -375,6 +383,20 @@ class tx_mklib_mod1_export_Handler {
 			$this->getConfId().'types.'.$type.'.headers.', TRUE
 		);
 		return is_array($headers) ? $headers : array();
+	}
+
+	/**
+	 * test if BOM is set in configuration
+	 *
+	 * @param $type
+	 * @return bool
+	 */
+	protected function isBomRequired($type) {
+		$configuration = $this->getConfigurations();
+		$confId = $this->getConfId().'types.';
+		$bom = $configuration->get($confId.$type.'.BOM');
+
+		return (bool) $bom;
 	}
 
 	/**
