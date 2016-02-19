@@ -368,7 +368,8 @@ abstract class tx_mklib_repository_Abstract
 	 * @return int anzahl der betroffenen zeilen
 	 */
 	public static function delete($table, $where, $mode) {
-		return $this->getDatabaseUtility()->delete($table, $where, $mode);
+		// @TODO: could not call $this->getDatabaseUtility in static context.
+		return Tx_Mklib_Database_Connection::getInstance()->delete($table, $where, $mode);
 	}
 
 	/**
