@@ -479,12 +479,22 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 	 * Start creation of result list.
 	 *
 	 * @param string &$content
-	 * @param array $items
+	 * @param Traversable|array $items
 	 * @param array $options
 	 * @return string
 	 */
-	protected function showItems(&$content, array $items, array $options = array()) {
-		if (empty($items)) {
+	protected function showItems(
+		&$content,
+		$items,
+		array $options = array()
+	) {
+		if (!(is_array($items) || $items instanceof Traversable)) {
+			throw new Exception(
+				'Argument 2 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
+			);
+		}
+
+		if (! (array) $items) {
 			$content = $this->getNoItemsFoundMsg();
 			return '';
 		}

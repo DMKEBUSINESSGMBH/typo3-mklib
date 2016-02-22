@@ -187,16 +187,22 @@ class tx_mklib_mod1_util_Selector {
 	/**
 	 * Gibt einen selector mit den models im gegebenen array zurück
 	 *
-	 * @param array $items
+	 * @param Traversable|array $items
 	 * @param array $data enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
 	 * @param array $options zusätzliche Optionen: label, id
 	 * @return string selected item
 	 */
 	protected function showSelectorByModels(
-		array $items,
+		$items,
 		array &$data,
 		array $options = array()
 	) {
+		if (!(is_array($items) || $items instanceof Traversable)) {
+			throw new Exception(
+				'Argument 1 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
+			);
+		}
+
 		$id = $options['id'];
 		if (empty($id)) {
 			throw new Exception('No ID for widget given!');
