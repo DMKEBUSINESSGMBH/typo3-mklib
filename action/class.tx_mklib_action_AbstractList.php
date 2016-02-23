@@ -32,8 +32,8 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  * Controller
  * Generische Klasse für List Views
  *
- * @package tx_mklib
- * @subpackage tx_mklib_action
+ * @package TYPO3
+ * @subpackage tx_mklib
  * @author Michael Wagner
  */
 abstract class tx_mklib_action_AbstractList
@@ -55,7 +55,7 @@ abstract class tx_mklib_action_AbstractList
 		}
 
 		$items = $this->getItems();
-		$viewData->offsetSet('items', is_array($items) ? array_values($items) : array());
+		$viewData->offsetSet('items', $items);
 		$viewData->offsetSet('searched', $items !== FALSE);
 
 		return NULL;
@@ -111,8 +111,7 @@ abstract class tx_mklib_action_AbstractList
 			// it was not carried out search
 			return FALSE;
 		}
-
-		return empty($items) ? array() : $items;
+		return !(array) $items ? array() : $items;
 	}
 
 	/**
