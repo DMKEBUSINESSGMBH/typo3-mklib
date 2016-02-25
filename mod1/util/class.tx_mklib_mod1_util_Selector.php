@@ -419,6 +419,8 @@ class tx_mklib_mod1_util_Selector {
 	private function getDateFieldByKey($key, &$out) {
 		$value = isset($_POST[$key]) ? tx_rnbase_parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
 
+		tx_rnbase::load('tx_rnbase_mod_Util');
+		// TODO: sollte das Element nicht über Tx_Rnbase_Backend_Form_ToolBox gebaut werden???
 		$out['field'] .= '<input name="' . $key . '" type="text" id="tceforms-datefield-' . $key . '" value="' . $value . '" />' .
 			tx_rnbase_mod_Util::getSpriteIcon(
 				'actions-edit-pick-date',
