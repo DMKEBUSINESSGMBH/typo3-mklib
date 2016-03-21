@@ -281,6 +281,9 @@ abstract class tx_mklib_repository_Abstract
 	 *
 	 * Note that the PID derived from the EXT:mklib constant "portalPageId"
 	 * is inserted.
+	 * @TODO: should be protected, not public. handleCreation is public!
+	 *
+	 * @access protected
 	 *
 	 * @param array		$data
 	 * @param string	$table
@@ -360,6 +363,9 @@ abstract class tx_mklib_repository_Abstract
 	 *
 	 * Delete records according to given ready-constructed "where" condition and deletion mode
 	 * @TODO: use tx_mklib_util_TCA::getEnableColumn to get enablecolumns!
+	 * @TODO: should be protected, not public. handleDelete is public!
+	 *
+	 * @access protected
 	 *
 	 * @param string	$table
 	 * @param string	$where		Ready-to-use where condition containing uid restriction
