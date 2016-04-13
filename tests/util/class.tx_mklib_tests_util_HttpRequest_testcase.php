@@ -31,6 +31,7 @@
  */
 
 tx_rnbase::load('tx_mklib_util_HttpRequest');
+tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * Http Request Object Tests
