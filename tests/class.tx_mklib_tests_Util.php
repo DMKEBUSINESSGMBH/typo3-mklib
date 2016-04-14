@@ -182,7 +182,7 @@ class tx_mklib_tests_Util {
 	private static function getSqlStatementArrayDependendOnTypo3Version($sql) {
 		tx_rnbase::load('tx_rnbase_util_TYPO3');
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$dbHandler = tx_rnbase::makeInstance('\TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
+			$dbHandler = tx_rnbase::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
 		} elseif(tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
 			$dbHandler = tx_rnbase::makeInstance('t3lib_install_Sql');
 		} else {
