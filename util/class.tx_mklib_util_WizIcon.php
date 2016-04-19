@@ -25,6 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+tx_rnbase::load('Tx_Rnbase_Utility_T3General');
 
 /**
  * Diese Klasse fügt das Wizzard Icon hinzu
@@ -88,15 +89,12 @@ class tx_mklib_util_WizIcon {
 	public function includeLocalLang()	{
 		$llFile = $this->getLocalLangFilePath();
 		if (tx_rnbase_util_TYPO3::isTYPO47OrHigher()) {
-			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-				$localizationParserClass = '\TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser';
-			} else {
-				$localizationParserClass = 't3lib_l10n_parser_Llxml';
-			}
-			$localizationParser = tx_rnbase::makeInstance($localizationParserClass);
+			$localizationParser = tx_rnbase::makeInstance(
+				tx_rnbase_util_Typo3Classes::getLocalizationParserClass()
+			);
 			$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
 		} else {
-			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+			$LOCAL_LANG = Tx_Rnbase_Utility_T3General::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		}
 
 		return $LOCAL_LANG;
