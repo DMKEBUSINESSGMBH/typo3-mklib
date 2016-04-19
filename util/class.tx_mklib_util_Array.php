@@ -85,19 +85,13 @@ class tx_mklib_util_Array {
 	/**
 	 * Entfernt alle Keys welche nicht in needle vorhanden sind
 	 *
-	 * @param 	array	$aData		Zu filternde Daten
-	 * @param 	array	$aNeedle	Enthält die erlaubten Keys
+	 * @param 	array	$data		Zu filternde Daten
+	 * @param 	array	$needle	Enthält die erlaubten Keys
 	 * @return 	array
+	 * @deprecated use tx_rnbase_util_Arrays::removeNotIn instead
 	 */
-	public static function removeNotIn(array $aData, array $aNeedle) {
-		if (!empty($aNeedle)) {
-			foreach (array_keys($aData) as $column) {
-				if (!in_array($column, $aNeedle)) {
-					unset($aData[$column]);
-				}
-			}
-		}
-		return $aData;
+	public static function removeNotIn(array $data, array $needle) {
+		return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
 	}
 
   	/**

@@ -143,13 +143,14 @@ class tx_mklib_util_TCA {
 	 *
 	 * @param array $data Data to be filtered
 	 * @return array Data now containing only TCA-defined columns
+	 * @deprecated use tx_rnbase_util_TCA::eleminateNonTcaColumns
 	 */
 	public static function eleminateNonTcaColumns(
 		Tx_Rnbase_Domain_Model_RecordInterface $model,
 		array $data
 	) {
-		tx_rnbase::load('tx_mklib_util_Array');
-		return tx_mklib_util_Array::removeNotIn($data, $model->getColumnNames());
+		tx_rnbase::load('tx_rnbase_util_TCA');
+		return tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
 	}
 	/**
 	 * Eleminate non-TCA-defined columns from given data
