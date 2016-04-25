@@ -25,15 +25,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-/**
- * benötigte Klassen einbinden
- */
-
 tx_rnbase::load('tx_mklib_tests_Util');
 tx_rnbase::load('Tx_Mklib_Database_Connection');
 tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
-tx_rnbase::load('Tx_Rnbase_Utility_Extension_Devlog');
 
 /**
  * Tx_Mklib_Database_ConnectionDatabaseTest
@@ -52,10 +46,6 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 
 	private $ignoreTablesBackup;
 
-	protected $devLogTable;
-	protected $devLogExtraDataField;
-	protected $devLogMessageField;
-
 	/**
 	 * Klassenkonstruktor
 	 *
@@ -67,7 +57,6 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 		// devlog erstmal deaktivieren,
 		// da Prozesse auserhalb des Tests auch darauf zugreifen!
 		tx_mklib_tests_Util::disableDevlog();
-
 	}
 
 	/**
@@ -77,19 +66,11 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 		parent::setUp();
 
 		$ttContentExtension = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ? 'frontend' : 'cms';
-		$this->importExtensions(array($ttContentExtension, 'devlog'));
-
-		// devlog wieder aktivieren
-		tx_mklib_tests_Util::disableDevlog('devlog', false);
+		$this->importExtensions(array($ttContentExtension));
 
 		// logging aktivieren
 		tx_mklib_tests_Util::storeExtConf();
 		tx_mklib_tests_Util::setExtConfVar('logDbHandler', 1);
-
-		//wir setzen noch das min Log Level auf -1 damit
-		//systemeinstellungen nicht hereinspielen und alles geloggt wird
-		tx_mklib_tests_Util::storeExtConf('devlog');
-		tx_mklib_tests_Util::setExtConfVar('minLogLevel', -1, 'devlog');
 
 		// Hooks leer machen da die aus anderen extensions stören könnten
 		self::$hooks['rn_base']['util_db_do_insert_post'] =
@@ -98,10 +79,14 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_update_post'];
 		self::$hooks['rn_base']['util_db_do_delete_pre'] =
 			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'];
+		self::$hooks['core']['devlog'] = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'];
 
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_update_post'] = array();
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'] = array();
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] = array(
+			'Tx_Mklib_Database_ConnectionDatabaseTestDevlog->devLog'
+		);
 
 		$property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'log');
 		$property->setAccessible(TRUE);
@@ -110,10 +95,6 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 		$property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'ignoreTables');
 		$property->setAccessible(TRUE);
 		$this->ignoreTablesBackup = $property->getValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'));
-
-		$this->devLogTable = Tx_Rnbase_Utility_Extension_Devlog::getTableName();
-		$this->devLogExtraDataField = Tx_Rnbase_Utility_Extension_Devlog::getExtraDataFieldName();
-		$this->devLogMessageField = Tx_Rnbase_Utility_Extension_Devlog::getMessageFieldName();
 	}
 
 	/**
@@ -122,12 +103,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 	protected function tearDown () {
 		parent::tearDown();
 
-		// devlog wieder deaktivieren
-		tx_mklib_tests_Util::disableDevlog();
-
-		// ext conf zurückspielen aktivieren
 		tx_mklib_tests_Util::restoreExtConf();
-		tx_mklib_tests_Util::restoreExtConf('devlog');
 
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'] =
 			self::$hooks['rn_base']['util_db_do_insert_post'];
@@ -135,6 +111,8 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 			self::$hooks['rn_base']['util_db_do_update_post'];
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'] =
 			self::$hooks['rn_base']['util_db_do_delete_pre'];
+
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] = self::$hooks['core']['devlog'];
 
 		$property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'log');
 		$property->setAccessible(TRUE);
@@ -166,16 +144,19 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 				'deleted' => 0,
 				'bodytext' => 'Test!'
 			);
+		Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before insert ' . __METHOD__));
 		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', $this->devLogTable, array('enablefieldsoff' => true));
-		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		self::assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(128, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		self::assertEquals(0, count($aDevLog), $this->devLogTable . ' wurde in die Datenbank geschrieben!');
+		self::assertEquals(
+			array('before insert ' . __METHOD__), Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData,
+			'Es wurde ein neuer Eintrag ans devlog gegeben nachdem insert'
+		);
 	}
 
 	/**
@@ -192,16 +173,19 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 				'deleted' => 0,
 				'bodytext' => 'Test!'
 			);
+		Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before insert ' . __METHOD__));
 		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', $this->devLogTable, array('enablefieldsoff' => true));
-		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		self::assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(128, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		self::assertEquals(0, count($aDevLog), $this->devLogTable . ' wurde in die Datenbank geschrieben!');
+		self::assertEquals(
+			array('before insert ' . __METHOD__), Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData,
+			'Es wurde ein neuer Eintrag ans devlog gegeben nachdem insert'
+		);
 	}
 
 	/**
@@ -217,24 +201,18 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 			);
 		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', $this->devLogTable, array('enablefieldsoff' => true));
-		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		self::assertEquals(128, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(128, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		self::assertEquals(1, count($aDevLog), $this->devLogTable . ' wurde nicht in die Datenbank eingefügt!');
-		self::assertEquals('mklib', $aDevLog[0]['extkey'], 'Falscher extkey in ' . $this->devLogTable);
-		self::assertEquals('doInsert(tt_content)', $aDevLog[0][$this->devLogMessageField], 'Falsche ' . $this->devLogMessageField . ' in ' . $this->devLogTable);
-		self::assertEquals(true, !empty($aDevLog[0][$this->devLogExtraDataField]), $this->devLogExtraDataField . ' in ' . $this->devLogTable . ' nicht gesetzt!');
-
-
-		$aDevLogData = Tx_Rnbase_Utility_Extension_Devlog::getExtraDataAsArray(
-			$aDevLog[0][$this->devLogExtraDataField]
-		);
-		self::assertEquals('tt_content', $aDevLogData['tablename'], $this->devLogExtraDataField . ': tablename falsch!');
-		self::assertEquals(128, $aDevLogData['values']['pid'], $this->devLogExtraDataField . ': values|pid falsch!');
+		$lastLogData = Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData;
+		self::assertSame('mklib', $lastLogData['extKey'], 'Falscher extKey in devlog daten');
+		self::assertSame('doInsert(tt_content)', $lastLogData['msg'], 'Falsche Nachricht in devlog daten');
+		self::assertSame(1, $lastLogData['severity'], 'Falsche severity in devlog daten');
+		self::assertSame('tt_content', $lastLogData['dataVar']['tablename'], 'tablename falsch in dataVar der devlog daten');
+		self::assertSame(128, $lastLogData['dataVar']['values']['pid'], 'values|pid falsch in dataVar der devlog daten');
 	}
 
 	/**
@@ -250,23 +228,18 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 			);
 		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
-		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', $this->devLogTable, array('enablefieldsoff' => true));
-		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		self::assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(256, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		self::assertEquals(2, count($aDevLog), $this->devLogTable . ' wurde nicht in die Datenbank eingefügt!');
-		self::assertEquals('mklib', $aDevLog[1]['extkey'], 'Falscher extkey in ' . $this->devLogTable);
-		self::assertEquals('doUpdate(tt_content)', $aDevLog[1][$this->devLogMessageField], 'Falsche ' . $this->devLogMessageField . ' in ' . $this->devLogTable);
-		self::assertEquals(true, !empty($aDevLog[1][$this->devLogExtraDataField]), $this->devLogExtraDataField . ' in ' . $this->devLogTable . ' nicht gesetzt!');
-
-		$aDevLogData = Tx_Rnbase_Utility_Extension_Devlog::getExtraDataAsArray(
-			$aDevLog[1][$this->devLogExtraDataField]
-		);
-		self::assertEquals('tt_content', $aDevLogData['tablename'], $this->devLogExtraDataField . ': tablename falsch!');
-		self::assertEquals(256, $aDevLogData['values']['pid'], $this->devLogExtraDataField . ': values|pid falsch!');
+		$lastLogData = Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData;
+		self::assertSame('mklib', $lastLogData['extKey'], 'Falscher extKey in devlog daten');
+		self::assertSame('doUpdate(tt_content)', $lastLogData['msg'], 'Falsche Nachricht in devlog daten');
+		self::assertSame(1, $lastLogData['severity'], 'Falsche severity in devlog daten');
+		self::assertSame('tt_content', $lastLogData['dataVar']['tablename'], 'tablename falsch in dataVar der devlog daten');
+		self::assertSame(256, $lastLogData['dataVar']['values']['pid'], 'values|pid falsch in dataVar der devlog daten');
 	}
 
 	/**
@@ -284,15 +257,34 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 				'pid' => 256,
 				'bodytext' => 'geändert!'
 			);
+		Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before update ' . __METHOD__));
 		tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
-		$aDevLog = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', $this->devLogTable, array('enablefieldsoff' => true));
-		$aTtContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
+		$ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
 
-		self::assertEquals(1, count($aTtContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
-		self::assertEquals(20, $aTtContent[0]['uid'], 'tt_content hat die Falsche UID!');
-		self::assertEquals(256, $aTtContent[0]['pid'], 'tt_content hat die Falsche PID!');
+		self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
+		self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
+		self::assertEquals(256, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
-		self::assertEquals(1, count($aDevLog), $this->devLogTable . ' wurde in die Datenbank eingefügt!');
+		self::assertEquals(
+			array('before update ' . __METHOD__), Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData,
+			'Es wurde ein neuer Eintrag ans devlog gegeben nachdem update'
+		);
+	}
+}
+
+class Tx_Mklib_Database_ConnectionDatabaseTestDevlog {
+
+	/**
+	 * @var array
+	 */
+	public static $lastLogData = array();
+
+	/**
+	 * @param array $logData
+	 * @return void
+	 */
+	public static function devLog(array $logData) {
+		self::$lastLogData = $logData;
 	}
 }

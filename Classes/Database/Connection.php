@@ -129,11 +129,11 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 	 */
 	public function doInsert($tablename, $values, $debug=0, array $options = array()) {
 		if($options['eleminateNonTcaColumns']) $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
-		$newUid = tx_rnbase_util_DB::doInsert(
-						$tablename,
-						$this->insertCrdateAndTimestamp($values, $tablename),
-						$debug
-					);
+		$newUid = parent::doInsert(
+			$tablename,
+			$this->insertCrdateAndTimestamp($values, $tablename),
+			$debug
+		);
 		$this->log('doInsert', $tablename, '1=1 AND `'.$tablename.'`.`uid`=\''.$newUid.'\'', $values);
 		return $newUid;
 	}
@@ -152,10 +152,10 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 	public function doUpdate($tablename, $where, $values, $debug=0, $noQuoteFields = false, array $options = array()) {
 		if($options['eleminateNonTcaColumns']) $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
 		$res = parent::doUpdate(
-						$tablename, $where,
-						$this->insertTimestamp($values, $tablename),
-						$debug, $noQuoteFields
-					);
+			$tablename, $where,
+			$this->insertTimestamp($values, $tablename),
+			$debug, $noQuoteFields
+		);
 		$this->log('doUpdate', $tablename, $where, $values);
 		return $res;
 	}
@@ -240,9 +240,9 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 		$sMmTable = $this->mmGetTable($sTable, $sField);
 
 		$where = implode(
-					' AND ',
-					$this->mmGetData($sTable, $sField, $sLocalId, $iForeignId, true)
-				);
+			' AND ',
+			$this->mmGetData($sTable, $sField, $sLocalId, $iForeignId, true)
+		);
 
 		$options = array(
 			'where' => $where,
@@ -277,11 +277,10 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 		$options['where'] = (isset($options['where']) ? $options['where'].' AND ' : '') . $where;
 
 		return $this->doSelect(
-					$sForeignTable.'.*',
-					array($sJoin, $sForeignTable),
-					$options
-//					, 1
-				);
+			$sForeignTable.'.*',
+			array($sJoin, $sForeignTable),
+			$options
+		);
 	}
 
 	/**
@@ -392,8 +391,9 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 			// ignore tables besorgen
 			if(!is_array($this->ignoreTables)){
 				$this->ignoreTables = tx_rnbase_util_Strings::trimExplode(',',
-									tx_rnbase_configurations::getExtensionCfgValue('mklib', 'logDbIgnoreTables'),
-								true);
+					tx_rnbase_configurations::getExtensionCfgValue('mklib', 'logDbIgnoreTables'),
+					true
+				);
 			}
 			// tabelle loggen ?
 			if(in_array($tablename,$this->ignoreTables)) {
