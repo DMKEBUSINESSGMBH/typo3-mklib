@@ -482,6 +482,18 @@ class tx_mklib_tests_Util {
 	public static function simulateFrontendEnviroment($extKey = 'mklib') {
 		self::prepareTSFE(array('force' => TRUE));
 	}
+
+	/**
+	 * @param string $pdfPath
+	 * @return string
+	 */
+	public static function removeCreationDateFromPdfContent($pdfPath) {
+		return preg_replace(
+			'/\/CreationDate \(D\:[0-9].*\)/',
+			'',
+			file_get_contents($pdfPath)
+		);
+	}
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
