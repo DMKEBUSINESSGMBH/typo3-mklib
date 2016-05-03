@@ -8,7 +8,7 @@
 		<languageKey index="default" type="array">
 
 			<!-- scheduler -->
-			<label index="scheduler_cleanupTempFiles_name">Cleanup tempfiles</label>
+			<label index="scheduler_cleanupTempFiles_name">Cleanup files</label>
 			<label index="scheduler_cleanupTempFiles_taskinfo">Cleans up files in an directory.</label>
 			<label index="scheduler_cleanupTempFiles_field_lifetime">Lifetime</label>
 			<label index="scheduler_cleanupTempFiles_field_lifetime_eval_int">Lifetime must be an Integer</label>
