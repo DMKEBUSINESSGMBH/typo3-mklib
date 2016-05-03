@@ -358,7 +358,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 			// Anhand der Daten das WHERE aufbauen
 			$where = array();
 			foreach($aData as $sField => $sValue) {
-				$where[] = $sMmTable.'.'.$sField.' = \''.$sValue.'\'';
+				$where[] = $sMmTable.'.'.$sField.' = '.Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($sValue, $sMmTable);
 			}
 			return $where;
 		}

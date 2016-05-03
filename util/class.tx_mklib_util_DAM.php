@@ -177,7 +177,7 @@ class tx_mklib_util_DAM {
 		if(!self::isLoaded()) {
 			return 0;
 		}
-		$aOptions['where'] = 'tablenames=\'' . $sTableName . '\' AND ident=\'' . $sFieldName .'\' AND uid_foreign=' . $iItemId;
+		$aOptions['where'] = 'tablenames=\'' . $sTableName . '\' AND ident=\'' . $sFieldName .'\' AND uid_foreign=' . intval($iItemId);
 		$aOptions['count'] = 1;
 		$aOptions['enablefieldsoff'] = 1;
 		$ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'tx_dam_mm_ref', $aOptions, 0);
