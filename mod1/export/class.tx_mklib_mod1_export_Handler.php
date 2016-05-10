@@ -47,7 +47,8 @@ tx_rnbase::load('tx_rnbase_util_Files');
 						description = Firmen mit Hauptkontakt und Anzahl geschaltener Anzeigen
 						### ein für Typo3 bekanntes Sprite Icon. Siehe tx_rnbase_mod_Util::debugSprites
 						spriteIcon = mimetypes-excel
-						### Wenn gesetzt, wird das BOM an den Anfang der Ausgabe gesetzt
+						### Wenn gesetzt, wird das BOM (Byte Order Mark) an den Anfang der Ausgabe gesetzt.
+						### Das ist z.B. bei UTF-8 Ausgaben nötig für eine korrekte Darstellung in MS Excel.
 						BOM = 0
 						### konfiguration für das template
 						template {
@@ -94,11 +95,23 @@ tx_rnbase::load('tx_rnbase_util_Files');
  */
 class tx_mklib_mod1_export_Handler {
 
+	/**
+	 * @var tx_mklib_mod1_export_IModFunc
+	 */
 	private $modFunc = NULL;
 
-	/** Byte Order Mark */
-	public static function BOM() { return ( chr(0xEF) . chr(0xBB) . chr(0xBF) ); }
+	/**
+	 * Byte Order Mark = BOM
+	 * @return void
+	 */
+	public static function getByteOrderMark() {
+		return ( chr(0xEF) . chr(0xBB) . chr(0xBF) );
+	}
 
+	/**
+	 * @param tx_mklib_mod1_export_IModFunc $modFunc
+	 * @return void
+	 */
 	public function tx_mklib_mod1_export_Handler(
 		tx_mklib_mod1_export_IModFunc $modFunc
 	) {
@@ -141,8 +154,9 @@ class tx_mklib_mod1_export_Handler {
 
 		tx_mklib_mod1_export_Util::sendHeaders($this->getHeaderConfig($type));
 
-		if ($this->isBomRequired($type))
-			echo self::BOM();
+		if ($this->isByteOrderMarkRequired($type)) {
+			echo self::getByteOrderMark();
+		}
 
 		/* @var $listBuilder tx_mklib_mod1_export_ListBuilder */
 		$listBuilder = tx_rnbase::makeInstance('tx_mklib_mod1_export_ListBuilder');
@@ -391,11 +405,11 @@ class tx_mklib_mod1_export_Handler {
 	 * @param $type
 	 * @return bool
 	 */
-	protected function isBomRequired($type) {
+	protected function isByteOrderMarkRequired($type) {
 		$configuration = $this->getConfigurations();
-		$confId = $this->getConfId().'types.';
+		$confId = $this->getConfId() . 'types.';
 
-		return $configuration->getBool($confId.$type.'.BOM');
+		return $configuration->getBool($confId . $type . '.BOM');
 	}
 
 	/**
