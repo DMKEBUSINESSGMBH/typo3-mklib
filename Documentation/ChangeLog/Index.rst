@@ -18,9 +18,21 @@ The following is a very high level overview of the changes in this extension.
 =========  ===========================================================================
 Version    Changes
 =========  ===========================================================================
-?.?.?      | compatibility to TYPO3 7.6
+2.0.2      | compatibility to TYPO3 7.6
+           | added autoloading support for composer environments
            | fixed CLI clear cache command for >= TYPO3 6.x
-           | removed some deprecated methods
+           | removed some deprecated methods and classes
+           | throwItemNotFound404Exception configurable in TS for ShowSingleItemAction
+           | move up and down support for records in be module added.
+           | don't check deactivated scheduler tasks for failures
+           | new prepareRequest for abstract list action, for childclass usage
+           | new IBAN model, swiftbic model and validator added
+           | new showSelectorByModels method for backend module selector
+           | add switch for adding BOM in export handler output
+           | new output handler 'buffer' for listbuilder
+           | first ArrayObject / Traversable support for be modules
+           | Heads Up Grid updated and moved to footer
+           | new method tx_mklib_tests_Util::removeCreationDateFromPdfContent
 1.0.10     | bugfix in tx_mklib_mod1_searcher_abstractBase for TYPO3 4.x
 1.0.9      | existing locallang lables are not longer overwritten in BE modules which use tx_mklib_mod1_searcher_abstractBase
            | added possibility to use full TypoScript support for export headers in the export handler of BE modules
