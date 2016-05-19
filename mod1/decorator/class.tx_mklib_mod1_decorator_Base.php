@@ -231,7 +231,15 @@ class tx_mklib_mod1_decorator_Base
 						}
 					}
 					if ($prevId) {
-						$ret .= $this->getFormTool()->createMoveUpLink($tableName, $fromUid, $prevId, array('label' => ''));
+						$ret .= $this->getFormTool()->createMoveUpLink(
+							$tableName,
+							$fromUid,
+							$prevId,
+							array(
+								'label' => '',
+								'title' => 'Move ' . $fromUid . ' after ' . $prevId,
+							)
+						);
 					} else {
 						tx_rnbase::load('tx_rnbase_mod_Util');
 						$ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
@@ -241,8 +249,17 @@ class tx_mklib_mod1_decorator_Base
 					$uidMap = $this->getItemsMap($item);
 					// einen schritt in der map nach vorne, denn wir wollen das aktuelle hinter dem nächsten platzieren.
 					next($uidMap);
-					if (key($uidMap)) {
-						$ret .= $this->getFormTool()->createMoveDownLink($tableName, $uid, key($uidMap), array('label' => ''));
+					$nextId = key($uidMap);
+					if ($nextId) {
+						$ret .= $this->getFormTool()->createMoveDownLink(
+							$tableName,
+							$uid,
+							$nextId,
+							array(
+								'label' => '',
+								'title' => 'Move ' . $uid . ' after ' . $nextId,
+							)
+						);
 					} else {
 						tx_rnbase::load('tx_rnbase_mod_Util');
 						$ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
