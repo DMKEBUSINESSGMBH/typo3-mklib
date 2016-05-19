@@ -213,19 +213,25 @@ class tx_mklib_mod1_decorator_Base
 					$ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle,array('confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')));
 					break;
 				case 'moveup':
+					$fromUid = $uid;
 					$uidMap = $this->getItemsMap($item);
 					// zwei schritte in der map zurück,
 					// denn wir wollen das aktuelle element vor das vorherige.
 					// typo3 verschiebt aber immer hinter elemente, also muss es hinter das vorvorletzte.
-					// wenn es kein vorvorletztes gibt, benötigt typo3 die pid, um es an erster stelle zuplatzieren.
+					// wenn es kein vorvorletztes gibt, verschieben wir das vorletzte element hinter das aktuelle element
 					prev($uidMap);
 					$prevId = key($uidMap);
 					if ($prevId) {
 						prev($uidMap);
-						$prevId = key($uidMap) ?: $item->getPid();
+						if (key($uidMap)) {
+							$prevId = key($uidMap);
+						} else {
+							$fromUid = $prevId;
+							$prevId = $uid;
+						}
 					}
 					if ($prevId) {
-						$ret .= $this->getFormTool()->createMoveUpLink($tableName, $uid, $prevId, array('label' => ''));
+						$ret .= $this->getFormTool()->createMoveUpLink($tableName, $fromUid, $prevId, array('label' => ''));
 					} else {
 						tx_rnbase::load('tx_rnbase_mod_Util');
 						$ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
@@ -233,7 +239,7 @@ class tx_mklib_mod1_decorator_Base
 					break;
 				case 'movedown':
 					$uidMap = $this->getItemsMap($item);
-					// einen schritt in der map nach vorne, denn wir wollen das aktuelle hinder dem nächsten platzieren.
+					// einen schritt in der map nach vorne, denn wir wollen das aktuelle hinter dem nächsten platzieren.
 					next($uidMap);
 					if (key($uidMap)) {
 						$ret .= $this->getFormTool()->createMoveDownLink($tableName, $uid, key($uidMap), array('label' => ''));
