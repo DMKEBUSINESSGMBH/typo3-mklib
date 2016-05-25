@@ -1,7 +1,7 @@
 <?php
 /**
- * 	@package tx_mktegut
- *  @subpackage tx_mktegut_mod1
+ * 	@package tx_mklib
+ *  @subpackage tx_mklib_mod1
  *  @author Hannes Bochmann
  *
  *  Copyright notice
@@ -37,8 +37,8 @@ tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 /**
  * Hilfsklassen um nach Gewinnspielen im BE zu suchen
  *
- * @package tx_mktegut
- * @subpackage tx_mktegut_mod1
+ * @package tx_mklib
+ * @subpackage tx_mklib_mod1
  */
 class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_searcher_abstractBase {
 	
@@ -93,5 +93,5 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
 	}
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/mod1/searcher/class.tx_mktegut_mod1_searcher_Regions.php'])
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/mod1/searcher/class.tx_mktegut_mod1_searcher_Regions.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php'])
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']);

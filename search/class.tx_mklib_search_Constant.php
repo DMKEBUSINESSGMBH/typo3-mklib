@@ -83,6 +83,6 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase {
 	}
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/search/class.tx_mktegut_search_Constant.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/search/class.tx_mktegut_search_Constant.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Constant.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Constant.php']);
 }

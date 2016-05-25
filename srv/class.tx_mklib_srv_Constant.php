@@ -41,7 +41,7 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base {
 	 * @param mixed		$type
 	 * @param array		$fields		Additional fields (table alias: "CONST")
 	 * @param array		$options	Additional options
-	 * @return tx_mktegut_models_Constants
+	 * @return tx_mklib_models_Constants
 	 */
 	public function getConstantsByType($type, array $fields=array(), array $options=array()) {
 		if (is_array($type)) $fields['CONSTANT.type'] = array(OP_IN_INT => implode(',', $type));
@@ -69,6 +69,6 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base {
 	}
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/srv/class.tx_mktegut_srv_Constant.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/srv/class.tx_mktegut_srv_Constant.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Constant.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Constant.php']);
 }

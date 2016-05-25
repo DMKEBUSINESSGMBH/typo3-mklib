@@ -82,6 +82,6 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base {
 	}
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/models/class.tx_mktegut_models_Constant.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mktegut/models/class.tx_mktegut_models_Constant.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php']) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php']);
 }
