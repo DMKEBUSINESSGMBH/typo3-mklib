@@ -5,6 +5,12 @@ The following is a very high level overview of the changes in this extension.
 
 |Version|Changes|
 |-------|-------|
+|2.0.4| add missing classmap folders in composer.json|
+||converted documentation to markdown|
+||some minor cleanup|
+|2.0.3| new model fpr tt_news|
+||move up and down links in BE modules improved|
+||bugfix for move up and down sorting in BE modules|
 |2.0.2| compatibility to TYPO3 7.6|
 || added autoloading support for composer environments|
 || fixed CLI clear cache command for \>= TYPO3 6.x|
