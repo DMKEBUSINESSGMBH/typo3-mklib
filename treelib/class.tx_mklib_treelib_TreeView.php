@@ -128,10 +128,11 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView {
 		$this->expandAll = $oConfig->getExpandAll();
 		$this->expandFirst = $oConfig->getExpandFirst();
 		$this->fieldArray = array(
-								'uid',
-								$oConfig->getTitleField(),
-								$this->parentField,
-							);
+			'uid',
+			$oConfig->getTitleField(),
+			$this->parentField,
+			'pid'
+		);
 		// label_alt felder zum record hinzufügen.
 		$oConfig->addLabelAltFields($this->fieldArray);
 

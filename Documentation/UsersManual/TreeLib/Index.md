@@ -48,4 +48,13 @@ $TCA['tx_mkexample_downloads']['columns']['category']['config'] = array(
 Known problems
 --------------
 
-Normal backend users sometimes have trouble with rights for the root mount. You can avoid this by setting forceAdminRootRecord so root records are displayed for non admin users.
+Normal backend users sometimes have trouble with rights for the root mount. You can avoid this by setting forceAdminRootRecord so root records are displayed for non admin users. This is always the case if the TreeView is not used for pages. Therefore this is setting is true by default.
+
+Background: For non-admins the root record is taken from the web mounts as this was designed for pages. Therefore this option hat to be set for all non-pages TreeViews.
+
+~~~~ {.sourceCode .php}
+$TCA['tx_mkexample_downloads']['columns']['category']['config'] = array(
+   ...
+   'forceAdminRootRecord' => TRUE
+);
+~~~~

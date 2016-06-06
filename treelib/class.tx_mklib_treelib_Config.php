@@ -174,7 +174,7 @@ class tx_mklib_treelib_Config {
 	 * @return boolean
 	 */
 	public function forceAdminRootRecord() {
-		return (boolean)$this->get('forceAdminRootRecord');
+		return (boolean)$this->get('forceAdminRootRecord', TRUE);
 	}
 
 	/**
