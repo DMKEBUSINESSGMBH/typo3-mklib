@@ -122,7 +122,7 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView {
 		$this->setTreeName($PA['table'].'_'.$PA['field'].'_tree');
 
 		$this->title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
-		$this->MOUNTS = $GLOBALS['WEBMOUNTS'];
+		$this->MOUNTS = $GLOBALS['BE_USER']->returnWebmounts();
 
 		$this->maxDepth = $oConfig->getMaxDepth();
 		$this->expandAll = $oConfig->getExpandAll();
