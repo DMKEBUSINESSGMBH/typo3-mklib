@@ -364,6 +364,24 @@ class tx_mklib_mod1_export_Handler {
 			}
 		}
 
+		if ($configuration->getBool($confId . 'callModules')) {
+			$markerArray = $subpartArray = $wrappedSubpartArray = $params = array();
+			tx_rnbase_util_BaseMarker::callModules(
+				$template,
+				$markerArray,
+				$subpartArray,
+				$wrappedSubpartArray,
+				$params,
+				$this->getConfigurations()->getFormatter()
+			);
+			$template = tx_rnbase_util_Templates::substituteMarkerArrayCached(
+				$template,
+				$markerArray,
+				$subpartArray,
+				$wrappedSubpartArray
+			);
+		}
+
 		return $template;
 	}
 
