@@ -340,26 +340,30 @@ class tx_mklib_mod1_export_Handler {
 		$confId = $this->getConfId().'types.'.$type.'.template.';
 
 		// template laden
-		$sAbsPath = tx_rnbase_util_Files::getFileAbsFileName( $configuration->get($confId.'template') );
-		$templateCode = tx_rnbase_util_Network::getUrl($sAbsPath);
-		if(!$templateCode) {
-			$this->getModule()->addMessage(
-				'Could not find the template "'.$sAbsPath.'"  defined under '.$confId.'template'.'.',
-				'Template not found', 2
-			);
-			return FALSE;
-		}
-		// subpart auslesen
-		$subpart = $configuration->get($confId.'subpart');
-		tx_rnbase::load('tx_rnbase_util_Templates');
-		$template = tx_rnbase_util_Templates::getSubpart($templateCode, $subpart);
+		$absPath = tx_rnbase_util_Files::getFileAbsFileName( $configuration->get($confId.'template') );
+		$template = tx_rnbase_util_Network::getUrl($absPath);
 		if(!$template) {
 			$this->getModule()->addMessage(
-				'Could not find the the subpart "'.$subpart.'" in template "'.$sAbsPath.'".',
-				'Subpart not found', 2
+				'Could not find the template "' . $absPath . '"  defined under ' . $confId . 'template.',
+				'Template not found',
+				2
 			);
-			return FALSE;
+			return false;
 		}
+		// subpart optional auslesen
+		$subpart = $configuration->get($confId.'subpart');
+		if ($subpart) {
+			tx_rnbase::load('tx_rnbase_util_Templates');
+			$template = tx_rnbase_util_Templates::getSubpart($template, $subpart);
+			if(!$template) {
+				$this->getModule()->addMessage(
+					'Could not find the the subpart "'.$subpart.'" in template "'.$sAbsPath.'".',
+					'Subpart not found', 2
+				);
+				return false;
+			}
+		}
+
 		return $template;
 	}
 
