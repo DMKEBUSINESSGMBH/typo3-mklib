@@ -327,6 +327,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 		$items = $this->getService()->search($fields, $options);
 
 		if ($firstPrev || $lastNext) {
+			// @FIXME !!! That's only an workaround. An ArrayObject shoul be retain!
+			$items = (array) $items;
 			// das letzte entfernen, aber nur wenn genügend elemente im result sind
 			if ($lastNext && count($items) >= $options['limit']) {
 				$lastNext = array_pop($items);
