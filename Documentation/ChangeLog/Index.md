@@ -5,6 +5,10 @@ The following is a very high level overview of the changes in this extension.
 
 |Version|Changes|
 |-------|-------|
+|2.0.6| make subparts for be export templates optionaly|
+|| add support for module markers in be export handlers|
+|2.0.5| bugfix for TreeView of non-admins|
+|| bugfix for sortable lists ans arrayobjects in be modules|
 |2.0.4| add missing classmap folders in composer.json|
 ||converted documentation to markdown|
 ||some minor cleanup|
