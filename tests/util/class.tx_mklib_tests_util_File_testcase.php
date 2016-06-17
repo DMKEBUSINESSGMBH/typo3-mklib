@@ -247,6 +247,15 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase {
 		);
 	}
 
+	/**
+	 * @group unit
+	 */
+	public function testGetDocumentRoot() {
+		$documentRoot = tx_mklib_util_File::getDocumentRoot();
+		// to make sure that not only "/" is returned
+		self::assertGreaterThan(3, strlen($documentRoot));
+		self::assertEquals(PATH_site, $documentRoot);
+	}
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_File_testcase.php']) {

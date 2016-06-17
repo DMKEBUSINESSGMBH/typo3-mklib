@@ -149,13 +149,17 @@ class tx_mklib_util_File {
 	 * @return 	string
 	 */
 	public static function getDocumentRoot($slashPath=true){
-//		return PATH_site;
-		if(self::$documentRoot===false){
-			self::$documentRoot = tx_rnbase_util_Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+		if (self::$documentRoot === false){
+			if (!self::$documentRoot = tx_rnbase_util_Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT')) {
+				// happens for example on the CLI
+				self::$documentRoot = PATH_site;
+			}
 		}
-		if($slashPath) {
+
+		if ($slashPath) {
 			return self::slashPath(self::$documentRoot, false);
 		}
+
 		return self::$documentRoot;
 	}
 
