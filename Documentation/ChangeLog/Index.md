@@ -5,6 +5,7 @@ The following is a very high level overview of the changes in this extension.
 
 |Version|Changes|
 |-------|-------|
+|2.0.8| bugfix for tx_mklib_util_File::getDocumentRoot() on CLI|
 |2.0.6| make subparts for be export templates optionaly|
 || add support for module markers in be export handlers|
 |2.0.5| bugfix for TreeView of non-admins|
