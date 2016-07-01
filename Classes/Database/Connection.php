@@ -442,10 +442,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 		return true;
 	}
 
-	private function getBackTrace() {
-
-	}
-
 	/**
 	 * Wrapper for actual deletion
 	 *

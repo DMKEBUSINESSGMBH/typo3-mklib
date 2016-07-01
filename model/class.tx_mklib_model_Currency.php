@@ -41,7 +41,6 @@
  * @subpackage tx_mklib_model
  */
 class tx_mklib_model_Currency {
-	private $instances = array();
 	private $record = array();
 
 	public function tx_mklib_model_Currency(array $options=array()){
