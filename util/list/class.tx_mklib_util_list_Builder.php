@@ -72,8 +72,6 @@ class tx_mklib_util_list_Builder
 		$markerParams = null
 	) {
 
-		$viewData = is_object($viewData) ? $viewData : new ArrayObject();
-
 		$outerMarker = $this->getOuterMarker($marker, $template);
 
 		// wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
@@ -94,7 +92,7 @@ class tx_mklib_util_list_Builder
 		$this->handleOutput($listHeader);
 
 		$listMarker->addVisitors($this->callbacks);
-		$ret = $listMarker->renderEach($provider, $templateEntry, $markerClassname,
+		$listMarker->renderEach($provider, $templateEntry, $markerClassname,
 				$confId, $marker, $formatter, $markerParams, $offset);
 
 		$this->handleOutput($listFooter);

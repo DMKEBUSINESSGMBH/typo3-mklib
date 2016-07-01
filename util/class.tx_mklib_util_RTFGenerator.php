@@ -205,7 +205,6 @@ class tx_mklib_util_RTFGenerator {
 		// 1 cm = 567 twips
 		// 1 mm = 56.7 twips
 		$inch = 1440;
-		$cm = 567;
 		$mm = 56.7;
 		// 1 => Letter (8.5 x 11 inch)
 		// 2 => Legal (8.5 x 14 inch)

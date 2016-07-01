@@ -74,7 +74,6 @@ class tx_mklib_tests_srv_Finance_testcase
 	 * Prüft ob richtig gerundet wird
 	 */
 	public function testRoundDouble(){
-		$srv = tx_mklib_util_ServiceRegistry::getFinanceService();
 		self::assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5316,2,false),'Die Zahl wurde nicht korrekt gerundet!');
 		self::assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5356,2,false),'Die Zahl wurde nicht korrekt gerundet!');
 		self::assertEquals(2.536,$this->oFinanceSrv->roundUpDouble(2.5356,3,false),'Die Zahl wurde nicht korrekt gerundet!');

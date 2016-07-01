@@ -132,7 +132,6 @@ class tx_mklib_util_Session {
 	 * @return boolean
 	 */
 	public static function areCookiesActivated() {
-		$cookiesActivated = FALSE;
 		if (!empty($_COOKIE) || tx_rnbase_parameters::getPostOrGetParameter('checkedIfCookiesAreActivated')) {
 			$cookiesActivated = !empty($_COOKIE);
 		} else {

@@ -455,7 +455,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 	 * @return int anzahl der betroffenen zeilen
 	 */
 	public function delete($table, $where, $mode) {
-		$affectedRows = 0;
 		switch ($mode) {
 			// Hide model
 			case self::DELETION_MODE_HIDE:
