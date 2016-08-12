@@ -82,10 +82,14 @@ abstract class tx_mklib_action_AbstractList
 		$repo = $this->getRepository();
 
 		// check the repo interface
-		if (!$repo instanceof tx_mklib_interface_Repository) {
+		if (!(
+			$repo instanceof Tx_Rnbase_Domain_Repository_InterfaceSearch ||
+			// tx_mklib_interface_Repository is deprecated!
+			$repo instanceof tx_mklib_interface_Repository
+		)) {
 			throw new RuntimeException(
 				'the repository "' . get_class($repo) . '" ' .
-				'has to implement the interface "tx_mklib_interface_Repository"!',
+				'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!',
 				intval(ERROR_CODE_MKLIB . '1')
 			);
 		}

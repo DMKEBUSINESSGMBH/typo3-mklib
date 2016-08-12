@@ -28,6 +28,8 @@
  * so the data can be read from everywhere
  * (database, solr, xml, interface, ...).
  *
+ * @deprecated use Tx_Rnbase_Domain_Repository_InterfaceSearch instead
+ *
  * @package tx_mklib
  * @subpackage tx_mklib_repository
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
@@ -36,16 +38,15 @@
  */
 interface tx_mklib_interface_Repository
 {
-
 	/**
 	 * Search repository
 	 *
 	 * @param array $fields
 	 * @param array $options
+	 *
 	 * @return array
 	 */
 	public function search(array $fields, array $options);
-
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_interface_Repository']) {
