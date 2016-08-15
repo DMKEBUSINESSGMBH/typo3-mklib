@@ -26,7 +26,10 @@ if(is_array($_EXTCONF) && array_key_exists('tableWordlist', $_EXTCONF) && intval
 
 // static_info_tables um PLZ regeln erweitern
 if(tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
-	$tempColumns = array(
+	tx_rnbase::load('tx_rnbase_util_TYPO3');
+	tx_rnbase_util_Extensions::addTCAcolumns(
+		'static_countries',
+		array(
 			'zipcode_rule' => array(
 				'exclude' => '0',
 				'label' => 'LLL:EXT:mklib/locallang_db.xml:static_countries.zipcode_rule',
@@ -45,8 +48,9 @@ if(tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
 		            'eval' => 'trim,int',
 				)
 			),
-		);
-	tx_rnbase_util_Extensions::addTCAcolumns('static_countries', $tempColumns, 1);
+		),
+		!tx_rnbase_util_TYPO3::isTYPO62OrHigher()
+	);
 	tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_rule');
 	tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_length');
 }
