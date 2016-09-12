@@ -32,15 +32,12 @@ tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_mod1_util_Language {
-
-
 	/**
 	 * cached language records
 	 *
 	 * @var array
 	 */
 	private static $sysLanguageRecords = array();
-	private static $sysLanguageRecordAll = FALSE;
 
 	/**
 	 *
@@ -63,9 +60,11 @@ class tx_mklib_mod1_util_Language {
 	 * @param integer $pageId
 	 * @return array
 	 */
-	public static function getLangRecords($pageId) {
-		if (!static::$sysLanguageRecordAll) {
-			static::$sysLanguageRecordAll = TRUE;
+	public static function getLangRecords($pageId)
+	{
+		static $sysLanguageRecordAll = false;
+		if (!$sysLanguageRecordAll) {
+			$sysLanguageRecordAll = TRUE;
 			tx_rnbase::load('tx_rnbase_util_DB');
 			$records = tx_rnbase_util_DB::doSelect('*', 'sys_language', array());
 			foreach ($records as $record) {
