@@ -38,21 +38,6 @@
 class tx_mklib_mod1_searcher_Base {
 
 	private $mod;
-	private $dates = array();
-
-	/**
-	 * Current search term
-	 *
-	 * @var 	string
-	 */
-	private $currentSearchWord;
-
-	/**
-	 * Current hidden option
-	 *
-	 * @var 	string
-	 */
-	private $currentShowHidden;
 
 	protected $selector;
 

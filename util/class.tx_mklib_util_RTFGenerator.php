@@ -43,8 +43,6 @@ class tx_mklib_util_RTFGenerator {
 	// {\colortbl;\red 0\green 0\blue 0;\red 255\green 0\ blue0;\red0 ...}
 	private $colour_table = array();
 	private $colour_rgb;
-	// {\fonttbl{\f0}{\f1}{f...}}
-	private $font_table = array();
 	private $font_face;
 	private $windings_font_face;
 	private $font_size;
@@ -61,7 +59,7 @@ class tx_mklib_util_RTFGenerator {
 	private $document;
 	private $buffer;
 	private $shouldInfoTableBeExported;
-	
+
 	protected $aSpecialChars = array(
 			"&Aacute;" => "c1",
 			"&aacute;" => "e1",
@@ -124,7 +122,7 @@ class tx_mklib_util_RTFGenerator {
 	/**
 	 * Klassen-Konstruktor
 	 * Setzt die notwendigen Konfigurationen
-	 * 
+	 *
 	 * @param array $params
 	 */
 	public function __construct(array $params) {
@@ -140,7 +138,7 @@ class tx_mklib_util_RTFGenerator {
 		//$this->addColour("#000000");
 		$this->exportInfoTable($params['exportInfoTable']);
 	}
-	
+
 	/**
 	 * Soll die Info table ausgegeben werden?
 	 * @param bool $bSetInfoPart
@@ -148,7 +146,7 @@ class tx_mklib_util_RTFGenerator {
 	private function exportInfoTable($bSetInfoPart) {
 		$this->shouldInfoTableBeExported = $bSetInfoPart;
 	}
-	
+
 	/**
 	 * Soll die Info table ausgegeben werden?
 	 */
@@ -337,7 +335,7 @@ class tx_mklib_util_RTFGenerator {
 	}
 
 	/**
-	 * Den gesamten RTF-inhalt erzeugen 
+	 * Den gesamten RTF-inhalt erzeugen
 	 * @param string $text
 	 */
 	public function getRTF($text) {
@@ -441,7 +439,7 @@ class tx_mklib_util_RTFGenerator {
 
 		return $font_buffer;
 	}
-	
+
 	/**
 	 * gibt die Schriftarteinstellung zurück
 	 */
@@ -450,20 +448,6 @@ class tx_mklib_util_RTFGenerator {
 		//Verhätnis von JJK übernommen
 		$iWingdingsFontSize = ceil(($this->font_size * 113.63) / 100);
 		return "\\f{$this->windings_font_face}\\fs{$iWingdingsFontSize}\\dn0";
-	}
-
-	/**
-	 * Gibt die Seiten Einstellungen wie Höhe zurück
-	 */
-	private function getPageSettings() {
-		if($this->page_orientation == 1)
-			$page_buffer = "\\paperw{$this->page_width}\\paperh{$this->page_height}\\margl{$this->margins['left']}\\margr{$this->margins['right']}\\margt{$this->margins['top']}\\margb{$this->margins['bottom']}";
-		else
-			$page_buffer = "\\paperw{$this->page_height}\\paperh{$this->page_width}\\landscape\\margl{$this->margins['left']}\\margr{$this->margins['right']}\\margt{$this->margins['top']}\\margb{$this->margins['bottom']}";
-
-		$page_buffer .= "\\pgncont\\pgndec\\pgnstarts1\\pgnrestart";
-
-		return $page_buffer;
 	}
 
 	/**
@@ -479,41 +463,15 @@ class tx_mklib_util_RTFGenerator {
 		//der neue weg
 		//einfach alle bekannten Sonderzeichen ersetzen
 		foreach($this->aSpecialChars as $sSpecialChar => $sReplacement)
-			//Sonderzeichen ersetzen. immer \' als Prefix  
+			//Sonderzeichen ersetzen. immer \' als Prefix
 			//damit es als Sonderzeichen im RTF gilt
 			$text = str_replace($sSpecialChar, '\\\''.$sReplacement, $text);
-		
+
 		//dann noch die Windings Sonderzeichen ersetzten
 		$sSpecialCharMarker = tx_mklib_util_MiscTools::getSpecialCharMarker();
 		$text = preg_replace("/###$sSpecialCharMarker(.*?)###/mi", "}{{$this->getWindingsFont()} \\1}{{$this->getDefaultFont(false)}", $text);
-		
+
 		return $text;
-	}
-
-	/**
-	 * Hilfsfunktion für specialCharacters()
-	 * @param string $character
-	 */
-	private function escapeCharacter($character) {
-		$escaped = "";
-		if(ord($character) >= 0x00 && ord($character) < 0x20)
-			$escaped = "\\'".dechex(ord($character));
-
-		if ((ord($character) >= 0x20 && ord($character) < 0x80) || ord($character) == 0x09 || ord($character) == 0x0A)
-			$escaped = $character;
-
-		if (ord($character) >= 0x80 and ord($character) < 0xFF)
-			$escaped = "\\'".dechex(ord($character));
-
-		switch(ord($character)) {
-			case 0x5C:
-			case 0x7B:
-			case 0x7D:
-				$escaped = "\\".$character;
-				break;
-		}
-
-		return $escaped;
 	}
 
 	/**

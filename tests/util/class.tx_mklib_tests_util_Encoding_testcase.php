@@ -37,12 +37,6 @@ tx_rnbase::load('tx_mklib_util_Encoding');
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase {
-
-	/**
-	 * Der für die Tests genutzte String
-	 * @var string
-	 */
-	private static $bin = 'ÄäÖöÜüß';
 	/**
 	 * Dies ist die in Hex umgewandelte Form des Strings
 	 * mit der ISO-8859-1 Zeichen codierung.
