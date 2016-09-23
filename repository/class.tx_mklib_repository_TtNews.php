@@ -63,7 +63,7 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract {
 	 * {@inheritDoc}
 	 * @see tx_mklib_repository_Abstract::search()
 	 */
-	public function search(array $fields, array $options) {
+	public function search(array $fields = array(), array $options = array()) {
 		return parent::search($fields, $this->insertSearchDefinition($options));
 	}
 
@@ -71,7 +71,7 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract {
 	 * {@inheritDoc}
 	 * @see tx_mklib_repository_Abstract::searchSingle()
 	 */
-	public function searchSingle(array $fields, array $options) {
+	public function searchSingle(array $fields = array(), array $options = array()) {
 		return parent::searchSingle($fields, $this->insertSearchDefinition($options));
 	}
 
