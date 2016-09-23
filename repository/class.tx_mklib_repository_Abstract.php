@@ -81,6 +81,8 @@ abstract class tx_mklib_repository_Abstract
 	 *
 	 * @param integer|array $rowOrUid
 	 * @return Tx_Rnbase_Domain_Model_RecordInterface|null
+	 *
+	 * @TODO use handleEnableFieldsOptions to get hidden records in BE
 	 */
 	public function findByUid($rowOrUid) {
 		/* @var $model Tx_Rnbase_Domain_Model_RecordInterface */
