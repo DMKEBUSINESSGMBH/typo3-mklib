@@ -39,6 +39,16 @@ class tx_mklib_tests_repository_TtNews_testcase
 	extends tx_rnbase_tests_BaseTestCase {
 
 	/**
+	 * {@inheritDoc}
+	 * @see PHPUnit_Framework_TestCase::setUp()
+	 */
+	protected function setUp() {
+		if (!tx_rnbase_util_Extensions::isLoaded('tt_news')) {
+			self::markTestSkipped('tt_news nicht installiert');
+		}
+	}
+
+	/**
 	 *
 	 * @return PHPUnit_Framework_MockObject_MockObject
 	 */
