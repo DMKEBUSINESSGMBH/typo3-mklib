@@ -353,8 +353,8 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase {
 			)
 		);
 		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$expectedLinkWizard['link']['icon'] = 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_link.gif';
-			$expectedLinkWizard['link']['module']['name'] = 'wizard_link';
+			$expectedLinkWizard['link']['icon'] = 'EXT:t3skin/icons/gfx/link_popup.gif';
+			$expectedLinkWizard['link']['module']['name'] = 'wizard_element_browser';
 		} else {
 			$expectedLinkWizard['link']['icon'] = 'link_popup.gif';
 			$expectedLinkWizard['link']['script'] = 'browse_links.php?mode=wizard';
