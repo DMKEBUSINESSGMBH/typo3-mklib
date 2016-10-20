@@ -27,6 +27,7 @@
  ***************************************************************/
 tx_rnbase::load('Tx_Rnbase_Utility_T3General');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
+tx_rnbase::load('tx_rnbase_util_Wizicon');
 
 /**
  * Diese Klasse fügt das Wizzard Icon hinzu
@@ -45,7 +46,7 @@ tx_rnbase::load('tx_rnbase_util_Typo3Classes');
  * @subpackage tx_mklib_util
  * @author Michael Wagner
  */
-class tx_mklib_util_WizIcon {
+class tx_mklib_util_WizIcon extends tx_rnbase_util_Wizicon{
 
 	/**
 	 * Das muss von der Kindklasse überschrieben werden!!
@@ -62,56 +63,22 @@ class tx_mklib_util_WizIcon {
 	protected $iconPath = '/ext_icon.gif';
 
 	/**
-	 * Adds the plugin wizard icon
-	 *
-	 * @param 	array 	Input array with wizard items for plugins
-	 * @return 	array 	Modified input array, having the items for plugin added.
+	 * @return array
 	 */
-	public function proc($wizardItems)	{
-		global $LANG;
-
-		$LL = $this->includeLocalLang();
-
-		$wizardItems['plugins_tx_' . $this->extKey] = array(
-			'icon'			=>	tx_rnbase_util_Extensions::extRelPath($this->extKey) . $this->iconPath,
-			'title'			=>	$LANG->getLLL('plugin.' . $this->extKey . '.label', $LL),
-			'description'	=>	$LANG->getLLL('plugin.' . $this->extKey . '.description', $LL),
-			'params'		=>	'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=tx_' . $this->extKey
+	protected function getPluginData() {
+		return array(
+			'tx_' . $this->extKey => array(
+				'icon'        => tx_rnbase_util_Extensions::extRelPath( $this->extKey ) . 'ext_icon.gif',
+				'title'       => 'plugin.' . $this->extKey . '.label',
+				'description' => 'plugin.' . $this->extKey . '.description'
+			)
 		);
-
-		return $wizardItems;
 	}
 
 	/**
-	 * Laden der Lokalisierung.
-	 *
-	 * @return 	array
-	 */
-	public function includeLocalLang()	{
-		$llFile = $this->getLocalLangFilePath();
-		if (tx_rnbase_util_TYPO3::isTYPO47OrHigher()) {
-			$localizationParser = tx_rnbase::makeInstance(
-				tx_rnbase_util_Typo3Classes::getLocalizationParserClass()
-			);
-			$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
-		} else {
-			$LOCAL_LANG = Tx_Rnbase_Utility_T3General::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
-		}
-
-		return $LOCAL_LANG;
-	}
-
-	/**
-	 * Der Pfad zur ll, kann Überschrieben werden, wenn nötig.
-	 *
 	 * @return string
 	 */
-	protected function getLocalLangFilePath()
-	{
-		return tx_rnbase_util_Extensions::extPath($this->extKey) . 'locallang_db.xml';
+	protected function getLLFile() {
+		return tx_rnbase_util_Extensions::extPath( $this->extKey ) . 'locallang_db.xml';
 	}
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkdownloads/util/class.tx_mklib_util_WizIcon.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkdownloads/util/class.tx_mklib_util_WizIcon.php']);
 }
