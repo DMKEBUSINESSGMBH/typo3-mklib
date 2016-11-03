@@ -133,8 +133,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$aResultList = $this->searcher->getResultList();
 
 		$result = $aResultList['table'];
-		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
 		for($i=1; $i<6; $i++) {
 			self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
@@ -190,8 +190,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$aResultList = $this->searcher->getResultList();
 
 		$result = $aResultList['table'];
-		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
 		for($i=1; $i<6; $i++) {
 			self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
@@ -214,8 +214,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		self::assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
 		$result = $aResultList['table'];
-		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
 		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
 		for($i=1; $i<6; $i++) {
@@ -279,8 +279,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		self::assertEquals('asc', $_GET['sortRev'], '$_GET[\'sortRev\'] nicht korrekt gesetzt.');
 
 		$result = $aResultList['table'];
-		self::assertRegExp('/^<table border="0"/', $result, 'Table Tag fehlt.');
-		self::assertRegExp('/<\/table>$/', $result, 'Schließendes Table Tag fehlt.');
+		self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
+		self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
 		// TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
 		for($i=1; $i<6; $i++) {
