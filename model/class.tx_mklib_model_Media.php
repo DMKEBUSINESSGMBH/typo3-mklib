@@ -57,7 +57,7 @@ class tx_mklib_model_Media extends tx_rnbase_model_base {
 	 */
 	public function fillPath($sPath = false){
 		// Pathname immer setzen!
-		if (!$this->hasFilePath()) {
+		if (!$this->hasFilePathName()) {
 			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 				$this->setFilePathName(
 					$this->getUrl()
@@ -102,7 +102,8 @@ class tx_mklib_model_Media extends tx_rnbase_model_base {
 		) {
 			$this->setFileRelpath(
 				tx_mklib_util_File::getRelPath(
-					$this->getFilePathName()
+					$this->getFilePathName(),
+					true
 				)
 			);
 		}
