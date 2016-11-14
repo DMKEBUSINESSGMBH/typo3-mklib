@@ -177,6 +177,10 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase {
 			'typo3conf/localconf.php',
 			tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php', TRUE)
 		);
+		self::assertEquals(
+			'fileadmin/portal/pdf/test.pdf',
+			tx_mklib_util_File::getRelPath('fileadmin/portal/pdf/test.pdf', TRUE)
+		);
 	}
 
 	/**

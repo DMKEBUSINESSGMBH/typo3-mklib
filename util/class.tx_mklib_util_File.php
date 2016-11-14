@@ -286,7 +286,11 @@ class tx_mklib_util_File {
 
 		// wir brauchen den server pfad, um verschiedene prüfungen zu machen
 		$path = self::getServerPath($path);
-		$path = str_replace(self::removeStartingSlash(self::getDocumentRoot()), '', $path);
+		$path = str_replace(
+			self::removeStartingSlash(self::getDocumentRoot()),
+			TYPO3_OS == 'WIN' ? '/' : '',
+			$path
+		);
 
 		// gegebenenfals ein slash anfügen wenn dieser nicht entfernt werden soll
 		if ($removeStartingSlash && $path{0} == '/') {
