@@ -94,7 +94,7 @@ This class and all work done here is dedicated to Tatjana.
  $r->parse();
  if( count( $r->err) == 0) // no errors detected
  echo $r->out;
- 
+
  History:
  ========
  Sat Nov 25 09:52:12 CET 2000 mfischer
@@ -142,10 +142,10 @@ class tx_mklib_util_RTFParser {
 	protected $queue;		// every character which is no sepcial char, not belongs to a control word/symbol; is generally considered being 'plain'
 
 	protected $stack = array();	// group stack
-	
+
 	/**
 	 * Sonderzeichen, die ersetzt werden müssen
-	 
+
 	 * @var array
 	 */
 	protected $aSpecialChars = array(
@@ -245,36 +245,36 @@ class tx_mklib_util_RTFParser {
 		"underlined"	=> "u",
 		"strikethru"	=> "strike"
 	);
-	
+
 	/*
 	 Class Constructor:
 	 Takes as argument the raw RTF stream
 	 (Note under certain circumstances the stream has to be stripslash'ed before handling over)
 	 Initialises some class-global variables
-	 
+
 	 @param $cleanRtf - sollen informationen zur colortable, fonttable und meta-infos vor dem
 	 parsen entfernt werden?
 	 */
 	public function __construct( $data, $cleanRtf = false) {
 		//da der text evtl. bereinigt wird, müssen wir vorher
-		//wissen ob es Wingdings in der font table gibt und 
+		//wissen ob es Wingdings in der font table gibt und
 		//welchen index Wingdings einnimmt um die Symbole
 		//durch einen Sonderzeichen Marker zu ersetzten
-		
+
 		//teil der Fontable mit Wingdings
 		preg_match('/f[0-9]*.fnil *?Wingdings/i', $data, $matches);
 		//jetzt brauchen wir noch den index von Wingdings in der fonttable
 		//und ersetzten anschliessend alle Wingdings Sonderzeichen
 		if(!empty($matches)){
 			preg_match('/[0-9]+/', $matches[0], $aWingdingsFontTableIndex);
-			//jetzt ersetzen aber ohne die magic quotes einstellungen zu beachten			
+			//jetzt ersetzen aber ohne die magic quotes einstellungen zu beachten
 			$data = preg_replace(
 				'/\{.f'.$aWingdingsFontTableIndex[0].'\\\\[a-z0-9\\\\]+ *(.) *\}/i',
-				'###'.tx_mklib_util_MiscTools::getSpecialCharMarker().'$1###', 
+				'###'.tx_mklib_util_MiscTools::getSpecialCharMarker().'$1###',
 				$data
 			);
 		}
-		
+
 		//@todo: warum ist es nötig den text zu bereinigen? wäre es nicht besser
 		//den text zu reparieren damit z.B. evtl. das Sonderzeichen parsen funktioniert
 		//womit die eigene ersetzung am ende von parse() wegfallen würde
@@ -434,7 +434,7 @@ class tx_mklib_util_RTFParser {
 				else
 				$this->flags["superscription"] = true;
 				break;
-					
+
 		}
 	}
 
@@ -508,8 +508,7 @@ class tx_mklib_util_RTFParser {
 
 
 	protected function checkHtmlSpanContent( $command) {
-		reset( $this->fontmodifier_table);
-		while( list( $rtf, $html) = each( $this->fontmodifier_table)) {
+		foreach ($this->fontmodifier_table as $rtf => $html) {
 			if( $this->flags[$rtf] == true) {
 				if( $command == "start")
 				$this->out .= "<".$html.">";
@@ -543,7 +542,7 @@ class tx_mklib_util_RTFParser {
 					// only output html if a valid (for now, just numeric;) fonttable is given
 					//if( ereg( "^[0-9]+$", $this->flags["fonttbl_current_read"])) {
 					if( preg_match( "/^[0-9]+$/", $this->flags["fonttbl_current_read"])) {
-							
+
 						if( $this->flags["beginparagraph"] == true) {
 							$this->flags["beginparagraph"] = false;
 							$this->out .= "<div align=\"";
@@ -560,7 +559,7 @@ class tx_mklib_util_RTFParser {
 							}
 							$this->out .= "\">";
 						}
-							
+
 						/* define new style for that span */
 						$this->styles["f".$this->flags["fonttbl_current_read"]."s".$this->flags["fontsize"]] = "font-family:".$this->fonttable[$this->flags["fonttbl_current_read"]]["charset"]." font-size:".$this->flags["fontsize"].";";
 						/* write span start */
@@ -654,7 +653,7 @@ class tx_mklib_util_RTFParser {
 		if( count( $this->err) > 0) {
 			if( $this->wantXML) {
 				$this->out .= "<errors>";
-				while( list($num,$value) = each( $this->err)) {
+				foreach ($this->err as $value) {
 					$this->out .= "<message>".$value."</message>";
 				}
 				$this->out .= "</errors>";
@@ -664,8 +663,8 @@ class tx_mklib_util_RTFParser {
 
 	protected function makeStyles() {
 		$this->outstyles = "<style type=\"text/css\"><!--\n";
-		reset( $this->styles);
-		while( list( $stylename, $styleattrib) = each( $this->styles)) {
+
+		foreach ($this->styles as $stylename => $styleattrib) {
 			$this->outstyles .= ".".$stylename." { ".$styleattrib." }\n";
 		}
 		$this->outstyles .= "--></style>\n";
@@ -802,7 +801,7 @@ class tx_mklib_util_RTFParser {
 		if( $this->wantHTML) {
 			$this->makeStyles();
 		}
-		
+
 		//jetzt ersetzen wir noch alle übrigen Sonderzeichen da das während dem Parsen
 		//nicht klappt für die Beispiele in den Tests. Wenn aber die Daten bspw. direkt
 		//vom JJK Webservice kommen, werden die umlaute etc. schon vorher ersetzt
@@ -810,11 +809,11 @@ class tx_mklib_util_RTFParser {
 		foreach ($this->aSpecialChars as $sSpecialChar => $aSpecialCharReplacement) {
 			$this->out = str_replace(
 				'\''.$sSpecialChar,
-				$aSpecialCharReplacement, 
+				$aSpecialCharReplacement,
 				$this->out
 			);
 		}
-		
+
 		return $this->out;
 	}
 }
