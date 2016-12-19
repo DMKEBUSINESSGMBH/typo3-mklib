@@ -302,7 +302,6 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView {
 	 * @param 	string 		$where
 	 */
 	private function setMMQueryFelds($parentId, &$what, &$fromClause, &$where){
-		global $TCA;
 		$oConfig = $this->getConfig();
 		$sMM = $oConfig->getMM();
 
@@ -420,7 +419,6 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView {
 	 */
 	private function getRecordOnClickLink($title, $v) {
 		$aOnClick =  'setFormValueFromBrowseWin(\'' . $this->PA['itemFormElName'] . '\',' . $v['uid'] . ',\'' . $title . '\');';
-		$title_alt = $v[$this->getConfig()->getTitleField().'_alt'];
 		$link = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . htmlentities($v['description']) . '">' .
 				$title
 				. '</a>';

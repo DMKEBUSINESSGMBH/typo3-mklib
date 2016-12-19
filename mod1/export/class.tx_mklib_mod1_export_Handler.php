@@ -160,7 +160,7 @@ class tx_mklib_mod1_export_Handler {
 
 		/* @var $listBuilder tx_mklib_mod1_export_ListBuilder */
 		$listBuilder = tx_rnbase::makeInstance('tx_mklib_mod1_export_ListBuilder');
-		$template = $listBuilder->renderEach(
+		$listBuilder->renderEach(
 			$provider, FALSE,
 			$template,
 			$this->getMarkerClass($type),
@@ -208,9 +208,6 @@ class tx_mklib_mod1_export_Handler {
 		if (!tx_rnbase_util_BaseMarker::containsMarker($template, 'EXPORT_BUTTONS')) {
 			return $template;
 		}
-
-		$configuration = $this->getConfigurations();
-		$confId = $this->getConfId().'types.';
 
 		$buttons = '';
 		foreach ($this->getExportTypes() as $type) {

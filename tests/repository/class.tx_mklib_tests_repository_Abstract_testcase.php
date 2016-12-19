@@ -138,8 +138,6 @@ class tx_mklib_tests_repository_Abstract_testcase
 		$method = new ReflectionMethod('tx_mklib_repository_Abstract', 'getWrapperClass');
 		$method->setAccessible(true);
 
-		$fields = array();
-
 		self::assertEquals(
 			'tx_mklib_model_WordlistEntry',
 			$method->invoke($repository),

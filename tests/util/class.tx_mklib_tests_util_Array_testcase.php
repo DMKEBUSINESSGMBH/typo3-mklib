@@ -92,7 +92,6 @@ class tx_mklib_tests_util_Array_testcase extends Tx_Phpunit_TestCase {
 
 	public function testinArray(){
 		$aArray = array('wert1' => 1, 'zwei', 3, 'wert4' => 'vier', '5');
-		$sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
 
 		self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray), '1 wurde nicht gefunden.');
 		self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray, true), '1 wurde nicht gefunden.');

@@ -31,7 +31,7 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @author Hannes Bochmann
  */
 class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
-	
+
 	const SOAP_TEST_METHOD = 'mySoapTestMethod';
 	const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';
 
@@ -45,10 +45,10 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 	public function testCallSoapMethodWithValidMethodReturnsExpectedResult() {
 		$soapClientWrapper = $this->getSoapClientWrapper();
 		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(self::SOAP_TEST_METHOD);
-		
+
 		self::assertEquals(self::SOAP_TEST_METHOD_RETURN_VALUE,$soapMethodReturnValue);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
@@ -58,10 +58,10 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
 			self::SOAP_TEST_METHOD, array($expectedSoapMethodParams)
 		);
-		
+
 		self::assertEquals(self::SOAP_TEST_METHOD_RETURN_VALUE,$soapMethodReturnValue);
 	}
-	
+
 	/**
 	 * @group unit
 	 */
@@ -71,10 +71,10 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
 			self::SOAP_TEST_METHOD, array($expectedSoapMethodParams)
 		);
-		
+
 		self::assertEquals(self::SOAP_TEST_METHOD_RETURN_VALUE,$soapMethodReturnValue);
 	}
-	
+
 	/**
 	 * @group unit
 	 * @expectedException RuntimeException
@@ -89,11 +89,11 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 			$soapException,
 			self::exactly(2)
 		);
-		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
+		$soapClientWrapper->callSoapMethod(
 			self::SOAP_TEST_METHOD, array($expectedSoapMethodParams)
 		);
 	}
-	
+
 	/**
 	 * @group unit
 	 * @expectedException RuntimeException
@@ -108,7 +108,7 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 			$soapException,
 			self::exactly(2)
 		);
-		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
+		$soapClientWrapper->callSoapMethod(
 			self::SOAP_TEST_METHOD, array($expectedSoapMethodParams)
 		);
 	}
@@ -126,31 +126,31 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 				$soapException,
 				self::exactly(2)
 		);
-		$soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
+		$soapClientWrapper->callSoapMethod(
 				self::SOAP_TEST_METHOD, array($expectedSoapMethodParams)
 		);
 	}
-	
+
 	/**
 	 * @param string $soapMethodReturnValue
 	 * @param array $expectedParams
 	 * @return tx_mklib_soap_ClientWrapper
 	 */
 	private function getSoapClientWrapper(
-		$expectedParams = array(), $exceptionToThrow = null, 
+		$expectedParams = array(), $exceptionToThrow = null,
 		$getSoapClientInvocationCount = null
 	) {
 		$soapClient = $this->getSoapClientMock($expectedParams, $exceptionToThrow);
-		
+
 		$soapClientWrapper = $this->getMock('tx_mklib_soap_ClientWrapper',array('getSoapClient'));
-		
-		if(!$getSoapClientInvocationCount)	
+
+		if(!$getSoapClientInvocationCount)
 			$getSoapClientInvocationCount = self::once();
-			
+
 		$soapClientWrapper->expects($getSoapClientInvocationCount)
 			->method('getSoapClient')
 			->will(self::returnValue($soapClient));
-			
+
 		return $soapClientWrapper;
 	}
 
@@ -169,12 +169,12 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 			'',
 			false
 		);
-		
+
 		if(!is_null($exceptionToThrow))
 			$methodAction = $this->throwException($exceptionToThrow);
 		else
 			$methodAction = self::returnValue(self::SOAP_TEST_METHOD_RETURN_VALUE);
-			
+
 		if(!empty($expectedParams)){
 			$soapClient->expects(self::once())
 				->method(self::SOAP_TEST_METHOD)
@@ -185,7 +185,7 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
 				->method(self::SOAP_TEST_METHOD)
 				->will($methodAction);
 		}
-			
+
 		return $soapClient;
 	}
 }

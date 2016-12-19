@@ -199,7 +199,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 	public function testSetValueToModuleDataWithEmptyData() {
 		//vorhandene Daten
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
-		$aModuleData = $this->oSelector->setValueToModuleData($this->oMod->getName());
+		$this->oSelector->setValueToModuleData($this->oMod->getName());
 		//es sollten unr die vorhandenen Daten zurück kommen
 		self::assertEquals(array('testSearch' => 'joh316'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
 	}
@@ -207,7 +207,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 	public function testSetValueToModuleDataWithData() {
 		//vorhandene Daten
 		$GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
-		$aModuleData = $this->oSelector->setValueToModuleData($this->oMod->getName(),array('newTestSearch' => 'john doe'));
+		$this->oSelector->setValueToModuleData($this->oMod->getName(),array('newTestSearch' => 'john doe'));
 		//es sollten auch die neuen Daten da sein
 		self::assertEquals(array('testSearch' => 'joh316','newTestSearch' => 'john doe'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
 	}
@@ -333,7 +333,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$key = 'test';
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
-		$returnValue = $method->invokeArgs($selector, $arguments);
+		$method->invokeArgs($selector, $arguments);
 
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" ' .
 			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
@@ -355,7 +355,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$key = 'test';
 		$out = array('field' => 'test');
 		$arguments = array($key, &$out);
-		$returnValue = $method->invokeArgs($selector, $arguments);
+		$method->invokeArgs($selector, $arguments);
 
 		$expectedInput = 'test<input name="test" type="text" id="tceforms-datefield-test" ' .
 			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
@@ -395,7 +395,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$key = 'test';
 		$out = array('field' => '');
 		$arguments = array($key, &$out);
-		$returnValue = $method->invokeArgs($selector, $arguments);
+		$method->invokeArgs($selector, $arguments);
 
 		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" ' .
 			'value="123" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .

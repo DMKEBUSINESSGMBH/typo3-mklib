@@ -258,8 +258,6 @@ class tx_mklib_util_httprequest_Response {
 	 * @return string
 	 */
 	public function getBody() {
-		$body = '';
-
 		// Decode the body if it was transfer-encoded
 		switch (strtolower($this->getHeader('transfer-encoding'))) {
 

@@ -55,9 +55,6 @@ class tx_mklib_mod1_util_Helper {
 		}
 		$dataKey = 'current' . $key;
 		if($itemid === 'clear') {
-			$data = Tx_Rnbase_Backend_Utility::getModuleData(
-				array($dataKey => ''), array($dataKey => '0'),$module->getName()
-			);
 			return false;
 		}
 		// Daten mit Modul abgleichen

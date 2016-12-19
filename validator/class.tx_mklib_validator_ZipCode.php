@@ -27,7 +27,7 @@
 
 /**
  * Die Klasse stellt Funktionen für die Validierung von Postleitzahlen zur Verfügung.
- * 
+ *
  * @author René Nitzsche
  * @package tx_mklib
  * @subpackage tx_mklib_validator
@@ -36,7 +36,7 @@ class tx_mklib_validator_ZipCode {
 	static $instance = null;
 	/**
 	 * Liefert eine instanz des Validators
-	 * 
+	 *
 	 * @return tx_mklib_validator_ZipCode
 	 */
 	public static function getInstance() {
@@ -47,7 +47,7 @@ class tx_mklib_validator_ZipCode {
 	}
 	/**
 	 * Liefert für ein Land einen Hinweistext für das PLZ-Format.
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @return string
 	 */
@@ -58,7 +58,7 @@ class tx_mklib_validator_ZipCode {
 		$label = sprintf($llObj->sL($labelKey), $country->getZipLength());
 		return $label;
 	}
-	
+
 	/**
 	 * Validiert einen PLZ-String für ein Land.
 	 * @param tx_mklib_interface_IZipCountry $land
@@ -66,7 +66,6 @@ class tx_mklib_validator_ZipCode {
 	 * @return boolean
 	 */
 	public static function validate(tx_mklib_interface_IZipCountry $country, $zip) {
-		$result = true;
 		switch($country->getZipRule()) {
 			case 0: // no rule set
 				$result = true;
@@ -105,18 +104,17 @@ class tx_mklib_validator_ZipCode {
 				$result = false;
 				break;
 		}
-		
+
 		return $result;
 	}
 	/**
 	 * http://help.sap.com/saphelp_nw2004s/helpdata/en/0d/40bb3acf19c731e10000000a114084/content.htm
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
 	 */
 	private static function validateSpecial($country, $zip) {
-		$result = true;
 		switch($country->getISO2()) {
 			case 'CA':
 				$result = preg_match('/^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/', $zip) > 0;
@@ -142,11 +140,11 @@ class tx_mklib_validator_ZipCode {
 			default:
 				$result = false;
 		}
-		
+
 		return $result;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
@@ -155,7 +153,7 @@ class tx_mklib_validator_ZipCode {
 		return preg_match('/^[A-Za-z0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
@@ -165,7 +163,7 @@ class tx_mklib_validator_ZipCode {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
@@ -174,7 +172,7 @@ class tx_mklib_validator_ZipCode {
 		return preg_match('/^[A-Za-z0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
@@ -183,7 +181,7 @@ class tx_mklib_validator_ZipCode {
 		return preg_match('/^[0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
@@ -192,7 +190,7 @@ class tx_mklib_validator_ZipCode {
 		return preg_match('/^[ A-Za-z0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
@@ -201,7 +199,7 @@ class tx_mklib_validator_ZipCode {
 		return preg_match('/^[ 0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
@@ -210,7 +208,7 @@ class tx_mklib_validator_ZipCode {
 		return preg_match('/^[ A-Za-z0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
 	}
 	/**
-	 * 
+	 *
 	 * @param tx_mklib_interface_IZipCountry $country
 	 * @param string $zip
 	 * @return boolean
