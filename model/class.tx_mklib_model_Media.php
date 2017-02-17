@@ -89,8 +89,10 @@ class tx_mklib_model_Media extends tx_rnbase_model_base {
 			&& !$this->hasFileServerpath()
 		) {
 			$this->setFileServerpath(
-				tx_mklib_util_File::getServerPath(
-					$this->getFilePathName()
+				urldecode(
+					tx_mklib_util_File::getServerPath(
+						$this->getFilePathName()
+					)
 				)
 			);
 		}
