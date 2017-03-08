@@ -39,6 +39,7 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  * @package tx_mklib
  * @subpackage tx_mklib_action
  * @author Hannes Bochmann
+ * @deprecated use tx_mklib_action_AbstractList instead
  */
 abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC {
 
