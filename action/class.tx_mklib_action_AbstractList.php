@@ -108,6 +108,13 @@ abstract class tx_mklib_action_AbstractList
 			$this->prepareFieldsAndOptions($fields, $options)
 			&& $filter->init($fields, $options)
 		) {
+			if ($this->getConfigurations()->get($this->getConfId() . 'pagebrowser')) {
+				$filter::handlePageBrowser(
+					$this->getConfigurations(), $this->getConfId() . 'pagebrowser',
+					$this->getConfigurations()->getViewData(),
+					$fields, $options, array('searchcallback' => array($repo, 'search'))
+				);
+			}
 			// we search for the items
 			$items = $repo->search($fields, $options);
 		}
