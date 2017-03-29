@@ -44,43 +44,63 @@ class tx_mklib_util_Array {
 	 * Bereinigt ein Array von allen Werten die leer sind.
 	 * Leere Arrays innerhalb des zu bereinigenden Arrays werden ebenfalls entfernt.
 	 * Die Keys werden zurückgesetzt.
+	 * Nicht für Assoziative Arrays geeignet.
 	 *
 	 * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyArrayValuesSimple
 	 *
 	 * @author 2011 hbochmann
-   	 *
-   	 * @param array 	$aArray
-   	 * @param array 	$aEmptys 	Alle Werte, die einen leeren Zustand definieren.
-   	 * @param boolean 	$bStrict 	Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
-   	 * @return array
-   	 */
-  	public static function removeEmptyArrayValuesSimple(array $aArray, array $aEmptys = array('',0,'0',null,false,array()), $bStrict=true) {
-  		$aRet = array();
-    	foreach($aArray as $mValue) {
-    		if(!in_array($mValue, $aEmptys, $bStrict)) { $aRet[] = $mValue; }
-    	}
-    	return $aRet;
-  	}
+	 *
+	 * @param array $array
+	 * @param array $emptys Alle Werte, die einen leeren Zustand definieren.
+	 * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
+	 *
+	 * @return array
+	 */
+	public static function removeEmptyArrayValuesSimple(
+		array $array,
+		array $emptys = array('',0,'0',null,false,array()),
+		$strict = true
+	) {
+		$ret = array();
+		foreach ($array as $key => $value) {
+			if (!in_array($value, $emptys, $strict)) {
+				$ret[] = $value;
+			}
+		}
+
+		return $ret;
+	}
 
 	/**
 	 * Bereinigt ein Array von allen Werten die leer sind.
 	 * Leere Arrays innerhalb des zu bereinigenden Arrays bleiben unberührt.
 	 * Die Keys werden by default nicht zurückgesetzt!
+	 * Keys von Assoziative Arrays bleiben bestehen.
 	 *
 	 * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyValues
 	 *
 	 * @author 2011 mwagner
-   	 *
-   	 * @param array 	$aArray
-   	 * @param boolean 	$bResetIndex	Setzt die Array Keys zurück, falls sie numerisch sind.
-   	 * @return array
-   	 */
-  	public static function removeEmptyValues(array $aArray, $bResetIndex=false) {
-  		$aEmptyElements = array_keys($aArray, '');
-  		foreach($aEmptyElements as $key)
-			unset($aArray[$key]);
-  		return $bResetIndex ? array_merge($aArray) : $aArray;
-  	}
+	 *
+	 * @param array $array
+	 * @param boolean $resetIndexSetzt Die Array Keys zurück, falls sie numerisch sind.
+	 * @param mixed $emptys Single value for empty or array with multiple empty values
+	 * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
+	 *
+	 * @return array
+	 */
+	public static function removeEmptyValues(
+		array $array,
+		$resetIndex = false,
+		$emptys = '',
+		$strict = false
+	) {
+		$emptyKeys = array_keys($array, $emptys, $strict);
+		foreach($emptyKeys as $key) {
+			unset($array[$key]);
+		}
+
+		return $resetIndex ? array_merge($array) : $array;
+	}
 
 	/**
 	 * Entfernt alle Keys welche nicht in needle vorhanden sind
