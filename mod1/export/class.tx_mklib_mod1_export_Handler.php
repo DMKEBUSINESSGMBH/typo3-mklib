@@ -1,30 +1,26 @@
 <?php
-/**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
+/***************************************************************
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) 2016 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2012 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
-
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 tx_rnbase::load('tx_mklib_mod1_export_Util');
 tx_rnbase::load('tx_rnbase_mod_Util');
@@ -91,20 +87,26 @@ tx_rnbase::load('tx_rnbase_util_Files');
 		}
 	}
  *
- * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mklib
+ * @author Michael Wagner
  */
-class tx_mklib_mod1_export_Handler {
-
+class tx_mklib_mod1_export_Handler
+{
 	/**
+	 * The Module or handler
+	 *
 	 * @var tx_mklib_mod1_export_IModFunc
 	 */
-	private $modFunc = NULL;
+	private $modFunc = null;
 
 	/**
 	 * Byte Order Mark = BOM
-	 * @return void
+	 *
+	 * @return string
 	 */
-	public static function getByteOrderMark() {
+	public static function getByteOrderMark()
+	{
 		return ( chr(0xEF) . chr(0xBB) . chr(0xBF) );
 	}
 
@@ -123,9 +125,11 @@ class tx_mklib_mod1_export_Handler {
 
 	/**
 	 * Prüft, ob ein Export durchgeführt werden soll und führt diesen durch.
+	 *
+	 * @return void
 	 */
-	public function handleExport() {
-
+	public function handleExport()
+	{
 		// den Typ des Exports auslesen;
 		$type = $this->getCurrentExportType();
 		if (!$type) {
@@ -136,7 +140,7 @@ class tx_mklib_mod1_export_Handler {
 		$provider = $this->getListProvider();
 
 		if (!$template || !$provider) {
-			return ;
+			return;
 		}
 
 		// Ignoriere Stop-Button
@@ -149,8 +153,11 @@ class tx_mklib_mod1_export_Handler {
 		// Der Subpart für Debug-Ausgaben wird am ende ausgegeben
 		$debug = tx_rnbase_util_Templates::getSubpart($template, '###DEBUG###');
 		if ($debug) {
-			$template = tx_rnbase_util_Templates
-				::substituteSubpart($template, '###DEBUG###', '');
+			$template = tx_rnbase_util_Templates::substituteSubpart(
+				$template,
+				'###DEBUG###',
+				''
+			);
 			$timeStart = microtime(true);
 			$memStart = memory_get_usage();
 		}
@@ -162,12 +169,15 @@ class tx_mklib_mod1_export_Handler {
 		}
 
 		/* @var $listBuilder tx_mklib_mod1_export_ListBuilder */
-		$listBuilder = tx_rnbase::makeInstance('tx_mklib_mod1_export_ListBuilder');
+		$listBuilder = tx_rnbase::makeInstance(
+			'tx_mklib_mod1_export_ListBuilder'
+		);
 		$listBuilder->renderEach(
-			$provider, FALSE,
+			$provider,
+			false,
 			$template,
 			$this->getMarkerClass($type),
-			$this->getModFunc()->getConfId().strtolower($itemPath).'.',
+			$this->getModFunc()->getConfId() . strtolower($itemPath) . '.',
 			strtoupper($itemPath),
 			$this->getConfigurations()->getFormatter()
 		);
@@ -181,20 +191,21 @@ class tx_mklib_mod1_export_Handler {
 	/**
 	 * Liefert den aktuell angeforderten ExportTyp (string) oder false (boolean)
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
-	public function getCurrentExportType() {
+	public function getCurrentExportType()
+	{
 		$parameters = tx_rnbase_parameters::getPostAndGetParametersMerged('mklib');
 		if (empty($parameters['export'])) {
-			return FALSE;
+			return false;
 		}
 
 		// den Typ des Exports auslesen;
 		$type = reset(array_keys($parameters['export']));
 		$types = $this->getExportTypes();
 
-		if (!in_array($type,$types)) {
-			return FALSE;
+		if (!in_array($type, $types)) {
+			return false;
 		}
 
 		return $type;
@@ -205,8 +216,13 @@ class tx_mklib_mod1_export_Handler {
 	 * um die Ausgabe der Export funktionen zu implementieren.
 	 * Folgende Marker werden erzeugt:
 	 * ###EXPORT_BUTTONS###
+	 *
+	 * @param string $template
+	 *
+	 * @return string
 	 */
-	public function parseTemplate($template) {
+	public function parseTemplate($template)
+	{
 		tx_rnbase::load('tx_rnbase_util_BaseMarker');
 		if (!tx_rnbase_util_BaseMarker::containsMarker($template, 'EXPORT_BUTTONS')) {
 			return $template;
@@ -217,58 +233,70 @@ class tx_mklib_mod1_export_Handler {
 			$buttons .= $this->renderButton($type);
 		}
 
-		if (!empty($buttons)){
+		if (!empty($buttons)) {
 			$buttons = $this->getButtonStyles() . $buttons;
 		}
 
 		$markerArray = array();
 		$markerArray['###EXPORT_BUTTONS###'] = $buttons;
 
-		$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray);
-		return $out;
+		return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+			$template,
+			$markerArray
+		);
 	}
 
 	/**
 	 * Rendert einen einzelnen Button inklusive Icons und Beschreibungs-Tooltip.
+	 *
 	 * @param string $type
+	 *
 	 * @return string
 	 */
-	protected function renderButton($type) {
-		static $infoSprite = FALSE;
+	protected function renderButton($type)
+	{
+		static $infoSprite = false;
 
-		if ($infoSprite == FALSE) {
-			$infoSprite = tx_rnbase_mod_Util
-				::getSpriteIcon('status-dialog-information');
+		if ($infoSprite == false) {
+			$infoSprite = tx_rnbase_mod_Util::getSpriteIcon(
+				'status-dialog-information'
+			);
 		}
 
 		$configuration = $this->getConfigurations();
-		$confId = $this->getConfId().'types.';
+		$confId = $this->getConfId() . 'types.';
 
-		$label = $configuration->get($confId.$type.'.label');
-		$sprite = $configuration->get($confId.$type.'.spriteIcon');
+		$label = $configuration->get($confId . $type . '.label');
+		$sprite = $configuration->get($confId . $type . '.spriteIcon');
 		$button = $this->getModule()->getFormTool()->createSubmit(
-			'mklib[export]['.$type.']',
+			'mklib[export][' . $type . ']',
 			$label
 		);
+
 		if ($sprite) {
 			$sprite = tx_rnbase_mod_Util::getSpriteIcon($sprite);
 		}
-		$description = $configuration->get($confId.$type.'.description');
+		$description = $configuration->get($confId . $type . '.description');
 		if ($description) {
-			$description = '<span class="bgColor2 info">'
-			. $infoSprite . '<strong>' . $label . '</strong><br />'
-			. $description . '</span>';
+			$description = ('<span class="bgColor2 info">' .
+				$infoSprite . '<strong>' . $label . '</strong><br />' .
+				$description . '</span>'
+			);
 		}
 		$button = '<span class="imgbtn">' . $sprite . $button . '</span>';
+
 		return '<span class="mklibexport">' . $button . $description . '</span>';
 	}
 
 	/**
+	 * The configured export types
+	 *
 	 * @return array
 	 */
-	private function getExportTypes() {
+	private function getExportTypes()
+	{
 		return $this->getConfigurations()->getKeyNames(
-			$this->getConfId().'types.'
+			$this->getConfId() . 'types.'
 		);
 	}
 
@@ -277,7 +305,8 @@ class tx_mklib_mod1_export_Handler {
 	 *
 	 * @return tx_mklib_mod1_export_IModFunc
 	 */
-	protected function getModFunc() {
+	protected function getModFunc()
+	{
 		return $this->modFunc;
 	}
 
@@ -286,11 +315,12 @@ class tx_mklib_mod1_export_Handler {
 	 *
 	 * @return tx_mklib_mod1_export_ISearcher
 	 */
-	protected function getSearcher() {
+	protected function getSearcher()
+	{
 		$searcher = $this->getModFunc()->getSearcher();
 		if (!$searcher instanceof tx_mklib_mod1_export_ISearcher) {
 			throw new Exception(
-				'The searcher "'.get_class($searcher).'" has to implement'.
+				'The searcher "' . get_class($searcher) . '" has to implement' .
 				' the interface "tx_mklib_mod1_export_ISearcher"',
 				1361174776
 			);
@@ -299,6 +329,7 @@ class tx_mklib_mod1_export_Handler {
 		if ($searcher instanceof tx_mklib_mod1_export_IInjectHandler) {
 			$searcher->setExportHandler($this);
 		}
+
 		return $searcher;
 	}
 
@@ -307,16 +338,20 @@ class tx_mklib_mod1_export_Handler {
 	 *
 	 * @return tx_rnbase_util_IListProvider
 	 */
-	protected function getListProvider() {
+	protected function getListProvider()
+	{
 		$provider = $this->getSearcher()->getInitialisedListProvider();
 		if (!$provider instanceof tx_rnbase_util_IListProvider) {
 			$this->getModule()->addMessage(
-				'The provider "'.get_class($provider).'" has to implement'.
+				'The provider "' . get_class($provider) . '" has to implement' .
 				' the interface tx_rnbase_util_IListProvider',
-				'Subpart not found', 2
+				'Subpart not found',
+				2
 			);
-			return FALSE;
+
+			return false;
 		}
+
 		return $provider;
 	}
 
@@ -325,41 +360,53 @@ class tx_mklib_mod1_export_Handler {
 	 *
 	 * @return 	tx_rnbase_mod_IModule
 	 */
-	protected function getModule() {
+	protected function getModule()
+	{
 		return $this->getModFunc()->getModule();
 	}
 
 	/**
 	 * Liefert das Template für den Export
 	 * eigentlich private, für tests protected
+	 *
 	 * @param string $type
+	 *
 	 * @return string
 	 */
-	protected function getExportTemplate($type) {
+	protected function getExportTemplate($type)
+	{
 		$configuration = $this->getConfigurations();
-		$confId = $this->getConfId().'types.'.$type.'.template.';
+		$confId = $this->getConfId() . 'types.' . $type . '.template.';
 
 		// template laden
-		$absPath = tx_rnbase_util_Files::getFileAbsFileName( $configuration->get($confId.'template') );
+		$absPath = tx_rnbase_util_Files::getFileAbsFileName(
+			$configuration->get($confId . 'template')
+		);
 		$template = tx_rnbase_util_Network::getUrl($absPath);
-		if(!$template) {
+		if (!$template) {
 			$this->getModule()->addMessage(
-				'Could not find the template "' . $absPath . '"  defined under ' . $confId . 'template.',
+				'Could not find the template "' . $absPath . '"' .
+				' defined under ' . $confId . 'template.',
 				'Template not found',
 				2
 			);
+
 			return false;
 		}
+
 		// subpart optional auslesen
-		$subpart = $configuration->get($confId.'subpart');
+		$subpart = $configuration->get($confId . 'subpart');
 		if ($subpart) {
 			tx_rnbase::load('tx_rnbase_util_Templates');
 			$template = tx_rnbase_util_Templates::getSubpart($template, $subpart);
-			if(!$template) {
+			if (!$template) {
 				$this->getModule()->addMessage(
-					'Could not find the the subpart "'.$subpart.'" in template "'.$sAbsPath.'".',
-					'Subpart not found', 2
+					'Could not find the the subpart "' . $subpart . '"' .
+					' in template "' . $absPath . '".',
+					'Subpart not found',
+					2
 				);
+
 				return false;
 			}
 		}
@@ -386,48 +433,67 @@ class tx_mklib_mod1_export_Handler {
 	}
 
 	/**
+	 * The marker class to use for import type
+	 *
+	 * @param string $type
+	 *
 	 * @return string
 	 */
-	protected function getMarkerClass($type) {
+	protected function getMarkerClass($type)
+	{
 		$configuration = $this->getConfigurations();
-		$confId = $this->getConfId().'types.'.$type.'.template.';
-		$class = $configuration->get($confId.'markerclass');
+		$confId = $this->getConfId() . 'types.' . $type . '.template.';
+		$class = $configuration->get($confId . 'markerclass');
 		$class = $class ? $class : 'tx_rnbase_util_SimpleMarker';
 		if (!tx_rnbase::load($class)) {
 			$class = 'tx_rnbase_util_SimpleMarker';
 		}
+
 		return $class;
 	}
 
 	/**
+	 * The conf id to use for import type
+	 *
+	 * @param string $type
+	 *
 	 * @return string
 	 */
-	protected function getItemPath($type) {
+	protected function getItemPath($type)
+	{
 		$configuration = $this->getConfigurations();
-		$confId = $this->getConfId().'types.'.$type.'.template.';
-		$class = $configuration->get($confId.'itempath');
+		$confId = $this->getConfId() . 'types.' . $type . '.template.';
+		$class = $configuration->get($confId . 'itempath');
+
 		return $class ? $class : 'item';
 	}
 
 	/**
+	 * The conf id to use for import type
 	 *
 	 * @param string $type
+	 *
 	 * @return array
 	 */
-	protected function getHeaderConfig($type) {
+	protected function getHeaderConfig($type)
+	{
 		$headers = $this->getConfigurations()->get(
-			$this->getConfId().'types.'.$type.'.headers.', TRUE
+			$this->getConfId() . 'types.' . $type . '.headers.',
+			true
 		);
+
 		return is_array($headers) ? $headers : array();
 	}
 
 	/**
-	 * test if BOM is set in configuration
+	 * Test if BOM is set in configuration
 	 *
-	 * @param $type
+	 * @param string $type
+	 *
 	 * @return bool
 	 */
-	protected function isByteOrderMarkRequired($type) {
+	protected function isByteOrderMarkRequired($type)
+	{
 		$configuration = $this->getConfigurations();
 		$confId = $this->getConfId() . 'types.';
 
@@ -435,17 +501,23 @@ class tx_mklib_mod1_export_Handler {
 	}
 
 	/**
+	 * The config object
+	 *
 	 * @return tx_rnbase_configurations
 	 */
-	protected function getConfigurations() {
+	protected function getConfigurations()
+	{
 		return $this->getModule()->getConfigurations();
 	}
 
 	/**
+	 * The ConfId
+	 *
 	 * @return string
 	 */
-	protected function getConfId() {
-		return $this->getModFunc()->getConfId().'export.';
+	protected function getConfId()
+	{
+		return $this->getModFunc()->getConfId() . 'export.';
 	}
 
 	/**
@@ -455,16 +527,19 @@ class tx_mklib_mod1_export_Handler {
 	 * @param int $timeStart
 	 * @param int $memStart
 	 * @param array $markerArr
-	 * @return boolean
+	 *
+	 * @return bool
 	 */
 	protected function parseDebugs(
 		$template,
-		$timeStart = 0, $memStart = 0,
+		$timeStart = 0,
+		$memStart = 0,
 		array $markerArr = array()
 	) {
 		if (empty($template)) {
-			return FALSE;
+			return false;
 		}
+
 		tx_rnbase::load('tx_mklib_util_Date');
 		$memEnd = memory_get_usage();
 		$markerArr['###DEBUG_PARSETIME###'] = (microtime(true) - $timeStart);
@@ -483,7 +558,8 @@ class tx_mklib_mod1_export_Handler {
 		}
 		$out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArr);
 		echo $out;
-		return TRUE;
+
+		return true;
 	}
 
 	/**
@@ -491,7 +567,8 @@ class tx_mklib_mod1_export_Handler {
 	 *
 	 * @return string
 	 */
-	private function getButtonStyles() {
+	private function getButtonStyles()
+	{
 		$css = '<style type="text/css">
 		.mklibexport {
 			display: block;
@@ -525,9 +602,13 @@ class tx_mklib_mod1_export_Handler {
 		// alle umbrüche und tabs entfernen
 		return str_replace(array("\t", "\n", "\r"), '', $css);
 	}
-
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/export/class.tx_mklib_mod1_export_Handler.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/export/class.tx_mklib_mod1_export_Handler.php']);
+if ((
+	defined('TYPO3_MODE')
+	&& $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
+		['ext/mklib/mod1/export/class.tx_mklib_mod1_export_Handler.php']
+)) {
+	include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
+		['ext/mklib/mod1/export/class.tx_mklib_mod1_export_Handler.php'];
 }
