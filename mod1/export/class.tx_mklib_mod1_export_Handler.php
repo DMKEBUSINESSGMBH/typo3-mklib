@@ -109,10 +109,13 @@ class tx_mklib_mod1_export_Handler {
 	}
 
 	/**
+	 * Constructor
+	 *
 	 * @param tx_mklib_mod1_export_IModFunc $modFunc
+	 *
 	 * @return void
 	 */
-	public function tx_mklib_mod1_export_Handler(
+	public function __construct(
 		tx_mklib_mod1_export_IModFunc $modFunc
 	) {
 		$this->modFunc = $modFunc;
