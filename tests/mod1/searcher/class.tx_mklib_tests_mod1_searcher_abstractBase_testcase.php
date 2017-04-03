@@ -167,7 +167,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 			'Der Pager ist falsch.'
 		);
 		self::assertContains(
-			'<select name="SET[dummySearcherPagerdata_offset]"',
+			'<select class="form-control" name="SET[dummySearcherPagerdata_offset]"',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
@@ -250,7 +250,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 			'Der Pager ist falsch.'
 		);
 		self::assertContains(
-			'<select name="SET[dummySearcherPagerdata_offset]"',
+			'<select class="form-control" name="SET[dummySearcherPagerdata_offset]"',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
@@ -315,7 +315,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 			'Der Pager ist falsch.'
 		);
 		self::assertContains(
-			'<select name="SET[dummySearcherPagerdata_offset]"',
+			'<select class="form-control" name="SET[dummySearcherPagerdata_offset]"',
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
