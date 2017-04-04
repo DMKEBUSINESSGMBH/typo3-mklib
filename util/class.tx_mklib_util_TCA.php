@@ -271,6 +271,8 @@ class tx_mklib_util_TCA {
 	 * @param 	array 		extension keys which have TCA additions to load
 	 * @param 	boolean 	force include
 	 * @return 	void
+	 *
+	 * @TODO this won't work in TYPO3 8.x
 	 */
 	public static function loadTcaAdditions($ext_keys, $force=false) {
 		global $_EXTKEY, $TCA;
