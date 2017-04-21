@@ -106,19 +106,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection {
 	}
 
 	/**
-	 * Escaping and quoting values for SQL statements.
-	 * Usage count/core: 100
-	 *
-	 * @param	string		Input string
-	 * @param	string		Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
-	 * @return	string		Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
-	 * @see quoteStr()
-	 */
-	public function fullQuoteStr($value, $tableAlias = '') {
-		return $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $tableAlias);
-	}
-
-	/**
 	 * Make a SQL INSERT Statement
 	 *
 	 * @param 	string 	$tablename
