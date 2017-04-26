@@ -175,7 +175,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
-			$action, 'handleRequest', $parameters, $configurations, $viewData
+			array($action, 'handleRequest'),
+			array(&$parameters, &$configurations, &$viewData)
 		);
 	}
 
@@ -209,7 +210,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
-			$action, 'handleRequest', $parameters, $configurations, $viewData
+			array($action, 'handleRequest'),
+			array(&$parameters, &$configurations, &$viewData)
 		);
 	}
 
@@ -247,7 +249,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
-			$action, 'handleRequest', $parameters, $configurations, $viewData
+			array($action, 'handleRequest'),
+			array(&$parameters, &$configurations, &$viewData)
 		);
 	}
 
@@ -285,7 +288,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
-			$action, 'handleRequest', $parameters, $configurations, $viewData
+			array($action, 'handleRequest'),
+			array(&$parameters, &$configurations, &$viewData)
 		);
 
 		self::assertEquals($model, $viewData->offsetGet('item'));
@@ -322,7 +326,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
-			$action, 'handleRequest', $parameters, $configurations, $viewData
+			array($action, 'handleRequest'),
+			array(&$parameters, &$configurations, &$viewData)
 		);
 	}
 
@@ -361,7 +366,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
-			$action, 'handleRequest', $parameters, $configurations, $viewData
+			array($action, 'handleRequest'),
+			array(&$parameters, &$configurations, &$viewData)
 		);
 
 		self::assertNotEquals(
@@ -416,7 +422,8 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 		$action->setConfigurations($configurations);
 
 		$this->callInaccessibleMethod(
-			$action, 'handleRequest', $parameters, $configurations, $viewData
+			array($action, 'handleRequest'),
+			array(&$parameters, &$configurations, &$viewData)
 		);
 
 		self::assertEquals(
