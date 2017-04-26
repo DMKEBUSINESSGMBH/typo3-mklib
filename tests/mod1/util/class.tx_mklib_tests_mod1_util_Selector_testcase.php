@@ -154,7 +154,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 
 		self::assertEmpty($sSearchString,'suchstring ist nicht leer');
 		self::assertEquals('<input type="text" name="SET[testSearch]" style="width:96px;" value="" />', $out['field'], 'field nicht korrekt.');
-		self::assertEquals('<input type="submit" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
+		self::assertEquals('<input type="submit"  class="btn btn-default btn-sm" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
 		self::assertEquals('testLabel', $out['label'], 'label nicht korrekt.');
 	}
 
@@ -173,7 +173,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 
 		self::assertEquals('joh316',$sSearchString,'suchstring ist falsch');
 		self::assertEquals('<input type="text" name="SET[testSearch]" style="width:96px;" value="joh316" />', $out['field'], 'field nicht korrekt.');
-		self::assertEquals('<input type="submit" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
+		self::assertEquals('<input type="submit"  class="btn btn-default btn-sm" name="testName" value="testSearchValue" />', $out['button'], 'button nicht korrekt.');
 		self::assertEquals('testLabel', $out['label'], 'label nicht korrekt.');
 	}
 

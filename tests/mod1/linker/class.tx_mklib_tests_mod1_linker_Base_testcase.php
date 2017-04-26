@@ -54,7 +54,7 @@ class tx_mklib_tests_mod1_linker_Base_testcase extends Tx_Phpunit_TestCase {
 		$oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
 
 		self::assertEquals(
-			'<input type="submit" name="showTest[tx_rnbase_model_base|1]" value="' . $label . '" />',
+			'<input type="submit"  class="btn btn-default btn-sm" name="showTest[tx_rnbase_model_base|1]" value="' . $label . '" />',
 			$oLinker->makeLink($oModel,$oFormTool),
 			'Falscher Link.'
 		);
