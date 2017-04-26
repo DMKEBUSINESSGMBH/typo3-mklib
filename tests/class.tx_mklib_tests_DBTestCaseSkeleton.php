@@ -107,9 +107,9 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
 	}
 
 	/**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     *
+	 * Sets up the fixture, for example, open a network connection.
+	 * This method is called before a test is executed.
+	 *
 	 * setUp() = init DB etc.
 	 */
 	protected function setUp(){
@@ -117,7 +117,14 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
 		//Devlog stört beim Testen nur
 		tx_mklib_tests_Util::disableDevlog();
 
-		$this->createDatabase();
+
+		try {
+			$this->createDatabase();
+		} catch (RuntimeException $e) {
+			$this->markTestSkipped(
+				'This test is skipped because the test database is not available.'
+			);
+		}
 		// assuming that test-database can be created otherwise PHPUnit will skip the test
 		$this->useTestDatabase();
 		$this->importStdDB();
@@ -131,20 +138,20 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
 					self::importStaticTables($extension);
 				}
 			}
-//	   		$this->importExtensions($this->importExtensions);
+// 			$this->importExtensions($this->importExtensions);
 		}
 		// fixtures laden
 		if(count($this->importDataSet)) {
 			foreach($this->importDataSet as $fixturePath) {
-	   			$this->importDataSet(tx_rnbase_util_Files::getFileAbsFileName($fixturePath));
+				$this->importDataSet(tx_rnbase_util_Files::getFileAbsFileName($fixturePath));
 			}
 		}
 	}
 
 	/**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     *
+	 * Tears down the fixture, for example, close a network connection.
+	 * This method is called after a test is executed.
+	 *
 	 * tearDown() = destroy DB etc.
 	 */
 	protected function tearDown () {
