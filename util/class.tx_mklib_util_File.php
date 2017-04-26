@@ -61,8 +61,12 @@ class tx_mklib_util_File {
 		}
 		$key = $key ? 'base' : md5(serialize($mounts).serialize($f_ext));
 		if(!self::$ftInstances[$key]) {
-			self::$ftInstances[$key] = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getBasicFileUtilityClass());
-			self::$ftInstances[$key]->init($mounts, $f_ext);
+			self::$ftInstances[$key] = tx_rnbase::makeInstance(
+				tx_rnbase_util_Typo3Classes::getBasicFileUtilityClass()
+			);
+			if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+				self::$ftInstances[$key]->init($mounts, $f_ext);
+			}
 		}
 		return self::$ftInstances[$key];
 	}
@@ -228,18 +232,42 @@ class tx_mklib_util_File {
 	 * @param	boolean	$directoryCheck prüfen, ob das Verzeichnis existiert.
 	 * @return	string
 	 */
-	public static function slashPath($sPath, $directoryCheck = true)	{
-		$oFileTool = self::getFileTool();
+	public static function slashPath($sPath, $directoryCheck = true)
+	{
 		// entfernt überflüssige slashes
 		$sPath = self::trimSlashes($sPath);
 		// beginnenden slash hinzufügen
 		if(!self::isAbsWebPath($sPath) && ((TYPO3_OS == 'WIN' && substr($sPath,1,2) != ':/') || TYPO3_OS != 'WIN')) {
 			$sPath = ($sPath{0} != '/' ? '/' : '').$sPath;
 		}
-		if(!$directoryCheck || $oFileTool->is_directory($sPath)) {
-			$sPath = $oFileTool->slashPath($sPath);
+		if(!$directoryCheck || self::isDirectory($sPath)) {
+			if (substr($sPath, -1) != '/') {
+				return $sPath . '/';
+			}
 		}
 		return $sPath;
+	}
+
+	/**
+	 * Cleans $theDir for slashes in the end of the string and returns the new path, if it exists on the server.
+	 *
+	 * @param string Directory path to check
+	 *
+	 * @return string Returns the cleaned up directory name if OK, otherwise FALSE.
+	 */
+	public function isDirectory($theDir)
+	{
+		if (Tx_Rnbase_Utility_T3General::validPathStr($theDir)) {
+			if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
+				$theDir = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
+			} else {
+				$theDir = preg_replace('/[\/\. ]*$/', '', str_replace('//', '/', $theDir));
+			}
+			if (@is_dir($theDir)) {
+				return $theDir;
+			}
+		}
+		return false;
 	}
 
 	/**
