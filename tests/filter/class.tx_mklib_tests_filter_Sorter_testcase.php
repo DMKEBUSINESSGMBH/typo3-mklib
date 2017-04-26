@@ -49,6 +49,12 @@ class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase {
 		//tq_seo extension hat einen hook der auf das folgende feld zugreift.
 		//wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
 		//wir verhindern wollen!
+		if (!is_array($GLOBALS['TSFE']->rootLine)) {
+			$GLOBALS['TSFE']->rootLine = array();
+		}
+		if (!is_array($GLOBALS['TSFE']->rootLine[0])) {
+			$GLOBALS['TSFE']->rootLine[0] = array();
+		}
 		$GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
 	}
 
