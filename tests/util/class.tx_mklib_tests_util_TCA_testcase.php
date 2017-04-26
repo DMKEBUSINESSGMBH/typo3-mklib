@@ -71,15 +71,15 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase {
 	 *
 	 */
 	public function testEleminateNonTcaColumns(){
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
 		}
 		$model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array());
 		$data = array(
-	  		'blacklisted' => true,
-	  		'whitelisted' => 0,
-	  		'ich-muss-raus' => true,
-	  		'ich-auch' => false,
+			'blacklisted' => true,
+			'whitelisted' => 0,
+			'ich-muss-raus' => true,
+			'ich-auch' => false,
 		);
 		$res = tx_mklib_util_TCA::eleminateNonTcaColumns($model,$data);
 		self::assertEquals(2,count($res),'falsche array größe');
@@ -92,14 +92,14 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase {
 	 *
 	 */
 	public function testEleminateNonTcaColumnsByTable(){
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
 		}
 		$data = array(
-	  		'blacklisted' => true,
-	  		'whitelisted' => 0,
-	  		'ich-muss-raus' => true,
-	  		'ich-auch' => false,
+			'blacklisted' => true,
+			'whitelisted' => 0,
+			'ich-muss-raus' => true,
+			'ich-auch' => false,
 		);
 		$res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('tx_mklib_wordlist',$data);
 		self::assertEquals(2,count($res),'falsche array größe');

@@ -149,27 +149,12 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
 	/**
 	 * @return array
 	 */
-	public static function loadTca() {
-		$_EXTKEY = 'mklib';
-		global $TCA;
-		$TCA['tx_mklib_wordlist']['ctrl'] = array(
-	        'title'     => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist',
-	        'label'     => 'word',
-	    	'label_alt' => 'uid',
-	    	'label_alt_force' => false,
-	        'tstamp'    => 'tstamp',
-	        'crdate'    => 'crdate',
-	        'cruser_id' => 'cruser_id',
-	        'default_sortby' => 'ORDER BY crdate',
-	        'delete' => 'deleted',
-	        'enablecolumns' => array (
-	            'disabled' => 'hidden',
-	        ),
-	        'iconfile'          => 'EXT:mklib/icon/icon_tx_mklib_wordlist.gif',
-	        'dividers2tabs'     => true,
+	public static function loadTca()
+	{
+		$GLOBALS['TCA']['tx_mklib_wordlist'] = require tx_rnbase_util_Extensions::extPath(
+			'mklib',
+			'Configuration/TCA/tx_mklib_wordlist.php'
 		);
-
-		include_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'tca/tx_mklib_wordlist.php';
 	}
 
   /**

@@ -166,7 +166,7 @@ class tx_mklib_util_TCA {
 		tx_rnbase::load('tx_mklib_util_Array');
 		return tx_mklib_util_Array::removeNotIn(
 				$data,
-				isset($TCA[$table]) ? array_keys($TCA[$table]['columns']) : array()
+				empty($TCA[$table]['columns']) ? array() : array_keys($TCA[$table]['columns'])
 			);
 	}
 
