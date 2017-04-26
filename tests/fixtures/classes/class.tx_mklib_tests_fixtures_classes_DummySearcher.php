@@ -41,17 +41,17 @@ tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
  * @subpackage tx_mklib_mod1
  */
 class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_searcher_abstractBase {
-	
+
 /**
 	 * @return string
 	 */
 	protected function getSearcherId(){
 		return 'dummySearcher';
 	}
-	
+
 	/**
 	 * Liefert den Service.
-	 * 
+	 *
 	 * @return tx_mklib_srv_Base
 	 */
 	protected function getService() {
@@ -61,10 +61,10 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
 	/**
 	 * @return 	tx_mklib_mod1_decorator_Base
 	 */
-	protected function getDecorator(&$mod){
-		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);		
+	protected function getDecorator(&$mod, array $options = array()){
+		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod, $options);
 	}
-	
+
 	/**
 	 * Liefert die Spalten für den Decorator.
 	 * @param 	tx_mklib_mod1_decorator_Base 	$oDecorator
@@ -83,7 +83,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
 				)
 			);
 	}
-	
+
 	/**
 	 * (non-PHPdoc)
 	 * @see tx_mklib_mod1_searcher_abstractBase::getCols()
