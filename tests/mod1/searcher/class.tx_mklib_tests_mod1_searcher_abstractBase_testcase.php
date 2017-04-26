@@ -123,10 +123,10 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$GLOBALS['emptyTestResult'] = true;
 		$aResultList = $this->searcher->getResultList();
 
-		self::assertEquals('<p><strong>###LABEL_NO_DUMMYSEARCHER_FOUND###</strong></p><br/>', $aResultList['table'], 'Die Tabelle ist falsch.');
+		self::assertContains('LABEL_NO_DUMMYSEARCHER_FOUND', $aResultList['table'], 'Die Tabelle ist falsch.');
 
 		self::assertEquals(0, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-		self::assertEquals('<div class="pager"></div>', $aResultList['pager'], 'Der Pager ist falsch.');
+		self::assertEquals('', trim(strip_tags($aResultList['pager'])), 'Der Pager ist falsch.');
 	}
 
 	public function testGetResultListReturnsCorrectTableAndPagerIfResults() {
@@ -135,6 +135,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		$aResultList = $this->searcher->getResultList();
 
 		$result = $aResultList['table'];
+
 		self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
 		self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
@@ -146,42 +147,42 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 		self::assertContains(
 			'<div class="pager">',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager wrap ist falsch.'
 		);
-		self::assertContains(
-			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
+		self::assertRegExp(
+			'/<select (?(?=>)|.*)name="SET\[dummySearcherPagerdata_limit\]" onchange="jumpToUrl\(/',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager limit select start ist falsch.'
 		);
 		self::assertContains(
 			'<option value="10" selected="selected">10 Einträge</option>',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Die Pager limit option 10 ist falsch.'
 		);
 		self::assertContains(
 			'<option value="100">100 Einträge</option>',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Die Pager limit option 100 ist falsch.'
 		);
 		self::assertContains(
 			'</select>',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager limit select end ist falsch.'
 		);
 		self::assertContains(
 			'<select class="form-control" name="SET[dummySearcherPagerdata_offset]"',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager offset select ist falsch.'
 		);
 		self::assertContains(
 			'<option value="0" selected="selected">Seite 0</option>',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager offset select option 0 ist falsch.'
 		);
 		self::assertContains(
 			'</div>',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager endwrap ist falsch.'
 		);
 	}
 
@@ -231,10 +232,10 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		self::assertContains(
-			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
+		self::assertRegExp(
+			'/<select (?(?=>)|.*)name="SET\[dummySearcherPagerdata_limit\]" onchange="jumpToUrl\(/',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager limit select start ist falsch.'
 		);
 		self::assertContains(
 			'<option value="10" selected="selected">10 Einträge</option>',
@@ -296,10 +297,10 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase
 			$aResultList['pager'],
 			'Der Pager ist falsch.'
 		);
-		self::assertContains(
-			'<select name="SET[dummySearcherPagerdata_limit]" onchange="jumpToUrl(',
+		self::assertRegExp(
+			'/<select (?(?=>)|.*)name="SET\[dummySearcherPagerdata_limit\]" onchange="jumpToUrl\(/',
 			$aResultList['pager'],
-			'Der Pager ist falsch.'
+			'Der Pager limit select start ist falsch.'
 		);
 		self::assertContains(
 			'<option value="10" selected="selected">10 Einträge</option>',

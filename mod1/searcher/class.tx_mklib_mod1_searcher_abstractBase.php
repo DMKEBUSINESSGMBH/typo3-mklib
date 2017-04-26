@@ -509,7 +509,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase
 			$this->getOptions()
 		);
 
-		$out = $this->getModule()->getDoc()->table($tableData, $tableLayout);
+		/* @var $tables Tx_Rnbase_Backend_Utility_Tables */
+		$tables = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
+		$out = $tables->buildTable($tableData, $tableLayout);
 		$content .= $out;
 
 		return $out;
