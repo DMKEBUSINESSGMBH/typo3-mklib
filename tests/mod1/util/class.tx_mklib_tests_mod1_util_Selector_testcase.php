@@ -26,7 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
@@ -37,7 +37,7 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTestCase {
 	/**
 	 * @var tx_mklib_mod1_decorator_Base
 	 */
@@ -216,8 +216,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$data = array();
 		$return = $this->oSelector->showHiddenSelector($data);
 
-		self::assertContains(
-			'<select name="SET[showhidden]" onchange="jumpToUrl',
+		self::assertRegExp(
+			'/<select (?(?=>)|.*)name="SET\[showhidden\]" onchange="jumpToUrl\(/',
 			$data['selector'],
 			'falscher selector'
 		);
@@ -246,8 +246,9 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$options = array('id' => $this->sModuleKey);
 		$return = $this->oSelector->showHiddenSelector($data,$options);
 
-		self::assertContains(
-			'<select name="SET[testSearch]" onchange="jumpToUrl',
+
+		self::assertRegExp(
+			'/<select (?(?=>)|.*)name="SET\[testSearch\]" onchange="jumpToUrl\(/',
 			$data['selector'],
 			'falscher selector'
 		);
@@ -335,12 +336,29 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$arguments = array($key, &$out);
 		$method->invokeArgs($selector, $arguments);
 
-		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" ' .
-			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
-			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
-			$this->whitespaceByTypo3Version . '</span>';
+		$fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
 
-		self::assertEquals($expectedInput, tx_mklib_util_String::removeMultipleWhitespaces($out['field']), 'input feld falsch');
+		self::assertContains(
+			'<input name="test" type="text" id="tceforms-datefield-test" value="" />',
+			$fieldHtml
+		);
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			self::assertContains(
+				'<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
+				' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
+				$fieldHtml
+			);
+			self::assertContains(
+				'<img src="',
+				$fieldHtml
+			);
+		} else {
+			self::assertContains(
+				'<span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
+					'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
+				$fieldHtml
+			);
+		}
 	}
 
 	/**
@@ -357,11 +375,29 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$arguments = array($key, &$out);
 		$method->invokeArgs($selector, $arguments);
 
-		$expectedInput = 'test<input name="test" type="text" id="tceforms-datefield-test" ' .
-			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
-			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
-			$this->whitespaceByTypo3Version . '</span>';
-		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
+		$fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
+
+		self::assertContains(
+			'<input name="test" type="text" id="tceforms-datefield-test" value="" />',
+			$fieldHtml
+		);
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			self::assertContains(
+				'<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
+				' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
+				$fieldHtml
+			);
+			self::assertContains(
+				'<img src="',
+				$fieldHtml
+			);
+		} else {
+			self::assertContains(
+				'<span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
+					'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
+				$fieldHtml
+			);
+		}
 	}
 
 	/**
@@ -397,11 +433,29 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$arguments = array($key, &$out);
 		$method->invokeArgs($selector, $arguments);
 
-		$expectedInput = '<input name="test" type="text" id="tceforms-datefield-test" ' .
-			'value="123" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
-			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
-			$this->whitespaceByTypo3Version . '</span>';
-		self::assertEquals($expectedInput, $out['field'], 'input feld falsch');
+		$fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
+
+		self::assertContains(
+			'<input name="test" type="text" id="tceforms-datefield-test" value="123" />',
+			$fieldHtml
+		);
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			self::assertContains(
+				'<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
+				' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
+				$fieldHtml
+			);
+			self::assertContains(
+				'<img src="',
+				$fieldHtml
+			);
+		} else {
+			self::assertContains(
+				'<span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
+					'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
+				$fieldHtml
+			);
+		}
 	}
 
 	/**
@@ -526,15 +580,38 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
 
-		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" ' .
-			'value="" /><span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" ' .
-			'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
-			$this->whitespaceByTypo3Version . '</span><input name="test_to" type="text" ' .
-			'id="tceforms-datefield-test_to" value="" /><span style="cursor:pointer;" ' .
-			'id="picker-tceforms-datefield-test_to" class="t3-icon ' .
-			't3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">' .
-			$this->whitespaceByTypo3Version . '</span>';
-		self::assertEquals($expectedOut, $out['field'], 'out falsch');
+		$fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
+
+		self::assertContains(
+			'<input name="test_from" type="text" id="tceforms-datefield-test_from" value="" />',
+			$fieldHtml
+		);
+		self::assertContains(
+			'<input name="test_to" type="text" id="tceforms-datefield-test_to" value="" />',
+			$fieldHtml
+		);
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			self::assertContains(
+				'<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
+				' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
+				$fieldHtml
+			);
+			self::assertContains(
+				'<img src="',
+				$fieldHtml
+			);
+		} else {
+			self::assertContains(
+				'<span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" ' .
+					'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
+				$fieldHtml
+			);
+			self::assertContains(
+				'<span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" ' .
+					'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
+				$fieldHtml
+			);
+		}
 	}
 
 	/**
@@ -558,16 +635,38 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		$out = array('field' => '');
 		$selector->showDateRangeSelector($out, $key);
 
-		$expectedOut = '<input name="test_from" type="text" id="tceforms-datefield-test_from" ' .
-			'value="08-07-2013" /><span style="cursor:pointer;" id="picker-tceforms-' .
-			'datefield-test_from" class="t3-icon t3-icon-actions t3-icon-actions-edit ' .
-			't3-icon-edit-pick-date">' . $this->whitespaceByTypo3Version . '</span><input ' .
-			'name="test_to" type="text" ' .
-			'id="tceforms-datefield-test_to" value="09-07-2013" /><span style="cursor:pointer;" ' .
-			'id="picker-tceforms-datefield-test_to" class="t3-icon t3-icon-actions ' .
-			't3-icon-actions-edit t3-icon-edit-pick-date">' .
-			$this->whitespaceByTypo3Version . '</span>';
-		self::assertEquals($expectedOut, $out['field'], 'out falsch');
+		$fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
+
+		self::assertContains(
+			'<input name="test_from" type="text" id="tceforms-datefield-test_from" value="08-07-2013" />',
+			$fieldHtml
+		);
+		self::assertContains(
+			'<input name="test_to" type="text" id="tceforms-datefield-test_to" value="09-07-2013" />',
+			$fieldHtml
+		);
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			self::assertContains(
+				'<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
+				' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
+				$fieldHtml
+			);
+			self::assertContains(
+				'<img src="',
+				$fieldHtml
+			);
+		} else {
+			self::assertContains(
+				'<span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" ' .
+					'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
+				$fieldHtml
+			);
+			self::assertContains(
+				'<span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" ' .
+					'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
+				$fieldHtml
+			);
+		}
 	}
 
 	/**
