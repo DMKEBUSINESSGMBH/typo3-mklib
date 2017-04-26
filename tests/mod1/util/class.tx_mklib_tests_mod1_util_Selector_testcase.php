@@ -94,7 +94,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends Tx_Phpunit_TestCase {
 		}
 
 		// sonst fehler die icon klassen
-		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+		if(tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
 			\TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
 		}
 
