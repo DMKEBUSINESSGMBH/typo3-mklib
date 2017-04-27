@@ -26,10 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * benötigte Klassen einbinden
- */
-
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_String');
 
 /**
@@ -37,7 +34,7 @@ tx_rnbase::load('tx_mklib_util_String');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_String_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase {
 
 	/**
 	 * Testen ob crop nur richtig kürzt
@@ -220,6 +217,12 @@ class tx_mklib_tests_util_String_testcase extends Tx_Phpunit_TestCase {
 		//tq_seo extension hat einen hook der auf das folgende feld zugreift.
 		//wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
 		//wir verhindern wollen!
+		if (!is_array($GLOBALS['TSFE']->rootLine)) {
+			$GLOBALS['TSFE']->rootLine = array();
+		}
+		if (!is_array($GLOBALS['TSFE']->rootLine[0])) {
+			$GLOBALS['TSFE']->rootLine[0] = array();
+		}
 		$GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
 	}
 
