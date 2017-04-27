@@ -329,12 +329,16 @@ abstract class tx_mklib_repository_Abstract
 		Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where='',
 		$debug = 0, $noQuoteFields = ''
 	) {
+		$db = $this->getDatabaseUtility();
 		$table = $model->getTableName();
 		$uid = $model->getUid();
 
 		if (!$where) {
-			$where = 	'1=1 AND `' . $table .
-						'`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+			$where = sprintf(
+				'1=1 AND `%s`.`uid`=%s',
+				$table,
+				$db->fullQuoteStr($uid, $table)
+			);
 		}
 
 		// remove uid if exists
@@ -347,7 +351,7 @@ abstract class tx_mklib_repository_Abstract
 		$data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
 		$data = $this->secureFromCrossSiteScripting($model, $data);
 
-		$this->getDatabaseUtility()->doUpdate($table, $where, $data, $debug, $noQuoteFields);
+		$db->doUpdate($table, $where, $data, $debug, $noQuoteFields);
 
 		$model->reset();
 		return $model;
@@ -401,7 +405,11 @@ abstract class tx_mklib_repository_Abstract
 		$uid = $model->getUid();
 
 		if (!$where) {
-			$where = '1=1 AND `'.$table.'`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+			$where = sprintf(
+				'1=1 AND `%s`.`uid`=%s',
+				$table,
+				$this->getDatabaseUtility()->fullQuoteStr($uid, $table)
+			);
 		}
 
 		$this->delete($table, $where, $mode);

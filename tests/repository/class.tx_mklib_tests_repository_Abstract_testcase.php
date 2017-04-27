@@ -360,10 +360,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 			array('getSearchClass', 'getDatabaseUtility')
 		);
 
-		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+		$databaseConnection->expects(self::once())
+			->method('fullQuoteStr')
+			->with('123')
+			->will(self::returnValue('\'quoted123\''));
 		$databaseConnection->expects(self::once())
 			->method('doUpdate')
-			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'');
+			->with('unknown', '1=1 AND `unknown`.`uid`=\'quoted123\'');
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
@@ -394,11 +398,15 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$data = array('column_1' => 'new value', 'column_2' => 'new value');
-		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+		$databaseConnection->expects(self::once())
+			->method('fullQuoteStr')
+			->with('123')
+			->will(self::returnValue('\'quoted123\''));
 		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with(
-				'unknown', '1=1 AND `unknown`.`uid`=\'123\'',
+				'unknown', '1=1 AND `unknown`.`uid`=\'quoted123\'',
 				array('column_1' => 'new value')
 			);
 
@@ -431,10 +439,14 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$data = array('column_1' => 'new value');
-		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+		$databaseConnection->expects(self::once())
+			->method('fullQuoteStr')
+			->with('123')
+			->will(self::returnValue('\'quoted123\''));
 		$databaseConnection->expects(self::once())
 			->method('doUpdate')
-			->with('unknown', '1=1 AND `unknown`.`uid`=\'123\'', array('secured'));
+			->with('unknown', '1=1 AND `unknown`.`uid`=\'quoted123\'', array('secured'));
 
 		$repository->expects(self::once())
 			->method('getDatabaseUtility')
@@ -470,12 +482,16 @@ class tx_mklib_tests_repository_Abstract_testcase
 		);
 
 		$data = array('column_1' => 'new value', 'uid' => 456);
-		$databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+		$databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+		$databaseConnection->expects(self::once())
+			->method('fullQuoteStr')
+			->with('123')
+			->will(self::returnValue('\'quoted123\''));
 		$databaseConnection->expects(self::once())
 			->method('doUpdate')
 			->with(
 				'unknown',
-				'1=1 AND `unknown`.`uid`=\'123\'',
+				'1=1 AND `unknown`.`uid`=\'quoted123\'',
 				array('column_1' => 'new value')
 			);
 
