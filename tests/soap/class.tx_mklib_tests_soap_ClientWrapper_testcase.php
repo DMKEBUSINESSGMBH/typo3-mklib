@@ -23,19 +23,23 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_soap_ClientWrapper');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_soap_ClientWrapper_testcase extends Tx_Phpunit_TestCase{
+class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTestCase{
 
 	const SOAP_TEST_METHOD = 'mySoapTestMethod';
 	const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';
 
 	public function setUp() {
+		if (extension_loaded('soap')) {
+			$this->markTestSkipped('Skipped because soap is not installed.');
+		}
+
 		tx_mklib_tests_Util::disableDevlog();
 	}
 
