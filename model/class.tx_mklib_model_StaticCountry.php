@@ -47,7 +47,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
 	public static function getInstance($rowOrUid = null)
 	{
 		// Instanzieren, wenn nicht im Cache oder ein Record übergeben wurde.
-		if(is_array($rowOrUid) || !isset(self::$instances[$rowOrUid])) {
+		if (is_array($rowOrUid) || !isset(self::$instances[$rowOrUid])) {
 			$item = tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
 			// Nur das erzeugte Model zurückgeben
 			if (is_array($rowOrUid)) {
@@ -56,6 +56,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
 			// else, Model Cachen, wenn eine uid übergeben wurde
 			self::$instances[$rowOrUid] = $item;
 		}
+
 		return self::$instances[$rowOrUid];
 	}
 
