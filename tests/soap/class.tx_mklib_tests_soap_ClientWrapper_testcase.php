@@ -36,7 +36,7 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTes
 	const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';
 
 	public function setUp() {
-		if (extension_loaded('soap')) {
+		if (!extension_loaded('soap')) {
 			$this->markTestSkipped('Skipped because soap is not installed.');
 		}
 
