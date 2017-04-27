@@ -25,6 +25,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
+tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_Session');
 
 /**
@@ -32,7 +33,9 @@ tx_rnbase::load('tx_mklib_util_Session');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_Session_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_util_Session_testcase
+	extends tx_rnbase_tests_BaseTestCase
+{
 
 	/**
 	 * @var array
@@ -120,12 +123,35 @@ class tx_mklib_tests_util_Session_testcase extends Tx_Phpunit_TestCase {
 	/**
 	 * @group unit
 	 */
-	public function testSetSessionIdCallsFetchSessionDataOnFeUser(){
+	public function testSetSessionIdCallsFetchSessionDataOnFeUser() {
+		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$this->markTestSkipped(
+				'fetchSessionData was removed in TYPO3 8'
+			);
+		}
 		$GLOBALS['TSFE']->fe_user = $this->getMock(
 			tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(), array('fetchSessionData')
 		);
 		$GLOBALS['TSFE']->fe_user->expects(self::once())
 			->method('fetchSessionData');
+
+		tx_mklib_util_Session::setSessionId(456);
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testSetSessionIdCallsFetchUserSessionOnFeUser() {
+		if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+			$this->markTestSkipped(
+				'fetchUserSession is only present since TYPO3 8'
+			);
+		}
+		$GLOBALS['TSFE']->fe_user = $this->getMock(
+			tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(), array('fetchUserSession')
+		);
+		$GLOBALS['TSFE']->fe_user->expects(self::once())
+			->method('fetchUserSession');
 
 		tx_mklib_util_Session::setSessionId(456);
 	}
@@ -152,7 +178,7 @@ class tx_mklib_tests_util_Session_testcase extends Tx_Phpunit_TestCase {
 		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
 		tx_mklib_util_Session::storeSessionData();
 
-		// dann wir eigentliche Session ID Wert setzen
+		// dann den eigentliche Session ID Wert setzen
 		tx_mklib_util_Session::setSessionId($sessionIdBackup);
 		tx_mklib_util_Session::setSessionValue('mklibTest', 'initialTestValue');
 		tx_mklib_util_Session::storeSessionData();
