@@ -40,18 +40,16 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @author Michael Wagner
  */
 class tx_mklib_tests_srv_Finance_testcase
-	extends tx_rnbase_tests_BaseTestCase {
-	protected $oFinanceSrv;
-
+	extends tx_rnbase_tests_BaseTestCase
+{
 	/**
-	 * Service instanzieren
+	 * This method is called before the first test of this test class is run.
 	 */
-	public function setUp() {
-		/*
-		 * ist es sinnvoll hier den setup zu nutzen?
-		 * der service wird ja eh vor jedem test neu geholt!
-		 */
-		$this->oFinanceSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
+	public static function setUpBeforeClass()
+	{
+		if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
+			self::prepareLegacyTypo3DbGlobal();
+		}
 	}
 
 	public function testGetCurrency(){
@@ -74,10 +72,11 @@ class tx_mklib_tests_srv_Finance_testcase
 	 * Prüft ob richtig gerundet wird
 	 */
 	public function testRoundDouble(){
-		self::assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5316,2,false),'Die Zahl wurde nicht korrekt gerundet!');
-		self::assertEquals(2.54,$this->oFinanceSrv->roundUpDouble(2.5356,2,false),'Die Zahl wurde nicht korrekt gerundet!');
-		self::assertEquals(2.536,$this->oFinanceSrv->roundUpDouble(2.5356,3,false),'Die Zahl wurde nicht korrekt gerundet!');
-		self::assertEquals('2,20',$this->oFinanceSrv->roundUpDouble('2.2000',2, true, ','),'Die Zahl wurde nicht korrekt gerundet!');
+		$oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
+		self::assertEquals(2.54,$oSrv->roundUpDouble(2.5316,2,false),'Die Zahl wurde nicht korrekt gerundet!');
+		self::assertEquals(2.54,$oSrv->roundUpDouble(2.5356,2,false),'Die Zahl wurde nicht korrekt gerundet!');
+		self::assertEquals(2.536,$oSrv->roundUpDouble(2.5356,3,false),'Die Zahl wurde nicht korrekt gerundet!');
+		self::assertEquals('2,20',$oSrv->roundUpDouble('2.2000',2, true, ','),'Die Zahl wurde nicht korrekt gerundet!');
 	}
 
 	/**
