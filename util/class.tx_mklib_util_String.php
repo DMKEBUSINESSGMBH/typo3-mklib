@@ -169,7 +169,7 @@ class tx_mklib_util_String
 		static $cObj;
 
 		if (!$cObj) {
-			$cObj = tx_rnbase::makeInstance('tx_rnbase_configurations')->getCObj();
+			$cObj = tx_rnbase_util_TYPO3::getContentObject();
 		}
 
 		$emailMailTo = $cObj->getMailTo($emailParts[0],$emailParts[0]);
