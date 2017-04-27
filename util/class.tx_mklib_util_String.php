@@ -40,7 +40,9 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  * @package tx_mklib
  * @subpackage tx_mklib_util
  */
-class tx_mklib_util_String extends tx_mklib_util_Var{
+class tx_mklib_util_String
+	extends tx_mklib_util_Var
+{
 
 	const emailRegex = "/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,4}))/";
 
