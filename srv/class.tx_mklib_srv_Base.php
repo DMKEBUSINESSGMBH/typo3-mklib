@@ -91,8 +91,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 	}
 
 	/**
-	 * On default, return hidden and deleted fields in backend
-	 * @TODO: realy return deleted fields? make Konfigurable!
+	 * On default, return hidden fields in backend
 	 *
 	 * @param array $fields
 	 * @param array $options
