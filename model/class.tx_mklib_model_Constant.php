@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_model
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_model
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -32,56 +32,61 @@ tx_rnbase::load('tx_rnbase_model_base');
 
 /**
  * Model einer Konstante.
- * 
  */
-abstract class tx_mklib_model_Constant extends tx_rnbase_model_base {
-	
-	/**
-	 * returns the alias1 of this constant
-	 *
-	 * @return string
-	 */
-	public function getAlias1(){
-		return $this->record['alias1'];
-	}
+abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
+{
+    
+    /**
+     * returns the alias1 of this constant
+     *
+     * @return string
+     */
+    public function getAlias1()
+    {
+        return $this->record['alias1'];
+    }
 
-	/**
-	 * returns the alias2 of this constant
-	 *
-	 * @return string
-	 */
-	public function getAlias2(){
-		return $this->record['alias2'];
-	}
-	
-	/**
-	 * returns the name of this constant
-	 * 
-	 * @return string
-	 */
-	public function getName(){
-		return $this->record['name'];
-	}
+    /**
+     * returns the alias2 of this constant
+     *
+     * @return string
+     */
+    public function getAlias2()
+    {
+        return $this->record['alias2'];
+    }
+    
+    /**
+     * returns the name of this constant
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->record['name'];
+    }
 
-	/**
-	 * returns the name of this constant
-	 * 
-	 * @return string
-	 */
-	public function getTitle(){
-		return $this->record['name'];
-	}
-	
-	/**
-	 * returns the type number of this constant
-	 * 
-	 * @return integer
-	 */
-	public function getTypeUid(){
-		return (int) $this->record['type'];
-	}
+    /**
+     * returns the name of this constant
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->record['name'];
+    }
+    
+    /**
+     * returns the type number of this constant
+     *
+     * @return int
+     */
+    public function getTypeUid()
+    {
+        return (int) $this->record['type'];
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php']);
 }

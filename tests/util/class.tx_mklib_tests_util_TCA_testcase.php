@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_util
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,295 +38,321 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
+{
 
-	/**
-	 * @var string
-	 */
-	private $returnUrlBackup;
+    /**
+     * @var string
+     */
+    private $returnUrlBackup;
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		//es kann sein dass die TCA von der wordlist nicht geladen wurde.
-		//also stellen wir die TCA hier bereit
-		tx_rnbase::load('tx_mklib_srv_Wordlist');
-		tx_mklib_srv_Wordlist::loadTca();
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        //es kann sein dass die TCA von der wordlist nicht geladen wurde.
+        //also stellen wir die TCA hier bereit
+        tx_rnbase::load('tx_mklib_srv_Wordlist');
+        tx_mklib_srv_Wordlist::loadTca();
 
-		$this->returnUrlBackup = $_GET['returnUrl'];
-	}
+        $this->returnUrlBackup = $_GET['returnUrl'];
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		$_GET['returnUrl'] = $this->returnUrlBackup;
-		unset($GLOBALS['TCA']['tt_mktest_table']);
-	}
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        $_GET['returnUrl'] = $this->returnUrlBackup;
+        unset($GLOBALS['TCA']['tt_mktest_table']);
+    }
 
-	/**
-	 *
-	 */
-	public function testEleminateNonTcaColumns(){
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
-		}
-		$model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array());
-		$data = array(
-			'blacklisted' => true,
-			'whitelisted' => 0,
-			'ich-muss-raus' => true,
-			'ich-auch' => false,
-		);
-		$res = tx_mklib_util_TCA::eleminateNonTcaColumns($model,$data);
-		self::assertEquals(2,count($res),'falsche array größe');
-		self::assertTrue($res['blacklisted'],'blacklsited Feld ist nicht korrekt!');
-		self::assertEquals(0,$res['whitelisted'],'whitelisted Feld ist nicht korrekt!');
-		self::assertTrue(empty($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
-		self::assertTrue(empty($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
-	}
-	/**
-	 *
-	 */
-	public function testEleminateNonTcaColumnsByTable(){
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
-		}
-		$data = array(
-			'blacklisted' => true,
-			'whitelisted' => 0,
-			'ich-muss-raus' => true,
-			'ich-auch' => false,
-		);
-		$res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('tx_mklib_wordlist',$data);
-		self::assertEquals(2,count($res),'falsche array größe');
-		self::assertTrue($res['blacklisted'],'blacklsited Feld ist nicht korrekt!');
-		self::assertEquals(0,$res['whitelisted'],'whitelisted Feld ist nicht korrekt!');
-		self::assertFalse(isset($res['ich-muss-raus']),'ich-muss-raus Feld wurde nicht entfernt!');
-		self::assertFalse(isset($res['ich-auch']),'ich-auch Feld wurde nicht entfernt!');
-	}
+    /**
+     *
+     */
+    public function testEleminateNonTcaColumns()
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
+        }
+        $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array());
+        $data = array(
+            'blacklisted' => true,
+            'whitelisted' => 0,
+            'ich-muss-raus' => true,
+            'ich-auch' => false,
+        );
+        $res = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
+        self::assertEquals(2, count($res), 'falsche array größe');
+        self::assertTrue($res['blacklisted'], 'blacklsited Feld ist nicht korrekt!');
+        self::assertEquals(0, $res['whitelisted'], 'whitelisted Feld ist nicht korrekt!');
+        self::assertTrue(empty($res['ich-muss-raus']), 'ich-muss-raus Feld wurde nicht entfernt!');
+        self::assertTrue(empty($res['ich-auch']), 'ich-auch Feld wurde nicht entfernt!');
+    }
+    /**
+     *
+     */
+    public function testEleminateNonTcaColumnsByTable()
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::loadNewTcaColumnsConfigFiles();
+        }
+        $data = array(
+            'blacklisted' => true,
+            'whitelisted' => 0,
+            'ich-muss-raus' => true,
+            'ich-auch' => false,
+        );
+        $res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('tx_mklib_wordlist', $data);
+        self::assertEquals(2, count($res), 'falsche array größe');
+        self::assertTrue($res['blacklisted'], 'blacklsited Feld ist nicht korrekt!');
+        self::assertEquals(0, $res['whitelisted'], 'whitelisted Feld ist nicht korrekt!');
+        self::assertFalse(isset($res['ich-muss-raus']), 'ich-muss-raus Feld wurde nicht entfernt!');
+        self::assertFalse(isset($res['ich-auch']), 'ich-auch Feld wurde nicht entfernt!');
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetEnableColumnReturnsDeletedForDisabled() {
-		$expected = 'deleted';
-		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns']['disabled'] = $expected;
-		$actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
-		self::assertEquals($expected, $actual);
-	}
-	/**
-	 * @group unit
-	 * @expectedException LogicException
+    /**
+     * @group unit
+     */
+    public function testGetEnableColumnReturnsDeletedForDisabled()
+    {
+        $expected = 'deleted';
+        $GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns']['disabled'] = $expected;
+        $actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
+        self::assertEquals($expected, $actual);
+    }
+    /**
+     * @group unit
+     * @expectedException LogicException
      * @expectedExceptionCode 4003001
-	 */
-	public function testGetEnableColumnThrowsExceptionForNonExcitingTable() {
-		tx_mklib_util_TCA::getEnableColumn('tt_mktest_table_does_not_exists', 'disabled');
-	}
-	/**
-	 * @group unit
-	 * @expectedException LogicException
+     */
+    public function testGetEnableColumnThrowsExceptionForNonExcitingTable()
+    {
+        tx_mklib_util_TCA::getEnableColumn('tt_mktest_table_does_not_exists', 'disabled');
+    }
+    /**
+     * @group unit
+     * @expectedException LogicException
      * @expectedExceptionCode 4003002
-	 */
-	public function testGetEnableColumnThrowsExceptionForNonExcitingColumn() {
-		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns'] = array();
-		tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
-	}
-	/**
-	 * @group unit
-	 */
-	public function testGetEnableColumnReturnsDefaultValueForDisabled() {
-		$expected = 'removed';
-		$actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled', $expected);
-		self::assertEquals($expected, $actual);
-	}
-	/**
-	 * @group unit
-	 */
-	public function testGetLanguageFieldReturnsRightValue() {
-		$expected = 'sys_language_identifier';
-		$GLOBALS['TCA']['tt_mktest_table']['ctrl']['languageField'] = $expected;
-		$actual = tx_mklib_util_TCA::getLanguageField('tt_mktest_table');
-		self::assertEquals($expected, $actual);
-	}
-	/**
-	 * @group unit
-	 * @expectedException LogicException
+     */
+    public function testGetEnableColumnThrowsExceptionForNonExcitingColumn()
+    {
+        $GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns'] = array();
+        tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
+    }
+    /**
+     * @group unit
+     */
+    public function testGetEnableColumnReturnsDefaultValueForDisabled()
+    {
+        $expected = 'removed';
+        $actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled', $expected);
+        self::assertEquals($expected, $actual);
+    }
+    /**
+     * @group unit
+     */
+    public function testGetLanguageFieldReturnsRightValue()
+    {
+        $expected = 'sys_language_identifier';
+        $GLOBALS['TCA']['tt_mktest_table']['ctrl']['languageField'] = $expected;
+        $actual = tx_mklib_util_TCA::getLanguageField('tt_mktest_table');
+        self::assertEquals($expected, $actual);
+    }
+    /**
+     * @group unit
+     * @expectedException LogicException
      * @expectedExceptionCode 4003001
-	 */
-	public function testGetLanguageThrowsExceptionForNonExcitingTable() {
-		tx_mklib_util_TCA::getLanguageField('tt_mktest_table_does_not_exists');
-	}
-	/**
-	 * @group unit
-	 */
-	public function testGetParentUidFromReturnUrlReturnsNullIfNoReturnUrl(){
-		self::assertNull(
-			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
-		);
-	}
+     */
+    public function testGetLanguageThrowsExceptionForNonExcitingTable()
+    {
+        tx_mklib_util_TCA::getLanguageField('tt_mktest_table_does_not_exists');
+    }
+    /**
+     * @group unit
+     */
+    public function testGetParentUidFromReturnUrlReturnsNullIfNoReturnUrl()
+    {
+        self::assertNull(
+            tx_mklib_util_TCA::getParentUidFromReturnUrl(),
+            'parent uid zu Beginn nicht leer'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotExistentInReturnUrl(){
-		$_GET['returnUrl'] = 'typo3/wizard_add.php';
+    /**
+     * @group unit
+     */
+    public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotExistentInReturnUrl()
+    {
+        $_GET['returnUrl'] = 'typo3/wizard_add.php';
 
-		self::assertNull(
-			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
-		);
-	}
+        self::assertNull(
+            tx_mklib_util_TCA::getParentUidFromReturnUrl(),
+            'parent uid zu Beginn nicht leer'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotSetInReturnUrl(){
-		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=';
+    /**
+     * @group unit
+     */
+    public function testGetParentUidFromReturnUrlReturnsNullIfParentUidNotSetInReturnUrl()
+    {
+        $_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=';
 
-		self::assertNull(
-			tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid zu Beginn nicht leer'
-		);
-	}
+        self::assertNull(
+            tx_mklib_util_TCA::getParentUidFromReturnUrl(),
+            'parent uid zu Beginn nicht leer'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetParentUidFromReturnUrlReturnsCorrectParentUid(){
-		$_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=2';
+    /**
+     * @group unit
+     */
+    public function testGetParentUidFromReturnUrlReturnsCorrectParentUid()
+    {
+        $_GET['returnUrl'] = 'typo3/wizard_add.php?&P[uid]=2';
 
-		self::assertEquals(
-			2, tx_mklib_util_TCA::getParentUidFromReturnUrl(), 'parent uid nicht korrekt'
-		);
-	}
+        self::assertEquals(
+            2,
+            tx_mklib_util_TCA::getParentUidFromReturnUrl(),
+            'parent uid nicht korrekt'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testCropLabelsWithDefaultLengthOf80CharsCorrect() {
-		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
-		$tcaTableInformation = array('items' => array(0 => array(0 => $labelWith81Chars)));
+    /**
+     * @group unit
+     */
+    public function testCropLabelsWithDefaultLengthOf80CharsCorrect()
+    {
+        $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
+        $tcaTableInformation = array('items' => array(0 => array(0 => $labelWith81Chars)));
 
-		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+        tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
-		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
-		self::assertEquals(
-			$labelWith80CharsAnd3Dots,
-			$tcaTableInformation['items'][0][0],
-			'Label nicht richtig gekürzt'
-		);
-	}
+        $labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
+        self::assertEquals(
+            $labelWith80CharsAnd3Dots,
+            $tcaTableInformation['items'][0][0],
+            'Label nicht richtig gekürzt'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testCropLabelsWithEmptyItems() {
-		$tcaTableInformation = array('items' => array());
-		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
-		unset($tcaTableInformation['items']);
-		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
-	}
+    /**
+     * @group unit
+     */
+    public function testCropLabelsWithEmptyItems()
+    {
+        $tcaTableInformation = array('items' => array());
+        tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+        unset($tcaTableInformation['items']);
+        tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testCropLabelsWithConfiguredLengthOf40Chars() {
-		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
-		$tcaTableInformation = array(
-			'items' => array(0 => array(0 => $labelWith81Chars)),
-			'config' => array('labelLength' => 40)
-		);
+    /**
+     * @group unit
+     */
+    public function testCropLabelsWithConfiguredLengthOf40Chars()
+    {
+        $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
+        $tcaTableInformation = array(
+            'items' => array(0 => array(0 => $labelWith81Chars)),
+            'config' => array('labelLength' => 40)
+        );
 
-		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+        tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
-		$labelWith40CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur s...';
-		self::assertEquals(
-			$labelWith40CharsAnd3Dots,
-			$tcaTableInformation['items'][0][0],
-			'Label nicht richtig gekürzt'
-		);
-	}
+        $labelWith40CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur s...';
+        self::assertEquals(
+            $labelWith40CharsAnd3Dots,
+            $tcaTableInformation['items'][0][0],
+            'Label nicht richtig gekürzt'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testCropLabelsUsesDefaultLengthIfConfiguredLengthIsNoIntegerGreaterThan0() {
-		$labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
-		$tcaTableInformation = array(
-			'items' => array(0 => array(0 => $labelWith81Chars)),
-			'config' => array('labelLength' => 'test')
-		);
+    /**
+     * @group unit
+     */
+    public function testCropLabelsUsesDefaultLengthIfConfiguredLengthIsNoIntegerGreaterThan0()
+    {
+        $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
+        $tcaTableInformation = array(
+            'items' => array(0 => array(0 => $labelWith81Chars)),
+            'config' => array('labelLength' => 'test')
+        );
 
-		tx_mklib_util_TCA::cropLabels($tcaTableInformation);
+        tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
-		$labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
-		self::assertEquals(
-			$labelWith80CharsAnd3Dots,
-			$tcaTableInformation['items'][0][0],
-			'Label nicht richtig gekürzt'
-		);
-	}
+        $labelWith80CharsAnd3Dots = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmods...';
+        self::assertEquals(
+            $labelWith80CharsAnd3Dots,
+            $tcaTableInformation['items'][0][0],
+            'Label nicht richtig gekürzt'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetGermanStatesFieldWithoutRequired() {
-		$expectedGermanStatesField = array (
-			'exclude'	=> 1,
-			'label'		=> 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-			'config'	=> array (
-				'type'	=> 'select',
-				'items'	=> array (
-					array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
-				),
-				'foreign_table'			=> 'static_country_zones',
-				'foreign_table_where' 	=> ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
-				'size' 					=> 1,
-			)
-		);
+    /**
+     * @group unit
+     */
+    public function testGetGermanStatesFieldWithoutRequired()
+    {
+        $expectedGermanStatesField = array(
+            'exclude'    => 1,
+            'label'        => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+            'config'    => array(
+                'type'    => 'select',
+                'items'    => array(
+                    array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
+                ),
+                'foreign_table'            => 'static_country_zones',
+                'foreign_table_where'    => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+                'size'                    => 1,
+            )
+        );
 
-		$germanStatesField = tx_mklib_util_TCA::getGermanStatesField();
+        $germanStatesField = tx_mklib_util_TCA::getGermanStatesField();
 
-		self::assertEquals(
-			$expectedGermanStatesField,
-			$germanStatesField,
-			'TCA Feld falsch'
-		);
-	}
+        self::assertEquals(
+            $expectedGermanStatesField,
+            $germanStatesField,
+            'TCA Feld falsch'
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testGetGermanStatesFieldWithRequired() {
-		$expectedGermanStatesField = array (
-			'exclude'	=> 1,
-			'label'		=> 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-			'config'	=> array (
-				'type'	=> 'select',
-				'items'	=> array (
-					array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
-				),
-				'foreign_table'			=> 'static_country_zones',
-				'foreign_table_where' 	=> ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
-				'size' 					=> 1,
-				'minitems' => 1,
-				'maxitems' => 1,
-				'eval' => 'required'
-			)
-		);
+    /**
+     * @group unit
+     */
+    public function testGetGermanStatesFieldWithRequired()
+    {
+        $expectedGermanStatesField = array(
+            'exclude'    => 1,
+            'label'        => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+            'config'    => array(
+                'type'    => 'select',
+                'items'    => array(
+                    array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
+                ),
+                'foreign_table'            => 'static_country_zones',
+                'foreign_table_where'    => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+                'size'                    => 1,
+                'minitems' => 1,
+                'maxitems' => 1,
+                'eval' => 'required'
+            )
+        );
 
-		$germanStatesField = tx_mklib_util_TCA::getGermanStatesField(true);
+        $germanStatesField = tx_mklib_util_TCA::getGermanStatesField(true);
 
-		self::assertEquals(
-			$expectedGermanStatesField,
-			$germanStatesField,
-			'TCA Feld falsch'
-		);
-	}
+        self::assertEquals(
+            $expectedGermanStatesField,
+            $germanStatesField,
+            'TCA Feld falsch'
+        );
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']);
 }

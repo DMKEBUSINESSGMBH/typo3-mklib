@@ -45,117 +45,116 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_mod1_linker_ShowDetails {
+class tx_mklib_mod1_linker_ShowDetails
+{
+    private $identifier = null;
 
-	private $identifier = null;
+    /**
+     *
+     * @throws InvalidArgumentException
+     * @param string $identifier Model or tablename
+     *                           Wird zum Speichern in den Moduldaten,
+     *                           zum erzeugen der buttons und
+     *                           zum auslesend er Parameter verwendet
+     */
+    public function __construct($identifier)
+    {
+        if (empty($identifier)) {
+            throw new InvalidArgumentException(
+                'Constructor needs a valid identifier'
+            );
+        }
+        $this->identifier = $identifier;
+    }
 
-	/**
-	 *
-	 * @throws InvalidArgumentException
-	 * @param string $identifier (model or tablename)
-	 * 		Wird zum Speichern in den Moduldaten,
-	 * 		zum erzeugen der buttons und
-	 * 		zum auslesend er Parameter verwendet
-	 */
-	public function __construct($identifier) {
-		if (empty($identifier)) {
-			throw new InvalidArgumentException(
-				'Constructor needs a valid identifier'
-			);
-		}
-		$this->identifier = $identifier;
-	}
+    /**
+     *
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param tx_rnbase_util_FormTool $formTool
+     * @param array $options
+     * @return string
+     */
+    public function makeLink(
+            Tx_Rnbase_Domain_Model_RecordInterface $item,
+            tx_rnbase_util_FormTool $formTool,
+            $options=array()
+    ) {
+        $out = $formTool->createSubmit(
+                'showDetails['.$this->identifier.']['.$item->getUid().']',
+                isset($options['label']) ? $options['label'] : '###LABEL_SHOW_DETAILS###',
+                isset($options['confirm']) ? $options['confirm'] : '',
+                $options
+            );
+        return $out;
+    }
 
-	/**
-	 *
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @param array $options
-	 * @return string
-	 */
-	public function makeLink(
-			Tx_Rnbase_Domain_Model_RecordInterface $item,
-			tx_rnbase_util_FormTool $formTool,
-			$options=array()
-	) {
-		$out = $formTool->createSubmit(
-				'showDetails['.$this->identifier.']['.$item->getUid().']',
-				isset($options['label']) ? $options['label'] : '###LABEL_SHOW_DETAILS###',
-				isset($options['confirm']) ? $options['confirm'] : '',
-				$options
-			);
-		return $out;
-	}
+    /**
+     *
+     * @param tx_rnbase_util_FormTool $formTool
+     * @param array $options
+     * @return string
+     */
+    public function makeClearLink(
+            // wird eigentlich nicht benötigt.
+            Tx_Rnbase_Domain_Model_RecordInterface $item,
+            tx_rnbase_util_FormTool $formTool,
+            $options=array()
+    ) {
+        $out = $formTool->createSubmit(
+                'showDetails['.$this->identifier.'][clear]',
+                isset($options['label']) ? $options['label'] : '###LABEL_BTN_NEWSEARCH###',
+                isset($options['confirm']) ? $options['confirm'] : '',
+                $options
+            );
+        return $out;
+    }
 
-	/**
-	 *
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @param array $options
-	 * @return string
-	 */
-	public function makeClearLink(
-			// wird eigentlich nicht benötigt.
-			Tx_Rnbase_Domain_Model_RecordInterface $item,
-			tx_rnbase_util_FormTool $formTool,
-			$options=array()
-	) {
-		$out = $formTool->createSubmit(
-				'showDetails['.$this->identifier.'][clear]',
-				isset($options['label']) ? $options['label'] : '###LABEL_BTN_NEWSEARCH###',
-				isset($options['confirm']) ? $options['confirm'] : '',
-				$options
-			);
-		return $out;
-	}
+    /**
+     *
+     * @param tx_rnbase_mod_IModule $mod
+     */
+    public function getCurrentUid(
+        tx_rnbase_mod_IModule $mod
+    ) {
+        $modSettings = array(
+            $this->identifier => '0',
+        );
 
-	/**
-	 *
-	 * @param tx_rnbase_mod_IModule $mod
-	 */
-	public function getCurrentUid(
-		tx_rnbase_mod_IModule $mod
-	) {
+        $params = tx_rnbase_parameters::getPostOrGetParameter('showDetails');
+        $params = is_array($params) ? $params : array();
+        list($model, $uid) = each($params);
+        if (is_array($uid)) {
+            list($uid, ) = each($uid);
+        }
 
-		$modSettings = array(
-			$this->identifier => '0',
-		);
+        if (
+            !empty($uid)
+            && $uid === 'clear'
+        ) {
+            Tx_Rnbase_Backend_Utility::getModuleData(
+                $modSettings,
+                $modSettings,
+                $mod->getName()
+            );
+            return 0;
+        }
+        // else
 
-		$params = tx_rnbase_parameters::getPostOrGetParameter('showDetails');
-		$params = is_array($params) ? $params : array();
-		list($model, $uid) = each($params);
-		if (is_array($uid)) {
-			list($uid, ) = each($uid);
-		}
+        $uid = intval($uid);
+        $data = Tx_Rnbase_Backend_Utility::getModuleData(
+            $modSettings,
+            $uid
+                ? array(
+                    $this->identifier => $uid,
+                ) : array(),
+            $mod->getName()
+        );
 
-		if (
-			!empty($uid)
-			&& $uid === 'clear'
-		){
-			Tx_Rnbase_Backend_Utility::getModuleData(
-				$modSettings,
-				$modSettings,
-				$mod->getName()
-			);
-			return 0;
-		}
-		// else
-
-		$uid = intval($uid);
-		$data = Tx_Rnbase_Backend_Utility::getModuleData(
-			$modSettings,
-			$uid
-				? array(
-					$this->identifier => $uid,
-				) : array(),
-			$mod->getName()
-		);
-
-		return intval($data[$this->identifier]);
-	}
-
+        return intval($data[$this->identifier]);
+    }
 }
 
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php']);
 }

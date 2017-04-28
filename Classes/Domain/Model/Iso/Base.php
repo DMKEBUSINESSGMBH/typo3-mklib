@@ -31,64 +31,65 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-abstract class Tx_Mklib_Domain_Model_Iso_Base {
+abstract class Tx_Mklib_Domain_Model_Iso_Base
+{
 
 
-	/**
-	 * The iso value.
-	 *
-	 * @var string
-	 */
-	private $value;
+    /**
+     * The iso value.
+     *
+     * @var string
+     */
+    private $value;
 
-	/**
-	 * Returns the iso value.
-	 * @return string
-	 */
-	public function getValue()
-	{
-		return $this->value;
-	}
+    /**
+     * Returns the iso value.
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
-	 * Make an instanceof ISO model.
-	 *
-	 * @param string $value
-	 * @return Tx_Mklib_Domain_Model_Iso_Base
-	 */
-	public static function getInstance($value)
-	{
-		return tx_rnbase::makeInstance(get_called_class(), $value);
-	}
+    /**
+     * Make an instanceof ISO model.
+     *
+     * @param string $value
+     * @return Tx_Mklib_Domain_Model_Iso_Base
+     */
+    public static function getInstance($value)
+    {
+        return tx_rnbase::makeInstance(get_called_class(), $value);
+    }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param string $value
-	 */
-	public function __construct($value)
-	{
-		$this->value = $this->normalize($value);
-	}
+    /**
+     * Constructor.
+     *
+     * @param string $value
+     */
+    public function __construct($value)
+    {
+        $this->value = $this->normalize($value);
+    }
 
-	/**
-	 * Validates the ISO Value
-	 *
-	 * @return boolean
-	 */
-	abstract public function validate();
+    /**
+     * Validates the ISO Value
+     *
+     * @return bool
+     */
+    abstract public function validate();
 
-	/**
-	 * Normalize the value
-	 *
-	 * @param string $iban
-	 * @return string
-	 */
-	private function normalize($value)
-	{
-		$value = trim($value);
-		$value = preg_replace('/\s+/', '', $value);
+    /**
+     * Normalize the value
+     *
+     * @param string $iban
+     * @return string
+     */
+    private function normalize($value)
+    {
+        $value = trim($value);
+        $value = preg_replace('/\s+/', '', $value);
 
-		return $value;
-	}
+        return $value;
+    }
 }

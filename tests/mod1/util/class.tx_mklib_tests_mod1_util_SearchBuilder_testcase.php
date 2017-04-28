@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_mod1_util
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_mod1_util
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -35,61 +35,67 @@ tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
  * @subpackage tx_mklib_tests_mod1_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends Tx_Phpunit_TestCase
+{
 
-	/**
-	 * @dataProvider providerMakeWildcardTerm
-	 */
-	public function testMakeWildcardTerm($term, $field, $leadingWC, $expected) {
-		$result = tx_mklib_mod1_util_SearchBuilder::makeWildcardTerm($term, $field, $leadingWC);
-		self::assertEquals($expected, $result);
-	}
+    /**
+     * @dataProvider providerMakeWildcardTerm
+     */
+    public function testMakeWildcardTerm($term, $field, $leadingWC, $expected)
+    {
+        $result = tx_mklib_mod1_util_SearchBuilder::makeWildcardTerm($term, $field, $leadingWC);
+        self::assertEquals($expected, $result);
+    }
 
-	public function providerMakeWildcardTerm() {
-		return array(
-			'ds 01' => array('test', '', false, '+"test"*'),
-			'ds 02' => array('test', '', true, '+*"test"*'),
-			'ds 03' => array('test', 'myfield', false, '+myfield:"test"*'),
-			'ds 04' => array('Test', 'myfield', false, '+myfield:"test"*'),
-			'ds 05' => array('test', 'myfield', true, '+myfield:*"test"*'),
-			'ds 06' => array('Bad Ar', 'fieldname', false, '+fieldname:"bad"* +fieldname:"ar"*'),
-			'ds 07' => array('Bad Ar', 'fieldname', true, '+fieldname:*"bad"* +fieldname:*"ar"*'),
-			'ds 08' => array('Dussmann AG & Co.KGaA', 'sfr_companyname', true, '+sfr_companyname:*"dussmann"* +sfr_companyname:*"ag"* +sfr_companyname:*"co"* +sfr_companyname:*"kgaa"*'),
-			'ds 09' => array('\'test\'+-&|!(){}\[]^"~+*?:', 'sfr_companyname', true, '+sfr_companyname:*"test"*'),
-			'ds 10' => array('c # sharp', 'testfield', false, '+testfield:"c"* +testfield:"sharp"*'),
-		);
-	}
+    public function providerMakeWildcardTerm()
+    {
+        return array(
+            'ds 01' => array('test', '', false, '+"test"*'),
+            'ds 02' => array('test', '', true, '+*"test"*'),
+            'ds 03' => array('test', 'myfield', false, '+myfield:"test"*'),
+            'ds 04' => array('Test', 'myfield', false, '+myfield:"test"*'),
+            'ds 05' => array('test', 'myfield', true, '+myfield:*"test"*'),
+            'ds 06' => array('Bad Ar', 'fieldname', false, '+fieldname:"bad"* +fieldname:"ar"*'),
+            'ds 07' => array('Bad Ar', 'fieldname', true, '+fieldname:*"bad"* +fieldname:*"ar"*'),
+            'ds 08' => array('Dussmann AG & Co.KGaA', 'sfr_companyname', true, '+sfr_companyname:*"dussmann"* +sfr_companyname:*"ag"* +sfr_companyname:*"co"* +sfr_companyname:*"kgaa"*'),
+            'ds 09' => array('\'test\'+-&|!(){}\[]^"~+*?:', 'sfr_companyname', true, '+sfr_companyname:*"test"*'),
+            'ds 10' => array('c # sharp', 'testfield', false, '+testfield:"c"* +testfield:"sharp"*'),
+        );
+    }
 
-	public function testBuildFreeTextWithSearchWordAndNoCols() {
-		$fields = array();
-		$result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test');
+    public function testBuildFreeTextWithSearchWordAndNoCols()
+    {
+        $fields = array();
+        $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test');
 
-		self::assertTrue($result,'es wurde trotz Suchbegriff nicht true zurück gegeben.');
-		self::assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
-		self::assertEmpty($fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
-		self::assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
-	}
+        self::assertTrue($result, 'es wurde trotz Suchbegriff nicht true zurück gegeben.');
+        self::assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
+        self::assertEmpty($fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
+        self::assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
+    }
 
-	public function testBuildFreeTextWithSearchWordAndCols() {
-		$fields = array();
-		$result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test', array('TEST1.col1','TEST1.col2','TEST2.col1'));
+    public function testBuildFreeTextWithSearchWordAndCols()
+    {
+        $fields = array();
+        $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test', array('TEST1.col1','TEST1.col2','TEST2.col1'));
 
-		self::assertTrue($result,'es wurde trotz Suchbegriff nicht true zurück gegeben.');
-		self::assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
-		$aExpectedCols = array('TEST1.col1','TEST1.col2','TEST2.col1');
-		self::assertEquals($aExpectedCols,$fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
-		self::assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
-	}
+        self::assertTrue($result, 'es wurde trotz Suchbegriff nicht true zurück gegeben.');
+        self::assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
+        $aExpectedCols = array('TEST1.col1','TEST1.col2','TEST2.col1');
+        self::assertEquals($aExpectedCols, $fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
+        self::assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
+    }
 
-	public function testBuildFreeTextWithoutSearchWord() {
-		$fields = array();
-		$result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, '');
+    public function testBuildFreeTextWithoutSearchWord()
+    {
+        $fields = array();
+        $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, '');
 
-		self::assertFalse($result,'es wurde trotz Suchbegriff nicht true zurück gegeben.');
-		self::assertEmpty($fields, 'fields ist nicht korrekt');
-	}
+        self::assertFalse($result, 'es wurde trotz Suchbegriff nicht true zurück gegeben.');
+        self::assertEmpty($fields, 'fields ist nicht korrekt');
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']);
 }

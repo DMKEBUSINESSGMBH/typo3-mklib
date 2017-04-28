@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_util
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -33,173 +33,188 @@ tx_rnbase::load('tx_mklib_util_Session');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_Session_testcase
-	extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
 {
 
-	/**
-	 * @var array
-	 */
-	private $cookiesBackup = array();
+    /**
+     * @var array
+     */
+    private $cookiesBackup = array();
 
-	/**
-	 * @var array
-	 */
-	private $feUserBackUp = array();
+    /**
+     * @var array
+     */
+    private $feUserBackUp = array();
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		$this->cookiesBackup = $_COOKIE;
-		$this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        $this->cookiesBackup = $_COOKIE;
+        $this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
 
-		tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => TRUE, 'force' => TRUE));
-	}
+        tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true, 'force' => true));
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		$_COOKIE = $this->cookiesBackup;
-		tx_mklib_util_Session::removeSessionValue('checkCookieIsSet');
-		if(isset($GLOBALS['TSFE']->fe_user)) {
-			$GLOBALS['TSFE']->fe_user = $this->feserBackUp;
-		}
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        $_COOKIE = $this->cookiesBackup;
+        tx_mklib_util_Session::removeSessionValue('checkCookieIsSet');
+        if (isset($GLOBALS['TSFE']->fe_user)) {
+            $GLOBALS['TSFE']->fe_user = $this->feserBackUp;
+        }
+    }
 
-	}
+    /**
+     * @group unit
+     * @dataProvider getCookies
+     */
+    public function testAreCookiesActivated($cookies, $expectedReturnValue, $setCheckedIfCookiesAreActivatedGetParameter)
+    {
+        if ($setCheckedIfCookiesAreActivatedGetParameter) {
+            $_GET['checkedIfCookiesAreActivated'] = true;
+        }
+        $_COOKIE = $cookies;
+        self::assertEquals(
+            $expectedReturnValue,
+            tx_mklib_util_Session::areCookiesActivated(),
+            'falscher return'
+        );
+    }
 
-	/**
-	 * @group unit
-	 * @dataProvider getCookies
-	 */
-	public function testAreCookiesActivated($cookies, $expectedReturnValue, $setCheckedIfCookiesAreActivatedGetParameter){
-		if ($setCheckedIfCookiesAreActivatedGetParameter) {
-			$_GET['checkedIfCookiesAreActivated'] = TRUE;
-		}
-		$_COOKIE = $cookies;
-		self::assertEquals(
-			$expectedReturnValue, tx_mklib_util_Session::areCookiesActivated(),
-			'falscher return'
-		);
-	}
+    /**
+     * @return array
+     */
+    public function getCookies()
+    {
+        return array(
+            array(array('fe_typo_user' => ''), true, false),
+            array(array('fe_typo_user' => '123'), true, false),
+            array(array(), false, true),
+            array(array('fe_typo_user' => '123'), true, true),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getCookies(){
-		return array(
-			array(array('fe_typo_user' => ''), TRUE, FALSE),
-			array(array('fe_typo_user' => '123'), TRUE, FALSE),
-			array(array(), FALSE, TRUE),
-			array(array('fe_typo_user' => '123'), TRUE, TRUE),
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testSetSessionIdSetsIdAndEmptiesSessionData()
+    {
+        $oldRandomSessionId = uniqid();
+        $GLOBALS['TSFE']->fe_user->id = $oldRandomSessionId;
+        $GLOBALS['TSFE']->fe_user->sesData = array('something');
 
-	/**
-	 * @group unit
-	 */
-	public function testSetSessionIdSetsIdAndEmptiesSessionData(){
-		$oldRandomSessionId = uniqid();
-		$GLOBALS['TSFE']->fe_user->id = $oldRandomSessionId;
-		$GLOBALS['TSFE']->fe_user->sesData = array('something');
+        $newRandomSessionId = uniqid();
+        tx_mklib_util_Session::setSessionId($newRandomSessionId);
 
-		$newRandomSessionId = uniqid();
-		tx_mklib_util_Session::setSessionId($newRandomSessionId);
+        self::assertEquals(
+            $newRandomSessionId,
+            $GLOBALS['TSFE']->fe_user->id,
+            'falsche neue session id'
+        );
 
-		self::assertEquals(
-			$newRandomSessionId, $GLOBALS['TSFE']->fe_user->id,
-			'falsche neue session id'
-		);
+        self::assertEquals(
+            array(),
+            $GLOBALS['TSFE']->fe_user->sesData,
+            'session data für neue id nicht leer'
+        );
+    }
 
-		self::assertEquals(
-			array(), $GLOBALS['TSFE']->fe_user->sesData,
-			'session data für neue id nicht leer'
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testSetSessionIdCallsFetchSessionDataOnFeUser()
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            $this->markTestSkipped(
+                'fetchSessionData was removed in TYPO3 8'
+            );
+        }
+        $GLOBALS['TSFE']->fe_user = $this->getMock(
+            tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
+            array('fetchSessionData')
+        );
+        $GLOBALS['TSFE']->fe_user->expects(self::once())
+            ->method('fetchSessionData');
 
-	/**
-	 * @group unit
-	 */
-	public function testSetSessionIdCallsFetchSessionDataOnFeUser() {
-		if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			$this->markTestSkipped(
-				'fetchSessionData was removed in TYPO3 8'
-			);
-		}
-		$GLOBALS['TSFE']->fe_user = $this->getMock(
-			tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(), array('fetchSessionData')
-		);
-		$GLOBALS['TSFE']->fe_user->expects(self::once())
-			->method('fetchSessionData');
+        tx_mklib_util_Session::setSessionId(456);
+    }
 
-		tx_mklib_util_Session::setSessionId(456);
-	}
+    /**
+     * @group unit
+     */
+    public function testSetSessionIdCallsFetchUserSessionOnFeUser()
+    {
+        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
+            $this->markTestSkipped(
+                'fetchUserSession is only present since TYPO3 8'
+            );
+        }
+        $GLOBALS['TSFE']->fe_user = $this->getMock(
+            tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
+            array('fetchUserSession')
+        );
+        $GLOBALS['TSFE']->fe_user->expects(self::once())
+            ->method('fetchUserSession');
 
-	/**
-	 * @group unit
-	 */
-	public function testSetSessionIdCallsFetchUserSessionOnFeUser() {
-		if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-			$this->markTestSkipped(
-				'fetchUserSession is only present since TYPO3 8'
-			);
-		}
-		$GLOBALS['TSFE']->fe_user = $this->getMock(
-			tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(), array('fetchUserSession')
-		);
-		$GLOBALS['TSFE']->fe_user->expects(self::once())
-			->method('fetchUserSession');
+        tx_mklib_util_Session::setSessionId(456);
+    }
 
-		tx_mklib_util_Session::setSessionId(456);
-	}
+    /**
+     * @group unit
+     */
+    public function testSetStoreAndGetSessionValue()
+    {
+        tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
+        tx_mklib_util_Session::storeSessionData();
+        self::assertEquals(
+            'testValue',
+            tx_mklib_util_Session::getSessionValue('mklibTest')
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testSetStoreAndGetSessionValue(){
-		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
-		tx_mklib_util_Session::storeSessionData();
-		self::assertEquals(
-			'testValue', tx_mklib_util_Session::getSessionValue('mklibTest')
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testSetStoreAndGetSessionValueWhenSessionIdSet()
+    {
+        $sessionIdBackup = tx_mklib_util_Session::getSessionId();
+        // erstmal Session ID wechseln und Wert setzen
+        $newSessionId = $this->getRandomHexString();
+        tx_mklib_util_Session::setSessionId($newSessionId);
+        tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
+        tx_mklib_util_Session::storeSessionData();
 
-	/**
-	 * @group unit
-	 */
-	public function testSetStoreAndGetSessionValueWhenSessionIdSet() {
-		$sessionIdBackup = tx_mklib_util_Session::getSessionId();
-		// erstmal Session ID wechseln und Wert setzen
-		$newSessionId = $this->getRandomHexString();
-		tx_mklib_util_Session::setSessionId($newSessionId);
-		tx_mklib_util_Session::setSessionValue('mklibTest', 'testValue');
-		tx_mklib_util_Session::storeSessionData();
+        // dann den eigentliche Session ID Wert setzen
+        tx_mklib_util_Session::setSessionId($sessionIdBackup);
+        tx_mklib_util_Session::setSessionValue('mklibTest', 'initialTestValue');
+        tx_mklib_util_Session::storeSessionData();
 
-		// dann den eigentliche Session ID Wert setzen
-		tx_mklib_util_Session::setSessionId($sessionIdBackup);
-		tx_mklib_util_Session::setSessionValue('mklibTest', 'initialTestValue');
-		tx_mklib_util_Session::storeSessionData();
+        // dann wieder auf neue Session ID wechseln und prüfen ob
+        // Werte korrekt geliefert wernde
+        tx_mklib_util_Session::setSessionId($newSessionId);
 
-		// dann wieder auf neue Session ID wechseln und prüfen ob
-		// Werte korrekt geliefert wernde
-		tx_mklib_util_Session::setSessionId($newSessionId);
+        self::assertEquals(
+            'testValue',
+            tx_mklib_util_Session::getSessionValue('mklibTest')
+        );
 
-		self::assertEquals(
-			'testValue', tx_mklib_util_Session::getSessionValue('mklibTest')
-		);
+        tx_mklib_util_Session::setSessionId($sessionIdBackup);
+    }
 
-		tx_mklib_util_Session::setSessionId($sessionIdBackup);
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function getRandomHexString() {
-		return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-			\TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32) :
-			t3lib_div::getRandomHexString(32);
-	}
+    /**
+     * @return string
+     */
+    protected function getRandomHexString()
+    {
+        return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
+            \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32) :
+            t3lib_div::getRandomHexString(32);
+    }
 }

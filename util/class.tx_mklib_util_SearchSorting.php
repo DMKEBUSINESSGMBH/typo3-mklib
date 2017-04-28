@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -42,124 +42,125 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  * @package tx_mklib
  * @subpackage tx_mklib_util
  */
-class tx_mklib_util_SearchSorting {
+class tx_mklib_util_SearchSorting
+{
 
-	/**
-	 * Liefert den Name dieser Klasse.
-	 * Dies ist für Kinds-Klassen wichtig, da die Methoden alle statisch aufgerufen werden.
-	 * @TODO: 	wie lässt sich die klasse bei kindsklassen herausfinden!?
-	 * 			Statische dinge können leider nicht überschrieben werden.
-	 * 			Einzige möglichkeit ist zurzeit, diese Variable durch überschreiben von
-	 * 			self::registerSortingAliases zu setzen.
-	 * @var 	string
-	 */
-	protected static $className = __CLASS__;
+    /**
+     * Liefert den Name dieser Klasse.
+     * Dies ist für Kinds-Klassen wichtig, da die Methoden alle statisch aufgerufen werden.
+     * @TODO:   wie lässt sich die klasse bei kindsklassen herausfinden!?
+     *          Statische dinge können leider nicht überschrieben werden.
+     *          Einzige möglichkeit ist zurzeit, diese Variable durch überschreiben von
+     *          self::registerSortingAliases zu setzen.
+     * @var     string
+     */
+    protected static $className = __CLASS__;
 
-	/**
-	 * Wurde der hook bereits gesetzt?
-	 *
-	 * @var boolean
-	 */
-	protected static $hooked = false;
+    /**
+     * Wurde der hook bereits gesetzt?
+     *
+     * @var bool
+     */
+    protected static $hooked = false;
 
-	/**
-	 * Enthält TableAliases, welche sortiert werden sollen.
-	 *
-	 * @var 	array
-	 */
-	private static $sortingTables = array();
+    /**
+     * Enthält TableAliases, welche sortiert werden sollen.
+     *
+     * @var     array
+     */
+    private static $sortingTables = array();
 
-	/**
-	 * Fügt Tabellen für das Sortieren hinzu und registriert den Hook
-	 *
-	 * @param array $tableAliases array($tableAlias.$tableName => $sortingColumn)
-	 * $tableName muss nicht gesetzt sein, sollte aber um Konflikte zu vermeiden
-	 * Beispiel:
-	 *
-	 * array(
-	 * 	'DOWNLOAD.tx_mytable'=>'sorting', // optimal
-	 * 	'CATEGORY'=>'sorting' // nicht optimal
-	 * )
-	 */
-	public static function registerSortingAliases(array $tableAliases) {
-		if(count($tableAliases)) {
-			foreach($tableAliases as $tableAlias => $sortingCol) {
-				list($tableAlias, $tableName) = tx_rnbase_util_Strings::trimExplode('.', $tableAlias);
-				// wenn der key numeric ist, wurde keine sorting col übergeben!
-				if(is_numeric($tableAlias) && $sortingCol) {
-					$tableAlias = $sortingCol;
-					$sortingCol = 'sorting';
-				}
-				if(empty($tableAlias)) {
-					continue;
-				}
-				self::$sortingTables[] = array(
-					'alias' 	=> $tableAlias,
-					'column' 	=> $sortingCol,
-					'table' 	=> $tableName,
-				);
-			}
-			// den hook registrieren
-			if(count(self::$sortingTables)) {
-				self::registerHook();
-			}
-		}
-	}
+    /**
+     * Fügt Tabellen für das Sortieren hinzu und registriert den Hook
+     *
+     * @param array $tableAliases array($tableAlias.$tableName => $sortingColumn)
+     * $tableName muss nicht gesetzt sein, sollte aber um Konflikte zu vermeiden
+     * Beispiel:
+     *
+     * array(
+     *  'DOWNLOAD.tx_mytable'=>'sorting', // optimal
+     *  'CATEGORY'=>'sorting' // nicht optimal
+     * )
+     */
+    public static function registerSortingAliases(array $tableAliases)
+    {
+        if (count($tableAliases)) {
+            foreach ($tableAliases as $tableAlias => $sortingCol) {
+                list($tableAlias, $tableName) = tx_rnbase_util_Strings::trimExplode('.', $tableAlias);
+                // wenn der key numeric ist, wurde keine sorting col übergeben!
+                if (is_numeric($tableAlias) && $sortingCol) {
+                    $tableAlias = $sortingCol;
+                    $sortingCol = 'sorting';
+                }
+                if (empty($tableAlias)) {
+                    continue;
+                }
+                self::$sortingTables[] = array(
+                    'alias'    => $tableAlias,
+                    'column'    => $sortingCol,
+                    'table'    => $tableName,
+                );
+            }
+            // den hook registrieren
+            if (count(self::$sortingTables)) {
+                self::registerHook();
+            }
+        }
+    }
 
-	/**
-	 * Registriert den Hook für rnbase, um die sortierung hinzuzufügen
-	 */
-	private static function registerHook(){
-		if(!self::$hooked) {
-			// $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = 'EXT:mklib/util/class.tx_mklib_util_SearchSorting.php:&tx_mklib_util_SearchSorting->handleTableMapping';
+    /**
+     * Registriert den Hook für rnbase, um die sortierung hinzuzufügen
+     */
+    private static function registerHook()
+    {
+        if (!self::$hooked) {
+            // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = 'EXT:mklib/util/class.tx_mklib_util_SearchSorting.php:&tx_mklib_util_SearchSorting->handleTableMapping';
 
-			// Die Klasse ist schon geladen, wir brauchen den Pfad also nicht.
-			$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = '&'.self::$className.'->handleTableMapping';
+            // Die Klasse ist schon geladen, wir brauchen den Pfad also nicht.
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = '&'.self::$className.'->handleTableMapping';
 
-			self::$hooked = true;
-		}
-	}
+            self::$hooked = true;
+        }
+    }
 
-	/**
-	 * Wird von tx_rnbase_util_SearchBase aufgerufen um die Sortierung hinzuzufügen.
-	 *
-	 * @param 	array 						$params
-	 * @param 	tx_rnbase_util_SearchBase 	$searcher
-	 */
-	public static function handleTableMapping(&$params, &$searcher) {
-		if(count(self::$sortingTables)) {
+    /**
+     * Wird von tx_rnbase_util_SearchBase aufgerufen um die Sortierung hinzuzufügen.
+     *
+     * @param   array                       $params
+     * @param   tx_rnbase_util_SearchBase   $searcher
+     */
+    public static function handleTableMapping(&$params, &$searcher)
+    {
+        if (count(self::$sortingTables)) {
+            $tableAliases    = & $params['tableAliases'];
+            //@TODO: $joinedFields && $customFields zusätzlich zu den $tableAliases beachten!!!
+            // $joinedFields = & $params['joinedFields'];
+            // $customFields = & $params['customFields'];
+            $options = & $params['options'];
+            $tableMappings = & $params['tableMappings'];
 
-			$tableAliases 	= & $params['tableAliases'];
-			//@TODO: $joinedFields && $customFields zusätzlich zu den $tableAliases beachten!!!
-			//$joinedFields 	= & $params['joinedFields'];
-			//$customFields 	= & $params['customFields'];
-			$options 		= & $params['options'];
-			$tableMappings	= & $params['tableMappings'];
-
-			// sortierung nur bei self::$sortingTables aufrufen
-			foreach(self::$sortingTables as $tableData) {
-				$tableAlias = $tableData['alias'];
-				$sortingCol = $tableData['column'];
-				$tableName = $tableData['table'];
-				$field = $tableAlias.'.'.$sortingCol;
-				if(
-					isset($tableAliases[$tableAlias]) &&
-					!isset($options['orderby'][$field]) &&
-					(!$tableName || isset($tableMappings[$tableName]))
-				) {
-					// orderby muss ein array sein
-					if(!is_array($options['orderby'])) {
-						$options['orderby'] = array();
-					}
-					// immer zuerst anhand von sorting sortieren!!!
-					$options['orderby'] = array($field => 'ASC') + $options['orderby'];
-				}
-			}
-		}
-	}
-
+            // sortierung nur bei self::$sortingTables aufrufen
+            foreach (self::$sortingTables as $tableData) {
+                $tableAlias = $tableData['alias'];
+                $sortingCol = $tableData['column'];
+                $tableName = $tableData['table'];
+                $field = $tableAlias.'.'.$sortingCol;
+                if (isset($tableAliases[$tableAlias]) &&
+                    !isset($options['orderby'][$field]) &&
+                    (!$tableName || isset($tableMappings[$tableName]))
+                ) {
+                    // orderby muss ein array sein
+                    if (!is_array($options['orderby'])) {
+                        $options['orderby'] = array();
+                    }
+                    // immer zuerst anhand von sorting sortieren!!!
+                    $options['orderby'] = array($field => 'ASC') + $options['orderby'];
+                }
+            }
+        }
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_SearchSorting.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_SearchSorting.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_SearchSorting.php']);
 }

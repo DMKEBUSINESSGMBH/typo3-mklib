@@ -25,34 +25,33 @@
 /**
  * Ersetzt Komma mit Punkt
  */
-class tx_mklib_tca_eval_priceDecimalSeperator {
-	
-	/**
-	 * Evaluate value on client-side via JavaScript
-	 *
-	 * @return string
-	 */
-	public function returnFieldJS() {
-		
-		return 'return value.replace(\',\', \'.\');';
-		
-	}
-	
-	/**
-	 * Evaluate value on server-side by ourselves
-	 *
-	 * @param string $value
-	 * @param string $is_in
-	 * @param bool $set
-	 * @return string
-	 */
-	public function evaluateFieldValue($value, $is_in, &$set) {
-		
-		return str_replace(',', '.', $value);
-		
-	}
+class tx_mklib_tca_eval_priceDecimalSeperator
+{
+    
+    /**
+     * Evaluate value on client-side via JavaScript
+     *
+     * @return string
+     */
+    public function returnFieldJS()
+    {
+        return 'return value.replace(\',\', \'.\');';
+    }
+    
+    /**
+     * Evaluate value on server-side by ourselves
+     *
+     * @param string $value
+     * @param string $is_in
+     * @param bool $set
+     * @return string
+     */
+    public function evaluateFieldValue($value, $is_in, &$set)
+    {
+        return str_replace(',', '.', $value);
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_priceDecimalSeperator.php']);
 }

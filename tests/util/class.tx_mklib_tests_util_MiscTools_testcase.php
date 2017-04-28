@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -38,103 +38,106 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
+{
 
-	/**
-	 * setUp() = Extension-Konfiguration speichern
-	 */
-	public function setUp() {
-		tx_mklib_tests_Util::storeExtConf('mklib');
-		tx_mklib_tests_Util::storeExtConf('mktest');
-	}
+    /**
+     * setUp() = Extension-Konfiguration speichern
+     */
+    public function setUp()
+    {
+        tx_mklib_tests_Util::storeExtConf('mklib');
+        tx_mklib_tests_Util::storeExtConf('mktest');
+    }
 
-	/**
-	 * tearDown() = Extension-Konfiguration zurückspielen
-	 */
-	public function tearDown () {
-		tx_mklib_tests_Util::restoreExtConf('mklib');
-		tx_mklib_tests_Util::restoreExtConf('mktest');
-	}
+    /**
+     * tearDown() = Extension-Konfiguration zurückspielen
+     */
+    public function tearDown()
+    {
+        tx_mklib_tests_Util::restoreExtConf('mklib');
+        tx_mklib_tests_Util::restoreExtConf('mktest');
+    }
 
-	/**
-	 * Prüfen ob die richtig Extension Konfiguration geliefert wird
-	 */
-	public function testGetProxyBeUserId(){
-		tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', 2, 'mklib');
+    /**
+     * Prüfen ob die richtig Extension Konfiguration geliefert wird
+     */
+    public function testGetProxyBeUserId()
+    {
+        tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', 2, 'mklib');
 
-		$val = tx_mklib_util_MiscTools::getProxyBeUserId();
-		self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+        $val = tx_mklib_util_MiscTools::getProxyBeUserId();
+        self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
 
-		$val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest');
-		self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+        $val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest');
+        self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
 
-		$val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest', false);
-		self::assertEquals($val, 0, 'Es wurde ein BE-User geliefert.');
+        $val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest', false);
+        self::assertEquals($val, 0, 'Es wurde ein BE-User geliefert.');
 
-		tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', '5', 'mktest');
+        tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', '5', 'mktest');
 
-		$val = tx_mklib_util_MiscTools::getProxyBeUserId();
-		self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-
-
-		$val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest');
-		self::assertEquals($val, 5, 'Falscher BE-User geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-	}
-
-	/**
-	 * Prüfen ob die richtig Extension Konfiguration geliefert wird
-	 */
-	public function testGetPicturesUploadPath(){
-		tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mklib', 'mklib');
-
-		self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
-		self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(array()), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
-		self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
-		self::assertFalse(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest', false), 'Es wurde ein Pfad geliefert.');
-
-		tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mktest', 'mktest');
-
-		self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
-		self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mktest', 'Falscher Pfad geliefert.');
-	}
-
-	/**
-	 * Prüfen ob die richtig Extension Konfiguration geliefert wird
-	 */
-	public function testGetPortalPageId(){
-		tx_mklib_tests_Util::setExtConfVar('portalPageId', 2, 'mklib');
-
-		$val = tx_mklib_util_MiscTools::getPortalPageId();
-		self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-
-		$val = tx_mklib_util_MiscTools::getPortalPageId('mktest');
-		self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
-
-		$val = tx_mklib_util_MiscTools::getPortalPageId('mktest', false);
-		self::assertEquals($val, 0, 'Es wurde eine Page-ID geliefert.');
-
-		tx_mklib_tests_Util::setExtConfVar('portalPageId', '5', 'mktest');
-
-		$val = tx_mklib_util_MiscTools::getPortalPageId();
-		self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+        $val = tx_mklib_util_MiscTools::getProxyBeUserId();
+        self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
 
 
-		$val = tx_mklib_util_MiscTools::getPortalPageId('mktest');
-		self::assertEquals($val, 5, 'Falsche Page-ID geliefert.');
-		self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+        $val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest');
+        self::assertEquals($val, 5, 'Falscher BE-User geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+    }
 
-	}
+    /**
+     * Prüfen ob die richtig Extension Konfiguration geliefert wird
+     */
+    public function testGetPicturesUploadPath()
+    {
+        tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mklib', 'mklib');
+
+        self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
+        self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(array()), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
+        self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
+        self::assertFalse(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest', false), 'Es wurde ein Pfad geliefert.');
+
+        tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mktest', 'mktest');
+
+        self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
+        self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mktest', 'Falscher Pfad geliefert.');
+    }
+
+    /**
+     * Prüfen ob die richtig Extension Konfiguration geliefert wird
+     */
+    public function testGetPortalPageId()
+    {
+        tx_mklib_tests_Util::setExtConfVar('portalPageId', 2, 'mklib');
+
+        $val = tx_mklib_util_MiscTools::getPortalPageId();
+        self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+
+        $val = tx_mklib_util_MiscTools::getPortalPageId('mktest');
+        self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+
+        $val = tx_mklib_util_MiscTools::getPortalPageId('mktest', false);
+        self::assertEquals($val, 0, 'Es wurde eine Page-ID geliefert.');
+
+        tx_mklib_tests_Util::setExtConfVar('portalPageId', '5', 'mktest');
+
+        $val = tx_mklib_util_MiscTools::getPortalPageId();
+        self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
 
 
+        $val = tx_mklib_util_MiscTools::getPortalPageId('mktest');
+        self::assertEquals($val, 5, 'Falsche Page-ID geliefert.');
+        self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscTools_testcase.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscTools_testcase.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscTools_testcase.php']);
 }

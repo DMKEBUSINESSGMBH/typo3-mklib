@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_mod1
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,38 +38,42 @@ tx_rnbase::load('tx_rnbase_mod_BaseModule');
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  */
-class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule {
-	var $pageinfo;
-    var $tabs;
+class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
+{
+    public $pageinfo;
+    public $tabs;
 
     /**
      * Method to get the extension key
      *
-     * @return	string Extension key
+     * @return  string Extension key
      */
-	function getExtensionKey() {
-		return 'mklib';
-	}
-	
-	/**
-	 * Method to set the tabs for the mainmenu
-	 * Umstellung von SelectBox auf Menu
-	 */
-	protected function getFuncMenu() {
-		$mainmenu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
-		return $mainmenu['menu'];
-	}
-	
-	/**
-	 * Returns the module ident name
-	 * @return string
-	 */
-	public function getName() {
-		return 'dummyMod';
-	}
+    public function getExtensionKey()
+    {
+        return 'mklib';
+    }
+    
+    /**
+     * Method to set the tabs for the mainmenu
+     * Umstellung von SelectBox auf Menu
+     */
+    protected function getFuncMenu()
+    {
+        $mainmenu = $this->getFormTool()->showTabMenu($this->getPid(), 'function', $this->getName(), $this->MOD_MENU['function']);
 
+        return $mainmenu['menu'];
+    }
+    
+    /**
+     * Returns the module ident name
+     * @return string
+     */
+    public function getName()
+    {
+        return 'dummyMod';
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/index.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/index.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/index.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/index.php']);
 }

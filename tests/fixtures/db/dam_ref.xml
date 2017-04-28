@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
-	<tx_dam_mm_ref>
-		<uid_local>1</uid_local>
-		<uid_foreign>1</uid_foreign>
-		<tablenames>tx_mklib_wordlist</tablenames>
-		<ident>blacklisted</ident>
-	</tx_dam_mm_ref>
+    <tx_dam_mm_ref>
+        <uid_local>1</uid_local>
+        <uid_foreign>1</uid_foreign>
+        <tablenames>tx_mklib_wordlist</tablenames>
+        <ident>blacklisted</ident>
+    </tx_dam_mm_ref>
 </dataset>

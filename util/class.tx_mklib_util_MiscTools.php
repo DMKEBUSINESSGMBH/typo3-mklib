@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -34,109 +34,119 @@ tx_rnbase::load('tx_rnbase_util_Misc');
  * @package tx_mklib
  * @subpackage tx_mklib_util
  */
-class tx_mklib_util_MiscTools {
+class tx_mklib_util_MiscTools
+{
 
-	/**
-	 * Liefert einen Wert aus der Extension-Konfiguration.
-	 * Gibt es für die angegebene Extension keine Konfiguration,
-	 * wird als Fallback der Wert von mklib zurückgegeben.
-	 *
-	 * @param string 	$sValueKey
-	 * @param string 	$sExtKey
-	 * @param boolean 	$bFallback
-	 * @return mixed
-	 */
-	public static function getExtensionValue($sValueKey, $sExtKey='mklib', $bFallback=false){
-		if(!$sExtKey) {
-			$sExtKey = 'mklib';
-		}
-		tx_rnbase::load('tx_rnbase_configurations');
-		$mValue = tx_rnbase_configurations::getExtensionCfgValue($sExtKey, $sValueKey);
-		if($bFallback && $mValue === false && $sExtKey != 'mklib')
-			$mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey);
-		return $mValue;
-	}
+    /**
+     * Liefert einen Wert aus der Extension-Konfiguration.
+     * Gibt es für die angegebene Extension keine Konfiguration,
+     * wird als Fallback der Wert von mklib zurückgegeben.
+     *
+     * @param string    $sValueKey
+     * @param string    $sExtKey
+     * @param bool   $bFallback
+     * @return mixed
+     */
+    public static function getExtensionValue($sValueKey, $sExtKey = 'mklib', $bFallback = false)
+    {
+        if (!$sExtKey) {
+            $sExtKey = 'mklib';
+        }
+        tx_rnbase::load('tx_rnbase_configurations');
+        $mValue = tx_rnbase_configurations::getExtensionCfgValue($sExtKey, $sValueKey);
+        if ($bFallback && $mValue === false && $sExtKey != 'mklib') {
+            $mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey);
+        }
 
-	/**
-	 * Liefert eine BE-Account.
-	 * Dieser Nutzer wird für TCE Operationen verwendet. Er sollte Admin-Rechte haben.
-	 *
-	 * @param string 	$sExtKey
-	 * @param boolean 	$bFallback
-	 * @return int
-	 */
-	public static function getProxyBeUserId($sExtKey='mklib', $bFallback=true){
-		return intval( self::getExtensionValue('proxyBeUserId', $sExtKey, $bFallback) );
-	}
+        return $mValue;
+    }
 
-	/**
-	 * Liefert den Pfad zu den Bildern.
-	 *
-	 * @param string 	$sExtKey
-	 * @param boolean 	$bFallback
-	 * @return int
-	 */
-	public static function getPicturesUploadPath($sExtKey='mklib', $bFallback=true){
-		return self::getExtensionValue('picturesUploadPath', $sExtKey, $bFallback);
-	}
+    /**
+     * Liefert eine BE-Account.
+     * Dieser Nutzer wird für TCE Operationen verwendet. Er sollte Admin-Rechte haben.
+     *
+     * @param string    $sExtKey
+     * @param bool   $bFallback
+     * @return int
+     */
+    public static function getProxyBeUserId($sExtKey = 'mklib', $bFallback = true)
+    {
+        return intval(self::getExtensionValue('proxyBeUserId', $sExtKey, $bFallback));
+    }
 
-	/**
-	 * Liefert die Page-ID, wo alle Portaldaten gespeichert sind.
-	 *
-	 * @param string 	$sExtKey
-	 * @param boolean 	$bFallback
-	 * @return int
-	 */
-	public static function getPortalPageId($sExtKey='mklib', $bFallback=true){
-		return intval( self::getExtensionValue('portalPageId', $sExtKey, $bFallback) );
-	}
+    /**
+     * Liefert den Pfad zu den Bildern.
+     *
+     * @param string    $sExtKey
+     * @param bool   $bFallback
+     * @return int
+     */
+    public static function getPicturesUploadPath($sExtKey = 'mklib', $bFallback = true)
+    {
+        return self::getExtensionValue('picturesUploadPath', $sExtKey, $bFallback);
+    }
 
-	/**
-	 * Gibt die Extension Konfiguration für den Sonderzeichen Marker zurück
-	 * Diese wird aber lediglich angegeben. Die Mehrwertsteuer wird durch die Extension
-	 * Konfiguration NICHT angelegt!
-	 *
-	 * @param string 	$sExtKey
-	 * @param boolean 	$bFallback
-	 * @return int
-	 */
-	public static function getSpecialCharMarker($sExtKey='mklib', $bFallback=true){
-		return self::getExtensionValue('specialCharMarker', $sExtKey, $bFallback);
-	}
+    /**
+     * Liefert die Page-ID, wo alle Portaldaten gespeichert sind.
+     *
+     * @param string    $sExtKey
+     * @param bool   $bFallback
+     * @return int
+     */
+    public static function getPortalPageId($sExtKey = 'mklib', $bFallback = true)
+    {
+        return intval(self::getExtensionValue('portalPageId', $sExtKey, $bFallback));
+    }
 
-	/**
-	 * IP-based Access restrictions
-	 * @TODO: in util_dev auslagern!?
-	 *
-	 * @param 	string 		$remoteAddress
-	 * @param 	string 		$devIPmask
-	 * @return 	boolean
-	 * @deprecated use tx_rnbase_util_Network::isDevelopmentIp
-	 */
-	public static function isDevIpMask($remoteAddress='',$devIPmask=''){
-		return tx_rnbase_util_Network::isDevelopmentIp($remoteAddress, $devIPmask);
-	}
+    /**
+     * Gibt die Extension Konfiguration für den Sonderzeichen Marker zurück
+     * Diese wird aber lediglich angegeben. Die Mehrwertsteuer wird durch die Extension
+     * Konfiguration NICHT angelegt!
+     *
+     * @param string    $sExtKey
+     * @param bool   $bFallback
+     * @return int
+     */
+    public static function getSpecialCharMarker($sExtKey = 'mklib', $bFallback = true)
+    {
+        return self::getExtensionValue('specialCharMarker', $sExtKey, $bFallback);
+    }
 
-	/**
-	 * workaround for HTTP authorization in CGI environment
-	 *
-	 * Requires Redirect in .htaccess:
-	 *   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-	 *
-	 */
-	public static function enableHttpAuthForCgi(){
-		if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-			list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
-				explode(
-					':' ,
-					base64_decode(
-						substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)
-					)
-				);
-		}
-	}
+    /**
+     * IP-based Access restrictions
+     *
+     * @TODO: in util_dev auslagern!?
+     *
+     * @param   string      $remoteAddress
+     * @param   string      $devIPmask
+     * @return  bool
+     * @deprecated use tx_rnbase_util_Network::isDevelopmentIp
+     */
+    public static function isDevIpMask($remoteAddress = '', $devIPmask = '')
+    {
+        return tx_rnbase_util_Network::isDevelopmentIp($remoteAddress, $devIPmask);
+    }
+
+    /**
+     * workaround for HTTP authorization in CGI environment
+     *
+     * Requires Redirect in .htaccess:
+     *   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+     */
+    public static function enableHttpAuthForCgi()
+    {
+        if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
+                explode(
+                    ':',
+                    base64_decode(
+                        substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)
+                    )
+                );
+        }
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php']);
 }

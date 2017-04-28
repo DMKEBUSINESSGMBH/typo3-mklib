@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_mod1
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -37,31 +37,34 @@
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  */
-abstract class tx_mklib_mod1_linker_Base {
+abstract class tx_mklib_mod1_linker_Base
+{
 
-	/**
-	 * gibt den Namen des Links/der Action zurück
-	 * @return string
-	 */
-	abstract protected function getActionName();
+    /**
+     * gibt den Namen des Links/der Action zurück
+     * @return string
+     */
+    abstract protected function getActionName();
 
-	/**
-	 * Linker Html ausgeben
-	 *
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-	 * @param tx_rnbase_util_FormTool $formTool
-	 * @return string
-	 */
-	public function makeLink(Tx_Rnbase_Domain_Model_RecordInterface $oItem, $oFormTool) {
-		$sOut = $oFormTool->createSubmit(
-			$this->getActionName().'['.get_class($oItem).'|'.$oItem->getUid().']',
-			$GLOBALS['LANG']->getLL('label_show_details')
-		);
-		return $sOut;
-	}
+    /**
+     * Linker Html ausgeben
+     *
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param tx_rnbase_util_FormTool $formTool
+     * @return string
+     */
+    public function makeLink(Tx_Rnbase_Domain_Model_RecordInterface $oItem, $oFormTool)
+    {
+        $sOut = $oFormTool->createSubmit(
+            $this->getActionName().'['.get_class($oItem).'|'.$oItem->getUid().']',
+            $GLOBALS['LANG']->getLL('label_show_details')
+        );
+
+        return $sOut;
+    }
 }
 
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php']);
 }

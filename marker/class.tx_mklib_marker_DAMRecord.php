@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mkdownloads
- *  @subpackage tx_mkdownloads_marker
- *  @author Michael Wagner
+ * @package tx_mkdownloads
+ * @subpackage tx_mkdownloads_marker
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -37,10 +37,11 @@ tx_rnbase::load('tx_mklib_marker_MediaRecord');
  * @author Michael Wagner
  * @deprecated use tx_mklib_marker_MediaRecord
  */
-class tx_mklib_marker_DAMRecord extends tx_mklib_marker_MediaRecord {
+class tx_mklib_marker_DAMRecord extends tx_mklib_marker_MediaRecord
+{
 }
 
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php']);
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package TYPO3
- *  @subpackage tx_mkdifu
- *  @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @package TYPO3
+ * @subpackage tx_mkdifu
+ * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
  *  Copyright notice
  *
@@ -32,13 +32,15 @@ tx_rnbase::load('tx_mklib_filter_Sorter');
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_fixtures_classes_SorterFilter extends tx_mklib_filter_Sorter {
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_filter_BaseFilter::initFilter()
-	 */
-	protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId) {
-		return intval($this->initSorting()) . ' ' . $this->getSortBy() . ' ' . $this->getSortOrder();
-	}
+class tx_mklib_tests_fixtures_classes_SorterFilter extends tx_mklib_filter_Sorter
+{
+    
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_filter_BaseFilter::initFilter()
+     */
+    protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
+    {
+        return intval($this->initSorting()) . ' ' . $this->getSortBy() . ' ' . $this->getSortOrder();
+    }
 }

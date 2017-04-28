@@ -33,82 +33,89 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract {
+class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
+{
 
-	/**
-	 * {@inheritDoc}
-	 * @see tx_mklib_repository_Abstract::getSearchClass()
-	 */
-	protected function getSearchClass() {
-		return 'tx_rnbase_util_SearchGeneric';
-	}
+    /**
+     * {@inheritDoc}
+     * @see tx_mklib_repository_Abstract::getSearchClass()
+     */
+    protected function getSearchClass()
+    {
+        return 'tx_rnbase_util_SearchGeneric';
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * @see tx_mklib_repository_Abstract::getEmptyModel()
-	 */
-	public function getEmptyModel() {
-		return parent::getEmptyModel()->setTablename('tt_news');
-	}
+    /**
+     * {@inheritDoc}
+     * @see tx_mklib_repository_Abstract::getEmptyModel()
+     */
+    public function getEmptyModel()
+    {
+        return parent::getEmptyModel()->setTablename('tt_news');
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * @see tx_mklib_repository_Abstract::getWrapperClass()
-	 */
-	protected function getWrapperClass() {
-		return 'tx_mklib_model_TtNews';
-	}
+    /**
+     * {@inheritDoc}
+     * @see tx_mklib_repository_Abstract::getWrapperClass()
+     */
+    protected function getWrapperClass()
+    {
+        return 'tx_mklib_model_TtNews';
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * @see tx_mklib_repository_Abstract::search()
-	 */
-	public function search(array $fields = array(), array $options = array()) {
-		return parent::search($fields, $this->insertSearchDefinition($options));
-	}
+    /**
+     * {@inheritDoc}
+     * @see tx_mklib_repository_Abstract::search()
+     */
+    public function search(array $fields = array(), array $options = array())
+    {
+        return parent::search($fields, $this->insertSearchDefinition($options));
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * @see tx_mklib_repository_Abstract::searchSingle()
-	 */
-	public function searchSingle(array $fields = array(), array $options = array()) {
-		return parent::searchSingle($fields, $this->insertSearchDefinition($options));
-	}
+    /**
+     * {@inheritDoc}
+     * @see tx_mklib_repository_Abstract::searchSingle()
+     */
+    public function searchSingle(array $fields = array(), array $options = array())
+    {
+        return parent::searchSingle($fields, $this->insertSearchDefinition($options));
+    }
 
-	/**
-	 * @param array $options
-	 * @return array
-	 */
-	protected function insertSearchDefinition(array $options) {
-		if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
-			$options['searchdef'] = array();
-		}
-		$options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-			// default sercher config
-			$this->getSearchDefinition(),
-			// searcher config overrides
-			$options['searchdef']
-		);
+    /**
+     * @param array $options
+     * @return array
+     */
+    protected function insertSearchDefinition(array $options)
+    {
+        if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
+            $options['searchdef'] = array();
+        }
+        $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            // default sercher config
+            $this->getSearchDefinition(),
+            // searcher config overrides
+            $options['searchdef']
+        );
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 *
-	 * @return array
-	 */
-	protected function getSearchDefinition() {
-		return array(
-			'usealias' => '1',
-			'basetable' => 'tt_news',
-			'basetablealias' => 'NEWS',
-			'wrapperclass' => $this->getWrapperClass(),
-			'alias' => array(
-				'NEWS' => array(
-					'table' => 'tt_news'
-				),
-			)
-		);
-	}
-
+    /**
+     *
+     * @return array
+     */
+    protected function getSearchDefinition()
+    {
+        return array(
+            'usealias' => '1',
+            'basetable' => 'tt_news',
+            'basetablealias' => 'NEWS',
+            'wrapperclass' => $this->getWrapperClass(),
+            'alias' => array(
+                'NEWS' => array(
+                    'table' => 'tt_news'
+                ),
+            )
+        );
+    }
 }

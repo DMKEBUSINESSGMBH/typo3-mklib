@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -42,27 +42,31 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  * @package tx_mklib
  * @subpackage tx_mklib_tests
  */
-class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase {
+class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		tx_rnbase_util_Templates::disableSubstCache();
-	}
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        tx_rnbase_util_Templates::disableSubstCache();
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		tx_rnbase_util_Templates::enableSubstCache();
-	}
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        tx_rnbase_util_Templates::enableSubstCache();
+    }
 
-	/**
-	 * @group dummytest
-	 */
-	public function testDummy() {
-	}
+    /**
+     * @group dummytest
+     */
+    public function testDummy()
+    {
+    }
 }

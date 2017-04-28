@@ -47,54 +47,53 @@
  * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-interface tx_mklib_util_httprequest_adapter_Interface {
+interface tx_mklib_util_httprequest_adapter_Interface
+{
 
 
-	/**
-	 * Set the configuration array for the adapter
-	 *
-	 * @param array $config
-	 */
-	public function setConfig(array $config = array());
+    /**
+     * Set the configuration array for the adapter
+     *
+     * @param array $config
+     */
+    public function setConfig(array $config = array());
 
 
-	/**
-	 * Connect to the remote server
-	 *
-	 * @param string  $host
-	 * @param int	 $port
-	 * @param boolean $secure
-	 */
-	public function connect($host, $port = 80, $secure = false);
+    /**
+     * Connect to the remote server
+     *
+     * @param string  $host
+     * @param int    $port
+     * @param bool $secure
+     */
+    public function connect($host, $port = 80, $secure = false);
 
 
-	/**
-	 * Send request to the remote server
-	 *
-	 * @param string $method
-	 * @param string $url
-	 * @param array $headers
-	 * @param string $body
-	 * @return string Request as text
-	 */
-	public function write($method, $url, $headers = array(), $body = '');
+    /**
+     * Send request to the remote server
+     *
+     * @param string $method
+     * @param string $url
+     * @param array $headers
+     * @param string $body
+     * @return string Request as text
+     */
+    public function write($method, $url, $headers = array(), $body = '');
 
 
-	/**
-	 * Read response from server
-	 *
-	 * @return string
-	 */
-	public function read();
+    /**
+     * Read response from server
+     *
+     * @return string
+     */
+    public function read();
 
-	/**
-	 * Close the connection to the server
-	 *
-	 */
-	public function close();
-
+    /**
+     * Close the connection to the server
+     */
+    public function close();
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php']);
 }

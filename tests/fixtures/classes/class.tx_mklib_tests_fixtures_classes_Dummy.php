@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_srv
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_srv
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,44 +38,54 @@ tx_rnbase::load('tx_mklib_srv_Base');
  * @package tx_mklib
  * @subpackage tx_mklib_srv
  */
-class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base {
+class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
+{
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_srv_Base::search()
-	 */
-	public function search($fields, $options){
-		if($GLOBALS['emptyTestResult'])
-			$aResults = array();
-		else
-			$aResults = array(
-				0 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 1)),
-				1 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 2)),
-				2 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 3)),
-				3 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 4)),
-				4 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 5)),
-			);
-		//sortieren?
-		if(!empty($options['orderby']))
-			rsort($aResults);//reicht um zu sehen ob die Sortierung anspringt
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_srv_Base::search()
+     */
+    public function search($fields, $options)
+    {
+        if ($GLOBALS['emptyTestResult']) {
+            $aResults = array();
+        } else {
+            $aResults = array(
+                0 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 1)),
+                1 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 2)),
+                2 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 3)),
+                3 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 4)),
+                4 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 5)),
+            );
+        }
+        //sortieren?
+        if (!empty($options['orderby'])) {
+            rsort($aResults);
+        }//reicht um zu sehen ob die Sortierung anspringt
 
-		//versteckte zurück geben?
-		if($GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden'] == 1)
-			$aResults[5] = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry',array('uid' => 6, 'hidden' => 1));
+        //versteckte zurück geben?
+        if ($GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden'] == 1) {
+            $aResults[5] = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 6, 'hidden' => 1));
+        }
 
-		if($options['count'])
-			return count($aResults);
-		return $aResults;
-	}
+        if ($options['count']) {
+            return count($aResults);
+        }
+
+        return $aResults;
+    }
 
   /**
    * Liefert die zugehörige Search-Klasse zurück
    *
    * @return string
    */
-  public function getSearchClass(){return 'tx_mklib_search_Wordlist';}
+    public function getSearchClass()
+    {
+        return 'tx_mklib_search_Wordlist';
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'])	{
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
 }

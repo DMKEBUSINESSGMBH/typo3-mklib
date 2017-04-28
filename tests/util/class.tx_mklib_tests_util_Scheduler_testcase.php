@@ -1,6 +1,6 @@
 <?php
 /**
- *  @author Hannes Bochmann
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -32,47 +32,47 @@ tx_rnbase::load('tx_mklib_util_Scheduler');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- *
  * tx_mklib_tests_util_Scheduler_testcase
  *
- * @package 		TYPO3
- * @subpackage	 	mklib
- * @author 			Hannes Bochmann <dev@dmk-ebusiness.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      mklib
+ * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_util_Scheduler_testcase
-	extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_Scheduler_testcase extends tx_rnbase_tests_BaseTestCase
 {
+    protected $languageBackup;
 
-	protected $languageBackup;
 
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        $this->languageBackup = $GLOBALS['LANG']->lang;
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		$this->languageBackup = $GLOBALS['LANG']->lang;
+        $GLOBALS['LANG']->lang = 'default';
+    }
 
-		$GLOBALS['LANG']->lang = 'default';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        $GLOBALS['LANG']->lang = $this->languageBackup;
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		$GLOBALS['LANG']->lang = $this->languageBackup;
-	}
-
-	/**
-	 * @group unit
-	 */
-	public function testGetFormattedTime() {
-		self::assertEquals(
-			'1 Stunde ',
-			tx_mklib_util_Scheduler::getFormattedTime(3600)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testGetFormattedTime()
+    {
+        self::assertEquals(
+            '1 Stunde ',
+            tx_mklib_util_Scheduler::getFormattedTime(3600)
+        );
+    }
 }

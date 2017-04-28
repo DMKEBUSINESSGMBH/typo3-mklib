@@ -33,41 +33,45 @@ tx_rnbase::load('tx_rnbase_model_base');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_model_Page extends tx_rnbase_model_base {
+class tx_mklib_model_Page extends tx_rnbase_model_base
+{
 
-	/**
-	 * @var array[tx_mklib_model_Page]
-	 */
-	private $children = NULL;
+    /**
+     * @var array[tx_mklib_model_Page]
+     */
+    private $children = null;
 
-	/**
-	 * Liefert den Namen der Datenbanktabelle
-	 *
-	 * @return String
-	 */
-	public function getTableName() {
-		return 'pages';
-	}
+    /**
+     * Liefert den Namen der Datenbanktabelle
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return 'pages';
+    }
 
-	/**
-	 * returns all subpages of a page on first level.
-	 *
-	 * @return array[tx_mklib_model_Page]
-	 */
-	public function getChildren() {
-		if ($this->children === NULL) {
-			$this->children = $this->getRepository()->getChildren($this);
-		}
-		return $this->children;
-	}
+    /**
+     * returns all subpages of a page on first level.
+     *
+     * @return array[tx_mklib_model_Page]
+     */
+    public function getChildren()
+    {
+        if ($this->children === null) {
+            $this->children = $this->getRepository()->getChildren($this);
+        }
 
-	/**
-	 * the repo for the pages
-	 *
-	 * @return tx_mklib_repository_Pages
-	 */
-	protected function getRepository() {
-		return tx_rnbase::makeInstance('tx_mklib_repository_Pages');
-	}
+        return $this->children;
+    }
 
+    /**
+     * the repo for the pages
+     *
+     * @return tx_mklib_repository_Pages
+     */
+    protected function getRepository()
+    {
+        return tx_rnbase::makeInstance('tx_mklib_repository_Pages');
+    }
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_srv
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_srv
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -39,20 +39,24 @@ tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableInterface');
  * @package tx_mklib
  * @subpackage tx_mklib_srv
  */
-class tx_mklib_tests_fixtures_classes_ObservableT3Service extends tx_mklib_abstract_ObservableT3Service implements tx_mklib_tests_fixtures_classes_ObservableInterface{
-	protected $aData = array();
-	public function getDataForObservers() {
-		return $this->aData;
-	}
-	public function setDataForObservers($aData = array()) {
-		$this->aData = $aData;
-	}
-	public function doSomething($aData = array()) {
-		$this->setDataForObservers($aData);
-		$this->notifyObservers();
-	}
+class tx_mklib_tests_fixtures_classes_ObservableT3Service extends tx_mklib_abstract_ObservableT3Service implements tx_mklib_tests_fixtures_classes_ObservableInterface
+{
+    protected $aData = array();
+    public function getDataForObservers()
+    {
+        return $this->aData;
+    }
+    public function setDataForObservers($aData = array())
+    {
+        $this->aData = $aData;
+    }
+    public function doSomething($aData = array())
+    {
+        $this->setDataForObservers($aData);
+        $this->notifyObservers();
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'])	{
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
 }

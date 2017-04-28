@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_srv
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_srv
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,34 +38,38 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_srv
  */
-class tx_mklib_tests_srv_StaticCountryZones_testcase extends Tx_Phpunit_TestCase {
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		if(!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
-			$this->markTestSkipped('static_info_tables nicht installiert.');
-		}
-	}
-	
-	/**
-	 * @group integration
-	 */
-	public function testGetByZnCode(){
-		$service = tx_mklib_util_ServiceRegistry::getStaticCountryZonesService();
-		$models = $service->getByZnCode('al');//Alabama
-		$model = $models[0];
+class tx_mklib_tests_srv_StaticCountryZones_testcase extends Tx_Phpunit_TestCase
+{
+    
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
+            $this->markTestSkipped('static_info_tables nicht installiert.');
+        }
+    }
+    
+    /**
+     * @group integration
+     */
+    public function testGetByZnCode()
+    {
+        $service = tx_mklib_util_ServiceRegistry::getStaticCountryZonesService();
+        $models = $service->getByZnCode('al');//Alabama
+        $model = $models[0];
 
-		self::assertInstanceOf(
-			'tx_mklib_model_StaticCountryZone', $model,
-			'Statemodel hat falsche Klasse'
-		);
-		self::assertEquals(
-			'Alabama',
-			$model->getZnNameLocal(), 
-			'Bundesland falsch.'
-		);
-	}
+        self::assertInstanceOf(
+            'tx_mklib_model_StaticCountryZone',
+            $model,
+            'Statemodel hat falsche Klasse'
+        );
+        self::assertEquals(
+            'Alabama',
+            $model->getZnNameLocal(),
+            'Bundesland falsch.'
+        );
+    }
 }

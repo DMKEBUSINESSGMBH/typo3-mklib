@@ -33,36 +33,36 @@ tx_rnbase::load('tx_mklib_util_list_output_Interface');
  * @subpackage tx_mklib
  * @author Michael Wagner
  */
-class tx_mklib_util_list_output_Buffer
-	implements tx_mklib_util_list_output_Interface {
+class tx_mklib_util_list_output_Buffer implements tx_mklib_util_list_output_Interface
+{
 
-	/**
-	 * @var string
-	 */
-	private $output = '';
+    /**
+     * @var string
+     */
+    private $output = '';
 
-	public function getOutput()
-	{
-		return $this->output;
-	}
+    public function getOutput()
+    {
+        return $this->output;
+    }
 
-	/**
-	 * Do the output
-	 *
-	 * @return void
-	 */
-	public function handleOutput() {
-		if (func_num_args() > 0) {
-			foreach (func_get_args() as $output) {
-				if ($output != '') {
-					$this->output .= $output;
-				}
-			}
-		}
-	}
-
+    /**
+     * Do the output
+     *
+     * @return void
+     */
+    public function handleOutput()
+    {
+        if (func_num_args() > 0) {
+            foreach (func_get_args() as $output) {
+                if ($output != '') {
+                    $this->output .= $output;
+                }
+            }
+        }
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php']);
 }

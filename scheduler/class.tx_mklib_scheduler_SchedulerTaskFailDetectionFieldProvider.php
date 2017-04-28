@@ -25,38 +25,38 @@
 tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 
 /**
- *
  * tx_mklib_scheduler_SchedulerTaskFailDetectionFieldProvider
  *
- * @package 		TYPO3
- * @subpackage	 	mklib
- * @author 			Hannes Bochmann <dev@dmk-ebusiness.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      mklib
+ * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_scheduler_SchedulerTaskFailDetectionFieldProvider
-	extends tx_mklib_scheduler_GenericFieldProvider {
+class tx_mklib_scheduler_SchedulerTaskFailDetectionFieldProvider extends tx_mklib_scheduler_GenericFieldProvider
+{
 
-	/**
-	 *
-	 * @return 	array
-	 * @todo CSH einfügen
-	 */
-	protected function getAdditionalFieldConfig(){
-		return array(
-			'failDetectionReceiver' => array(
-				'type' => 'input',
- 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
-				'default' => $GLOBALS['BE_USER']->user['email'],
-				'eval' => 'email,required',
-			),
-			'failDetectionRememberAfter' => array(
-				'type' => 'input',
- 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter',
-				'cshLabel' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter', // key aus der ssh locallang zu cshKey
-				'default' => 3600, // nach 1 h erneut mail schicken
-				'eval' => 'int',
-			),
-		);
-	}
+    /**
+     *
+     * @return  array
+     * @todo CSH einfügen
+     */
+    protected function getAdditionalFieldConfig()
+    {
+        return array(
+            'failDetectionReceiver' => array(
+                'type' => 'input',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
+                'default' => $GLOBALS['BE_USER']->user['email'],
+                'eval' => 'email,required',
+            ),
+            'failDetectionRememberAfter' => array(
+                'type' => 'input',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter',
+                'cshLabel' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter', // key aus der ssh locallang zu cshKey
+                'default' => 3600, // nach 1 h erneut mail schicken
+                'eval' => 'int',
+            ),
+        );
+    }
 }

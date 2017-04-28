@@ -30,5 +30,6 @@ tx_rnbase::load('tx_mklib_soap_ClientWrapper');
  *
  * @author Hannes Bochmann
  */
-class tx_mklib_abstract_SoapClientWrapper extends tx_mklib_soap_ClientWrapper{
+class tx_mklib_abstract_SoapClientWrapper extends tx_mklib_soap_ClientWrapper
+{
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_mod1
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,16 +38,19 @@ tx_rnbase::load('tx_mklib_mod1_linker_Base');
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  */
-class tx_mklib_tests_fixtures_classes_DummyLinker extends tx_mklib_mod1_linker_Base {
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_mod1_linker_Base::getActionName()
-	 */
-	protected function getActionName() {
-		return 'showTest';
-	}
+class tx_mklib_tests_fixtures_classes_DummyLinker extends tx_mklib_mod1_linker_Base
+{
+    
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_mod1_linker_Base::getActionName()
+     */
+    protected function getActionName()
+    {
+        return 'showTest';
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php'])
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']);
+}

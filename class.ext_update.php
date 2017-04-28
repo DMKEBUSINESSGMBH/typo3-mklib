@@ -1,7 +1,7 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib
+ * @package tx_mklib
+ * @subpackage tx_mklib
  *
  *  Copyright notice
  *
@@ -37,58 +37,66 @@
  * auf jeden fall sollte das umgestellt werden, das hier ist nur eine quick and dirty lösung!
  */
 // wenn mklib installiert wird, funktioniert der aufruf extPath natürlich nicht und wirft eine exception
-if(tx_rnbase_util_Extensions::isLoaded('mklib')) {
-	require_once(tx_rnbase_util_Extensions::extPath('mklib', 'class.abstract_ext_update.php'));
-}
-// ist de pfad bereits gesetzt?
-elseif(isset($GLOBALS['absPath'])) {
-	require_once($GLOBALS['absPath'] . 'class.abstract_ext_update.php');
-}
-// ist de pfad bereits gesetzt?
-elseif(isset($absPath)) {
-	require_once($absPath . 'class.abstract_ext_update.php');
-}
-// weitere ausführung abbrechen 
+if (tx_rnbase_util_Extensions::isLoaded('mklib')) {
+    require_once(tx_rnbase_util_Extensions::extPath('mklib', 'class.abstract_ext_update.php'));
+} // ist de pfad bereits gesetzt?
+elseif (isset($GLOBALS['absPath'])) {
+    require_once($GLOBALS['absPath'] . 'class.abstract_ext_update.php');
+} // ist de pfad bereits gesetzt?
+elseif (isset($absPath)) {
+    require_once($absPath . 'class.abstract_ext_update.php');
+} // weitere ausführung abbrechen
 else {
-	// klasse mus erstellt. access liefert false um weitere aufrufe zu verhindern
-	class ext_update { function access() { return FALSE; } }
-	return'';
+    // klasse mus erstellt. access liefert false um weitere aufrufe zu verhindern
+    class ext_update
+    {
+        public function access()
+        {
+            return false;
+        }
+    }
+
+    return'';
 }
 
 /**
  * Class for updating the db
  *
- * @author	 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- * @author	 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @author   Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ * @author   Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class ext_update extends abstract_ext_update {
+class ext_update extends abstract_ext_update
+{
 
-	/**
-	 * Liefert den Namen der Extension für die
-	 * @return string
-	 */
-	protected function getExtensionName() {
-		return 'mklib';
-	}
+    /**
+     * Liefert den Namen der Extension für die
+     * @return string
+     */
+    protected function getExtensionName()
+    {
+        return 'mklib';
+    }
 
-	/**
-	 * Liefert die Nachricht, was gemacht werden soll
-	 * @return string
-	 */
-	protected function getInfoMsg() {
-		return '<p>Update the Static Info Tables with new zip code rules.<br /></p>';
-	}
-	
-	/**
-	 * Liefert die Nachricht, was gemacht werden soll
-	 * @return string
-	 */
-	protected function getSuccessMsg() {
-		return '<p><big><strong>Import done.</strong></big></p>';
-	}
+    /**
+     * Liefert die Nachricht, was gemacht werden soll
+     * @return string
+     */
+    protected function getInfoMsg()
+    {
+        return '<p>Update the Static Info Tables with new zip code rules.<br /></p>';
+    }
+    
+    /**
+     * Liefert die Nachricht, was gemacht werden soll
+     * @return string
+     */
+    protected function getSuccessMsg()
+    {
+        return '<p><big><strong>Import done.</strong></big></p>';
+    }
 }
 
 // Include extension?
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']);
 }

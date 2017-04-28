@@ -26,18 +26,20 @@
 
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
-class tx_mklib_tests_fixtures_classes_DummyFilterWithReturnFalse extends tx_rnbase_filter_BaseFilter {
-	/**
-	 * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
-	 *
-	 * @param array $fields
-	 * @param array $options
-	 * @param tx_rnbase_parameters $parameters
-	 * @param tx_rnbase_configurations $configurations
-	 * @param string $confId
-	 * @return boolean
-	 */
-	protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId) {
-		return false;
-	}
+class tx_mklib_tests_fixtures_classes_DummyFilterWithReturnFalse extends tx_rnbase_filter_BaseFilter
+{
+    /**
+     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
+     *
+     * @param array $fields
+     * @param array $options
+     * @param tx_rnbase_parameters $parameters
+     * @param tx_rnbase_configurations $configurations
+     * @param string $confId
+     * @return bool
+     */
+    protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
+    {
+        return false;
+    }
 }

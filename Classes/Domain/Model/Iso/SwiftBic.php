@@ -33,20 +33,18 @@ tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Base');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mklib_Domain_Model_Iso_SwiftBic
-	extends Tx_Mklib_Domain_Model_Iso_Base
+class Tx_Mklib_Domain_Model_Iso_SwiftBic extends Tx_Mklib_Domain_Model_Iso_Base
 {
-	/**
-	 * Validates the swift/bic code
-	 *
-	 * @return boolean
-	 */
-	public function validate()
-	{
-		return 1 === preg_match(
-			'/^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$/',
-			$this->getValue()
-		);
-	}
-
+    /**
+     * Validates the swift/bic code
+     *
+     * @return bool
+     */
+    public function validate()
+    {
+        return 1 === preg_match(
+            '/^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$/',
+            $this->getValue()
+        );
+    }
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- *  @package tx_mklib
- *  @subpackage tx_mklib_model
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_model
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -33,87 +33,87 @@ tx_rnbase::load('tx_rnbase_model_base');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_model
- *  @author Michael Wagner
+ * @author Michael Wagner
  */
-class tx_mklib_model_Media extends tx_rnbase_model_base {
-	/**
-	 * Liefert den Namen der Datenbanktabelle
-	 *
-	 * @return String
-	 */
-	public function getTableName() {
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			return 'sys_file';
-		} else {
-			return 'tx_dam';
-		}
-	}
+class tx_mklib_model_Media extends tx_rnbase_model_base
+{
+    /**
+     * Liefert den Namen der Datenbanktabelle
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+            return 'sys_file';
+        } else {
+            return 'tx_dam';
+        }
+    }
 
-	/**
-	 * Befüllt den Record Pfaden
-	 *
-	 * @param string $sPath
-	 * @return tx_mklib_model_Dam
-	 */
-	public function fillPath($sPath = false){
-		// Pathname immer setzen!
-		if (!$this->hasFilePathName()) {
-			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-				$this->setFilePathName(
-					$this->getUrl()
-				);
-			} else {
-				$this->setFilePathName(
-					$this->getFilePath() . $this->getFileName()
-				);
-			}
-		}
+    /**
+     * Befüllt den Record Pfaden
+     *
+     * @param string $sPath
+     * @return tx_mklib_model_Dam
+     */
+    public function fillPath($sPath = false)
+    {
+        // Pathname immer setzen!
+        if (!$this->hasFilePathName()) {
+            if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+                $this->setFilePathName(
+                    $this->getUrl()
+                );
+            } else {
+                $this->setFilePathName(
+                    $this->getFilePath() . $this->getFileName()
+                );
+            }
+        }
 
-		tx_rnbase::load('tx_mklib_util_File');
+        tx_rnbase::load('tx_mklib_util_File');
 
-		// webpath setzen
-		if (
-			(!$sPath || $sPath == 'webpath')
-			&& !$this->hasFileWebpath()
-		) {
-			$this->setFileWebpath(
-				tx_mklib_util_File::getWebPath(
-					$this->getFilePathName()
-				)
-			);
-		}
+        // webpath setzen
+        if ((!$sPath || $sPath == 'webpath')
+            && !$this->hasFileWebpath()
+        ) {
+            $this->setFileWebpath(
+                tx_mklib_util_File::getWebPath(
+                    $this->getFilePathName()
+                )
+            );
+        }
 
-		// serverpath setzen
-		if (
-			(!$sPath || $sPath == 'serverpath')
-			&& !$this->hasFileServerpath()
-		) {
-			$this->setFileServerpath(
-				urldecode(
-					tx_mklib_util_File::getServerPath(
-						$this->getFilePathName()
-					)
-				)
-			);
-		}
+        // serverpath setzen
+        if ((!$sPath || $sPath == 'serverpath')
+            && !$this->hasFileServerpath()
+        ) {
+            $this->setFileServerpath(
+                urldecode(
+                    tx_mklib_util_File::getServerPath(
+                        $this->getFilePathName()
+                    )
+                )
+            );
+        }
 
-		// relpath setzen
-		if (
-			(!$sPath || $sPath == 'relpath')
-			&& !$this->hasFileRelpath()
-		) {
-			$this->setFileRelpath(
-				tx_mklib_util_File::getRelPath(
-					$this->getFilePathName(),
-					true
-				)
-			);
-		}
+        // relpath setzen
+        if ((!$sPath || $sPath == 'relpath')
+            && !$this->hasFileRelpath()
+        ) {
+            $this->setFileRelpath(
+                tx_mklib_util_File::getRelPath(
+                    $this->getFilePathName(),
+                    true
+                )
+            );
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']);
 }

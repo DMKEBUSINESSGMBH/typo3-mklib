@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,41 +38,48 @@ tx_rnbase::load('tx_rnbase_util_Misc');
  * @package tx_mklib
  * @subpackage tx_mklib_util
  */
-class tx_mklib_util_ServiceRegistry {
+class tx_mklib_util_ServiceRegistry
+{
 
-	/** @var 	string 	Extensionkey*/
-	private static $extKey = 'mklib';
-	/**
-	 * Return wordlist service
-	 * @return tx_mklib_srv_Wordlist
-	 */
-	public static function getWordlistService() {
-		return tx_rnbase_util_Misc::getService(self::$extKey, 'wordlist');
-	}
+    /**
+     * @var    string  Extensionkey
+     */
+    private static $extKey = 'mklib';
+    /**
+     * Return wordlist service
+     * @return tx_mklib_srv_Wordlist
+     */
+    public static function getWordlistService()
+    {
+        return tx_rnbase_util_Misc::getService(self::$extKey, 'wordlist');
+    }
 
-	/**
-	 * Return wordlist service
-	 * @return tx_mklib_srv_Finance
-	 */
-	public static function getFinanceService() {
-		return tx_rnbase_util_Misc::getService(self::$extKey, 'finance');
-	}
-	
-	/**
-	 * @return tx_mklib_srv_StaticCountries
-	 */
-	public static function getStaticCountriesService() {
-		return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountries');
-	}
-	
-	/**
-	 * @return tx_mklib_srv_StaticCountryZones
-	 */
-	public static function getStaticCountryZonesService() {
-		return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountryZones');
-	}
+    /**
+     * Return wordlist service
+     * @return tx_mklib_srv_Finance
+     */
+    public static function getFinanceService()
+    {
+        return tx_rnbase_util_Misc::getService(self::$extKey, 'finance');
+    }
+    
+    /**
+     * @return tx_mklib_srv_StaticCountries
+     */
+    public static function getStaticCountriesService()
+    {
+        return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountries');
+    }
+    
+    /**
+     * @return tx_mklib_srv_StaticCountryZones
+     */
+    public static function getStaticCountryZonesService()
+    {
+        return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountryZones');
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php']);
 }

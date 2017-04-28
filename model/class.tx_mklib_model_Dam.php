@@ -1,8 +1,8 @@
 <?php
 /**
- *  @package tx_mklib
- *  @subpackage tx_mklib_model
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_model
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -34,12 +34,13 @@ tx_rnbase::load('tx_mklib_model_Media');
  *
  * @package tx_mklib
  * @subpackage tx_mklib_model
- *  @author Michael Wagner
- *  @deprecated use tx_mklib_model_Media
+ * @author Michael Wagner
+ * @deprecated use tx_mklib_model_Media
  */
-class tx_mklib_model_Dam extends tx_mklib_model_Media {
+class tx_mklib_model_Dam extends tx_mklib_model_Media
+{
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']);
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -30,29 +30,30 @@
  * this class just as proxy
  * use Tx_Mklib_Database_Connection instead
  */
-class tx_mklib_util_DB extends tx_rnbase_util_DB {
+class tx_mklib_util_DB extends tx_rnbase_util_DB
+{
 
-	/**
-	 * @var string
-	 */
-	protected static $databaseConnectionClass = 'Tx_Mklib_Database_Connection';
+    /**
+     * @var string
+     */
+    protected static $databaseConnectionClass = 'Tx_Mklib_Database_Connection';
 
-	/**
-	 * @var int
-	 */
-	const DELETION_MODE_HIDE = 0;
+    /**
+     * @var int
+     */
+    const DELETION_MODE_HIDE = 0;
 
-	/**
-	 * @var int
-	 */
-	const DELETION_MODE_SOFTDELETE = 1;
+    /**
+     * @var int
+     */
+    const DELETION_MODE_SOFTDELETE = 1;
 
-	/**
-	 * @var int
-	 */
-	const DELETION_MODE_REALLYDELETE = 2;
+    /**
+     * @var int
+     */
+    const DELETION_MODE_REALLYDELETE = 2;
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DB.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DB.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DB.php']);
 }

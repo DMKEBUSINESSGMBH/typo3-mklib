@@ -33,163 +33,163 @@ tx_rnbase::load('tx_rnbase_util_Templates');
  * @subpackage tx_mklib
  * @author Michael Wagner
  */
-class tx_mklib_mod1_export_ListBuilder
-	extends tx_rnbase_util_ListBuilder
+class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
 {
 
-	/**
-	 * Die ist leider private und muss überschrieben werden
-	 *
-	 * @var array
-	 */
-	private $callbacks = array();
+    /**
+     * Die ist leider private und muss überschrieben werden
+     *
+     * @var array
+     */
+    private $callbacks = array();
 
-	/**
-	 * Add a visitor callback. It is called for each item before rendering
-	 *
-	 * @param array $callback
-	 *
-	 * @return void
-	 */
-	public function addVisitor(array $callback)
-	{
-		$this->callbacks[] = $callback;
-	}
+    /**
+     * Add a visitor callback. It is called for each item before rendering
+     *
+     * @param array $callback
+     *
+     * @return void
+     */
+    public function addVisitor(array $callback)
+    {
+        $this->callbacks[] = $callback;
+    }
 
-	/**
-	 * Render each element
-	 *
-	 * {@inheritDoc}
-	 * @see tx_rnbase_util_ListBuilder::renderEach()
-	 */
-	public function renderEach(
-		tx_rnbase_util_IListProvider $provider,
-		$viewData,
-		$template,
-		$markerClassname,
-		$confId,
-		$marker,
-		$formatter,
-		$markerParams = null
-	) {
+    /**
+     * Render each element
+     *
+     * {@inheritDoc}
+     *
+     * @see tx_rnbase_util_ListBuilder::renderEach()
+     */
+    public function renderEach(
+        tx_rnbase_util_IListProvider $provider,
+        $viewData,
+        $template,
+        $markerClassname,
+        $confId,
+        $marker,
+        $formatter,
+        $markerParams = null
+    ) {
+        $outerMarker = $this->getOuterMarker($marker, $template);
 
-		$outerMarker = $this->getOuterMarker($marker, $template);
+        // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
+        list($header, $footer) = $this->getWrapForSubpart($template, $outerMarker . 'S');
 
-		// wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
-		list($header, $footer) = $this->getWrapForSubpart($template, $outerMarker . 'S');
+        tx_mklib_mod1_export_Util::doOutPut($header);
 
-		tx_mklib_mod1_export_Util::doOutPut($header);
+        /* @var $listMarker tx_mklib_mod1_export_ListMarker */
+        $listMarker = tx_rnbase::makeInstance(
+            'tx_mklib_mod1_export_ListMarker',
+            $this->info->getListMarkerInfo()
+        );
 
-		/* @var $listMarker tx_mklib_mod1_export_ListMarker */
-		$listMarker = tx_rnbase::makeInstance(
-			'tx_mklib_mod1_export_ListMarker',
-			$this->info->getListMarkerInfo()
-		);
+        $templateList = tx_rnbase_util_Templates::getSubpart(
+            $template,
+            '###' . $outerMarker . 'S###'
+        );
+        list($listHeader, $listFooter) = $this->getWrapForSubpart(
+            $templateList,
+            $marker
+        );
+        $templateEntry = tx_rnbase_util_Templates::getSubpart(
+            $templateList,
+            '###' . $marker . '###'
+        );
 
-		$templateList = tx_rnbase_util_Templates::getSubpart(
-			$template,
-			'###' . $outerMarker . 'S###'
-		);
-		list($listHeader, $listFooter) = $this->getWrapForSubpart(
-			$templateList,
-			$marker
-		);
-		$templateEntry = tx_rnbase_util_Templates::getSubpart(
-			$templateList,
-			'###' . $marker . '###'
-		);
+        tx_mklib_mod1_export_Util::doOutPut($listHeader);
 
-		tx_mklib_mod1_export_Util::doOutPut($listHeader);
+        $listMarker->addVisitors($this->callbacks);
+        $listMarker->renderEach(
+            $provider,
+            $templateEntry,
+            $markerClassname,
+            $confId,
+            $marker,
+            $formatter,
+            $markerParams
+        );
 
-		$listMarker->addVisitors($this->callbacks);
-		$listMarker->renderEach(
-			$provider,
-			$templateEntry,
-			$markerClassname,
-			$confId,
-			$marker,
-			$formatter,
-			$markerParams
-		);
+        tx_mklib_mod1_export_Util::doOutPut($listFooter);
+        tx_mklib_mod1_export_Util::doOutPut($footer);
 
-		tx_mklib_mod1_export_Util::doOutPut($listFooter);
-		tx_mklib_mod1_export_Util::doOutPut($footer);
+        return '';
+    }
 
-		return '';
-	}
+    /**
+     * Returns the Wrap for the subpart
+     *
+     * @param string $template
+     * @param string $marker
+     * @param bool $required
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    protected function getWrapForSubpart(
+        $template,
+        $marker,
+        $required = true
+    ) {
+        // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
+        $token = md5(time()) . md5(get_class());
+        $wrap = tx_rnbase_util_Templates::substituteSubpart(
+            $template,
+            '###' . $marker . '###',
+            $token,
+            0
+        );
+        $wrap = explode($token, $wrap);
 
-	/**
-	 * Returns the Wrap for the subpart
-	 *
-	 * @param string $template
-	 * @param string $marker
-	 * @param bool $required
-	 *
-	 * @throws Exception
-	 *
-	 * @return string
-	 */
-	protected function getWrapForSubpart(
-		$template,
-		$marker,
-		$required = true
-	) {
-		// wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
-		$token = md5(time()) . md5(get_class());
-		$wrap = tx_rnbase_util_Templates::substituteSubpart(
-			$template,
-			'###' . $marker . '###',
-			$token,
-			0
-		);
-		$wrap = explode($token, $wrap);
+        if ($required && count($wrap) != 2) {
+            // es ist etwas schiefgelaufen, wir sollten immer 2 teile haben
+            // einmal header und einmal footer
+            throw new Exception(
+                'Marker ' . $marker . ' not fount in Template',
+                1361171589
+            );
+        }
 
-		if ($required && count($wrap) != 2) {
-			// es ist etwas schiefgelaufen, wir sollten immer 2 teile haben
-			// einmal header und einmal footer
-			throw new Exception(
-				'Marker ' . $marker . ' not fount in Template',
-				1361171589
-			);
-		}
+        return $wrap;
+    }
 
-		return $wrap;
-	}
-
-	/**
-	 * Renders the element
-	 *
-	 * {@inheritDoc}
-	 * @see tx_rnbase_util_ListBuilder::render()
-	 */
-	function render(
-		&$dataArr,
-		$viewData,
-		$template,
-		$markerClassname,
-		$confId,
-		$marker,
-		$formatter,
-		$markerParams = null
-	) {
-		$out = parent::render(
-			$dataArr,
-			$viewData,
-			$template,
-			$markerClassname,
-			$confId,
-			$marker,
-			$formatter
-		);
-		tx_mklib_mod1_export_Util::doOutPut($out);
-	}
+    /**
+     * Renders the element
+     *
+     * {@inheritDoc}
+     *
+     * @see tx_rnbase_util_ListBuilder::render()
+     */
+    public function render(
+        &$dataArr,
+        $viewData,
+        $template,
+        $markerClassname,
+        $confId,
+        $marker,
+        $formatter,
+        $markerParams = null
+    ) {
+        $out = parent::render(
+            $dataArr,
+            $viewData,
+            $template,
+            $markerClassname,
+            $confId,
+            $marker,
+            $formatter
+        );
+        tx_mklib_mod1_export_Util::doOutPut($out);
+    }
 }
 
 if ((
-	defined('TYPO3_MODE')
-	&& $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-		['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php']
+    defined('TYPO3_MODE')
+    && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
+        ['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php']
 )) {
-	include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-		['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php'];
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
+        ['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php'];
 }

@@ -34,107 +34,105 @@ tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Iban');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mklib_Domain_Model_Iso_IbanTest
-	extends tx_rnbase_tests_BaseTestCase
+class Tx_Mklib_Domain_Model_Iso_IbanTest extends tx_rnbase_tests_BaseTestCase
 {
 
-	/**
-	 * Test the validate method
-	 *
-	 * @param string $iban
-	 * @param boolean $valid
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 * @dataProvider getValidateData
-	 */
-	public function testValidate($iban, $valid)
-	{
-		$model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
-		self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_Iban, $model);
-		self::assertSame($model->validate(), $valid);
-	}
+    /**
+     * Test the validate method
+     *
+     * @param string $iban
+     * @param bool $valid
+     * @return void
+     *
+     * @group unit
+     * @test
+     * @dataProvider getValidateData
+     */
+    public function testValidate($iban, $valid)
+    {
+        $model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
+        self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_Iban, $model);
+        self::assertSame($model->validate(), $valid);
+    }
 
-	/**
-	 * Gets the array for the testValidate testcase.
-	 *
-	 * @return array
-	 */
-	public function getValidateData()
-	{
-		return array(
-			// invalid ibans
-			__LINE__ => array(
-				'iban' => 'AD1200012030200359100120',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'iban' => 'AT611904300234573221',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'iban' => 'BA39129007940028494',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'iban' => 'BE685390047034',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'iban' => 'AA611904300234573201',
-				'valid' => FALSE,
-			),
-			// valid ibans
-			__LINE__ => array(
-				'iban' => 'AT611904300234573201',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => ' HU42117730161111101800000000',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'MK07250120000058984',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'MT84MALT011000012345MTLCAST001S',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'BE68539007547034',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'NO9386011117947',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'SM86U0322509800000000270100',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'LV80BANK0000435195001 ',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'GB29NWBK60161331926819',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'TR330006100519786457841326',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'IE29AIBK93115212345678',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'iban' => 'DE21301204000000015228',
-				'valid' => TRUE,
-			),
-		);
-	}
-
+    /**
+     * Gets the array for the testValidate testcase.
+     *
+     * @return array
+     */
+    public function getValidateData()
+    {
+        return array(
+            // invalid ibans
+            __LINE__ => array(
+                'iban' => 'AD1200012030200359100120',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'iban' => 'AT611904300234573221',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'iban' => 'BA39129007940028494',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'iban' => 'BE685390047034',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'iban' => 'AA611904300234573201',
+                'valid' => false,
+            ),
+            // valid ibans
+            __LINE__ => array(
+                'iban' => 'AT611904300234573201',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => ' HU42117730161111101800000000',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'MK07250120000058984',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'MT84MALT011000012345MTLCAST001S',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'BE68539007547034',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'NO9386011117947',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'SM86U0322509800000000270100',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'LV80BANK0000435195001 ',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'GB29NWBK60161331926819',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'TR330006100519786457841326',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'IE29AIBK93115212345678',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'iban' => 'DE21301204000000015228',
+                'valid' => true,
+            ),
+        );
+    }
 }

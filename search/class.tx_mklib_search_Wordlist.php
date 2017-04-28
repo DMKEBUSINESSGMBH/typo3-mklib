@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_search
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_search
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -40,40 +40,46 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  * @package tx_mklib
  * @subpackage tx_mklib_search
  */
-class tx_mklib_search_Wordlist extends tx_rnbase_util_SearchBase {
-  /**
-   * getTableMappings()
-   */
-  protected function getTableMappings() {
-  }
+class tx_mklib_search_Wordlist extends tx_rnbase_util_SearchBase
+{
+    /**
+     * getTableMappings()
+     */
+    protected function getTableMappings()
+    {
+    }
 
   /**
    * useAlias()
    */
-  protected function useAlias() {
-    return true;
-  }
+    protected function useAlias()
+    {
+        return true;
+    }
 
   /**
    * getBaseTableAlias()
    */
-  protected function getBaseTableAlias() {
-    return 'WORDLIST';
-  }
+    protected function getBaseTableAlias()
+    {
+        return 'WORDLIST';
+    }
 
   /**
    * getBaseTable()
    */
-  protected function getBaseTable() {
-    return 'tx_mklib_wordlist';
-  }
+    protected function getBaseTable()
+    {
+        return 'tx_mklib_wordlist';
+    }
 
   /**
    * getWrapperClass()
    */
-  function getWrapperClass() {
-    return 'tx_mklib_model_WordlistEntry';
-  }
+    public function getWrapperClass()
+    {
+        return 'tx_mklib_model_WordlistEntry';
+    }
 
   /**
    * Liefert alle JOINS zurück
@@ -81,11 +87,12 @@ class tx_mklib_search_Wordlist extends tx_rnbase_util_SearchBase {
    * @param array $tableAliases
    * @return string
    */
-  protected function getJoins($tableAliases) {
-  }
+    protected function getJoins($tableAliases)
+    {
+    }
 }
 
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Wordlist.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Wordlist.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Wordlist.php']);
 }

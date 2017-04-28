@@ -31,124 +31,135 @@
  * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_util_csv_reader
-	implements Iterator {
+class tx_mklib_util_csv_reader implements Iterator
+{
 
-	/**
-	 *
-	 * @var ressource
-	 */
-	private $handle = FALSE;
-	/**
-	 * @var string
-	 */
-	private $delimiter = ';';
-	/**
-	 * @var string
-	 */
-	private $enclosure = '"';
-	/**
-	 * @var string
-	 */
-	private $escape = '\\';
-	/**
-	 * Ignoriert die erste Zeile der CSV.
-	 * Dies ist der Fall, wenn ein Header im CSV enthalten ist.
-	 *
-	 * @var bool
-	 */
-	private $ignoreFirst = TRUE;
+    /**
+     *
+     * @var ressource
+     */
+    private $handle = false;
+    /**
+     * @var string
+     */
+    private $delimiter = ';';
+    /**
+     * @var string
+     */
+    private $enclosure = '"';
+    /**
+     * @var string
+     */
+    private $escape = '\\';
+    /**
+     * Ignoriert die erste Zeile der CSV.
+     * Dies ist der Fall, wenn ein Header im CSV enthalten ist.
+     *
+     * @var bool
+     */
+    private $ignoreFirst = true;
 
-	/**
-	 *
-	 * @param string $file
-	 * @param string $delimiter
-	 * @param string $enclosure
-	 * @param string $escape
-	 * @throws Exception
-	 */
-	public function tx_mklib_util_csv_reader (
-		$file, $delimiter = ';', $enclosure = '"', $escape = '\\'
-	) {
-		$this->handle = @fopen($file, 'r');
-		if ($this->handle === FALSE) {
-			throw new Exception(
-				'Could not open file for csv reader. File: ' . $file
-			);
-		}
-		$this->delimiter = $delimiter;
-		$this->enclosure = $enclosure;
-		$this->escape = $escape;
-	}
+    /**
+     *
+     * @param string $file
+     * @param string $delimiter
+     * @param string $enclosure
+     * @param string $escape
+     * @throws Exception
+     */
+    public function tx_mklib_util_csv_reader(
+        $file,
+        $delimiter = ';',
+        $enclosure = '"',
+        $escape = '\\'
+    ) {
+        $this->handle = @fopen($file, 'r');
+        if ($this->handle === false) {
+            throw new Exception(
+                'Could not open file for csv reader. File: ' . $file
+            );
+        }
+        $this->delimiter = $delimiter;
+        $this->enclosure = $enclosure;
+        $this->escape = $escape;
+    }
 
-	public function __destruct() {
-		if ($this->handle)
-			@fclose($this->handle);
-	}
+    public function __destruct()
+    {
+        if ($this->handle) {
+            @fclose($this->handle);
+        }
+    }
 
-	public function setIgnoreFirstLine($ignoreFirst = TRUE) {
-		$this->ignoreFirst = $ignoreFirst;
-	}
+    public function setIgnoreFirstLine($ignoreFirst = true)
+    {
+        $this->ignoreFirst = $ignoreFirst;
+    }
 
-	/**
-	 * This method resets the file pointer.
-	 */
-	public function rewind() {
-		fseek($this->handle, 0, SEEK_SET);
-		if ($this->ignoreFirst) {
-			$this->current();
-		}
-	}
+    /**
+     * This method resets the file pointer.
+     */
+    public function rewind()
+    {
+        fseek($this->handle, 0, SEEK_SET);
+        if ($this->ignoreFirst) {
+            $this->current();
+        }
+    }
 
     /**
      * This method returns the current csv row as a 2 dimensional array
      *
      * @return array The current csv row as a 2 dimensional array
      */
-	public function current() {
-		return fgetcsv(
-			$this->handle,
-			NULL,
-			$this->delimiter,
-			$this->enclosure,
-			$this->escape
-		);
-	}
+    public function current()
+    {
+        return fgetcsv(
+            $this->handle,
+            null,
+            $this->delimiter,
+            $this->enclosure,
+            $this->escape
+        );
+    }
 
-	/**
-	 * This method returns the current row number.
-	 *
-	 * @return int The current row number
-	 */
-	public function key() {
-		return ftell($this->handle);
-	}
+    /**
+     * This method returns the current row number.
+     *
+     * @return int The current row number
+     */
+    public function key()
+    {
+        return ftell($this->handle);
+    }
 
-	/**
-	 * This method checks if the end of file is reached.
-	 *
-	 * @return boolean Returns true on EOF reached, false otherwise.
-	 */
-	public function next() {
-		return !feof($this->handle);
-	}
+    /**
+     * This method checks if the end of file is reached.
+     *
+     * @return bool Returns true on EOF reached, false otherwise.
+     */
+    public function next()
+    {
+        return !feof($this->handle);
+    }
 
-	/**
-	 * This method checks if the next row is a valid row.
-	 *
-	 * @return boolean If the next row is a valid row.
-	 */
-	public function valid() {
+    /**
+     * This method checks if the next row is a valid row.
+     *
+     * @return bool If the next row is a valid row.
+     */
+    public function valid()
+    {
         if (!$this->next()) {
-        	// nicht schließen, wenn mehrfach über die csv itteriert werden soll gibts probleme!
+            // nicht schließen, wenn mehrfach über die csv itteriert werden soll gibts probleme!
 //             fclose($this->handle);
             return false;
         }
-        return true;
-	}
 
+        return true;
+    }
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_reader.php'])	{
-  include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_readere.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_reader.php']) {
+    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_readere.php']);
 }

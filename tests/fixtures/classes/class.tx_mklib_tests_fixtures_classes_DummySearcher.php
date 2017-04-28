@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_mod1
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -40,58 +40,65 @@ tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
  * @package tx_mklib
  * @subpackage tx_mklib_mod1
  */
-class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_searcher_abstractBase {
+class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_searcher_abstractBase
+{
 
 /**
-	 * @return string
-	 */
-	protected function getSearcherId(){
-		return 'dummySearcher';
-	}
+ * @return string
+ */
+    protected function getSearcherId()
+    {
+        return 'dummySearcher';
+    }
 
-	/**
-	 * Liefert den Service.
-	 *
-	 * @return tx_mklib_srv_Base
-	 */
-	protected function getService() {
-		return tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_Dummy');
-	}
+    /**
+     * Liefert den Service.
+     *
+     * @return tx_mklib_srv_Base
+     */
+    protected function getService()
+    {
+        return tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_Dummy');
+    }
 
-	/**
-	 * @return 	tx_mklib_mod1_decorator_Base
-	 */
-	protected function getDecorator(&$mod, array $options = array()){
-		return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod, $options);
-	}
+    /**
+     * @return  tx_mklib_mod1_decorator_Base
+     */
+    protected function getDecorator(&$mod, array $options = array())
+    {
+        return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod, $options);
+    }
 
-	/**
-	 * Liefert die Spalten für den Decorator.
-	 * @param 	tx_mklib_mod1_decorator_Base 	$oDecorator
-	 * @return 	array
-	 */
-	protected function getDecoratorColumns(&$oDecorator){
-		return array(
-				'uid' => array(
-					'title' => 'label_tableheader_uid',
-					'decorator' => &$oDecorator,
-					'sortable' => 'WORDLIST.'
-				),
-				'actions' => array(
-					'title' => 'label_tableheader_actions',
-					'decorator' => &$oDecorator,
-				)
-			);
-	}
+    /**
+     * Liefert die Spalten für den Decorator.
+     * @param   tx_mklib_mod1_decorator_Base    $oDecorator
+     * @return  array
+     */
+    protected function getDecoratorColumns(&$oDecorator)
+    {
+        return array(
+                'uid' => array(
+                    'title' => 'label_tableheader_uid',
+                    'decorator' => &$oDecorator,
+                    'sortable' => 'WORDLIST.'
+                ),
+                'actions' => array(
+                    'title' => 'label_tableheader_actions',
+                    'decorator' => &$oDecorator,
+                )
+            );
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_mod1_searcher_abstractBase::getCols()
-	 */
-	protected function getCols() {
-		return array('WORDLIST.uid');
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_mod1_searcher_abstractBase::getCols()
+     */
+    protected function getCols()
+    {
+        return array('WORDLIST.uid');
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php'])
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']);
+}

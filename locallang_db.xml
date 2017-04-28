@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 'mklib'</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<!-- misc -->
-			<label index="general.undef">Undefined</label>
-			<label index="plugin.mklib.label">MK Library</label>
-			
-			<label index="please_choose">==please choose==</label>
-			
-			<!--  flexform -->
-			<label index="plugin.mklib.flexform.tab.common">Common</label>
-			<label index="plugin.mklib.flexform.action">View</label>
-			<label index="plugin.mklib.flexform.action.gemnericlist">Generic List</label>
-			<label index="plugin.mklib.flexform.qualifier">Qualifier</label>
-			<label index="plugin.mklib.flexform.action.genericlist.extendedConfId">Extended ConfID (default is 'default')</label>
-			<label index="plugin.mklib.flexform.tab.TSSetup">TS-Setup</label>
-			<label index="plugin.mklib.flexform.tssetup">plugin.tx_mklib.</label>
+    <meta type="array">
+        <type>database</type>
+        <description>Language labels for database tables/fields belonging to extension 'mklib'</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <!-- misc -->
+            <label index="general.undef">Undefined</label>
+            <label index="plugin.mklib.label">MK Library</label>
 
-			<!-- TCA tx_mklib_wordlist -->
-			<label index="tx_mklib_wordlist">Wordlist</label>
-			<label index="tx_mklib_wordlist.blacklisted">explicitly forbidden</label>
-			<label index="tx_mklib_wordlist.whitelisted">explicitly allowed</label>
-			<label index="tx_mklib_wordlist.word">Word(s)</label>
-			
-			<!-- TCA static_countries -->
-			<label index="static_countries.zipcode_rule">zip code rule</label>
-			<label index="static_countries.zipcode_length">zip code length</label>
-			
-			<!-- tt_address -->
-			<label index="tt_address.region">Region/State</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<!-- misc -->
-			<label index="general.undef">Undefiniert</label>
-			<label index="plugin.mklib.label">MK Bibliothek</label>
-			
-			<label index="please_choose">==bitte wählen==</label>
+            <label index="please_choose">==please choose==</label>
 
-			<!-- TCA tx_mklib_wordlist -->
-			<label index="tx_mklib_wordlist">Wortliste</label>
-			<label index="tx_mklib_wordlist.blacklisted">explizit verboten</label>
-			<label index="tx_mklib_wordlist.whitelisted">explizit erlaubt</label>
-			<label index="tx_mklib_wordlist.word">Wort(e)</label>
-			
-			<!-- TCA static_countries -->
-			<label index="static_countries.zipcode_rule">Postleitzahl-Regel</label>
-			<label index="static_countries.zipcode_length">Postleitzahl-Länge</label>
-			
-			<!-- tt_address -->
+            <!--  flexform -->
+            <label index="plugin.mklib.flexform.tab.common">Common</label>
+            <label index="plugin.mklib.flexform.action">View</label>
+            <label index="plugin.mklib.flexform.action.gemnericlist">Generic List</label>
+            <label index="plugin.mklib.flexform.qualifier">Qualifier</label>
+            <label index="plugin.mklib.flexform.action.genericlist.extendedConfId">Extended ConfID (default is 'default')</label>
+            <label index="plugin.mklib.flexform.tab.TSSetup">TS-Setup</label>
+            <label index="plugin.mklib.flexform.tssetup">plugin.tx_mklib.</label>
+
+            <!-- TCA tx_mklib_wordlist -->
+            <label index="tx_mklib_wordlist">Wordlist</label>
+            <label index="tx_mklib_wordlist.blacklisted">explicitly forbidden</label>
+            <label index="tx_mklib_wordlist.whitelisted">explicitly allowed</label>
+            <label index="tx_mklib_wordlist.word">Word(s)</label>
+
+            <!-- TCA static_countries -->
+            <label index="static_countries.zipcode_rule">zip code rule</label>
+            <label index="static_countries.zipcode_length">zip code length</label>
+
+            <!-- tt_address -->
+            <label index="tt_address.region">Region/State</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <!-- misc -->
+            <label index="general.undef">Undefiniert</label>
+            <label index="plugin.mklib.label">MK Bibliothek</label>
+
+            <label index="please_choose">==bitte wählen==</label>
+
+            <!-- TCA tx_mklib_wordlist -->
+            <label index="tx_mklib_wordlist">Wortliste</label>
+            <label index="tx_mklib_wordlist.blacklisted">explizit verboten</label>
+            <label index="tx_mklib_wordlist.whitelisted">explizit erlaubt</label>
+            <label index="tx_mklib_wordlist.word">Wort(e)</label>
+
+            <!-- TCA static_countries -->
+            <label index="static_countries.zipcode_rule">Postleitzahl-Regel</label>
+            <label index="static_countries.zipcode_length">Postleitzahl-Länge</label>
+
+            <!-- tt_address -->
             <label index="tt_address.region">Bundesland</label>
-		</languageKey>
-	</data>
+        </languageKey>
+    </data>
 </T3locallang>

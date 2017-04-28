@@ -34,87 +34,85 @@ tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_SwiftBic');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mklib_Domain_Model_Iso_SwiftBicTest
-	extends tx_rnbase_tests_BaseTestCase
+class Tx_Mklib_Domain_Model_Iso_SwiftBicTest extends tx_rnbase_tests_BaseTestCase
 {
 
-	/**
-	 * Test the validate method
-	 *
-	 * @param string $value
-	 * @param boolean $valid
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 * @dataProvider getValidateData
-	 */
-	public function testValidate($value, $valid)
-	{
-		$model = Tx_Mklib_Domain_Model_Iso_SwiftBic::getInstance($value);
-		self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_SwiftBic, $model);
-		self::assertSame($model->validate(), $valid);
-	}
+    /**
+     * Test the validate method
+     *
+     * @param string $value
+     * @param bool $valid
+     * @return void
+     *
+     * @group unit
+     * @test
+     * @dataProvider getValidateData
+     */
+    public function testValidate($value, $valid)
+    {
+        $model = Tx_Mklib_Domain_Model_Iso_SwiftBic::getInstance($value);
+        self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_SwiftBic, $model);
+        self::assertSame($model->validate(), $valid);
+    }
 
-	/**
-	 * Gets the array for the testValidate testcase.
-	 *
-	 * @return array
-	 */
-	public function getValidateData()
-	{
-		return array(
-			// invalid SwiftBic
-			__LINE__ => array(
-				'value' => 'CE1EL2LLFFF',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'value' => 'E31DCLLFFF',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'value' => '',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'value' => '  ',
-				'valid' => FALSE,
-			),
-			__LINE__ => array(
-				'value' => NULL,
-				'valid' => FALSE,
-			),
-			// valid SwiftBic
-			__LINE__ => array(
-				'value' => 'RBOSGGSX',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'value' => ' RZTIAT22263',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'value' => 'BCEELULL',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'value' => 'MARKDEFF',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'value' => 'GENODEF1JEV',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'value' => 'UBSWCHZH80A',
-				'valid' => TRUE,
-			),
-			__LINE__ => array(
-				'value' => 'CEDELULLXXX',
-				'valid' => TRUE,
-			),
-		);
-	}
-
+    /**
+     * Gets the array for the testValidate testcase.
+     *
+     * @return array
+     */
+    public function getValidateData()
+    {
+        return array(
+            // invalid SwiftBic
+            __LINE__ => array(
+                'value' => 'CE1EL2LLFFF',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'value' => 'E31DCLLFFF',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'value' => '',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'value' => '  ',
+                'valid' => false,
+            ),
+            __LINE__ => array(
+                'value' => null,
+                'valid' => false,
+            ),
+            // valid SwiftBic
+            __LINE__ => array(
+                'value' => 'RBOSGGSX',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'value' => ' RZTIAT22263',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'value' => 'BCEELULL',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'value' => 'MARKDEFF',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'value' => 'GENODEF1JEV',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'value' => 'UBSWCHZH80A',
+                'valid' => true,
+            ),
+            __LINE__ => array(
+                'value' => 'CEDELULLXXX',
+                'valid' => true,
+            ),
+        );
+    }
 }

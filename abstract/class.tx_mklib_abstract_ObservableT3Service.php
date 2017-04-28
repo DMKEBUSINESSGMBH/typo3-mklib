@@ -36,52 +36,58 @@ tx_rnbase::load('Tx_Rnbase_Service_Base');
  * @subpackage tx_mklib_model
  * @author René Nitzsche
  */
-abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_Base implements tx_mklib_interface_IObservable{
+abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_Base implements tx_mklib_interface_IObservable
+{
 
-	/**
-	 * alle registrierten Observer
-	 * @var array[tx_mklib_interface_IObserver]
-	 */
-	protected $aObservers = array();
+    /**
+     * alle registrierten Observer
+     * @var array[tx_mklib_interface_IObserver]
+     */
+    protected $aObservers = array();
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_interface_IObservable::notifyObservers()
-	 */
-	public function notifyObservers() {
-		if(!empty($this->aObservers)){
-			foreach ($this->aObservers as $oObserver) {
-				$oObserver->notify($this);
-			}
-		}
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_interface_IObservable::notifyObservers()
+     */
+    public function notifyObservers()
+    {
+        if (!empty($this->aObservers)) {
+            foreach ($this->aObservers as $oObserver) {
+                $oObserver->notify($this);
+            }
+        }
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_interface_IObservable::registerObserver()
-	 */
-	public function registerObserver(tx_mklib_interface_IObserver $oObserver) {
-		$this->aObservers[get_class($oObserver)] = $oObserver;
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_interface_IObservable::registerObserver()
+     */
+    public function registerObserver(tx_mklib_interface_IObserver $oObserver)
+    {
+        $this->aObservers[get_class($oObserver)] = $oObserver;
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_interface_IObservable::unregisterObserver()
-	 */
-	public function unregisterObserver(tx_mklib_interface_IObserver $oObserver) {
-		if(isset($this->aObservers[get_class($oObserver)]))
-			unset($this->aObservers[get_class($oObserver)]);
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_interface_IObservable::unregisterObserver()
+     */
+    public function unregisterObserver(tx_mklib_interface_IObserver $oObserver)
+    {
+        if (isset($this->aObservers[get_class($oObserver)])) {
+            unset($this->aObservers[get_class($oObserver)]);
+        }
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_interface_IObservable::getObservers()
-	 */
-	public function getObservers() {
-		return $this->aObservers;
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_interface_IObservable::getObservers()
+     */
+    public function getObservers()
+    {
+        return $this->aObservers;
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
 }

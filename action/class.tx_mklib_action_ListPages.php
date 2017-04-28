@@ -31,27 +31,28 @@ tx_rnbase::load('tx_mklib_action_AbstractList');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_action_ListPages
-	extends tx_mklib_action_AbstractList {
+class tx_mklib_action_ListPages extends tx_mklib_action_AbstractList
+{
 
-	/**
-	 * Liefert die Service Klasse, welche das Suchen übernimmt
-	 *
-	 * @return tx_mklib_interface_Repository
-	 */
-	protected function getRepository() {
-		return tx_rnbase::makeInstance('tx_mklib_repository_Pages');
-	}
+    /**
+     * Liefert die Service Klasse, welche das Suchen übernimmt
+     *
+     * @return tx_mklib_interface_Repository
+     */
+    protected function getRepository()
+    {
+        return tx_rnbase::makeInstance('tx_mklib_repository_Pages');
+    }
 
-	/**
-	 * Liefert den Default-Namen des Templates. Über diesen Namen
-	 * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
-	 * geprüft. Dessen Key wird aus dem Name und dem String "Template"
-	 * gebildet: [tmpname]Template
-	 * @return string
-	 */
-	protected function getTemplateName() {
-		return 'listpages';
-	}
-
+    /**
+     * Liefert den Default-Namen des Templates. Über diesen Namen
+     * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
+     * geprüft. Dessen Key wird aus dem Name und dem String "Template"
+     * gebildet: [tmpname]Template
+     * @return string
+     */
+    protected function getTemplateName()
+    {
+        return 'listpages';
+    }
 }

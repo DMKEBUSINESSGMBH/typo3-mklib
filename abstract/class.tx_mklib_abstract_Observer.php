@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mkjjk
- *  @subpackage tx_mkjjk_srv
- *  @author Hannes Bochmann
+ * @package tx_mkjjk
+ * @subpackage tx_mkjjk_srv
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -41,48 +41,52 @@ tx_rnbase::load('tx_mklib_interface_IObserver');
  * @package tx_mkjjk
  * @subpackage tx_mkjjk_srv
  */
-abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserver {
+abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserver
+{
 
-	/**
-	 * wenn das observable nicht diese interface implementiert
-	 * dann wird execute() nicht ausgeführt.
-	 * wenn nicht auf ein interface geprüft werden soll dann einfach
-	 * leer lassen.
-	 * Beispiel:
-	 * protected $sSupportedInterface = tx_mkextension_interface_ForSomething
-	 * die klasse einfach angeben. nicht als string!
-	 *
-	 * @var const
-	 */
-	protected $sSupportedInterface;
+    /**
+     * wenn das observable nicht diese interface implementiert
+     * dann wird execute() nicht ausgeführt.
+     * wenn nicht auf ein interface geprüft werden soll dann einfach
+     * leer lassen.
+     * Beispiel:
+     * protected $sSupportedInterface = tx_mkextension_interface_ForSomething
+     * die klasse einfach angeben. nicht als string!
+     *
+     * @var const
+     */
+    protected $sSupportedInterface;
 
-	/**
-	 * kann nicht überschrieben werden!!!
-	 * (non-PHPdoc)
-	 * @see tx_mklib_interface_IObserver::notify()
-	 */
-	final public function notify(tx_mklib_interface_IObservable $oObservable) {
-		//wird nur ein bestimmtes interface unterstützt?
-		$supportedInterface = $this->getSupportedInterface();
-		if($supportedInterface && !$oObservable instanceof $supportedInterface)
-			return;
-		$this->execute($oObservable);
-	}
+    /**
+     * kann nicht überschrieben werden!!!
+     * (non-PHPdoc)
+     * @see tx_mklib_interface_IObserver::notify()
+     */
+    final public function notify(tx_mklib_interface_IObservable $oObservable)
+    {
+        //wird nur ein bestimmtes interface unterstützt?
+        $supportedInterface = $this->getSupportedInterface();
+        if ($supportedInterface && !$oObservable instanceof $supportedInterface) {
+            return;
+        }
+        $this->execute($oObservable);
+    }
 
-	protected function getSupportedInterface() {
-		return null;
-	}
+    protected function getSupportedInterface()
+    {
+        return null;
+    }
 
-	/**
-	 * führt die eigentiche arbeit des jeweiligen
-	 * observers aus
-	 *
-	 * @param tx_mklib_interface_IObservable $oObservable
-	 * @return void
-	 */
-	abstract protected function execute(tx_mklib_interface_IObservable $oObservable);
+    /**
+     * führt die eigentiche arbeit des jeweiligen
+     * observers aus
+     *
+     * @param tx_mklib_interface_IObservable $oObservable
+     * @return void
+     */
+    abstract protected function execute(tx_mklib_interface_IObservable $oObservable);
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php'])	{
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']);
 }

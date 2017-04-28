@@ -31,33 +31,36 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
  * @subpackage tx_mklib
  * @author Hannes Bochmann <hann.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFieldProvider {
+class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFieldProvider
+{
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_scheduler_GenericFieldProvider::getAdditionalFieldConfig()
-	 */
-	protected function getAdditionalFieldConfig(){
-		// wenn mehrere Scheduler den email field provider
-		// verwenden, dann überschreiben diese felder sich gegenseitig
-		// da alle im Quelltext vorhanden sind.
-		// also setzen wir den wert von mklibEmail, der eingegeben wird,
-		// für alle übrigen Felder.
-		// siehe http://forge.typo3.org/issues/25805
-		$doc = $this->schedulerModule->doc;
-		if(is_object($doc))
-			$doc->getPageRenderer()->addJsFile(tx_rnbase_util_Extensions::extRelPath('mklib').'res/js/emailFieldProvider.js');
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_scheduler_GenericFieldProvider::getAdditionalFieldConfig()
+     */
+    protected function getAdditionalFieldConfig()
+    {
+        // wenn mehrere Scheduler den email field provider
+        // verwenden, dann überschreiben diese felder sich gegenseitig
+        // da alle im Quelltext vorhanden sind.
+        // also setzen wir den wert von mklibEmail, der eingegeben wird,
+        // für alle übrigen Felder.
+        // siehe http://forge.typo3.org/issues/25805
+        $doc = $this->schedulerModule->doc;
+        if (is_object($doc)) {
+            $doc->getPageRenderer()->addJsFile(tx_rnbase_util_Extensions::extRelPath('mklib').'res/js/emailFieldProvider.js');
+        }
 
-		return array(
-			// wir brauchen einen eindeutigen namen da es das email
-			// feld schon im scheduler test task gibt. dieser überschreibt
-			// dann unseren email wert da er später im quelltext auftaucht.
-			'mklibEmail' => array(
-				'type' => 'input',
- 				'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
-				'default' => $GLOBALS['BE_USER']->user['email'],
-				'eval' => 'email',
-			),
-		);
-	}
+        return array(
+            // wir brauchen einen eindeutigen namen da es das email
+            // feld schon im scheduler test task gibt. dieser überschreibt
+            // dann unseren email wert da er später im quelltext auftaucht.
+            'mklibEmail' => array(
+                'type' => 'input',
+                'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
+                'default' => $GLOBALS['BE_USER']->user['email'],
+                'eval' => 'email',
+            ),
+        );
+    }
 }

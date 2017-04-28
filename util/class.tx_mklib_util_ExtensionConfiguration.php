@@ -30,19 +30,22 @@ tx_rnbase::load('tx_rnbase_configurations');
  *
  * @author Hannes Bochmann
  */
-class tx_mklib_util_ExtensionConfiguration{
+class tx_mklib_util_ExtensionConfiguration
+{
 
-	/**
-	 * @var string
-	 */
-	protected $extKey = 'mklib';
-	
-	/**
-	 * @return mixed
-	 */
-	protected function getExtensionCfgValue($key) {
-		return tx_rnbase_configurations::getExtensionCfgValue(
-			$this->extKey, $key
-		);
-	}
+    /**
+     * @var string
+     */
+    protected $extKey = 'mklib';
+    
+    /**
+     * @return mixed
+     */
+    protected function getExtensionCfgValue($key)
+    {
+        return tx_rnbase_configurations::getExtensionCfgValue(
+            $this->extKey,
+            $key
+        );
+    }
 }

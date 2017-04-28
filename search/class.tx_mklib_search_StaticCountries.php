@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_search
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_search
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -40,47 +40,54 @@ tx_rnbase::load('tx_rnbase_util_SearchBase');
  * @package tx_mklib
  * @subpackage tx_mklib_search
  */
-class tx_mklib_search_StaticCountries extends tx_rnbase_util_SearchBase {
-	/**
-	 * getTableMappings()
-	 */
-	protected function getTableMappings() {
-	}
+class tx_mklib_search_StaticCountries extends tx_rnbase_util_SearchBase
+{
+    /**
+     * getTableMappings()
+     */
+    protected function getTableMappings()
+    {
+    }
 
-	/**
-	 * useAlias()
-	 */
-	protected function useAlias() {
-		return true;
-	}
+    /**
+     * useAlias()
+     */
+    protected function useAlias()
+    {
+        return true;
+    }
 
-	/**
-	 * getBaseTableAlias()
-	 */
-	protected function getBaseTableAlias() {
-		return 'STATICCOUNTRY';
-	}
+    /**
+     * getBaseTableAlias()
+     */
+    protected function getBaseTableAlias()
+    {
+        return 'STATICCOUNTRY';
+    }
 
-	/**
-	 * getBaseTable()
-	 */
-	protected function getBaseTable() {
-		return 'static_countries';
-	}
+    /**
+     * getBaseTable()
+     */
+    protected function getBaseTable()
+    {
+        return 'static_countries';
+    }
 
-	/**
-	 * getWrapperClass()
-	 */
-	function getWrapperClass() {
-		return 'tx_mklib_model_StaticCountry';
-	}
+    /**
+     * getWrapperClass()
+     */
+    public function getWrapperClass()
+    {
+        return 'tx_mklib_model_StaticCountry';
+    }
 
-	/**
-	 * Liefert alle JOINS zurück
-	 *
-	 * @param array $tableAliases
-	 * @return string
-	 */
-	protected function getJoins($tableAliases) {
-	}
+    /**
+     * Liefert alle JOINS zurück
+     *
+     * @param array $tableAliases
+     * @return string
+     */
+    protected function getJoins($tableAliases)
+    {
+    }
 }

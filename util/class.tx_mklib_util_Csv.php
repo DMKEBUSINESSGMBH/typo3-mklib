@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -31,56 +31,66 @@ tx_rnbase::load('tx_rnbase_util_Files');
  * Die Klasse ermöglicht direkt eine CSV Datei
  * mit den Boardmitteln von TYPO3 zu schreiben
  */
-class tx_mklib_util_Csv extends localRecordList {
+class tx_mklib_util_Csv extends localRecordList
+{
 
-	/**
-	 * Gibt die Csv Zeilen zurück, die gesetzt wurden
-	 * @return array
-	 */
-	public function getCsvLines() {
-		return $this->csvLines;
-	}
+    /**
+     * Gibt die Csv Zeilen zurück, die gesetzt wurden
+     * @return array
+     */
+    public function getCsvLines()
+    {
+        return $this->csvLines;
+    }
 
-	/**
-	 * Schreibt die ganzen CSV Zeilen in eine Datei
-	 *
-	 * @param string $sDir
-	 * @param string $sPrefix
-	 * @param array $aData
-	 * @param string $sFileName	| gibt es einen festen dateinamen?
-	 *
-	 * @return string | Name der Datei
-	 */
-	public function writeCsv($sDir, $sPrefix = '', $aData = array(), $sFileName = '') {
-		if(empty($aData)) $aData = $this->getCsvLines();
+    /**
+     * Schreibt die ganzen CSV Zeilen in eine Datei
+     *
+     * @param string $sDir
+     * @param string $sPrefix
+     * @param array $aData
+     * @param string $sFileName | gibt es einen festen dateinamen?
+     *
+     * @return string | Name der Datei
+     */
+    public function writeCsv($sDir, $sPrefix = '', $aData = array(), $sFileName = '')
+    {
+        if (empty($aData)) {
+            $aData = $this->getCsvLines();
+        }
 
-		if(!$sFileName){
-			if($sPrefix)$sPrefix = $sPrefix.'_';
-			$sFileName=$sPrefix.date('dmy-Hi').'.csv';
-		}
-		$sCsvLines = implode(chr(13).chr(10),$aData);
+        if (!$sFileName) {
+            if ($sPrefix) {
+                $sPrefix = $sPrefix.'_';
+            }
+            $sFileName = $sPrefix.date('dmy-Hi').'.csv';
+        }
+        $sCsvLines = implode(chr(13).chr(10), $aData);
 
-		if(tx_rnbase_util_Files::writeFile($sDir.$sFileName,$sCsvLines))
-			return $sFileName;
-		else return false;
-	}
+        if (tx_rnbase_util_Files::writeFile($sDir.$sFileName, $sCsvLines)) {
+            return $sFileName;
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	 * @param array $csvRow
-	 * @param string $delimiter
-	 * @param string $quote
-	 * @return void
-	 */
-	public function setCsvRow($csvRow, $delimiter = ',', $quote = '"')	{
-		if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-			$csvLine = \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($csvRow, $delimiter, $quote);
-		} else {
-			$csvLine = t3lib_div::csvValues($csvRow, $delimiter, $quote);
-		}
-		$this->csvLines[] = $csvLine;
-	}
+    /**
+     * @param array $csvRow
+     * @param string $delimiter
+     * @param string $quote
+     * @return void
+     */
+    public function setCsvRow($csvRow, $delimiter = ',', $quote = '"')
+    {
+        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+            $csvLine = \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($csvRow, $delimiter, $quote);
+        } else {
+            $csvLine = t3lib_div::csvValues($csvRow, $delimiter, $quote);
+        }
+        $this->csvLines[] = $csvLine;
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Csv.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Csv.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Csv.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Csv.php']);
 }

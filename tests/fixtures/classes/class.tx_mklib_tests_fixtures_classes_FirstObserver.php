@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_srv
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_srv
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,33 +38,36 @@ tx_rnbase::load('tx_mklib_interface_IObserver');
  * @package tx_mklib
  * @subpackage tx_mklib_srv
  */
-class tx_mklib_tests_fixtures_classes_FirstObserver implements tx_mklib_interface_IObserver{
+class tx_mklib_tests_fixtures_classes_FirstObserver implements tx_mklib_interface_IObserver
+{
 
-	/**
-	 * speichert die aufrufe von notify
-	 * @var array
-	 */
-	public $aNotified = array();
+    /**
+     * speichert die aufrufe von notify
+     * @var array
+     */
+    public $aNotified = array();
 
-	/**
-	 * wie oft wurde notify aufgerufen?
-	 * @var int
-	 */
-	public $iNotified = 0;
+    /**
+     * wie oft wurde notify aufgerufen?
+     * @var int
+     */
+    public $iNotified = 0;
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_mklib_interface_IObserver::notify()
-	 */
-	public function notify(tx_mklib_interface_IObservable $oObservable) {
-		//prüfen ob wir die richtige klasse haben damit wir die daten abgreifen können die wir brauchen
-		if(!$oObservable instanceof tx_mklib_tests_fixtures_classes_ObservableInterface)
-			return;
-		$this->aNotified[] = $oObservable->getDataForObservers();
-		$this->iNotified++;
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_mklib_interface_IObserver::notify()
+     */
+    public function notify(tx_mklib_interface_IObservable $oObservable)
+    {
+        //prüfen ob wir die richtige klasse haben damit wir die daten abgreifen können die wir brauchen
+        if (!$oObservable instanceof tx_mklib_tests_fixtures_classes_ObservableInterface) {
+            return;
+        }
+        $this->aNotified[] = $oObservable->getDataForObservers();
+        $this->iNotified++;
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'])	{
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -39,34 +39,34 @@ tx_rnbase::load('tx_mklib_tests_Util');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_HttpRequest_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_util_HttpRequest_testcase extends Tx_Phpunit_TestCase
+{
 
 
-	/**
-	 * @group integration
-	 */
-	public function testHttpRequestWithCurlAndSllAndServerAuth(){
-		$time = time();
+    /**
+     * @group integration
+     */
+    public function testHttpRequestWithCurlAndSllAndServerAuth()
+    {
+        $time = time();
 
-		$url = 'https://phpunit.project.dmknet.de/tests/httprequest.php?method=POST';
-		$config = array(
-			'sslcainfo' => tx_mklib_tests_Util::getFixturePath('project.dmknet.de.crt'),
-		);
+        $url = 'https://phpunit.project.dmknet.de/tests/httprequest.php?method=POST';
+        $config = array(
+            'sslcainfo' => tx_mklib_tests_Util::getFixturePath('project.dmknet.de.crt'),
+        );
 
-		$request = new tx_mklib_util_HttpRequest($url, $config);
+        $request = new tx_mklib_util_HttpRequest($url, $config);
 
-		$request->addParameter('httprequest', array('time' => $time, 'return' => 'time'));
-		$request->setMethod($request::METHOD_POST);
-		$response = $request->request();
+        $request->addParameter('httprequest', array('time' => $time, 'return' => 'time'));
+        $request->setMethod($request::METHOD_POST);
+        $response = $request->request();
 
-		self::assertEquals(200, $response->getStatus());
-		self::assertEquals('OK', $response->getMessage());
-		self::assertEquals($time, $response->getBody());
-
-	}
-
+        self::assertEquals(200, $response->getStatus());
+        self::assertEquals('OK', $response->getMessage());
+        self::assertEquals($time, $response->getBody());
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php']);
 }

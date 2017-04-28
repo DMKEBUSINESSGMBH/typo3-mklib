@@ -1,7 +1,7 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_action
+ * @package tx_mklib
+ * @subpackage tx_mklib_action
  *
  *  Copyright notice
  *
@@ -36,139 +36,141 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  * @subpackage tx_mklib
  * @author Michael Wagner
  */
-abstract class tx_mklib_action_AbstractList
-	extends tx_rnbase_action_BaseIOC {
+abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
+{
 
-	/**
-	 * Do the magic!
-	 *
-	 * @param tx_rnbase_parameters &$parameters
-	 * @param tx_rnbase_configurations &$configurations
-	 * @param ArrayObject &$viewData
-	 * @return string error msg or null
-	 */
-	public function handleRequest(&$parameters, &$configurations, &$viewData)
-	{
-		$out = $this->prepareRequest();
-		if ($out !== NULL) {
-			return $out;
-		}
+    /**
+     * Do the magic!
+     *
+     * @param tx_rnbase_parameters &$parameters
+     * @param tx_rnbase_configurations &$configurations
+     * @param ArrayObject &$viewData
+     * @return string error msg or null
+     */
+    public function handleRequest(&$parameters, &$configurations, &$viewData)
+    {
+        $out = $this->prepareRequest();
+        if ($out !== null) {
+            return $out;
+        }
 
-		$items = $this->getItems();
-		$viewData->offsetSet('items', $items);
-		$viewData->offsetSet('searched', $items !== FALSE);
+        $items = $this->getItems();
+        $viewData->offsetSet('items', $items);
+        $viewData->offsetSet('searched', $items !== false);
 
-		return NULL;
-	}
+        return null;
+    }
 
-	/**
-	 * Childclass can override this method to prepare the request.
-	 *
-	 * @return string error msg or null
-	 */
-	protected function prepareRequest() {
-		return NULL;
-	}
+    /**
+     * Childclass can override this method to prepare the request.
+     *
+     * @return string error msg or null
+     */
+    protected function prepareRequest()
+    {
+        return null;
+    }
 
-	/**
-	 * Searches for the items to show in list
-	 *
-	 * @throws RuntimeException
-	 * @return array|FALSE
-	 */
-	protected function getItems()
-	{
-		// get the repo
-		$repo = $this->getRepository();
+    /**
+     * Searches for the items to show in list
+     *
+     * @throws RuntimeException
+     * @return array|FALSE
+     */
+    protected function getItems()
+    {
+        // get the repo
+        $repo = $this->getRepository();
 
-		// check the repo interface
-		if (!(
-			$repo instanceof Tx_Rnbase_Domain_Repository_InterfaceSearch ||
-			// tx_mklib_interface_Repository is deprecated!
-			$repo instanceof tx_mklib_interface_Repository
-		)) {
-			throw new RuntimeException(
-				'the repository "' . get_class($repo) . '" ' .
-				'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!',
-				intval(ERROR_CODE_MKLIB . '1')
-			);
-		}
+        // check the repo interface
+        if (!(
+            $repo instanceof Tx_Rnbase_Domain_Repository_InterfaceSearch ||
+            // tx_mklib_interface_Repository is deprecated!
+            $repo instanceof tx_mklib_interface_Repository
+        )) {
+            throw new RuntimeException(
+                'the repository "' . get_class($repo) . '" ' .
+                'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!',
+                intval(ERROR_CODE_MKLIB . '1')
+            );
+        }
 
-		// create filter
-		$filter = tx_rnbase_filter_BaseFilter::createFilter(
-			$this->getParameters(),
-			$this->getConfigurations(),
-			$this->getViewData(),
-			$this->getConfId() . 'filter.'
-		);
+        // create filter
+        $filter = tx_rnbase_filter_BaseFilter::createFilter(
+            $this->getParameters(),
+            $this->getConfigurations(),
+            $this->getViewData(),
+            $this->getConfId() . 'filter.'
+        );
 
-		$fields = $options = array();
-		// let the filter fill the fields end options
-		if (
-			$this->prepareFieldsAndOptions($fields, $options)
-			&& $filter->init($fields, $options)
-		) {
-			if ($this->getConfigurations()->get($this->getConfId() . 'pagebrowser')) {
-				$filter::handlePageBrowser(
-					$this->getConfigurations(), $this->getConfId() . 'pagebrowser',
-					$this->getConfigurations()->getViewData(),
-					$fields, $options, array('searchcallback' => array($repo, 'search'))
-				);
-			}
-			// we search for the items
-			$items = $repo->search($fields, $options);
-		}
-		else {
-			// it was not carried out search
-			return FALSE;
-		}
-		return !(array) $items ? array() : $items;
-	}
+        $fields = $options = array();
+        // let the filter fill the fields end options
+        if ($this->prepareFieldsAndOptions($fields, $options)
+            && $filter->init($fields, $options)
+        ) {
+            if ($this->getConfigurations()->get($this->getConfId() . 'pagebrowser')) {
+                $filter::handlePageBrowser(
+                    $this->getConfigurations(),
+                    $this->getConfId() . 'pagebrowser',
+                    $this->getConfigurations()->getViewData(),
+                    $fields,
+                    $options,
+                    array('searchcallback' => array($repo, 'search'))
+                );
+            }
+            // we search for the items
+            $items = $repo->search($fields, $options);
+        } else {
+            // it was not carried out search
+            return false;
+        }
 
-	/**
-	 * Childclass can prepare the fields and options
-	 * for the search in the repository.
-	 *
-	 * @param array &$fields
-	 * @param array &$options
-	 * @return boolean
-	 */
-	protected function prepareFieldsAndOptions(
-		array &$fields,
-		array &$options
-	) {
-		return TRUE;
-	}
+        return !(array) $items ? array() : $items;
+    }
 
-	/**
-	 * Gibt den Name der zugehörigen View-Klasse zurück
-	 *
-	 * @return string
-	 */
-	public function getViewClassName()
-	{
-		return 'tx_rnbase_view_List';
-	}
+    /**
+     * Childclass can prepare the fields and options
+     * for the search in the repository.
+     *
+     * @param array &$fields
+     * @param array &$options
+     * @return bool
+     */
+    protected function prepareFieldsAndOptions(
+        array &$fields,
+        array &$options
+    ) {
+        return true;
+    }
+
+    /**
+     * Gibt den Name der zugehörigen View-Klasse zurück
+     *
+     * @return string
+     */
+    public function getViewClassName()
+    {
+        return 'tx_rnbase_view_List';
+    }
 
 
-	/**
-	 * Liefert den Templatenamen.
-	 * Darüber wird per Konvention auch auf ein per TS konfiguriertes
-	 * HTML-Template geprüft und die ConfId gebildet
-	 *
-	 * @return string
-	 */
-	// abstract protected function getTemplateName();
+    /**
+     * Liefert den Templatenamen.
+     * Darüber wird per Konvention auch auf ein per TS konfiguriertes
+     * HTML-Template geprüft und die ConfId gebildet
+     *
+     * @return string
+     */
+    // abstract protected function getTemplateName();
 
-	/**
-	 * Liefert die Service Klasse, welche das Suchen übernimmt
-	 *
-	 * @return tx_mklib_interface_Repository
-	 */
-	abstract protected function getRepository();
-
+    /**
+     * Liefert die Service Klasse, welche das Suchen übernimmt
+     *
+     * @return tx_mklib_interface_Repository
+     */
+    abstract protected function getRepository();
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php']);
 }

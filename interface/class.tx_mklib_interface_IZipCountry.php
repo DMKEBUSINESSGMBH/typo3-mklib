@@ -30,39 +30,40 @@
  * @subpackage tx_mklib_model
  * @author René Nitzsche
  */
-interface tx_mklib_interface_IZipCountry {
+interface tx_mklib_interface_IZipCountry
+{
 
-	/**
-	 * Liefert den ISO2 Code des Landes. DE,CZ,PL usw.
-	 *
-	 * @return String
-	 */
-	public function getISO2();
+    /**
+     * Liefert den ISO2 Code des Landes. DE,CZ,PL usw.
+     *
+     * @return string
+     */
+    public function getISO2();
 
-	/**
-	 * ID der Regel für die PLZ-Validierung
-			1: maximum length without gaps
-			2: maximum length numerical without gaps
-			3: exact length without gaps
-			4: exact length numerical without gaps
-			5: maximum length with gaps
-			6: maximum length numerical with gaps
-			7: exact length with gaps
-			8: exact length numerical with gaps
-			9: special rules
+    /**
+     * ID der Regel für die PLZ-Validierung
+            1: maximum length without gaps
+            2: maximum length numerical without gaps
+            3: exact length without gaps
+            4: exact length numerical without gaps
+            5: maximum length with gaps
+            6: maximum length numerical with gaps
+            7: exact length with gaps
+            8: exact length numerical with gaps
+            9: special rules
 
-	 * @return int 1-9
-	 */
-	public function getZipRule();
+     * @return int 1-9
+     */
+    public function getZipRule();
 
-	/**
-	 * Erlaubte Anzahl Zeichen der PLZ
-	 *
-	 * @return int
-	 */
-	public function getZipLength();
+    /**
+     * Erlaubte Anzahl Zeichen der PLZ
+     *
+     * @return int
+     */
+    public function getZipLength();
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
 }

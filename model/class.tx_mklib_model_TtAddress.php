@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package TYPO3
- *  @subpackage mklib
- *  @author Hannes Bochmann
+ * @package TYPO3
+ * @subpackage mklib
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -36,13 +36,15 @@ tx_rnbase::load('tx_rnbase_model_base');
  * @package TYPO3
  * @subpackage mklib
  */
-class tx_mklib_model_TtAddress extends tx_rnbase_model_base {
+class tx_mklib_model_TtAddress extends tx_rnbase_model_base
+{
 
-	/**
-	 * (non-PHPdoc)
-	 * @see tx_rnbase_model_base::getTableName()
-	 */
-	public function getTableName() {
-		return 'tt_address';
-	}
+    /**
+     * (non-PHPdoc)
+     * @see tx_rnbase_model_base::getTableName()
+     */
+    public function getTableName()
+    {
+        return 'tt_address';
+    }
 }

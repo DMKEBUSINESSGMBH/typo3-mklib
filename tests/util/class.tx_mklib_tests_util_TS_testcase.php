@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_util
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -37,21 +37,23 @@ tx_rnbase::load('tx_mklib_util_TS');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_TS_testcase extends Tx_Phpunit_TestCase {
+class tx_mklib_tests_util_TS_testcase extends Tx_Phpunit_TestCase
+{
 
-	/**
-	 *
-	 */
-	public function testGetPagesTsConfigLoadsTsAlwaysNewIfTsAdded(){
-		$pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
+    /**
+     *
+     */
+    public function testGetPagesTsConfigLoadsTsAlwaysNewIfTsAdded()
+    {
+        $pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
 
-		self::assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
+        self::assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
 
-		tx_rnbase_util_Extensions::addPageTSConfig(
-			'<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mklib/static/basic/setup.txt">'
-		);
+        tx_rnbase_util_Extensions::addPageTSConfig(
+            '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mklib/static/basic/setup.txt">'
+        );
 
-		$pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
-		self::assertTrue(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS nicht geladen');
-	}
+        $pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
+        self::assertTrue(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS nicht geladen');
+    }
 }

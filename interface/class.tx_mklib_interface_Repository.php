@@ -38,17 +38,17 @@
  */
 interface tx_mklib_interface_Repository
 {
-	/**
-	 * Search repository
-	 *
-	 * @param array $fields
-	 * @param array $options
-	 *
-	 * @return array
-	 */
-	public function search(array $fields, array $options);
+    /**
+     * Search repository
+     *
+     * @param array $fields
+     * @param array $options
+     *
+     * @return array
+     */
+    public function search(array $fields, array $options);
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_interface_Repository']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_interface_Repository']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_interface_Repository']);
 }

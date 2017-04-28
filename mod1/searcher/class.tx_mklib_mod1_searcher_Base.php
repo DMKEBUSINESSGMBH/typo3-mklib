@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_mod1
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_mod1
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -35,116 +35,127 @@
 /**
  * Basisklasse für Suchfunktionen in BE-Modulen
  */
-class tx_mklib_mod1_searcher_Base {
+class tx_mklib_mod1_searcher_Base
+{
+    private $mod;
 
-	private $mod;
+    protected $selector;
 
-	protected $selector;
+    protected $options;
+    protected $formTool;//
 
-	protected $options;
-	protected $formTool;#
-
-	protected $uid;
+    protected $uid;
 
 
-	/**
-	 * Constructor
-	 *
-	 * @param 	tx_rnbase_mod_IModule $mod
-	 * @param 	unknown_type $options
-	 * @param 	string $sSelector
-	 * @return 	unknown_type
-	 */
-	public function __construct(tx_rnbase_mod_IModule $mod, $options = array(), $sSelector = 'tx_mklib_mod1_util_Selector') {
-		$this->init($mod, $options);
-	}
+    /**
+     * Constructor
+     *
+     * @param   tx_rnbase_mod_IModule $mod
+     * @param   unknown_type $options
+     * @param   string $sSelector
+     * @return  unknown_type
+     */
+    public function __construct(tx_rnbase_mod_IModule $mod, $options = array(), $sSelector = 'tx_mklib_mod1_util_Selector')
+    {
+        $this->init($mod, $options);
+    }
 
-	/**
-	 * Init object
-	 *
-	 * @param 	tx_rnbase_mod_IModule $mod
-	 * @param 	array $options
-	 * @param 	string $sSelector
-	 */
-	protected function init(tx_rnbase_mod_IModule $mod, $options, $sSelector = 'tx_mklib_mod1_util_Selector') {
-		$this->options = $options;
-		$this->mod = $mod;
-		$this->formTool = $mod->getFormTool();
+    /**
+     * Init object
+     *
+     * @param   tx_rnbase_mod_IModule $mod
+     * @param   array $options
+     * @param   string $sSelector
+     */
+    protected function init(tx_rnbase_mod_IModule $mod, $options, $sSelector = 'tx_mklib_mod1_util_Selector')
+    {
+        $this->options = $options;
+        $this->mod = $mod;
+        $this->formTool = $mod->getFormTool();
 
-		$this->selector = tx_rnbase::makeInstance($sSelector);
-		$this->selector->init($mod);
-	}
+        $this->selector = tx_rnbase::makeInstance($sSelector);
+        $this->selector->init($mod);
+    }
 
-	/**
-	 *
-	 * @param unknown_type $srv
-	 * @param unknown_type $fields
-	 * @param unknown_type $options
-	 */
-	public function getCount($srv, $fields, $options){
-		// Get counted data
-		$options['count'] = 1;
-		return $srv->search($fields, $options);
-	}
+    /**
+     *
+     * @param unknown_type $srv
+     * @param unknown_type $fields
+     * @param unknown_type $options
+     */
+    public function getCount($srv, $fields, $options)
+    {
+        // Get counted data
+        $options['count'] = 1;
 
-	/**
-	 * Returns an instance of tx_mkhoga_beutil_Selector
-	 *
-	 * @return 	tx_mkhoga_beutil_Selector
-	 */
-	protected function getSelector() {
-		return $this->selector;
-	}
+        return $srv->search($fields, $options);
+    }
 
-	/**
-	 * Returns an instance of tx_rnbase_mod_IModule
-	 *
-	 * @return 	tx_rnbase_mod_IModule
-	 */
-	public function getModule() {
-		return $this->mod;
-	}
+    /**
+     * Returns an instance of tx_mkhoga_beutil_Selector
+     *
+     * @return  tx_mkhoga_beutil_Selector
+     */
+    protected function getSelector()
+    {
+        return $this->selector;
+    }
 
-	/**
-	 * Returns an instance of tx_rnbase_mod_IModule
-	 *
-	 * @return 	tx_rnbase_mod_IModule
-	 */
-	public function getOptions() {
-		return $this->options;
-	}
+    /**
+     * Returns an instance of tx_rnbase_mod_IModule
+     *
+     * @return  tx_rnbase_mod_IModule
+     */
+    public function getModule()
+    {
+        return $this->mod;
+    }
 
-	/**
-	 * Returns an instance of tx_rnbase_mod_IModule
-	 *
-	 * @return 	tx_rnbase_mod_IModule
-	 */
-	public function getFormTool() {
-		return $this->formTool;
-	}
+    /**
+     * Returns an instance of tx_rnbase_mod_IModule
+     *
+     * @return  tx_rnbase_mod_IModule
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * Liefert die Funktions-Id
-	 */
-	public function getFuncId() {
-		return '';
-	}
+    /**
+     * Returns an instance of tx_rnbase_mod_IModule
+     *
+     * @return  tx_rnbase_mod_IModule
+     */
+    public function getFormTool()
+    {
+        return $this->formTool;
+    }
 
-	/**
-	 * Setzte die Uid des Objekts
-	 */
-	public function setUid($uid) {
-		$this->uid = $uid;
-	}
+    /**
+     * Liefert die Funktions-Id
+     */
+    public function getFuncId()
+    {
+        return '';
+    }
 
-	/**
-	 * Gibt die Uid des Objekts
-	 */
-	public function getUid() {
-		return $this->uid;
-	}
+    /**
+     * Setzte die Uid des Objekts
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
+     * Gibt die Uid des Objekts
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php']);
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_model
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_model
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -37,23 +37,26 @@ tx_rnbase::load('tx_rnbase_model_base');
  * @package tx_mklib
  * @subpackage tx_mklib_model
  */
-class tx_mklib_model_WordlistEntry extends tx_rnbase_model_base {
+class tx_mklib_model_WordlistEntry extends tx_rnbase_model_base
+{
 
-	/**
-	 * Liefert das Wort des Datensatzes zurück
-	 */
-	public function getWord(){
-		return $this->record['word'];
-	}
+    /**
+     * Liefert das Wort des Datensatzes zurück
+     */
+    public function getWord()
+    {
+        return $this->record['word'];
+    }
 
-  	/**
-   	 * Gibt den Namen der DB-Tabelle zurück
-   	 */
-  	public function getTableName(){
-    	return 'tx_mklib_wordlist';
-  	}
+    /**
+     * Gibt den Namen der DB-Tabelle zurück
+     */
+    public function getTableName()
+    {
+        return 'tx_mklib_wordlist';
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_WordlistEntry.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_WordlistEntry.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_WordlistEntry.php']);
 }

@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>general</type>
-		<description>General Language labels belonging to extension 'mklib'</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="label_tableheader_uid">Uid</label>
-			<label index="label_tableheader_title">Title</label>
-			<label index="label_tableheader_actions">Actions</label>
-			<label index="label_tableheader_language">Language</label>
-			<label index="label_button_update">Update</label>
-			<label index="label_button_search">search</label>
-			
-			<label index="confirmation_deletion">You realy want to delete this record?</label>
-			
-			<label index="label_search">Free text search: </label>
-			<label index="label_language">Language:</label>
-			<label index="label_hidden">Hidden entries:</label>
-			<label index="label_select_hide_hidden">Hide</label>
-			<label index="label_select_show_hidden">Show</label>
-			<label index="label_daterange">Zeitraum (von - bis)</label>
-		</languageKey>
-		<languageKey index="de" type="array">
-			<label index="label_tableheader_title">Titel</label>
-			<label index="label_tableheader_actions">Aktionen</label>
-			<label index="label_button_update">Aktualisieren</label>
-			<label index="label_button_search">Suchen</label>			
-			
-			<label index="confirmation_deletion">Wollen Sie diesen Eintrag wirklich löschen?</label>
+    <meta type="array">
+        <type>general</type>
+        <description>General Language labels belonging to extension 'mklib'</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="label_tableheader_uid">Uid</label>
+            <label index="label_tableheader_title">Title</label>
+            <label index="label_tableheader_actions">Actions</label>
+            <label index="label_tableheader_language">Language</label>
+            <label index="label_button_update">Update</label>
+            <label index="label_button_search">search</label>
 
-			<label index="label_search">Freitext-Suche: </label>
-			<label index="label_hidden">Versteckte Daten:</label>
-			<label index="label_select_hide_hidden">Ausblenden</label>
-			<label index="label_select_show_hidden">Einblenden</label>
-		</languageKey>
-	</data>
+            <label index="confirmation_deletion">You realy want to delete this record?</label>
+
+            <label index="label_search">Free text search: </label>
+            <label index="label_language">Language:</label>
+            <label index="label_hidden">Hidden entries:</label>
+            <label index="label_select_hide_hidden">Hide</label>
+            <label index="label_select_show_hidden">Show</label>
+            <label index="label_daterange">Zeitraum (von - bis)</label>
+        </languageKey>
+        <languageKey index="de" type="array">
+            <label index="label_tableheader_title">Titel</label>
+            <label index="label_tableheader_actions">Aktionen</label>
+            <label index="label_button_update">Aktualisieren</label>
+            <label index="label_button_search">Suchen</label>
+
+            <label index="confirmation_deletion">Wollen Sie diesen Eintrag wirklich löschen?</label>
+
+            <label index="label_search">Freitext-Suche: </label>
+            <label index="label_hidden">Versteckte Daten:</label>
+            <label index="label_select_hide_hidden">Ausblenden</label>
+            <label index="label_select_show_hidden">Einblenden</label>
+        </languageKey>
+    </data>
 </T3locallang>

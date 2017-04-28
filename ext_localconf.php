@@ -8,8 +8,8 @@
 /**
  * alle benötigten Klassen einbinden etc.
  */
-if (!defined ('TYPO3_MODE')) {
-   die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
 }
 
 $_EXTKEY = 'mklib';

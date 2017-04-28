@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_tests_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_tests_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -39,85 +39,94 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase {
+class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * @var string
-	 */
-	protected $databaseConnectionClassBackup = '';
+    /**
+     * @var string
+     */
+    protected $databaseConnectionClassBackup = '';
 
-	/**
-	 *
-	 * {@inheritDoc}
-	 * @see PHPUnit_Framework_TestCase::setUp()
-	 */
-	protected function setUp() {
-		$this->databaseConnectionClassBackup = $this->getDatabaseConnectionClassReflectionProperty()->getValue(NULL);
-	}
+    /**
+     * {@inheritDoc}
+     * @see PHPUnit_Framework_TestCase::setUp()
+     */
+    protected function setUp()
+    {
+        $this->databaseConnectionClassBackup = $this->getDatabaseConnectionClassReflectionProperty()->getValue(null);
+    }
 
-	/**
-	 * @return $property
-	 */
-	protected function getDatabaseConnectionClassReflectionProperty() {
-		$property = new ReflectionProperty('tx_mklib_util_DB', 'databaseConnectionClass');
-		$property->setAccessible(TRUE);
+    /**
+     * @return $property
+     */
+    protected function getDatabaseConnectionClassReflectionProperty()
+    {
+        $property = new ReflectionProperty('tx_mklib_util_DB', 'databaseConnectionClass');
+        $property->setAccessible(true);
 
-		return $property;
-	}
+        return $property;
+    }
 
-	/**
-	 *
-	 * {@inheritDoc}
-	 * @see PHPUnit_Framework_TestCase::tearDown()
-	 */
-	protected function tearDown() {
-		$this->getDatabaseConnectionClassReflectionProperty()->setValue(NULL, $this->databaseConnectionClassBackup);
-	}
+    /**
+     * {@inheritDoc}
+     * @see PHPUnit_Framework_TestCase::tearDown()
+     */
+    protected function tearDown()
+    {
+        $this->getDatabaseConnectionClassReflectionProperty()->setValue(null, $this->databaseConnectionClassBackup);
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testDefaultDatabaseConnectionClassProperty() {
-		self::assertEquals(
-			'Tx_Mklib_Database_Connection', $this->getDatabaseConnectionClassReflectionProperty()->getValue(NULL)
-		);
-	}
+    /**
+     * @group unit
+     */
+    public function testDefaultDatabaseConnectionClassProperty()
+    {
+        self::assertEquals(
+            'Tx_Mklib_Database_Connection',
+            $this->getDatabaseConnectionClassReflectionProperty()->getValue(null)
+        );
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testClassHasNoMoreMethodsExceptCallStatic() {
-		self::assertEquals(array('__callstatic'), get_class_methods('tx_mklib_util_DB'));
-	}
+    /**
+     * @group unit
+     */
+    public function testClassHasNoMoreMethodsExceptCallStatic()
+    {
+        self::assertEquals(array('__callstatic'), get_class_methods('tx_mklib_util_DB'));
+    }
 
-	/**
-	 * @group unit
-	 */
-	public function testMethodClassAreRedirectedToDatabaseConnectionClass() {
-		$this->getDatabaseConnectionClassReflectionProperty()->setValue(NULL, 'Tx_Mklib_Database_ConnectionMock');
+    /**
+     * @group unit
+     */
+    public function testMethodClassAreRedirectedToDatabaseConnectionClass()
+    {
+        $this->getDatabaseConnectionClassReflectionProperty()->setValue(null, 'Tx_Mklib_Database_ConnectionMock');
 
-		self::assertEquals(array('first', 'second'), tx_mklib_util_DB::nonStaticTestMethod('first', 'second'));
-	}
+        self::assertEquals(array('first', 'second'), tx_mklib_util_DB::nonStaticTestMethod('first', 'second'));
+    }
 }
 
-class Tx_Mklib_Database_ConnectionMock extends Tx_Mklib_Database_Connection {
+class Tx_Mklib_Database_ConnectionMock extends Tx_Mklib_Database_Connection
+{
 
-	/**
-	 * Zugriff darauf würde scheitern wenn die Methode doch
-	 * statisch aufgerufen wird
-	 *
-	 * @var array
-	 */
-	protected $returnProperty = array();
+    /**
+     * Zugriff darauf würde scheitern wenn die Methode doch
+     * statisch aufgerufen wird
+     *
+     * @var array
+     */
+    protected $returnProperty = array();
 
-	/**
-	 * @param string $firstParameter
-	 * @param string $secondParameter
-	 *
-	 * @return array
-	 */
-	public function nonStaticTestMethod($firstParameter, $secondParameter) {
-		$this->returnProperty = array($firstParameter, $secondParameter);
-		return $this->returnProperty;
-	}
+    /**
+     * @param string $firstParameter
+     * @param string $secondParameter
+     *
+     * @return array
+     */
+    public function nonStaticTestMethod($firstParameter, $secondParameter)
+    {
+        $this->returnProperty = array($firstParameter, $secondParameter);
+
+        return $this->returnProperty;
+    }
 }

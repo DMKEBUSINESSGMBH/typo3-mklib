@@ -34,98 +34,102 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_repository_Pages
-	extends tx_mklib_repository_Abstract
+class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
 {
-	/**
-	 * Liefert den Namen der Suchklasse
-	 *
-	 * @return 	string
-	 */
-	protected function getSearchClass() {
-		return 'tx_rnbase_util_SearchGeneric';
-	}
+    /**
+     * Liefert den Namen der Suchklasse
+     *
+     * @return  string
+     */
+    protected function getSearchClass()
+    {
+        return 'tx_rnbase_util_SearchGeneric';
+    }
 
-	/**
-	 * Liefert die Model Klasse.
-	 *
-	 * @return 	string
-	 */
-	protected function getWrapperClass() {
-		return 'tx_mklib_model_Page';
-	}
+    /**
+     * Liefert die Model Klasse.
+     *
+     * @return  string
+     */
+    protected function getWrapperClass()
+    {
+        return 'tx_mklib_model_Page';
+    }
 
-	/**
-	 * Return an instantiated dummy model without any content
-	 *
-	 * This is used only to access several model info methods like
-	 * getTableName(), getColumnNames() etc.
-	 *
-	 * @return Tx_Rnbase_Domain_Model_RecordInterface
-	 */
-	public function getEmptyModel() {
-		return parent::getEmptyModel()->setTablename('pages');
-	}
+    /**
+     * Return an instantiated dummy model without any content
+     *
+     * This is used only to access several model info methods like
+     * getTableName(), getColumnNames() etc.
+     *
+     * @return Tx_Rnbase_Domain_Model_RecordInterface
+     */
+    public function getEmptyModel()
+    {
+        return parent::getEmptyModel()->setTablename('pages');
+    }
 
-	/**
-	 * returns all subpages of a page on first level.
-	 *
-	 * @param tx_mklib_model_Page $page
-	 * @return array[tx_mklib_model_Page]
-	 */
-	public function getChildren(
-		tx_mklib_model_Page $page
-	) {
-		$fields = $options = array();
-		$fields['PAGES.pid'][OP_EQ_INT] = $page->getUid();
+    /**
+     * returns all subpages of a page on first level.
+     *
+     * @param tx_mklib_model_Page $page
+     * @return array[tx_mklib_model_Page]
+     */
+    public function getChildren(
+        tx_mklib_model_Page $page
+    ) {
+        $fields = $options = array();
+        $fields['PAGES.pid'][OP_EQ_INT] = $page->getUid();
 
-		return $this->search($fields, $options);
-	}
+        return $this->search($fields, $options);
+    }
 
-	/**
-	 * Search database
-	 *
-	 * @param array $fields
-	 * @param array $options
-	 * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
-	 */
-	public function search(array $fields, array $options) {
-		if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
-			$options['searchdef'] = array();
-		}
-		$options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
-			// default sercher config
-			$this->getSearchdef(),
-			// searcher config overrides
-			$options['searchdef']
-		);
-		return parent::search($fields, $options);
-	}
+    /**
+     * Search database
+     *
+     * @param array $fields
+     * @param array $options
+     * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
+     */
+    public function search(array $fields, array $options)
+    {
+        if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
+            $options['searchdef'] = array();
+        }
+        $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+            // default sercher config
+            $this->getSearchdef(),
+            // searcher config overrides
+            $options['searchdef']
+        );
 
-	/**
-	 *
-	 * @return array
-	 */
-	protected function getSearchdef() {
-		return array(
-			'usealias' => '1',
-			'basetable' => 'pages',
-			'basetablealias' => 'PAGES',
-			'wrapperclass' => $this->getWrapperClass(),
-			'alias' => array(
-				'PAGES' => array(
-					'table' => 'pages'
-				),
-				'PAGESPARENT' => array(
-					'table' => 'pages',
-					'join' => 'JOIN pages AS PAGESPARENT ON PAGES.pid = PAGESPARENT.uid',
-				),
-			)
-		);
-	}
+        return parent::search($fields, $options);
+    }
 
+    /**
+     *
+     * @return array
+     */
+    protected function getSearchdef()
+    {
+        return array(
+            'usealias' => '1',
+            'basetable' => 'pages',
+            'basetablealias' => 'PAGES',
+            'wrapperclass' => $this->getWrapperClass(),
+            'alias' => array(
+                'PAGES' => array(
+                    'table' => 'pages'
+                ),
+                'PAGESPARENT' => array(
+                    'table' => 'pages',
+                    'join' => 'JOIN pages AS PAGESPARENT ON PAGES.pid = PAGESPARENT.uid',
+                ),
+            )
+        );
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
 }

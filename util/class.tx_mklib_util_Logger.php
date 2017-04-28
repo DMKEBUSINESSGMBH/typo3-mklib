@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -32,17 +32,20 @@
  * @subpackage tx_mklib
  * @author Hannes Bochmann
  */
-class tx_mklib_util_Logger {
+class tx_mklib_util_Logger
+{
 
-	/**
-	 * @return 	array
-	 */
-	public static function getDebugBacktrace() {
-		tx_rnbase::load('tx_rnbase_util_Debug');
-		return tx_rnbase_util_Debug::getDebugTrail();
-	}
+    /**
+     * @return  array
+     */
+    public static function getDebugBacktrace()
+    {
+        tx_rnbase::load('tx_rnbase_util_Debug');
+
+        return tx_rnbase_util_Debug::getDebugTrail();
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Logger.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Logger.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Logger.php']);
 }

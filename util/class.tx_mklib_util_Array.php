@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,195 +38,205 @@
  * @package tx_mklib
  * @subpackage tx_mklib_util
  */
-class tx_mklib_util_Array {
+class tx_mklib_util_Array
+{
 
-	/**
-	 * Bereinigt ein Array von allen Werten die leer sind.
-	 * Leere Arrays innerhalb des zu bereinigenden Arrays werden ebenfalls entfernt.
-	 * Die Keys werden zurückgesetzt.
-	 * Nicht für Assoziative Arrays geeignet.
-	 *
-	 * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyArrayValuesSimple
-	 *
-	 * @author 2011 hbochmann
-	 *
-	 * @param array $array
-	 * @param array $emptys Alle Werte, die einen leeren Zustand definieren.
-	 * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
-	 *
-	 * @return array
-	 */
-	public static function removeEmptyArrayValuesSimple(
-		array $array,
-		array $emptys = array('',0,'0',null,false,array()),
-		$strict = true
-	) {
-		$ret = array();
-		foreach ($array as $key => $value) {
-			if (!in_array($value, $emptys, $strict)) {
-				$ret[] = $value;
-			}
-		}
+    /**
+     * Bereinigt ein Array von allen Werten die leer sind.
+     * Leere Arrays innerhalb des zu bereinigenden Arrays werden ebenfalls entfernt.
+     * Die Keys werden zurückgesetzt.
+     * Nicht für Assoziative Arrays geeignet.
+     *
+     * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyArrayValuesSimple
+     *
+     * @author 2011 hbochmann
+     *
+     * @param array $array
+     * @param array $emptys Alle Werte, die einen leeren Zustand definieren.
+     * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
+     *
+     * @return array
+     */
+    public static function removeEmptyArrayValuesSimple(
+        array $array,
+        array $emptys = array('',0,'0',null,false,array()),
+        $strict = true
+    ) {
+        $ret = array();
+        foreach ($array as $key => $value) {
+            if (!in_array($value, $emptys, $strict)) {
+                $ret[] = $value;
+            }
+        }
 
-		return $ret;
-	}
+        return $ret;
+    }
 
-	/**
-	 * Bereinigt ein Array von allen Werten die leer sind.
-	 * Leere Arrays innerhalb des zu bereinigenden Arrays bleiben unberührt.
-	 * Die Keys werden by default nicht zurückgesetzt!
-	 * Keys von Assoziative Arrays bleiben bestehen.
-	 *
-	 * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyValues
-	 *
-	 * @author 2011 mwagner
-	 *
-	 * @param array $array
-	 * @param boolean $resetIndexSetzt Die Array Keys zurück, falls sie numerisch sind.
-	 * @param mixed $emptys Single value for empty or array with multiple empty values
-	 * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
-	 *
-	 * @return array
-	 */
-	public static function removeEmptyValues(
-		array $array,
-		$resetIndex = false,
-		$emptys = '',
-		$strict = false
-	) {
-		$emptyKeys = array_keys($array, $emptys, $strict);
-		foreach($emptyKeys as $key) {
-			unset($array[$key]);
-		}
+    /**
+     * Bereinigt ein Array von allen Werten die leer sind.
+     * Leere Arrays innerhalb des zu bereinigenden Arrays bleiben unberührt.
+     * Die Keys werden by default nicht zurückgesetzt!
+     * Keys von Assoziative Arrays bleiben bestehen.
+     *
+     * @see tx_mklib_tests_util_Array_testcase::testRemoveEmptyValues
+     *
+     * @author 2011 mwagner
+     *
+     * @param array $array
+     * @param bool $resetIndexSetzt Die Array Keys zurück, falls sie numerisch sind.
+     * @param mixed $emptys Single value for empty or array with multiple empty values
+     * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
+     *
+     * @return array
+     */
+    public static function removeEmptyValues(
+        array $array,
+        $resetIndex = false,
+        $emptys = '',
+        $strict = false
+    ) {
+        $emptyKeys = array_keys($array, $emptys, $strict);
+        foreach ($emptyKeys as $key) {
+            unset($array[$key]);
+        }
 
-		return $resetIndex ? array_merge($array) : $array;
-	}
+        return $resetIndex ? array_merge($array) : $array;
+    }
 
-	/**
-	 * Entfernt alle Keys welche nicht in needle vorhanden sind
-	 *
-	 * @param 	array	$data		Zu filternde Daten
-	 * @param 	array	$needle	Enthält die erlaubten Keys
-	 * @return 	array
-	 * @deprecated use tx_rnbase_util_Arrays::removeNotIn instead
-	 */
-	public static function removeNotIn(array $data, array $needle) {
-		return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
-	}
+    /**
+     * Entfernt alle Keys welche nicht in needle vorhanden sind
+     *
+     * @param   array   $data       Zu filternde Daten
+     * @param   array   $needle Enthält die erlaubten Keys
+     * @return  array
+     * @deprecated use tx_rnbase_util_Arrays::removeNotIn instead
+     */
+    public static function removeNotIn(array $data, array $needle)
+    {
+        return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
+    }
 
-  	/**
-  	 * Prüft ob ein oder mehrere Werte in einem Array vorhanden sind.
-  	 *
-	 * @author 2011 mwagner
-	 *
-  	 * @param mixed 	$mNeedle
-  	 * @param array 	$aHaystack
-  	 * @param boolean 	$bStrict
-  	 */
-  	public static function inArray($mNeedle, array $aHaystack, $bStrict = false) {
-		if(!is_array($mNeedle)) {
-			return in_array($mNeedle, $aHaystack, $bStrict);
-		}
-		foreach($mNeedle as $sNeedle) {
-			if(in_array($sNeedle, $aHaystack, $bStrict)){
-				return TRUE;
-			}
-		}
-		return FALSE;
-  	}
+    /**
+     * Prüft ob ein oder mehrere Werte in einem Array vorhanden sind.
+     *
+     * @author 2011 mwagner
+     *
+     * @param mixed     $mNeedle
+     * @param array     $aHaystack
+     * @param bool   $bStrict
+     */
+    public static function inArray($mNeedle, array $aHaystack, $bStrict = false)
+    {
+        if (!is_array($mNeedle)) {
+            return in_array($mNeedle, $aHaystack, $bStrict);
+        }
+        foreach ($mNeedle as $sNeedle) {
+            if (in_array($sNeedle, $aHaystack, $bStrict)) {
+                return true;
+            }
+        }
 
-	/**
-	 * Erstellt anhand einer Liste von Models/Arrays ein Array mit Werten einer Spalte
-	 *
-	 * @author 2011 mwagner
-   	 *
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
-	 * @param string $attr
-	 * @return array
-	 */
-	public static function fieldsToArray($aObj, $sAttr = 'uid') {
-		$fieldsArray = array();
-		foreach ($aObj As $oObj) {
-			$aRecord = is_object($oObj) ? $oObj->record : (is_array($oObj) ? $oObj : array());
-			if(isset($aRecord[$sAttr])) {
-				$fieldsArray[] = $aRecord[$sAttr];
-			}
-		}
-		return $fieldsArray;
-	}
+        return false;
+    }
 
-	/**
-	 * Erstellt anhand einer Liste von Models/Arrays ein String mit Werten einer Spalte
-	 *
-	 * @author 2011 mwagner
-	 *
-	 * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
-	 * @param string $attr
-	 * @param string $delimiter
-	 * @return string
-	 */
-	public static function fieldsToString($aObj, $sAttr='uid', $sDelimiter=',') {
-		$fieldsArray = self::fieldsToArray($aObj, $sAttr);
-		return implode($sDelimiter, self::removeEmptyValues($fieldsArray));
-	}
+    /**
+     * Erstellt anhand einer Liste von Models/Arrays ein Array mit Werten einer Spalte
+     *
+     * @author 2011 mwagner
+     *
+     * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
+     * @param string $attr
+     * @return array
+     */
+    public static function fieldsToArray($aObj, $sAttr = 'uid')
+    {
+        $fieldsArray = array();
+        foreach ($aObj as $oObj) {
+            $aRecord = is_object($oObj) ? $oObj->record : (is_array($oObj) ? $oObj : array());
+            if (isset($aRecord[$sAttr])) {
+                $fieldsArray[] = $aRecord[$sAttr];
+            }
+        }
 
-	/**
-	 * @param object $object
-	 *
-	 * @return array
-	 */
-	public static function castObjectToArray($object) {
-		if(class_exists('ReflectionObject')) {
-			return self::castObjectToArrayViaReflection($object);
-		} else {
-			$result = (array) $object;
+        return $fieldsArray;
+    }
 
-			foreach ($result as $key => $value) {
-			  $key = self::fixProtectedInstanceVariableNames($key);
-			  $result[$key] = $value;
-			}
+    /**
+     * Erstellt anhand einer Liste von Models/Arrays ein String mit Werten einer Spalte
+     *
+     * @author 2011 mwagner
+     *
+     * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
+     * @param string $attr
+     * @param string $delimiter
+     * @return string
+     */
+    public static function fieldsToString($aObj, $sAttr = 'uid', $sDelimiter = ',')
+    {
+        $fieldsArray = self::fieldsToArray($aObj, $sAttr);
 
-			return $result;
-		}
+        return implode($sDelimiter, self::removeEmptyValues($fieldsArray));
+    }
 
-	}
+    /**
+     * @param object $object
+     *
+     * @return array
+     */
+    public static function castObjectToArray($object)
+    {
+        if (class_exists('ReflectionObject')) {
+            return self::castObjectToArrayViaReflection($object);
+        } else {
+            $result = (array) $object;
 
-	/**
-	 * @param object $object
-	 *
-	 * @return array
-	 */
-	public static function castObjectToArrayViaReflection($object) {
-		$result = array();
+            foreach ($result as $key => $value) {
+                $key = self::fixProtectedInstanceVariableNames($key);
+                $result[$key] = $value;
+            }
 
-	    $reflectedObject = new ReflectionObject($object);
+            return $result;
+        }
+    }
 
-	    $properties = $reflectedObject->getProperties();
+    /**
+     * @param object $object
+     *
+     * @return array
+     */
+    public static function castObjectToArrayViaReflection($object)
+    {
+        $result = array();
 
-	    foreach ($properties as $property) {
-	    	$property->setAccessible(true);
-	        $result[$property->getName()] = $property->getValue($object);
-	    }
+        $reflectedObject = new ReflectionObject($object);
 
-	    return $result;
-	}
+        $properties = $reflectedObject->getProperties();
 
-	/**
-	 * Variablennamen von protected Variablen werden beim cast zum array mit
-	 * x00*x00 geprefixed. Das entfernen wir.
-	 *
-	 * @param string $variableName
-	 *
-	 * @return string
-	 */
-	protected static function fixProtectedInstanceVariableNames($variableName) {
-		$matches = array();
-		preg_match('/^\x00(?:.*?)\x00(.+)/', $variableName, $matches);
-		return $matches ? $matches[1] : $variableName;
-	}
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $result[$property->getName()] = $property->getValue($object);
+        }
 
+        return $result;
+    }
+
+    /**
+     * Variablennamen von protected Variablen werden beim cast zum array mit
+     * x00*x00 geprefixed. Das entfernen wir.
+     *
+     * @param string $variableName
+     *
+     * @return string
+     */
+    protected static function fixProtectedInstanceVariableNames($variableName)
+    {
+        $matches = array();
+        preg_match('/^\x00(?:.*?)\x00(.+)/', $variableName, $matches);
+
+        return $matches ? $matches[1] : $variableName;
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php']);
 }

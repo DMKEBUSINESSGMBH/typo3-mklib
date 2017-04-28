@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -38,33 +38,36 @@
  * @package tx_mklib
  * @subpackage tx_mklib_util
  */
-class tx_mklib_util_Var {
+class tx_mklib_util_Var
+{
 
-	/**
-	 * Prüft, ob der Wert TRUE ist
-	 *
-	 * @author mwagner
-	 *
-	 * @param 	mixed		Der zu prüfende Wert
-	 * @return	boolean 	Ist der Wert TRUE
-	 */
-	public static function isTrueVal($mVal) {
-		return (($mVal === TRUE) || ($mVal == "1") || (strtoupper($mVal) == "TRUE"));
-	}
+    /**
+     * Prüft, ob der Wert TRUE ist
+     *
+     * @author mwagner
+     *
+     * @param   mixed       Der zu prüfende Wert
+     * @return  bool     Ist der Wert TRUE
+     */
+    public static function isTrueVal($mVal)
+    {
+        return (($mVal === true) || ($mVal == '1') || (strtoupper($mVal) == 'TRUE'));
+    }
 
-	/**
-	 * Prüft, ob der Wert FALSE ist
-	 *
-	 * @author mwagner
-	 *
-	 * @param 	mixed		Der zu prüfende Wert
-	 * @return	boolean 	Ist der Wert FALSE
-	 */
-	public static function isFalseVal($mVal) {
-		return (($mVal == FALSE) || ($mVal == "0") || (strtoupper($mVal) == "FALSE"));
-	}
+    /**
+     * Prüft, ob der Wert FALSE ist
+     *
+     * @author mwagner
+     *
+     * @param   mixed       Der zu prüfende Wert
+     * @return  bool     Ist der Wert FALSE
+     */
+    public static function isFalseVal($mVal)
+    {
+        return (($mVal == false) || ($mVal == '0') || (strtoupper($mVal) == 'FALSE'));
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php']);
 }

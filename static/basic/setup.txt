@@ -1,4 +1,3 @@
-### setup
 includeLibs.tx_rnbase_controller = EXT:rn_base/class.tx_rnbase_controller.php
 
 plugin.tx_mklib = USER
@@ -12,33 +11,33 @@ plugin.tx_mklib.locallangFilename = {$plugin.tx_mklib.locallangFilename}
 tt_content.list.20.tx_mklib =< plugin.tx_mklib
 
 lib.mklib.genericlist.default {
-	template {
-		#path = {$plugin.tx_mklib.templatePath}/genericlist.html
-		#subpart =
-		#itempath = item
-		#markerclass = tx_rnbase_util_SimpleMarker
-	}
-	filter {
-		fields {
-		}
-		options {
-		}
-	}
-	pagebrowser = 0
-	pagebrowser {
-		#pbid = pb-default
-	}
-	charbrowser = 0
-	charbrowser {
-		colname = title
-		specials = last
-		#cbid = cb-default
-	}
+    template {
+        #path = {$plugin.tx_mklib.templatePath}/genericlist.html
+        #subpart =
+        #itempath = item
+        #markerclass = tx_rnbase_util_SimpleMarker
+    }
+    filter {
+        fields {
+        }
+        options {
+        }
+    }
+    pagebrowser = 0
+    pagebrowser {
+        #pbid = pb-default
+    }
+    charbrowser = 0
+    charbrowser {
+        colname = title
+        specials = last
+        #cbid = cb-default
+    }
 }
 
 plugin.tx_mklib {
-	genericlist {
-		extendedConfId = default
-		default = < lib.mklib.genericlist.default
-	}
+    genericlist {
+        extendedConfId = default
+        default = < lib.mklib.genericlist.default
+    }
 }

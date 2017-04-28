@@ -33,52 +33,52 @@ tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
  * @subpackage tx_mklib
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider
-	extends tx_mklib_scheduler_GenericFieldProvider {
+class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider extends tx_mklib_scheduler_GenericFieldProvider
+{
 
-	/**
-	 *
-	 * @return 	array
-	 * @todo CSH einfügen
-	 */
-	protected function getAdditionalFieldConfig(){
-		return array(
-			'receiver' => array(
-				'type' => 'input',
- 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
-				'default' => $GLOBALS['BE_USER']->user['email'], // default is 7 days
-				'eval' => 'required,email',
-			),
-			'threshold' => array(
-				'type' => 'input',
- 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_threshold',
-				'default' => 90, // jeder task sollte nach 90 sekunden fertig sein
-				'eval' => 'int,minThreshold',
-			),
-			'rememberAfter' => array(
-				'type' => 'input',
- 				'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter',
-				'cshLabel' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter', // key aus der ssh locallang zu cshKey
-				'default' => 3600, // nach 1 h erneut mail schicken
-				'eval' => 'int',
-			),
-		);
-	}
+    /**
+     *
+     * @return  array
+     * @todo CSH einfügen
+     */
+    protected function getAdditionalFieldConfig()
+    {
+        return array(
+            'receiver' => array(
+                'type' => 'input',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
+                'default' => $GLOBALS['BE_USER']->user['email'], // default is 7 days
+                'eval' => 'required,email',
+            ),
+            'threshold' => array(
+                'type' => 'input',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_threshold',
+                'default' => 90, // jeder task sollte nach 90 sekunden fertig sein
+                'eval' => 'int,minThreshold',
+            ),
+            'rememberAfter' => array(
+                'type' => 'input',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter',
+                'cshLabel' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter', // key aus der ssh locallang zu cshKey
+                'default' => 3600, // nach 1 h erneut mail schicken
+                'eval' => 'int',
+            ),
+        );
+    }
 
-	/**
-	 * der threshold sollte nicht kleiner als 10 sekunden sein. dsa
-	 * prüfen wir hier
-	 *
-	 * @param  string $sPath
-	 * @return 	mixed
-	 */
-	protected function minThreshold($iThreshold){
-		return ($iThreshold < 10)
-			? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold')
-			: true;
-	}
+    /**
+     * der threshold sollte nicht kleiner als 10 sekunden sein. dsa
+     * prüfen wir hier
+     *
+     * @param  string $sPath
+     * @return  mixed
+     */
+    protected function minThreshold($iThreshold)
+    {
+        return ($iThreshold < 10) ? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold') : true;
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php']);
 }

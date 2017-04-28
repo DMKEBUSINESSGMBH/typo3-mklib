@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -31,44 +31,47 @@
  */
 
 tx_rnbase::load('tx_mklib_util_Var');
-	
+    
 /**
  * Generic form view test
  * @package tx_mklib
  * @subpackage tx_mklib_tests_util
  */
-class tx_mklib_tests_util_Var_testcase extends Tx_Phpunit_TestCase {
-	
-	/**
-	 * isTrue testen
-	 */
-	public function testIsTrueVal(){
-		self::assertTrue(tx_mklib_util_Var::isTrueVal(true));
-		self::assertTrue(tx_mklib_util_Var::isTrueVal('true'));
-		self::assertTrue(tx_mklib_util_Var::isTrueVal('TrUe'));
-		self::assertTrue(tx_mklib_util_Var::isTrueVal('1'));
-		self::assertTrue(tx_mklib_util_Var::isTrueVal(1));
-		self::assertFalse(tx_mklib_util_Var::isTrueVal(false));
-		self::assertFalse(tx_mklib_util_Var::isTrueVal('false'));
-		self::assertFalse(tx_mklib_util_Var::isTrueVal('0'));
-		self::assertFalse(tx_mklib_util_Var::isTrueVal(0));
-	}
-	/**
-	 * isFalseVal testen
-	 */
-	public function testIsFalseVal(){
-		self::assertTrue(tx_mklib_util_Var::isFalseVal(false));
-		self::assertTrue(tx_mklib_util_Var::isFalseVal('false'));
-		self::assertTrue(tx_mklib_util_Var::isFalseVal('0'));
-		self::assertTrue(tx_mklib_util_Var::isFalseVal(0));
-		self::assertFalse(tx_mklib_util_Var::isFalseVal(true));
-		self::assertFalse(tx_mklib_util_Var::isFalseVal('true'));
-		self::assertFalse(tx_mklib_util_Var::isFalseVal('TrUe'));
-		self::assertFalse(tx_mklib_util_Var::isFalseVal('1'));
-		self::assertFalse(tx_mklib_util_Var::isFalseVal(1));
-	}
+class tx_mklib_tests_util_Var_testcase extends Tx_Phpunit_TestCase
+{
+    
+    /**
+     * isTrue testen
+     */
+    public function testIsTrueVal()
+    {
+        self::assertTrue(tx_mklib_util_Var::isTrueVal(true));
+        self::assertTrue(tx_mklib_util_Var::isTrueVal('true'));
+        self::assertTrue(tx_mklib_util_Var::isTrueVal('TrUe'));
+        self::assertTrue(tx_mklib_util_Var::isTrueVal('1'));
+        self::assertTrue(tx_mklib_util_Var::isTrueVal(1));
+        self::assertFalse(tx_mklib_util_Var::isTrueVal(false));
+        self::assertFalse(tx_mklib_util_Var::isTrueVal('false'));
+        self::assertFalse(tx_mklib_util_Var::isTrueVal('0'));
+        self::assertFalse(tx_mklib_util_Var::isTrueVal(0));
+    }
+    /**
+     * isFalseVal testen
+     */
+    public function testIsFalseVal()
+    {
+        self::assertTrue(tx_mklib_util_Var::isFalseVal(false));
+        self::assertTrue(tx_mklib_util_Var::isFalseVal('false'));
+        self::assertTrue(tx_mklib_util_Var::isFalseVal('0'));
+        self::assertTrue(tx_mklib_util_Var::isFalseVal(0));
+        self::assertFalse(tx_mklib_util_Var::isFalseVal(true));
+        self::assertFalse(tx_mklib_util_Var::isFalseVal('true'));
+        self::assertFalse(tx_mklib_util_Var::isFalseVal('TrUe'));
+        self::assertFalse(tx_mklib_util_Var::isFalseVal('1'));
+        self::assertFalse(tx_mklib_util_Var::isFalseVal(1));
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']) {
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']);
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']);
 }

@@ -1,7 +1,7 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
  *
  *  Copyright notice
  *
@@ -26,42 +26,43 @@
  ***************************************************************/
 
 /**
- *
  * tx_mklib_util_Scheduler
  *
- * @package 		TYPO3
- * @subpackage	 	mklib
- * @author 			Hannes Bochmann <dev@dmk-ebusiness.de>
- * @license 		http://www.gnu.org/licenses/lgpl.html
- * 					GNU Lesser General Public License, version 3 or later
+ * @package         TYPO3
+ * @subpackage      mklib
+ * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_util_Scheduler {
+class tx_mklib_util_Scheduler
+{
 
-	/**
-	 * formatiert die sekunden als eine leserliche ausgabe
-	 * wie 1 minute 30 sekunden
-	 *
-	 * @param integer $seconds
-	 * @return string
-	 */
-	public static function getFormattedTime($seconds) {
-		$time = array();
-		$time['hours'] = floor($seconds / 3600);
-		$time['minutes'] = floor(($seconds-$time['hours'] * 3600) / 60);
-		$time['seconds'] = $seconds-$time['hours'] * 3600 - $time['minutes'] * 60;
+    /**
+     * formatiert die sekunden als eine leserliche ausgabe
+     * wie 1 minute 30 sekunden
+     *
+     * @param int $seconds
+     * @return string
+     */
+    public static function getFormattedTime($seconds)
+    {
+        $time = array();
+        $time['hours'] = floor($seconds / 3600);
+        $time['minutes'] = floor(($seconds - $time['hours'] * 3600) / 60);
+        $time['seconds'] = $seconds - $time['hours'] * 3600 - $time['minutes'] * 60;
 
-		$formattedTime = '';
-		foreach ($time as $timePart => $value) {
-			if($value < 1) {
-				continue; //null wollen wir nicht sehen
-			}
-			//else
-			$labelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_' .
-						$timePart . '_' . (($value > 1) ? 'plural' : 'singular');
-			$formattedTime .= 	sprintf('%01d', $value) . ' ' .
-								$GLOBALS['LANG']->sL($labelKey) . ' ';
-		}
+        $formattedTime = '';
+        foreach ($time as $timePart => $value) {
+            if ($value < 1) {
+                continue; //null wollen wir nicht sehen
+            }
+            //else
+            $labelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_' .
+                        $timePart . '_' . (($value > 1) ? 'plural' : 'singular');
+            $formattedTime .=    sprintf('%01d', $value) . ' ' .
+                                $GLOBALS['LANG']->sL($labelKey) . ' ';
+        }
 
-		return $formattedTime;
-	}
+        return $formattedTime;
+    }
 }

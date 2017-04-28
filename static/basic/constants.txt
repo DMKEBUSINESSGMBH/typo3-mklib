@@ -1,10 +1,11 @@
-#contants
 
 plugin.tx_mklib {
-	# cat=mklib/qualifier; type=string; label=qualifier: The qualifier for links
-	qualifier = mklib
-	# cat=mklib/template; type=string; label=template path: Path to the directory with the templates
-	templatePath = EXT:mklib/res/template
-	# cat=mklib/locallangFilename; type=string; label=locallang filename: Path to the locallang file
-	locallangFilename =  EXT:mklib/locallang.xml
+    # cat=mklib/qualifier; type=string; label=qualifier: The qualifier for links
+    qualifier = mklib
+
+    # cat=mklib/template; type=string; label=template path: Path to the directory with the templates
+    templatePath = EXT:mklib/res/template
+
+    # cat=mklib/locallangFilename; type=string; label=locallang filename: Path to the locallang file
+    locallangFilename =  EXT:mklib/locallang.xml
 }

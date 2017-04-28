@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_srv
- *  @author Hannes Bochmann
+ * @package tx_mklib
+ * @subpackage tx_mklib_srv
+ * @author Hannes Bochmann
  *
  *  Copyright notice
  *
@@ -38,133 +38,147 @@ tx_rnbase::load('tx_mklib_srv_Base');
  * @package tx_mklib
  * @subpackage tx_mklib_srv
  */
-class tx_mklib_srv_Wordlist extends tx_mklib_srv_base {
+class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
+{
 
-	/**
-	 * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
-	 *
-	 * @param $word
-	 * @param $greedy | alle oder nur ein Treffer?
-	 * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-	 * @return null || array
-	 */
-	public function getWordlistEntryByWord($word, $greedy = true, $sanitizeWord = true){
-		return $this->checkForWordInWordlist($word,$this->getWordlist(),$greedy,$sanitizeWord);
-	}
+    /**
+     * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
+     *
+     * @param $word
+     * @param $greedy | alle oder nur ein Treffer?
+     * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
+     * @return null || array
+     */
+    public function getWordlistEntryByWord($word, $greedy = true, $sanitizeWord = true)
+    {
+        return $this->checkForWordInWordlist($word, $this->getWordlist(), $greedy, $sanitizeWord);
+    }
 
-	/**
-	 * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
-	 * nur Einträge die blacklisted sind
-	 *
-	 * @param $word
-	 * @param $greedy | alle oder nur ein Treffer?
-	 * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-	 * @return null || array
-	 */
-	public function getBlacklistEntryByWord($word, $greedy = true, $sanitizeWord = true){
-		$fields = array(
-		  	'WORDLIST.blacklisted' => array(OP_EQ_INT => 1),
-			'WORDLIST.whitelisted' => array(OP_EQ_INT => 0),
-	    );
-		return $this->checkForWordInWordlist($word,$this->getWordlist($fields),$greedy,$sanitizeWord);
-	}
+    /**
+     * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
+     * nur Einträge die blacklisted sind
+     *
+     * @param $word
+     * @param $greedy | alle oder nur ein Treffer?
+     * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
+     * @return null || array
+     */
+    public function getBlacklistEntryByWord($word, $greedy = true, $sanitizeWord = true)
+    {
+        $fields = array(
+            'WORDLIST.blacklisted' => array(OP_EQ_INT => 1),
+            'WORDLIST.whitelisted' => array(OP_EQ_INT => 0),
+        );
 
-	/**
-	 * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
-	 * nur Einträge die whitelisted sind
-	 *
-	 * @param $word
-	 * @param $greedy | alle oder nur ein Treffer?
-	 * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-	 * @return null || array
-	 */
-	public function getWhitelistEntryByWord($word, $greedy = true, $sanitizeWord = true){
-		$fields = array(
-		  	'WORDLIST.blacklisted' => array(OP_EQ_INT => 0),
-			'WORDLIST.whitelisted' => array(OP_EQ_INT => 1),
-	    );
-		return $this->checkForWordInWordlist($word,$this->getWordlist($fields),$greedy,$sanitizeWord);
-	}
+        return $this->checkForWordInWordlist($word, $this->getWordlist($fields), $greedy, $sanitizeWord);
+    }
 
-	/**
-	 * Gibt die gesamte Wordlist zurück
-	 *
-	 * @param array $fields
-	 * @return array
-	 */
-	protected function getWordlist(array $fields = array()){
-	    $options = array(/*'debug' => 1*/);
+    /**
+     * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
+     * nur Einträge die whitelisted sind
+     *
+     * @param $word
+     * @param $greedy | alle oder nur ein Treffer?
+     * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
+     * @return null || array
+     */
+    public function getWhitelistEntryByWord($word, $greedy = true, $sanitizeWord = true)
+    {
+        $fields = array(
+            'WORDLIST.blacklisted' => array(OP_EQ_INT => 0),
+            'WORDLIST.whitelisted' => array(OP_EQ_INT => 1),
+        );
 
-	    $foo = $this->search($fields, $options);
-	    if (count($foo)) return $foo;
-	    // else
-	    return null;
-	}
+        return $this->checkForWordInWordlist($word, $this->getWordlist($fields), $greedy, $sanitizeWord);
+    }
 
-	/**
-	 * Prüft ob ein Wort der Wortliste im gegebenen String vorkommt
-	 *
-	 * @param string $word
-	 * @param $wordlist
-	 * @param $greedy | alle oder nur ein Treffer?
-	 * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-	 *
-	 * @return null || array || string
-	 */
-	private function checkForWordInWordlist($word,$wordlist, $greedy = true, $sanitizeWord = true){
-		//wenn es kein array ist, dann is die wordlist leer
-		if (!is_array($wordlist)) {
-			return NULL;
-		}
+    /**
+     * Gibt die gesamte Wordlist zurück
+     *
+     * @param array $fields
+     * @return array
+     */
+    protected function getWordlist(array $fields = array())
+    {
+        $options = array(/*'debug' => 1*/);
 
-		if($sanitizeWord){//alle Sondzeichen entfernen
-			$utilString = tx_rnbase::makeInstance('tx_mklib_util_String');
-			$word = $utilString->html2plain($word);
-			$word = $utilString->removeNoneLetters($word);
-		}
+        $foo = $this->search($fields, $options);
+        if (count($foo)) {
+            return $foo;
+        }
+        // else
+        return null;
+    }
 
-		//die einzelnen Wörter prüfen
-		foreach($wordlist as $entry){
-			//damit in DB nicht für jedes Wort ein Eintrag angelegt werden muss,
-			//werden komma-separierte Wörterlisten innerhalb des Wort-Feldes
-			//ebenfalls unterstützt --> str_replace
-			$sWordlist .= $sEntry = str_replace(',','|',$entry->getWord());
-			// '\b' bedeutet das nur nach ganzen Wörtern gesucht wird. ist fuck
-			//geblacklisted wird sfuck nicht bemängelt
-			if(!$greedy && preg_match('/\b('.$sEntry.' )\b/i',$word,$matches))//nur einen treffer?
-				return $matches[0];
-			$sWordlist .= '|';//für die regexp
-		}
-		// '\b' bedeutet das nur nach ganzen Wörtern gesucht wird. ist fuck
-		//geblacklisted wird sfuck nicht bemängelt
-		if($greedy && preg_match_all('/\b('.$sWordlist.')\b/i',$word,$matches)){//alle treffer?
-			tx_rnbase::load('tx_mklib_util_Array');
-			//preg_mactch_all gibt ein array zurück, was auch viele leere Werte für die Nicht-Treffer enthält. Diese stören und werden bereinigt
-			return tx_mklib_util_Array::removeEmptyArrayValuesSimple($matches[0]);
-		}
-		//kein Treffer!!!
-		return null;
-	}
+    /**
+     * Prüft ob ein Wort der Wortliste im gegebenen String vorkommt
+     *
+     * @param string $word
+     * @param $wordlist
+     * @param $greedy | alle oder nur ein Treffer?
+     * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
+     *
+     * @return null || array | string
+     */
+    private function checkForWordInWordlist($word, $wordlist, $greedy = true, $sanitizeWord = true)
+    {
+        //wenn es kein array ist, dann is die wordlist leer
+        if (!is_array($wordlist)) {
+            return null;
+        }
 
-	/**
-	 * @return array
-	 */
-	public static function loadTca()
-	{
-		$GLOBALS['TCA']['tx_mklib_wordlist'] = require tx_rnbase_util_Extensions::extPath(
-			'mklib',
-			'Configuration/TCA/tx_mklib_wordlist.php'
-		);
-	}
+        if ($sanitizeWord) {//alle Sondzeichen entfernen
+            $utilString = tx_rnbase::makeInstance('tx_mklib_util_String');
+            $word = $utilString->html2plain($word);
+            $word = $utilString->removeNoneLetters($word);
+        }
+
+        //die einzelnen Wörter prüfen
+        foreach ($wordlist as $entry) {
+            //damit in DB nicht für jedes Wort ein Eintrag angelegt werden muss,
+            //werden komma-separierte Wörterlisten innerhalb des Wort-Feldes
+            //ebenfalls unterstützt --> str_replace
+            $sWordlist .= $sEntry = str_replace(',', '|', $entry->getWord());
+            // '\b' bedeutet das nur nach ganzen Wörtern gesucht wird. ist fuck
+            //geblacklisted wird sfuck nicht bemängelt
+            if (!$greedy && preg_match('/\b('.$sEntry.' )\b/i', $word, $matches)) {//nur einen treffer?
+                return $matches[0];
+            }
+            $sWordlist .= '|';//für die regexp
+        }
+        // '\b' bedeutet das nur nach ganzen Wörtern gesucht wird. ist fuck
+        //geblacklisted wird sfuck nicht bemängelt
+        if ($greedy && preg_match_all('/\b('.$sWordlist.')\b/i', $word, $matches)) {//alle treffer?
+            tx_rnbase::load('tx_mklib_util_Array');
+            //preg_mactch_all gibt ein array zurück, was auch viele leere Werte für die Nicht-Treffer enthält. Diese stören und werden bereinigt
+            return tx_mklib_util_Array::removeEmptyArrayValuesSimple($matches[0]);
+        }
+        //kein Treffer!!!
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public static function loadTca()
+    {
+        $GLOBALS['TCA']['tx_mklib_wordlist'] = require tx_rnbase_util_Extensions::extPath(
+            'mklib',
+            'Configuration/TCA/tx_mklib_wordlist.php'
+        );
+    }
 
   /**
    * Liefert die zugehörige Search-Klasse zurück
    *
    * @return string
    */
-  public function getSearchClass(){return 'tx_mklib_search_Wordlist';}
+    public function getSearchClass()
+    {
+        return 'tx_mklib_search_Wordlist';
+    }
 }
 
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'])	{
-  include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
 }

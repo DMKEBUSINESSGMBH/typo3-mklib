@@ -5,104 +5,104 @@ config.admPanel = 0
 
 ### Admintool aktivieren
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:admin = 1]
-	config.admPanel = 1
-	config.no_cache = 1
-	config.linkVars := addToList(admin)
+    config.admPanel = 1
+    config.no_cache = 1
+    config.linkVars := addToList(admin)
 [global]
 
 ### Nutzung von Cache unterdrücken
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nc = 1]
-	config.no_cache = 1
-	config.linkVars := addToList(nc)
+    config.no_cache = 1
+    config.linkVars := addToList(nc)
 [global]
 
 ### Realurl unterdrücken
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nru = 1]
-	config.tx_realurl_enable = 0
-	config.no_cache = 1
-	config.linkVars := addToList(nru)
+    config.tx_realurl_enable = 0
+    config.no_cache = 1
+    config.linkVars := addToList(nru)
 [global]
 
 ### debug-Variable kann zum durchschleifen bei Debugausgaben aus Code benutzt werden
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:debug = 1]
-	config.linkVars := addToList(debug)
-	config.no_cache = 1
+    config.linkVars := addToList(debug)
+    config.no_cache = 1
 [global]
 
 ### Scriptmerger
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:sm = 1]
-	config.no_cache = 1
-	### Scriptmerger_configurieren
-	#plugin.tx_scriptmerger >
-	config {
-		linkVars := addToList(sm)
-		compressCss = 1
-		concatenateCss = 1
-		compressJs = 1
-		concatenateJs = 1
-	}
+    config.no_cache = 1
+    ### Scriptmerger_configurieren
+    #plugin.tx_scriptmerger >
+    config {
+        linkVars := addToList(sm)
+        compressCss = 1
+        concatenateCss = 1
+        compressJs = 1
+        concatenateJs = 1
+    }
 [global]
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nsm = 1]
-	plugin.tx_scriptmerger >
-	config {
-		linkVars := addToList(sm)
-		compressCss = 0
-		concatenateCss = 0
-		compressJs = 0
-		concatenateJs = 0
-	}
-	config.no_cache = 1
+    plugin.tx_scriptmerger >
+    config {
+        linkVars := addToList(sm)
+        compressCss = 0
+        concatenateCss = 0
+        compressJs = 0
+        concatenateJs = 0
+    }
+    config.no_cache = 1
 [global]
 
 ### php-ids
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:phpids = 1]
-	config.linkVars := addToList(phpids)
-	page.8.General.debug_mode = 1
-	config.no_cache = 1
+    config.linkVars := addToList(phpids)
+    page.8.General.debug_mode = 1
+    config.no_cache = 1
 [global]
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:phpids = 2]
-	config.linkVars := addToList(phpids)
-	page.8 >
-	config.no_cache = 1
+    config.linkVars := addToList(phpids)
+    page.8 >
+    config.no_cache = 1
 [global]
 
 ##CSS deaktivieren
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nocss = 1]
-	config.linkVars := addToList(nocss)
-	page.includeCSS >
-	config.no_cache = 1
+    config.linkVars := addToList(nocss)
+    page.includeCSS >
+    config.no_cache = 1
 [global]
 
 ##JS deaktivieren
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nojs = 1]
-	config.linkVars := addToList(nojs)
-	page.includeJS >
-	config.no_cache = 1
+    config.linkVars := addToList(nojs)
+    page.includeJS >
+    config.no_cache = 1
 [global]
 
 ### Grid einblenden zur Prüfung des Layouts
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:grid = 1]
-	config.linkVars := addToList(grid)
-	config.no_cache = 1
-	page.includeCSS.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.css
-	page.includeJSFooter.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.js
-	page.footerData.5050 = TEXT
-	page.footerData.5050.value (
+    config.linkVars := addToList(grid)
+    config.no_cache = 1
+    page.includeCSS.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.css
+    page.includeJSFooter.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.js
+    page.footerData.5050 = TEXT
+    page.footerData.5050.value (
 <script type="text/javascript">
 /*<![CDATA[*/
 <!--
 (function($) {
-	$(document).ready(function() {
-		pageUnits = '{$GRID.units}';
-		colUnits = '{$GRID.units}';
-		pagewidth = {$GRID.pagewidth};
-		columns = {$GRID.coloums};
-		columnwidth = {$GRID.coloumswidth};
-		gutterwidth = {$GRID.gutterwidth};
-		pagetopmargin = {$GRID.pagetopmargin};
-		rowheight = {$GRID.rowheight};
-		makehugrid();
-	});
+    $(document).ready(function() {
+        pageUnits = '{$GRID.units}';
+        colUnits = '{$GRID.units}';
+        pagewidth = {$GRID.pagewidth};
+        columns = {$GRID.coloums};
+        columnwidth = {$GRID.coloumswidth};
+        gutterwidth = {$GRID.gutterwidth};
+        pagetopmargin = {$GRID.pagetopmargin};
+        rowheight = {$GRID.rowheight};
+        makehugrid();
+    });
 })(jQuery);
 // -->
 /*]]>*/
@@ -112,14 +112,14 @@ config.admPanel = 0
 
 ### sourceopt-Deaktivieren
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP : sourceopt = 1]
-	config.sourceopt {
-		formatHtml = 4
-		formatHtml.tabSize = 2
-	}
-	config.linkVars := addToList(sourceopt)
-	config.no_cache = 1
+    config.sourceopt {
+        formatHtml = 4
+        formatHtml.tabSize = 2
+    }
+    config.linkVars := addToList(sourceopt)
+    config.no_cache = 1
 [global]
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:showprint = 1]
-	config.linkVars := addToList(GP:showprint)
-	config.no_cache = 1
+    config.linkVars := addToList(GP:showprint)
+    config.no_cache = 1
 [global]

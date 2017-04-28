@@ -1,8 +1,8 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib_util
- *  @author Michael Wagner
+ * @package tx_mklib
+ * @subpackage tx_mklib_util
+ * @author Michael Wagner
  *
  *  Copyright notice
  *
@@ -36,74 +36,75 @@ tx_rnbase::load('tx_mklib_util_FlexForm');
  * @subpackage tx_mklib
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  * @license http://www.gnu.org/licenses/lgpl.html
- * 		  GNU Lesser General Public License, version 3 or later
+ *        GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_util_FlexForm_testcase
-	extends tx_rnbase_tests_BaseTestCase {
+class tx_mklib_tests_util_FlexForm_testcase extends tx_rnbase_tests_BaseTestCase
+{
 
-	/**
-	 * Testet die getByRefererCallsSearchCorrect Methode.
-	 *
-	 * @return void
-	 *
-	 * @group unit
-	 * @test
-	 */
-	public function testFlexForm() {
-		$util = tx_mklib_util_FlexForm::getInstance($this->getFlexFormFixture());
+    /**
+     * Testet die getByRefererCallsSearchCorrect Methode.
+     *
+     * @return void
+     *
+     * @group unit
+     * @test
+     */
+    public function testFlexForm()
+    {
+        $util = tx_mklib_util_FlexForm::getInstance($this->getFlexFormFixture());
 
-		self::assertEquals(
-			'tx_mklib_action_AbstractList',
-			$util->get('action')
-		);
-		self::assertContains(
-			'notfound = 404 Not Found',
-			$util->get('flexformTS', 's_tssetup')
-		);
-		self::assertEquals(
-			'tx_mklib_filter_SingleItem',
-			$util->get('abstractlist.filter', 's_abstractlist')
-		);
-	}
+        self::assertEquals(
+            'tx_mklib_action_AbstractList',
+            $util->get('action')
+        );
+        self::assertContains(
+            'notfound = 404 Not Found',
+            $util->get('flexformTS', 's_tssetup')
+        );
+        self::assertEquals(
+            'tx_mklib_filter_SingleItem',
+            $util->get('abstractlist.filter', 's_abstractlist')
+        );
+    }
 
-	/**
-	 * Liefert das Fixture XML
-	 *
-	 * @return string
-	 */
-	protected function getFlexFormFixture() {
-		return <<<FF
+    /**
+     * Liefert das Fixture XML
+     *
+     * @return string
+     */
+    protected function getFlexFormFixture()
+    {
+        return <<<FF
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3FlexForms>
-	<data>
-		<sheet index="sDEF">
-			<language index="lDEF">
-				<field index="action">
-					<value index="vDEF">tx_mklib_action_AbstractList</value>
-				</field>
-			</language>
-		</sheet>
-		<sheet index="s_tssetup">
-			<language index="lDEF">
-				<field index="flexformTS">
-					<value index="vDEF">abstractlist.notfound = 404 Not Found</value>
-				</field>
-			</language>
-		</sheet>
-		<sheet index="s_abstractlist">
-			<language index="lDEF">
-				<field index="abstractlist.filter">
-					<value index="vDEF">tx_mklib_filter_SingleItem</value>
-				</field>
-			</language>
-		</sheet>
-	</data>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="action">
+                    <value index="vDEF">tx_mklib_action_AbstractList</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="s_tssetup">
+            <language index="lDEF">
+                <field index="flexformTS">
+                    <value index="vDEF">abstractlist.notfound = 404 Not Found</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="s_abstractlist">
+            <language index="lDEF">
+                <field index="abstractlist.filter">
+                    <value index="vDEF">tx_mklib_filter_SingleItem</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
 </T3FlexForms>
 FF;
-	}
-
+    }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_FlexForm_testcase.php']) {
-	require_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_FlexForm_testcase.php'];
+    require_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_FlexForm_testcase.php'];
 }

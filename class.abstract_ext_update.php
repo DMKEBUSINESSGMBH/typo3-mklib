@@ -1,7 +1,7 @@
 <?php
 /**
- * 	@package tx_mklib
- *  @subpackage tx_mklib
+ * @package tx_mklib
+ * @subpackage tx_mklib
  *
  *  Copyright notice
  *
@@ -31,257 +31,262 @@ tx_rnbase::load('tx_rnbase_util_Link');
 /**
  * Class for updating the db
  *
- * @author	 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+ * @author   Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-abstract class abstract_ext_update  {
+abstract class abstract_ext_update
+{
 
-	/**
-	 *
-	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter or t3lib_cs
-	 */
-	private $csconv = false;
+    /**
+     *
+     * @var \TYPO3\CMS\Core\Charset\CharsetConverter or t3lib_cs
+     */
+    private $csconv = false;
 
-	/**
-	 * Main function, returning the HTML content of the update module
-	 *
-	 * @return	string		HTML
-	 */
-	function main()	{
-		$fieldsets = array();
-		$fieldsets['Character encoding'] 	= $this->getDestEncodingSelect();
-		$fieldsets['Update Static Info Tables']	= $this->handleUpdateStaticInfoTables();
+    /**
+     * Main function, returning the HTML content of the update module
+     *
+     * @return  string      HTML
+     */
+    public function main()
+    {
+        $fieldsets = array();
+        $fieldsets['Character encoding']    = $this->getDestEncodingSelect();
+        $fieldsets['Update Static Info Tables']    = $this->handleUpdateStaticInfoTables();
 
-		$content  = '';
-		$content .= '<form action="'.htmlspecialchars(tx_rnbase_util_Link::linkThisScript()).'" method="post">';
-		foreach($fieldsets as $legend => $fieldset) {
-			$content .= '<fieldset>';
-			if($legend && !is_numeric($legend)) {
-				$content .=  '<legend><strong>&nbsp;'.$legend.'&nbsp;</strong></legend>';
-			}
-			$content .= $fieldset;
-			$content .= '</fieldset>';
-			$content .= '<p><br /></p>';
-		}
+        $content  = '';
+        $content .= '<form action="'.htmlspecialchars(tx_rnbase_util_Link::linkThisScript()).'" method="post">';
+        foreach ($fieldsets as $legend => $fieldset) {
+            $content .= '<fieldset>';
+            if ($legend && !is_numeric($legend)) {
+                $content .=  '<legend><strong>&nbsp;'.$legend.'&nbsp;</strong></legend>';
+            }
+            $content .= $fieldset;
+            $content .= '</fieldset>';
+            $content .= '<p><br /></p>';
+        }
 
-		$content .= '<p><input type="submit" /></p>';
-		$content .= '</form>';
+        $content .= '<p><input type="submit" /></p>';
+        $content .= '</form>';
 
-		return $content;
-	}
+        return $content;
+    }
 
-	/**
-	 * Erzeugt die Selectbox für das encoding
-	 * @return 	string
-	 */
-	private function getDestEncodingSelect(){
-		require_once(tx_rnbase_util_Extensions::extPath('static_info_tables','class.tx_staticinfotables_encoding.php'));
-		$content  = '';
-		$content .= '<label>Destination character encoding:</label>';
-		$content .= tx_staticinfotables_encoding::getEncodingSelect('dest_encoding', '', 'utf-8');
-		$content .= '<p>(The character encoding must match the encoding of the existing tables data. By default this is UTF-8.)</p>';
-		if($destEncoding = $this->getDestEncoding()) {
-			$content .= '<p>Current encoding: '.htmlspecialchars($destEncoding).'</p>';
-		}
-		return $content;
-	}
+    /**
+     * Erzeugt die Selectbox für das encoding
+     * @return  string
+     */
+    private function getDestEncodingSelect()
+    {
+        require_once(tx_rnbase_util_Extensions::extPath('static_info_tables', 'class.tx_staticinfotables_encoding.php'));
+        $content  = '';
+        $content .= '<label>Destination character encoding:</label>';
+        $content .= tx_staticinfotables_encoding::getEncodingSelect('dest_encoding', '', 'utf-8');
+        $content .= '<p>(The character encoding must match the encoding of the existing tables data. By default this is UTF-8.)</p>';
+        if ($destEncoding = $this->getDestEncoding()) {
+            $content .= '<p>Current encoding: '.htmlspecialchars($destEncoding).'</p>';
+        }
 
-	/**
-	 * @return string
-	 */
-	private function getDestEncoding(){
-		return tx_rnbase_parameters::getPostOrGetParameter('dest_encoding');
-	}
+        return $content;
+    }
 
-	/**
-	 * @TODO prüfen ob der import bereits durchgeführt wurde.
-	 *
-	 * @return 	string
-	 */
-	private function handleUpdateStaticInfoTables(){
-		$updateKey = $this->getStatementKey();
+    /**
+     * @return string
+     */
+    private function getDestEncoding()
+    {
+        return tx_rnbase_parameters::getPostOrGetParameter('dest_encoding');
+    }
 
-		$content  = '';
-		$content .= $this->getInfoMsg();
+    /**
+     * @TODO prüfen ob der import bereits durchgeführt wurde.
+     *
+     * @return  string
+     */
+    private function handleUpdateStaticInfoTables()
+    {
+        $updateKey = $this->getStatementKey();
 
-		if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
-			$content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
-		} else {
-			if(tx_rnbase_parameters::getPostOrGetParameter($updateKey)) {
-				if(($ret = $this->queryDB($updateKey)) === true) {
-					$content .= $this->getSuccessMsg();
-				} else {
-					$content .= '<p><big><strong>'.$ret.'</strong></big></p>';
-				}
-			} else {
-				$content .= '<p><br /><input type="checkbox" name="'.$updateKey.'" id="'.$updateKey.'" /> <label for="'.$updateKey.'">'.$this->getCheckboxLabel().'</label></p>';
-			}
-		}
-		return $content;
+        $content  = '';
+        $content .= $this->getInfoMsg();
 
-		// export von der dsag
-//		$sUpdate = 'UPDATE static_countries SET	zipcode_rule=\'%2$d\',	zipcode_length=\'%3$d\'	WHERE cn_iso_2=\'%1$s\';';
-//		tx_rnbase::load('tx_rnbase_util_DB');
-//		$aLand = tx_rnbase_util_DB::doSelect('*','land', array('enablefieldsoff'=>1,/*'debug'=>1,*/ 'where'=>'tx_dsagsap_iso_2 != \'\''));
-//		$sSQL = ''; $aCountries = array();
-//		foreach($aLand as $aRecord){
-//			$aCountries[] = $aRecord['land'].' ('.$aRecord['tx_dsagsap_iso_2'].')';
-//			$sSQL .= sprintf( $sUpdate, $aRecord['tx_dsagsap_iso_2'], $aRecord['prplz'], $aRecord['lnplz'] )."\n";
-//		}
-//		exit('<h1>Importierte Länder:</h1><ul><li>'.implode("</li>\r\n<li>", $aCountries).'</li></ul><h1>Import SQL für static_countries</h1><pre>'.$sSQL.'</pre>');
+        if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
+            $content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
+        } else {
+            if (tx_rnbase_parameters::getPostOrGetParameter($updateKey)) {
+                if (($ret = $this->queryDB($updateKey)) === true) {
+                    $content .= $this->getSuccessMsg();
+                } else {
+                    $content .= '<p><big><strong>'.$ret.'</strong></big></p>';
+                }
+            } else {
+                $content .= '<p><br /><input type="checkbox" name="'.$updateKey.'" id="'.$updateKey.'" /> <label for="'.$updateKey.'">'.$this->getCheckboxLabel().'</label></p>';
+            }
+        }
 
-	}
+        return $content;
+    }
 
-	/**
-	 * Liefert das Label für die Checkbox
-	 * Enter description here ...
-	 */
-	protected function getCheckboxLabel() {
-		return 'import static info tables';
-	}
+    /**
+     * Liefert das Label für die Checkbox
+     * Enter description here ...
+     */
+    protected function getCheckboxLabel()
+    {
+        return 'import static info tables';
+    }
 
-	private function queryDB($updateKey){
+    private function queryDB($updateKey)
+    {
+        $file = tx_rnbase_util_Extensions::extPath($this->getExtensionName(), $this->getSqlFileName());
+        $fileContent = explode("\n", tx_rnbase_util_Network::getUrl($file));
+        if (!$fileContent) {
+            return $this->getSqlFileName().' not found! ('.$file.')';
+        }
 
-		$file = tx_rnbase_util_Extensions::extPath($this->getExtensionName(), $this->getSqlFileName());
-		$fileContent = explode("\n", tx_rnbase_util_Network::getUrl($file));
-		if(!$fileContent) {
-			return $this->getSqlFileName().' not found! ('.$file.')';
-		}
+        $destEncoding = $this->getDestEncoding();
+        $querys = array();
+        $keyQuery = 0;
+        foreach ($fileContent as $line) {
+            $line = trim($line);
+            // nach dem ende des update keys suchen
+            if ($keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
+                $keyQuery = 2;
+                break; // alle satements gefunden schleife nicht mehr durchlaufen
+            }
+            // nach dem anfang des update keys suchen
+            if (!$keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
+                $keyQuery = 1; // key gefunden, jetzt folgen die statements
+                continue;
+            }
+            // der update key wurde noch nicht erreicht
+            if (!$keyQuery) {
+                continue;
+            }
+            if ($line && tx_rnbase_util_Strings::isFirstPartOfStr($line, $this->getSqlMode())) {
+                // ggf. das encoding ändern
+                $querys[] = $this->getUpdateEncoded($line, $destEncoding);
+            }
+        }
 
-		$destEncoding = $this->getDestEncoding();
-		$querys = array();
-		$keyQuery = 0;
-		foreach($fileContent as $line)	{
-			$line=trim($line);
-			// nach dem ende des update keys suchen
-			if($keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line,'#'.$updateKey)) {
-				$keyQuery = 2;
-				break; // alle satements gefunden schleife nicht mehr durchlaufen
-			}
-			// nach dem anfang des update keys suchen
-			if(!$keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
-				$keyQuery = 1; // key gefunden, jetzt folgen die statements
-				continue;
-			}
-			// der update key wurde noch nicht erreicht
-			if(!$keyQuery) {
-				continue;
-			}
-			if ($line && tx_rnbase_util_Strings::isFirstPartOfStr($line, $this->getSqlMode())) {
-				// ggf. das encoding ändern
-				$querys[] = $this->getUpdateEncoded($line, $destEncoding);
-			}
-		}
+        switch ($keyQuery) {
+            case 0:
+                return 'No '.strtolower($this->getSqlMode()).' key not found. ('.$updateKey.')';
+            case 1:
+                return 'End key not found. ('.$updateKey.')';
+            case 2:
+                // alles ok
+        }
 
-		switch($keyQuery){
-			case 0:
-				return 'No '.strtolower($this->getSqlMode()).' key not found. ('.$updateKey.')';
-			case 1:
-				return 'End key not found. ('.$updateKey.')';
-			case 2:
-				// alles ok
-		}
+        if (count($querys) === 0) {
+            return 'No queries found. ('.$updateKey.')';
+        }
+        foreach ($querys as $query) {
+            $GLOBALS['TYPO3_DB']->admin_query($query);
+        }
 
-		if(count($querys)===0) {
-			return 'No queries found. ('.$updateKey.')';
-		}
-		foreach($querys as $query) {
-			$GLOBALS['TYPO3_DB']->admin_query($query);
-		}
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Sollen Updates, Inserts ausgeführt werden?
-	 * @return string
-	 */
-	protected function getSqlMode() {
-		return 'UPDATE';
-	}
+    /**
+     * Sollen Updates, Inserts ausgeführt werden?
+     * @return string
+     */
+    protected function getSqlMode()
+    {
+        return 'UPDATE';
+    }
 
-	/**
-	 * @return \TYPO3\CMS\Core\Charset\CharsetConverter or t3lib_cs
-	 */
-	private function getCharsetsConversion(){
-		if(!$this->csconv) {
-			if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-				$charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
-			} else {
-				$charsetConverterClass = 't3lib_cs';
-			}
-			$this->csconv = tx_rnbase::makeInstance($charsetConverterClass);
-		}
-		return $this->csconv;
-	}
+    /**
+     * @return \TYPO3\CMS\Core\Charset\CharsetConverter or t3lib_cs
+     */
+    private function getCharsetsConversion()
+    {
+        if (!$this->csconv) {
+            if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
+                $charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
+            } else {
+                $charsetConverterClass = 't3lib_cs';
+            }
+            $this->csconv = tx_rnbase::makeInstance($charsetConverterClass);
+        }
 
-	/**
-	 * Convert the values of a SQL update statement to a different encoding than UTF-8.
-	 *
-	 * @param 	string $query Update statement like: UPDATE static_countries SET zipcode_rule='2', zipcode_length='5' WHERE cn_iso_2='DE';
-	 * @param 	string $destEncoding Destination encoding
-	 * @return 	string Converted update statement
-	 */
-	private function getUpdateEncoded($query, $destEncoding) {
-		if (!($destEncoding==='utf-8')) {
-			$queryElements = explode('WHERE', $query);
-			$where = preg_replace('#;$#', '', trim($queryElements[1]));
-			$queryElements = explode('SET', $queryElements[0]);
-			$queryFields = $queryElements[1];
+        return $this->csconv;
+    }
 
-			$queryElements = tx_rnbase_util_Strings::trimExplode('UPDATE', $queryElements[0], 1);
-			$table = $queryElements[0];
+    /**
+     * Convert the values of a SQL update statement to a different encoding than UTF-8.
+     *
+     * @param   string $query Update statement like: UPDATE static_countries SET zipcode_rule='2', zipcode_length='5' WHERE cn_iso_2='DE';
+     * @param   string $destEncoding Destination encoding
+     * @return  string Converted update statement
+     */
+    private function getUpdateEncoded($query, $destEncoding)
+    {
+        if (!($destEncoding === 'utf-8')) {
+            $queryElements = explode('WHERE', $query);
+            $where = preg_replace('#;$#', '', trim($queryElements[1]));
+            $queryElements = explode('SET', $queryElements[0]);
+            $queryFields = $queryElements[1];
 
-			$fields_values = array();
-			$queryFieldsArray = tx_rnbase_util_Strings::trimExplode(',', $queryFields, 1);
-			foreach ($queryFieldsArray as $fieldsSet) {
-				$col = tx_rnbase_util_Strings::trimExplode('=', $fieldsSet, 1);
-				$value = stripslashes(substr($col[1], 1, strlen($col[1])-2));
-				$value = $this->getCharsetsConversion()->conv($value, 'utf-8', $destEncoding);
-				$fields_values[$col[0]] = $value;
-			}
-			$query = $GLOBALS['TYPO3_DB']->UPDATEquery($table,$where,$fields_values);
-		}
-		return $query;
-	}
+            $queryElements = tx_rnbase_util_Strings::trimExplode('UPDATE', $queryElements[0], 1);
+            $table = $queryElements[0];
 
-	function access() {
-		return TRUE;
-	}
+            $fields_values = array();
+            $queryFieldsArray = tx_rnbase_util_Strings::trimExplode(',', $queryFields, 1);
+            foreach ($queryFieldsArray as $fieldsSet) {
+                $col = tx_rnbase_util_Strings::trimExplode('=', $fieldsSet, 1);
+                $value = stripslashes(substr($col[1], 1, strlen($col[1]) - 2));
+                $value = $this->getCharsetsConversion()->conv($value, 'utf-8', $destEncoding);
+                $fields_values[$col[0]] = $value;
+            }
+            $query = $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values);
+        }
 
-	/**
-	 * Liefert den Namen der Datei, welche die Update Statements beinhaltet
-	 * @return string
-	 */
-	protected function getSqlFileName() {
-		return 'ext_tables_static_update.sql';
-	}
+        return $query;
+    }
 
-	/**
-	 * @return string
-	 */
-	protected function getStatementKey() {
-		return 'importStaticInfoTables';
-	}
+    public function access()
+    {
+        return true;
+    }
 
-	/**
-	 * Liefert den Namen der Extension für die
-	 * @return string
-	 */
-	abstract protected function getExtensionName();
+    /**
+     * Liefert den Namen der Datei, welche die Update Statements beinhaltet
+     * @return string
+     */
+    protected function getSqlFileName()
+    {
+        return 'ext_tables_static_update.sql';
+    }
 
-	/**
-	 * Liefert die Nachricht, was gemacht werden soll
-	 * @return string
-	 */
-	abstract protected function getInfoMsg();
+    /**
+     * @return string
+     */
+    protected function getStatementKey()
+    {
+        return 'importStaticInfoTables';
+    }
 
-	/**
-	 * Liefert die Nachricht für den Erfolgsfall
-	 * @return string
-	 */
-	abstract protected function getSuccessMsg();
+    /**
+     * Liefert den Namen der Extension für die
+     * @return string
+     */
+    abstract protected function getExtensionName();
+
+    /**
+     * Liefert die Nachricht, was gemacht werden soll
+     * @return string
+     */
+    abstract protected function getInfoMsg();
+
+    /**
+     * Liefert die Nachricht für den Erfolgsfall
+     * @return string
+     */
+    abstract protected function getSuccessMsg();
 }
 
 // Include extension?
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php'])	{
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']);
+if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']) {
+    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']);
 }
