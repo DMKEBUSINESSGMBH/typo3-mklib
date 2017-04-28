@@ -104,7 +104,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base {
 			!isset($options['enablefieldsbe']) &&
 			!isset($options['enablefieldsfe'])
 		) {
-			$options['enablefieldsoff'] = true;
+			$options['enablefieldsbe'] = true;
 		}
 	}
 
