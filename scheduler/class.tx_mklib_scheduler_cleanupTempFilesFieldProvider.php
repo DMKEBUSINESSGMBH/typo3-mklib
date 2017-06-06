@@ -56,6 +56,7 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_schedule
                     // $value => $caption
                     'typo3temp' => 'typo3temp',
                     'uploads' => 'uploads',
+                    'fileadmin' => 'fileadmin',
                 ),
                 'default' => '',
                 'eval' => 'required',
