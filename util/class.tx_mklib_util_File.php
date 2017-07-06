@@ -239,11 +239,19 @@ class tx_mklib_util_File
         $sPath = self::trimSlashes($sPath);
 
         // Konvertiert alle double slashes (//) zu einem single slash (/)
-        // @TODO Methode nicht statisch aufrufen
-        $sPath = self::removeDoubleSlash($sPath);
+        $sPath = self::getInstance()->removeDoubleSlash($sPath);
 
         return $slashPath ? self::slashPath($sPath) : $sPath;
     }
+
+    /**
+     * @return tx_mklib_util_File
+     */
+    public static function getInstance()
+    {
+        return tx_rnbase::makeInstance('tx_mklib_util_File');
+    }
+
     /**
      * // Bei Verzeichnissen sicherstellen, das ein slash (/) am ende steht
      *
@@ -259,7 +267,7 @@ class tx_mklib_util_File
         if (!self::isAbsWebPath($sPath) && ((TYPO3_OS == 'WIN' && substr($sPath, 1, 2) != ':/') || TYPO3_OS != 'WIN')) {
             $sPath = ($sPath{0} != '/' ? '/' : '').$sPath;
         }
-        if (!$directoryCheck || self::isDirectory($sPath)) {
+        if (!$directoryCheck || self::getInstance()->isDirectory($sPath)) {
             if (substr($sPath, -1) != '/') {
                 return $sPath . '/';
             }
