@@ -239,6 +239,7 @@ class tx_mklib_util_File
         $sPath = self::trimSlashes($sPath);
 
         // Konvertiert alle double slashes (//) zu einem single slash (/)
+        // @TODO Methode nicht statisch aufrufen
         $sPath = self::removeDoubleSlash($sPath);
 
         return $slashPath ? self::slashPath($sPath) : $sPath;
