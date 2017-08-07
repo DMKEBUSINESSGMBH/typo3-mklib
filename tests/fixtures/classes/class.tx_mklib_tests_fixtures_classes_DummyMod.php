@@ -52,7 +52,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
     {
         return 'mklib';
     }
-    
+
     /**
      * Method to set the tabs for the mainmenu
      * Umstellung von SelectBox auf Menu
@@ -63,7 +63,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
 
         return $mainmenu['menu'];
     }
-    
+
     /**
      * Returns the module ident name
      * @return string
@@ -71,6 +71,29 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
     public function getName()
     {
         return 'dummyMod';
+    }
+
+    /**
+     * workaround, da ansonsten ->main() aufgerufen werden müsste, um $doc zu setzen.
+     * In ->main() wird aber auch das rendering ausgeführt, was dann zu ungewollten Ausgaben,
+     * Fehlern etc. führt.
+     *
+     * {@inheritDoc}
+     * @see tx_rnbase_mod_BaseModule::getDoc()
+     */
+    public function getDoc()
+    {
+        if (!$this->doc) {
+            if (isset($GLOBALS['TBE_TEMPLATE'])) {
+                $this->doc = $GLOBALS['TBE_TEMPLATE'];
+            } else {
+                $this->doc = tx_rnbase::makeInstance(
+                    tx_rnbase_util_Typo3Classes::getDocumentTemplateClass()
+                );
+            }
+        }
+
+        return $this->doc;
     }
 }
 
