@@ -168,7 +168,11 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
         $cacheManager = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
         $cacheManager->flushCaches();
 
-        \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive();
+        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
+            tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Service\\OpcodeCacheService')->clearAllActive();
+        } else {
+            \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive();
+        }
     }
 
     /**
