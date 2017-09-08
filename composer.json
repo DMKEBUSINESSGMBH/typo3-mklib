@@ -55,5 +55,9 @@
             "repository/"
         ]
     },
-    "autoload-dev": {"classmap": {"tests/"}}
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    }
 }
