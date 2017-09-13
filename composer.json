@@ -54,10 +54,5 @@
             "view/",
             "repository/"
         ]
-    },
-    "autoload-dev": {
-        "classmap": [
-            "tests/"
-        ]
     }
 }
