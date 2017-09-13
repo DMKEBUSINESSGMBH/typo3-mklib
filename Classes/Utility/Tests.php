@@ -375,7 +375,7 @@ class Tests
                 }
             }
 
-            $handleRequest = new ReflectionMethod(get_class($action), 'handleRequest');
+            $handleRequest = new \ReflectionMethod(get_class($action), 'handleRequest');
             $handleRequest->setAccessible(true);
             $viewData = $configurations->getViewData();
             $frontendOutput = $handleRequest->invokeArgs(
