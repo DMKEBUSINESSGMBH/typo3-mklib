@@ -163,7 +163,7 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
      */
     private function flushCacheForTypo6AndHigher()
     {
-        $commonCacheDirectory = tx_rnbase_util_TYPO3::isTYPO87OrHigher() ? 'typo3temp/var/Cache' : 'typo3temp/Cache';
+        $commonCacheDirectory = tx_rnbase_util_TYPO3::isTYPO86OrHigher() ? 'typo3temp/var/Cache' : 'typo3temp/Cache';
         \TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory(PATH_site . $commonCacheDirectory, true, true);
 
         $cacheManager = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
