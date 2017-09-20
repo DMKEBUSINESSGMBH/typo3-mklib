@@ -123,3 +123,18 @@ config.admPanel = 0
     config.linkVars := addToList(GP:showprint)
     config.no_cache = 1
 [global]
+
+### Aktuelle url anzeigen, wenn z.B. Aufruf aus BE erfolgt.
+[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:showUrl = 1]
+    page.1 = TEXT
+    page.1 {
+        value =
+        typolink.parameter.data = TSFE:id
+        typolink.addQueryString = 1
+        typolink.addQueryString.exclude = showUrl
+        typolink.returnLast = url
+        typolink.forceAbsoluteUrl = 1
+    }
+    config.no_cache = 1
+[global]
+
