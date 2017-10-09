@@ -26,10 +26,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
- * benötigte Klassen einbinden
- */
-if (!defined('TYPO3_cliMode')) {
+if (!tx_rnbase_util_TYPO3::isCliMode()) {
     die('You cannot run this script directly!');
 }
 tx_rnbase::load('Tx_Rnbase_CommandLine_Controller');
@@ -189,6 +186,6 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
     }
 }
 
-if (defined('TYPO3_cliMode')) {
+if (tx_rnbase_util_TYPO3::isCliMode()) {
     tx_rnbase::makeInstance('tx_mklib_cli_main')->main();
 }
