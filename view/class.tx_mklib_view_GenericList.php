@@ -58,7 +58,7 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
 
         $itemPath = $this->getItemPath($configurations, $confId);
         $markerClass = $this->getMarkerClass($configurations, $confId);
-        
+
         //Liste generieren
         $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
         $out = $listBuilder->render(
@@ -75,7 +75,7 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
         return $out;
     }
 
-    
+
     /**
      * Set the path of the template file.
      *
@@ -101,7 +101,7 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
      *
      * @return string
      */
-    public function getMainSubpart()
+    public function getMainSubpart(&$viewData)
     {
         $confId = $this->getController()->getExtendedConfId();
         $subpart = $this->getController()->getConfigurations()->get($confId.'template.subpart');
