@@ -24,4 +24,9 @@ if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
         'mksearch',
         'Configuration/TCA/Override/static_countries.php'
     );
+    // tca integrieren für tx_mklib_wordlist einbinden, wenn gesetzt.
+    if (is_array($_EXTCONF) && array_key_exists('tableWordlist', $_EXTCONF) && intval($_EXTCONF['tableWordlist'])) {
+        tx_rnbase::load('tx_mklib_srv_Wordlist');
+        tx_mklib_srv_Wordlist::loadTca();
+    }
 }

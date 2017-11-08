@@ -157,6 +157,17 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
         return null;
     }
 
+    /**
+     * @return array
+     */
+    public static function loadTca()
+    {
+        $GLOBALS['TCA']['tx_mklib_wordlist'] = require tx_rnbase_util_Extensions::extPath(
+            'mklib',
+            'Configuration/TCA/tx_mklib_wordlist.php'
+        );
+    }
+
   /**
    * Liefert die zugehörige Search-Klasse zurück
    *

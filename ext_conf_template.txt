@@ -8,10 +8,13 @@ picturesUploadPath = uploads/tx_mklib/pictures
 portalPageId = 0
 
 # cat=base; type=boolean; label=logDbHandler:Put a notice on db changes to the devlog. (Log level notice must be enabled for devlog)
-logDbHandler = 0
+logDbHandler = 0 
 
 # cat=base; type=string; label=logDbIgnoreTables:Do not log this tables. (comma separated)
-logDbIgnoreTables =
+logDbIgnoreTables = 
 
 # cat=rtf; type=string; label=Marker für Sonderzeichen
 specialCharMarker = SPECIALCHAR_
+
+# cat=tables; type=boolean; label=Wordlist (tx_mklib_wordlist):Integriert die TCA für tx_mklib_wordlist
+tableWordlist = 0
