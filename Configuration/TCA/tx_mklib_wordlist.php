@@ -62,7 +62,7 @@ return array(
     ),
     'types' => array(
         '0' => array(
-            'showitem' => 'hidden;;1;;1-1-1,blacklisted,whitelisted,word'
+            'showitem' => 'hidden,blacklisted,whitelisted,word'
         )
     ),
     'palettes' => array(
