@@ -427,14 +427,14 @@ class tx_mklib_mod1_util_Selector
     {
         $fromTimestamp = 0;
         if ($fromValue) {
-            // @todo resepct timezone
+            // @todo respect timezone
             $dateTime = new DateTime($fromValue);
             $fromTimestamp = $dateTime->getTimestamp();
         }
 
         $toTimestamp = 0;
         if ($toValue) {
-            // @todo resepct timezone
+            // @todo respect timezone
             $dateTime = new DateTime($toValue);
             $toTimestamp = $dateTime->getTimestamp();
         }
