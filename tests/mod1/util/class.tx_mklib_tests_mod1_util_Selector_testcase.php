@@ -331,18 +331,18 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->expects(self::once())
             ->method('createDateInput')
             ->with($key, 'testValue')
-            ->willReturn('created');
+            ->will(self::returnValue('created'));
 
         $selector = $this->getMock('tx_mklib_mod1_util_Selector', array('getFormTool', 'getValueFromModuleData'));
         $selector
             ->expects(self::once())
             ->method('getFormTool')
-            ->willReturn($formTool);
+            ->will(self::returnValue($formTool));
         $selector
             ->expects(self::once())
             ->method('getValueFromModuleData')
             ->with($key)
-            ->willReturn('testValue');
+            ->will(self::returnValue('testValue'));
 
         $selector->init(tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
 
@@ -367,13 +367,13 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->expects(self::once())
             ->method('createDateInput')
             ->with($key, 'valueFromPost')
-            ->willReturn('created');
+            ->will(self::returnValue('created'));
 
         $selector = $this->getMock('tx_mklib_mod1_util_Selector', array('getFormTool', 'getValueFromModuleData'));
         $selector
             ->expects(self::once())
             ->method('getFormTool')
-            ->willReturn($formTool);
+            ->will(self::returnValue($formTool));
         $selector
             ->expects(self::never())
             ->method('getValueFromModuleData');
@@ -469,12 +469,12 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->expects(self::at(0))
             ->method('createDateInput')
             ->with('test_from', null)
-            ->willReturn('parsed_from');
+            ->will(self::returnValue('parsed_from'));
         $formTool
             ->expects(self::at(1))
             ->method('createDateInput')
             ->with('test_to', null)
-            ->willReturn('parsed_to');
+            ->will(self::returnValue('parsed_to'));
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
@@ -509,12 +509,12 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->expects(self::at(0))
             ->method('createDateInput')
             ->with('test_from', '2013-07-08')
-            ->willReturn('parsed_from');
+            ->will(self::returnValue('parsed_from'));
         $formTool
             ->expects(self::at(1))
             ->method('createDateInput')
             ->with('test_to', '2013-07-09')
-            ->willReturn('parsed_to');
+            ->will(self::returnValue('parsed_to'));
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
