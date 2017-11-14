@@ -423,16 +423,21 @@ class tx_mklib_mod1_util_Selector
      *
      * @return array[to => int, from => int]
      */
-    private function getCrDateReturnArray($fromValue, $toValue)
+    protected function getCrDateReturnArray($fromValue, $toValue)
     {
-        tx_rnbase::load('tx_rnbase_util_Dates');
-        $fromTimestamp = tx_rnbase_util_Dates::date_mysql2tstamp(
-            tx_rnbase_util_Dates::date_german2mysql($fromValue)
-        );
+        $fromTimestamp = 0;
+        if ($fromValue) {
+            // @todo resepct timezone
+            $dateTime = new DateTime($fromValue);
+            $fromTimestamp = $dateTime->getTimestamp();
+        }
 
-        $toTimestamp = tx_rnbase_util_Dates::date_mysql2tstamp(
-            tx_rnbase_util_Dates::date_german2mysql($toValue)
-        );
+        $toTimestamp = 0;
+        if ($toValue) {
+            // @todo resepct timezone
+            $dateTime = new DateTime($toValue);
+            $toTimestamp = $dateTime->getTimestamp();
+        }
 
         if ($toTimestamp) {
             $toTimestamp = $this->moveTimestampToTheEndOfTheDay($toTimestamp);

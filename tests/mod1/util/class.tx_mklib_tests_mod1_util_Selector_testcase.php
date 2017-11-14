@@ -294,10 +294,10 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getCrDateReturnArray');
         $method->setAccessible(true);
 
-        $returnArray = $method->invoke($selector, '08-07-2013', '09-07-2013');
+        $returnArray = $method->invoke($selector, '2013-07-08T00:00:00Z', '2013-07-09T00:00:00Z');
         $expectedReturnArray = array(
-            'from'    => 1373234400,
-            'to'    => 1373407200
+            'from'    => 1373241600,
+            'to'    => 1373414400
         );
         self::assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
     }
@@ -430,12 +430,12 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->expects(self::any())
             ->method('createDateInput');
 
-        $_POST['test_from'] = '08-07-2013';
-        $_POST['test_to'] = '09-07-2013';
+        $_POST['test_from'] = '2013-07-08T00:00:00Z';
+        $_POST['test_to'] = '2013-07-09T00:00:00Z';
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('getFormTool')
+            array('getFormTool', 'getCrDateReturnArray')
         );
         $selector->init($this->oMod);
 
@@ -443,14 +443,19 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->method('getFormTool')
             ->will(self::returnValue($formTool));
 
-        $key = 'test';
-        $out = array('field' => '');
-        $timestampArray = $selector->showDateRangeSelector($out, $key);
-
         $expectedReturnArray = array(
             'from'    => 1373234400 ,
             'to'    => 1373407200
         );
+        $selector->expects(self::once())
+            ->method('getCrDateReturnArray')
+            ->with('2013-07-08T00:00:00Z', '2013-07-09T00:00:00Z')
+            ->will(self::returnValue($expectedReturnArray));
+
+        $key = 'test';
+        $out = array('field' => '');
+        $timestampArray = $selector->showDateRangeSelector($out, $key);
+
         self::assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
     }
 
@@ -496,19 +501,19 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testShowDateRangeSelectorReturnsCorrectInputsWhenPostValuesSet()
     {
-        $_POST['test_from'] = '08-07-2013';
-        $_POST['test_to'] = '09-07-2013';
+        $_POST['test_from'] = '2013-07-08';
+        $_POST['test_to'] = '2013-07-09';
 
         $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
         $formTool
             ->expects(self::at(0))
             ->method('createDateInput')
-            ->with('test_from', '08-07-2013')
+            ->with('test_from', '2013-07-08')
             ->willReturn('parsed_from');
         $formTool
             ->expects(self::at(1))
             ->method('createDateInput')
-            ->with('test_to', '09-07-2013')
+            ->with('test_to', '2013-07-09')
             ->willReturn('parsed_to');
 
         $selector = $this->getMock(
@@ -541,8 +546,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->expects(self::any())
             ->method('createDateInput');
 
-        $_POST['test_from'] = '08-07-2013';
-        $_POST['test_to'] = '09-07-2013';
+        $_POST['test_from'] = '2013-07-08';
+        $_POST['test_to'] = '2013-07-09';
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
