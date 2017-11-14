@@ -323,212 +323,70 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
     /**
      * @group unit
      */
-    public function testGetDateFieldByKeyWhenNoPostValueReturnsEmptyValue()
+    public function testGetDateFieldByKeyWhenNoPost()
     {
-        $selector = $this->oSelector;
-
-        $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
-        $method->setAccessible(true);
-
         $key = 'test';
-        $out = array('field' => '');
-        $arguments = array($key, &$out);
-        $returnValue = $method->invokeArgs($selector, $arguments);
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool
+            ->expects(self::once())
+            ->method('createDateInput')
+            ->with($key, 'testValue')
+            ->willReturn('created');
 
-        self::assertEmpty($returnValue, 'doch ein return value');
-    }
-
-    /**
-     * @group unit
-     */
-    public function testGetDateFieldByKeyWhenNoPostValueSetsInputCorrect()
-    {
-        $selector = $this->oSelector;
-
-        $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
-        $method->setAccessible(true);
-
-        $key = 'test';
-        $out = array('field' => '');
-        $arguments = array($key, &$out);
-        $method->invokeArgs($selector, $arguments);
-
-        $fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
-
-        self::assertContains(
-            '<input name="test" type="text" id="tceforms-datefield-test" value="" />',
-            $fieldHtml
-        );
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            self::assertContains(
-                '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
-                ' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
-                $fieldHtml
-            );
-            self::assertContains(
-                '<img src="',
-                $fieldHtml
-            );
-        } else {
-            self::assertContains(
-                '<span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
-                    'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
-                $fieldHtml
-            );
-        }
-    }
-
-    /**
-     * @group unit
-     */
-    public function testGetDateFieldByKeyKeepsExistingOutFieldValue()
-    {
-        $selector = $this->oSelector;
-
-        $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
-        $method->setAccessible(true);
-
-        $key = 'test';
-        $out = array('field' => 'test');
-        $arguments = array($key, &$out);
-        $method->invokeArgs($selector, $arguments);
-
-        $fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
-
-        self::assertContains(
-            '<input name="test" type="text" id="tceforms-datefield-test" value="" />',
-            $fieldHtml
-        );
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            self::assertContains(
-                '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
-                ' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
-                $fieldHtml
-            );
-            self::assertContains(
-                '<img src="',
-                $fieldHtml
-            );
-        } else {
-            self::assertContains(
-                '<span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
-                    'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
-                $fieldHtml
-            );
-        }
-    }
-
-    /**
-     * @group unit
-     */
-    public function testGetDateFieldByKeyWhenPostValueReturnsCorrectValue()
-    {
-        $_POST['test'] = 123;
-        $selector = $this->oSelector;
-
-        $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
-        $method->setAccessible(true);
-
-        $key = 'test';
-        $out = array('field' => '');
-        $arguments = array($key, &$out);
-        $returnValue = $method->invokeArgs($selector, $arguments);
-
-        self::assertEquals(123, $returnValue, 'return value falsch');
-    }
-
-    /**
-     * @group unit
-     */
-    public function testGetDateFieldByKeyWhenPostValueSetsInputCorrect()
-    {
-        $_POST['test'] = 123;
-        $selector = $this->oSelector;
-
-        $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
-        $method->setAccessible(true);
-
-        $key = 'test';
-        $out = array('field' => '');
-        $arguments = array($key, &$out);
-        $method->invokeArgs($selector, $arguments);
-
-        $fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
-
-        self::assertContains(
-            '<input name="test" type="text" id="tceforms-datefield-test" value="123" />',
-            $fieldHtml
-        );
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            self::assertContains(
-                '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
-                ' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
-                $fieldHtml
-            );
-            self::assertContains(
-                '<img src="',
-                $fieldHtml
-            );
-        } else {
-            self::assertContains(
-                '<span style="cursor:pointer;" id="picker-tceforms-datefield-test" ' .
-                    'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
-                $fieldHtml
-            );
-        }
-    }
-
-    /**
-     * @group unit
-     */
-    public function testGetDateFieldByKeyWhenPrefersGetPostDataOverModuleData()
-    {
-        $_POST['test'] = 123;
-        $selector = $this->getMock(
-            'tx_mklib_mod1_util_Selector',
-            array('getValueFromModuleData')
-        );
-        $selector->init($this->oMod);
-
-        $key = 'test';
-        $selector->expects(self::never())
-            ->method('getValueFromModuleData');
-
-        $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
-        $method->setAccessible(true);
-
-        $out = array('field' => '');
-        $arguments = array($key, &$out);
-        $returnValue = $method->invokeArgs($selector, $arguments);
-
-        self::assertEquals(123, $returnValue, 'return value falsch');
-    }
-
-    /**
-     * @group unit
-     */
-    public function testGetDateFieldByKeyWhenUsesModuleDataWhenNoPostData()
-    {
-        $selector = $this->getMock(
-            'tx_mklib_mod1_util_Selector',
-            array('getValueFromModuleData')
-        );
-        $selector->init($this->oMod);
-
-        $key = 'test';
-        $selector->expects(self::once())
+        $selector = $this->getMock('tx_mklib_mod1_util_Selector', array('getFormTool', 'getValueFromModuleData'));
+        $selector
+            ->expects(self::once())
+            ->method('getFormTool')
+            ->willReturn($formTool);
+        $selector
+            ->expects(self::once())
             ->method('getValueFromModuleData')
             ->with($key)
-            ->will(self::returnValue('test'));
+            ->willReturn('testValue');
 
-        $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getDateFieldByKey');
-        $method->setAccessible(true);
+        $selector->init(tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
 
         $out = array('field' => '');
-        $arguments = array($key, &$out);
-        $returnValue = $method->invokeArgs($selector, $arguments);
 
-        self::assertEquals('test', $returnValue, 'return value falsch');
+        self::assertEquals(
+            'testValue',
+            $this->callInaccessibleMethod(array($selector, 'getDateFieldByKey'), array($key, &$out))
+        );
+        self::assertEquals('created', $out['field']);
+    }
+
+    /**
+     * @group unit
+     */
+    public function testGetDateFieldByKeyWhenPost()
+    {
+        $key = 'test';
+        $_POST[$key] = 'valueFromPost';
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool
+            ->expects(self::once())
+            ->method('createDateInput')
+            ->with($key, 'valueFromPost')
+            ->willReturn('created');
+
+        $selector = $this->getMock('tx_mklib_mod1_util_Selector', array('getFormTool', 'getValueFromModuleData'));
+        $selector
+            ->expects(self::once())
+            ->method('getFormTool')
+            ->willReturn($formTool);
+        $selector
+            ->expects(self::never())
+            ->method('getValueFromModuleData');
+
+        $selector->init(tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
+
+        $out = array('field' => '');
+
+        self::assertEquals(
+            'valueFromPost',
+            $this->callInaccessibleMethod(array($selector, 'getDateFieldByKey'), array($key, &$out))
+        );
+        self::assertEquals('created', $out['field']);
     }
 
     /**
@@ -536,15 +394,20 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testShowDateRangeSelectorReturnsCorrectTimestampArray()
     {
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool
+            ->expects(self::any())
+            ->method('createDateInput');
+
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('loadAdditionalJsForDatePicker', 'getFormTool')
+            array('getFormTool')
         );
         $selector->init($this->oMod);
 
         $selector->expects(self::any())
             ->method('getFormTool')
-            ->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+            ->will(self::returnValue($formTool));
 
         $key = 'test';
         $out = array('field' => '');
@@ -562,18 +425,23 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testShowDateRangeSelectorReturnsCorrectTimestampArrayWhenPostValuesSet()
     {
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool
+            ->expects(self::any())
+            ->method('createDateInput');
+
         $_POST['test_from'] = '08-07-2013';
         $_POST['test_to'] = '09-07-2013';
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('loadAdditionalJsForDatePicker', 'getFormTool')
+            array('getFormTool')
         );
         $selector->init($this->oMod);
 
         $selector->expects(self::any())
             ->method('getFormTool')
-            ->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+            ->will(self::returnValue($formTool));
 
         $key = 'test';
         $out = array('field' => '');
@@ -591,15 +459,27 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testShowDateRangeSelectorReturnsCorrectInputs()
     {
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool
+            ->expects(self::at(0))
+            ->method('createDateInput')
+            ->with('test_from', null)
+            ->willReturn('parsed_from');
+        $formTool
+            ->expects(self::at(1))
+            ->method('createDateInput')
+            ->with('test_to', null)
+            ->willReturn('parsed_to');
+
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('loadAdditionalJsForDatePicker', 'getFormTool')
+            array('getFormTool')
         );
         $selector->init($this->oMod);
 
         $selector->expects(self::any())
             ->method('getFormTool')
-            ->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+            ->will(self::returnValue($formTool));
 
         $key = 'test';
         $out = array('field' => '');
@@ -607,36 +487,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
 
         $fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
 
-        self::assertContains(
-            '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="" />',
-            $fieldHtml
-        );
-        self::assertContains(
-            '<input name="test_to" type="text" id="tceforms-datefield-test_to" value="" />',
-            $fieldHtml
-        );
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            self::assertContains(
-                '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
-                ' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
-                $fieldHtml
-            );
-            self::assertContains(
-                '<img src="',
-                $fieldHtml
-            );
-        } else {
-            self::assertContains(
-                '<span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" ' .
-                    'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
-                $fieldHtml
-            );
-            self::assertContains(
-                '<span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" ' .
-                    'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
-                $fieldHtml
-            );
-        }
+        self::assertContains('parsed_to', $fieldHtml);
+        self::assertContains('parsed_from', $fieldHtml);
     }
 
     /**
@@ -647,15 +499,27 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         $_POST['test_from'] = '08-07-2013';
         $_POST['test_to'] = '09-07-2013';
 
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool
+            ->expects(self::at(0))
+            ->method('createDateInput')
+            ->with('test_from', '08-07-2013')
+            ->willReturn('parsed_from');
+        $formTool
+            ->expects(self::at(1))
+            ->method('createDateInput')
+            ->with('test_to', '09-07-2013')
+            ->willReturn('parsed_to');
+
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('loadAdditionalJsForDatePicker', 'getFormTool')
+            array('getFormTool')
         );
         $selector->init($this->oMod);
 
         $selector->expects(self::any())
             ->method('getFormTool')
-            ->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+            ->will(self::returnValue($formTool));
 
         $key = 'test';
         $out = array('field' => '');
@@ -663,36 +527,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
 
         $fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
 
-        self::assertContains(
-            '<input name="test_from" type="text" id="tceforms-datefield-test_from" value="08-07-2013" />',
-            $fieldHtml
-        );
-        self::assertContains(
-            '<input name="test_to" type="text" id="tceforms-datefield-test_to" value="09-07-2013" />',
-            $fieldHtml
-        );
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            self::assertContains(
-                '<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-edit-pick-date"' .
-                ' data-identifier="actions-edit-pick-date"> <span class="icon-markup">',
-                $fieldHtml
-            );
-            self::assertContains(
-                '<img src="',
-                $fieldHtml
-            );
-        } else {
-            self::assertContains(
-                '<span style="cursor:pointer;" id="picker-tceforms-datefield-test_from" ' .
-                    'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
-                $fieldHtml
-            );
-            self::assertContains(
-                '<span style="cursor:pointer;" id="picker-tceforms-datefield-test_to" ' .
-                    'class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-pick-date">',
-                $fieldHtml
-            );
-        }
+        self::assertContains('parsed_to', $fieldHtml);
+        self::assertContains('parsed_from', $fieldHtml);
     }
 
     /**
@@ -700,18 +536,23 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
      */
     public function testShowDateRangeSelectorSetModuleDataCorrect()
     {
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool
+            ->expects(self::any())
+            ->method('createDateInput');
+
         $_POST['test_from'] = '08-07-2013';
         $_POST['test_to'] = '09-07-2013';
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('loadAdditionalJsForDatePicker', 'getFormTool', 'setValueToModuleData')
+            array('getFormTool', 'setValueToModuleData')
         );
         $selector->init($this->oMod);
 
         $selector->expects(self::any())
             ->method('getFormTool')
-            ->will(self::returnValue(tx_rnbase::makeInstance('tx_rnbase_util_FormTool')));
+            ->will(self::returnValue($formTool));
 
         $key = 'test';
         $selector->expects(self::any())
