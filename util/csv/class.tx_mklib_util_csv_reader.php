@@ -67,7 +67,7 @@ class tx_mklib_util_csv_reader implements Iterator
      * @param string $escape
      * @throws Exception
      */
-    public function tx_mklib_util_csv_reader(
+    public function __construct(
         $file,
         $delimiter = ';',
         $enclosure = '"',

@@ -64,7 +64,7 @@ class tx_mklib_treelib_Renderer
      *
      * @return  void
      */
-    public function tx_mklib_treelib_Renderer($PA, &$fObj)
+    public function __construct($PA, &$fObj)
     {
         $this->oTceForm = &$PA['pObj'];
         $this->PA = &$PA;

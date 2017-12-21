@@ -44,7 +44,7 @@ class tx_mklib_model_Currency
 {
     private $record = array();
 
-    public function tx_mklib_model_Currency(array $options = array())
+    public function __construct(array $options = array())
     {
         $data = array();
         $data['symbol'] = $options['symbol'] ? $options['symbol'] : '';

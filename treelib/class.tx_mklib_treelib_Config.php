@@ -53,7 +53,7 @@ class tx_mklib_treelib_Config
      * @param   \TYPO3\CMS\Backend\Form\FormEngine  $fObj
      * @return  void
      */
-    public function tx_mklib_treelib_Config(&$PA, &$pObj)
+    public function __construct(&$PA, &$pObj)
     {
         $this->oTceForm = &$PA['pObj'];
         $this->config = &$PA['fieldConf']['config'];

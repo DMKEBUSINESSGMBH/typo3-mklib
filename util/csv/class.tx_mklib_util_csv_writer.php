@@ -82,7 +82,7 @@ class tx_mklib_util_csv_writer
      * @param string $escape
      * @throws Exception
      */
-    public function Tx_Mkappelrath_Util_Csv_Writer(
+    public function __construct(
         $file,
         $delimiter = ';',
         $enclosure = '"',

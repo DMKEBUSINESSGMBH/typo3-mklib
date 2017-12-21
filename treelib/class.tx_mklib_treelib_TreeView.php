@@ -102,7 +102,7 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
      * @return  string
      * @return  void
      */
-    public function tx_mklib_treelib_TreeView($PA, &$fObj)
+    public function __construct($PA, &$fObj)
     {
         global $GLOBALS, $LANG, $TCA;
 
