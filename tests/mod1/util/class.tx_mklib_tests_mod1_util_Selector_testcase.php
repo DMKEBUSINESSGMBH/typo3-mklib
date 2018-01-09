@@ -76,7 +76,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         $_GET['SET'] = null;
 
         //für cli
-        $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
+        $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
         $GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
         //sprache auf default setzen damit wir die richtigen labels haben

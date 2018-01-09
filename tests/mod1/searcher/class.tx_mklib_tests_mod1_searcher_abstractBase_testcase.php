@@ -64,7 +64,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 
         $this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         $this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher', $this->mod);
-        $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getDocumentTemplateClass());
+        $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
         $GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
         $GLOBALS['emptyTestResult'] = false;

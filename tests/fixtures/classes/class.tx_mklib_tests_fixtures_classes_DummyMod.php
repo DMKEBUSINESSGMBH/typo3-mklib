@@ -87,9 +87,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
             if (isset($GLOBALS['TBE_TEMPLATE'])) {
                 $this->doc = $GLOBALS['TBE_TEMPLATE'];
             } else {
-                $this->doc = tx_rnbase::makeInstance(
-                    tx_rnbase_util_Typo3Classes::getDocumentTemplateClass()
-                );
+                $this->doc = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
             }
         }
 
