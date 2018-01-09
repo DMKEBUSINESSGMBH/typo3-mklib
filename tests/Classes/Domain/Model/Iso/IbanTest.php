@@ -50,6 +50,10 @@ class Tx_Mklib_Domain_Model_Iso_IbanTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testValidate($iban, $valid)
     {
+        if (!function_exists('bcmod')) {
+            self::markTestSkipped('BC-Math module not installed.');
+        }
+
         $model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
         self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_Iban, $model);
         self::assertSame($model->validate(), $valid);
