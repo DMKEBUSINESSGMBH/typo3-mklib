@@ -1,9 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
- * @author Hannes Bochmann
- *
  *  Copyright notice
  *
  *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
@@ -29,9 +25,13 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_Session');
 
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * tx_mklib_tests_util_Session_testcase
+ *
+ * @package         TYPO3
+ * @subpackage      mklib
+ * @author          Hannes Bochmann
+ * @license         http://www.gnu.org/licenses/lgpl.html
+ *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
 {
@@ -55,7 +55,10 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
         $this->cookiesBackup = $_COOKIE;
         $this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
 
-        tx_mklib_tests_Util::prepareTSFE(array('initFEuser' => true, 'force' => true));
+        \DMK\Mklib\Utility\Tests::prepareTSFE(array('initFEuser' => true, 'force' => true));
+
+        // ip lock not necessary
+        $GLOBALS['TSFE']->fe_user->lockIP = 0;
     }
 
     /**
@@ -66,6 +69,7 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
     {
         $_COOKIE = $this->cookiesBackup;
         tx_mklib_util_Session::removeSessionValue('checkCookieIsSet');
+        tx_mklib_util_Session::removeSessionValue('mklibTest');
         if (isset($GLOBALS['TSFE']->fe_user)) {
             $GLOBALS['TSFE']->fe_user = $this->feserBackUp;
         }
