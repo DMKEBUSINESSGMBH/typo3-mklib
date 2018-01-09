@@ -143,7 +143,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
      */
     public function testGetServerPath()
     {
-        if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
+        if (tx_rnbase_util_TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();
@@ -158,7 +158,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
      */
     public function testGetRelPath()
     {
-        if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
+        if (tx_rnbase_util_TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();
@@ -173,7 +173,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
      */
     public function testGetRelPathWithRemovedStartingSlashSetToTrue()
     {
-        if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
+        if (tx_rnbase_util_TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();
@@ -201,7 +201,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
      */
     public function testGetWebPath()
     {
-        if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
+        if (tx_rnbase_util_TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();

@@ -48,7 +48,7 @@ class tx_mklib_tests_mod1_Util
      */
     public static function replaceForCli(&$sString)
     {
-        if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
+        if (tx_rnbase_util_TYPO3::isCliMode()) {
             //wir müssen noch mod.php durch cli_dispatch.phpsh ersetzen
             $sString = str_replace('mod.php', 'cli_dispatch.phpsh', $sString);
             //außerdem müssen die get parameter, die im BE gesetzt sind löschen
