@@ -37,17 +37,12 @@ class tx_mklib_soap_ClientWrapper
      * @var string
      */
     protected $url;
-    
-    /**
-     * @var SoapClient
-     */
-    protected $soapclient;
-    
+
     /**
      * @var integer
      */
     protected $soapVersion = SOAP_1_1;
-    
+
     /**
      * @param string $method
      * @param array $args
@@ -64,32 +59,31 @@ class tx_mklib_soap_ClientWrapper
         } catch (Exception $exception) {
             $this->handleException($exception, $args);
         }
-        
+
         return $methodResult;
     }
-    
+
     /**
+     * don't reuse existing objects. always use a fresh instance.
+     * (@see http://php.blogaboutwhatever.com/2011/11/error-fetching-http-headers/)
+     *
      * @return SoapClient
      */
     protected function getSoapClient()
     {
-        if (is_null($this->soapclient)) {
-            $this->soapclient = new SoapClient(
-                $this->getUrl(),
-                array(
-                    'location'        => $this->getUrl(),
-                    'uri'            => '',
-                    'soap_version'    => $this->soapVersion,
-                    'trace'            => 1,
-                    'exceptions'    => 1,
-                    'compression'    => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
-                )
-            );
-        }
-        
-        return $this->soapclient;
+        return new SoapClient(
+            $this->getUrl(),
+            array(
+                'location'        => $this->getUrl(),
+                'uri'            => '',
+                'soap_version'    => $this->soapVersion,
+                'trace'            => 1,
+                'exceptions'    => 1,
+                'compression'    => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
+            )
+        );
     }
-    
+
     /**
      * @param Exception $soapFault
      * @param array $args
@@ -101,7 +95,7 @@ class tx_mklib_soap_ClientWrapper
         $this->logException($exception, $args);
         $this->throwRuntimeException($exception);
     }
-    
+
     /**
      * @param Exception $exception
      * @param array $args
@@ -110,7 +104,7 @@ class tx_mklib_soap_ClientWrapper
     protected function logException(Exception $exception, array $args = array())
     {
         $soapClient = $this->getSoapClient();
-        
+
         if ($soapClient instanceof SoapClient) {
             tx_rnbase_util_Logger::fatal(
                 'Access to Soap Interface failed: ' . $exception->getMessage(),
@@ -127,7 +121,7 @@ class tx_mklib_soap_ClientWrapper
             tx_rnbase_util_Logger::fatal('Soap Client was not instanciated!', 'mklib');
         }
     }
-    
+
     /**
      * @param Exception $exception
      * @throws RuntimeException
@@ -149,7 +143,7 @@ class tx_mklib_soap_ClientWrapper
             $exception
         );
     }
-    
+
     /**
      * @return string
      */
@@ -157,7 +151,7 @@ class tx_mklib_soap_ClientWrapper
     {
         return $this->url;
     }
-    
+
     /**
      * @param string $url
      */
