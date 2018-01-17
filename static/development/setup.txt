@@ -110,7 +110,7 @@ config.admPanel = 0
 )
 [global]
 
-### sourceopt-Deaktivieren
+### sourceopt - format as less as possible
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP : sourceopt = 1]
     config.sourceopt {
         formatHtml = 4
@@ -118,6 +118,14 @@ config.admPanel = 0
     }
     config.linkVars := addToList(sourceopt)
     config.no_cache = 1
+[global]
+### deactivate sourceopt
+[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP : nosourceopt = 1]
+    config {
+        sourceopt.enabled = 0
+        linkVars := addToList(nosourceopt)
+        no_cache = 1
+    }
 [global]
 [globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:showprint = 1]
     config.linkVars := addToList(GP:showprint)
