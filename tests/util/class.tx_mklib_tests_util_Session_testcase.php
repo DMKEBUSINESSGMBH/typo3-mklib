@@ -56,9 +56,6 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
         $this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
 
         \DMK\Mklib\Utility\Tests::prepareTSFE(array('initFEuser' => true, 'force' => true));
-
-        // ip lock not necessary
-        $GLOBALS['TSFE']->fe_user->lockIP = 0;
     }
 
     /**
