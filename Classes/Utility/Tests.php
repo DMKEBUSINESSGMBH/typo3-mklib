@@ -419,6 +419,8 @@ class Tests
             // sonst wird eine Exception in TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
             // Zeile 548 geworfen
             $GLOBALS['TSFE']->fe_user->newSessionID = false;
+            // ip lock not necessary
+            $GLOBALS['TSFE']->fe_user->lockIP = 0;
         }
 
         if (isset($options['initCObject'])) {
