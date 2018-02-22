@@ -31,7 +31,7 @@ tx_rnbase::load('tx_rnbase_util_Files');
  * Die Klasse ermöglicht direkt eine CSV Datei
  * mit den Boardmitteln von TYPO3 zu schreiben
  */
-class tx_mklib_util_Csv extends localRecordList
+class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
 {
 
     /**
