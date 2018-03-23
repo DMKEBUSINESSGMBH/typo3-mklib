@@ -32,6 +32,8 @@
  * @package tx_mklib
  * @subpackage tx_mklib_treelib
  * @author Michael Wagner
+ * @deprecated since TYPO3 7.6. use core feature for tree views instead since TYPO3 7.6
+ * @todo remove when support for TYPO3 6.2 is dropped
  */
 class tx_mklib_treelib_Renderer
 {
@@ -200,22 +202,22 @@ class tx_mklib_treelib_Renderer
         }
         // add add js
         $js = '			function getFormValueSelected(fName)	{	//
-							var formObj = setFormValue_getFObj(fName)
-								if (formObj)	{
-							var result = "";
-							var localArray_V = new Array();
-							var fObjSel = formObj[fName+"_list"];
-							var l=fObjSel.length;
-							var c=0;
-							for (a=0;a<l;a++)	{
-								if (fObjSel.options[a].selected==1)	{
-									localArray_V[c++]=fObjSel.options[a].value;
-								}
-							}
-						}
-						result = localArray_V.join("_");
-						return result;
-				}';
+                            var formObj = setFormValue_getFObj(fName)
+                                if (formObj)	{
+                            var result = "";
+                            var localArray_V = new Array();
+                            var fObjSel = formObj[fName+"_list"];
+                            var l=fObjSel.length;
+                            var c=0;
+                            for (a=0;a<l;a++)	{
+                                if (fObjSel.options[a].selected==1)	{
+                                    localArray_V[c++]=fObjSel.options[a].value;
+                                }
+                            }
+                        }
+                        result = localArray_V.join("_");
+                        return result;
+                }';
         $needle = array('/ {2,}/','/\}\r\n/','/\t{2,}/');
         $replace = array(' ','}',' ');
         $js = preg_replace($needle, $replace, $js);

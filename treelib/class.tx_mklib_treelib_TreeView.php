@@ -44,6 +44,8 @@ if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
  * @package tx_mklib
  * @subpackage tx_mklib_treelib
  * @author Michael Wagner
+ * @deprecated since TYPO3 7.6. use core feature for tree views instead since TYPO3 7.6
+ * @todo remove when support for TYPO3 6.2 is dropped
  */
 class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
 {

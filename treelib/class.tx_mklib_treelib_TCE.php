@@ -33,6 +33,8 @@ tx_rnbase::load('tx_rnbase_parameters');
  * @package tx_mklib
  * @subpackage tx_mklib_treelib
  * @author Michael Wagner
+ * @deprecated since TYPO3 7.6. use core feature for tree views instead since TYPO3 7.6
+ * @todo remove when support for TYPO3 6.2 is dropped
  */
 class tx_mklib_treelib_TCE
 {

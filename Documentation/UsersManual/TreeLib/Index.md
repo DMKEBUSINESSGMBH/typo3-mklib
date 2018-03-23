@@ -1,4 +1,4 @@
-Tree View in the TCA
+Tree View in the TCA (deprecated since TYPO3 7.6 - use core feature for trees instead)
 ====================
 
 Load the TCA class in ext\_tables.php
