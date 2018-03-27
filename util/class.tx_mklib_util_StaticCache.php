@@ -51,7 +51,7 @@ class tx_mklib_util_StaticCache
      * @param string $value
      * @param $extKey
      */
-    public function set($key, $value, $extKey = 'mklib')
+    public static function set($key, $value, $extKey = 'mklib')
     {
         if (!is_array(self::$staticCache[$extKey])) {
             self::$staticCache[$extKey] = array();
@@ -66,7 +66,7 @@ class tx_mklib_util_StaticCache
      * @param $extKey
      * @return mixed
      */
-    public function get($key, $extKey = 'mklib')
+    public static function get($key, $extKey = 'mklib')
     {
         if (!is_array(self::$staticCache[$extKey])) {
             self::$staticCache[$extKey] = array();
@@ -82,7 +82,7 @@ class tx_mklib_util_StaticCache
      * @param $extKey
      * @return mixed
      */
-    public function has($key, $extKey = 'mklib')
+    public static function has($key, $extKey = 'mklib')
     {
         return is_array(self::$staticCache[$extKey]) && array_key_exists($key, self::$staticCache[$extKey]);
     }
@@ -94,7 +94,7 @@ class tx_mklib_util_StaticCache
      * @param $extKey
      * @return mixed
      */
-    public function remove($key, $extKey = 'mklib')
+    public static function remove($key, $extKey = 'mklib')
     {
         unset(self::$staticCache[$extKey][$key]);
     }
