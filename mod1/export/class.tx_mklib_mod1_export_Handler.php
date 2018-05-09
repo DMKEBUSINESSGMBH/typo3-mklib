@@ -278,7 +278,7 @@ class tx_mklib_mod1_export_Handler
         }
         $description = $configuration->get($confId . $type . '.description');
         if ($description) {
-            $description = ('<span class="bgColor2 info">' .
+            $description = ('<span class="bgColor2 info popover fade in">' .
                 $infoSprite . '<strong>' . $label . '</strong><br />' .
                 $description . '</span>'
             );
@@ -570,35 +570,41 @@ class tx_mklib_mod1_export_Handler
     private function getButtonStyles()
     {
         $css = '<style type="text/css">
-		.mklibexport {
-			display: block;
-			position: relative;
-		}
-		.mklibexport .imgbtn {
-			position: relative;
-			margin: 5px;
-			float: left;
-		}
-		.mklibexport .imgbtn span.t3-icon {
-			left: 8px;
-			margin: 0;
-			position: absolute;
-			top: 2px;
-		}
-		.mklibexport span.info {
-			display: none;
-			position: absolute;
-			padding: 5px;
-			top: 25px
-		}
-		.mklibexport:hover span.info {
-			display: block;
-		}
-		.mklibexport input[type="submit"] {
-			float: none;
-			padding-left: 24px;
-		}
-		</style>';
+        .mklibexport {
+            display: block;
+            position: relative;
+        }
+        .mklibexport .imgbtn {
+            position: relative;
+            margin: 5px;
+            float: left;
+        }
+        .mklibexport .imgbtn span.t3-icon,
+        .mklibexport .imgbtn span.t3js-icon{
+            left: 8px;
+            margin: 0;
+            position: absolute;
+        }
+        .mklibexport .imgbtn span.t3-icon{
+            top: 2px;
+        }
+        .mklibexport .imgbtn span.t3js-icon{
+            top: 4px;
+        }
+        .mklibexport span.info {
+            display: none;
+            position: absolute;
+            padding: 5px;
+            top: 25px
+        }
+        .mklibexport:hover span.info {
+            display: block;
+        }
+        .mklibexport input[type="submit"] {
+            float: none;
+            padding-left: 24px;
+        }
+        </style>';
         // alle umbrüche und tabs entfernen
         return str_replace(array("\t", "\n", "\r"), '', $css);
     }
