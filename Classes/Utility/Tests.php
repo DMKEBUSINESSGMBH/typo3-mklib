@@ -335,6 +335,7 @@ class Tests
         $configurations = \tx_rnbase::makeInstance('tx_rnbase_configurations');
         $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
 
+        $aConfig = (array) $aConfig;
         $configurations->init(
             $aConfig,
             $configurations->getCObj(1),
