@@ -109,7 +109,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      * @param   string  $sHaystack
      * @param   mixed   $mValue
      */
-    public function removeRepeatedlyOccurrings($sHaystack, $mValue = array(' ', TAB, LF, CR, CRLF))
+    public static function removeRepeatedlyOccurrings($sHaystack, $mValue = array(' ', TAB, LF, CR, CRLF))
     {
         $mValue = is_array($mValue) ? $mValue : array($mValue);
         // Alle Werte Prprüfen/ersetzen
