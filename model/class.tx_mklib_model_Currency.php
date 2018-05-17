@@ -62,11 +62,12 @@ class tx_mklib_model_Currency
      * @param   array       $options
      * @return  tx_mklib_model_Currency
      */
-    protected function makeInstance(array $options = array())
+    protected static function makeInstance(array $options = array())
     {
         // @TODO: caching umstellen, wenn in den options mehr als nur das symbol steckt.
         // $key = md5(serialize($options));
         $key = $options['symbol'];
+        // @todo why is this non static variable used? is static $instances; missing?
         if (!$instances[$key]) {
             $instances[$key] = tx_rnbase::makeInstance('tx_mklib_model_Currency', $options);
         }
@@ -79,7 +80,7 @@ class tx_mklib_model_Currency
      * @param   string      $country    Country in ISO 3166 Alpha 2 code
      * @return  tx_mklib_model_Currency
      */
-    public function getByCountry($country = 'DE')
+    public static function getByCountry($country = 'DE')
     {
         //@TODO: anhand des landes den currency code herausfinden
         if ($country === 'DE') {
@@ -100,7 +101,7 @@ class tx_mklib_model_Currency
      * @param   string      $currency
      * @return  tx_mklib_model_Currency
      */
-    public function getByCurrencyCode($currency = 'EUR')
+    public static function getByCurrencyCode($currency = 'EUR')
     {
         if ($currency === 'EUR') {
             $options = array();

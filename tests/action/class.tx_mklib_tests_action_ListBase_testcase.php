@@ -27,6 +27,7 @@
 tx_rnbase::load('tx_mklib_action_ListBase');
 
 //in abstrakten klassen lassen sich keine nicht-abstrakten methoden mocken
+// @todo remove. since phpunit 5 this is working
 abstract class ListBaseWithNewFilterMode extends tx_mklib_action_ListBase
 {
     protected function isOldFilterMode()
@@ -84,29 +85,34 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
      * @param unknown_type $oSearchSrv
      * @param unknown_type $sClassToMock
      */
-    protected function getActionMock($oSearchSrv, $sClassToMock = 'tx_mklib_action_ListBase')
+    protected function getActionMock($oSearchSrv, $sClassToMock = 'tx_mklib_action_ListBase', $isOldFilterMode = true)
     {
-        $oListBase = $this->getMockForAbstractClass($sClassToMock);
+        $oListBase = $this->getMockForAbstractClass(
+            $sClassToMock,
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['getService', 'getTsPathPageBrowser', 'getTemplateName', 'isOldFilterMode']
+        );
         //abstrakte methoden mocken
         $oListBase->expects(self::once())
-        ->method('getService')
-        ->will(self::returnValue($oSearchSrv));
+            ->method('getService')
+            ->will(self::returnValue($oSearchSrv));
 
         $oListBase->expects(self::any())
-        ->method('getTsPathPageBrowser')
-        ->will(self::returnValue('pagebrowser'));
-
-        $oListBase->expects(self::once())
-        ->method('getService');
+            ->method('getTsPathPageBrowser')
+            ->will(self::returnValue('pagebrowser'));
 
         //damit die konfig stimmt
         $oListBase->expects(self::any())
-        ->method('getTemplateName')
-        ->will(self::returnValue('dummyconfig'));
+            ->method('getTemplateName')
+            ->will(self::returnValue('dummyconfig'));
 
         $oListBase->expects(self::any())
-        ->method('isOldFilterMode')
-        ->will(self::returnValue($bOldFilterMode));
+            ->method('isOldFilterMode')
+            ->will(self::returnValue($isOldFilterMode));
 
         return $oListBase;
     }
@@ -159,7 +165,7 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
         $oSrv = $this->getSrvMock();
 
         //mock für die zu testende action
-        $oListBase = $this->getActionMock($oSrv, 'ListBaseWithNewFilterMode');
+        $oListBase = $this->getActionMock($oSrv, 'ListBaseWithNewFilterMode', false);
 
         //jetzt den aufruf der action simulieren
         $aConfig = array(

@@ -343,9 +343,11 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
             $methods
         );
 
-        $scheduler->expects(self::any())
-            ->method('getDatabaseConnection')
-            ->will(self::returnValue($databaseUtility));
+        if ($databaseUtility) {
+            $scheduler->expects(self::any())
+                ->method('getDatabaseConnection')
+                ->will(self::returnValue($databaseUtility));
+        }
 
         $scheduler->setOptions($this->options);
 
