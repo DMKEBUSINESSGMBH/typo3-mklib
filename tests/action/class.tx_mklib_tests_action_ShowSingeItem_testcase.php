@@ -610,4 +610,63 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 
         self::assertEquals($model, $viewData->offsetGet('item'));
     }
+
+    /**
+     * @group unit
+     */
+    public function testHandleRequestIfUidNoInteger()
+    {
+        $repository = $this->getMockForAbstractClass(
+            'tx_mklib_repository_Abstract',
+            array(),
+            '',
+            false,
+            false,
+            false,
+            array('findByExternalId')
+        );
+        $model = tx_rnbase::makeInstance(
+            'tx_mklib_model_Page',
+            array('uid' => 'abc')
+        );
+        $repository->expects(self::once())
+            ->method('findByExternalId')
+            ->with('abc')
+            ->will(self::returnValue($model));
+        $action = $this->getMockForAbstractClass(
+            'tx_mklib_action_ShowSingeItem',
+            array(),
+            '',
+            true,
+            true,
+            true,
+            array('getSingleItemRepository', 'getRepositoryFindMethod')
+        );
+        $action->expects(self::once())
+            ->method('getSingleItemRepository')
+            ->will(self::returnValue($repository));
+        $action->expects(self::once())
+            ->method('getRepositoryFindMethod')
+            ->will(self::returnValue('findByExternalId'));
+
+        $parameters = tx_rnbase::makeInstance(
+            'tx_rnbase_parameters',
+            array('uid' => 'abc')
+        );
+        $configurations = $this->createConfigurations(
+            array(),
+            'mklib',
+            'mklib',
+            $parameters
+        );
+        $viewData = $configurations->getViewData();
+        $action->setConfigurations($configurations);
+
+        $this->callInaccessibleMethod(
+            array($action, 'handleRequest'),
+            array(&$parameters, &$configurations, &$viewData)
+        );
+
+        self::assertEquals($model, $viewData->offsetGet('item'));
+    }
 }
