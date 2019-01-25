@@ -66,7 +66,8 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
             );
         }
 
-        if (!($item = $singleItemRepository->findByUid($itemUid))) {
+        $findByMethod = $this->getRepositoryFindMethod();
+        if (!($item = $singleItemRepository->$findByMethod($itemUid))) {
             $this->throwItemNotFound404Exception();
         }
 
@@ -99,6 +100,14 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
         );
 
         return empty($uidParameterKey) ? 'uid' : $uidParameterKey;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRepositoryFindMethod()
+    {
+        return 'findByUid';
     }
 
     /**
