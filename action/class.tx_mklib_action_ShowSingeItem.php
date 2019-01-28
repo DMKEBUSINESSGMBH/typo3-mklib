@@ -49,7 +49,7 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
 
         $itemParameterKey = $this->getSingleItemUidParameterKey();
         if (!$itemUid &&
-            !($itemUid = $parameters->get($itemParameterKey))
+            !($itemUid = $parameters->getInt($itemParameterKey))
         ) {
             $this->throwItemNotFound404Exception();
         }
