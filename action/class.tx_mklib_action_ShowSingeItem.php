@@ -55,10 +55,12 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
         }
 
         $singleItemRepository = $this->getSingleItemRepository();
-        // check for tx_mklib_repository_Abstract or tx_mklib_srv_Base
-        // both classeshave the same findByUid method
+        // @todo migrate to real interface
+        // check for interfaces/classes that we know of having the findByUid method
+        // as we need it
         if (!$singleItemRepository instanceof tx_mklib_repository_Abstract
             && !$singleItemRepository instanceof tx_mklib_srv_Base
+            && !$singleItemRepository instanceof Tx_Rnbase_Domain_Repository_AbstractRepository
         ) {
             throw new Exception(
                 'Das Repository, welches von getSingleItemRepository() geliefert ' .
