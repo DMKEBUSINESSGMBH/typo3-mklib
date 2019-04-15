@@ -303,6 +303,7 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
             'label'        => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
             'config'    => array(
                 'type'    => 'select',
+                'renderType' => 'selectSingle',
                 'items'    => array(
                     array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
                 ),
@@ -331,6 +332,7 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
             'label'        => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
             'config'    => array(
                 'type'    => 'select',
+                'renderType' => 'selectSingle',
                 'items'    => array(
                     array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
                 ),
