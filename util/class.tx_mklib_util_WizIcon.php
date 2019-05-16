@@ -69,7 +69,7 @@ class tx_mklib_util_WizIcon extends tx_rnbase_util_Wizicon
     {
         return array(
             'tx_' . $this->extKey => array(
-                'icon'        => tx_rnbase_util_Extensions::extRelPath($this->extKey) . 'ext_icon.gif',
+                'icon'        => 'EXT:'.$this->extkey.'/ext_icon.gif',
                 'title'       => 'plugin.' . $this->extKey . '.label',
                 'description' => 'plugin.' . $this->extKey . '.description'
             )

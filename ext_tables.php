@@ -37,8 +37,10 @@ tx_rnbase_util_Extensions::addPlugin(
     array(
         'LLL:EXT:'.$_EXTKEY.'/locallang_db.php:plugin.mklib.label',
         'tx_mklib',
-        tx_rnbase_util_Extensions::extRelPath($_EXTKEY) . 'ext_icon.gif',
-    )
+        'EXT:'.$_EXTKEY.'/ext_icon.gif',
+    ),
+    'list_type',
+    $_EXTKEY
 );
 
 tx_rnbase_util_Extensions::addStaticFile($_EXTKEY, 'static/basic/', 'MK Lib - Basics');

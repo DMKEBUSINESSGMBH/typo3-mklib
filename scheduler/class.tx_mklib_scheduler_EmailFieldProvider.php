@@ -48,7 +48,7 @@ class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFi
         // siehe http://forge.typo3.org/issues/25805
         $doc = $this->schedulerModule->doc;
         if (is_object($doc)) {
-            $doc->getPageRenderer()->addJsFile(tx_rnbase_util_Extensions::extRelPath('mklib').'res/js/emailFieldProvider.js');
+            $doc->getPageRenderer()->addJsFile(tx_rnbase_util_Extensions::siteRelPath('mklib').'res/js/emailFieldProvider.js');
         }
 
         return array(
