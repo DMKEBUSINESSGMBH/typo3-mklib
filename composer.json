@@ -1,7 +1,7 @@
 {
     "name": "dmk/mklib",
     "description": "Utilities for extensions.",
-    "version": "3.0.10",
+    "version": "3.0.11",
     "type": "typo3-cms-extension",
     "keywords": [
         "TYPO3 CMS",
