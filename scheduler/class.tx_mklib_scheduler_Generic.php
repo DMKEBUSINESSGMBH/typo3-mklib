@@ -51,7 +51,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      *
      * @var     array
      */
-    protected $options = array();
+    private $options = array();
 
     /**
      * Extension key, used for devlog.
