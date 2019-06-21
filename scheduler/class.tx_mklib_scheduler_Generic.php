@@ -47,11 +47,20 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     protected $lastRun = false;
 
     /**
-     * die verschiedenen optionen vom field provider
+     * Was used as the scheduler options before making the extension compatible with TYPO3 9. But as private
+     * class variables can't be serialized anymore (@see __makeUp() method) this variable can't be used anymore.
      *
      * @var     array
+     * @deprecated can be removed including the __wakeup() method when support for TYPO3 8.7 and below is dropped.
      */
     private $options = array();
+
+    /**
+     * The options of the scheduler task.
+     *
+     * @var array
+     */
+    protected $schedulerOptions = [];
 
     /**
      * Extension key, used for devlog.
@@ -61,6 +70,21 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     protected function getExtKey()
     {
         return 'mklib';
+    }
+
+    /**
+     * After the update to TYPO3 9 the private $options variable can't be serialized and therefore not saved in the
+     * database anymore as our parent implemented the __sleep() method to return the class variables which should be
+     * serialized/saved. So to keep the possibly saved $options we need to move them to $schedulerOptions if present.
+     * Otherwise the $options will be lost after the scheduler is executed/saved.
+     */
+    public function __wakeup()
+    {
+        parent::__wakeup();
+
+        if ($this->options && !$this->schedulerOptions) {
+            $this->schedulerOptions = $this->options;
+        }
     }
 
     /**
@@ -215,7 +239,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      */
     public function setOption($key, $value)
     {
-        return $this->options[$key] = $value;
+        return $this->schedulerOptions[$key] = $value;
     }
 
     /**
@@ -226,17 +250,17 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      */
     public function getOption($key)
     {
-        return $this->options[$key];
+        return $this->schedulerOptions[$key];
     }
     /**
      * Setzt alle Otionen.
      *
-     * @param array $values
+     * @param array $options
      * @return mixed Der gesetzte Wert.
      */
-    public function setOptions(array $values)
+    public function setOptions(array $options)
     {
-        return $this->options = $values;
+        return $this->schedulerOptions = $options;
     }
     /**
      * Liefert alle Optionen
@@ -246,7 +270,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     public function getOptions()
     {
         // wir brauchen per default ein array
-        return is_array($this->options) ? $this->options : array();
+        return is_array($this->schedulerOptions) ? $this->schedulerOptions : array();
     }
 
     /**
