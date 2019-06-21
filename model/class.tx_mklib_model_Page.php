@@ -22,12 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 tx_rnbase::load('tx_rnbase_model_base');
 /**
- *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Hannes Bochmann
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
@@ -35,14 +31,13 @@ tx_rnbase::load('tx_rnbase_model_base');
  */
 class tx_mklib_model_Page extends tx_rnbase_model_base
 {
-
     /**
      * @var array[tx_mklib_model_Page]
      */
     private $children = null;
 
     /**
-     * Liefert den Namen der Datenbanktabelle
+     * Liefert den Namen der Datenbanktabelle.
      *
      * @return string
      */
@@ -58,7 +53,7 @@ class tx_mklib_model_Page extends tx_rnbase_model_base
      */
     public function getChildren()
     {
-        if ($this->children === null) {
+        if (null === $this->children) {
             $this->children = $this->getRepository()->getChildren($this);
         }
 
@@ -66,7 +61,7 @@ class tx_mklib_model_Page extends tx_rnbase_model_base
     }
 
     /**
-     * the repo for the pages
+     * the repo for the pages.
      *
      * @return tx_mklib_repository_Pages
      */

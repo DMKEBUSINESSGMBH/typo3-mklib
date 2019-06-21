@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 tx_rnbase::load('tx_mklib_srv_Base');
 
 /**
@@ -30,8 +29,6 @@ tx_rnbase::load('tx_mklib_srv_Base');
  */
 class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
 {
-
-
     /**
      * @return string
      */
@@ -41,7 +38,8 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::search()
      */
     public function search($fields, $options)
@@ -56,6 +54,7 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      * Liefert alle Regionen anhand eines ISO-2-Länder-Codes.
      *
      * @param string $iso
+     *
      * @return array[tx_mklib_model_StaticCountryZone]
      */
     public function getByIso2Code($iso)
@@ -68,6 +67,7 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
 
     /**
      * @param string $znCode
+     *
      * @return array[tx_mklib_model_StaticCountryZone]
      */
     public function getByZnCode($znCode)
@@ -79,51 +79,54 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::create()
      */
     public function create(array $data)
     {
         tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'creating a static country zone via the service can\'t be done.'
+            'creating a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::handleUpdate()
      */
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
     {
         tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'updating a static country zone via the service can\'t be done.'
+            'updating a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::handleDelete()
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
         tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'deleting a static country zone via the service can\'t be done.'
+            'deleting a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::handleCreation()
      */
     public function handleCreation(array $data)
     {
         tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'creating a static country zone via the service can\'t be done.'
+            'creating a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 }

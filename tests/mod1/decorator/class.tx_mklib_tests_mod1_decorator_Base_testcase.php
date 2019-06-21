@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -30,9 +28,6 @@ tx_rnbase::load('tx_mklib_mod1_decorator_Base');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTestCase
@@ -67,7 +62,6 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
         // Achtung: Das Ergebnis ist Multiline. Leider wird der Modifikator nicht akzeptiert...
         self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 
-
         //jetzt mit versteckt und record fallback
         $record = array('uid' => 1, 'disable' => 1);
         $result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
@@ -82,7 +76,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
     public function testFormatWithUidColumnAndNoEnableColumnsConfig()
     {
         //es sollte hidden genommen werden da nicht in enablecolumns konfiguriert
-        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null;//konfig löschen
+        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null; //konfig löschen
 
         $record = array('uid' => 1, 'disable' => 0);
         $result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
@@ -126,7 +120,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
         // @TODO: test the language output on typo3 8 .78 lts!
         if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
             $this->markTestIncomplete(
-                'The IconFactory builds a diffrent output.' .
+                'The IconFactory builds a diffrent output.'.
                 ' The test must be refactored!'
             );
         }
@@ -147,8 +141,8 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
 
         $whitespaceByTypo3Version = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? ' ' : '&nbsp;';
         self::assertContains(
-            '<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">' .
-            $whitespaceByTypo3Version . '</span>&nbsp;Default',
+            '<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">'.
+            $whitespaceByTypo3Version.'</span>&nbsp;Default',
             $result,
             'Falsches oder fehlendes Icon erzeugt.'
         );
@@ -157,8 +151,8 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
         $result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
         self::assertContains(
-            '<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">' .
-            $whitespaceByTypo3Version . '</span>&nbsp;[All]',
+            '<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">'.
+            $whitespaceByTypo3Version.'</span>&nbsp;[All]',
             $result,
             'Falsches oder fehlendes Icon erzeugt.'
         );
@@ -212,7 +206,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
         $GLOBALS['BE_USER']->user['admin'] = 1;
         //base model liefert als table name immer 0
         //also setzen wir die columns für die tabelle 0
-        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null;//konfig löschen
+        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null; //konfig löschen
 
         $record = array('uid' => 1, 'hidden' => 0);
         $result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
@@ -253,5 +247,5 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php'];
 }

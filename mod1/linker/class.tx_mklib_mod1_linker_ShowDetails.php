@@ -22,9 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * Generischer Linker für eine Detailseite
+ * Generischer Linker für eine Detailseite.
  *
  * // Linker Instanz
  * $linker = tx_rnbase::makeInstance(
@@ -50,8 +49,8 @@ class tx_mklib_mod1_linker_ShowDetails
     private $identifier = null;
 
     /**
-     *
      * @throws InvalidArgumentException
+     *
      * @param string $identifier Model or tablename
      *                           Wird zum Speichern in den Moduldaten,
      *                           zum erzeugen der buttons und
@@ -68,16 +67,16 @@ class tx_mklib_mod1_linker_ShowDetails
     }
 
     /**
-     *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param tx_rnbase_util_FormTool $formTool
-     * @param array $options
+     * @param tx_rnbase_util_FormTool                $formTool
+     * @param array                                  $options
+     *
      * @return string
      */
     public function makeLink(
             Tx_Rnbase_Domain_Model_RecordInterface $item,
             tx_rnbase_util_FormTool $formTool,
-            $options=array()
+            $options = array()
     ) {
         $out = $formTool->createSubmit(
                 'showDetails['.$this->identifier.']['.$item->getUid().']',
@@ -85,20 +84,21 @@ class tx_mklib_mod1_linker_ShowDetails
                 isset($options['confirm']) ? $options['confirm'] : '',
                 $options
             );
+
         return $out;
     }
 
     /**
-     *
      * @param tx_rnbase_util_FormTool $formTool
-     * @param array $options
+     * @param array                   $options
+     *
      * @return string
      */
     public function makeClearLink(
             // wird eigentlich nicht benötigt.
             Tx_Rnbase_Domain_Model_RecordInterface $item,
             tx_rnbase_util_FormTool $formTool,
-            $options=array()
+            $options = array()
     ) {
         $out = $formTool->createSubmit(
                 'showDetails['.$this->identifier.'][clear]',
@@ -106,11 +106,11 @@ class tx_mklib_mod1_linker_ShowDetails
                 isset($options['confirm']) ? $options['confirm'] : '',
                 $options
             );
+
         return $out;
     }
 
     /**
-     *
      * @param tx_rnbase_mod_IModule $mod
      */
     public function getCurrentUid(
@@ -124,18 +124,19 @@ class tx_mklib_mod1_linker_ShowDetails
         $params = is_array($params) ? $params : array();
         list($model, $uid) = each($params);
         if (is_array($uid)) {
-            list($uid, ) = each($uid);
+            list($uid) = each($uid);
         }
 
         if (
             !empty($uid)
-            && $uid === 'clear'
+            && 'clear' === $uid
         ) {
             Tx_Rnbase_Backend_Utility::getModuleData(
                 $modSettings,
                 $modSettings,
                 $mod->getName()
             );
+
             return 0;
         }
         // else
@@ -154,7 +155,6 @@ class tx_mklib_mod1_linker_ShowDetails
     }
 }
 
-
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/linker/class.tx_mklib_mod1_linker_ShowDetails.php'];
 }

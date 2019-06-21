@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,30 +25,30 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_rnbase_util_Arrays');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Util Methoden für die TCA.
+ *
  * @errorcodebase 3000
+ *
  * @author  Hannes Bochmann
  * @author  Michael Wagner <michael.wagner@dmk-ebusiness.de>
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 class tx_mklib_util_TCA
 {
-
     /**
      * Wurde ext_tables.php der Extension bereits geladen?
-     * @var     array
+     *
+     * @var array
      */
     private static $tcaAdditionsLoaded = array();
 
     /**
-     * Get DAM TCA for ONE file
+     * Get DAM TCA for ONE file.
      *
      *  $options = array(
      *          'label' => 'Ein Bild',
@@ -61,7 +59,8 @@ class tx_mklib_util_TCA
      *      )
      *
      * @param array $ref
-     * @param array $options    These options are merged into the resulting TCA
+     * @param array $options These options are merged into the resulting TCA
+     *
      * @return array
      */
     public static function getDamMediaTCA($ref, $options = array())
@@ -91,10 +90,11 @@ class tx_mklib_util_TCA
     }
 
     /**
-     * Get DAM TCA for ONE picture
+     * Get DAM TCA for ONE picture.
      *
      * @param string $ref
-     * @param array $options    These options are merged into the resulting TCA
+     * @param array  $options These options are merged into the resulting TCA
+     *
      * @return array
      */
     public static function getDamMediaTCAOnePic($ref, $options = array())
@@ -128,10 +128,11 @@ class tx_mklib_util_TCA
     }
 
     /**
-     * Get DAM TCA for ONE file
+     * Get DAM TCA for ONE file.
      *
      * @param array $ref
-     * @param array $options    These options are merged into the resulting TCA
+     * @param array $options These options are merged into the resulting TCA
+     *
      * @return array
      */
     public static function getDamMediaTCAOneFile($ref, $options = array())
@@ -165,12 +166,14 @@ class tx_mklib_util_TCA
     }
 
     /**
-     * Eleminate non-TCA-defined columns from given data
+     * Eleminate non-TCA-defined columns from given data.
      *
      * Doesn't do anything if no TCA columns are found.
      *
      * @param array $data Data to be filtered
+     *
      * @return array Data now containing only TCA-defined columns
+     *
      * @deprecated use tx_rnbase_util_TCA::eleminateNonTcaColumns
      */
     public static function eleminateNonTcaColumns(
@@ -181,14 +184,16 @@ class tx_mklib_util_TCA
 
         return tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
     }
+
     /**
-     * Eleminate non-TCA-defined columns from given data
+     * Eleminate non-TCA-defined columns from given data.
      *
      * Doesn't do anything if no TCA columns are found.
      *
-     * @param   array   $dbColumns      TCA columns
-     * @param   array   $data           Data to be filtered
-     * @return  array                   Data now containing only TCA-defined columns
+     * @param array $dbColumns TCA columns
+     * @param array $data      Data to be filtered
+     *
+     * @return array Data now containing only TCA-defined columns
      */
     public static function eleminateNonTcaColumnsByTable($table, array $data)
     {
@@ -202,18 +207,18 @@ class tx_mklib_util_TCA
     }
 
     /**
-     * Liefert den Spaltenname für enablecolumns aus der TCA
+     * Liefert den Spaltenname für enablecolumns aus der TCA.
      *
      * @FIXME: Nicht alle felder stehen unter ctrlo.enablecolumns. siehe: tstamp, crdate, cruser_id, delete, ...
      * @TODO: wirft keine exception, wenn ein default wert gegeben ist. das ist allerdings falsch.
      *
-     * @param   string  $tableName
-     * @param   string  $column (disabled, starttime, endtime, fe_group')
-     * @param   string  $default
+     * @param string $tableName
+     * @param string $column    (disabled, starttime, endtime, fe_group')
+     * @param string $default
      *
      * @throws Exception
      *
-     * @return  string
+     * @return string
      */
     public static function getEnableColumn($tableName, $column, $default = null)
     {
@@ -222,12 +227,12 @@ class tx_mklib_util_TCA
             'enablecolumns',
             // wenn ein defaultwert definiert ist,
             // wollen wir als fallback immer ein array!
-            $default === null ? null : array()
+            null === $default ? null : array()
         );
-        if (!(is_array($fields) && isset($fields[$column])) && $default === null) {
+        if (!(is_array($fields) && isset($fields[$column])) && null === $default) {
             throw new LogicException(
                 'The enablecolumn "'.$column.'" does not exists in TCA for for table "'.$tableName.'".',
-                intval(ERROR_CODE_MKLIB . 3002)
+                intval(ERROR_CODE_MKLIB. 3002)
             );
         }
 
@@ -235,22 +240,23 @@ class tx_mklib_util_TCA
     }
 
     /**
-     * Liefert den Spaltenname aus dem ctrl der TCA
+     * Liefert den Spaltenname aus dem ctrl der TCA.
      *
-     * @param   string  $sTableName
-     * @param   string  $sFallback
-     * @return  string
+     * @param string $sTableName
+     * @param string $sFallback
+     *
+     * @return string
      */
     private static function getCtrlField($tableName, $field, $default = null)
     {
         global $TCA;
         if (!isset($TCA[$tableName])) {
-            if ($default !== null) {
+            if (null !== $default) {
                 return $default;
             }
             throw new LogicException(
                 'The table "'.$tableName.'" not found in TCA!',
-                intval(ERROR_CODE_MKLIB . 3001)
+                intval(ERROR_CODE_MKLIB. 3001)
             );
         }
 
@@ -261,29 +267,34 @@ class tx_mklib_util_TCA
      * Liefert den Spaltenname für das sys_language_uid feld.
      *
      * @param string $tableName
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function getLanguageField($tableName, $default = null)
     {
         return self::getCtrlField($tableName, 'languageField', $default);
     }
+
     /**
      * Liefert den Spaltenname für das l18n_parent feld.
      *
      * @param string $tableName
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function getTransOrigPointerField($tableName, $default = null)
     {
         return self::getCtrlField($tableName, 'transOrigPointerField', $default);
     }
+
     /**
      * Liefert den Spaltenname für das l18n_diffsource feld.
      *
      * @param string $tableName
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function getTransOrigDiffSourceField($tableName, $default = null)
@@ -293,7 +304,7 @@ class tx_mklib_util_TCA
 
     /**
      * Taken from tx_div!
-     * Loads TCA additions of other extensions
+     * Loads TCA additions of other extensions.
      *
      * Your extension may depend on fields that are added by other
      * extensions. For reasons of performance parts of the TCA are only
@@ -304,7 +315,6 @@ class tx_mklib_util_TCA
      *
      * @param   array       extension keys which have TCA additions to load
      * @param   bool     force include
-     * @return  void
      *
      * @TODO this won't work in TYPO3 8.x
      */
@@ -313,11 +323,11 @@ class tx_mklib_util_TCA
         global $_EXTKEY, $TCA;
         //Merge all ext_keys
         if (is_array($ext_keys)) {
-            for ($i = 0; $i < sizeof($ext_keys); $i++) {
+            for ($i = 0; $i < sizeof($ext_keys); ++$i) {
                 if ($force || !array_key_exists($ext_keys[$i], self::$tcaAdditionsLoaded)) {
                     //Include the ext_table
                     $_EXTKEY = $ext_keys[$i];
-                    include(tx_rnbase_util_Extensions::extPath($ext_keys[$i], 'ext_tables.php'));
+                    include tx_rnbase_util_Extensions::extPath($ext_keys[$i], 'ext_tables.php');
                     self::$tcaAdditionsLoaded[$ext_keys[$i]] = 1;
                 }
             }
@@ -327,9 +337,11 @@ class tx_mklib_util_TCA
     /**
      * Liefert Wizard-Daten für die TCA.
      *
-     * @param   string  $sTable
-     * @param   array   $options
-     * @return  array
+     * @param string $sTable
+     * @param array  $options
+     *
+     * @return array
+     *
      * @deprecated use Tx_Rnbase_Utility_TcaTool::getWizards
      */
     public static function getWizards($sTable, array $options = array())
@@ -377,8 +389,6 @@ class tx_mklib_util_TCA
      * Default ist 80 Zeichen.
      *
      * @param array $tcaTableInformation
-     *
-     * @return void
      */
     public static function cropLabels(array &$tcaTableInformation)
     {
@@ -416,7 +426,6 @@ class tx_mklib_util_TCA
     }
 
     /**
-     *
      * @param bool $required
      *
      * @return array
@@ -424,18 +433,18 @@ class tx_mklib_util_TCA
     public static function getGermanStatesField($isRequired = false)
     {
         $tcaFieldConfig = array(
-            'exclude'    => 1,
-            'label'        => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-            'config'    => array(
-                'type'    => 'select',
+            'exclude' => 1,
+            'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+            'config' => array(
+                'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items'    => array(
+                'items' => array(
                     array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
                 ),
-                'foreign_table'            => 'static_country_zones',
-                'foreign_table_where'    => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
-                'size'                    => 1,
-            )
+                'foreign_table' => 'static_country_zones',
+                'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+                'size' => 1,
+            ),
         );
 
         if ($isRequired) {
@@ -448,10 +457,11 @@ class tx_mklib_util_TCA
     }
 
     /**
-     * entweder DAM oder FAL
+     * entweder DAM oder FAL.
      *
      * @param array $ref
-     * @param array $options    These options are merged into the resulting TCA
+     * @param array $options These options are merged into the resulting TCA
+     *
      * @return array
      */
     public static function getMediaTCA($ref, $options = array())
@@ -472,5 +482,5 @@ class tx_mklib_util_TCA
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php'];
 }

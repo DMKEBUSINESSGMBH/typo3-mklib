@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,22 +25,18 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_Array');
 
 /**
- * Array util tests
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Array util tests.
  */
 class tx_mklib_tests_util_Array_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
      * Prüfen ob alle leeren Elemente außer dem array gelöscht werden
-     * und keys unberührt bleiben
+     * und keys unberührt bleiben.
      */
     public function testRemoveEmptyValues()
     {
@@ -62,7 +56,7 @@ class tx_mklib_tests_util_Array_testcase extends Tx_Phpunit_TestCase
 
     /**
      * Prüfen ob alle leeren Elemente auch das array gelöscht werden
-     * und keys zurückgesetzt werden
+     * und keys zurückgesetzt werden.
      */
     public function testRemoveEmptyArrayValuesSimple()
     {
@@ -82,9 +76,9 @@ class tx_mklib_tests_util_Array_testcase extends Tx_Phpunit_TestCase
     public function testFieldsToArray()
     {
         $aArray = array(
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 2,'name' => 'Model Nr. 2')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5,'name' => 'Model Nr. 5')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 6,'name' => 'Model Nr. 6')),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 2, 'name' => 'Model Nr. 2')),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5, 'name' => 'Model Nr. 5')),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 6, 'name' => 'Model Nr. 6')),
                     );
         $aFields = tx_mklib_util_Array::fieldsToArray($aArray, 'name');
         self::assertTrue(is_array($aFields), 'No array given.');
@@ -118,12 +112,13 @@ class tx_mklib_tests_util_Array_testcase extends Tx_Phpunit_TestCase
         self::assertTrue(tx_mklib_util_Array::inArray(array('zwei', 5), $aArray), 'zwei oder 5 wurde nicht gefunden.');
         self::assertFalse(tx_mklib_util_Array::inArray(array('3', 5), $aArray, true), '3 oder 5 wurde gefunden.');
     }
+
     public function testFieldsToString()
     {
         $aArray = array(
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 2,'name' => 'Model Nr. 2')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5,'name' => 'Model Nr. 5')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 6,'name' => 'Model Nr. 6')),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 2, 'name' => 'Model Nr. 2')),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5, 'name' => 'Model Nr. 5')),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 6, 'name' => 'Model Nr. 6')),
                     );
         $sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
 
@@ -183,14 +178,14 @@ class tx_mklib_tests_util_Array_testcase extends Tx_Phpunit_TestCase
  */
 class CastObjectToArrayTest
 {
-    public $publicVariable            = 'publicVariable';
-    protected $protectedVariable            = 'protectedVariable';
-    private $privateVariable            = 'privateVariable';
-    public static $publicStaticVariable        = 'publicStaticVariable';
-    protected static $protectedStaticVariable    = 'protectedStaticVariable';
-    private static $privateStaticVariable        = 'privateStaticVariable';
+    public $publicVariable = 'publicVariable';
+    protected $protectedVariable = 'protectedVariable';
+    private $privateVariable = 'privateVariable';
+    public static $publicStaticVariable = 'publicStaticVariable';
+    protected static $protectedStaticVariable = 'protectedStaticVariable';
+    private static $privateStaticVariable = 'privateStaticVariable';
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Array_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Array_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Array_testcase.php'];
 }

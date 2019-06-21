@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,15 +25,12 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 
 /**
  * Util Methoden für die Date.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author  Hannes Bochmann
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
@@ -48,7 +43,7 @@ class tx_mklib_util_Date
                         4 => 'Thursday',
                         5 => 'Friday',
                         6 => 'Saturday',
-                        7 => 'Sunday'
+                        7 => 'Sunday',
                     );
     // @TODO: wär das nicht besser in der locallang.xml aufgehoben!?
     // tx_rnbase_configurations::getLL()
@@ -59,11 +54,11 @@ class tx_mklib_util_Date
                         4 => 'Donnerstag',
                         5 => 'Freitag',
                         6 => 'Samstag',
-                        7 => 'Sonntag'
+                        7 => 'Sonntag',
                     );
 
     /**
-     * Gibt einen Unixtimestamp für einen Wochentag, eine Kalenderwoche und ein Jahr zurück
+     * Gibt einen Unixtimestamp für einen Wochentag, eine Kalenderwoche und ein Jahr zurück.
      *
      * @param int $day
      * @param int $calendarWeek
@@ -76,28 +71,28 @@ class tx_mklib_util_Date
         $weekDay = self::$days[$day];
 
         $time = strtotime('4 January '.$year);
-        if (date('w', $time) != 0) {//wenn der 4.Januar von dem Jahr keine Sonntag ist, holen wir den timestamp vom ersten Sonntag
+        if (0 != date('w', $time)) {//wenn der 4.Januar von dem Jahr keine Sonntag ist, holen wir den timestamp vom ersten Sonntag
             $time = strtotime('last Sunday', $time);
         }
 
-        $time = strtotime('next '.$weekDay, $time);//anschliessend holen wir den timestamp für das erste Auftreten des Veröffentlichungstags
+        $time = strtotime('next '.$weekDay, $time); //anschliessend holen wir den timestamp für das erste Auftreten des Veröffentlichungstags
 
         //wenn es nicht die erste Kalenderwoche ist sonder die 2.
-        if (date('W', $time) == 2) {
+        if (2 == date('W', $time)) {
             $time = strtotime('last '.$weekDay, $time);
         } //gehen wir eine Woche zurück
-        elseif (date('W', $time) == 52 || date('W', $time) == 53) {//oder die letzte des vorhergehenden Jahres
+        elseif (52 == date('W', $time) || 53 == date('W', $time)) {//oder die letzte des vorhergehenden Jahres
             $time = strtotime('next '.$weekDay, $time);
         }//gehen wir eine Woche weiter
 
         //und dann noch das Datum der jeweilgen Woche holen
         //TODO: Zeitzone beachten
-        return strtotime('+' . ($calendarWeek - 1). ' weeks', $time);
+        return strtotime('+'.($calendarWeek - 1).' weeks', $time);
     }
 
     /**
      * Liefert ein Array zurück das folgendes enthält (=key): weekday,week,year,date
-     * Wenn kein timestamp gegeben wurde, wird die aktuelle zeit genommen
+     * Wenn kein timestamp gegeben wurde, wird die aktuelle zeit genommen.
      *
      * @param int $timestamp
      *
@@ -124,14 +119,15 @@ class tx_mklib_util_Date
     /**
      * Gibt ein Array mit alle Zeiten innerhalb der Spanne zurück
      * im gegebenen Format zurück
-     * Jahrestage => der 1. februar wäre der 32. tag
+     * Jahrestage => der 1. februar wäre der 32. tag.
      *
      * @see tx_mklib_tests_util_Date_testcase::testgetTimesInTimeRangeReturnsCorrectDays
      *
-     * @param   int     $starttime
-     * @param   int     $endtime
-     * @param   string  $format
-     * @return  array
+     * @param int    $starttime
+     * @param int    $endtime
+     * @param string $format
+     *
+     * @return array
      */
     public static function getTimesInTimeRange($starttime, $endtime, $format = 'z')
     {
@@ -146,34 +142,36 @@ class tx_mklib_util_Date
     /**
      * Prüft, ob es sich bei dem string um ein Datum handelt.
      *
-     * @param   string  $date
-     * @return  bool
+     * @param string $date
+     *
+     * @return bool
      */
     public static function isMySQLDate($date)
     {
         return !(
-            $date === '0000-00-00'
+            '0000-00-00' === $date
             || strlen($date) < 2
-            || count(explode('-', $date)) !== 3
+            || 3 !== count(explode('-', $date))
         );
     }
 
     /**
      * prüft String ob es sich um Datetime handelt
-     * Format: YYYY-mm-dd HH:ii:ss
+     * Format: YYYY-mm-dd HH:ii:ss.
+     *
      * @param string $datetime
+     *
      * @return bool
      */
     public static function isDateTime($datetime)
     {
         return !(
-            strlen($datetime) !== 19
-            || count(explode(' ', $datetime)) !== 2
-            || count(explode(':', $datetime)) !== 3
-            || count(explode('-', $datetime)) !== 3
+            19 !== strlen($datetime)
+            || 2 !== count(explode(' ', $datetime))
+            || 3 !== count(explode(':', $datetime))
+            || 3 !== count(explode('-', $datetime))
         );
     }
-
 
     /**
      * DateTimeZone ist wichtig, falls nicht dann:
@@ -185,6 +183,7 @@ class tx_mklib_util_Date
      *  'Europe/Paris' for '2.0/DST' instead.
      *
      * @param string|DateTimeZone $timezone
+     *
      * @return DateTimeZone
      */
     public static function getDateTimeZone($timezone = null)
@@ -196,9 +195,11 @@ class tx_mklib_util_Date
 
         return is_null($timezone) ? $europeBerlin : new DateTimeZone($timezone);
     }
+
     /**
      * @param string|DateTimeZone $date
-     * @param string $timezone
+     * @param string              $timezone
+     *
      * @return DateTime
      */
     public static function getDateTime($date = null, $timezone = null)
@@ -209,9 +210,11 @@ class tx_mklib_util_Date
     }
 
     /**
-     * Liefert dei Scriptausführungszeit
+     * Liefert dei Scriptausführungszeit.
+     *
      * @param string $format
-     * @param bool $useGMT
+     * @param bool   $useGMT
+     *
      * @return string
      */
     public static function getExecDate($format = 'U', $useGMT = false)
@@ -223,5 +226,5 @@ class tx_mklib_util_Date
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Date.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Date.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Date.php'];
 }

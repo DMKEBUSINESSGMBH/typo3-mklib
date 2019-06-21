@@ -30,8 +30,6 @@
  *
  * @deprecated use Tx_Rnbase_Domain_Repository_InterfaceSearch instead
  *
- * @package tx_mklib
- * @subpackage tx_mklib_repository
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -39,7 +37,7 @@
 interface tx_mklib_interface_Repository
 {
     /**
-     * Search repository
+     * Search repository.
      *
      * @param array $fields
      * @param array $options
@@ -50,5 +48,5 @@ interface tx_mklib_interface_Repository
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_interface_Repository']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_interface_Repository']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_interface_Repository'];
 }

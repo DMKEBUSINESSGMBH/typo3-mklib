@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -28,7 +26,7 @@
 tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
- * Hilfsklasse für Suchen im BE
+ * Hilfsklasse für Suchen im BE.
  */
 class tx_mklib_mod1_util_SearchBuilder
 {
@@ -36,7 +34,7 @@ class tx_mklib_mod1_util_SearchBuilder
      * Suche nach einem Freitext bei der Wordlist-Suche. Wird ein leerer String
      * übergeben, dann wird nicht gesucht.
      *
-     * @param array $fields
+     * @param array  $fields
      * @param string $searchword
      */
     public static function buildFeUserFreeText(&$fields, $searchword)
@@ -53,14 +51,15 @@ class tx_mklib_mod1_util_SearchBuilder
         return $result;
     }
 
-
     /**
      * Build a wildcard query. Support for phrases:
      * "bad ar" will be turned into "+field:bad* +field:ar*"
-     * Note: the following signs will be ignored: ,.&*+-%/
+     * Note: the following signs will be ignored: ,.&*+-%/.
+     *
      * @param string $term
      * @param string $fieldName
-     * @param bool $leadingWC force leading wildcard query
+     * @param bool   $leadingWC force leading wildcard query
+     *
      * @return string
      */
     public static function makeWildcardTerm($term, $fieldName = '', $leadingWC = false)
@@ -87,10 +86,10 @@ class tx_mklib_mod1_util_SearchBuilder
             if (empty($term)) {
                 continue;
             }
-                // @FIXME: warum Hochkommas um den string?
-                // es handelt sich um ein einzelnes wort!
-                // bei buhl musste dies wieder entfernt werden, da es mit hochkommas nicht funktionierte.
-                $terms[] = '+' .$field.($leadingWC ? '*' : '').'"'.$term.'"*';
+            // @FIXME: warum Hochkommas um den string?
+            // es handelt sich um ein einzelnes wort!
+            // bei buhl musste dies wieder entfernt werden, da es mit hochkommas nicht funktionierte.
+            $terms[] = '+'.$field.($leadingWC ? '*' : '').'"'.$term.'"*';
         }
 
         return implode(' ', $terms);
@@ -98,14 +97,16 @@ class tx_mklib_mod1_util_SearchBuilder
 
     /**
      * Returns the complete search form
-     * enthält Suchefeld und Dropdown für versteckte Items
+     * enthält Suchefeld und Dropdown für versteckte Items.
      *
      * @param string $funcId
      * @param string $currentSearchWord
      * @param string $currentShowHidden
      * @param object $selector
      * @param string $out
+     *
      * @deprecated tx_mklib_mod1_searcher_abstractBase nutzen
+     *
      * @return string
      */
     public static function getSearchForm($funcId, &$currentSearchWord, &$currentShowHidden, $selector, array &$data = array())
@@ -113,16 +114,17 @@ class tx_mklib_mod1_util_SearchBuilder
         $currentSearchWord = $selector->showFreeTextSearchForm($data, $funcId, 'search'.$funcId, $GLOBALS['LANG']->getLL('label_button_search'));
         $currentShowHidden = $selector->showHiddenSelector($data, array('id' => 'showhidden'.$funcId));
         $out = '';
-        $out .= '<div>Suche: ' . $data['field']. $data['selector'] . $data['misc'] . $data['button'] .'</div>';
+        $out .= '<div>Suche: '.$data['field'].$data['selector'].$data['misc'].$data['button'].'</div>';
 
         return $out;
     }
 
     /**
-     * Fügt allgemeine Spalten ein
+     * Fügt allgemeine Spalten ein.
      *
-     * @param array $columns
+     * @param array                        $columns
      * @param tx_mklib_mod1_decorator_Base $decorator
+     *
      * @deprecated tx_mklib_mod1_searcher_abstractBase nutzen
      */
     public static function addMiscColumns(&$columns, tx_mklib_mod1_decorator_Base $decorator)
@@ -134,9 +136,9 @@ class tx_mklib_mod1_util_SearchBuilder
      * Suche nach einem Freitext. Wird ein leerer String
      * übergeben, dann wird nicht gesucht.
      *
-     * @param array $fields
+     * @param array  $fields
      * @param string $searchword
-     * @param array $cols
+     * @param array  $cols
      */
     public static function buildFreeText(&$fields, $searchword, array $cols = array())
     {
@@ -153,13 +155,15 @@ class tx_mklib_mod1_util_SearchBuilder
     }
 
     /**
-     * Bildet die Resultliste mit Pageer
+     * Bildet die Resultliste mit Pageer.
      *
      * @param tx_mklib_mod1_searcher_Base $callingClass
-     * @param object $srv
-     * @param array $fields
-     * @param array $options
+     * @param object                      $srv
+     * @param array                       $fields
+     * @param array                       $options
+     *
      * @deprecated tx_mklib_mod1_searcher_abstractBase nutzen
+     *
      * @return string
      */
     public static function getResultList(tx_mklib_mod1_searcher_Base $callingClass, $srv, array &$fields = array(), array &$options = array())
@@ -184,19 +188,20 @@ class tx_mklib_mod1_util_SearchBuilder
         $ret['table'] = $content;
         $ret['totalsize'] = $cnt;
         $pagerData = $pager->render();
-        $ret['pager'] .= '<div class="pager">' . $pagerData['limits'] . ' - ' .$pagerData['pages'] .'</div>';
+        $ret['pager'] .= '<div class="pager">'.$pagerData['limits'].' - '.$pagerData['pages'].'</div>';
 
         return $ret;
     }
 
     /**
-     * Start creation of result list
+     * Start creation of result list.
      *
-     * @param string $content
-     * @param array $items
+     * @param string                       $content
+     * @param array                        $items
      * @param tx_mklib_mod1_decorator_Base $decorator
-     * @param tx_mklib_mod1_searcher_Base $callingClass
-     * @param bool $bAddMiscColumns
+     * @param tx_mklib_mod1_searcher_Base  $callingClass
+     * @param bool                         $bAddMiscColumns
+     *
      * @deprecated tx_mklib_mod1_searcher_abstractBase nutzen
      */
     public static function showItems(&$content, $items, tx_mklib_mod1_decorator_Base $decorator, tx_mklib_mod1_searcher_Base $callingClass, $columns, $bAddMiscColumns = true)
@@ -220,5 +225,5 @@ class tx_mklib_mod1_util_SearchBuilder
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_mod1_util_SearchBuilder.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_mod1_util_SearchBuilder.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_mod1_util_SearchBuilder.php'];
 }

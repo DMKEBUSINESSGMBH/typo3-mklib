@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,27 +25,24 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_TCA');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Generic form view test.
  */
 class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
      * @var string
      */
     private $returnUrlBackup;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -61,7 +56,8 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -70,9 +66,6 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         unset($GLOBALS['TCA']['tt_mktest_table']);
     }
 
-    /**
-     *
-     */
     public function testEleminateNonTcaColumns()
     {
         if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
@@ -92,9 +85,7 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         self::assertTrue(empty($res['ich-muss-raus']), 'ich-muss-raus Feld wurde nicht entfernt!');
         self::assertTrue(empty($res['ich-auch']), 'ich-auch Feld wurde nicht entfernt!');
     }
-    /**
-     *
-     */
+
     public function testEleminateNonTcaColumnsByTable()
     {
         if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
@@ -124,18 +115,20 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         $actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
         self::assertEquals($expected, $actual);
     }
+
     /**
      * @group unit
-     * @expectedException LogicException
+     * @expectedException \LogicException
      * @expectedExceptionCode 4003001
      */
     public function testGetEnableColumnThrowsExceptionForNonExcitingTable()
     {
         tx_mklib_util_TCA::getEnableColumn('tt_mktest_table_does_not_exists', 'disabled');
     }
+
     /**
      * @group unit
-     * @expectedException LogicException
+     * @expectedException \LogicException
      * @expectedExceptionCode 4003002
      */
     public function testGetEnableColumnThrowsExceptionForNonExcitingColumn()
@@ -143,6 +136,7 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         $GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns'] = array();
         tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
     }
+
     /**
      * @group unit
      */
@@ -152,6 +146,7 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         $actual = tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled', $expected);
         self::assertEquals($expected, $actual);
     }
+
     /**
      * @group unit
      */
@@ -162,15 +157,17 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         $actual = tx_mklib_util_TCA::getLanguageField('tt_mktest_table');
         self::assertEquals($expected, $actual);
     }
+
     /**
      * @group unit
-     * @expectedException LogicException
+     * @expectedException \LogicException
      * @expectedExceptionCode 4003001
      */
     public function testGetLanguageThrowsExceptionForNonExcitingTable()
     {
         tx_mklib_util_TCA::getLanguageField('tt_mktest_table_does_not_exists');
     }
+
     /**
      * @group unit
      */
@@ -259,7 +256,7 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
         $tcaTableInformation = array(
             'items' => array(0 => array(0 => $labelWith81Chars)),
-            'config' => array('labelLength' => 40)
+            'config' => array('labelLength' => 40),
         );
 
         tx_mklib_util_TCA::cropLabels($tcaTableInformation);
@@ -280,7 +277,7 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
         $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
         $tcaTableInformation = array(
             'items' => array(0 => array(0 => $labelWith81Chars)),
-            'config' => array('labelLength' => 'test')
+            'config' => array('labelLength' => 'test'),
         );
 
         tx_mklib_util_TCA::cropLabels($tcaTableInformation);
@@ -299,18 +296,18 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
     public function testGetGermanStatesFieldWithoutRequired()
     {
         $expectedGermanStatesField = array(
-            'exclude'    => 1,
-            'label'        => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-            'config'    => array(
-                'type'    => 'select',
+            'exclude' => 1,
+            'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+            'config' => array(
+                'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items'    => array(
+                'items' => array(
                     array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
                 ),
-                'foreign_table'            => 'static_country_zones',
-                'foreign_table_where'    => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
-                'size'                    => 1,
-            )
+                'foreign_table' => 'static_country_zones',
+                'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+                'size' => 1,
+            ),
         );
 
         $germanStatesField = tx_mklib_util_TCA::getGermanStatesField();
@@ -328,21 +325,21 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
     public function testGetGermanStatesFieldWithRequired()
     {
         $expectedGermanStatesField = array(
-            'exclude'    => 1,
-            'label'        => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-            'config'    => array(
-                'type'    => 'select',
+            'exclude' => 1,
+            'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+            'config' => array(
+                'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items'    => array(
+                'items' => array(
                     array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
                 ),
-                'foreign_table'            => 'static_country_zones',
-                'foreign_table_where'    => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
-                'size'                    => 1,
+                'foreign_table' => 'static_country_zones',
+                'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
+                'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,
-                'eval' => 'required'
-            )
+                'eval' => 'required',
+            ),
         );
 
         $germanStatesField = tx_mklib_util_TCA::getGermanStatesField(true);
@@ -356,5 +353,5 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCA_testcase.php'];
 }

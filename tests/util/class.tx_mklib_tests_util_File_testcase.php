@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,15 +25,12 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_File');
 
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Generic form view test.
  */
 class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
 {
@@ -52,21 +47,23 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
     public function setUp()
     {
     }
+
     public function tearDown()
     {
     }
+
     private static function createTestfiles($testfolder)
     {
         tx_rnbase_util_Files::mkdir_deep($testfolder);
         $files = array(
-            array($testfolder.'/','test.zip'),
-            array($testfolder.'/','test.xml'),
-            array($testfolder.'/','test.tmp'),
-            array($testfolder.'/','test.dat'),
-            array($testfolder.'/sub/','test.zip'),
-            array($testfolder.'/sub/','test.tmp'),
-            array($testfolder.'/sub/sub/','test.xml'),
-            array($testfolder.'/sub/sub/','test.dat'),
+            array($testfolder.'/', 'test.zip'),
+            array($testfolder.'/', 'test.xml'),
+            array($testfolder.'/', 'test.tmp'),
+            array($testfolder.'/', 'test.dat'),
+            array($testfolder.'/sub/', 'test.zip'),
+            array($testfolder.'/sub/', 'test.tmp'),
+            array($testfolder.'/sub/sub/', 'test.xml'),
+            array($testfolder.'/sub/sub/', 'test.dat'),
         );
         foreach ($files as $file) {
             $path = $file[0];
@@ -98,6 +95,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
         // weider löschen
         tx_rnbase_util_Files::rmdir($testfolder, true);
     }
+
     public function testCleanupFilesWithZipAndXml()
     {
         //@TODO: lifetime testen
@@ -133,13 +131,13 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
             'filetypes' => 'zip, xml',
             'skiptypo3tempcheck' => '1',
         ));
-        self::assertEquals(4, $count, 'wrong deleted count. testfolder: ' . $testfolder);
+        self::assertEquals(4, $count, 'wrong deleted count. testfolder: '.$testfolder);
         // weider löschen
         tx_rnbase_util_Files::rmdir($testfolder, true);
     }
 
     /**
-     * getServerPath testen
+     * getServerPath testen.
      */
     public function testGetServerPath()
     {
@@ -154,7 +152,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * getRelPath testen
+     * getRelPath testen.
      */
     public function testGetRelPath()
     {
@@ -169,7 +167,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * getRelPath testen
+     * getRelPath testen.
      */
     public function testGetRelPathWithRemovedStartingSlashSetToTrue()
     {
@@ -197,7 +195,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * getWebPath testen
+     * getWebPath testen.
      */
     public function testGetWebPath()
     {
@@ -256,8 +254,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     *
-     * @return multitype:multitype:string  multitype:Ambigous <string, string, unknown>
+     * @return multitype:multitype:string multitype:Ambigous <string, string, unknown>
      */
     public function getFiles()
     {
@@ -281,5 +278,5 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_File_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php'];
 }

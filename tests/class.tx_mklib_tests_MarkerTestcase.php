@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,9 +25,8 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_rnbase_util_Templates');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
@@ -38,15 +35,12 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
  * tx_rnbase_util_Templates::substituteMarkerArrayCached erstellen.
  *
  * Bei den Tests sollte der Cache NIE genutzt werden!
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests
  */
 class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -55,7 +49,8 @@ class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()

@@ -1,62 +1,35 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_action
- *
- *  Copyright notice
- *
- *  (c) 2014 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
 
 tx_rnbase::load('tx_rnbase_action_BaseIOC');
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
 /**
  * Controller
- * Generische Klasse für List Views
+ * Generische Klasse für List Views.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner
  */
 abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
 {
-
     /**
      * Do the magic!
      *
-     * @param tx_rnbase_parameters &$parameters
+     * @param tx_rnbase_parameters     &$parameters
      * @param tx_rnbase_configurations &$configurations
-     * @param ArrayObject &$viewData
+     * @param ArrayObject              &$viewData
+     *
      * @return string error msg or null
      */
     public function handleRequest(&$parameters, &$configurations, &$viewData)
     {
         $out = $this->prepareRequest();
-        if ($out !== null) {
+        if (null !== $out) {
             return $out;
         }
 
         $items = $this->getItems();
         $viewData->offsetSet('items', $items);
-        $viewData->offsetSet('searched', $items !== false);
+        $viewData->offsetSet('searched', false !== $items);
 
         return null;
     }
@@ -72,10 +45,11 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Searches for the items to show in list
+     * Searches for the items to show in list.
      *
      * @throws RuntimeException
-     * @return array|FALSE
+     *
+     * @return array|false
      */
     protected function getItems()
     {
@@ -89,9 +63,9 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
             $repo instanceof tx_mklib_interface_Repository
         )) {
             throw new RuntimeException(
-                'the repository "' . get_class($repo) . '" ' .
+                'the repository "'.get_class($repo).'" '.
                 'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!',
-                intval(ERROR_CODE_MKLIB . '1')
+                intval(ERROR_CODE_MKLIB.'1')
             );
         }
 
@@ -100,7 +74,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
             $this->getParameters(),
             $this->getConfigurations(),
             $this->getViewData(),
-            $this->getConfId() . 'filter.'
+            $this->getConfId().'filter.'
         );
 
         $fields = $options = array();
@@ -108,10 +82,10 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
         if ($this->prepareFieldsAndOptions($fields, $options)
             && $filter->init($fields, $options)
         ) {
-            if ($this->getConfigurations()->get($this->getConfId() . 'pagebrowser')) {
+            if ($this->getConfigurations()->get($this->getConfId().'pagebrowser')) {
                 $filter::handlePageBrowser(
                     $this->getConfigurations(),
-                    $this->getConfId() . 'pagebrowser',
+                    $this->getConfId().'pagebrowser',
                     $this->getConfigurations()->getViewData(),
                     $fields,
                     $options,
@@ -134,6 +108,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
      *
      * @param array &$fields
      * @param array &$options
+     *
      * @return bool
      */
     protected function prepareFieldsAndOptions(
@@ -144,7 +119,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Gibt den Name der zugehörigen View-Klasse zurück
+     * Gibt den Name der zugehörigen View-Klasse zurück.
      *
      * @return string
      */
@@ -153,18 +128,17 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
         return 'tx_rnbase_view_List';
     }
 
-
     /**
      * Liefert den Templatenamen.
      * Darüber wird per Konvention auch auf ein per TS konfiguriertes
-     * HTML-Template geprüft und die ConfId gebildet
+     * HTML-Template geprüft und die ConfId gebildet.
      *
      * @return string
      */
     // abstract protected function getTemplateName();
 
     /**
-     * Liefert die Service Klasse, welche das Suchen übernimmt
+     * Liefert die Service Klasse, welche das Suchen übernimmt.
      *
      * @return tx_mklib_interface_Repository
      */
@@ -172,5 +146,5 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php'];
 }

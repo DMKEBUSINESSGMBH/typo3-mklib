@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_srv
  * @author Hannes Bochmann
  * @author Michael Wagner
  *
@@ -26,16 +24,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_srv
+ * Generic form view test.
+ *
  * @author Hannes Bochmann
  * @author Michael Wagner
  */
@@ -69,8 +64,9 @@ class tx_mklib_tests_srv_Finance_testcase extends tx_rnbase_tests_BaseTestCase
         self::assertEquals('6,00 €', $oSrv->getFormattedCurrency('6', false));
         self::assertEquals('-3,60 &euro;', $oSrv->getFormattedCurrency('-3.6'));
     }
+
     /**
-     * Prüft ob richtig gerundet wird
+     * Prüft ob richtig gerundet wird.
      */
     public function testRoundDouble()
     {
@@ -86,7 +82,6 @@ class tx_mklib_tests_srv_Finance_testcase extends tx_rnbase_tests_BaseTestCase
      *
      * @param string $tableAliases
      * @param string $expectedJoin
-     * @return void
      *
      * @group unit
      * @test
@@ -150,5 +145,5 @@ class tx_mklib_tests_srv_Finance_testcase extends tx_rnbase_tests_BaseTestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_Finance_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_Finance_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_Finance_testcase.php'];
 }

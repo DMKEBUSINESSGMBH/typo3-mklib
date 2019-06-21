@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_search
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,72 +25,66 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
-
 tx_rnbase::load('tx_rnbase_util_SearchBase');
 
-
 /**
- * Class to search ads from database
- *
- * @package tx_mklib
- * @subpackage tx_mklib_search
+ * Class to search ads from database.
  */
 class tx_mklib_search_Wordlist extends tx_rnbase_util_SearchBase
 {
     /**
-     * getTableMappings()
+     * getTableMappings().
      */
     protected function getTableMappings()
     {
     }
 
-  /**
-   * useAlias()
-   */
+    /**
+     * useAlias().
+     */
     protected function useAlias()
     {
         return true;
     }
 
-  /**
-   * getBaseTableAlias()
-   */
+    /**
+     * getBaseTableAlias().
+     */
     protected function getBaseTableAlias()
     {
         return 'WORDLIST';
     }
 
-  /**
-   * getBaseTable()
-   */
+    /**
+     * getBaseTable().
+     */
     protected function getBaseTable()
     {
         return 'tx_mklib_wordlist';
     }
 
-  /**
-   * getWrapperClass()
-   */
+    /**
+     * getWrapperClass().
+     */
     public function getWrapperClass()
     {
         return 'tx_mklib_model_WordlistEntry';
     }
 
-  /**
-   * Liefert alle JOINS zurück
-   *
-   * @param array $tableAliases
-   * @return string
-   */
+    /**
+     * Liefert alle JOINS zurück.
+     *
+     * @param array $tableAliases
+     *
+     * @return string
+     */
     protected function getJoins($tableAliases)
     {
     }
 }
 
-
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Wordlist.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Wordlist.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Wordlist.php'];
 }

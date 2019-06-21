@@ -1,7 +1,5 @@
 <?php
 /**
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
  *  Copyright notice
@@ -27,20 +25,17 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-
 /**
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -61,7 +56,8 @@ class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -124,42 +120,42 @@ class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase
                 '###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
                 '',
-                ''
+                '',
             ),
             // da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
             array(
                 '###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
                 'firstField',
-                'asc'
+                'asc',
             ),
             //normaler Link mit asc wenn anderes sortBy gewählt
             array(
                 '###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
                 'unknownField',
-                'asc'
+                'asc',
             ),
             // Links werden ohne default config immer asc sortiert
             array(
                 '###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
                 '',
-                ''
+                '',
             ),
             // da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
             array(
                 '###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
                 'secondField',
-                'asc'
+                'asc',
             ),
             // unbekannte Felder werden nicht geparsed
             array(
                 '###SORT_UNKNOWN_LINK###link###SORT_UNKNOWN_LINK###',
                 '/(###SORT_UNKNOWN_LINK###link###SORT_UNKNOWN_LINK###)/',
                 '',
-                ''
+                '',
             ),
         );
     }
@@ -176,7 +172,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * @param boolean $defaultConfig
+     * @param bool $defaultConfig
      *
      * @return tx_rnbase_configurations
      */
@@ -192,17 +188,17 @@ class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase
                     'sort.' => array(
                         'fields' => 'firstField,secondField',
                         'link.' => array(
-                            'noHash' => 1
-                        )
-                    )
-                )
-            )
+                            'noHash' => 1,
+                        ),
+                    ),
+                ),
+            ),
         );
 
         if ($defaultConfig) {
             $config['myConfId.']['filter.']['sort.']['default.'] = array(
-                'field'    => 'firstField',
-                'sortOrder'    => 'asc'
+                'field' => 'firstField',
+                'sortOrder' => 'asc',
             );
         }
 

@@ -23,7 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 tx_rnbase::load('tx_mklib_action_ListBase');
 
 //in abstrakten klassen lassen sich keine nicht-abstrakten methoden mocken
@@ -38,6 +37,7 @@ abstract class ListBaseWithNewFilterMode extends tx_mklib_action_ListBase
 
 /**
  * Enter description here ...
+ *
  * @author Hannes Bochmann
  */
 class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
@@ -66,7 +66,7 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
         if (!empty($expectedFields)) {
             $this->expectedFields = $expectedFields;
         } else {
-            $this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD' => array(OP_EQ => 'anotherValue'),'test' => 'value');
+            $this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD' => array(OP_EQ => 'anotherValue'), 'test' => 'value');
         }
 
         $this->expectedOptions = array('orderby' => 'someOrderBy');
@@ -81,7 +81,8 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * konfigurieren wie oft welche methoden aufgerufen werden sollten
+     * konfigurieren wie oft welche methoden aufgerufen werden sollten.
+     *
      * @param unknown_type $oSearchSrv
      * @param unknown_type $sClassToMock
      */
@@ -133,14 +134,14 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
                 'fields.' => array(
                     'anotherTest.' => array(
                         'anotherField.' => array(
-                            'OP_EQ' => 'anotherValue'
-                        )
-                    )
+                            'OP_EQ' => 'anotherValue',
+                        ),
+                    ),
                 ),
                 'options.' => array(
-                    'orderby' => 'someOrderBy'
+                    'orderby' => 'someOrderBy',
                 ),
-            )
+            ),
         );
         $configurations = $this->getConfigurations($aConfig);
 
@@ -171,20 +172,20 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
         $aConfig = array(
             'dummyconfig.' => array(
                 'filter.' => array(
-                    'class'  => 'tx_mklib_tests_fixtures_classes_DummyFilter',
+                    'class' => 'tx_mklib_tests_fixtures_classes_DummyFilter',
                     //fields und options sollte übernommen werden
                     'fields.' => array(
                         'anotherTest.' => array(
                             'anotherField.' => array(
-                                'OP_EQ' => 'anotherValue'
-                            )
-                        )
+                                'OP_EQ' => 'anotherValue',
+                            ),
+                        ),
                     ),
                     'options.' => array(
-                        'orderby' => 'someOrderBy'
+                        'orderby' => 'someOrderBy',
                     ),
-                )
-            )
+                ),
+            ),
         );
         $configurations = $this->getConfigurations($aConfig);
 
@@ -219,14 +220,14 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
                 'fields.' => array(
                     'anotherTest.' => array(
                         'anotherField.' => array(
-                            'OP_EQ' => 'anotherValue'
-                        )
-                    )
+                            'OP_EQ' => 'anotherValue',
+                        ),
+                    ),
                 ),
                 'options.' => array(
-                    'orderby' => 'someOrderBy'
+                    'orderby' => 'someOrderBy',
                 ),
-            )
+            ),
         );
         $configurations = $this->getConfigurations($aConfig);
 
@@ -246,7 +247,7 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionCode 4001
      * @expectedExceptionMessage Der Service dummySrv muss die Methode search unterstützen!
      */
@@ -286,7 +287,7 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
         $aConfig = array(
             'dummyconfig.' => array(
                 'filter' => 'tx_mklib_tests_fixtures_classes_DummyFilterWithReturnFalse',
-            )
+            ),
         );
         $configurations = $this->getConfigurations($aConfig);
 
@@ -299,5 +300,5 @@ class tx_mklib_tests_action_ListBase_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php'];
 }

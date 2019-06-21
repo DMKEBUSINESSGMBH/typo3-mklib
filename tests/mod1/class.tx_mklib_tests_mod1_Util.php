@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,24 +25,20 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-    require_once(PATH_site.'typo3/template.php');
+    require_once PATH_site.'typo3/template.php';
 }
 
 /**
- * Statische Hilfsmethoden für Tests
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests
+ * Statische Hilfsmethoden für Tests.
  */
 class tx_mklib_tests_mod1_Util
 {
-
     /**
-     * Deaktiviert den Cache
+     * Deaktiviert den Cache.
      */
     public static function replaceForCli(&$sString)
     {
@@ -63,7 +57,7 @@ class tx_mklib_tests_mod1_Util
     }
 
     /**
-     * Deaktiviert den Cache und den formtoken
+     * Deaktiviert den Cache und den formtoken.
      */
     public static function removeVcAndFormToken(&$sString)
     {
@@ -81,6 +75,7 @@ class tx_mklib_tests_mod1_Util
     /**
      * Löscht die gesetzten Sortierungsoptionen
      * Enter description here ...
+     *
      * @param tx_rnbase_mod_BaseModule $mod
      */
     public static function unsetSorting(tx_rnbase_mod_BaseModule $mod)
@@ -96,5 +91,5 @@ class tx_mklib_tests_mod1_Util
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php'];
 }

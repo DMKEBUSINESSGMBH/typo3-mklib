@@ -1,30 +1,4 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
- *
- *  Copyright notice
- *
- *  (c) 2012 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
-
 
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 
@@ -35,9 +9,8 @@ tx_rnbase::load('tx_rnbase_util_BaseMarker');
  */
 class tx_mklib_mod1_export_Util
 {
-
     /**
-     * Sendet die Headerdaten
+     * Sendet die Headerdaten.
      *
      * @param array $options
      */
@@ -51,14 +24,14 @@ class tx_mklib_mod1_export_Util
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Cache-Control: public', false);
         header('Content-Description: File Transfer');
-        header('Content-Type: ' . $contentType.'');
+        header('Content-Type: '.$contentType.'');
         header('Accept-Ranges: bytes');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        header('Content-Disposition: attachment; filename="'.$fileName.'"');
         header('Content-Transfer-Encoding: binary');
 
         if (!empty($options['additional.']) && is_array($options['additional.'])) {
             foreach ($options['additional.'] as $name => $value) {
-                header($name . ': ' . $value, null, null);
+                header($name.': '.$value, null, null);
             }
         }
 
@@ -72,7 +45,8 @@ class tx_mklib_mod1_export_Util
     }
 
     /**
-     * erzeugt direkt den output
+     * erzeugt direkt den output.
+     *
      * @param string $content
      */
     public static function doOutPut($content)
@@ -93,5 +67,5 @@ class tx_mklib_mod1_export_Util
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/export/class.tx_mklib_mod1_export_Util.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/export/class.tx_mklib_mod1_export_Util.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/export/class.tx_mklib_mod1_export_Util.php'];
 }

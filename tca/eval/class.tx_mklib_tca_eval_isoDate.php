@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2014 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -23,13 +23,12 @@
  */
 
 /**
- * Evaluate a value as data type "iso date" as used for MySQL date fields
+ * Evaluate a value as data type "iso date" as used for MySQL date fields.
  */
 class tx_mklib_tca_eval_isoDate
 {
-
     /**
-     * Evaluate value on client-side via JavaScript
+     * Evaluate value on client-side via JavaScript.
      *
      * @return string
      */
@@ -51,11 +50,12 @@ LH;
     }
 
     /**
-     * Evaluate value on server-side by ourselves
+     * Evaluate value on server-side by ourselves.
      *
      * @param string $value
      * @param string $is_in
-     * @param bool $set
+     * @param bool   $set
+     *
      * @return string
      */
     public function evaluateFieldValue($value, $is_in, &$set)
@@ -73,5 +73,5 @@ LH;
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_isoDate.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_isoDate.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_isoDate.php'];
 }

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -16,7 +17,7 @@ if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
                     'type' => 'input',
                     'size' => '1',
                     'eval' => 'trim,int',
-                )
+                ),
             ),
             'zipcode_length' => array(
                 'exclude' => '0',
@@ -25,7 +26,7 @@ if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
                     'type' => 'input',
                     'size' => '2',
                     'eval' => 'trim,int',
-                )
+                ),
             ),
         ),
         !tx_rnbase_util_TYPO3::isTYPO62OrHigher()

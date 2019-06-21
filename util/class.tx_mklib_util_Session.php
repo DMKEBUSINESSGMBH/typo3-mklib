@@ -1,30 +1,4 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- *  Copyright notice
- *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-
 
 /**
  * Util für session handling.
@@ -34,13 +8,10 @@
  *
  * @see tx_t3users_services_feuser
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_Session
 {
-
     /**
      * Liefert die aktuelle Session id des Nutzers.
      *
@@ -51,6 +22,7 @@ class tx_mklib_util_Session
      * Nur das bewegt Typo3 dazu, sich die Session zu merken!
      *
      * @param bool $keepId
+     *
      * @return string
      */
     public static function getSessionId($keepId = false)
@@ -73,7 +45,7 @@ class tx_mklib_util_Session
      * @see tx_t3users_services_feuser::setSessionValue
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $extKey
      */
     public static function setSessionValue($key, $value, $extKey = 'mklib')
@@ -90,8 +62,9 @@ class tx_mklib_util_Session
      *
      * @see tx_t3users_services_feuser::getSessionValue
      *
-     * @param string $key key of session value
+     * @param string $key    key of session value
      * @param string $extKey optional
+     *
      * @return mixed
      */
     public static function getSessionValue($key, $extKey = 'mklib')
@@ -108,7 +81,7 @@ class tx_mklib_util_Session
      *
      * @see tx_t3users_services_feuser::removeSessionValue
      *
-     * @param string $key key of session value
+     * @param string $key    key of session value
      * @param string $extKey optional
      */
     public static function removeSessionValue($key, $extKey = 'mklib')
@@ -128,6 +101,7 @@ class tx_mklib_util_Session
 
     /**
      * @deprecated use tx_mklib_util_Session::areCookiesActivated
+     *
      * @return bool
      */
     public static function areCookiesActivatedInFrontend()
@@ -156,11 +130,11 @@ class tx_mklib_util_Session
             // um einen Infinite Redirect zu verhindern
             // falls keine Cookies erlaubt sind.
             $parsedUrl = parse_url(tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_SCRIPT'));
-            $checkedIfCookiesAreActivatedParameter = ($parsedUrl['query'] ? '&' : '?') . 'checkedIfCookiesAreActivated=1';
+            $checkedIfCookiesAreActivatedParameter = ($parsedUrl['query'] ? '&' : '?').'checkedIfCookiesAreActivated=1';
             // Und machen einen Reload um zu sehen ob Cookies gesetzt werden konnten.
             header(
-                'Location: /' .
-                tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_SCRIPT') .
+                'Location: /'.
+                tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_SCRIPT').
                 $checkedIfCookiesAreActivatedParameter
             );
             exit;
@@ -170,9 +144,7 @@ class tx_mklib_util_Session
     }
 
     /**
-     *
      * @param string $sessionId
-     * @return void
      */
     public static function setSessionId($sessionId)
     {
@@ -200,5 +172,5 @@ class tx_mklib_util_Session
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php'];
 }

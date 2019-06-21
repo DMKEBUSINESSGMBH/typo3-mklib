@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_srv
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -28,17 +26,14 @@
 tx_rnbase::load('Tx_Rnbase_Service_Base');
 
 /**
- * Service für alles rund um Finanzen
+ * Service für alles rund um Finanzen.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_srv
  * @author Michael Wagner
  */
 class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
 {
-
     /**
-     * @return  tx_mklib_model_Currency
+     * @return tx_mklib_model_Currency
      */
     public function getCurrency()
     {
@@ -54,9 +49,10 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
      * @deprecated: direkt $this->getCurrency()->getFormatted($value) aufrufen,
      *              ansonsten bekommen wir bei späterer erweiterung des currencies wahrscheinlich probleme!
      *
-     * @param   float      $value
-     * @param   bool     $htmlEntities
-     * @return  string
+     * @param float $value
+     * @param bool  $htmlEntities
+     *
+     * @return string
      */
     public function getFormattedCurrency($value, $htmlEntities = true)
     {
@@ -64,10 +60,11 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Berechnet den Nettopreis anhand des Bruttopreises und des Steuersatzes
+     * Berechnet den Nettopreis anhand des Bruttopreises und des Steuersatzes.
      *
      * @param doubleval $gross
-     * @param int $tax
+     * @param int       $tax
+     *
      * @return float
      */
     public function getNetPriceByGrossPriceAndTax($gross, $tax)
@@ -81,10 +78,11 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes
+     * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes.
      *
      * @param doubleval $gross
-     * @param int $tax
+     * @param int       $tax
+     *
      * @return float
      */
     public function getGrossPriceByNetPriceAndTax($net, $tax)
@@ -98,10 +96,11 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes
+     * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes.
      *
      * @param doubleval $gross
-     * @param int $tax
+     * @param int       $tax
+     *
      * @return float
      */
     public function getTaxAmountByNetPriceAndTax($net, $tax)
@@ -116,11 +115,12 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Multipliziert den Preis mit einem Wert (Anzahl Produkte)
+     * Multipliziert den Preis mit einem Wert (Anzahl Produkte).
      *
      * @param doubleval $price
-     * @param int $quantity
-     * @param bool $formatted Gibt an ob der Preis Formatiert ausgegeben werde soll.
+     * @param int       $quantity
+     * @param bool      $formatted gibt an ob der Preis Formatiert ausgegeben werde soll
+     *
      * @return float
      */
     public function getSumPriceByPriceAndQuantity($price, $quantity, $formatted = false)
@@ -131,6 +131,7 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
 
         return $formatted ? $this->getFormattedCurrency($sum) : $sum;
     }
+
     /**
      * @see         self::getSumPriceByPriceAndQuantity
      * @deprecated  Die getSumPriceByPriceAndQuantity hatte einen Tippfehler.
@@ -142,7 +143,7 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes
+     * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes.
      *
      * @param doubleval $net
      * @param doubleval $gross
@@ -155,14 +156,15 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Wandelt einen Doubole-Wert für berechnungen in einen Integer-Wert um
+     * Wandelt einen Doubole-Wert für berechnungen in einen Integer-Wert um.
      *
      * Wir wandeln den Wert für die Berechnung in einen Integer
      *
      * @see  http://javathreads.de/2009/03/niemals-mit-den-datentypen-float-oder-double-geldbetraege-berechnen/
      *
      * @param float $double
-     * @param int $digits
+     * @param int   $digits
+     *
      * @return int
      */
     public function getIntByDouble($double, $digits = 4)
@@ -175,17 +177,18 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Wandelt einen Integer-Wert für berechnungen in einen Dounbe-Wert um
+     * Wandelt einen Integer-Wert für berechnungen in einen Dounbe-Wert um.
      *
      * Wir wandeln den Wert für die Berechnung in einen Integer
      *
      * @see  http://javathreads.de/2009/03/niemals-mit-den-datentypen-float-oder-double-geldbetraege-berechnen/
      *
-     * @param int $double
-     * @param int $digits
-     * @param bool $format | soll die double Zahl formatiert werden?
-     *  Bsp: $int=8 --> ohne Format:8 mit Format:8.0000
+     * @param int    $double
+     * @param int    $digits
+     * @param bool   $format    | soll die double Zahl formatiert werden?
+     *                          Bsp: $int=8 --> ohne Format:8 mit Format:8.0000
      * @param string $delimiter
+     *
      * @return float
      */
     public function getDoubleByInt($int, $digits = 4, $format = true, $delimiter = '.')
@@ -199,12 +202,12 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Rundet einen Double Wert auf die gegeben Stellen nach dem Komma AUF
+     * Rundet einen Double Wert auf die gegeben Stellen nach dem Komma AUF.
      *
      * @param doubleval $doubleValue
-     * @param int $digits
-     * @param bool $format
-     * @param string $delimiter
+     * @param int       $digits
+     * @param bool      $format
+     * @param string    $delimiter
      *
      * @return doubleval
      */
@@ -226,19 +229,16 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
         return ($format) ? number_format($roundedDoubleValue, $digits, $delimiter, '') : $roundedDoubleValue;
     }
 
-
-
-
     /**
-     * Validate vatregno
+     * Validate vatregno.
      *
-     * @param string $country cn_iso_2 value of country DE, CH etc...
+     * @param string $country  cn_iso_2 value of country DE, CH etc...
      * @param string $vatregno
      */
     public function validateVatRegNo($country, $vatregno)
     {
         // if there is a uid, so get from database.
-        if ((string) (int)$country === (string) $country) {
+        if ((string) (int) $country === (string) $country) {
             $country = tx_mklib_util_ServiceRegistry::getStaticCountriesService()->get($country);
         }
         // get iso from model
@@ -283,5 +283,5 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Finance.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Finance.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Finance.php'];
 }

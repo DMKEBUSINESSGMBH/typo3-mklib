@@ -2,8 +2,6 @@
 
 /**
  * DB-Felder, die im BE bearbeitbar sind.
- * @package tx_mkmarketplace
- * @subpackage tx_mkmarketplace_
  */
 
 /**
@@ -19,8 +17,6 @@ require tx_rnbase_util_Extensions::extPath($_EXTKEY).'tca/ext_tables.php';
 
 // initalize 'context sensitive help' (csh)
 require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'res/help/ext_csh.php';
-
-
 
 ////////////////////////////////
 // Plugin anmelden

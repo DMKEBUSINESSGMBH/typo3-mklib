@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -30,16 +28,15 @@ tx_rnbase::load('tx_rnbase_util_Strings');
 /**
  * Konfiguration für einen TreeView.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
+ *
  * @deprecated since TYPO3 7.6. use core feature for tree views instead since TYPO3 7.6
+ *
  * @todo remove when support for TYPO3 6.2 is dropped
  */
 class tx_mklib_treelib_Config
 {
     /**
-     *
      * @var \TYPO3\CMS\Backend\Form\FormEngine
      */
     private $oTceForm = null;
@@ -49,11 +46,10 @@ class tx_mklib_treelib_Config
     private $config = array();
 
     /**
-     * Liefert eine Instans des Treeviews
+     * Liefert eine Instans des Treeviews.
      *
-     * @param   array           $PA
-     * @param   \TYPO3\CMS\Backend\Form\FormEngine  $fObj
-     * @return  void
+     * @param array                              $PA
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
      */
     public function __construct(&$PA, &$pObj)
     {
@@ -62,11 +58,12 @@ class tx_mklib_treelib_Config
     }
 
     /**
-     * Liefert eine Instans der Konfiguration
+     * Liefert eine Instans der Konfiguration.
      *
-     * @param   array           $PA
-     * @param   \TYPO3\CMS\Backend\Form\FormEngine  $fObj
-     * @return  tx_mklib_treelib_Config
+     * @param array                              $PA
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
+     *
+     * @return tx_mklib_treelib_Config
      */
     public static function &makeInstance(&$PA, &$pObj)
     {
@@ -74,7 +71,7 @@ class tx_mklib_treelib_Config
     }
 
     /**
-     * @return  \TYPO3\CMS\Backend\Form\FormEngine  $fObj
+     * @return \TYPO3\CMS\Backend\Form\FormEngine $fObj
      */
     public function &getTceForm()
     {
@@ -85,12 +82,15 @@ class tx_mklib_treelib_Config
     {
         return array_key_exists($field, $this->config) ? $this->config[$field] : $default;
     }
+
     /**
      * Liefert die MM Configuration der Tabelle.
      * Die steht in der ext_tables.php!
-     * @param   string  $field
-     * @param   string  $default
-     * @return  string
+     *
+     * @param string $field
+     * @param string $default
+     *
+     * @return string
      */
     public function getMM($field = 'MM', $default = null)
     {
@@ -99,6 +99,7 @@ class tx_mklib_treelib_Config
 
         return array_key_exists($field, $config) ? $config[$field] : $default;
     }
+
     public function addLabelAltFields(array &$fields = array())
     {
         if ($this->getTreeConfig('parseRecordTitle')) {
@@ -109,12 +110,14 @@ class tx_mklib_treelib_Config
             }
         }
     }
+
     public function getTreeConfig($field = false, $default = null)
     {
         $treeConfig = $this->get('treeConfig', array());
 
         return $field ? (array_key_exists($field, $treeConfig) ? $treeConfig[$field] : $default) : $treeConfig;
     }
+
     public function getForeignTable()
     {
         $val = $this->get('foreign_table');
@@ -124,6 +127,7 @@ class tx_mklib_treelib_Config
 
         return $val;
     }
+
     public function getParentField()
     {
         global $TCA;
@@ -131,22 +135,27 @@ class tx_mklib_treelib_Config
 
         return $val ? $val : $this->get('field', 'parent');
     }
+
     public function getTitleField()
     {
         return $this->get('titleField', 'title');
     }
+
     public function getMaxDepth()
     {
         return $this->get('maxDepth', 99);
     }
+
     public function getExpandAll()
     {
         return $this->get('expandAll', 0);
     }
+
     public function getExpandFirst()
     {
         return $this->get('expandFirst', 0);
     }
+
     public function getExtIconMode()
     {
         return $this->get('ext_IconMode', true); // default no context menu on icons
@@ -158,18 +167,21 @@ class tx_mklib_treelib_Config
 
         return tx_rnbase_util_Math::intInRange($this->get('minitems', 0), 0);
     }
+
     public function getMaxItems()
     {
         tx_rnbase::load('tx_rnbase_util_Math');
 
         return tx_rnbase_util_Math::intInRange($this->get('maxitems', 100000), 0);
     }
+
     public function getAutoSizeMax()
     {
         tx_rnbase::load('tx_rnbase_util_Math');
 
         return tx_rnbase_util_Math::intInRange($this->get('autoSizeMax', 1), 0);
     }
+
     public function getSize()
     {
         return $this->get('size', 1);
@@ -184,6 +196,7 @@ class tx_mklib_treelib_Config
 
         return $this->get('treeWrapStyle', $default);
     }
+
     public function getSelectedListStyle()
     {
         return $this->get('selectedListStyle', 'width:250px;');
@@ -207,7 +220,7 @@ class tx_mklib_treelib_Config
      */
     public function forceAdminRootRecord()
     {
-        return (boolean)$this->get('forceAdminRootRecord', true);
+        return (bool) $this->get('forceAdminRootRecord', true);
     }
 
     /**
@@ -215,10 +228,10 @@ class tx_mklib_treelib_Config
      */
     public function dontLinkParentRecords()
     {
-        return (boolean) $this->getTreeConfig('dontLinkParentRecords', 0);
+        return (bool) $this->getTreeConfig('dontLinkParentRecords', 0);
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Config.php'];
 }

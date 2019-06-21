@@ -25,10 +25,8 @@
 tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Base');
 
 /**
- * Iban Model and Validatort based on jschaedl/Iban
+ * Iban Model and Validatort based on jschaedl/Iban.
  *
- * @package TYPO3
- * @subpackage Tx_Mklib
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -36,7 +34,7 @@ tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Base');
 class Tx_Mklib_Domain_Model_Iso_SwiftBic extends Tx_Mklib_Domain_Model_Iso_Base
 {
     /**
-     * Validates the swift/bic code
+     * Validates the swift/bic code.
      *
      * @return bool
      */

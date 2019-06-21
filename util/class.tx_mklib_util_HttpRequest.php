@@ -1,95 +1,55 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- *
- * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- * All rights reserved
- *
- * This script is part of the TYPO3 project. The TYPO3 project is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * This copyright notice MUST APPEAR in all copies of the script!
- */
-
-
 
 /**
- * HttpRequest
+ * HttpRequest.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_HttpRequest
 {
-
     /**
-     * HTTP request methods
+     * HTTP request methods.
      */
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
 
     /**
-     * The adapter used to perform the actual connection to the server
+     * The adapter used to perform the actual connection to the server.
      *
      * @var tx_mklib_util_httprequest_adapter_Interface
      */
     protected $adapter = null;
 
     /**
-     * Request URI
+     * Request URI.
      *
      * @var string
      */
     protected $uri = '';
 
     /**
-     * HTTP request method
+     * HTTP request method.
      *
      * @var string
      */
     protected $method = self::METHOD_GET;
 
     /**
-     * Associative array of request headers
+     * Associative array of request headers.
      *
      * @var array
      */
     protected $headers = array();
 
     /**
-     * Associative array of request headers
+     * Associative array of request headers.
      *
      * @var array
      */
     protected $parameters = array();
 
     /**
-     * HTTP Authentication settings
+     * HTTP Authentication settings.
      *
      * Expected to be an associative array with this structure:
      * $this->auth = array('user' => 'username', 'password' => 'password', 'type' => 'basic')
@@ -101,7 +61,7 @@ class tx_mklib_util_HttpRequest
     protected $auth = null;
 
     /**
-     * Configuration array, set using the constructor or using ::setConfig()
+     * Configuration array, set using the constructor or using ::setConfig().
      *
      * @var array
      */
@@ -121,7 +81,7 @@ class tx_mklib_util_HttpRequest
      * URL and optionally configuration array.
      *
      * @param string $uri
-     * @param array $config Configuration key-value pairs.
+     * @param array  $config configuration key-value pairs
      */
     public function __construct($uri, $config = null)
     {
@@ -131,11 +91,11 @@ class tx_mklib_util_HttpRequest
         }
     }
 
-
     /**
-     * Set configuration parameters for this HTTP client
+     * Set configuration parameters for this HTTP client.
      *
      * @param array $config
+     *
      * @return tx_mklib_util_HttpRequest
      */
     public function setConfig(array $config = array())
@@ -152,14 +112,14 @@ class tx_mklib_util_HttpRequest
         return $this;
     }
 
-
     /**
-     * Load the connection adapter
+     * Load the connection adapter.
      *
      * While this method is not called more than one for a client, it is
      * seperated from ->request() to preserve logic and readability
      *
      * @param string $adapter
+     *
      * @return tx_mklib_util_HttpRequest
      */
     public function setAdapter($adapter)
@@ -181,24 +141,25 @@ class tx_mklib_util_HttpRequest
     }
 
     /**
-     * Set HTTP authentication parameters
+     * Set HTTP authentication parameters.
      *
-     * @param string|false $user User name or false disable authentication
-     * @param string $password Password
+     * @param string|false $user     User name or false disable authentication
+     * @param string       $password Password
+     *
      * @return tx_mklib_util_HttpRequest
      */
     public function setAuth($user, $password = '')
     {
         // If we got false or null, disable authentication
-        if ($user === false || $user === null) {
+        if (false === $user || null === $user) {
             $this->auth = null;
 
-            // Else, set up authentication
+        // Else, set up authentication
         } else {
             $this->auth = array(
                 'user' => (string) $user,
                 'password' => (string) $password,
-                'type' => 'basic'
+                'type' => 'basic',
             );
         }
 
@@ -206,24 +167,24 @@ class tx_mklib_util_HttpRequest
     }
 
     /**
-     * Set one or more request headers
+     * Set one or more request headers.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return tx_mklib_util_HttpRequest
      */
     public function setHeader($name, $value = null)
     {
-
         // Make sure the name is valid if we are in strict mode
-        if ($this->config['strict'] && (! preg_match('/^[a-zA-Z0-9-]+$/', $name))) {
+        if ($this->config['strict'] && (!preg_match('/^[a-zA-Z0-9-]+$/', $name))) {
             throw new Exception("{$name} is not a valid HTTP header name");
         }
 
         $normalized_name = strtolower($name);
 
         // If $value is null or false, unset the header
-        if ($value === null || $value === false) {
+        if (null === $value || false === $value) {
             unset($this->headers[$normalized_name]);
 
         // set the header
@@ -238,15 +199,14 @@ class tx_mklib_util_HttpRequest
     }
 
     /**
-     * Sets a Parameter for the Request
+     * Sets a Parameter for the Request.
      *
-     * @param string $name
+     * @param string      $name
      * @param string|null $value
-     * @return null
      */
     public function addParameter($name, $value = null)
     {
-        if ($value === null) {
+        if (null === $value) {
             if (isset($this->parameters[$name])) {
                 unset($this->parameters[$name]);
             }
@@ -256,7 +216,7 @@ class tx_mklib_util_HttpRequest
     }
 
     /**
-     * Gets Parameters
+     * Gets Parameters.
      *
      * @return array
      */
@@ -266,21 +226,22 @@ class tx_mklib_util_HttpRequest
     }
 
     /**
-     * Set the next request's method
+     * Set the next request's method.
      *
      * Validated the passed method and sets it. If we have files set for
      * POST requests, and the new method is not POST, the files are silently
      * dropped.
      *
      * @param string $method
+     *
      * @throws tx_mklib_util_HttpRequest
      */
     public function setMethod($method = self::METHOD_GET)
     {
         $method = strtoupper($method);
 
-        if (!defined('self::METHOD_' . $method)) {
-            throw new Exception($method . ' is not a valid HTTP request method.');
+        if (!defined('self::METHOD_'.$method)) {
+            throw new Exception($method.' is not a valid HTTP request method.');
         }
 
         $this->method = $method;
@@ -289,9 +250,10 @@ class tx_mklib_util_HttpRequest
     }
 
     /**
-     * Send the HTTP request and return an HTTP response object
+     * Send the HTTP request and return an HTTP response object.
      *
      * @param string $method
+     *
      * @return tx_mklib_util_httprequest_Response
      */
     public function request($method = null)
@@ -314,12 +276,12 @@ class tx_mklib_util_HttpRequest
         // Clone the URI and add the additional GET parameters to it
         $uri = parse_url($this->uri);
 
-        if (!empty($this->parameters) && $this->method == self::METHOD_GET) {
+        if (!empty($this->parameters) && self::METHOD_GET == $this->method) {
             $query = http_build_query($this->parameters, null, '&');
             if ($this->config['rfc3986_strict']) {
                 $query = str_replace('+', '%20', $query);
             }
-            $uri['query']  = empty($uri['query']) ? '' : $uri['query'] . '&';
+            $uri['query'] = empty($uri['query']) ? '' : $uri['query'].'&';
             $uri['query'] .= $query;
         }
 
@@ -327,7 +289,7 @@ class tx_mklib_util_HttpRequest
         $headers = $this->prepareHeaders();
 
         // Open the connection, send the request and read the response
-        $this->adapter->connect($uri['host'], $uri['port'], ($uri['scheme'] == 'https' ? true : false));
+        $this->adapter->connect($uri['host'], $uri['port'], ('https' == $uri['scheme'] ? true : false));
 
         tx_rnbase::load('tx_mklib_util_File');
         $this->adapter->write($this->method, tx_mklib_util_File::parseUrlFromParts($uri), $headers, $body);
@@ -347,7 +309,7 @@ class tx_mklib_util_HttpRequest
     }
 
     /**
-     * Prepare the request headers
+     * Prepare the request headers.
      *
      * @return array
      */
@@ -357,7 +319,7 @@ class tx_mklib_util_HttpRequest
 
         // Set the connection header
         if (!isset($this->headers['connection'])) {
-            if (! $this->config['keepalive']) {
+            if (!$this->config['keepalive']) {
                 $headers[] = 'Connection: close';
             }
         }
@@ -371,21 +333,21 @@ class tx_mklib_util_HttpRequest
         }
 
         // Set the Content-Type header
-        if ($this->method == self::METHOD_POST
+        if (self::METHOD_POST == $this->method
             && !isset($this->headers['content-type'])) {
             $headers[] = 'Content-Type: application/x-www-form-urlencoded';
         }
 
         // Set the user agent header
         if (!isset($this->headers['user-agent']) && isset($this->config['useragent'])) {
-            $headers[] = 'User-Agent: ' . $this->config['useragent'];
+            $headers[] = 'User-Agent: '.$this->config['useragent'];
         }
 
         // Set HTTP authentication if needed
         if (is_array($this->auth)) {
             $headers[] = 'Authorization: Basic '
-                . base64_encode($this->auth['user']
-                . ':' . $this->auth['password']);
+                .base64_encode($this->auth['user']
+                .':'.$this->auth['password']);
         }
 
         // Add all other user defined headers
@@ -395,14 +357,14 @@ class tx_mklib_util_HttpRequest
                 $value = implode(', ', $value);
             }
 
-            $headers[] = $name . ': ' . $value;
+            $headers[] = $name.': '.$value;
         }
 
         return $headers;
     }
 
     /**
-     * Prepare the request body (for POST and PUT requests)
+     * Prepare the request body (for POST and PUT requests).
      *
      * @return string
      */
@@ -411,14 +373,14 @@ class tx_mklib_util_HttpRequest
         $body = '';
 
         // If we have POST parameters, add them to the body
-        if (count($this->parameters) > 0 && $this->method == self::METHOD_POST) {
+        if (count($this->parameters) > 0 && self::METHOD_POST == $this->method) {
             // Encode body as application/x-www-form-urlencoded
             $this->setHeader('Content-Type', 'application/x-www-form-urlencoded');
             $body = http_build_query($this->parameters, '', '&');
         }
 
         // Set the Content-Length if we have a body or if request is POST
-        if ($body || $this->method == self::METHOD_POST) {
+        if ($body || self::METHOD_POST == $this->method) {
             $this->setHeader('Content-Length', strlen($body));
         }
 
@@ -427,5 +389,5 @@ class tx_mklib_util_HttpRequest
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_HttpRequest.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_HttpRequest.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_HttpRequest.php'];
 }

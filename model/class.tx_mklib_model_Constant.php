@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,19 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-
 tx_rnbase::load('tx_rnbase_model_base');
-
 
 /**
  * Model einer Konstante.
  */
 abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
 {
-    
     /**
-     * returns the alias1 of this constant
+     * returns the alias1 of this constant.
      *
      * @return string
      */
@@ -47,7 +41,7 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
     }
 
     /**
-     * returns the alias2 of this constant
+     * returns the alias2 of this constant.
      *
      * @return string
      */
@@ -55,9 +49,9 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
     {
         return $this->record['alias2'];
     }
-    
+
     /**
-     * returns the name of this constant
+     * returns the name of this constant.
      *
      * @return string
      */
@@ -67,7 +61,7 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
     }
 
     /**
-     * returns the name of this constant
+     * returns the name of this constant.
      *
      * @return string
      */
@@ -75,9 +69,9 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
     {
         return $this->record['name'];
     }
-    
+
     /**
-     * returns the type number of this constant
+     * returns the type number of this constant.
      *
      * @return int
      */
@@ -88,5 +82,5 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/models/class.tx_mklib_models_Constant.php'];
 }

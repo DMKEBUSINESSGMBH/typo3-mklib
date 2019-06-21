@@ -1,59 +1,34 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * Copyright notice
- *
- * (c) 2010 - 2014 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- * All rights reserved
- *
- * This script is part of the TYPO3 project. The TYPO3 project is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * This copyright notice MUST APPEAR in all copies of the script!
- */
+
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 tx_rnbase::load('tx_rnbase_util_Files');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 tx_rnbase::load('tx_rnbase_util_Typo3Classes');
 
 /**
- * Util Methoden für das TS, speziell im BE
- * @package tx_mklib
- * @subpackage tx_mklib_util
+ * Util Methoden für das TS, speziell im BE.
+ *
  * @author  Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @author  Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_TS
 {
-
     /**
      * Lädt ein COnfigurations Objekt nach mit der TS aus der Extension
      * Dabei wird alles geholt was in "plugin.tx_$extKey", "lib.$extKey." und
-     * "lib.links." liegt
+     * "lib.links." liegt.
      *
-     * @param string $extKey Extension, deren TS Config geladen werden soll
-     * @param string $extKeyTS Extension, deren Konfig innerhalb der
-     *     TS Config geladen werden soll.
-     *     Es kann also zb. das TS von mklib geladen werden aber darin die konfig für
-     *     das plugin von mkxyz
-     * @param string $sStaticPath pfad zum TS
-     * @param array $aConfig zusätzliche Konfig, die die default  überschreibt
-     * @param bool $resolveReferences sollen referenzen die in lib.
-     *     und plugin.tx_$extKeyTS stehen aufgelöst werden?
-     * @param bool $forceTsfePreparation
+     * @param string $extKey               Extension, deren TS Config geladen werden soll
+     * @param string $extKeyTS             Extension, deren Konfig innerhalb der
+     *                                     TS Config geladen werden soll.
+     *                                     Es kann also zb. das TS von mklib geladen werden aber darin die konfig für
+     *                                     das plugin von mkxyz
+     * @param string $sStaticPath          pfad zum TS
+     * @param array  $aConfig              zusätzliche Konfig, die die default  überschreibt
+     * @param bool   $resolveReferences    sollen referenzen die in lib.
+     *                                     und plugin.tx_$extKeyTS stehen aufgelöst werden?
+     * @param bool   $forceTsfePreparation
+     *
      * @return tx_rnbase_configurations
      */
     public static function loadConfig4BE(
@@ -70,8 +45,8 @@ class tx_mklib_util_TS
             $sStaticPath = '/static/ts/setup.txt';
         }
 
-        if (file_exists(tx_rnbase_util_Files::getFileAbsFileName('EXT:' . $extKey . $sStaticPath))) {
-            tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $extKey . $sStaticPath . '">');
+        if (file_exists(tx_rnbase_util_Files::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
+            tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
         }
 
         tx_rnbase::load('tx_rnbase_configurations');
@@ -90,15 +65,15 @@ class tx_mklib_util_TS
 
         $pageTsConfig = self::getPagesTSconfig(0);
 
-        $tempConfig = $pageTsConfig['plugin.']['tx_' . $extKeyTs . '.'];
-        $tempConfig['lib.'][$extKeyTs . '.'] = $pageTsConfig['lib.'][$extKeyTs . '.'];
+        $tempConfig = $pageTsConfig['plugin.']['tx_'.$extKeyTs.'.'];
+        $tempConfig['lib.'][$extKeyTs.'.'] = $pageTsConfig['lib.'][$extKeyTs.'.'];
         $tempConfig['lib.']['links.'] = $pageTsConfig['lib.']['links.'];
 
         if ($resolveReferences) {
-            $GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTs . '.'] =
-                $tempConfig['lib.'][$extKeyTs . '.'];
-            $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . $extKeyTs . '.'] =
-                $pageTsConfig['plugin.']['tx_' . $extKeyTs . '.'];
+            $GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTs.'.'] =
+                $tempConfig['lib.'][$extKeyTs.'.'];
+            $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_'.$extKeyTs.'.'] =
+                $pageTsConfig['plugin.']['tx_'.$extKeyTs.'.'];
         }
 
         $pageTsConfig = $tempConfig;
@@ -115,9 +90,10 @@ class tx_mklib_util_TS
     }
 
     /**
-     * wrapper funktion
+     * wrapper funktion.
      *
      * @param number $pageId
+     *
      * @return array
      */
     public static function getPagesTSconfig($pageId = 0)
@@ -133,12 +109,13 @@ class tx_mklib_util_TS
     }
 
     /**
-     * load ts from page
+     * load ts from page.
      *
-     * @param mixed $mPageUid alias or uid
+     * @param mixed  $mPageUid   alias or uid
      * @param string $sExtKey
      * @param string $sDomainKey
-     * @return  tx_rnbase_configurations
+     *
+     * @return tx_rnbase_configurations
      *
      * @TODO: static caching integrieren!?
      */
@@ -177,7 +154,7 @@ class tx_mklib_util_TS
         }
 
         // ts für die extension auslesen
-        $pageTsConfig = $tsObj->setup[$sDomainKey]['tx_' . $sExtKey . '.'];
+        $pageTsConfig = $tsObj->setup[$sDomainKey]['tx_'.$sExtKey.'.'];
         $pageTsConfig['lib.'] = $pageTsConfig['lib.'];
         $qualifier = $pageTsConfig['qualifier'] ? $pageTsConfig['qualifier'] : $sExtKey;
 
@@ -191,5 +168,5 @@ class tx_mklib_util_TS
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php'];
 }

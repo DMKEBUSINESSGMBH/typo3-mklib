@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -24,19 +22,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
-
 /**
- *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Hannes Bochmann
  */
 class tx_mklib_util_Logger
 {
-
     /**
-     * @return  array
+     * @return array
      */
     public static function getDebugBacktrace()
     {
@@ -47,5 +39,5 @@ class tx_mklib_util_Logger
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Logger.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Logger.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Logger.php'];
 }

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_validator
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,38 +25,35 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 
 /**
- * Validatoren für den WordList Service
+ * Validatoren für den WordList Service.
  *
  * @author hbochmann
- * @package tx_mklib
- * @subpackage tx_mklib_validator
  */
 class tx_mklib_validator_WordList
 {
-
     /**
      * @var tx_mklib_srv_Wordlist
      */
     protected static $wordlistService = null;
 
     /**
-     * Prüft ob in einem String kein Wort, das blacklisted ist, vorkommt
+     * Prüft ob in einem String kein Wort, das blacklisted ist, vorkommt.
      *
      * @param string $word
      * @param $greedy | alle oder nur ein Treffer?
      * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
+     *
      * @return bool
      */
     public static function stringContainsNoBlacklistedWords($word, $greedy = true, $sanitizeWord = true)
     {
         if (empty($word)) {
-            return true;//leer bedeutet kein Treffer
+            return true; //leer bedeutet kein Treffer
         }
 
         $entry = static::getWordlistService()->getBlacklistEntryByWord($word, $greedy, $sanitizeWord);
@@ -81,5 +76,5 @@ class tx_mklib_validator_WordList
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_WordList.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_WordList.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_WordList.php'];
 }

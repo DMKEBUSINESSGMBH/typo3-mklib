@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author mwagner
  *
  *  Copyright notice
@@ -26,9 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 /**
- * Model eine Währung
+ * Model eine Währung.
  *
  * @TODO:   Die verschiedenen Währungen müssen irgendwo hinterlegt und Konfiguriert werden.
  *          Ideal wäre wahrscheinlich eine eigene Currency-Extension.
@@ -36,9 +33,6 @@
  *          Die könnte eine Tabelle mit den benötigten Daten bereitstellen.
  *          Ein Scheduler, welcher die aktuellen Kurse aktualisiert,
  *          um zwischen Währungen umzurechnen wäre denkbar.
- *
- * @package tx_mklib
- * @subpackage tx_mklib_model
  */
 class tx_mklib_model_Currency
 {
@@ -59,8 +53,9 @@ class tx_mklib_model_Currency
     }
 
     /**
-     * @param   array       $options
-     * @return  tx_mklib_model_Currency
+     * @param array $options
+     *
+     * @return tx_mklib_model_Currency
      */
     protected static function makeInstance(array $options = array())
     {
@@ -77,13 +72,15 @@ class tx_mklib_model_Currency
 
     /**
      * @see     http://en.wikipedia.org/wiki/ISO_3166-1
-     * @param   string      $country    Country in ISO 3166 Alpha 2 code
-     * @return  tx_mklib_model_Currency
+     *
+     * @param string $country Country in ISO 3166 Alpha 2 code
+     *
+     * @return tx_mklib_model_Currency
      */
     public static function getByCountry($country = 'DE')
     {
         //@TODO: anhand des landes den currency code herausfinden
-        if ($country === 'DE') {
+        if ('DE' === $country) {
             return self::getByCurrencyCode('EUR');
         } else {
             throw tx_rnbase::makeInstance(
@@ -97,13 +94,16 @@ class tx_mklib_model_Currency
 
     /**
      * @TODO    konzept, wo die currencys konfigurieren/die daten holen?
+     *
      * @see     http://www.xe.com/symbols.php
-     * @param   string      $currency
-     * @return  tx_mklib_model_Currency
+     *
+     * @param string $currency
+     *
+     * @return tx_mklib_model_Currency
      */
     public static function getByCurrencyCode($currency = 'EUR')
     {
-        if ($currency === 'EUR') {
+        if ('EUR' === $currency) {
             $options = array();
             $options['symbol'] = '€';
             $options['plusSign'] = false;
@@ -122,9 +122,9 @@ class tx_mklib_model_Currency
     }
 
     /**
+     * @param float $value
      *
-     * @param   float      $value
-     * @return  string
+     * @return string
      */
     protected function numberFormat($value)
     {
@@ -134,11 +134,12 @@ class tx_mklib_model_Currency
     }
 
     /**
-     * Formatiert einen Wert anhand der aktuellen Wärung/Konfiguration
+     * Formatiert einen Wert anhand der aktuellen Wärung/Konfiguration.
      *
-     * @param   float      $value
-     * @param   bool     $htmlEntities
-     * @return  string
+     * @param float $value
+     * @param bool  $htmlEntities
+     *
+     * @return string
      */
     public function getFormatted($value, $htmlEntities = true)
     {
@@ -166,9 +167,9 @@ class tx_mklib_model_Currency
 
     public function __toString()
     {
-        $out = get_class($this). "\n\nData:\n";
+        $out = get_class($this)."\n\nData:\n";
         while (list($key, $val) = each($this->record)) {
-            $out .= $key. ' = ' . $val . "\n";
+            $out .= $key.' = '.$val."\n";
         }
         reset($this->record);
 
@@ -177,5 +178,5 @@ class tx_mklib_model_Currency
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Currency.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Currency.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Currency.php'];
 }

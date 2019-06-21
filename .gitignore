@@ -2,3 +2,5 @@
 /.buildpath
 /.project
 /.idea
+/.Build
+/.php_cs.cache

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_validator
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,25 +25,22 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_validator_WordList');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 /**
- * Testfälle für tx_mklib_validator_WordList
+ * Testfälle für tx_mklib_validator_WordList.
  *
  * @author hbochmann
- * @package tx_mklib
- * @subpackage tx_mklib_tests_validator
  *
  * @group unit
  */
 class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -85,7 +80,8 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde.
+     *
      * @group unit
      */
     public function testStringContainsNoBlacklistedWordsRetrunsTrueIfNoWordGiven()
@@ -98,7 +94,8 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde.
+     *
      * @group unit
      */
     public function testStringContainsNoBlacklistedWordsRetrunsTrueWhenWordNotBlacklsited()
@@ -116,7 +113,8 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde.
+     *
      * @group unit
      */
     public function testStringContainsNoBlacklistedWordsRetrunsTrueInGreedyModeWhenWordNotBlacklsited()
@@ -131,7 +129,8 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde
+     * Prüft das stringContainsNoBlacklistedWords() true zurück gibt wenn kein Wort gegeben wurde.
+     *
      * @group unit
      */
     public function testStringContainsNoBlacklistedWordsRetrunsMatchesIfWordsAreBlacklisted()
@@ -150,12 +149,10 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
     }
 
     /**
-     * @param array $returnValue
+     * @param array  $returnValue
      * @param string $word
-     * @param boolean $greedy
-     * @param boolean $sanitizeWord
-     *
-     * @return void
+     * @param bool   $greedy
+     * @param bool   $sanitizeWord
      */
     protected function setWordlistService($returnValue, $word, $greedy = true, $sanitizeWord = true)
     {
@@ -163,7 +160,7 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
             'tx_mklib_srv_Wordlist',
             array('getBlacklistEntryByWord')
         );
-        if ($returnValue === null) {
+        if (null === $returnValue) {
             $wordlistServiceMock->expects(self::never())
                 ->method('getBlacklistEntryByWord');
         } else {
@@ -180,5 +177,5 @@ class tx_mklib_tests_validator_WordList_testcase extends tx_rnbase_tests_BaseTes
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/validator/class.tx_mklib_tests_validator_WordList_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/validator/class.tx_mklib_tests_validator_WordList_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/validator/class.tx_mklib_tests_validator_WordList_testcase.php'];
 }

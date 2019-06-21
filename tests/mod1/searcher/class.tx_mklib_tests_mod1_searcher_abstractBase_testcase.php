@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
@@ -33,17 +30,13 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-    require_once(PATH_site.'typo3/template.php');
+    require_once PATH_site.'typo3/template.php';
 }
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var tx_mklib_tests_fixtures_classes_DummySearcher
      */
@@ -89,7 +82,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         $searchForm = $this->searcher->getSearchForm();
 
         self::assertContains(
-            '<table class="filters"><tr><td>' . $GLOBALS['LANG']->getLL('label_search') .
+            '<table class="filters"><tr><td>'.$GLOBALS['LANG']->getLL('label_search').
             '</td><td><input type="text" name="SET[dummySearcherSearch]" style="width:96px;" value="" /> <input type="submit" name="dummySearcherSearch" value="search" /></td></tr><tr><td>Hidden entries:</td><td>',
             $searchForm,
             'das suchformular ist falsch.'
@@ -100,12 +93,12 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
             'das suchformular ist falsch.'
         );
         self::assertContains(
-            '<option value="0">' . $GLOBALS['LANG']->getLL('label_select_hide_hidden') . '</option>',
+            '<option value="0">'.$GLOBALS['LANG']->getLL('label_select_hide_hidden').'</option>',
             $searchForm,
             'das suchformular ist falsch.'
         );
         self::assertContains(
-            '<option value="1">' . $GLOBALS['LANG']->getLL('label_select_show_hidden') . '</option>',
+            '<option value="1">'.$GLOBALS['LANG']->getLL('label_select_show_hidden').'</option>',
             $searchForm,
             'das suchformular ist falsch.'
         );
@@ -143,8 +136,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
         self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
-        for ($i = 1; $i < 6; $i++) {
-            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+        for ($i = 1; $i < 6; ++$i) {
+            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert '.$i.' fehlt in Tabelle');
         }
 
         self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
@@ -201,8 +194,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
         self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
-        for ($i = 1; $i < 6; $i++) {
-            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+        for ($i = 1; $i < 6; ++$i) {
+            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert '.$i.' fehlt in Tabelle');
         }
         self::assertRegExp('/"><del>6<\/del><\/span>/', $result, 'versteckter Wert 6 fehlt in Tabelle');
 
@@ -227,8 +220,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
         // TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
-        for ($i = 1; $i < 6; $i++) {
-            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+        for ($i = 1; $i < 6; ++$i) {
+            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert '.$i.' fehlt in Tabelle');
         }
 
         self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
@@ -293,8 +286,8 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertRegExp('/<\/table>/', $result, 'Schließendes Table Tag fehlt.');
 
         // TODO: Die Reihenfolge der Zeilen müsste noch getestet werden.
-        for ($i = 1; $i < 6; $i++) {
-            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert ' . $i .' fehlt in Tabelle');
+        for ($i = 1; $i < 6; ++$i) {
+            self::assertRegExp('/">'.$i.'<\/span>/', $result, 'Wert '.$i.' fehlt in Tabelle');
         }
 
         self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
@@ -364,6 +357,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertTrue(is_array($res['map']));
         self::assertCount(5, $res['map']);
     }
+
     /**
      * @group unit
      */
@@ -390,6 +384,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertTrue(is_array($res['map']));
         self::assertCount(5, $res['map']);
     }
+
     /**
      * @group unit
      */
@@ -416,6 +411,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertTrue(is_array($res['map']));
         self::assertCount(5, $res['map']);
     }
+
     /**
      * @group unit
      */
@@ -428,7 +424,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
             ),
             'searchItems',
             array(),
-            array('limit' => 3,'offset' => 1)
+            array('limit' => 3, 'offset' => 1)
         );
 
         // das erste und letzte item muss fehlen!
@@ -442,6 +438,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertTrue(is_array($res['map']));
         self::assertCount(5, $res['map']);
     }
+
     /**
      * wenn weniger daten als limit in der db vorhanden sind,
      * dann darf der array_pop auf die items nicht durchgeführt werden!
@@ -457,7 +454,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
             ),
             'searchItems',
             array(),
-            array('limit' => 10,'offset' => 0)
+            array('limit' => 10, 'offset' => 0)
         );
 
         self::assertTrue(is_array($res));
@@ -471,8 +468,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         self::assertCount(5, $res['map']);
     }
 
-    /**
-     */
     protected function getSearchItemsSearcherMock(
         array $expectedFields = array(),
         array $expectedOptions = array(),
@@ -544,7 +539,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
     /**
      * @param string $labelKey
      * @param string $label
-     * @return void
      */
     protected function setLocallangLabel($labelKey, $label)
     {
@@ -557,6 +551,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 
     /**
      * @param string $labelKey
+     *
      * @return string
      */
     protected function getLocallangLabel($labelKey)
@@ -572,5 +567,5 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php'];
 }

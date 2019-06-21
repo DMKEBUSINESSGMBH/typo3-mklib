@@ -22,26 +22,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 tx_rnbase::load('tx_mklib_srv_Base');
 
 /**
- * Service for accessing constants
+ * Service for accessing constants.
  */
 abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base
 {
-    
     /**
-     * Get constants by their type
+     * Get constants by their type.
      *
      * Additional fields and options can be defined.
      * Constant values are ordered by name by default
      * (important for very special querys with $options['what']
      * (might need to explicitely set $options['ORDERBY']=null).
      *
-     * @param mixed     $type
-     * @param array     $fields     Additional fields (table alias: "CONST")
-     * @param array     $options    Additional options
+     * @param mixed $type
+     * @param array $fields  Additional fields (table alias: "CONST")
+     * @param array $options Additional options
+     *
      * @return tx_mklib_models_Constants
      */
     public function getConstantsByType($type, array $fields = array(), array $options = array())
@@ -57,15 +56,16 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base
 
         return $this->search($fields, $options);
     }
-    
+
     /***************************************************
      * Often needed methods for specific constant values
      ***************************************************/
-    
+
     /**
-     * Get textual Yes / No
+     * Get textual Yes / No.
      *
-     * @param int $yesOrNo  Numerical representation of yes / no
+     * @param int $yesOrNo Numerical representation of yes / no
+     *
      * @return string Textual "Yes" / "No"
      */
     public function getSpecificValue_YesNo($yesOrNo)
@@ -80,5 +80,5 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Constant.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Constant.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Constant.php'];
 }

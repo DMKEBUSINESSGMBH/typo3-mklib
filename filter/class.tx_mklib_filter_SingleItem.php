@@ -1,7 +1,5 @@
 <?php
 /**
- * @package TYPO3
- * @subpackage tx_mkdifu
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
  *  Copyright notice
@@ -25,8 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
 /**
@@ -34,25 +30,25 @@ tx_rnbase::load('tx_rnbase_filter_BaseFilter');
  */
 abstract class tx_mklib_filter_SingleItem extends tx_rnbase_filter_BaseFilter
 {
-    
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_filter_BaseFilter::initFilter()
      */
     protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
     {
         $singleItemUid = $parameters->getInt($this->getParameterName());
-        $fields[$this->getSearchAlias() . '.uid'] = array(OP_EQ_INT => $singleItemUid);
+        $fields[$this->getSearchAlias().'.uid'] = array(OP_EQ_INT => $singleItemUid);
         $options['limit'] = 1;
-        
+
         return true;
     }
-    
+
     /**
      * @return string
      */
     abstract protected function getParameterName();
-    
+
     /**
      * @return string
      */

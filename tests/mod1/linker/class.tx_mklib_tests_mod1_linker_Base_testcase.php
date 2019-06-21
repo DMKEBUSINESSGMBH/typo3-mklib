@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,14 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummyLinker');
 
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_tests_mod1_linker_Base_testcase extends Tx_Phpunit_TestCase
@@ -55,7 +48,7 @@ class tx_mklib_tests_mod1_linker_Base_testcase extends Tx_Phpunit_TestCase
         $oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
 
         self::assertEquals(
-            '<input type="submit"  class="btn btn-default btn-sm" name="showTest[tx_rnbase_model_base|1]" value="' . $label . '" />',
+            '<input type="submit"  class="btn btn-default btn-sm" name="showTest[tx_rnbase_model_base|1]" value="'.$label.'" />',
             $oLinker->makeLink($oModel, $oFormTool),
             'Falscher Link.'
         );
@@ -63,5 +56,5 @@ class tx_mklib_tests_mod1_linker_Base_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php'];
 }

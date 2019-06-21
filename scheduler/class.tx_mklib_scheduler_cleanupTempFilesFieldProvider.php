@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2011 DMK E-BUSINESS GmbH  <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -21,24 +21,19 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 
 // tx_rnbase_util_Extensions::addLLrefForTCAdescr('_MOD_tools_txschedulerM1', tx_rnbase_util_Extensions::extPath($_EXTKEY).'scheduler/locallang.xml');
 
 /**
- * Fügt Felder im scheduler task hinzu
+ * Fügt Felder im scheduler task hinzu.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_scheduler_GenericFieldProvider
 {
-
     /**
-     *
-     * @return  array
+     * @return array
      */
     protected function getAdditionalFieldConfig()
     {
@@ -85,17 +80,18 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_schedule
     /**
      * Validiert den Pfad. Dieser muss zur sicherheit unter typo3temp oder uploads liegen!
      *
-     * @param  string $sPath
-     * @return  mixed
+     * @param string $sPath
+     *
+     * @return mixed
      */
     protected function validateFolder($sPath, $submittedData)
     {
         $directoryCheckDir = isset($submittedData['directorycheckdir']) ? $submittedData['directorycheckdir'] : 'typo3temp';
 
-        return (strpos($sPath, $directoryCheckDir) === false) ? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder_eval_'.$directoryCheckDir) : true;
+        return (false === strpos($sPath, $directoryCheckDir)) ? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder_eval_'.$directoryCheckDir) : true;
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_cleanupTempFilesFieldProvider.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_cleanupTempFilesFieldProvider.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_cleanupTempFilesFieldProvider.php'];
 }

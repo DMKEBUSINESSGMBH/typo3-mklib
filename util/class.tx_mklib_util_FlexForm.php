@@ -22,26 +22,21 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_util_FlexForm
 {
-
     /**
      * @var array
      */
     private $data = array();
 
     /**
-     *
      * @param string $flexForm
+     *
      * @return tx_mklib_util_FlexForm
      */
     public static function getInstance($flexForm)
@@ -53,7 +48,6 @@ class tx_mklib_util_FlexForm
     }
 
     /**
-     *
      * @param string $flexForm
      */
     public function __construct($flexForm)
@@ -62,16 +56,16 @@ class tx_mklib_util_FlexForm
         $this->data = empty($flex['data']) ? array() : $flex['data'];
     }
 
-
     /**
-     * Return value from somewhere inside a FlexForm structure
+     * Return value from somewhere inside a FlexForm structure.
      *
-     * @param array $T3FlexForm_array FlexForm data
-     * @param string $fieldName Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
-     * @param string $sheet Sheet pointer, eg. "sDEF
-     * @param string $lang Language pointer, eg. "lDEF
-     * @param string $value Value pointer, eg. "vDEF
-     * @return string The content.
+     * @param array  $T3FlexForm_array FlexForm data
+     * @param string $fieldName        Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
+     * @param string $sheet            Sheet pointer, eg. "sDEF
+     * @param string $lang             Language pointer, eg. "lDEF
+     * @param string $value            Value pointer, eg. "vDEF
+     *
+     * @return string the content
      */
     public function get($fieldName, $sheet = 'sDEF', $lang = 'lDEF', $value = 'vDEF')
     {
@@ -90,14 +84,13 @@ class tx_mklib_util_FlexForm
         );
     }
 
-
-
     /**
-     * Returns part of $sheetArray pointed to by the keys in $fieldNameArray
+     * Returns part of $sheetArray pointed to by the keys in $fieldNameArray.
      *
      * @param array $sheetArray Multidimensiona array, typically FlexForm contents
      * @param intnteger counterparts, but rather traverse the current position in the array an return element number X (whether this is right behavior is not settled yet...)
      * @param string $value Value for outermost key, typ. "vDEF" depending on language.
+     *
      * @return mixed The value, typ. string.
      */
     protected function getFromSheetArray($sheetArray, $fieldNameArr, $value)
@@ -112,7 +105,7 @@ class tx_mklib_util_FlexForm
                             $tempArr = $values;
                             break;
                         }
-                        $c++;
+                        ++$c;
                     }
                 }
             } else {
@@ -124,7 +117,7 @@ class tx_mklib_util_FlexForm
     }
 
     /**
-     * liefert die typo3 flexform utils
+     * liefert die typo3 flexform utils.
      *
      * @return array
      */
@@ -140,5 +133,5 @@ class tx_mklib_util_FlexForm
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Number.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Number.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Number.php'];
 }

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_exception
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,15 +25,12 @@
  */
 
 /**
- * Exception "no feuser"
- *
- * @package tx_mklib
- * @subpackage tx_mklib_exception
+ * Exception "no feuser".
  */
 class tx_mklib_exception_NoBeUser extends Exception
 {
     /**
-     * Error code
+     * Error code.
      *
      * @var int
      */
@@ -43,5 +38,5 @@ class tx_mklib_exception_NoBeUser extends Exception
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_NoBeUser.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_NoBeUser.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_NoBeUser.php'];
 }

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,22 +25,18 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_MiscTools');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
- * Model util tests
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Model util tests.
  */
 class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
-     * setUp() = Extension-Konfiguration speichern
+     * setUp() = Extension-Konfiguration speichern.
      */
     public function setUp()
     {
@@ -51,7 +45,7 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * tearDown() = Extension-Konfiguration zurückspielen
+     * tearDown() = Extension-Konfiguration zurückspielen.
      */
     public function tearDown()
     {
@@ -60,7 +54,7 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * Prüfen ob die richtig Extension Konfiguration geliefert wird
+     * Prüfen ob die richtig Extension Konfiguration geliefert wird.
      */
     public function testGetProxyBeUserId()
     {
@@ -83,14 +77,13 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
         self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
         self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
 
-
         $val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest');
         self::assertEquals($val, 5, 'Falscher BE-User geliefert.');
         self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
     }
 
     /**
-     * Prüfen ob die richtig Extension Konfiguration geliefert wird
+     * Prüfen ob die richtig Extension Konfiguration geliefert wird.
      */
     public function testGetPicturesUploadPath()
     {
@@ -108,7 +101,7 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * Prüfen ob die richtig Extension Konfiguration geliefert wird
+     * Prüfen ob die richtig Extension Konfiguration geliefert wird.
      */
     public function testGetPortalPageId()
     {
@@ -131,7 +124,6 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
         self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
         self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
 
-
         $val = tx_mklib_util_MiscTools::getPortalPageId('mktest');
         self::assertEquals($val, 5, 'Falsche Page-ID geliefert.');
         self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
@@ -139,5 +131,5 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscTools_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscTools_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscTools_testcase.php'];
 }

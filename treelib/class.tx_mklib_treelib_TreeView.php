@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -41,10 +39,10 @@ if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
+ *
  * @deprecated since TYPO3 7.6. use core feature for tree views instead since TYPO3 7.6
+ *
  * @todo remove when support for TYPO3 6.2 is dropped
  */
 class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
@@ -62,7 +60,7 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
      */
     private $config = array();
     /**
-     * @var boolean
+     * @var bool
      */
     private $useAjax = false;
     /**
@@ -83,11 +81,12 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     private $iCurrentRow = 0;
 
     /**
-     * Liefert eine Instans des Treeviews
+     * Liefert eine Instans des Treeviews.
      *
-     * @param   array                   $PA
-     * @param   \TYPO3\CMS\Backend\Form\FormEngine          $fObj
-     * @return  tx_mklib_treelib_TreeView
+     * @param array                              $PA
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
+     *
+     * @return tx_mklib_treelib_TreeView
      */
     public static function makeInstance($PA, &$fObj)
     {
@@ -97,12 +96,12 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     }
 
     /**
-     * Initialisiert den Treeview
+     * Initialisiert den Treeview.
      *
-     * @param   array                   $PA
-     * @param   \TYPO3\CMS\Backend\Form\FormEngine          $fObj
-     * @return  string
-     * @return  void
+     * @param array                              $PA
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
+     *
+     * @return string
      */
     public function __construct($PA, &$fObj)
     {
@@ -139,7 +138,7 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
             'uid',
             $oConfig->getTitleField(),
             $this->parentField,
-            'pid'
+            'pid',
         );
         // label_alt felder zum record hinzufügen.
         $oConfig->addLabelAltFields($this->fieldArray);
@@ -168,31 +167,33 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
 
     public function useAjax()
     {
-        return $this->useAjax !== false;
+        return false !== $this->useAjax;
     }
 
     /**
      * Liefert das Konfigurations Objekt.
      *
-     * @return  tx_mklib_treelib_Config
+     * @return tx_mklib_treelib_Config
      */
     public function &getConfig()
     {
         return $this->config;
     }
+
     /**
      * Liefert ein Array mit den bereits selektierten Daten.
      *
-     * @return  array
+     * @return array
      */
     public function getItemArray()
     {
         return $this->itemArray;
     }
+
     /**
      * Liefert ein Array mit den UIDs der bereits selektierten Daten.
      *
-     * @return  array
+     * @return array
      */
     private function getItemArrayIds()
     {
@@ -206,9 +207,11 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
 
         return $this->itemArrayIds;
     }
+
     /**
-     * Liefert das Hidden Field
-     * @return  string
+     * Liefert das Hidden Field.
+     *
+     * @return string
      */
     public function getHiddenField()
     {
@@ -218,9 +221,9 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     /**
      * Liefert die Anzahl an Kategorien!
      *
-     * @param   int     $uid
-     * @return  int
-     * @access  private
+     * @param int $uid
+     *
+     * @return int
      */
     public function getCount($uid)
     {
@@ -247,11 +250,12 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     /**
      * Getting the tree data: Selecting/Initializing data pointer to items for a certain parent id.
      * For tables: This will make a database query to select all children to "parent"
-     * For arrays: This will return key to the ->dataLookup array
+     * For arrays: This will return key to the ->dataLookup array.
      *
-     * @param   int     $parentId
-     * @param   string      $subCSSclass    (unused)
-     * @return  intteger. -1 is returned if there were NO subLevel.)
+     * @param int    $parentId
+     * @param string $subCSSclass (unused)
+     *
+     * @return intteger. -1 is returned if there were NO subLevel.)
      */
     public function getDataInit($parentId, $subCSSclass = '')
     {
@@ -282,13 +286,15 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
 
         return parent::getDataInit($parentId, $subCSSclass);
     }
+
     /**
-     * Getting the tree data: next entry
+     * Getting the tree data: next entry.
      *
      * @param   mixed       data handle
      * @param   string      CSS class for sub elements (workspace related)
-     * @return  array       item data array OR FALSE if end of elements.
-     * @access private
+     *
+     * @return array item data array OR FALSE if end of elements
+     *
      * @see getDataInit()
      */
     public function getDataNext(&$res, $subCSSclass = '')
@@ -296,13 +302,13 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
         $row = parent::getDataNext($res, $subCSSclass);
         // Wir heben jede zweite Zeile hervor
         if ($row) {
-            $this->iCurrentRow++;
+            ++$this->iCurrentRow;
             $bgColorClass = ($this->iCurrentRow) % 2 ? 'bgColor' : 'bgColor3';
             // Bereits gewählte werden zusätzlich hervorgehoben
             if (in_array($row['uid'], $this->getItemArrayIds())) {
                 $bgColorClass = 'bgColor4';
             }
-            $row['_CSSCLASS'] = ($row['_CSSCLASS'] ? ' ' : '') . $bgColorClass;
+            $row['_CSSCLASS'] = ($row['_CSSCLASS'] ? ' ' : '').$bgColorClass;
 
             $oConfig = $this->getConfig();
             // den Titel mit label_alt fülen
@@ -315,12 +321,12 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     }
 
     /**
-     * Setzt die nötigen SQL werte für die Abfrage einer MM Relation
+     * Setzt die nötigen SQL werte für die Abfrage einer MM Relation.
      *
-     * @param   string      $parentId
-     * @param   string      $what
-     * @param   string      $fromClause
-     * @param   string      $where
+     * @param string $parentId
+     * @param string $what
+     * @param string $fromClause
+     * @param string $where
      */
     private function setMMQueryFelds($parentId, &$what, &$fromClause, &$where)
     {
@@ -335,7 +341,7 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
         $what = 'DISTINCT '.implode(',', $aWhat);
 
         //@FIXME 'MM_opposite_field', 'uid_local' => 'uid_foreign', 'uid_foreign' beachten!?
-        $fromClause  = $this->table.' as BASE';
+        $fromClause = $this->table.' as BASE';
         $fromClause .= ' JOIN '.$sMM.' as MM ON MM.uid_local = BASE.uid';
         $fromClause .= ' JOIN '.$this->table.' AS PARENT ON MM.uid_foreign = PARENT.uid';
 
@@ -354,22 +360,21 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     /**
      * Das Plus/Minus Symbol in einen Link zum auf-/zu-klappen Wrappen.
      *
-     * @param   string      $icon
-     * @param   string      $cmd
-     * @param   bool     $bMark  Enthält einen Ankerpunkt, wenn gesetzt
-     * @return  string
-     * @access  private
+     * @param string $icon
+     * @param string $cmd
+     * @param bool   $bMark Enthält einen Ankerpunkt, wenn gesetzt
+     *
+     * @return string
      */
     public function PM_ATagWrap($icon, $cmd, $bMark = '')
     {
         if ($this->thisScript) {
-
             $additionalParams = array();
 
             if ($this->useAjax()) {
-                $title = $cmdParts[1] == '1' ? 'expand' : 'collapse';
+                $title = '1' == $cmdParts[1] ? 'expand' : 'collapse';
                 // Die Funktion $this->treeName.'_sendXajaxResponse wird von xajax angelegt
-                $additionalParams[] = 'onclick="'.$this->treeName.'_sendXajaxResponse(\'' . $cmd . '\');return false;"';
+                $additionalParams[] = 'onclick="'.$this->treeName.'_sendXajaxResponse(\''.$cmd.'\');return false;"';
                 $additionalParams[] = 'title="'.$title.'"';
             }
 
@@ -385,7 +390,7 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
                 $queryString = str_replace('PM='.$pm, '', $queryString);
             }
             // Erstes & Anfügen, wenn noch nicht vorhanden.
-            if ($queryString{0} !== '&') {
+            if ('&' !== $queryString[0]) {
                 $queryString = '&'.$queryString;
             }
 
@@ -400,9 +405,10 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     /**
      * Wrappt den Titel in einen Link, welcher den Eintrag zur Liste hinzufügt.
      *
-     * @param   string      $title
-     * @param   array       $v
-     * @return  string
+     * @param string $title
+     * @param array  $v
+     *
+     * @return string
      */
     public function wrapTitle($title, $v, $bank)
     {
@@ -410,7 +416,7 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
         $title = ($title_alt ? $title_alt : $title);
         //nicht wählbar
         if ($this->isRootRecord($v) ||
-            ($this->getConfig()->dontLinkParentRecords() && $v[$this->getConfig()->getParentField()] == 0)
+            ($this->getConfig()->dontLinkParentRecords() && 0 == $v[$this->getConfig()->getParentField()])
         ) {
             $link = $title;
         } else {
@@ -421,33 +427,35 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
     }
 
     /**
-     * @param   string      $title
-     * @param   array       $v
+     * @param string $title
+     * @param array  $v
      *
      * @return string
      */
     private function getRecordOnClickLink($title, $v)
     {
-        $aOnClick =  'setFormValueFromBrowseWin(\'' . $this->PA['itemFormElName'] . '\',' . $v['uid'] . ',\'' . $title . '\');';
-        $link = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . htmlentities($v['description']) . '">' .
+        $aOnClick = 'setFormValueFromBrowseWin(\''.$this->PA['itemFormElName'].'\','.$v['uid'].',\''.$title.'\');';
+        $link = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'" title="'.htmlentities($v['description']).'">'.
                 $title
-                . '</a>';
+                .'</a>';
 
         return $link;
     }
 
     /**
      * @param array $record
+     *
      * @return bool
      */
     private function isRootRecord(array $record)
     {
-        return $record['uid'] == 0;
+        return 0 == $record['uid'];
     }
 
     /**
      * @workaround - siehe Wiki von mklib und mkdownloads
      * (non-PHPdoc)
+     *
      * @see \TYPO3\CMS\Backend\Tree\View\AbstractTreeView::getBrowsableTree()
      */
     public function getBrowsableTree()
@@ -461,5 +469,5 @@ class tx_mklib_treelib_TreeView extends tx_mklib_treelib_BaseTreeView
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TreeView.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TreeView.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TreeView.php'];
 }

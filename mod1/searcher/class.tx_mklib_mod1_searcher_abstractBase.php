@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2011 - 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,50 +21,52 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_mklib_mod1_export_ISearcher');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
- * Basisklasse für Suchfunktionen in BE-Modulen
+ * Basisklasse für Suchfunktionen in BE-Modulen.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner
  */
 abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_export_ISearcher
 {
-
     /**
      * Wurde die ll bereits geladen?
-     * @var boolean
+     *
+     * @var bool
      */
     private static $localLangLoaded = false;
     /**
-     * Selector Klasse
+     * Selector Klasse.
+     *
      * @var tx_rnbase_mod_IModule
      */
     private $mod = null;
     /**
-     * Selector Klasse
+     * Selector Klasse.
+     *
      * @var tx_mklib_mod1_util_Selector
      */
     private $selector = null;
     /**
-     * Otions
+     * Otions.
+     *
      * @var array
      */
     protected $options = array();
 
     /**
-     * Current search term
-     * @var     string
+     * Current search term.
+     *
+     * @var string
      */
     protected $currentSearchWord = '';
 
     /**
-     * Current hidden option
-     * @var     string
+     * Current hidden option.
+     *
+     * @var string
      */
     protected $currentShowHidden = 1;
 
@@ -73,12 +75,11 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected $currentLanguage = null;
 
-
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param   tx_rnbase_mod_IModule   $mod
-     * @param   array                   $options
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array                 $options
      */
     public function __construct(tx_rnbase_mod_IModule $mod, array $options = array())
     {
@@ -86,10 +87,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Init object
+     * Init object.
      *
-     * @param   tx_rnbase_mod_IModule   $mod
-     * @param   array                   $options
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array                 $options
      */
     protected function init(tx_rnbase_mod_IModule $mod, $options)
     {
@@ -122,8 +123,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * Also überschreiben wir die Labels aus mklib mit vorhandenen aus
      * $GLOBALS['LOCAL_LANG'] und schreiben das dann zurück nach $GLOBALS['LOCAL_LANG'],
      * damit die mklib Lables nur eine Ergänzung sind.
-     *
-     * @return void
      */
     protected function loadOwnLocalLangNotOverwritingExistingLabels()
     {
@@ -136,14 +135,15 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Bietet die Möglichkeit die Optionen nach der Erstellung noch zu ändern
+     * Bietet die Möglichkeit die Optionen nach der Erstellung noch zu ändern.
+     *
      * @param array $options
      */
     public function setOptions($options)
     {
         $this->options = $options;
-        ;
     }
+
     /**
      * @return string
      */
@@ -163,8 +163,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     abstract protected function getService();
 
     /**
-     * Returns the complete search form
-     * @return  string
+     * Returns the complete search form.
+     *
+     * @return string
      */
     public function getSearchForm()
     {
@@ -178,7 +179,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 
     /**
      * Liefert die Daten für das Basis-Suchformular damit
-     * das Html gebaut werden kann
+     * das Html gebaut werden kann.
+     *
      * @return array
      */
     protected function getFilterTableDataForSearchForm()
@@ -209,7 +211,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         if ($updateButton = $this->getSearchButton()) {
             $data['updatebutton'] = array(
                 'label' => '',
-                'button' => $updateButton
+                'button' => $updateButton,
             );
         }
 
@@ -217,8 +219,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns the search button
-     * @return  string|false
+     * Returns the search button.
+     *
+     * @return string|false
      */
     protected function getSearchButton()
     {
@@ -248,7 +251,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Bildet die Resultliste mit Pager
+     * Bildet die Resultliste mit Pager.
      *
      * @return string
      */
@@ -257,7 +260,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         /* @var $pager tx_rnbase_util_BEPager */
         $pager = $this->usePager() ? tx_rnbase::makeInstance(
             'tx_rnbase_util_BEPager',
-            $this->getSearcherId() . 'Pager',
+            $this->getSearcherId().'Pager',
             $this->getModule()->getName(),
             // @TODO: die PageId solle noch konfigurierbar gemacht werden.
                 $pid = 0
@@ -280,7 +283,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         $this->showItems($content, $items, array('items_map' => $search['map']));
 
         $data = array(
-            'table'    => $content,
+            'table' => $content,
             'totalsize' => $cnt,
             'items' => $items,
         );
@@ -292,9 +295,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             // nur wenn es auch Ergebnisse gibt. sonst reicht die noItemsFoundMsg
             $sPagerData = '';
             if ($cnt) {
-                $sPagerData = $pagerData['limits'] . ' - ' . $pagerData['pages'];
+                $sPagerData = $pagerData['limits'].' - '.$pagerData['pages'];
             }
-            $data['pager'] = '<div class="pager">' . $sPagerData . '</div>';
+            $data['pager'] = '<div class="pager">'.$sPagerData.'</div>';
         }
 
         return $data;
@@ -307,6 +310,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      *
      * @param array $fields
      * @param array $options
+     *
      * @return array
      */
     protected function searchItems(array $fields, array $options)
@@ -333,7 +337,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             // wir haben ein limit und benötigen das element danach.
             if (!empty($options['limit'])) {
                 $lastNext = true;
-                $options['limit']++;
+                ++$options['limit'];
             }
         }
 
@@ -380,8 +384,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function usePager()
     {
         if (isset($this->options['usepager'])) {
-            return $this->options['usepager'] === false
-                || intval($this->options['usepager']) !== 0;
+            return false === $this->options['usepager']
+                || 0 !== intval($this->options['usepager']);
         }
 
         return true;
@@ -414,7 +418,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Sortierung vorbereiten
+     * Sortierung vorbereiten.
+     *
      * @param array $options
      */
     private function prepareSorting(&$options)
@@ -451,16 +456,17 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
                 // das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
                 $sortCol = $configuredCol['sortable'];
                 // Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-                $sortCol = substr($sortCol, -1) === '.' ? $sortCol.$colLabel : $sortCol;
-                $options['orderby'][$sortCol] = (strtolower($sortOrder) == 'asc' ? 'asc' : 'desc');
+                $sortCol = '.' === substr($sortCol, -1) ? $sortCol.$colLabel : $sortCol;
+                $options['orderby'][$sortCol] = ('asc' == strtolower($sortOrder) ? 'asc' : 'desc');
             }
         }
     }
+
     /**
      * Kann von der Kindklasse überschrieben werden, um weitere Filter zu setzen.
      *
-     * @param   array   $fields
-     * @param   array   $options
+     * @param array $fields
+     * @param array $options
      */
     protected function prepareFieldsAndOptions(array &$fields, array &$options)
     {
@@ -491,7 +497,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Liefert die Spalten, in denen gesucht werden soll
+     * Liefert die Spalten, in denen gesucht werden soll.
+     *
      * @return array
      */
     protected function getSearchColumns()
@@ -502,9 +509,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Start creation of result list.
      *
-     * @param string &$content
+     * @param string            &$content
      * @param Traversable|array $items
-     * @param array $options
+     * @param array             $options
+     *
      * @return string
      */
     protected function showItems(
@@ -514,11 +522,11 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     ) {
         if (!(is_array($items) || $items instanceof Traversable)) {
             throw new Exception(
-                'Argument 2 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
+                'Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.'
             );
         }
 
-        if (! (array) $items) {
+        if (!(array) $items) {
             $content = $this->getNoItemsFoundMsg();
 
             return '';
@@ -544,7 +552,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * the decorator instace.
      *
      * @param tx_rnbase_mod_IModule &$mod
-     * @param array $options
+     * @param array                 $options
+     *
      * @return tx_mklib_mod1_decorator_Base
      */
     protected function getDecorator(&$mod, array $options = array())
@@ -555,6 +564,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             $options
         );
     }
+
     /**
      * @return string
      */
@@ -573,8 +583,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 
     /**
      * Liefert die Spalten für den Decorator.
-     * @param   tx_mklib_mod1_decorator_Base    $oDecorator
-     * @return  array
+     *
+     * @param tx_mklib_mod1_decorator_Base $oDecorator
+     *
+     * @return array
      */
     protected function getDecoratorColumns(&$oDecorator)
     {
@@ -590,8 +602,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Adds the column 'uid' to the be list.
      *
-     * @param array $columns
+     * @param array                    $columns
      * @param tx_rnbase_mod_IDecorator $oDecorator
+     *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnUid(
@@ -605,11 +618,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 
         return $this;
     }
+
     /**
      * Adds the column 'uid' to the be list.
      *
-     * @param array $columns
+     * @param array                    $columns
      * @param tx_rnbase_mod_IDecorator $oDecorator
+     *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnLabel(
@@ -637,8 +652,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Adds the column 'sys_language_uid' to the be list.
      *
-     * @param array $columns
+     * @param array                    $columns
      * @param tx_rnbase_mod_IDecorator $oDecorator
+     *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnLanguage(
@@ -663,8 +679,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * Adds the column 'actions' to the be list.
      * this column contains the edit, hide, remove, ... actions.
      *
-     * @param array $columns
+     * @param array                    $columns
      * @param tx_rnbase_mod_IDecorator $oDecorator
+     *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnActions(
@@ -680,7 +697,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * @return  tx_mklib_mod1_util_Selector
+     * @return tx_mklib_mod1_util_Selector
      */
     protected function getSelector()
     {
@@ -704,7 +721,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     *
      * @param array $fields
      * @param array $options
      */
@@ -717,9 +733,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     protected function getModule()
     {
@@ -727,9 +743,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     protected function getOptions()
     {
@@ -737,9 +753,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_util_FormTool
+     * @return tx_rnbase_util_FormTool
      */
     protected function getFormTool()
     {
@@ -747,9 +763,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns the message in case no items could be found in showItems()
+     * Returns the message in case no items could be found in showItems().
      *
-     * @return  string
+     * @return string
      */
     protected function getNoItemsFoundMsg()
     {
@@ -758,5 +774,5 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_abstractBase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_abstractBase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_abstractBase.php'];
 }

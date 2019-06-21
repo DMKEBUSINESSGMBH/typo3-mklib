@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,13 +25,11 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-
-
 /**
- * Basisklasse für Suchfunktionen in BE-Modulen
+ * Basisklasse für Suchfunktionen in BE-Modulen.
  */
 class tx_mklib_mod1_searcher_Base
 {
@@ -42,18 +38,18 @@ class tx_mklib_mod1_searcher_Base
     protected $selector;
 
     protected $options;
-    protected $formTool;//
+    protected $formTool;
 
     protected $uid;
 
-
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param   tx_rnbase_mod_IModule $mod
-     * @param   unknown_type $options
-     * @param   string $sSelector
-     * @return  unknown_type
+     * @param tx_rnbase_mod_IModule $mod
+     * @param unknown_type          $options
+     * @param string                $sSelector
+     *
+     * @return unknown_type
      */
     public function __construct(tx_rnbase_mod_IModule $mod, $options = array(), $sSelector = 'tx_mklib_mod1_util_Selector')
     {
@@ -61,11 +57,11 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Init object
+     * Init object.
      *
-     * @param   tx_rnbase_mod_IModule $mod
-     * @param   array $options
-     * @param   string $sSelector
+     * @param tx_rnbase_mod_IModule $mod
+     * @param array                 $options
+     * @param string                $sSelector
      */
     protected function init(tx_rnbase_mod_IModule $mod, $options, $sSelector = 'tx_mklib_mod1_util_Selector')
     {
@@ -78,7 +74,6 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     *
      * @param unknown_type $srv
      * @param unknown_type $fields
      * @param unknown_type $options
@@ -92,9 +87,9 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Returns an instance of tx_mkhoga_beutil_Selector
+     * Returns an instance of tx_mkhoga_beutil_Selector.
      *
-     * @return  tx_mkhoga_beutil_Selector
+     * @return tx_mkhoga_beutil_Selector
      */
     protected function getSelector()
     {
@@ -102,9 +97,9 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     public function getModule()
     {
@@ -112,9 +107,9 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     public function getOptions()
     {
@@ -122,9 +117,9 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     public function getFormTool()
     {
@@ -132,7 +127,7 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Liefert die Funktions-Id
+     * Liefert die Funktions-Id.
      */
     public function getFuncId()
     {
@@ -140,7 +135,7 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Setzte die Uid des Objekts
+     * Setzte die Uid des Objekts.
      */
     public function setUid($uid)
     {
@@ -148,7 +143,7 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Gibt die Uid des Objekts
+     * Gibt die Uid des Objekts.
      */
     public function getUid()
     {
@@ -157,5 +152,5 @@ class tx_mklib_mod1_searcher_Base
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Base.php'];
 }

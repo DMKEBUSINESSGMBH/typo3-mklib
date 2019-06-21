@@ -25,32 +25,29 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_scheduler_DeleteFromDatabase');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * @author Hannes Bochmann
- * @package TYPO3
- * @subpackage tx_mklib
  */
 class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var array
      */
     private $options = array(
         'table' => 'someTable',
         'where' => 'someWhereClause',
-        'mode'  => Tx_Mklib_Database_Connection::DELETION_MODE_HIDE
+        'mode' => Tx_Mklib_Database_Connection::DELETION_MODE_HIDE,
     );
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -88,7 +85,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
                 $this->options['table'],
                 array(
                     'where' => $this->options['where'], 'enablefieldsoff' => true,
-                    'callback'    => array($scheduler, 'deleteRow')
+                    'callback' => array($scheduler, 'deleteRow'),
                 )
             );
 
@@ -107,11 +104,11 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
         $databaseConnection->expects(self::once())
             ->method('doSelect')
             ->with(
-                $this->options['selectFields'] . ',uid',
+                $this->options['selectFields'].',uid',
                 $this->options['table'],
                 array(
                     'where' => $this->options['where'], 'enablefieldsoff' => true,
-                    'callback'    => array($scheduler, 'deleteRow')
+                    'callback' => array($scheduler, 'deleteRow'),
                 )
             );
 
@@ -157,7 +154,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
             ->method('delete')
             ->with(
                 $this->options['table'],
-                $this->options['uidField'] . ' = \'quoted123\'',
+                $this->options['uidField'].' = \'quoted123\'',
                 $this->options['mode']
             );
 
@@ -216,13 +213,13 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
 
         $expectedDevLog = array(
             tx_rnbase_util_Logger::LOGLEVEL_INFO => array(
-                'message' =>    '2 Datensätze wurden in ' .
-                                'someTable mit der Bedingung ' .
+                'message' => '2 Datensätze wurden in '.
+                                'someTable mit der Bedingung '.
                                 'someWhereClause und dem Modus 0 entfernt',
-                'dataVar' =>    array(
-                    'betroffene Datensätze' => array(array('uid' => 1), array('uid' => 2))
-                )
-            )
+                'dataVar' => array(
+                    'betroffene Datensätze' => array(array('uid' => 1), array('uid' => 2)),
+                ),
+            ),
         );
 
         self::assertEquals(

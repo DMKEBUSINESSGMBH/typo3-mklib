@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,25 +25,20 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 tx_rnbase::load('tx_mklib_mod1_searcher_abstractBase');
 tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 
 /**
- * Hilfsklassen um nach Gewinnspielen im BE zu suchen
- *
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
+ * Hilfsklassen um nach Gewinnspielen im BE zu suchen.
  */
 class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_searcher_abstractBase
 {
-
-/**
- * @return string
- */
+    /**
+     * @return string
+     */
     protected function getSearcherId()
     {
         return 'dummySearcher';
@@ -62,7 +55,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
     }
 
     /**
-     * @return  tx_mklib_mod1_decorator_Base
+     * @return tx_mklib_mod1_decorator_Base
      */
     protected function getDecorator(&$mod, array $options = array())
     {
@@ -71,8 +64,10 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
 
     /**
      * Liefert die Spalten für den Decorator.
-     * @param   tx_mklib_mod1_decorator_Base    $oDecorator
-     * @return  array
+     *
+     * @param tx_mklib_mod1_decorator_Base $oDecorator
+     *
+     * @return array
      */
     protected function getDecoratorColumns(&$oDecorator)
     {
@@ -80,17 +75,18 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
                 'uid' => array(
                     'title' => 'label_tableheader_uid',
                     'decorator' => &$oDecorator,
-                    'sortable' => 'WORDLIST.'
+                    'sortable' => 'WORDLIST.',
                 ),
                 'actions' => array(
                     'title' => 'label_tableheader_actions',
                     'decorator' => &$oDecorator,
-                )
+                ),
             );
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_mod1_searcher_abstractBase::getCols()
      */
     protected function getCols()
@@ -100,5 +96,5 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php'];
 }

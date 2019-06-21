@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mkjjk
- * @subpackage tx_mkjjk_srv
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,23 +25,18 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_interface_IObserver');
 
 /**
  * generischer observer.
  * einfach die execute methode bereitstellen und das
  * eventuell unterstütze interface, welches genutzt wird
- * um die daten des observable abzufragen
- *
- * @package tx_mkjjk
- * @subpackage tx_mkjjk_srv
+ * um die daten des observable abzufragen.
  */
 abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserver
 {
-
     /**
      * wenn das observable nicht diese interface implementiert
      * dann wird execute() nicht ausgeführt.
@@ -59,7 +52,8 @@ abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserve
 
     /**
      * kann nicht überschrieben werden!!!
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_interface_IObserver::notify()
      */
     final public function notify(tx_mklib_interface_IObservable $oObservable)
@@ -79,14 +73,13 @@ abstract class tx_mklib_abstract_Observer implements tx_mklib_interface_IObserve
 
     /**
      * führt die eigentiche arbeit des jeweiligen
-     * observers aus
+     * observers aus.
      *
      * @param tx_mklib_interface_IObservable $oObservable
-     * @return void
      */
     abstract protected function execute(tx_mklib_interface_IObservable $oObservable);
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkjjk/srv/class.tx_mkjjk_srv_JJKInterface.php'];
 }

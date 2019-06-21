@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,28 +25,28 @@
  ***************************************************************/
 
 /**
- * Rendert die TreeViews
+ * Rendert die TreeViews.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
+ *
  * @deprecated since TYPO3 7.6. use core feature for tree views instead since TYPO3 7.6
+ *
  * @todo remove when support for TYPO3 6.2 is dropped
  */
 class tx_mklib_treelib_Renderer
 {
     /**
-     *
      * @var \TYPO3\CMS\Backend\Form\FormEngine
      */
     private $oTceForm = null;
 
     /**
-     * Liefert eine Instans des Treeviews
+     * Liefert eine Instans des Treeviews.
      *
-     * @param   array           $PA
-     * @param   \TYPO3\CMS\Backend\Form\FormEngine  $fObj
-     * @return  tx_mklib_treelib_Renderer
+     * @param array                              $PA
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
+     *
+     * @return tx_mklib_treelib_Renderer
      */
     public static function makeInstance($PA, &$fObj)
     {
@@ -58,13 +56,12 @@ class tx_mklib_treelib_Renderer
     }
 
     /**
-     * Initialisiert den Treeview
+     * Initialisiert den Treeview.
      *
-     * @param   array           $PA
-     * @param   \TYPO3\CMS\Backend\Form\FormEngine  $fObj
-     * @return  string
+     * @param array                              $PA
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
      *
-     * @return  void
+     * @return string
      */
     public function __construct($PA, &$fObj)
     {
@@ -75,20 +72,21 @@ class tx_mklib_treelib_Renderer
     /**
      * Erzeugt den Baum und gibt das HTML zurück.
      *
-     * @param   tx_mklib_treelib_TreeView   $oTreeView
-     * @return  string
+     * @param tx_mklib_treelib_TreeView $oTreeView
+     *
+     * @return string
      */
     public function getBrowsableTree(&$oTreeView)
     {
-        $content  = '';
-        $content .= '<span id="'. $this->treeName . '">';
+        $content = '';
+        $content .= '<span id="'.$this->treeName.'">';
         $content .= $oTreeView->getBrowsableTree();
         $content .= '<span>';
         $content .= $oTreeView->getHiddenField();
 
         // unnötige umbrüche und leerzeichen entfernen
-        $needle = array('/[\r\n\t]/', '/> +?</' );
-        $replace = array('', '><' );
+        $needle = array('/[\r\n\t]/', '/> +?</');
+        $replace = array('', '><');
         $content = preg_replace($needle, $replace, $content);
 
         return $content;
@@ -97,8 +95,9 @@ class tx_mklib_treelib_Renderer
     /**
      * Erzeugt Das Selectfeld mit der Baumstruktur.
      *
-     * @param   tx_mklib_treelib_TreeView   $oTreeView
-     * @return  string
+     * @param tx_mklib_treelib_TreeView $oTreeView
+     *
+     * @return string
      */
     public function renderTreeView(&$oTreeView, &$oTtce = null)
     {
@@ -106,10 +105,10 @@ class tx_mklib_treelib_Renderer
 
         $iMaxItems = $oConfig->getMaxItems();
 
-        $content  = $this->getBrowsableTree($oTreeView);
+        $content = $this->getBrowsableTree($oTreeView);
 
         $divStyle = $oConfig->getTreeWrapStyle();
-        $content  = '<div  name="' . $this->PA['itemFormElName'] . '_selTree" id="'.$oTreeView->treeName.'-tree-div" style="'.htmlspecialchars($divStyle).'">'.
+        $content = '<div  name="'.$this->PA['itemFormElName'].'_selTree" id="'.$oTreeView->treeName.'-tree-div" style="'.htmlspecialchars($divStyle).'">'.
                         $content.'</div>';
 
         $sSelectedListStyle = $oConfig->getSelectedListStyle();
@@ -123,11 +122,11 @@ class tx_mklib_treelib_Renderer
             'info' => '',
             'headers' => array(
                 'selector' => $this->oTceForm->getLL('l_selected').':<br />',
-                'items' => $this->oTceForm->getLL('l_items').':<br />'
+                'items' => $this->oTceForm->getLL('l_items').':<br />',
             ),
             'noBrowser' => true,
 //			'readOnly' => $disabled,
-            'thumbnails' => $content
+            'thumbnails' => $content,
         );
 
         $content = $this->oTceForm->dbFileIcons(
@@ -151,13 +150,14 @@ class tx_mklib_treelib_Renderer
     /**
      * Fügt die Wizzards hinzu.
      *
-     * @param   tx_mklib_treelib_TreeView   $oTreeView
-     * @param   string                      $sContent
-     * @return  string
+     * @param tx_mklib_treelib_TreeView $oTreeView
+     * @param string                    $sContent
+     *
+     * @return string
      */
     private function renderWissards($oTreeView, $sContent)
     {
-        $altItem = '<input type="hidden" name="' . $this->PA['itemFormElName'] . '" value="' . htmlspecialchars($this->PA['itemFormElName']) . '" />';
+        $altItem = '<input type="hidden" name="'.$this->PA['itemFormElName'].'" value="'.htmlspecialchars($this->PA['itemFormElName']).'" />';
         $sContent = $this->oTceForm->renderWizards(
             array($sContent, $altItem),
             $oTreeView->getConfig()->getWizards(),
@@ -175,14 +175,14 @@ class tx_mklib_treelib_Renderer
     /**
      * Fügt benötigtes Javascript hinzu.
      *
-     * @param   tx_mklib_treelib_TreeView   $oTreeView
-     * @param   string                      $content
-     * @param   tx_mklib_treelib_TCE        $oTtce
-     * @return  string
+     * @param tx_mklib_treelib_TreeView $oTreeView
+     * @param string                    $content
+     * @param tx_mklib_treelib_TCE      $oTtce
+     *
+     * @return string
      */
     private function addJs(&$oTreeView, $content, &$oTtce = null)
     {
-
         //@todo ajax funktionalitäten von typo3 nutzen wenn möglich
         //damit nicht extra die xajax Extension installiert werden muss
         if ($oTreeView->useAjax() && is_object($oTtce)) {
@@ -190,7 +190,7 @@ class tx_mklib_treelib_Renderer
             $xajax = tx_rnbase::makeInstance('tx_xajax');
             $xajax->setWrapperPrefix($oTreeView->treeName.'_');
             $xajax->registerFunction(array('sendXajaxResponse', &$oTtce, 'sendXajaxResponse'));
-            $js .= $xajax->getJavascript('../' . tx_rnbase_util_Extensions::siteRelPath('xajax'));
+            $js .= $xajax->getJavascript('../'.tx_rnbase_util_Extensions::siteRelPath('xajax'));
             $xajax->processRequests();
             $content .= $js;
         }
@@ -218,16 +218,18 @@ class tx_mklib_treelib_Renderer
                         result = localArray_V.join("_");
                         return result;
                 }';
-        $needle = array('/ {2,}/','/\}\r\n/','/\t{2,}/');
-        $replace = array(' ','}',' ');
+        $needle = array('/ {2,}/', '/\}\r\n/', '/\t{2,}/');
+        $replace = array(' ', '}', ' ');
         $js = preg_replace($needle, $replace, $js);
         $this->oTceForm->additionalJS_pre['tx_mklib_tree_'.$oTreeView->treeName] = $js;
     }
 
     /**
      * Liefert bereits selektierte Elemente.
-     * @param   tx_mklib_treelib_TreeView   $oTreeView
-     * @return  array
+     *
+     * @param tx_mklib_treelib_TreeView $oTreeView
+     *
+     * @return array
      */
     private function getItemArray(&$oTreeView)
     {
@@ -243,5 +245,5 @@ class tx_mklib_treelib_Renderer
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Renderer.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Renderer.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_Renderer.php'];
 }

@@ -22,20 +22,19 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-
-
 tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
 class tx_mklib_tests_fixtures_classes_DummyFilter extends tx_rnbase_filter_BaseFilter
 {
     /**
-     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen
+     * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen.
      *
-     * @param array $fields
-     * @param array $options
-     * @param tx_rnbase_parameters $parameters
+     * @param array                    $fields
+     * @param array                    $options
+     * @param tx_rnbase_parameters     $parameters
      * @param tx_rnbase_configurations $configurations
-     * @param string $confId
+     * @param string                   $confId
+     *
      * @return bool
      */
     protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
@@ -53,11 +52,11 @@ class tx_mklib_tests_fixtures_classes_DummyFilter extends tx_rnbase_filter_BaseF
             'confid' => $confid,
             'fields' => $fields,
             'options' => $options,
-            'cfg' => $cfg
+            'cfg' => $cfg,
         ));
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/rn_base/filter/class.tx_rnbase_filter_BaseFilter.php'];
 }

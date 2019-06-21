@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -25,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
@@ -39,20 +36,19 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  * oder die Ausgabe im FE wie im BE mittels der sorting Spalte sortiert werden sollen.
  *
  * @author mwagner
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 class tx_mklib_util_SearchSorting
 {
-
     /**
      * Liefert den Name dieser Klasse.
      * Dies ist für Kinds-Klassen wichtig, da die Methoden alle statisch aufgerufen werden.
+     *
      * @TODO:   wie lässt sich die klasse bei kindsklassen herausfinden!?
      *          Statische dinge können leider nicht überschrieben werden.
      *          Einzige möglichkeit ist zurzeit, diese Variable durch überschreiben von
      *          self::registerSortingAliases zu setzen.
-     * @var     string
+     *
+     * @var string
      */
     protected static $className = __CLASS__;
 
@@ -66,16 +62,16 @@ class tx_mklib_util_SearchSorting
     /**
      * Enthält TableAliases, welche sortiert werden sollen.
      *
-     * @var     array
+     * @var array
      */
     private static $sortingTables = array();
 
     /**
-     * Fügt Tabellen für das Sortieren hinzu und registriert den Hook
+     * Fügt Tabellen für das Sortieren hinzu und registriert den Hook.
      *
      * @param array $tableAliases array($tableAlias.$tableName => $sortingColumn)
-     * $tableName muss nicht gesetzt sein, sollte aber um Konflikte zu vermeiden
-     * Beispiel:
+     *                            $tableName muss nicht gesetzt sein, sollte aber um Konflikte zu vermeiden
+     *                            Beispiel:
      *
      * array(
      *  'DOWNLOAD.tx_mytable'=>'sorting', // optimal
@@ -96,9 +92,9 @@ class tx_mklib_util_SearchSorting
                     continue;
                 }
                 self::$sortingTables[] = array(
-                    'alias'    => $tableAlias,
-                    'column'    => $sortingCol,
-                    'table'    => $tableName,
+                    'alias' => $tableAlias,
+                    'column' => $sortingCol,
+                    'table' => $tableName,
                 );
             }
             // den hook registrieren
@@ -109,7 +105,7 @@ class tx_mklib_util_SearchSorting
     }
 
     /**
-     * Registriert den Hook für rnbase, um die sortierung hinzuzufügen
+     * Registriert den Hook für rnbase, um die sortierung hinzuzufügen.
      */
     private static function registerHook()
     {
@@ -126,18 +122,18 @@ class tx_mklib_util_SearchSorting
     /**
      * Wird von tx_rnbase_util_SearchBase aufgerufen um die Sortierung hinzuzufügen.
      *
-     * @param   array                       $params
-     * @param   tx_rnbase_util_SearchBase   $searcher
+     * @param array                     $params
+     * @param tx_rnbase_util_SearchBase $searcher
      */
     public static function handleTableMapping(&$params, &$searcher)
     {
         if (count(self::$sortingTables)) {
-            $tableAliases    = & $params['tableAliases'];
+            $tableAliases = &$params['tableAliases'];
             //@TODO: $joinedFields && $customFields zusätzlich zu den $tableAliases beachten!!!
             // $joinedFields = & $params['joinedFields'];
             // $customFields = & $params['customFields'];
-            $options = & $params['options'];
-            $tableMappings = & $params['tableMappings'];
+            $options = &$params['options'];
+            $tableMappings = &$params['tableMappings'];
 
             // sortierung nur bei self::$sortingTables aufrufen
             foreach (self::$sortingTables as $tableData) {
@@ -162,5 +158,5 @@ class tx_mklib_util_SearchSorting
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_SearchSorting.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_SearchSorting.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_SearchSorting.php'];
 }

@@ -1,6 +1,6 @@
 <?php
 
-if (! defined('TYPO3_MODE')) {
+if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
@@ -16,13 +16,13 @@ return array(
         'default_sortby' => 'ORDER BY crdate',
         'delete' => 'deleted',
         'enablecolumns' => array(
-            'disabled' => 'hidden'
+            'disabled' => 'hidden',
         ),
         'iconfile' => 'EXT:mklib/icon/icon_tx_mklib_wordlist.gif',
-        'dividers2tabs' => true
+        'dividers2tabs' => true,
     ),
     'interface' => array(
-        'showRecordFieldList' => 'hidden,blacklisted,whitelisted,word'
+        'showRecordFieldList' => 'hidden,blacklisted,whitelisted,word',
     ),
     'feInterface' => $TCA['tx_mklib_wordlist']['feInterface'],
     'columns' => array(
@@ -31,24 +31,24 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
-            )
+                'default' => '0',
+            ),
         ),
         'blacklisted' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist.blacklisted',
             'config' => array(
                 'type' => 'check',
-                'default' => '1'
-            )
+                'default' => '1',
+            ),
         ),
         'whitelisted' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist.whitelisted',
             'config' => array(
                 'type' => 'check',
-                'default' => '0'
-            )
+                'default' => '0',
+            ),
         ),
         'word' => array(
             'exclude' => 1,
@@ -56,18 +56,18 @@ return array(
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
-                'eval' => 'required'
-            )
-        )
+                'eval' => 'required',
+            ),
+        ),
     ),
     'types' => array(
         '0' => array(
-            'showitem' => 'hidden,blacklisted,whitelisted,word'
-        )
+            'showitem' => 'hidden,blacklisted,whitelisted,word',
+        ),
     ),
     'palettes' => array(
         '1' => array(
-            'showitem' => ''
-        )
-    )
+            'showitem' => '',
+        ),
+    ),
 );

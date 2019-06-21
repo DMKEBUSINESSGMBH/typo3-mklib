@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,22 +25,15 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_TS');
 
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Generic form view test.
  */
 class tx_mklib_tests_util_TS_testcase extends Tx_Phpunit_TestCase
 {
-
-    /**
-     *
-     */
     public function testGetPagesTsConfigLoadsTsAlwaysNewIfTsAdded()
     {
         $pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,26 +23,22 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_String');
 
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Generic form view test.
  */
 class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * Testen ob crop nur richtig kürzt
+     * Testen ob crop nur richtig kürzt.
      */
     public function testGetShortenedText()
     {
         $aRecord = array(
             'othertext' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
-            'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr'
+            'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
         );
 
         self::assertEquals(
@@ -67,7 +61,7 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob removeNoneLetters nur Buchstaben und Leerzeichen überlässt
+     * Testen ob removeNoneLetters nur Buchstaben und Leerzeichen überlässt.
      */
     public function testRemoveNoneLetters()
     {
@@ -75,14 +69,15 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob html2plain sonderzeichen etc entfernt bzw umwandelt
+     * Testen ob html2plain sonderzeichen etc entfernt bzw umwandelt.
      */
     public function testHtml2Plain()
     {
         self::assertEquals(' alert("ohoh") ""\' äö', tx_mklib_util_String::html2plain('<script>alert("ohoh")</script>""\'<!-- my comment -->äö'), 'Der zurückgegebene String wurde nicht korrekt bereingt bzw. umgewandelt.');
     }
+
     /**
-     * isTrueVal testen
+     * isTrueVal testen.
      */
     public function testIsTrueVal()
     {
@@ -96,8 +91,9 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
         self::assertFalse(tx_mklib_util_String::isTrueVal('0'));
         self::assertFalse(tx_mklib_util_String::isTrueVal(0));
     }
+
     /**
-     * isFalseVal testen
+     * isFalseVal testen.
      */
     public function testIsFalseVal()
     {
@@ -111,8 +107,9 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
         self::assertFalse(tx_mklib_util_String::isFalseVal('1'));
         self::assertFalse(tx_mklib_util_String::isFalseVal(1));
     }
+
     /**
-     * removeRepeatedlyOccurrings testen
+     * removeRepeatedlyOccurrings testen.
      */
     public function testRemoveRepeatedlyOccurrings()
     {
@@ -123,8 +120,9 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
             )
         );
     }
+
     /**
-     * toCamelCase testen
+     * toCamelCase testen.
      */
     public function testToCamelCase()
     {
@@ -218,7 +216,7 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * wie über TS
+     * wie über TS.
      */
     public static function initSpamProtectionConfig()
     {
@@ -314,5 +312,5 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_String_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_String_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_String_testcase.php'];
 }

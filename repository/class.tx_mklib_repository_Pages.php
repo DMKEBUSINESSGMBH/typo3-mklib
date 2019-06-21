@@ -26,10 +26,8 @@ tx_rnbase::load('tx_mklib_repository_Abstract');
 tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
- * Page Repository
+ * Page Repository.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_repository
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
@@ -37,9 +35,9 @@ tx_rnbase::load('tx_rnbase_util_Arrays');
 class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
 {
     /**
-     * Liefert den Namen der Suchklasse
+     * Liefert den Namen der Suchklasse.
      *
-     * @return  string
+     * @return string
      */
     protected function getSearchClass()
     {
@@ -49,7 +47,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     /**
      * Liefert die Model Klasse.
      *
-     * @return  string
+     * @return string
      */
     protected function getWrapperClass()
     {
@@ -57,7 +55,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     }
 
     /**
-     * Return an instantiated dummy model without any content
+     * Return an instantiated dummy model without any content.
      *
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
@@ -73,6 +71,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
      * returns all subpages of a page on first level.
      *
      * @param tx_mklib_model_Page $page
+     *
      * @return array[tx_mklib_model_Page]
      */
     public function getChildren(
@@ -85,10 +84,11 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     }
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
     public function search(array $fields, array $options)
@@ -107,7 +107,6 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     }
 
     /**
-     *
      * @return array
      */
     protected function getSearchdef()
@@ -119,17 +118,17 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
             'wrapperclass' => $this->getWrapperClass(),
             'alias' => array(
                 'PAGES' => array(
-                    'table' => 'pages'
+                    'table' => 'pages',
                 ),
                 'PAGESPARENT' => array(
                     'table' => 'pages',
                     'join' => 'JOIN pages AS PAGESPARENT ON PAGES.pid = PAGESPARENT.uid',
                 ),
-            )
+            ),
         );
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract'];
 }

@@ -23,26 +23,21 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-
 tx_rnbase::load('tx_mklib_scheduler_Generic');
 
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_scheduler
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
 {
-
     /**
      * @var array
      */
     private $affectedRows = array();
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_scheduler_Generic::executeTask()
      */
     protected function executeTask(array $options, array &$devLog)
@@ -57,15 +52,15 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
             $table,
             array(
                 'where' => $where, 'enablefieldsoff' => true,
-                'callback'    => array($this, 'deleteRow')
+                'callback' => array($this, 'deleteRow'),
             )
         );
 
         $devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO] = array(
-            'message' =>    count($this->affectedRows) . ' Datensätze wurden in ' .
-                            $table . ' mit der Bedingung ' .
-                            $where . ' und dem Modus ' . $mode . ' entfernt',
-            'dataVar' =>    array('betroffene Datensätze' => $this->affectedRows)
+            'message' => count($this->affectedRows).' Datensätze wurden in '.
+                            $table.' mit der Bedingung '.
+                            $where.' und dem Modus '.$mode.' entfernt',
+            'dataVar' => array('betroffene Datensätze' => $this->affectedRows),
         );
     }
 
@@ -77,8 +72,8 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
         $selectFields =
             $this->getOption('selectFields') ? $this->getOption('selectFields') : 'uid';
 
-        if (strpos($this->getUidField(), $selectFields) === false) {
-            $selectFields .= ',' . $this->getUidField();
+        if (false === strpos($this->getUidField(), $selectFields)) {
+            $selectFields .= ','.$this->getUidField();
         }
 
         return $selectFields;
@@ -100,7 +95,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
         $this->affectedRows[] = $row;
         $databaseConnection = $this->getDatabaseConnection();
         $uidField = $this->getUidField();
-        $where = $uidField . ' = ' . $databaseConnection->fullQuoteStr($row[$uidField]);
+        $where = $uidField.' = '.$databaseConnection->fullQuoteStr($row[$uidField]);
 
         $databaseConnection->delete(
             $this->getOption('table'),
@@ -118,9 +113,9 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
     }
 
     /**
-     * This method returns the destination mail address as additional information
+     * This method returns the destination mail address as additional information.
      *
-     * @return  string  Information to display
+     * @return string Information to display
      */
     public function getAdditionalInformation($info = '')
     {
@@ -131,5 +126,5 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabase.php'];
 }

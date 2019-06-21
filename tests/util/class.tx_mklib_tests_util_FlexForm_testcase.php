@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -25,26 +23,21 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_FlexForm');
 
 /**
- * testcase for the flexform util
+ * testcase for the flexform util.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  * @license http://www.gnu.org/licenses/lgpl.html
  *        GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_tests_util_FlexForm_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * Testet die getByRefererCallsSearchCorrect Methode.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -68,7 +61,7 @@ class tx_mklib_tests_util_FlexForm_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Liefert das Fixture XML
+     * Liefert das Fixture XML.
      *
      * @return string
      */

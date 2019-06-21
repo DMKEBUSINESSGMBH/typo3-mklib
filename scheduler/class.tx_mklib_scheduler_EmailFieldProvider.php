@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2011 DMK E-BUSINESS GmbH  <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -21,21 +21,18 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 
 /**
- * Bietet ein Feld für eine Email Adresse
+ * Bietet ein Feld für eine Email Adresse.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Hannes Bochmann <hann.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFieldProvider
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_scheduler_GenericFieldProvider::getAdditionalFieldConfig()
      */
     protected function getAdditionalFieldConfig()

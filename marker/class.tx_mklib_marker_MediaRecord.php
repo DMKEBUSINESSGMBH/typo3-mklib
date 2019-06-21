@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mkdownloads
- * @subpackage tx_mkdownloads_marker
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -25,23 +23,18 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 tx_rnbase::load('tx_rnbase_util_BaseMarker');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- * Diese Klasse ist für die Erstellung von Markerarrays der Section
+ * Diese Klasse ist für die Erstellung von Markerarrays der Section.
  *
  * Entweder für DAM oder für FAL
  *
- * @package tx_mkdownloads
- * @subpackage tx_mkdownloads_marker
  * @author Michael Wagner
  */
 class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
 {
-
     /**
      * @return tx_mklib_marker_DAMRecord
      */
@@ -53,12 +46,13 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
     /**
      * erzeugt eine Liste von Dateien.
      *
-     * @param   string                          $template
-     * @param   tx_mkdownloads_model_Download   $item
-     * @param   tx_rnbase_util_FormatUtil       $formatter
-     * @param   string                          $confId
-     * @param   string                          $marker
-     * @return  string
+     * @param string                        $template
+     * @param tx_mkdownloads_model_Download $item
+     * @param tx_rnbase_util_FormatUtil     $formatter
+     * @param string                        $confId
+     * @param string                        $marker
+     *
+     * @return string
      */
     public static function buildList($aRecords, $template, &$formatter, $confId, $marker)
     {
@@ -84,14 +78,15 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
      *  uid, pid, title, media_type, tstamp, crdate, cruser_id,
      *  deleted, sys_language_uid, l18n_parent, hidden, starttime, endtime, fe_group,
      *  file_name, file_dl_name, file_path, file_size, file_type, file_ctime, file_mtime,
-     *  file_hash, file_mime_type, file_mime_subtype, file_status, index_type, parent_id
+     *  file_hash, file_mime_type, file_mime_subtype, file_status, index_type, parent_id.
      *
-     * @param   tx_mklib_model_Dam              $item
-     * @param   array                           $record
-     * @param   tx_rnbase_util_FormatUtil       $formatter
-     * @param   string                          $confId
-     * @param   string                          $marker
-     * @return  string
+     * @param tx_mklib_model_Dam        $item
+     * @param array                     $record
+     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param string                    $confId
+     * @param string                    $marker
+     *
+     * @return string
      */
     public function parseTemplate($template, &$item, &$formatter, $confId, $marker = 'FILE')
     {
@@ -129,14 +124,15 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
     }
 
     /**
-     * Icon für den Typ hinzufügen
+     * Icon für den Typ hinzufügen.
      *
-     * @param   string                          $template
-     * @param   tx_mklib_model_Dam              $item
-     * @param   tx_rnbase_util_FormatUtil       $formatter
-     * @param   string                          $confId
-     * @param   string                          $marker
-     * @return  string
+     * @param string                    $template
+     * @param tx_mklib_model_Dam        $item
+     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param string                    $confId
+     * @param string                    $marker
+     *
+     * @return string
      */
     private function addIcon($template, &$item, &$formatter, $confId, $marker)
     {
@@ -147,37 +143,37 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
 
         return $template;
         //@TODO: implement if needet
-/*
-    ###TS
-
-    icon = IMAGE
-    icon {
-        ### welches feld soll für das mapping genutzt werden? (file_mime_type, file_mime_subtype, file_type )
-        field = file_type
-        fileext = gif
-        ## wenn kein mapping zutrifft
-        default = unknown
-        ### mapping der Felder
-        ###     wenn im field docx und in fileext gif steht wird doc.gif ausgegeben
-        ###     ACHTUNG: in der kommaseparierten liste dürfen keine leerzeichen sein!
-        ###              doc, docx wäre falsch und würde nicht funktionieren.
-        mapping {
-            doc = doc,docx
-            jpg = jpg,jpeg
-            dwg = dwg
-            dxf = dxf
-            pdf = pdf
-            tiff = tiff
-            xls = xls
-            zip = zip
-            video =
-        }
-    }
-    icon.file {
-        import = EXT:mkdownloads/res/fileicons/
-        import.field = icon
-    }
- */
+        /*
+            ###TS
+        
+            icon = IMAGE
+            icon {
+                ### welches feld soll für das mapping genutzt werden? (file_mime_type, file_mime_subtype, file_type )
+                field = file_type
+                fileext = gif
+                ## wenn kein mapping zutrifft
+                default = unknown
+                ### mapping der Felder
+                ###     wenn im field docx und in fileext gif steht wird doc.gif ausgegeben
+                ###     ACHTUNG: in der kommaseparierten liste dürfen keine leerzeichen sein!
+                ###              doc, docx wäre falsch und würde nicht funktionieren.
+                mapping {
+                    doc = doc,docx
+                    jpg = jpg,jpeg
+                    dwg = dwg
+                    dxf = dxf
+                    pdf = pdf
+                    tiff = tiff
+                    xls = xls
+                    zip = zip
+                    video =
+                }
+            }
+            icon.file {
+                import = EXT:mkdownloads/res/fileicons/
+                import.field = icon
+            }
+         */
         $configuration = $formatter->getConfigurations();
 
         $field = $configuration->get($confId.'icon.field');
@@ -192,7 +188,6 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         $fileExt = $configuration->get($confId.'icon.fileext');
         $fileExt = $fileExt ? $fileExt : 'gif';
 
-
         $icon = $default.'.'.$fileExt;
         if (is_array($mapping)) {
             foreach ($mapping as $key => $value) {
@@ -204,15 +199,16 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         }
         $item->record['icon'] = $icon;
     }
+
     /**
-     * Links vorbereiten
+     * Links vorbereiten.
      *
-     * @param   tx_mklib_model_Dam              $item
-     * @param   string                          $marker
-     * @param   array                           $markerArray
-     * @param   array                           $wrappedSubpartArray
-     * @param   string                          $confId
-     * @param   tx_rnbase_util_formatUtil       $formatter
+     * @param tx_mklib_model_Dam        $item
+     * @param string                    $marker
+     * @param array                     $markerArray
+     * @param array                     $wrappedSubpartArray
+     * @param string                    $confId
+     * @param tx_rnbase_util_formatUtil $formatter
      */
     private function prepareLinks(&$item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, &$formatter, $template)
     {
@@ -240,10 +236,10 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
                     $linkObj->externalTargetAttribute($extTarget);
                 }
                 if ($makeLink) {
-                    $wrappedSubpartArray['###'.$linkMarker . '###'] = explode($token, $linkObj->makeTag());
+                    $wrappedSubpartArray['###'.$linkMarker.'###'] = explode($token, $linkObj->makeTag());
                 }
                 if ($makeUrl) {
-                    $markerArray['###'.$linkMarker . 'URL###'] = $linkObj->makeUrl(false);
+                    $markerArray['###'.$linkMarker.'URL###'] = $linkObj->makeUrl(false);
                 }
             } else {
                 $remove = $configurations->getBool($confId.'link.removeIfDisabled', false, true);
@@ -253,7 +249,6 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
     }
 }
 
-
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php'];
 }

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -30,22 +28,18 @@
  * Class to handle static caches.
  *
  * can store data for an request to use in all views
- *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 class tx_mklib_util_StaticCache
 {
-
     /**
-     * stores static cache data
+     * stores static cache data.
      *
      * @var array
      */
     private static $staticCache = array();
 
     /**
-     * Set static cache value
+     * Set static cache value.
      *
      * @param string $key
      * @param string $value
@@ -60,10 +54,11 @@ class tx_mklib_util_StaticCache
     }
 
     /**
-     * get static cache value
+     * get static cache value.
      *
      * @param string $key
      * @param $extKey
+     *
      * @return mixed
      */
     public static function get($key, $extKey = 'mklib')
@@ -76,10 +71,11 @@ class tx_mklib_util_StaticCache
     }
 
     /**
-     * get static cache value
+     * get static cache value.
      *
      * @param string $key
      * @param $extKey
+     *
      * @return mixed
      */
     public static function has($key, $extKey = 'mklib')
@@ -88,10 +84,11 @@ class tx_mklib_util_StaticCache
     }
 
     /**
-     * remove static cache value
+     * remove static cache value.
      *
      * @param string $key
      * @param $extKey
+     *
      * @return mixed
      */
     public static function remove($key, $extKey = 'mklib')
@@ -101,5 +98,5 @@ class tx_mklib_util_StaticCache
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_StaticCache.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_StaticCache.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_StaticCache.php'];
 }

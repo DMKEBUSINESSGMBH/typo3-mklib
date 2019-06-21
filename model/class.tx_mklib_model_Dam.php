@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -25,16 +23,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_rnbase_model_base');
 tx_rnbase::load('tx_mklib_model_Media');
 
 /**
- * Model eines DAM-Records
+ * Model eines DAM-Records.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author Michael Wagner
+ *
  * @deprecated use tx_mklib_model_Media
  */
 class tx_mklib_model_Dam extends tx_mklib_model_Media
@@ -42,5 +38,5 @@ class tx_mklib_model_Dam extends tx_mklib_model_Media
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php'];
 }

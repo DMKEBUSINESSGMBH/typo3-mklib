@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -30,16 +28,15 @@ tx_rnbase::load('tx_rnbase_parameters');
 /**
  * Basisklasse, um eine Baumstruktur abzubilden.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_treelib
  * @author Michael Wagner
+ *
  * @deprecated since TYPO3 7.6. use core feature for tree views instead since TYPO3 7.6
+ *
  * @todo remove when support for TYPO3 6.2 is dropped
  */
 class tx_mklib_treelib_TCE
 {
     /**
-     *
      * @var \TYPO3\CMS\Backend\Form\FormEngine
      */
     private $oTceForm = null;
@@ -49,10 +46,10 @@ class tx_mklib_treelib_TCE
     private $PA = array();
 
     /**
+     * @param array                              $PA
+     * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
      *
-     * @param   array           $PA
-     * @param   \TYPO3\CMS\Backend\Form\FormEngine  $fObj
-     * @return  string
+     * @return string
      */
     public function getSelectTree(&$PA, &$pObj)
     {
@@ -71,10 +68,11 @@ class tx_mklib_treelib_TCE
     }
 
     /**
-     * Liefert
+     * Liefert.
      *
-     * @param   string  $cmd
-     * @return  tx_xajax_response
+     * @param string $cmd
+     *
+     * @return tx_xajax_response
      */
     public function sendXajaxResponse($cmd)
     {
@@ -100,5 +98,5 @@ class tx_mklib_treelib_TCE
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TCE.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TCE.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/treelib/class.tx_mklib_treelib_TCE.php'];
 }

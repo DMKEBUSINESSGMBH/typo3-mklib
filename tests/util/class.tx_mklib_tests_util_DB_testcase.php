@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,28 +25,25 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_tests_Util');
 tx_rnbase::load('tx_mklib_util_DB');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * DB util tests
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * DB util tests.
  */
 class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var string
      */
     protected $databaseConnectionClassBackup = '';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -68,7 +63,8 @@ class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -108,10 +104,9 @@ class tx_mklib_tests_util_DB_testcase extends tx_rnbase_tests_BaseTestCase
 
 class Tx_Mklib_Database_ConnectionMock extends Tx_Mklib_Database_Connection
 {
-
     /**
      * Zugriff darauf würde scheitern wenn die Methode doch
-     * statisch aufgerufen wird
+     * statisch aufgerufen wird.
      *
      * @var array
      */

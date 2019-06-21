@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2014 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
  * All rights reserved
@@ -22,20 +22,14 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
-
 /**
- * Liest CSV Dateien aus
+ * Liest CSV Dateien aus.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_csv_reader implements Iterator
 {
-
     /**
-     *
      * @var ressource
      */
     private $handle = false;
@@ -60,11 +54,11 @@ class tx_mklib_util_csv_reader implements Iterator
     private $ignoreFirst = true;
 
     /**
-     *
      * @param string $file
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
+     *
      * @throws Exception
      */
     public function __construct(
@@ -74,9 +68,9 @@ class tx_mklib_util_csv_reader implements Iterator
         $escape = '\\'
     ) {
         $this->handle = @fopen($file, 'r');
-        if ($this->handle === false) {
+        if (false === $this->handle) {
             throw new Exception(
-                'Could not open file for csv reader. File: ' . $file
+                'Could not open file for csv reader. File: '.$file
             );
         }
         $this->delimiter = $delimiter;
@@ -108,7 +102,7 @@ class tx_mklib_util_csv_reader implements Iterator
     }
 
     /**
-     * This method returns the current csv row as a 2 dimensional array
+     * This method returns the current csv row as a 2 dimensional array.
      *
      * @return array The current csv row as a 2 dimensional array
      */
@@ -136,7 +130,7 @@ class tx_mklib_util_csv_reader implements Iterator
     /**
      * This method checks if the end of file is reached.
      *
-     * @return bool Returns true on EOF reached, false otherwise.
+     * @return bool returns true on EOF reached, false otherwise
      */
     public function next()
     {
@@ -146,7 +140,7 @@ class tx_mklib_util_csv_reader implements Iterator
     /**
      * This method checks if the next row is a valid row.
      *
-     * @return bool If the next row is a valid row.
+     * @return bool if the next row is a valid row
      */
     public function valid()
     {
@@ -161,5 +155,5 @@ class tx_mklib_util_csv_reader implements Iterator
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_reader.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_readere.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_readere.php'];
 }

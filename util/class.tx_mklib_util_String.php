@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,18 +25,15 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_Var');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- * String Utilities
+ * String Utilities.
  *
  * @author hbochmann
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 class tx_mklib_util_String extends tx_mklib_util_Var
 {
@@ -48,9 +43,10 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      * Kürzt einen Text Feld auf die Anzahl angegebener Zeichen
      * Es wird nach dem ersten Leerzeichen nach der Zeichenanzahl gesucht!
      *
-     * @param string    $sText      Der zu kürzende Text
-     * @param int       $iLen       Die Länge des Textes
-     * @param string    $sSuffix    Wird nur angehängt, wenn der text gekürtzt wurde!
+     * @param string $sText   Der zu kürzende Text
+     * @param int    $iLen    Die Länge des Textes
+     * @param string $sSuffix Wird nur angehängt, wenn der text gekürtzt wurde!
+     *
      * @return string
      */
     public static function crop($sText, $iLen = 150, $sSuffix = '')
@@ -58,21 +54,22 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         if (// der Text ist länger als wir ihn brauchen
             strlen($sText) >= $iLen
             && // nur, wenn nach iCharPos noch ein Leerzeichen gefunden wurde.
-            ($iCharPos = strpos($sText, ' ', $iLen)) !== false
+            false !== ($iCharPos = strpos($sText, ' ', $iLen))
           ) {
             // der Text wird gekürzt
-            $sText = substr($sText, 0, $iCharPos) . $sSuffix;
+            $sText = substr($sText, 0, $iCharPos).$sSuffix;
         }
 
         return $sText;
     }
 
     /**
-     * Bereinigt ein String von allen Zeichen außer Buchstaben und Leerzeichen
+     * Bereinigt ein String von allen Zeichen außer Buchstaben und Leerzeichen.
      *
      * @TODO Leet beachten -> z.B. 4rsch
      *
      * @param string $string
+     *
      * @return string
      */
     public static function removeNoneLetters($string)
@@ -81,13 +78,14 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     }
 
     /**
-     * Convert HTML to plain text
+     * Convert HTML to plain text.
      *
      * Removes HTML tags and HTML comments and converts HTML entities
      * to their applicable characters.
      *
-     * @param string    $t
-     * @return string   Converted string (utf8-encoded)
+     * @param string $t
+     *
+     * @return string Converted string (utf8-encoded)
      */
     public static function html2plain($t)
     {
@@ -104,10 +102,10 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * Entfernt hintereinander mehrfach vorkommende Inhalte.
-     * Fünf Leerzeichen auf eines reduzieren: 'a b' = removeRepeatedlyOccurrings('a     b', ' ');
+     * Fünf Leerzeichen auf eines reduzieren: 'a b' = removeRepeatedlyOccurrings('a     b', ' ');.
      *
-     * @param   string  $sHaystack
-     * @param   mixed   $mValue
+     * @param string $sHaystack
+     * @param mixed  $mValue
      */
     public static function removeRepeatedlyOccurrings($sHaystack, $mValue = array(' ', TAB, LF, CR, CRLF))
     {
@@ -115,7 +113,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         // Alle Werte Prprüfen/ersetzen
         foreach ($mValue as $sValue) {
             // Ist der String mindestens 2x hintereinander enthalten
-            while (strpos($sHaystack, $sValue.$sValue) !== false) {
+            while (false !== strpos($sHaystack, $sValue.$sValue)) {
                 // doppeltes vorkommen entfernen
                 $sHaystack = str_replace($sValue.$sValue, $sValue, $sHaystack);
             }
@@ -125,24 +123,28 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     }
 
     /**
-     * lcfirst gibt es erst ab php 5.3
-     * @param   string  $sString
-     * @return  string
+     * lcfirst gibt es erst ab php 5.3.
+     *
+     * @param string $sString
+     *
+     * @return string
      */
     public static function lcfirst($sString)
     {
         if (function_exists('lcfirst')) {
             return lcfirst($sString);
         }
-        $sString{0} = strtolower($sString{0});
+        $sString[0] = strtolower($sString[0]);
 
         return $sString;
     }
 
     /**
      * Wandelt einen String anhand eines Trennzeichens in CamelCase um.
-     * @param   string  $sString
-     * @param   string  $sDelimiter
+     *
+     * @param string $sString
+     * @param string $sDelimiter
+     *
      * @return string
      */
     public static function toCamelCase($sString, $sDelimiter = '_')
@@ -159,13 +161,14 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param string $text
+     *
      * @return string
      */
     public static function obfusicateContainedEmails($text)
     {
         $text = preg_replace_callback(
             self::emailRegex,
-            array(self,'obfusicateEmail'),
+            array(self, 'obfusicateEmail'),
             $text
         );
 
@@ -174,6 +177,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param array $emailParts | provided e.g. from preg_replace
+     *
      * @return string
      */
     public static function obfusicateEmail($emailParts)
@@ -189,16 +193,16 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         return $emailMailTo[1];
     }
 
-
     /**
      * @param string $text
+     *
      * @return string
      */
     public static function convertContainedEmailsToMailToLinks($text)
     {
         $text = preg_replace_callback(
             self::emailRegex,
-            array(self,'convertEmailToMailToLink'),
+            array(self, 'convertEmailToMailToLink'),
             $text
         );
 
@@ -207,6 +211,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param array $emailParts | provided e.g. from preg_replace
+     *
      * @return string
      *
      * @todo prüfen ob es die email schon als link im text gibt und dann nicht parsen
@@ -241,7 +246,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * macht aus http://www.google.de, https://www.google.de, ftp://www.google.de,
-     * ftps://www.google.de, www.google.de, email@domain.tld die passenden HTML Links
+     * ftps://www.google.de, www.google.de, email@domain.tld die passenden HTML Links.
      *
      * dabei wird der Text auch XSS geschützt
      *
@@ -265,12 +270,12 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     }
 
     /**
-     * Convert a telephone number into a full-featured RFC 3966 telephone number
+     * Convert a telephone number into a full-featured RFC 3966 telephone number.
      *
      * @param string $orig Original telephone number, may be partial
      * @param array  $conf Configuration. Keys:
-     *   - "countryCode": default country code, "49" for Germany
-     *   - "areaCode": default area code, without leading zero
+     *                     - "countryCode": default country code, "49" for Germany
+     *                     - "areaCode": default area code, without leading zero
      *
      * @return string Full RFC 3966-compatible telephone number
      *
@@ -279,21 +284,21 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     public static function formatTelephoneNumberRfc3966($orig, $conf)
     {
         if (!isset($conf['countryCode'])) {
-            $conf['countryCode'] = '49';//germany
+            $conf['countryCode'] = '49'; //germany
         }
         $num = preg_replace('#[^+0-9]#', '', $orig);
-        if (substr($num, 0, 1) == '+') {
+        if ('+' == substr($num, 0, 1)) {
             //full telephone number
             $tel = $num;
-        } elseif (substr($num, 0, 2) == '00') {
+        } elseif ('00' == substr($num, 0, 2)) {
             //full number with country code, but 00 instead of +
-            $tel = '+' . substr($num, 2);
-        } elseif (substr($num, 0, 1) == '0') {
+            $tel = '+'.substr($num, 2);
+        } elseif ('0' == substr($num, 0, 1)) {
             //full number without country code
-            $tel = '+' . $conf['countryCode'] . substr($num, 1);
+            $tel = '+'.$conf['countryCode'].substr($num, 1);
         } else {
             //partial number, no country or area code
-            $tel = '+' . $conf['countryCode'] . $conf['areaCode'] . $num;
+            $tel = '+'.$conf['countryCode'].$conf['areaCode'].$num;
         }
 
         return $tel;
@@ -301,6 +306,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param string $string
+     *
      * @return string
      */
     public static function removeMultipleWhitespaces($string)
@@ -310,5 +316,5 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_String.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_String.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_String.php'];
 }

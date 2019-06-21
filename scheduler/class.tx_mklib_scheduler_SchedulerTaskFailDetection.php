@@ -22,33 +22,30 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 tx_rnbase::load('tx_mklib_scheduler_Generic');
 tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_mklib_util_Scheduler');
 
 /**
- * tx_mklib_scheduler_SchedulerTaskFailDetection
+ * tx_mklib_scheduler_SchedulerTaskFailDetection.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_Generic
 {
-
     /**
      * Diese werte/optionen werden bei der ausgabe in der scheduler
-     * übersicht als eine richtige zeitangabe formatiert wie 1 minute 30 sekunden
+     * übersicht als eine richtige zeitangabe formatiert wie 1 minute 30 sekunden.
      *
      * @var array
      */
     protected $optionsToFormat = array('failDetectionRememberAfter');
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_scheduler_Generic::executeTask()
      */
     protected function executeTask(array $options, array &$devLog)
@@ -64,14 +61,13 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
     }
 
     /**
-     * alle bei denen eine errinnerung notwendig ist
-     * @return void
+     * alle bei denen eine errinnerung notwendig ist.
      */
     protected function resetFailedTasksDetection()
     {
         $this->getDatabaseConnection()->doUpdate(
             'tx_scheduler_task',
-            'faildetected < ' . ($GLOBALS['EXEC_TIME'] - $this->getOption('failDetectionRememberAfter')),
+            'faildetected < '.($GLOBALS['EXEC_TIME'] - $this->getOption('failDetectionRememberAfter')),
             array('faildetected' => 0)
         );
     }
@@ -86,7 +82,6 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 
     /**
      * @param array $failedTasks
-     * @return void
      */
     protected function handleFailedTasks($failedTasks)
     {
@@ -97,12 +92,12 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
                 get_class(unserialize($failedTask['serialized_task_object'])) :
                 $failedTask['classname'];
 
-            $messages[] = '"' . $classname . ' (Task-Uid: ' . $failedTask['uid'] . ')"';
+            $messages[] = '"'.$classname.' (Task-Uid: '.$failedTask['uid'].')"';
             $uids[] = $failedTask['uid'];
         }
 
         //wir bauen eine exception damit die error mail von rnbase gebaut werden kann
-        $message =    'Die folgenden Scheduler Tasks sind fehlgeschlagen : ' .
+        $message = 'Die folgenden Scheduler Tasks sind fehlgeschlagen : '.
                     implode(', ', $messages);
 
         $exception = new Exception($message, 0);
@@ -116,7 +111,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
                 $this->getOption('failDetectionReceiver'),
                 'tx_mklib_scheduler_SchedulerTaskFailDetection',
                 $exception,
-                $options
+                $options,
             )
         );
 
@@ -137,19 +132,19 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 
     /**
      * @param array $uids
-     * @return void
      */
     protected function setFailDetected(array $uids)
     {
         $this->getDatabaseConnection()->doUpdate(
             'tx_scheduler_task',
-            'uid IN (' . implode(',', $uids) . ')',
+            'uid IN ('.implode(',', $uids).')',
             array('faildetected' => $GLOBALS['EXEC_TIME'])
         );
     }
 
     /**
-     * möglicherweise hängen geblibene tasks
+     * möglicherweise hängen geblibene tasks.
+     *
      * @return array
      */
     protected function getFailedTasks()
@@ -165,19 +160,19 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
                 //hat keine TCA
                 'enablefieldsoff' => true,
                 //nicht unser eigener Task, keine deaktivierten und alle mit Fehler
-                'where' =>    'uid != ' . intval($this->taskUid) . ' AND ' .
-                            'faildetected = 0 AND ' .
-                            'lastexecution_failure != "" AND ' .
-                            'disable = 0'
+                'where' => 'uid != '.intval($this->taskUid).' AND '.
+                            'faildetected = 0 AND '.
+                            'lastexecution_failure != "" AND '.
+                            'disable = 0',
             )
         );
     }
 
     /**
      * Liefert alle Optionen. sekunden werden in einer ordentlichen
-     * zeitangabe formatiert
+     * zeitangabe formatiert.
      *
-     * @return  array
+     * @return array
      */
     public function getOptions()
     {
@@ -196,5 +191,5 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetection.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetection.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetection.php'];
 }

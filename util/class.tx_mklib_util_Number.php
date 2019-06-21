@@ -1,39 +1,12 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- * All rights reserved
- *
- * This script is part of the TYPO3 project. The TYPO3 project is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * This copyright notice MUST APPEAR in all copies of the script!
- */
-
 
 /**
- * Numeric Utils
+ * Numeric Utils.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_Number extends tx_mklib_util_Var
 {
-
     /**
      * Wir wandeln einen Wert in einen Float um.
      *
@@ -45,6 +18,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
      * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
      *
      * @param string $number
+     *
      * @return float
      */
     public static function parseFloat($number)
@@ -75,8 +49,9 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
      * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
      *
      * @param string $number
-     * @param array $config
-     * @return string der float wert als String.
+     * @param array  $config
+     *
+     * @return string der float wert als String
      */
     public static function floatVal($number, array $config = array())
     {
@@ -160,5 +135,5 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Number.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Number.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Number.php'];
 }

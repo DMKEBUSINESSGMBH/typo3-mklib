@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,26 +25,23 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
 tx_rnbase::load('tx_mklib_util_DAM');
 
 /**
- * DB util tests
+ * DB util tests.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  *
  * @group integration
  */
 class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 {
-    protected $importExtensions = array('dam','mklib');
+    protected $importExtensions = array('dam', 'mklib');
     protected $importDependencies = true;
     protected $importDataSet = array(
-        'EXT:mklib/tests/fixtures/db/dam.xml'
+        'EXT:mklib/tests/fixtures/db/dam.xml',
     );
 
     /**
@@ -65,7 +60,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     protected $sAbsoluteImagePath;
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_tests_DBTestCaseSkeleton::setUp()
      */
     public function setUp()
@@ -84,7 +80,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_tests_DBTestCaseSkeleton::tearDown()
      */
     public function tearDown()
@@ -124,7 +121,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     * die referenz existiert nicht und daher darf auch nicht der dam record zurückgegeben werden
+     * die referenz existiert nicht und daher darf auch nicht der dam record zurückgegeben werden.
+     *
      * @group integration
      */
     public function testDamRecordHasReferencesReturnsFalseIfNoReferencesFound()
@@ -137,24 +135,24 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     *
      * @group integration
      */
     public function testDeleteDamRecordReturnsFalseIfGivenDamRecordIsEmpty()
     {
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
-        $aDamRecords = array('rows' => array(),'files' => array());
+        $aDamRecords = array('rows' => array(), 'files' => array());
         self::assertFalse(tx_mklib_util_DAM::deleteDamRecord($aDamRecords), 'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
     }
 
     /**
-     * nichts machen da es noch referenzen gibt
+     * nichts machen da es noch referenzen gibt.
+     *
      * @group integration
      */
     public function testDeleteDamRecordWorksCorrectWithDefaultSettingsAndExistingReferences()
     {
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
-        $aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
+        $aDamRecords = array('rows' => array(1 => array()), 'files' => array(1 => $this->sRelativeImagePath));
         self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords), 'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
         //dam record nicht auf hidden und deleted da noch referenzen da?
@@ -169,12 +167,13 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     * auf hidden setzen
+     * auf hidden setzen.
+     *
      * @group integration
      */
     public function testDeleteDamRecordWorksCorrectWithDefaultSettingsAndNoneExistingReferences()
     {
-        $aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
+        $aDamRecords = array('rows' => array(1 => array()), 'files' => array(1 => $this->sRelativeImagePath));
         self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords), 'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
         //dam record nicht auf hidden und deleted da noch referenzen da?
@@ -189,12 +188,13 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     * auf deleted setzen
+     * auf deleted setzen.
+     *
      * @group integration
      */
     public function testDeleteDamRecordWorksCorrectWithMode1AndNoneExistingReferences()
     {
-        $aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
+        $aDamRecords = array('rows' => array(1 => array()), 'files' => array(1 => $this->sRelativeImagePath));
         self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords, 1), 'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
         //dam record nicht auf hidden und deleted da noch referenzen da?
@@ -209,12 +209,13 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     * ganz löschen
+     * ganz löschen.
+     *
      * @group integration
      */
     public function testDeleteDamRecordWorksCorrectWithMode2AndNoneExistingReferences()
     {
-        $aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
+        $aDamRecords = array('rows' => array(1 => array()), 'files' => array(1 => $this->sRelativeImagePath));
         self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords, 2), 'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
         //dam record nicht auf hidden und deleted da noch referenzen da?
@@ -226,12 +227,13 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     * ganz löschen und bild löschen
+     * ganz löschen und bild löschen.
+     *
      * @group integration
      */
     public function testDeleteDamRecordWorksCorrectWithDeletingImageAndNoneExistingReferences()
     {
-        $aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
+        $aDamRecords = array('rows' => array(1 => array()), 'files' => array(1 => $this->sRelativeImagePath));
         self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords, 2, true), 'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
         //dam record nicht auf hidden und deleted da noch referenzen da?
@@ -243,13 +245,14 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
     }
 
     /**
-     * nichts machen da es noch referenzen gibt
+     * nichts machen da es noch referenzen gibt.
+     *
      * @group integration
      */
     public function testDeleteDamRecordWorksCorrectWithDeletingImageAndExistingReferences()
     {
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/dam_ref.xml'));
-        $aDamRecords = array('rows' => array(1 => array()),'files' => array(1 => $this->sRelativeImagePath));
+        $aDamRecords = array('rows' => array(1 => array()), 'files' => array(1 => $this->sRelativeImagePath));
         self::assertTrue(tx_mklib_util_DAM::deleteDamRecord($aDamRecords, 2, true), 'es wurde nicht false zurück gegeben obwohl der DAM Record leer ist.');
 
         //dam record nicht auf hidden und deleted da noch referenzen da?
@@ -265,7 +268,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
     /**
      * prüfen ob alles gelöscht wird, auch die bilder da sie keine
-     * verwendung mehr haben
+     * verwendung mehr haben.
+     *
      * @group integration
      */
     public function testHandleDeleteWithDefaultSettings()
@@ -274,7 +278,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/wordlist.xml'));
         //wir müssen nachträglich noch die richtige pid in die dam datensätze einfügen damit
         //diese auch gefunden werden über tx_mklib_util_DAM::getRecords
-        require_once(PATH_txdam.'lib/class.tx_dam_db.php');
+        require_once PATH_txdam.'lib/class.tx_dam_db.php';
         tx_rnbase_util_DB::doUpdate('tx_dam', '', array('pid' => tx_dam_db::getPidList()));
 
         $result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted');
@@ -300,7 +304,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
     /**
      * prüfen ob alles gelöscht wird, auch die bilder da sie keine
-     * verwendung mehr haben
+     * verwendung mehr haben.
+     *
      * @group integration
      */
     public function testHandleDeleteWithMode1()
@@ -309,7 +314,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/wordlist.xml'));
         //wir müssen nachträglich noch die richtige pid in die dam datensätze einfügen damit
         //diese auch gefunden werden über tx_mklib_util_DAM::getRecords
-        require_once(PATH_txdam.'lib/class.tx_dam_db.php');
+        require_once PATH_txdam.'lib/class.tx_dam_db.php';
         tx_rnbase_util_DB::doUpdate('tx_dam', '', array('pid' => tx_dam_db::getPidList()));
 
         $result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted', 1);
@@ -335,7 +340,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
     /**
      * prüfen ob alles gelöscht wird, auch die bilder da sie keine
-     * verwendung mehr haben
+     * verwendung mehr haben.
+     *
      * @group integration
      */
     public function testHandleDeleteWithMode2()
@@ -344,7 +350,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/wordlist.xml'));
         //wir müssen nachträglich noch die richtige pid in die dam datensätze einfügen damit
         //diese auch gefunden werden über tx_mklib_util_DAM::getRecords
-        require_once(PATH_txdam.'lib/class.tx_dam_db.php');
+        require_once PATH_txdam.'lib/class.tx_dam_db.php';
         tx_rnbase_util_DB::doUpdate('tx_dam', '', array('pid' => tx_dam_db::getPidList()));
 
         $result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted', 2);
@@ -367,7 +373,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
     /**
      * prüfen ob alles gelöscht wird, auch die bilder da sie keine
-     * verwendung mehr haben
+     * verwendung mehr haben.
+     *
      * @group integration
      */
     public function testHandleDeleteWithMode2AndDeleteImage()
@@ -376,7 +383,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/wordlist.xml'));
         //wir müssen nachträglich noch die richtige pid in die dam datensätze einfügen damit
         //diese auch gefunden werden über tx_mklib_util_DAM::getRecords
-        require_once(PATH_txdam.'lib/class.tx_dam_db.php');
+        require_once PATH_txdam.'lib/class.tx_dam_db.php';
         tx_rnbase_util_DB::doUpdate('tx_dam', '', array('pid' => tx_dam_db::getPidList()));
 
         $result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 1, 'blacklisted', 2, true);
@@ -399,7 +406,8 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
 
     /**
      * prüfen ob alles gelöscht wird, auch die bilder da sie keine
-     * verwendung mehr haben
+     * verwendung mehr haben.
+     *
      * @group integration
      */
     public function testHandleDeleteWhenNoReference()
@@ -407,7 +415,7 @@ class tx_mklib_tests_util_DAM_testcase extends tx_mklib_tests_DBTestCaseSkeleton
         $this->importDataSet(tx_mklib_tests_Util::getFixturePath('db/wordlist.xml'));
         //wir müssen nachträglich noch die richtige pid in die dam datensätze einfügen damit
         //diese auch gefunden werden über tx_mklib_util_DAM::getRecords
-        require_once(PATH_txdam.'lib/class.tx_dam_db.php');
+        require_once PATH_txdam.'lib/class.tx_dam_db.php';
         tx_rnbase_util_DB::doUpdate('tx_dam', '', array('pid' => tx_dam_db::getPidList()));
 
         $result = tx_mklib_util_DAM::handleDelete('tx_mklib_wordlist', 2, 'blacklisted', 1, true);

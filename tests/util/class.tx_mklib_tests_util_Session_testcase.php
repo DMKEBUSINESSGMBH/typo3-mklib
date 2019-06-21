@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *  All rights reserved
@@ -25,17 +25,14 @@ tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_util_Session');
 
 /**
- * tx_mklib_tests_util_Session_testcase
+ * tx_mklib_tests_util_Session_testcase.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var array
      */
@@ -47,7 +44,8 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
     private $feUserBackUp = array();
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -59,7 +57,8 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()

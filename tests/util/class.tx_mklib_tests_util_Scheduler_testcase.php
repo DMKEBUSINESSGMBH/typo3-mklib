@@ -25,17 +25,14 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_util_Scheduler');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
- * tx_mklib_tests_util_Scheduler_testcase
+ * tx_mklib_tests_util_Scheduler_testcase.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -44,9 +41,9 @@ class tx_mklib_tests_util_Scheduler_testcase extends tx_rnbase_tests_BaseTestCas
 {
     protected $languageBackup;
 
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -57,7 +54,8 @@ class tx_mklib_tests_util_Scheduler_testcase extends tx_rnbase_tests_BaseTestCas
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()

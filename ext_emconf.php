@@ -9,7 +9,7 @@
  * Only the data in the array - everything else is removed by next
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
-$EM_CONF [$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = array(
     'title' => 'MK Lib',
     'description' => 'Utilities for extensions',
     'category' => 'misc',

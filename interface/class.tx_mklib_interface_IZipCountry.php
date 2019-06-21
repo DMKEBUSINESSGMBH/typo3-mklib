@@ -24,15 +24,12 @@
  */
 
 /**
- * Interface für PLZ-Validierung von Ländern
+ * Interface für PLZ-Validierung von Ländern.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author René Nitzsche
  */
 interface tx_mklib_interface_IZipCountry
 {
-
     /**
      * Liefert den ISO2 Code des Landes. DE,CZ,PL usw.
      *
@@ -41,7 +38,7 @@ interface tx_mklib_interface_IZipCountry
     public function getISO2();
 
     /**
-     * ID der Regel für die PLZ-Validierung
+     * ID der Regel für die PLZ-Validierung.
             1: maximum length without gaps
             2: maximum length numerical without gaps
             3: exact length without gaps
@@ -57,7 +54,7 @@ interface tx_mklib_interface_IZipCountry
     public function getZipRule();
 
     /**
-     * Erlaubte Anzahl Zeichen der PLZ
+     * Erlaubte Anzahl Zeichen der PLZ.
      *
      * @return int
      */
@@ -65,5 +62,5 @@ interface tx_mklib_interface_IZipCountry
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php'];
 }

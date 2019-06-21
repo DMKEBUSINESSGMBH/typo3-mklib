@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,30 +25,27 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-
 /**
- * Basis Linker
- *
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
+ * Basis Linker.
  */
 abstract class tx_mklib_mod1_linker_Base
 {
-
     /**
-     * gibt den Namen des Links/der Action zurück
+     * gibt den Namen des Links/der Action zurück.
+     *
      * @return string
      */
     abstract protected function getActionName();
 
     /**
-     * Linker Html ausgeben
+     * Linker Html ausgeben.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param tx_rnbase_util_FormTool                $formTool
+     *
      * @return string
      */
     public function makeLink(Tx_Rnbase_Domain_Model_RecordInterface $oItem, $oFormTool)
@@ -64,7 +59,6 @@ abstract class tx_mklib_mod1_linker_Base
     }
 }
 
-
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php'];
 }

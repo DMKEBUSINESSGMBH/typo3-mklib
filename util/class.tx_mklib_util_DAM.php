@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -30,24 +28,19 @@ tx_rnbase::load('tx_rnbase_util_DB');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 if (tx_rnbase_util_Extensions::isLoaded('dam')) {
-    require_once(tx_rnbase_util_Extensions::extPath('dam').'tca_media_field.php');
+    require_once tx_rnbase_util_Extensions::extPath('dam').'tca_media_field.php';
 }
 
 /**
- * Klasse für Basisfunktionalitäten mit der DAM Extension
+ * Klasse für Basisfunktionalitäten mit der DAM Extension.
  *
  * @author  Michael Wagner
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * funktioniert nur bis TYPO 6.x da ab dann kein DAM mehr.
  * @TODO FAL Util bereitstellen mit gleicher API
  * @TODO diese klasse sollte ein wrapper sein um abhängig von TYPO3 Version
  * auf DAM oder FAL zu gehen.
  */
 class tx_mklib_util_DAM
 {
-
     /**
      * Prüft, ob Dam installiert ist.
      *
@@ -61,7 +54,8 @@ class tx_mklib_util_DAM
     /**
      * Gibt DAM Records von definierten UIDs zurück.
      *
-     * @param int           $iUid
+     * @param int $iUid
+     *
      * @return array|null
      */
     public static function getRecords($aUid)
@@ -84,10 +78,12 @@ class tx_mklib_util_DAM
 
         return array('files' => $aFiles, 'rows' => $aRows);
     }
+
     /**
      * Gibt Fileinfos von DAM Records von definierten UIDs zurück.
      *
-     * @param int           $iUid
+     * @param int $iUid
+     *
      * @return array|null
      */
     public static function getRecordsFileInfo($aUid)
@@ -101,13 +97,14 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Fügt eine Referenz hinzu
+     * Fügt eine Referenz hinzu.
      *
-     * @param string        $sTableName
-     * @param string        $sFieldName
-     * @param int           $iItemId (Referenz Datensatz)
-     * @param int           $iUid (DAM Datensatz)
-     * @param bool       $bUpdateCount
+     * @param string $sTableName
+     * @param string $sFieldName
+     * @param int    $iItemId      (Referenz Datensatz)
+     * @param int    $iUid         (DAM Datensatz)
+     * @param bool   $bUpdateCount
+     *
      * @return int
      */
     public static function addReference($sTableName, $sFieldName, $iItemId, $iUid, $bUpdateCount = true)
@@ -132,12 +129,12 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Löscht eine Referenz
+     * Löscht eine Referenz.
      *
-     * @param string        $sTableName
-     * @param string        $sFieldName
-     * @param int           $iItemId
-     * @param string|int    $iUid           Optional: Kommaseparierte liste mit Uids
+     * @param string     $sTableName
+     * @param string     $sFieldName
+     * @param int        $iItemId
+     * @param string|int $iUid         Optional: Kommaseparierte liste mit Uids
      * @param bool       $bUpdateCount
      */
     public static function deleteReferences($sTableName, $sFieldName, $iItemId, $mUid = '', $bUpdateCount = true)
@@ -146,10 +143,10 @@ class tx_mklib_util_DAM
             return false;
         }
         if (!empty($iItemId)) {
-            $sWhere = 'tablenames=\'' . $sTableName . '\' AND ident=\'' . $sFieldName .'\' AND uid_foreign=' . $iItemId;
+            $sWhere = 'tablenames=\''.$sTableName.'\' AND ident=\''.$sFieldName.'\' AND uid_foreign='.$iItemId;
             if (strlen(trim($mUid))) {
                 $mUid = implode(',', tx_rnbase_util_Strings::intExplode(',', $mUid));
-                $sWhere .= ' AND uid_local IN (' . $mUid .') ';
+                $sWhere .= ' AND uid_local IN ('.$mUid.') ';
             }
             tx_rnbase_util_DB::doDelete('tx_dam_mm_ref', $sWhere);
             // Jetzt die Bildanzahl aktualisieren
@@ -160,11 +157,11 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Die Bildanzahl aktualisieren
+     * Die Bildanzahl aktualisieren.
      *
-     * @param string        $sTableName
-     * @param string        $sFieldName
-     * @param int           $iItemId
+     * @param string $sTableName
+     * @param string $sFieldName
+     * @param int    $iItemId
      */
     public static function updateImageCount($sTableName, $sFieldName, $iItemId)
     {
@@ -177,11 +174,12 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Die Bildanzahl auslesen
+     * Die Bildanzahl auslesen.
      *
-     * @param string        $sTableName
-     * @param string        $sFieldName
-     * @param int           $iItemId
+     * @param string $sTableName
+     * @param string $sFieldName
+     * @param int    $iItemId
+     *
      * @return int
      */
     public static function getImageCount($sTableName, $sFieldName, $iItemId)
@@ -189,7 +187,7 @@ class tx_mklib_util_DAM
         if (!self::isLoaded()) {
             return 0;
         }
-        $aOptions['where'] = 'tablenames=\'' . $sTableName . '\' AND ident=\'' . $sFieldName .'\' AND uid_foreign=' . intval($iItemId);
+        $aOptions['where'] = 'tablenames=\''.$sTableName.'\' AND ident=\''.$sFieldName.'\' AND uid_foreign='.intval($iItemId);
         $aOptions['count'] = 1;
         $aOptions['enablefieldsoff'] = 1;
         $ret = tx_rnbase_util_DB::doSelect('count(*) AS \'cnt\'', 'tx_dam_mm_ref', $aOptions, 0);
@@ -200,17 +198,18 @@ class tx_mklib_util_DAM
     /**
      * Gibt die Anzahl der Referenzen zurück.
      *
-     * @param   string      $sTableName
-     * @param   int         $iItemId
-     * @param   string      $sFieldName
-     * @return  int
+     * @param string $sTableName
+     * @param int    $iItemId
+     * @param string $sFieldName
+     *
+     * @return int
      */
     public static function getReferencesCount($sTableName, $iItemId, $sFieldName)
     {
         if (!self::isLoaded()) {
             return 0;
         }
-        require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
+        require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_db.php';
 
         $ret = tx_dam_db::getReferencedFiles(
             $sTableName,
@@ -228,20 +227,21 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Gibt alle Referenzen zurück
+     * Gibt alle Referenzen zurück.
      *
-     * @param   string      $sTableName
-     * @param   int             $iItemId
-     * @param   string      $sFieldName
-     * @param   array       $options
-     * @return  array
+     * @param string $sTableName
+     * @param int    $iItemId
+     * @param string $sFieldName
+     * @param array  $options
+     *
+     * @return array
      */
     public static function getReferences($sTableName, $iItemId, $sFieldName, $options = array())
     {
         if (!self::isLoaded()) {
             return array('files' => array(), 'rows' => array());
         }
-        require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
+        require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_db.php';
 
         $files = tx_dam_db::getReferencedFiles($sTableName, $iItemId, $sFieldName);
 
@@ -249,7 +249,7 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Wrappt das ergebnis von einer referenzen abfrage
+     * Wrappt das ergebnis von einer referenzen abfrage.
      *
      * @param array $files
      * @param array $options
@@ -259,7 +259,7 @@ class tx_mklib_util_DAM
     protected static function wrapReferencesResult($files, $options = array())
     {
         // den record in ein model wrappen?
-        $wrapperClass = $options['wrapperclass'] === true ? 'tx_mklib_model_Dam' :
+        $wrapperClass = true === $options['wrapperclass'] ? 'tx_mklib_model_Dam' :
                             (is_string($options['wrapperclass']) ? trim($options['wrapperclass']) : false);
         if ($wrapperClass && !empty($files['rows'])) {
             foreach ($files['rows'] as $uid => $record) {
@@ -279,14 +279,14 @@ class tx_mklib_util_DAM
     /**
      * Hat der DAM Eintrag noch Referenzen?
      *
-     * @return  bool
+     * @return bool
      */
     public static function damRecordHasReferences($iLocalUid, $foreign_table = '', $foreign_uid = '', $MM_ident = '', $MM_table = 'tx_dam_mm_ref', $options = array())
     {
         if (!self::isLoaded()) {
             return false;
         }
-        require_once(tx_rnbase_util_Extensions::extPath('dam') . 'lib/class.tx_dam_db.php');
+        require_once tx_rnbase_util_Extensions::extPath('dam').'lib/class.tx_dam_db.php';
 
         $fields = tx_dam_db::getMetaInfoFieldList();
         $res = tx_dam_db::referencesQuery('tx_dam', $iLocalUid, $foreign_table, $foreign_uid, $MM_ident, $MM_table, $fields);
@@ -299,12 +299,13 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Setzt einen Dam Record auf hidden
+     * Setzt einen Dam Record auf hidden.
      *
      * @todo nicht nur verstecken sondern auch löschen integrieren
-     * @param array $aDamRecord sollte nur einen record in ['rows'] enthalten
-     * @param int $iMode verstecken, auf deleted setzen oder ganz löschen
-     * @param bool $bDeletePicture
+     *
+     * @param array $aDamRecord     sollte nur einen record in ['rows'] enthalten
+     * @param int   $iMode          verstecken, auf deleted setzen oder ganz löschen
+     * @param bool  $bDeletePicture
      *
      * @return bool
      */
@@ -347,13 +348,13 @@ class tx_mklib_util_DAM
 
     /**
      * Löscht die Referenzen (auf jeden fall),
-     * den DAM Eintrag (evtl.) und das Bild (evtl.)
+     * den DAM Eintrag (evtl.) und das Bild (evtl.).
      *
      * @param string $sTableName
-     * @param int $iItemId
+     * @param int    $iItemId
      * @param string $sFieldName
-     * @param int $iMode
-     * @param bool $bDeletePicture
+     * @param int    $iMode
+     * @param bool   $bDeletePicture
      *
      * @return array wie viele referenzen und dam einträge wurden gelöscht
      */
@@ -367,25 +368,26 @@ class tx_mklib_util_DAM
             foreach ($aReferences['rows'] as $uid => $row) {
                 //jetzt können wir erstmal die referenz löschen da wir sie nicht mehr benötigen
                 self::deleteReferences($sTableName, $sFieldName, $iItemId);
-                $iDeletedReferences++;
+                ++$iDeletedReferences;
                 //kann nur einer sein.
                 $aDamRecord = self::getRecords($uid);
                 //und dam eintrag selbst löschen wenn dieser keine weiteren referenzen hat
                 if (self::deleteDamRecord($aDamRecord, $iMode, $bDeletePicture)) {
-                    $iDeletedRecords++;
+                    ++$iDeletedRecords;
                 }
             }
         }
 
-        return array('deletedReferences' => $iDeletedReferences,'deletedRecords' => $iDeletedRecords);
+        return array('deletedReferences' => $iDeletedReferences, 'deletedRecords' => $iDeletedRecords);
     }
 
     /**
-     * Return file info for all references for the given reference data
+     * Return file info for all references for the given reference data.
      *
-     * @param string    $sTableName
-     * @param int       $iItemId
-     * @param string    $sFieldName
+     * @param string $sTableName
+     * @param int    $iItemId
+     * @param string $sFieldName
+     *
      * @return array
      */
     public static function getReferencesFileInfo($sTableName, $iItemId, $sFieldName)
@@ -399,9 +401,10 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Return file info for all records
+     * Return file info for all records.
      *
-     * @param array     $aRows
+     * @param array $aRows
+     *
      * @return array
      */
     private static function getFileInfos($aRows)
@@ -413,7 +416,7 @@ class tx_mklib_util_DAM
                 if (isset($aRows['files'][$uid])) {
                     $aFileInfo['file_path_name'] = $aRows['files'][$uid];
                 }
-                $aFileInfo['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $aFileInfo['file_path_name'];
+                $aFileInfo['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$aFileInfo['file_path_name'];
                 $aRes[$uid] = $aFileInfo;
             }
 
@@ -422,11 +425,12 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Return first reference for the given reference data
+     * Return first reference for the given reference data.
      *
-     * @param string    $sTableName
-     * @param int       $iItemId
-     * @param string    $sFieldName
+     * @param string $sTableName
+     * @param int    $iItemId
+     * @param string $sFieldName
+     *
      * @return array
      */
     public static function getFirstReference($sTableName, $iItemId, $sFieldName)
@@ -449,9 +453,10 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Return file information for a dam record
+     * Return file information for a dam record.
      *
-     * @param array $row    $damrecord['rows'][uid] data array, i.e. the actual database table record
+     * @param array $row $damrecord['rows'][uid] data array, i.e. the actual database table record
+     *
      * @return array
      */
     public static function getFileInfo(array $row)
@@ -461,7 +466,7 @@ class tx_mklib_util_DAM
         }
         $res = array();
         foreach ($row as $key => $value) {
-            if (substr($key, 0, 4) == 'file') {
+            if ('file' == substr($key, 0, 4)) {
                 $res[$key] = $value;
             }
         }
@@ -470,12 +475,12 @@ class tx_mklib_util_DAM
     }
 
     /**
-     * Return file info of first reference for the given reference data
+     * Return file info of first reference for the given reference data.
      *
      * @param string $refTable
-     * @param int $refUid
+     * @param int    $refUid
      * @param string $refField
-     * weshalb dort die uid nich
+     *                         weshalb dort die uid nich
      */
     public static function getFirstReferenceFileInfo($refTable, $refUid, $refField)
     {
@@ -491,7 +496,7 @@ class tx_mklib_util_DAM
                 if (isset($ref['files'][$firstKey])) {
                     $res['file_path_name'] = $ref['files'][$firstKey];
                 }
-                $res['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL') . $res['file_path_name'];
+                $res['file_abs_url'] = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL').$res['file_path_name'];
                 $res['file_uid'] = $ref['rows'][$firstKey]['uid'];
             }
 
@@ -502,8 +507,9 @@ class tx_mklib_util_DAM
     /**
      * Indiziert eine Datei mit DAM.
      *
-     * @param string    $sFile
-     * @param int       $iBeUserId
+     * @param string $sFile
+     * @param int    $iBeUserId
+     *
      * @return uid
      */
     public static function indexProcess($sFile, $iBeUserId = false)
@@ -521,10 +527,11 @@ class tx_mklib_util_DAM
 
         return $damData[0]['uid'];
     }
+
     /**
-     * Bereitet das Backend für die Indizierung einer Datei vor
+     * Bereitet das Backend für die Indizierung einer Datei vor.
      *
-     * @param int       $iBeUserId
+     * @param int $iBeUserId
      */
     private static function initBE4DAM($beUserId)
     {
@@ -558,7 +565,7 @@ class tx_mklib_util_DAM
 
         if (!$GLOBALS['LANG']) {
             // Bei Ajax-Calls fehlt das Objekt
-            require_once(tx_rnbase_util_Extensions::extPath('lang').'lang.php');
+            require_once tx_rnbase_util_Extensions::extPath('lang').'lang.php';
             $GLOBALS['LANG'] = tx_rnbase::makeInstance('language');
             $GLOBALS['LANG']->init($BE_USER->uc['lang']);
         }
@@ -566,5 +573,5 @@ class tx_mklib_util_DAM
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DAM.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DAM.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_DAM.php'];
 }

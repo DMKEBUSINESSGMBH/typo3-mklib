@@ -30,19 +30,16 @@ tx_rnbase::load('Tx_Rnbase_Scheduler_Task');
 tx_rnbase::load('tx_rnbase_util_DB');
 
 /**
- * generic abstract scheduler
+ * generic abstract scheduler.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
 {
-
     /**
-     * The DateTime Object with the last run time
+     * The DateTime Object with the last run time.
      *
-     * @var     DateTime
+     * @var DateTime
      */
     protected $lastRun = false;
 
@@ -50,7 +47,8 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      * Was used as the scheduler options before making the extension compatible with TYPO3 9. But as private
      * class variables can't be serialized anymore (@see __makeUp() method) this variable can't be used anymore.
      *
-     * @var     array
+     * @var array
+     *
      * @deprecated can be removed including the __wakeup() method when support for TYPO3 8.7 and below is dropped.
      */
     private $options = array();
@@ -65,7 +63,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     /**
      * Extension key, used for devlog.
      *
-     * @return  string
+     * @return string
      */
     protected function getExtKey()
     {
@@ -90,7 +88,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     /**
      * Function executed from the Scheduler.
      *
-     * @return bool  Returns true on successful execution, false on error
+     * @return bool Returns true on successful execution, false on error
      */
     public function execute()
     {
@@ -110,7 +108,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
         $memoryUsageAtStart = memory_get_usage();
 
         tx_rnbase_util_Logger::info(
-            '[' . get_class($this) . ']: Scheduler starts',
+            '['.get_class($this).']: Scheduler starts',
             $this->getExtKey()
         );
 
@@ -137,7 +135,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
                         continue;
                     }
                     tx_rnbase_util_Logger::devLog(
-                        '[' . get_class($this) . ']: ' . $logData['message'],
+                        '['.get_class($this).']: '.$logData['message'],
                         isset($logData['extKey']) ? $logData['extKey'] : $this->getExtKey(),
                         $logLevel,
                         isset($logData['dataVar']) ? $logData['dataVar'] : false
@@ -158,8 +156,8 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
             }
             if (tx_rnbase_util_Logger::isFatalEnabled()) {
                 tx_rnbase_util_Logger::fatal(
-                    'Task [' . get_class($this) . '] failed.' .
-                        ' Error(' . $exception->getCode() . '):' .
+                    'Task ['.get_class($this).'] failed.'.
+                        ' Error('.$exception->getCode().'):'.
                         $exception->getMessage(),
                     $this->getExtKey(),
                     $dataVar
@@ -176,7 +174,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
                     // Wir erstellen eine weitere Exception mit zusätzlichen Daten.
                     tx_rnbase::makeInstance(
                         'tx_rnbase_util_Exception',
-                        get_class($exception) . ': ' . $exception->getMessage(),
+                        get_class($exception).': '.$exception->getMessage(),
                         $exception->getCode(),
                         $dataVar,
                         $exception
@@ -190,13 +188,13 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
 
         $memoryUsageAtEnd = memory_get_usage();
         tx_rnbase_util_Logger::info(
-            '[' . get_class($this) . ']: Scheduler ends successful ',
+            '['.get_class($this).']: Scheduler ends successful ',
             $this->getExtKey(),
             array(
-                'Execution Time' => (tx_rnbase_util_Misc::milliseconds() - $startTimeInMilliseconds) . ' ms',
-                'Memory Start' => $memoryUsageAtStart . ' Bytes',
-                'Memory End' => $memoryUsageAtEnd . ' Bytes',
-                'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart) . ' Bytes',
+                'Execution Time' => (tx_rnbase_util_Misc::milliseconds() - $startTimeInMilliseconds).' ms',
+                'Memory Start' => $memoryUsageAtStart.' Bytes',
+                'Memory End' => $memoryUsageAtEnd.' Bytes',
+                'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart).' Bytes',
             )
         );
 
@@ -211,7 +209,8 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      * Should return true on successful execution, false on error.
      *
      * @param array $options
-     * @param array &$devLog Put some informations for the logging here.
+     * @param array &$devLog Put some informations for the logging here
+     *
      * @return string
      */
     abstract protected function executeTask(array $options, array &$devLog);
@@ -220,22 +219,24 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      * Liefert die im Scheduler gesetzten Optionen.
      *
      * @param string $info
-     * @return  string  Information to display
+     *
+     * @return string Information to display
      */
     public function getAdditionalInformation($info = '')
     {
-        $info .= CRLF . ' Options: ';
+        $info .= CRLF.' Options: ';
         $info .= tx_rnbase_util_Arrays::arrayToLogString($this->getOptions(), array(), 64);
 
         return $info;
     }
 
     /**
-     * Setzt eine Option
+     * Setzt eine Option.
      *
      * @param string $key
-     * @param mixed $value
-     * @return mixed Der gesetzte Wert.
+     * @param mixed  $value
+     *
+     * @return mixed der gesetzte Wert
      */
     public function setOption($key, $value)
     {
@@ -246,26 +247,30 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      * Liefert eine Option.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function getOption($key)
     {
         return $this->schedulerOptions[$key];
     }
+
     /**
      * Setzt alle Otionen.
      *
      * @param array $options
-     * @return mixed Der gesetzte Wert.
+     *
+     * @return mixed der gesetzte Wert
      */
     public function setOptions(array $options)
     {
         return $this->schedulerOptions = $options;
     }
+
     /**
-     * Liefert alle Optionen
+     * Liefert alle Optionen.
      *
-     * @return  array
+     * @return array
      */
     public function getOptions()
     {
@@ -274,16 +279,16 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     }
 
     /**
-     * gets the last run time
+     * gets the last run time.
      *
      * @return DateTime|null
      */
     protected function getLastRunTime()
     {
-        if ($this->lastRun === false) {
+        if (false === $this->lastRun) {
             $options = array();
             $options['enablefieldsoff'] = 1;
-            $options['where'] = 'uid=' . (int) $this->getTaskUid();
+            $options['where'] = 'uid='.(int) $this->getTaskUid();
             $options['limit'] = 1;
             try {
                 $ret = @tx_rnbase_util_DB::doSelect(
@@ -297,7 +302,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
             $this->lastRun = (
                     empty($ret)
                     || empty($ret[0]['tx_mklib_lastrun'])
-                    || $ret[0]['tx_mklib_lastrun'] === '0000-00-00 00:00:00'
+                    || '0000-00-00 00:00:00' === $ret[0]['tx_mklib_lastrun']
                 ) ? null : new DateTime($ret[0]['tx_mklib_lastrun']);
         }
 
@@ -305,7 +310,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     }
 
     /**
-     * updates the lastrun time with the current time
+     * updates the lastrun time with the current time.
      *
      * @return int
      */
@@ -315,9 +320,9 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
             $lastRun = new DateTime();
             $return = @tx_rnbase_util_DB::doUpdate(
                 'tx_scheduler_task',
-                'uid=' . (int) $this->getTaskUid(),
+                'uid='.(int) $this->getTaskUid(),
                 array(
-                    'tx_mklib_lastrun' => $lastRun->format('Y-m-d H:i:s')
+                    'tx_mklib_lastrun' => $lastRun->format('Y-m-d H:i:s'),
                 )
             );
         } catch (Exception $e) {
@@ -327,13 +332,11 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
         return $return;
     }
 
-
     /**
-     * sends a exception mail
+     * sends a exception mail.
      *
-     * @param string $email
+     * @param string    $email
      * @param Exception $exception
-     * @return void
      */
     protected function sendErrorMail($email, Exception $exception)
     {
@@ -344,5 +347,5 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_Generic.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_Generic.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_Generic.php'];
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2015 Hannes Bochmann <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -21,24 +21,20 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 tx_rnbase::load('tx_mklib_action_ShowSingeItem');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('tx_mklib_repository_Abstract');
 tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
- * tx_mklib_tests_action_ShowSingeItem_testcase
+ * tx_mklib_tests_action_ShowSingeItem_testcase.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var string
      */
@@ -146,7 +142,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
 
     /**
      * @group unit
-     * @expectedException tx_rnbase_exception_ItemNotFound404
+     * @expectedException \tx_rnbase_exception_ItemNotFound404
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testThrowItemNotFound404Exception()
@@ -165,7 +161,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
         $action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
         $configurations = $this->createConfigurations(
             array(
-                '.' => array('disable404ExceptionIfNoItemFound' => true)),
+                '.' => array('disable404ExceptionIfNoItemFound' => true), ),
             'mklib'
         );
         $action->setConfigurations($configurations);
@@ -175,7 +171,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
     /**
      * @group unit
      *
-     * @expectedException tx_rnbase_exception_ItemNotFound404
+     * @expectedException \tx_rnbase_exception_ItemNotFound404
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testHandleRequestThrowsItemNotFound404ExceptionIfNoItemId()
@@ -210,7 +206,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
     /**
      * @group unit
      *
-     * @expectedException Exception
+     * @expectedException \Exception
      * @expectedExceptionMessage Das Repository, welches von getSingleItemRepository() geliefert wird, muss von tx_mklib_repository_Abstract erben!
      */
     public function testHandleRequestThrowsExceptionIfRepositoryNotInheritedFromAbstractRepositoryClass()
@@ -259,7 +255,7 @@ class tx_mklib_tests_action_ShowSingeItem_testcase extends tx_rnbase_tests_BaseT
     /**
      * @group unit
      *
-     * @expectedException tx_rnbase_exception_ItemNotFound404
+     * @expectedException \tx_rnbase_exception_ItemNotFound404
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testHandleRequestThrowsItemNotFound404ExceptionIfItemNotFound()

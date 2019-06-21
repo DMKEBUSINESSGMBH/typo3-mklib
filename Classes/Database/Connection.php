@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -23,22 +21,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-
-
 tx_rnbase::load('Tx_Rnbase_Database_Connection');
 tx_rnbase::load('tx_mklib_util_TCA');
 tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
- * Beinhaltet Utility-Methoden für Datenbank handling
+ * Beinhaltet Utility-Methoden für Datenbank handling.
  *
- * @package TYPO3
- * @subpackage mklib
  * @author Michael Wagner
  */
 class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
 {
-
     /**
      * @var int
      */
@@ -55,23 +48,26 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     const DELETION_MODE_REALLYDELETE = 2;
 
     /**
-     * Is logging enabled? (protected für Tests)
-     * @var     boolean
+     * Is logging enabled? (protected für Tests).
+     *
+     * @var bool
      */
     protected $log = -1;
 
     /**
-     * Dont log this tables
+     * Dont log this tables.
+     *
      * @var array
      */
     protected $ignoreTables = -1;
 
     /**
-     * Insert crdate and timestamp into correct field (gotten from TCA)
+     * Insert crdate and timestamp into correct field (gotten from TCA).
      *
-     * @param   array   $data
-     * @param   string  $tablename
-     * @return  array
+     * @param array  $data
+     * @param string $tablename
+     *
+     * @return array
      */
     private function insertCrdateAndTimestamp($data, $tablename)
     {
@@ -87,11 +83,12 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Insert timestamp into correct field (gotten from TCA)
+     * Insert timestamp into correct field (gotten from TCA).
      *
-     * @param   array   $data
-     * @param   string  $tablename
-     * @return  array
+     * @param array  $data
+     * @param string $tablename
+     *
+     * @return array
      */
     private function insertTimestamp($data, $tablename)
     {
@@ -107,13 +104,14 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Make a SQL INSERT Statement
+     * Make a SQL INSERT Statement.
      *
-     * @param   string  $tablename
-     * @param   array   $values
-     * @param   int     $debug = 0      Set to 1 to debug sql-String
-     * @param   array   $options
-     * @return  int     UID of created record
+     * @param string $tablename
+     * @param array  $values
+     * @param int    $debug     = 0      Set to 1 to debug sql-String
+     * @param array  $options
+     *
+     * @return int UID of created record
      */
     public function doInsert($tablename, $values, $debug = 0, array $options = array())
     {
@@ -131,15 +129,16 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Aktualisiert einen Datensatz
+     * Aktualisiert einen Datensatz.
      *
-     * @param   string  $tablename
-     * @param   string  $where
-     * @param   array   $values
-     * @param   int     $debug = 0      Set to 1 to debug sql-String
-     * @param   mixed   $noQuoteFields  Array or commaseparated string with fieldnames
-     * @param   array   $options
-     * @return  int     number of rows affected
+     * @param string $tablename
+     * @param string $where
+     * @param array  $values
+     * @param int    $debug         = 0      Set to 1 to debug sql-String
+     * @param mixed  $noQuoteFields Array or commaseparated string with fieldnames
+     * @param array  $options
+     *
+     * @return int number of rows affected
      */
     public function doUpdate($tablename, $where, $values, $debug = 0, $noQuoteFields = false, array $options = array())
     {
@@ -159,12 +158,13 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Löscht einen Datensatz
+     * Löscht einen Datensatz.
      *
-     * @param   string      $tablename
-     * @param   string      $where
-     * @param   bool     $debug
-     * @return  int         number of rows affected
+     * @param string $tablename
+     * @param string $where
+     * @param bool   $debug
+     *
+     * @return int number of rows affected
      */
     public function doDelete($tablename, $where, $debug = 0)
     {
@@ -175,14 +175,15 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Führt ein SELECT aus
+     * Führt ein SELECT aus.
      *
-     * @param   string      $what       requested columns
-     * @param   string      $from       either the name of on table or an array with index 0 the from clause
-     *                                  and index 1 the requested tablename and optional index 2 a table alias to use.
-     * @param   array       $arr        the options array
-     * @param   bool     $debug = 0  Set to 1 to debug sql-String
-     * @return  array
+     * @param string $what  requested columns
+     * @param string $from  either the name of on table or an array with index 0 the from clause
+     *                      and index 1 the requested tablename and optional index 2 a table alias to use
+     * @param array  $arr   the options array
+     * @param bool   $debug = 0  Set to 1 to debug sql-String
+     *
+     * @return array
      */
     public function doSelect($what, $from, $arr, $debug = 0)
     {
@@ -196,7 +197,8 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      * @TODO: logging integrieren!
      *
      * @param string $sqlQuery
-     * @param int $debug
+     * @param int    $debug
+     *
      * @return booloolean
      */
     public function doQuery($query, array $options = array())
@@ -211,9 +213,11 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      * @TODO: Änderung an der TCA durch fremde Extensions berücksichtigen.
      * Vor dem aufruf muss tx_mklib_util_TCA::loadTcaAdditions(array('extkey')); aufgerufen werden.
      *
-     * @param   string  $sTable
-     * @param   string  $sField     False if no field check is needed.
-     * @return  bool             Returns true if field exists.
+     * @param string $sTable
+     * @param string $sField false if no field check is needed
+     *
+     * @return bool returns true if field exists
+     *
      * @deprecated Wird nicht mehr benötigt
      */
     private function loadTCA($sTable, $sField = false)
@@ -230,11 +234,12 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @TODO: write tests
      *
-     * @param   string  $sTable
-     * @param   string  $sField
-     * @param   int     $sLocalId
-     * @param   int     $iForeignId
-     * @return  bool
+     * @param string $sTable
+     * @param string $sField
+     * @param int    $sLocalId
+     * @param int    $iForeignId
+     *
+     * @return bool
      */
     public function mmExists($sTable, $sField, $sLocalId, $iForeignId)
     {
@@ -264,11 +269,12 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @TODO: write tests
      *
-     * @param   string  $sTable
-     * @param   string  $sField
-     * @param   int     $sLocalId
-     * @param   int     $iForeignId
-     * @return  bool
+     * @param string $sTable
+     * @param string $sField
+     * @param int    $sLocalId
+     * @param int    $iForeignId
+     *
+     * @return bool
      */
     public function mmSelectForeign($sTable, $sField, $sLocalId, array $options = array())
     {
@@ -281,7 +287,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
         $where = implode(' AND ', $this->mmGetData($sTable, $sField, $sLocalId, false, true));
         $sJoin = $sForeignTable.' JOIN '.$sMmTable.' on '.$sMmTable.'.uid_foreign = '.$sForeignTable.'.uid';
 
-        $options['where'] = (isset($options['where']) ? $options['where'].' AND ' : '') . $where;
+        $options['where'] = (isset($options['where']) ? $options['where'].' AND ' : '').$where;
 
         return $this->doSelect(
             $sForeignTable.'.*',
@@ -295,11 +301,12 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @TODO: write tests
      *
-     * @param   string  $sTable
-     * @param   string  $sField
-     * @param   int     $sLocalId
-     * @param   int     $iForeignId
-     * @return  bool
+     * @param string $sTable
+     * @param string $sField
+     * @param int    $sLocalId
+     * @param int    $iForeignId
+     *
+     * @return bool
      */
     public function mmCreate($sTable, $sField, $sLocalId, $iForeignId)
     {
@@ -320,13 +327,14 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Liefert den Tabellenname für die MM Tabelle aus der TCA
+     * Liefert den Tabellenname für die MM Tabelle aus der TCA.
      *
      * @TODO: write tests
      *
-     * @param   string  $sTable
-     * @param   string  $sField
-     * @return  string
+     * @param string $sTable
+     * @param string $sField
+     *
+     * @return string
      */
     private function mmGetTable($sTable, $sField, $sCF = 'MM')
     {
@@ -342,12 +350,13 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @TODO: write tests
      *
-     * @param   string  $sTable
-     * @param   string  $sField
-     * @param   int     $sLocalId
-     * @param   int     $iForeignId
-     * @param   bool $bWhere
-     * @return  array
+     * @param string $sTable
+     * @param string $sField
+     * @param int    $sLocalId
+     * @param int    $iForeignId
+     * @param bool   $bWhere
+     *
+     * @return array
      */
     private function mmGetData($sTable, $sField, $sLocalId = false, $iForeignId = false, $bWhere = false)
     {
@@ -385,7 +394,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
         return $aData;
     }
 
-
     /* *** **************** *** *
      * *** LOGGIN FUNCTIONS ***
      * *** **************** *** */
@@ -393,12 +401,13 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     /**
      * Is logging enabled?
      *
-     * @param   string  $tablename
-     * @return  bool
+     * @param string $tablename
+     *
+     * @return bool
      */
     private function isLog($tablename)
     {
-        if ($this->log == -1) {
+        if (-1 == $this->log) {
             // erst die Extension Konfiguration fragen!
             tx_rnbase::load('tx_rnbase_configurations');
             $this->log = intval(tx_rnbase_configurations::getExtensionCfgValue('mklib', 'logDbHandler'));
@@ -426,14 +435,14 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Logs DB changes
+     * Logs DB changes.
      *
      * @TODO: t3users log nutzen, wenn installiert! tx_t3users_util_ServiceRegistry::getLoggingService();
      *
-     * @param   string  $msg
-     * @param   string  $tablename
-     * @param   string  $where
-     * @param   mixed   $values
+     * @param string $msg
+     * @param string $tablename
+     * @param string $where
+     * @param mixed  $values
      */
     private function log($msg, $tablename, $where = false, $values = false)
     {
@@ -477,15 +486,15 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     }
 
     /**
-     * Wrapper for actual deletion
+     * Wrapper for actual deletion.
      *
      * Delete records according to given ready-constructed "where" condition and deletion mode
      *
      * @TODO: use tx_mklib_util_TCA::getEnableColumn to get enablecolumns!
      *
-     * @param string    $table
-     * @param string    $where      Ready-to-use where condition containing uid restriction
-     * @param int       $mode       @see $this->handleDelete()
+     * @param string $table
+     * @param string $where Ready-to-use where condition containing uid restriction
+     * @param int    $mode  @see $this->handleDelete()
      *
      * @return int anzahl der betroffenen zeilen
      */
@@ -536,5 +545,5 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/Classes/Database/Connection.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/Classes/Database/Connection.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/Classes/Database/Connection.php'];
 }

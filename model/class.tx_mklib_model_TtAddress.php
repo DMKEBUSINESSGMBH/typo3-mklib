@@ -1,7 +1,5 @@
 <?php
 /**
- * @package TYPO3
- * @subpackage mklib
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,20 +25,15 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_rnbase_model_base');
 
-/**
- * @package TYPO3
- * @subpackage mklib
- */
 class tx_mklib_model_TtAddress extends tx_rnbase_model_base
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_model_base::getTableName()
      */
     public function getTableName()

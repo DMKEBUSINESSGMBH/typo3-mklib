@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,43 +25,46 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
 tx_rnbase::load('tx_mklib_tests_Util');
 tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
- * Model eines wordlist eintrages
- * @package tx_mklib
- * @subpackage tx_mklib_tests
+ * Model eines wordlist eintrages.
  */
 abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_TestCase
 {
     protected $workspaceIdAtStart;
     /**
-     * Extensions, welche importiert werden sollen
+     * Extensions, welche importiert werden sollen.
+     *
      * @see tx_phpunit_database_testcase::importExtensions();
+     *
      * @var array
      */
     protected $importExtensions = array();
 
     /**
      * Sollen Abhängigkeiten in Extension mit importiert werden?
+     *
      * @see tx_phpunit_database_testcase::importExtensions();
+     *
      * @var array
      */
     protected $importDependencies = false;
     /**
      * Sollen die statischen Daten einer Extension
      * (ext_tables_static.sql) in die Datenbank importiert werden?
-     * @var boolean
+     *
+     * @var bool
      */
     protected $importStaticTables = false;
     /**
      * Diese FixtureXMLs werden beim setUp in die Datenbank geladen.
      * Es sollte nach folgendem Muster angegeben werden:
-     * EXT:mklib/tests/fixtures/test.xml
+     * EXT:mklib/tests/fixtures/test.xml.
+     *
      * @var array
      */
     protected $importDataSet = array();
@@ -74,7 +75,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
      *  Klassenkonstruktor - BE-Workspace setzen
      *
      * @param string $name
-     * @param array $data
+     * @param array  $data
      * @param string $dataName
      */
     public function __construct($name = null, array $data = array(), $dataName = '')
@@ -89,6 +90,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
 
     /**
      * Importier SQL-datei einer Extension.
+     *
      * @param unknown_type $extKey
      * @param unknown_type $files
      */
@@ -100,7 +102,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
             // read sql file content
             $sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(tx_rnbase_util_Extensions::extPath($extKey, $file));
             if (@is_file($sqlFilename)) {
-                tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
+                tx_mklib_tests_Util::queryDB($sqlFilename, false, true); //alle statements importieren
             }
         }
     }
@@ -113,10 +115,8 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
      */
     protected function setUp()
     {
-
         //Devlog stört beim Testen nur
         tx_mklib_tests_Util::disableDevlog();
-
 
         try {
             $this->createDatabase();
@@ -162,5 +162,5 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_DBTestCaseSkeleton.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_DBTestCaseSkeleton.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_DBTestCaseSkeleton.php'];
 }

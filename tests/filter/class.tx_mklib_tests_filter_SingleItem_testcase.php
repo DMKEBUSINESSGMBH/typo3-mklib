@@ -23,7 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 tx_rnbase::load('tx_mklib_filter_SingleItem');
 
 /**
@@ -31,17 +30,16 @@ tx_rnbase::load('tx_mklib_filter_SingleItem');
  */
 class tx_mklib_tests_filter_SingleItem_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
      * @var string
      */
     private $testParamName = 'johnDoe';
-    
+
     /**
      * @var string
      */
     private $testSearchAlias = 'JOHNDOE';
-    
+
     /**
      * @group unit
      */
@@ -49,23 +47,23 @@ class tx_mklib_tests_filter_SingleItem_testcase extends Tx_Phpunit_TestCase
     {
         $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
         $filter = $this->getFilter($parameters);
-            
+
         $fields = array();
         $options = array();
         $filterReturn = $filter->init($fields, $options);
         self::assertTrue($filterReturn, 'filter gibt nicht true zurück.');
-        
+
         $expectedFields = array(
-            $this->testSearchAlias . '.uid' => array(OP_EQ_INT => 0)
+            $this->testSearchAlias.'.uid' => array(OP_EQ_INT => 0),
         );
         self::assertEquals($expectedFields, $fields, 'fields nicht leer');
-        
+
         $expectedOptions = array(
-            'limit'    => 1,
+            'limit' => 1,
         );
         self::assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
     }
-    
+
     /**
      * @group unit
      */
@@ -75,30 +73,30 @@ class tx_mklib_tests_filter_SingleItem_testcase extends Tx_Phpunit_TestCase
         $itemUid = 123;
         $parameters->offsetSet($this->testParamName, $itemUid);
         $filter = $this->getFilter($parameters);
-        
+
         $fields = array();
         $options = array();
         $filterReturn = $filter->init($fields, $options);
         self::assertTrue($filterReturn, 'filter gibt nicht true zurück.');
-        
+
         $expectedFields = array(
-            $this->testSearchAlias . '.uid' => array(OP_EQ_INT => $itemUid)
+            $this->testSearchAlias.'.uid' => array(OP_EQ_INT => $itemUid),
         );
         self::assertEquals($expectedFields, $fields, 'fields nicht leer');
-        
+
         $expectedOptions = array(
-            'limit'    => 1,
+            'limit' => 1,
         );
         self::assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
     }
-    
+
     /**
      * @return tx_mklib_filter_SingleItem
      */
     private function getFilter($parameters)
     {
         $configurations = tx_mklib_util_TS::loadConfig4BE('mklib');
-        
+
         $confId = 'doesNotMatter.';
         $filter = $this->getMockForAbstractClass(
             'tx_mklib_filter_SingleItem',
@@ -110,7 +108,7 @@ class tx_mklib_tests_filter_SingleItem_testcase extends Tx_Phpunit_TestCase
         $filter->expects(self::once())
             ->method('getSearchAlias')
             ->will(self::returnValue($this->testSearchAlias));
-            
+
         return $filter;
     }
 }
