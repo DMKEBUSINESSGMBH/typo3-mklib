@@ -1,7 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_util_Files');
-
 /**
  * Debug Util.
  * Sammelt Debug-Meldungen mit Zeit und Speicher verbrauch.

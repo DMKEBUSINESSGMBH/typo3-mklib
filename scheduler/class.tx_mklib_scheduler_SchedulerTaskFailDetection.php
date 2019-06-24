@@ -22,10 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_mklib_scheduler_Generic');
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_mklib_util_Scheduler');
-
 /**
  * tx_mklib_scheduler_SchedulerTaskFailDetection.
  *
@@ -123,8 +119,6 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
      */
     protected function getMiscUtility()
     {
-        tx_rnbase::load('tx_rnbase_util_Misc');
-
         return 'tx_rnbase_util_Misc';
     }
 

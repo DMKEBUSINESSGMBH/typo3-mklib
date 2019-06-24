@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_TS');
 
 /**
  * Generic form view test.

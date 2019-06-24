@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_Date');
 
 /**
  * Generic form view test.
@@ -116,7 +115,6 @@ class tx_mklib_tests_util_Date_testcase extends Tx_Phpunit_TestCase
 
     public function testGetTimesInTimeRangeHandlesSummertimeCorrect()
     {
-        tx_rnbase::load('tx_rnbase_util_Dates');
         // In dieser Zeitspanne wurde der 30.11.2011 doppelt im Array geliefert (Tag 302).
         $start = tx_rnbase_util_Dates::date_mysql2tstamp('2011-07-13');
         $end = tx_rnbase_util_Dates::date_mysql2tstamp('2012-03-17');

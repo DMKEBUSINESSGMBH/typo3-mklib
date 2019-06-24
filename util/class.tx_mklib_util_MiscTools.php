@@ -23,8 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_util_Network');
-tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * Miscellaneous common methods.
@@ -47,7 +45,6 @@ class tx_mklib_util_MiscTools
         if (!$sExtKey) {
             $sExtKey = 'mklib';
         }
-        tx_rnbase::load('tx_rnbase_configurations');
         $mValue = tx_rnbase_configurations::getExtensionCfgValue($sExtKey, $sValueKey);
         if ($bFallback && false === $mValue && 'mklib' != $sExtKey) {
             $mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey);

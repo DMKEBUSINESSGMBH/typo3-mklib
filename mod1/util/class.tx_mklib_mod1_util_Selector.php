@@ -111,7 +111,6 @@ class tx_mklib_mod1_util_Selector
             0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value'),
         );
 
-        tx_rnbase::load('tx_mklib_mod1_util_Language');
         $langs = tx_mklib_mod1_util_Language::getLangRecords($options['pid']);
         foreach ($langs as $lang) {
             $items[(int) $lang['uid']] = $lang['title'];

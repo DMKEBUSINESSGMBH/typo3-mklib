@@ -23,9 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('Tx_Mklib_Database_Connection');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * DB util tests.

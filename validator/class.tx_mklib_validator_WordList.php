@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
 
 /**
  * Validatoren für den WordList Service.

@@ -22,13 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_configurations');
-tx_rnbase::load('tx_rnbase_util_Logger');
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Arrays');
-tx_rnbase::load('Tx_Rnbase_Scheduler_Task');
-tx_rnbase::load('tx_rnbase_util_DB');
-
 /**
  * generic abstract scheduler.
  *
@@ -340,7 +333,6 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      */
     protected function sendErrorMail($email, Exception $exception)
     {
-        tx_rnbase::load('tx_rnbase_util_Misc');
         $options = array('ignoremaillock' => true);
         tx_rnbase_util_Misc::sendErrorMail($email, get_class($this), $exception, $options);
     }

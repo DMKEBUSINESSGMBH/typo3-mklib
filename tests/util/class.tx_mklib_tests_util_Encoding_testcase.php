@@ -1,8 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_mklib_util_Encoding');
-
 /**
  * Class for encodings.
  *

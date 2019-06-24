@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_MiscTools');
-tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * Model util tests.
@@ -40,8 +38,8 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
      */
     public function setUp()
     {
-        tx_mklib_tests_Util::storeExtConf('mklib');
-        tx_mklib_tests_Util::storeExtConf('mktest');
+        \DMK\Mklib\Utility\Tests::storeExtConf('mklib');
+        \DMK\Mklib\Utility\Tests::storeExtConf('mktest');
     }
 
     /**
@@ -49,8 +47,8 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
      */
     public function tearDown()
     {
-        tx_mklib_tests_Util::restoreExtConf('mklib');
-        tx_mklib_tests_Util::restoreExtConf('mktest');
+        \DMK\Mklib\Utility\Tests::restoreExtConf('mklib');
+        \DMK\Mklib\Utility\Tests::restoreExtConf('mktest');
     }
 
     /**
@@ -58,7 +56,7 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
      */
     public function testGetProxyBeUserId()
     {
-        tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', 2, 'mklib');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('proxyBeUserId', 2, 'mklib');
 
         $val = tx_mklib_util_MiscTools::getProxyBeUserId();
         self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
@@ -71,7 +69,7 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
         $val = tx_mklib_util_MiscTools::getProxyBeUserId('mktest', false);
         self::assertEquals($val, 0, 'Es wurde ein BE-User geliefert.');
 
-        tx_mklib_tests_Util::setExtConfVar('proxyBeUserId', '5', 'mktest');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('proxyBeUserId', '5', 'mktest');
 
         $val = tx_mklib_util_MiscTools::getProxyBeUserId();
         self::assertEquals($val, 2, 'Falscher BE-User geliefert.');
@@ -87,14 +85,14 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
      */
     public function testGetPicturesUploadPath()
     {
-        tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mklib', 'mklib');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('picturesUploadPath', 'uploads/tx_mklib', 'mklib');
 
         self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
         self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(array()), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
         self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
         self::assertFalse(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest', false), 'Es wurde ein Pfad geliefert.');
 
-        tx_mklib_tests_Util::setExtConfVar('picturesUploadPath', 'uploads/tx_mktest', 'mktest');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('picturesUploadPath', 'uploads/tx_mktest', 'mktest');
 
         self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
         self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mktest', 'Falscher Pfad geliefert.');
@@ -105,7 +103,7 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
      */
     public function testGetPortalPageId()
     {
-        tx_mklib_tests_Util::setExtConfVar('portalPageId', 2, 'mklib');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('portalPageId', 2, 'mklib');
 
         $val = tx_mklib_util_MiscTools::getPortalPageId();
         self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');
@@ -118,7 +116,7 @@ class tx_mklib_tests_util_MiscTools_testcase extends Tx_Phpunit_TestCase
         $val = tx_mklib_util_MiscTools::getPortalPageId('mktest', false);
         self::assertEquals($val, 0, 'Es wurde eine Page-ID geliefert.');
 
-        tx_mklib_tests_Util::setExtConfVar('portalPageId', '5', 'mktest');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('portalPageId', '5', 'mktest');
 
         $val = tx_mklib_util_MiscTools::getPortalPageId();
         self::assertEquals($val, 2, 'Falsche Page-ID geliefert.');

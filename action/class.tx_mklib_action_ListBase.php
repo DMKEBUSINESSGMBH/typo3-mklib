@@ -3,8 +3,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_action_BaseIOC');
-tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
 /**
  * Controller

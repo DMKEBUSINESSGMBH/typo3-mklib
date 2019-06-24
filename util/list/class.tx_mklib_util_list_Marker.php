@@ -1,7 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_util_ListMarker');
-
 /**
  * Base class for Markers.
  *

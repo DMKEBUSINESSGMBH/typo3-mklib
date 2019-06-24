@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_mod1_linker_Base');
 
 /**
  * Hilfsklassen um nach Gewinnspielen im BE zu suchen.

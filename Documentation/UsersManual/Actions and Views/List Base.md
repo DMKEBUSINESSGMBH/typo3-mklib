@@ -22,7 +22,6 @@ deriving class example
 ----------------------
 
 ~~~~ {.sourceCode .php}
-tx_rnbase::load('tx_mklib_action_ListBase');
 class tx_mkdemo_action_ListDatasets extends tx_mklib_action_ListBase {
 
    /**

@@ -37,8 +37,6 @@ Features
 
 [Scheduler](Scheduler/Index.md)
 
-[TreeLib](TreeLib/Index.md)
-
 [Utilities](Utilities/Index.md)
 
 [Validators](Validators/Index.md)

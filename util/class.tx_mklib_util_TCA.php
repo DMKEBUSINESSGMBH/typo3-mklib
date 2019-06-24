@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_util_Arrays');
-tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * Util Methoden für die TCA.
@@ -68,7 +66,6 @@ class tx_mklib_util_TCA
         if (!is_array($options)) {
             $options = array('type' => $options);
         }
-        tx_rnbase::load('tx_rnbase_util_TSDAM');
         $tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, isset($options['type']) ? $options['type'] : 'image_field');
         unset($options['type']);
         if ($options) {
@@ -105,7 +102,6 @@ class tx_mklib_util_TCA
 
         return self::getDamMediaTCA($ref, $options);
 
-        tx_rnbase::load('tx_rnbase_util_TSDAM');
         $tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, 'image_field');
         $tca['config']['maxitems'] = 1;
         $tca['config']['size'] = 1;
@@ -143,7 +139,6 @@ class tx_mklib_util_TCA
 
         return self::getDamMediaTCA($ref, $options);
 
-        tx_rnbase::load('tx_rnbase_util_TSDAM');
         $tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, 'media_field');
         $tca['config']['maxitems'] = 1;
         $tca['config']['size'] = 1;
@@ -180,8 +175,6 @@ class tx_mklib_util_TCA
         Tx_Rnbase_Domain_Model_RecordInterface $model,
         array $data
     ) {
-        tx_rnbase::load('tx_rnbase_util_TCA');
-
         return tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
     }
 
@@ -198,7 +191,6 @@ class tx_mklib_util_TCA
     public static function eleminateNonTcaColumnsByTable($table, array $data)
     {
         global $TCA;
-        tx_rnbase::load('tx_mklib_util_Array');
 
         return tx_mklib_util_Array::removeNotIn(
             $data,
@@ -346,8 +338,6 @@ class tx_mklib_util_TCA
      */
     public static function getWizards($sTable, array $options = array())
     {
-        tx_rnbase::load('Tx_Rnbase_Utility_TcaTool');
-
         return Tx_Rnbase_Utility_TcaTool::getWizards($sTable, $options);
     }
 
@@ -463,8 +453,6 @@ class tx_mklib_util_TCA
      */
     public static function getMediaTCA($ref, $options = array())
     {
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
-        tx_rnbase::load('tx_rnbase_util_TSFAL');
         // in DAM wurde immer noch _field beim Typ verlangt, bei FAL nicht mehr
         if (isset($options['type'])) {
             $options['type'] = str_replace('_field', '', $options['type']);

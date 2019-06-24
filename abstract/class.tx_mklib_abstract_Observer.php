@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_interface_IObserver');
 
 /**
  * generischer observer.

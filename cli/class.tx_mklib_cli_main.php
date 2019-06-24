@@ -26,7 +26,6 @@
 if (!tx_rnbase_util_TYPO3::isCliMode()) {
     die('You cannot run this script directly!');
 }
-tx_rnbase::load('Tx_Rnbase_CommandLine_Controller');
 
 /**
  * tx_mklib_cli_main.

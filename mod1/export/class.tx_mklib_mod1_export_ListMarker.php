@@ -1,8 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_util_ListMarker');
-tx_rnbase::load('tx_mklib_mod1_export_Util');
-
 /**
  * Base class for Markers.
  *

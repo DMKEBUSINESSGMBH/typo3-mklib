@@ -79,7 +79,6 @@ class tx_mklib_util_Model
      */
     public static function getShortenedText(Tx_Rnbase_Domain_Model_RecordInterface $model, $textField = 'text', $charCount = 150, $bStripTags = false, $suffix = 'shortened')
     {
-        tx_rnbase::load('tx_mklib_util_String');
         //Html vorher entfernen?
         $sText = ($bStripTags) ? strip_tags($model->record[$textField]) : $model->record[$textField];
         $model->record[$textField.$suffix] = tx_mklib_util_String::crop($sText, $charCount);
@@ -121,7 +120,6 @@ class tx_mklib_util_Model
      */
     public static function getEmptyInstance($sClassName)
     {
-        tx_rnbase::load('tx_mklib_util_StaticCache');
         $key = 'empty_instance_'.$sClassName;
         $oInstance = tx_mklib_util_StaticCache::get($key);
 

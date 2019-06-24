@@ -6,7 +6,6 @@ if (!defined('TYPO3_MODE')) {
 
 // static_info_tables um PLZ regeln erweitern
 if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
-    tx_rnbase::load('tx_rnbase_util_TYPO3');
     tx_rnbase_util_Extensions::addTCAcolumns(
         'static_countries',
         array(

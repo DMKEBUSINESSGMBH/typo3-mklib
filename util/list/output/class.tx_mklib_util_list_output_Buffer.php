@@ -22,8 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_mklib_util_list_output_Interface');
-
 /**
  * Buffer Handler.
  * Collects all the output internal.

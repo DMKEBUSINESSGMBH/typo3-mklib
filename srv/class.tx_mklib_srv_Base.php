@@ -3,10 +3,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
-tx_rnbase::load('tx_rnbase_util_SearchBase');
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('Tx_Rnbase_Service_Base');
 
 /**
  * Base service class.
@@ -232,7 +228,6 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
             // Wir kürzen die Elemente.
             $items = array_slice($items, 0, $limit);
             // Wir Schreiben einen Log-Eintrag um den Fehler zu melden.
-            tx_rnbase::load('tx_rnbase_util_Logger');
             tx_rnbase_util_Logger::warn(
                 'There are more elements('.$count.') for limitResults supplied than expected('.$limit.').',
                 'mkhoga'
@@ -315,8 +310,6 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
      */
     protected function getPid()
     {
-        tx_rnbase::load('tx_mklib_util_MiscTools');
-
         return tx_mklib_util_MiscTools::getPortalPageId();
     }
 
@@ -336,7 +329,6 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
         $model = $this->getDummyModel();
         $table = $model->getTableName();
 
-        tx_rnbase::load('tx_mklib_util_TCA');
         $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
@@ -380,7 +372,6 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
         }
 
         // Eleminate columns not in TCA
-        tx_rnbase::load('tx_mklib_util_TCA');
         $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 

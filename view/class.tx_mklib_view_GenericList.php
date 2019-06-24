@@ -1,7 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_view_List');
-
 /**
  * Generic list view.
  *
@@ -54,8 +52,6 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
      *  You can make use the syntax  EXT:myextension/template.php
      *
      * @param    string      path to the file used as templates
-     *
-     * @return void
      */
     public function setTemplateFile($pathToFile)
     {

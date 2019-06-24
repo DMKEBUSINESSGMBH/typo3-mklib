@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_model_base');
-
 class tx_mklib_model_TtAddress extends tx_rnbase_model_base
 {
     /**

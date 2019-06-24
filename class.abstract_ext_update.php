@@ -1,9 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Network');
-tx_rnbase::load('tx_rnbase_util_Link');
-
 /**
  * Class for updating the db.
  *

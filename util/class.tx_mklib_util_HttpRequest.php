@@ -291,7 +291,6 @@ class tx_mklib_util_HttpRequest
         // Open the connection, send the request and read the response
         $this->adapter->connect($uri['host'], $uri['port'], ('https' == $uri['scheme'] ? true : false));
 
-        tx_rnbase::load('tx_mklib_util_File');
         $this->adapter->write($this->method, tx_mklib_util_File::parseUrlFromParts($uri), $headers, $body);
 
         $response = $this->adapter->read();
@@ -299,7 +298,6 @@ class tx_mklib_util_HttpRequest
             throw new Exception('Unable to read response, or response is empty');
         }
 
-        tx_rnbase::load('tx_mklib_util_httprequest_Response');
         $response = tx_mklib_util_httprequest_Response::fromString($response);
 
         // @TODO: redirect prüfen.

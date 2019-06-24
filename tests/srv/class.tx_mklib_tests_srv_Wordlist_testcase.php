@@ -27,10 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
-tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_srv_Wordlist');
 
 /**
  * Generic form view test.

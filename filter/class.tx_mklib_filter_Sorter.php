@@ -23,8 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_filter_BaseFilter');
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * BITTE INS WIKI SCHAUEN FÜR EINEN BEISPIEL TESTCASE,
@@ -291,7 +289,6 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
         $sortFields = $this->getAllowedSortFields();
 
         if (!empty($sortFields)) {
-            tx_rnbase::load('tx_rnbase_util_BaseMarker');
             $token = md5(microtime());
             $markOrders = array();
             foreach ($sortFields as $field) {

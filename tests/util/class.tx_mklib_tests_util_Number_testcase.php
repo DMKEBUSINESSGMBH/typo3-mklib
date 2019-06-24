@@ -1,7 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_mklib_util_Number');
-
 /**
  * Numeric Util Tests.
  *

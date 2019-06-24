@@ -21,8 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_mod_Util');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
 
 /**
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
@@ -45,7 +43,6 @@ class tx_mklib_mod1_util_Language
     {
         $uid = (int) $uid;
         if (empty(static::$sysLanguageRecords[$uid])) {
-            tx_rnbase::load('tx_rnbase_util_DB');
             static::$sysLanguageRecords[$uid] = tx_rnbase_util_DB::getRecord(
                 'sys_language',
                 $uid
@@ -65,7 +62,6 @@ class tx_mklib_mod1_util_Language
         static $sysLanguageRecordAll = false;
         if (!$sysLanguageRecordAll) {
             $sysLanguageRecordAll = true;
-            tx_rnbase::load('tx_rnbase_util_DB');
             $records = tx_rnbase_util_DB::doSelect('*', 'sys_language', array());
             foreach ($records as $record) {
                 static::$sysLanguageRecords[(int) $record['uid']] = $record;
@@ -104,7 +100,6 @@ class tx_mklib_mod1_util_Language
      */
     public static function getLangSpriteIcon($recordOrUid, $options = null)
     {
-        tx_rnbase::load('tx_rnbase_model_data');
         $options = tx_rnbase_model_data::getInstance($options);
 
         if (!is_array($recordOrUid)) {
@@ -160,7 +155,6 @@ class tx_mklib_mod1_util_Language
             }
 
             // skip, if a overlay for this language allready exists
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $parentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($item->getTableName());
             $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($item->getTableName());
             $overlays = tx_rnbase_util_DB::doSelect(

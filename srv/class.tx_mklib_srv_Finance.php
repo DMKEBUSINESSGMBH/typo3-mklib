@@ -23,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_Rnbase_Service_Base');
 
 /**
  * Service für alles rund um Finanzen.
@@ -37,7 +36,6 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
      */
     public function getCurrency()
     {
-        tx_rnbase::load('tx_mklib_model_Currency');
         //@TODO: aktuellen Code auslesen und übergeben,
 
         return tx_mklib_model_Currency::getByCurrencyCode();

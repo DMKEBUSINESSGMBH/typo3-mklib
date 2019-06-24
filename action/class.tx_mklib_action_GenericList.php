@@ -3,8 +3,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_action_BaseIOC');
-tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
 /**
  * Controller
@@ -38,7 +36,6 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
 
         // Searcher instanzieren. Konfiguriert wird er über die options['searchdef']
         /* @var $searcher tx_rnbase_util_SearchGeneric */
-        tx_rnbase::load('tx_rnbase_util_SearchBase');
         $searcher = tx_rnbase_util_SearchBase::getInstance('tx_rnbase_util_SearchGeneric');
 
         // Dem Filter den Searcher übergeben, fall er diese Möglichkeit bietet.

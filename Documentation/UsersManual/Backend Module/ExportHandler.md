@@ -77,9 +77,7 @@ mod {
                   ### you can also use a USER Func or every other TypoScript.
                   ### When using a userFunc you have to take care yourself to load the class
                   ### as filename.includeLibs = EXT:myext/Classes/Utility/Backend.php works not
-                  ### in the backend. You can do this via autoload or just call
-                  ### tx_rnbase::load('Tx_Myext_Utility_Backend') before the PageTS Config file
-                  ### which includes this TypoScript is loaded.
+                  ### in the backend. You can do this via autoload.
                   #filename = USER
                   #filename.userFunc = Tx_Myext_Utility_Backend->getFileNameForExport
                   ### marker for the subpart

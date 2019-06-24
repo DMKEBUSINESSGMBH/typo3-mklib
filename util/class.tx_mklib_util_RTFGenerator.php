@@ -27,7 +27,6 @@
 /**
  * erforderliche Klassen laden.
  */
-tx_rnbase::load('tx_mklib_util_MiscTools');
 
 /**
  * RTF-Generator.

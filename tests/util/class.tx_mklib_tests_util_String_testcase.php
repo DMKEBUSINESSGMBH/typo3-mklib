@@ -23,8 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_util_String');
 
 /**
  * Generic form view test.
@@ -214,7 +212,6 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public static function initSpamProtectionConfig()
     {
-        tx_rnbase::load('tx_rnbase_util_Misc');
         tx_rnbase_util_Misc::prepareTSFE();
 
         $GLOBALS['TSFE']->spamProtectEmailAddresses = 2;

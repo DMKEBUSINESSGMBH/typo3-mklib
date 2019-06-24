@@ -21,9 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_mklib_interface_Repository');
-tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
  * Abstracte Repository Klasse.
@@ -53,7 +50,6 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      */
     protected function getSearcher()
     {
-        tx_rnbase::load('tx_rnbase_util_SearchBase');
         $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof tx_rnbase_util_SearchBase) {
             throw new Exception(
@@ -285,8 +281,6 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      */
     protected function getPid()
     {
-        tx_rnbase::load('tx_mklib_util_MiscTools');
-
         return tx_mklib_util_MiscTools::getPortalPageId();
     }
 
@@ -308,7 +302,6 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
         $model = $this->getEmptyModel();
         $table = $model->getTableName();
 
-        tx_rnbase::load('tx_mklib_util_TCA');
         $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
@@ -364,7 +357,6 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
         }
 
         // Eleminate columns not in TCA
-        tx_rnbase::load('tx_mklib_util_TCA');
         $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 

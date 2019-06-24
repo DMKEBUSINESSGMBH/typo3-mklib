@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Model eines wordlist eintrages.
@@ -102,7 +100,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
             // read sql file content
             $sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(tx_rnbase_util_Extensions::extPath($extKey, $file));
             if (@is_file($sqlFilename)) {
-                tx_mklib_tests_Util::queryDB($sqlFilename, false, true); //alle statements importieren
+                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); //alle statements importieren
             }
         }
     }
@@ -116,7 +114,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
     protected function setUp()
     {
         //Devlog stört beim Testen nur
-        tx_mklib_tests_Util::disableDevlog();
+        \DMK\Mklib\Utility\Tests::disableDevlog();
 
         try {
             $this->createDatabase();

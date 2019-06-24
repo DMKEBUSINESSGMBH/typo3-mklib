@@ -21,8 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_mod1_export_ISearcher');
-tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
  * Basisklasse für Suchfunktionen in BE-Modulen.
@@ -149,7 +147,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function getSearcherId()
     {
-        tx_rnbase::load('tx_mklib_util_String');
         $pageId = tx_mklib_util_String::toCamelCase(get_class($this));
 
         return $pageId;
@@ -317,7 +314,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     {
         $firstPrev = $lastNext = false;
         if ($this->options['baseTableName']
-            && tx_rnbase::load('tx_rnbase_util_TCA')
             && tx_rnbase_util_TCA::getSortbyFieldForTable($this->options['baseTableName'])
             && ($options['limit'] || $options['offset'])
         ) {
@@ -480,7 +476,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 
         //die fields nun mit dem Suchbegriff und den Spalten,
         //in denen gesucht werden soll, füllen
-        tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
         tx_mklib_mod1_util_SearchBuilder::buildFreeText(
             $fields,
             $this->currentSearchWord,
@@ -532,7 +527,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             return '';
         }
         $columns = $this->getColumns($this->getDecorator($this->getModule(), $options));
-        tx_rnbase::load('tx_rnbase_mod_Tables');
         list($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
             $items,
             $columns,
@@ -632,7 +626,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         tx_rnbase_mod_IDecorator &$oDecorator = null
     ) {
         if (!empty($this->options['baseTableName'])) {
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($this->options['baseTableName']);
             if (!empty($labelField)) {
                 $columns['label'] = array(
@@ -662,7 +655,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         tx_rnbase_mod_IDecorator &$oDecorator = null
     ) {
         if (!empty($this->options['baseTableName'])) {
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($this->options['baseTableName']);
             if (!empty($sysLanguageUidField)) {
                 $columns['sys_language_uid'] = array(

@@ -22,8 +22,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_filter_BaseFilter');
-
 class tx_mklib_tests_fixtures_classes_DummyFilter extends tx_rnbase_filter_BaseFilter
 {
     /**

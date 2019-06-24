@@ -31,11 +31,6 @@ namespace DMK\Mklib\Utility;
 
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 
-\tx_rnbase::load('tx_rnbase_util_Strings');
-\tx_rnbase::load('tx_rnbase_cache_Manager');
-\tx_rnbase::load('tx_rnbase_util_TYPO3');
-\tx_rnbase::load('tx_rnbase_util_Spyc');
-
 /**
  * DMK\Mklib\Utility$Tests.
  *
@@ -202,7 +197,6 @@ class Tests
      */
     private static function getSqlStatementArrayDependendOnTypo3Version($sql)
     {
-        \tx_rnbase::load('tx_rnbase_util_TYPO3');
         $dbHandler = \tx_rnbase::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
 
         return $dbHandler->getStatementArray($sql, 1);
@@ -402,7 +396,6 @@ class Tests
             $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] = 0;
         }
 
-        \tx_rnbase::load('tx_rnbase_util_Misc');
         \tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
         $loaded = true;
 
@@ -464,7 +457,6 @@ class Tests
      */
     public static function setSysPageToTsfe()
     {
-        \tx_rnbase::load('tx_rnbase_util_TYPO3');
         self::prepareTSFE();
         $GLOBALS['TSFE']->sys_page = \tx_rnbase_util_TYPO3::getSysPage();
     }

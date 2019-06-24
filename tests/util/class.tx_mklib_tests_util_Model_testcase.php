@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_Model');
-tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * Model util tests.
@@ -113,7 +111,7 @@ class tx_mklib_tests_util_Model_testcase extends Tx_Phpunit_TestCase
         $this->markTestSkipped('@TODO: implement!');
         // eine dummy tca erstellen und prüfen!
 
-        tx_mklib_tests_Util::getFixturePath('dummyTCA.php');
+        \DMK\Mklib\Utility\Tests::getFixturePath('dummyTCA.php');
     }
 }
 

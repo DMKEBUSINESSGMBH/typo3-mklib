@@ -137,7 +137,6 @@ class tx_mklib_util_Encoding
      */
     public static function detectUtfEncoding($var)
     {
-        tx_rnbase::load('tx_rnbase_util_Strings');
         $bytes = tx_rnbase_util_Strings::isUtf8String($var);
         $encoding = false;
         switch ($bytes) {

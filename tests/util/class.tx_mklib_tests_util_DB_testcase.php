@@ -27,9 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('tx_mklib_util_DB');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * DB util tests.

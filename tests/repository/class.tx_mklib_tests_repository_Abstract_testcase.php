@@ -27,18 +27,11 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_repository_Abstract');
-tx_rnbase::load('tx_mklib_model_WordlistEntry');
-tx_rnbase::load('tx_mklib_search_Wordlist');
-tx_rnbase::load('Tx_Mklib_Database_Connection');
-
 class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTestCase
 {
     protected function setUp()
     {
         if (empty($GLOBALS['TCA']['tx_mklib_wordlist'])) {
-            tx_rnbase::load('tx_mklib_srv_Wordlist');
             tx_mklib_srv_Wordlist::loadTca();
             $GLOBALS['TCA']['tx_mklib_wordlist']['test'] = true;
         }

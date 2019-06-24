@@ -1,8 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_action_BaseIOC');
-tx_rnbase::load('tx_rnbase_filter_BaseFilter');
-
 /**
  * Controller
  * Generische Klasse für List Views.

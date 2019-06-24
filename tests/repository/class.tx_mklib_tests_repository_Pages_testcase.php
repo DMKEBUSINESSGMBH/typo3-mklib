@@ -21,10 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_SearchGeneric');
-tx_rnbase::load('tx_mklib_repository_Pages');
-tx_rnbase::load('tx_rnbase_model_base');
 
 /**
  * Tests for tx_mklib_repository_Pages.

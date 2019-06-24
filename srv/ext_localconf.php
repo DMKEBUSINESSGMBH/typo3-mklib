@@ -11,9 +11,6 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
-tx_rnbase::load('tx_rnbase_util_SearchBase');
-
 tx_rnbase_util_Extensions::addService(
     $_EXTKEY,
     'mklib' /* sv type */,

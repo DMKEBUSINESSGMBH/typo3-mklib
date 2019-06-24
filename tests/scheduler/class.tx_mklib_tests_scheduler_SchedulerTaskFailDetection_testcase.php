@@ -27,9 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_scheduler_SchedulerTaskFailDetection');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase.
@@ -57,7 +54,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
      */
     protected function setUp()
     {
-        tx_mklib_tests_Util::disableDevlog();
+        \DMK\Mklib\Utility\Tests::disableDevlog();
         $this->languageBackup = $GLOBALS['LANG']->lang;
 
         $GLOBALS['LANG']->lang = 'default';

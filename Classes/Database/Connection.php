@@ -21,9 +21,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Database_Connection');
-tx_rnbase::load('tx_mklib_util_TCA');
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * Beinhaltet Utility-Methoden für Datenbank handling.
@@ -409,10 +406,8 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     {
         if (-1 == $this->log) {
             // erst die Extension Konfiguration fragen!
-            tx_rnbase::load('tx_rnbase_configurations');
             $this->log = intval(tx_rnbase_configurations::getExtensionCfgValue('mklib', 'logDbHandler'));
             if ($this->log) {
-                tx_rnbase::load('tx_rnbase_util_Logger');
                 $this->log = tx_rnbase_util_Logger::isNoticeEnabled();
             }
         }
@@ -463,7 +458,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
             $data['values'] = $values;
         }
         // backtrace Konfigurierbar machen?
-        tx_rnbase::load('tx_mklib_util_Logger');
         $data['debug_backtrace'] = tx_mklib_util_Logger::getDebugBacktrace();
 
         // wurde auf hidden gesetzt?

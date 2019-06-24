@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_srv_Base');
 
 /**
  * Service for accessing ad entries.
@@ -138,7 +137,6 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
         // '\b' bedeutet das nur nach ganzen Wörtern gesucht wird. ist fuck
         //geblacklisted wird sfuck nicht bemängelt
         if ($greedy && preg_match_all('/\b('.$sWordlist.')\b/i', $word, $matches)) {//alle treffer?
-            tx_rnbase::load('tx_mklib_util_Array');
             //preg_mactch_all gibt ein array zurück, was auch viele leere Werte für die Nicht-Treffer enthält. Diese stören und werden bereinigt
             return tx_mklib_util_Array::removeEmptyArrayValuesSimple($matches[0]);
         }

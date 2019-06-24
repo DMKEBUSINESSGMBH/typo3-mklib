@@ -22,8 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Base');
-
 /**
  * Iban Model and Validatort based on jschaedl/Iban.
  *

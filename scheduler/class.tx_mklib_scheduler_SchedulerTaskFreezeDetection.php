@@ -22,11 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_mklib_scheduler_Generic');
-tx_rnbase::load('tx_rnbase_util_DB');
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_mklib_util_Scheduler');
-
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
@@ -83,7 +78,6 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
         $sMsg = LF.'Die folgenden Scheduler Tasks hängen seit mindestens '.
             tx_mklib_util_Scheduler::getFormattedTime($this->getOption('threshold')).' : '.implode(', ', $aMessages);
         $oException = new Exception($sMsg, 0);
-        tx_rnbase::load('tx_rnbase_util_Misc');
         //die Mail soll immer geschickt werden
         $aOptions = array('ignoremaillock' => true);
         tx_rnbase_util_Misc::sendErrorMail($this->getOption('receiver'), 'tx_mklib_scheduler_CheckRunningTasks', $oException, $aOptions);

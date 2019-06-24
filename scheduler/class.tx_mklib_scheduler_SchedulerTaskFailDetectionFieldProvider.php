@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
 
 /**
  * tx_mklib_scheduler_SchedulerTaskFailDetectionFieldProvider.

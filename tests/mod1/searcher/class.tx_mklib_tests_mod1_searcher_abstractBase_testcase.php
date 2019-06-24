@@ -25,9 +25,6 @@
  */
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
-tx_rnbase::load('tx_rnbase_util_TYPO3');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
@@ -49,7 +46,6 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
         //sprache auf default setzen damit wir die richtigen labels haben
         $GLOBALS['LANG']->lang = 'default';
 
-        tx_rnbase::load('tx_mklib_srv_Wordlist');
         tx_mklib_srv_Wordlist::loadTca();
 
         $this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');

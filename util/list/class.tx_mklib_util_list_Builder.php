@@ -1,8 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_util_Templates');
-tx_rnbase::load('tx_rnbase_util_ListBuilder');
-
 /**
  * Der Listbuilder erzeugt die ausgabe für den export.
  *

@@ -76,7 +76,6 @@ class tx_mklib_validator_ZipCode
         switch ($country->getZipRule()) {
             case 0: // no rule set
                 $result = true;
-                tx_rnbase::load('tx_rnbase_util_Logger');
                 if (tx_rnbase_util_Logger::isNoticeEnabled()) {
                     tx_rnbase_util_Logger::notice('No zip rule for country defined.', 'mklib', array('zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()));
                 }

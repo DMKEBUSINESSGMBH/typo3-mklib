@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_Scheduler');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * tx_mklib_tests_util_Scheduler_testcase.

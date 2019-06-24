@@ -112,7 +112,6 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
         );
         // Wir entfernen leere Einträge.
         // Die können nicht ersetzt werden und verursachen Fehler
-        tx_rnbase::load('tx_mklib_util_Array');
         $preg = tx_mklib_util_Array::removeEmptyValues(array_keys($mapping));
         $preg = '/('.implode('|\\', $preg).')/';
         // Wir splitten nun die Werte auf.

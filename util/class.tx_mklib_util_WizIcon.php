@@ -23,9 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Utility_T3General');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-tx_rnbase::load('tx_rnbase_util_Wizicon');
 
 /**
  * Diese Klasse fügt das Wizzard Icon hinzu.

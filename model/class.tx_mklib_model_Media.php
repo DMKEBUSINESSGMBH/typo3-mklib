@@ -23,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_model_base');
 
 /**
  * Model eines DAM-Records.
@@ -57,8 +56,6 @@ class tx_mklib_model_Media extends tx_rnbase_model_base
                 $this->getUrl()
             );
         }
-
-        tx_rnbase::load('tx_mklib_util_File');
 
         // webpath setzen
         if ((!$sPath || 'webpath' == $sPath)

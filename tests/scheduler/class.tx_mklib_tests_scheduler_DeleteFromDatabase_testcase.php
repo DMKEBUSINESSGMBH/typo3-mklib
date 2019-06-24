@@ -27,9 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_scheduler_DeleteFromDatabase');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * @author Hannes Bochmann
@@ -52,7 +49,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabase_testcase extends tx_rnbase_tes
      */
     protected function setUp()
     {
-        tx_mklib_tests_Util::disableDevlog();
+        \DMK\Mklib\Utility\Tests::disableDevlog();
     }
 
     /**

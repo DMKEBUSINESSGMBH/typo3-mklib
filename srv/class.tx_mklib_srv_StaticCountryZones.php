@@ -22,8 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_mklib_srv_Base');
-
 /**
  * @author Hannes Bochmann
  */
@@ -85,7 +83,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function create(array $data)
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
             'creating a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
@@ -98,7 +95,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
             'updating a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
@@ -111,7 +107,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
             'deleting a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
@@ -124,7 +119,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function handleCreation(array $data)
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
             'creating a static country zone via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me

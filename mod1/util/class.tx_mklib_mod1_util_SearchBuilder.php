@@ -23,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
  * Hilfsklasse für Suchen im BE.
@@ -214,7 +213,6 @@ class tx_mklib_mod1_util_SearchBuilder
         }
 
         if ($items) {
-            tx_rnbase::load('tx_rnbase_mod_Tables');
             $arr = tx_rnbase_mod_Tables::prepareTable($items, $columns, $callingClass->getFormTool(), $callingClass->getOptions());
             $out = $callingClass->getModule()->getDoc()->table($arr[0]);
         } else {

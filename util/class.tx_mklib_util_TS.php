@@ -1,10 +1,5 @@
 <?php
 
-tx_rnbase::load('Tx_Rnbase_Backend_Utility');
-tx_rnbase::load('tx_rnbase_util_Files');
-tx_rnbase::load('tx_rnbase_util_Arrays');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-
 /**
  * Util Methoden für das TS, speziell im BE.
  *
@@ -48,9 +43,6 @@ class tx_mklib_util_TS
         if (file_exists(tx_rnbase_util_Files::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
             tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
         }
-
-        tx_rnbase::load('tx_rnbase_configurations');
-        tx_rnbase::load('tx_rnbase_util_Misc');
 
         $tsfePreparationOptions = array();
         if ($forceTsfePreparation) {

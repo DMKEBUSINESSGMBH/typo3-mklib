@@ -22,9 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Iban');
-
 /**
  * iban tests.
  *

@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_validator_WordList');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 /**
  * Testfälle für tx_mklib_validator_WordList.
  *

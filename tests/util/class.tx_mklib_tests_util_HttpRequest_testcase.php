@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_HttpRequest');
-tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * Http Request Object Tests.
@@ -44,7 +42,7 @@ class tx_mklib_tests_util_HttpRequest_testcase extends Tx_Phpunit_TestCase
 
         $url = 'https://phpunit.project.dmknet.de/tests/httprequest.php?method=POST';
         $config = array(
-            'sslcainfo' => tx_mklib_tests_Util::getFixturePath('project.dmknet.de.crt'),
+            'sslcainfo' => \DMK\Mklib\Utility\Tests::getFixturePath('project.dmknet.de.crt'),
         );
 
         $request = new tx_mklib_util_HttpRequest($url, $config);

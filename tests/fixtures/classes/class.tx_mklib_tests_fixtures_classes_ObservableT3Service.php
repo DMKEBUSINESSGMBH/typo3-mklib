@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_abstract_ObservableT3Service');
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableInterface');
 
 /**

@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_mod_BaseModule');
 
 /**
  * Backend Modul für mklib.

@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('Tx_Rnbase_Scheduler_FieldProvider');
 /**
  * tx_mklib_scheduler_GenericFieldProvider.
  *
@@ -178,7 +177,6 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
 
                             break;
                         case 'folder':
-                            tx_rnbase::load('tx_mklib_util_File');
                             $sPath = tx_mklib_util_File::getServerPath($mValue);
                             $bMessage = !@is_dir($sPath);
                             if (!$bMessage) {
@@ -186,7 +184,6 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
                             }
                             break;
                         case 'file':
-                            tx_rnbase::load('tx_mklib_util_File');
                             $sPath = tx_mklib_util_File::getServerPath($mValue);
                             $bMessage = !@file_exists($sPath);
                             if (!$bMessage) {

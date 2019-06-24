@@ -9,10 +9,8 @@ The validator has two methods, which expect the first parameter to implement the
 
 ~~~~ {.sourceCode .php}
 // get the model with the data for germany
-tx_rnbase::load('tx_mklib_model_StaticCountry');
 $country = tx_mklib_model_StaticCountry::getInstance(54);
 // validate
-tx_rnbase::load('tx_mklib_validator_ZipCode');
 return tx_mklib_validator_ZipCode::validate($country, '09113')
       ? true : tx_mklib_validator_ZipCode::getFormatInfo($country);
 ~~~~

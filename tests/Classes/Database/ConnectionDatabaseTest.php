@@ -23,8 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('Tx_Mklib_Database_Connection');
 tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
 
 /**
@@ -53,7 +51,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 
         // devlog erstmal deaktivieren,
         // da Prozesse auserhalb des Tests auch darauf zugreifen!
-        tx_mklib_tests_Util::disableDevlog();
+        \DMK\Mklib\Utility\Tests::disableDevlog();
     }
 
     /**
@@ -66,8 +64,8 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         $this->importExtensions(array('frontend'));
 
         // logging aktivieren
-        tx_mklib_tests_Util::storeExtConf();
-        tx_mklib_tests_Util::setExtConfVar('logDbHandler', 1);
+        \DMK\Mklib\Utility\Tests::storeExtConf();
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbHandler', 1);
 
         // Hooks leer machen da die aus anderen extensions stören könnten
         self::$hooks['rn_base']['util_db_do_insert_post'] =
@@ -101,7 +99,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     {
         parent::tearDown();
 
-        tx_mklib_tests_Util::restoreExtConf();
+        \DMK\Mklib\Utility\Tests::restoreExtConf();
 
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'] =
             self::$hooks['rn_base']['util_db_do_insert_post'];
@@ -132,7 +130,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     public function testInsertTtContent()
     {
         // logging deaktivieren
-        tx_mklib_tests_Util::setExtConfVar('logDbHandler', 0);
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbHandler', 0);
 
         $aValues = array(
                 'uid' => 20,
@@ -163,7 +161,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     public function testInsertTtContentWithDevLogAndIgnoreTable()
     {
         // logging für tt_content deaktivieren
-        tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbIgnoreTables', 'tt_content');
 
         $aValues = array(
                 'uid' => 20,
@@ -252,7 +250,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         // Daten eintragen!
         $this->testInsertTtContentWithDevLog();
         // logging für tt_content deaktivieren
-        tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbIgnoreTables', 'tt_content');
 
         $this->restoreIgnoreTablesProperty();
 

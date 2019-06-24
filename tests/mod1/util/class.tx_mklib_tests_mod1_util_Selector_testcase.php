@@ -23,10 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
-tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>

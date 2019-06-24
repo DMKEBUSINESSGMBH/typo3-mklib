@@ -27,9 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
-tx_rnbase::load('tx_mklib_mod1_searcher_abstractBase');
-tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 
 /**
  * Hilfsklassen um nach Gewinnspielen im BE zu suchen.

@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_srv_Base');
 
 /**
  * Dummy Service um uns DB Abfragen zu ersparen.

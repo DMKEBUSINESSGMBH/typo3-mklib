@@ -22,9 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_mklib_repository_Abstract');
-tx_rnbase::load('tx_rnbase_util_Arrays');
-
 /**
  * Page Repository.
  *

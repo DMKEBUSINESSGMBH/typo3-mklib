@@ -21,7 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_mod_IDecorator');
 
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
@@ -139,7 +138,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     protected function getSysLanguageColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
     {
         if ($item->getTableName()) {
-            tx_rnbase::load('tx_mklib_mod1_util_Language');
             $ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
                 $item->getSysLanguageUid(),
                 array('show_title' => true)
@@ -210,7 +208,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                     $ret .= $this->getFormTool()->createEditLink($tableName, $uid, $bTitle);
                     break;
                 case 'hide':
-                    tx_rnbase::load('tx_mklib_util_TCA');
                     $sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($tableName, 'disabled', 'hidden');
                     $ret .= $this->getFormTool()->createHideLink($tableName, $uid, $item->record[$sHiddenColumn]);
                     break;
@@ -250,7 +247,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             )
                         );
                     } else {
-                        tx_rnbase::load('tx_rnbase_mod_Util');
                         $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
                     }
                     break;
@@ -270,7 +266,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             )
                         );
                     } else {
-                        tx_rnbase::load('tx_rnbase_mod_Util');
                         $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
                     }
                     break;

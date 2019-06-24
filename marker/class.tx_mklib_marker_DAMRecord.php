@@ -23,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_mklib_marker_MediaRecord');
 
 /**
  * Diese Klasse ist für die Erstellung von Markerarrays der Section.

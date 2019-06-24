@@ -100,7 +100,6 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
     public function getDateTimeFromPath($path)
     {
         $date = $this->getValueFromPath($path);
-        tx_rnbase::load('tx_mklib_util_Date');
         $date = tx_mklib_util_Date::getDateTime($date);
 
         return $date;

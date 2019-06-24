@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_TCA');
-tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * Generic form view test.
@@ -49,7 +47,6 @@ class tx_mklib_tests_util_TCA_testcase extends Tx_Phpunit_TestCase
     {
         //es kann sein dass die TCA von der wordlist nicht geladen wurde.
         //also stellen wir die TCA hier bereit
-        tx_rnbase::load('tx_mklib_srv_Wordlist');
         tx_mklib_srv_Wordlist::loadTca();
 
         $this->returnUrlBackup = $_GET['returnUrl'];

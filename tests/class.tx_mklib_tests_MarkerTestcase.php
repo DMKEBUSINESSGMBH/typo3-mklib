@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_util_Templates');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 
 /**
  * Testklasse für Marker Klassen, die ihre Ausgabe über

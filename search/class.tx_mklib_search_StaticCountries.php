@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_rnbase_util_SearchBase');
 
 /**
  * Class to search ads from database.

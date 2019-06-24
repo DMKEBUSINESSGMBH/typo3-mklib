@@ -23,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 
 /**
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>

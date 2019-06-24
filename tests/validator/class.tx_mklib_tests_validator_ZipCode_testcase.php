@@ -1,8 +1,5 @@
 <?php
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_Files');
-
 /**
  * Testfälle für tx_mklib_validator_ZipCode.
  *
@@ -33,7 +30,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
         if (@is_file($sqlFilename)) {
             try {
                 //alle statements importieren
-                tx_mklib_tests_Util::queryDB($sqlFilename, false, true);
+                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true);
             } catch (RuntimeException $e) {
                 $this->markTestSkipped('ext_tables_static_update failed.');
             }
@@ -148,7 +145,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
             // zur Sicherheit die Zip Code Rules einfügen
             $sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(tx_rnbase_util_Extensions::extPath('mklib', 'ext_tables_static_update.sql'));
             if (@is_file($sqlFilename)) {
-                tx_mklib_tests_Util::queryDB($sqlFilename, false, true); //alle statements importieren
+                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); //alle statements importieren
             }
         }
     }

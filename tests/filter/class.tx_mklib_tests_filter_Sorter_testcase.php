@@ -40,7 +40,6 @@ class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase
      */
     protected function setUp()
     {
-        tx_rnbase::load('tx_rnbase_util_Misc');
         tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
 
         //tq_seo extension hat einen hook der auf das folgende feld zugreift.

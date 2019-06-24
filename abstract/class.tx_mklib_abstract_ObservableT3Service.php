@@ -23,9 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_mklib_interface_IObservable');
-tx_rnbase::load('Tx_Rnbase_Service_Base');
-
 /**
  * Interface für ein Subject Objekt bei Verwendung des Subject/Observer Patterns.
  *

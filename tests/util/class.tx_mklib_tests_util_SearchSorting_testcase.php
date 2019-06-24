@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_SearchSorting');
 
 /**
  * Kindklasse der eigentlichen UtilDB, um die Variable $log von setzen zu können.

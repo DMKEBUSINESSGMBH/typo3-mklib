@@ -23,8 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_mklib_action_ListBase');
-
 //in abstrakten klassen lassen sich keine nicht-abstrakten methoden mocken
 // @todo remove. since phpunit 5 this is working
 abstract class ListBaseWithNewFilterMode extends tx_mklib_action_ListBase

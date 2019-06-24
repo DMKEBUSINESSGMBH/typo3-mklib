@@ -27,8 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_Var');
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * String Utilities.

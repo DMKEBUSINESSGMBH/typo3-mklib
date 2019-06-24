@@ -44,7 +44,6 @@ class tx_mklib_tests_util_ExtensionConfiguration_testcase extends Tx_Phpunit_Tes
     }
 }
 
-tx_rnbase::load('tx_mklib_util_ExtensionConfiguration');
 class tx_mklib_util_ExtensionConfigurationTest extends tx_mklib_util_ExtensionConfiguration
 {
     /**

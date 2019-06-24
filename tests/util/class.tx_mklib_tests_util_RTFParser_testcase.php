@@ -27,7 +27,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-tx_rnbase::load('tx_mklib_util_RTFParser');
 
 /**
  * RTFParser util tests.
@@ -39,13 +38,13 @@ class tx_mklib_tests_util_RTFParser_testcase extends Tx_Phpunit_TestCase
      */
     public function setUp()
     {
-        tx_mklib_tests_Util::storeExtConf('mklib');
-        tx_mklib_tests_Util::setExtConfVar('specialCharMarker', 'SPECIALCHAR_', 'mklib');
+        \DMK\Mklib\Utility\Tests::storeExtConf('mklib');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('specialCharMarker', 'SPECIALCHAR_', 'mklib');
     }
 
     public function tearDown()
     {
-        tx_mklib_tests_Util::restoreExtConf('mklib');
+        \DMK\Mklib\Utility\Tests::restoreExtConf('mklib');
     }
 
     /**

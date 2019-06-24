@@ -24,9 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
-tx_rnbase::load('tx_mklib_tests_Util');
 
 /**
  * Generic form view test.

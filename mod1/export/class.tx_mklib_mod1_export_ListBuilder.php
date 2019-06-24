@@ -22,10 +22,6 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_ListBuilder');
-tx_rnbase::load('tx_mklib_mod1_export_Util');
-tx_rnbase::load('tx_rnbase_util_Templates');
-
 /**
  * Der Listbuilder erzeugt die ausgabe für den export.
  *
