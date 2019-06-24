@@ -34,7 +34,7 @@
 class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
 {
     /**
-     * @return tx_mklib_marker_DAMRecord
+     * @return tx_mklib_marker_MediaRecord
      */
     public static function getInstance()
     {
@@ -245,8 +245,4 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
             }
         }
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/marker/class.tx_mklib_marker_DAMRecord.php'];
 }
