@@ -189,8 +189,8 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
                 $languages[] = '-1'; // for all languages
                 // Wenn eine bestimmte Sprache gesetzt ist,
                 // laden wir diese ebenfalls.
-                if (is_object($tsfe) && $tsfe->sys_language_content) {
-                    $languages[] = $tsfe->sys_language_content;
+                if (is_object($tsfe) && \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
+                    $languages[] = \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe);
                 } // andernfalls nutzen wir die default sprache
                 else {
                     $languages[] = '0'; // default language

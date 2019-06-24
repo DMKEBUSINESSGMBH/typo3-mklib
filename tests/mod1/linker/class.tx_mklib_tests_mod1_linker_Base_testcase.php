@@ -37,11 +37,7 @@ class tx_mklib_tests_mod1_linker_Base_testcase extends Tx_Phpunit_TestCase
         //damit labels geladen sind
         global $LOCAL_LANG;
         $label = 'Details';
-        if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $LOCAL_LANG['default']['label_show_details'][0]['target'] = $label;
-        } else {
-            $LOCAL_LANG['default']['label_show_details'] = $label;
-        }
+        $LOCAL_LANG['default']['label_show_details'][0]['target'] = $label;
         $oLinker = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyLinker');
         $oModel = tx_rnbase::makeInstance('tx_rnbase_model_base', 1);
         $oModel->uid = 1;

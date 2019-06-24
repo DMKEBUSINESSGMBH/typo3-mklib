@@ -100,11 +100,7 @@ class tx_mklib_tests_filter_Sorter_testcase extends Tx_Phpunit_TestCase
 
         $formatter = $configurations->getFormatter();
         $parsedTemplate = $filter->parseTemplate($template, $formatter, $confId);
-
-        // leerzeichen ab 6.2.3 nicht mehr vorhanden
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $expectedParsedTemplate = str_replace('" >', '">', $expectedParsedTemplate);
-        }
+        $expectedParsedTemplate = str_replace('" >', '">', $expectedParsedTemplate);
 
         self::assertRegExp($expectedParsedTemplate, $parsedTemplate, 'link falsch');
     }

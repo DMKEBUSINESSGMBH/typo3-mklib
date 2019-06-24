@@ -39,11 +39,7 @@ class tx_mklib_model_Media extends tx_rnbase_model_base
      */
     public function getTableName()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            return 'sys_file';
-        } else {
-            return 'tx_dam';
-        }
+        return 'sys_file';
     }
 
     /**
@@ -57,15 +53,9 @@ class tx_mklib_model_Media extends tx_rnbase_model_base
     {
         // Pathname immer setzen!
         if (!$this->hasFilePathName()) {
-            if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-                $this->setFilePathName(
-                    $this->getUrl()
-                );
-            } else {
-                $this->setFilePathName(
-                    $this->getFilePath().$this->getFileName()
-                );
-            }
+            $this->setFilePathName(
+                $this->getUrl()
+            );
         }
 
         tx_rnbase::load('tx_mklib_util_File');

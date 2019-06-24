@@ -29,7 +29,7 @@ if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
                 ),
             ),
         ),
-        !tx_rnbase_util_TYPO3::isTYPO62OrHigher()
+        false
     );
     tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_rule');
     tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_length');

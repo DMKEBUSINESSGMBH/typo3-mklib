@@ -88,9 +88,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
         //Nachrichten für den error mail versand
         $messages = $aUids = array();
         foreach ($failedTasks as $failedTask) {
-            $classname = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-                get_class(unserialize($failedTask['serialized_task_object'])) :
-                $failedTask['classname'];
+            $classname = get_class(unserialize($failedTask['serialized_task_object']));
 
             $messages[] = '"'.$classname.' (Task-Uid: '.$failedTask['uid'].')"';
             $uids[] = $failedTask['uid'];
@@ -127,7 +125,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
     {
         tx_rnbase::load('tx_rnbase_util_Misc');
 
-        return tx_rnbase_util_Misc;
+        return 'tx_rnbase_util_Misc';
     }
 
     /**
@@ -149,9 +147,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
      */
     protected function getFailedTasks()
     {
-        $selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-            'uid,serialized_task_object' :
-            'uid,classname';
+        $selectFields = 'uid,serialized_task_object';
 
         return $this->getDatabaseConnection()->doSelect(
             $selectFields,

@@ -29,6 +29,8 @@ namespace DMK\Mklib\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+
 \tx_rnbase::load('tx_rnbase_util_Strings');
 \tx_rnbase::load('tx_rnbase_cache_Manager');
 \tx_rnbase::load('tx_rnbase_util_TYPO3');
@@ -178,17 +180,18 @@ class Tests
         if (empty($sql)) {
             throw new Exception('SQL-Datei nicht gefunden');
         }
+        $databaseConnection = \Tx_Rnbase_Database_Connection::getInstance();
         if ($statementType || $bIgnoreStatementType) {
             $statements = self::getSqlStatementArrayDependendOnTypo3Version($sql);
             foreach ($statements as $statement) {
                 if (!$bIgnoreStatementType && \tx_rnbase_util_Strings::isFirstPartOfStr($statement, $statementType)) {
-                    $GLOBALS['TYPO3_DB']->admin_query($statement);
+                    $databaseConnection->doQuery($statement);
                 } elseif ($bIgnoreStatementType) {//alle gefundenen statements ausführen
-                    $GLOBALS['TYPO3_DB']->admin_query($statement);
+                    $databaseConnection->doQuery($statement);
                 }
             }
         } else {
-            $GLOBALS['TYPO3_DB']->admin_query($sql);
+            $databaseConnection->doQuery($sql);
         }
     }
 
@@ -200,13 +203,7 @@ class Tests
     private static function getSqlStatementArrayDependendOnTypo3Version($sql)
     {
         \tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (\tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $dbHandler = \tx_rnbase::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
-        } elseif (\tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $dbHandler = \tx_rnbase::makeInstance('t3lib_install_Sql');
-        } else {
-            $dbHandler = \tx_rnbase::makeInstance('t3lib_install');
-        }
+        $dbHandler = \tx_rnbase::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
 
         return $dbHandler->getStatementArray($sql, 1);
     }
@@ -221,10 +218,10 @@ class Tests
     {
         $path = self::getFixturePath($filename, $dir, $extKey);
 
-        $cObj = &$configurations->getCObj();
+        $markerTemplateService = \tx_rnbase::makeInstance(MarkerBasedTemplateService::class);
         $templateCode = file_get_contents($path);
         if ($subpart) {
-            $templateCode = $cObj->getSubpart($templateCode, $subpart);
+            $templateCode = $markerTemplateService->getSubpart($templateCode, $subpart);
         }
 
         return $templateCode;
@@ -264,11 +261,7 @@ class Tests
         $GLOBALS['LANG']->lang = $lang;
         //ab typo 4.6 ist das mit den lang labels anders
         foreach ($labels as $key => $label) {
-            if (\tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-                $LOCAL_LANG[$lang][$key][0]['target'] = $label;
-            } else {
-                $LOCAL_LANG[$lang][$key] = $label;
-            }
+            $LOCAL_LANG[$lang][$key][0]['target'] = $label;
         }
     }
 
@@ -507,8 +500,6 @@ class Tests
         \tx_rnbase_util_Misc::prepareTSFE();
 
         $GLOBALS['TSFE']->sys_page = \tx_rnbase_util_TYPO3::getSysPage();
-        $GLOBALS['TSFE']->initTemplate();
-
         $GLOBALS['TSFE']->id = $pageId;
     }
 

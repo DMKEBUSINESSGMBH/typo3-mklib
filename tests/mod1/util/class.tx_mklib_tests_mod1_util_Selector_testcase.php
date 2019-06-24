@@ -81,20 +81,10 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         //ab typo 4.6 ist das mit den lang labels anders
         $mHideEntry = 'Hide hidden entries';
         $mShowEntry = 'Show hidden entries';
-        if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $LOCAL_LANG['default']['label_select_hide_hidden'][0]['target'] = $mHideEntry;
-            $LOCAL_LANG['default']['label_select_show_hidden'][0]['target'] = $mShowEntry;
-        } else {
-            $LOCAL_LANG['default']['label_select_hide_hidden'] = $mHideEntry;
-            $LOCAL_LANG['default']['label_select_show_hidden'] = $mShowEntry;
-        }
+        $LOCAL_LANG['default']['label_select_hide_hidden'][0]['target'] = $mHideEntry;
+        $LOCAL_LANG['default']['label_select_show_hidden'][0]['target'] = $mShowEntry;
 
-        // sonst fehler die icon klassen
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            \TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
-        }
-
-        $this->whitespaceByTypo3Version = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? ' ' : '&nbsp;';
+        $this->whitespaceByTypo3Version = ' ';
     }
 
     /**

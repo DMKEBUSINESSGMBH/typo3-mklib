@@ -63,8 +63,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     {
         parent::setUp();
 
-        $ttContentExtension = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ? 'frontend' : 'cms';
-        $this->importExtensions(array($ttContentExtension));
+        $this->importExtensions(array('frontend'));
 
         // logging aktivieren
         tx_mklib_tests_Util::storeExtConf();

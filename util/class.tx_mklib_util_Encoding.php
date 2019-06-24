@@ -14,12 +14,17 @@ class tx_mklib_util_Encoding
      */
     public static function getTypo3Encoding()
     {
-        if (TYPO3_MODE == 'FE') {
-            $charset = $GLOBALS['TSFE']->renderCharset;
-        } elseif (is_object($GLOBALS['LANG'])) { // BE assumed:
-            $charset = $GLOBALS['LANG']->charSet;
-        } else { // best guess
-            $charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+        if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            // charset is always utf-8 since TYPO3 9
+            $charset = 'utf-8';
+        } else {
+            if (TYPO3_MODE == 'FE') {
+                $charset = $GLOBALS['TSFE']->renderCharset;
+            } elseif (is_object($GLOBALS['LANG'])) { // BE assumed:
+                $charset = $GLOBALS['LANG']->charSet;
+            } else { // best guess
+                $charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+            }
         }
 
         return $charset;

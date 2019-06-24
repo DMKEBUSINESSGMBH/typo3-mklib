@@ -173,10 +173,7 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
         $this->initSpamProtectionConfig();
 
         $expectedLink = '/\<a href="javascript:linkTo_UnCryptMailto\(\'(.*)\'\);" \>test.mail&#8203;\(at\)&#8203ein\-host.de\<\/a\>/';
-        // leerzeichen ab 6.2.3 nicht mehr vorhanden
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $expectedLink = str_replace('" \>', '"\>', $expectedLink);
-        }
+        $expectedLink = str_replace('" \>', '"\>', $expectedLink);
         self::assertRegExp(
             $expectedLink,
             tx_mklib_util_String::convertEmailToMailToLink(array(0 => 'test.mail@ein-host.de')),
@@ -189,10 +186,7 @@ class tx_mklib_tests_util_String_testcase extends tx_rnbase_tests_BaseTestCase
         $this->initSpamProtectionConfig();
 
         $expectedLink = 'ein text mit einer mail <a href="javascript:linkTo_UnCryptMailto(\'ocknvq,ocknBjquv0fg\');" >mail&#8203;(at)&#8203host.de</a> und noch einer <a href="javascript:linkTo_UnCryptMailto(\'ocknvq,cpqvjgtocknBjquv0fg\');" >anothermail&#8203;(at)&#8203host.de</a>';
-        // leerzeichen ab 6.2.3 nicht mehr vorhanden
-        if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-            $expectedLink = str_replace('" >', '">', $expectedLink);
-        }
+        $expectedLink = str_replace('" >', '">', $expectedLink);
         self::assertEquals(
             $expectedLink,
             tx_mklib_util_String::convertContainedEmailsToMailToLinks(

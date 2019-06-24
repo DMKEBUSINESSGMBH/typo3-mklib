@@ -273,7 +273,7 @@ class tx_mklib_tests_util_File_testcase extends Tx_Phpunit_TestCase
         $documentRoot = tx_mklib_util_File::getDocumentRoot();
         // to make sure that not only "/" is returned
         self::assertGreaterThan(3, strlen($documentRoot));
-        self::assertEquals(PATH_site, $documentRoot);
+        self::assertEquals(\Sys25\RnBase\Utility\Environment::getPublicPath(), $documentRoot);
     }
 }
 

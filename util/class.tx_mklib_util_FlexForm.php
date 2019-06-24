@@ -124,9 +124,6 @@ class tx_mklib_util_FlexForm
     private function xml2array($xmlData)
     {
         $className = '\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility';
-        if (!tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $className = 't3lib_div';
-        }
 
         return $className::xml2array($xmlData);
     }

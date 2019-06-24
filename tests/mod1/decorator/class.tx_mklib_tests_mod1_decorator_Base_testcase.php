@@ -118,12 +118,10 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
     public function testFormatWithSysLanguageUidColumn()
     {
         // @TODO: test the language output on typo3 8 .78 lts!
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $this->markTestIncomplete(
-                'The IconFactory builds a diffrent output.'.
-                ' The test must be refactored!'
-            );
-        }
+        $this->markTestIncomplete(
+            'The IconFactory builds a diffrent output.'.
+            ' The test must be refactored!'
+        );
 
         // this test needs the typo3 db
         $this->prepareLegacyTypo3DbGlobal();
@@ -139,10 +137,9 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
 
         $result = $this->getDecoratorMock()->format('0', 'sys_language_uid', $model->getRecord(), $model);
 
-        $whitespaceByTypo3Version = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? ' ' : '&nbsp;';
         self::assertContains(
             '<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">'.
-            $whitespaceByTypo3Version.'</span>&nbsp;Default',
+            ' </span>&nbsp;Default',
             $result,
             'Falsches oder fehlendes Icon erzeugt.'
         );
@@ -152,7 +149,7 @@ class tx_mklib_tests_mod1_decorator_Base_testcase extends tx_rnbase_tests_BaseTe
 
         self::assertContains(
             '<span class="t3-icon t3-icon-flags t3-icon-flags-multiple t3-icon-multiple">'.
-            $whitespaceByTypo3Version.'</span>&nbsp;[All]',
+            ' </span>&nbsp;[All]',
             $result,
             'Falsches oder fehlendes Icon erzeugt.'
         );

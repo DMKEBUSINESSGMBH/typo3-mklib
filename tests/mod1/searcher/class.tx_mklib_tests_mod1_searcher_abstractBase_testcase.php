@@ -29,9 +29,6 @@ tx_rnbase::load('tx_rnbase_util_TYPO3');
 tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
 tx_rnbase::load('Tx_Rnbase_Backend_Utility');
 
-if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-    require_once PATH_site.'typo3/template.php';
-}
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
@@ -542,11 +539,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
      */
     protected function setLocallangLabel($labelKey, $label)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $GLOBALS['LOCAL_LANG']['default'][$labelKey][0]['target'] = $label;
-        } else {
-            $GLOBALS['LOCAL_LANG']['default'][$labelKey] = $label;
-        }
+        $GLOBALS['LOCAL_LANG']['default'][$labelKey][0]['target'] = $label;
     }
 
     /**
@@ -556,11 +549,7 @@ class tx_mklib_tests_mod1_searcher_abstractBase_testcase extends tx_rnbase_tests
      */
     protected function getLocallangLabel($labelKey)
     {
-        if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $label = $GLOBALS['LOCAL_LANG']['default'][$labelKey][0]['target'];
-        } else {
-            $label = $GLOBALS['LOCAL_LANG']['default'][$labelKey];
-        }
+        $label = $GLOBALS['LOCAL_LANG']['default'][$labelKey][0]['target'];
 
         return $label;
     }

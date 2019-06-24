@@ -150,7 +150,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
             );
 
             if (!empty($new)) {
-                $fileExt = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ? 'xlf' : 'xml';
+                $fileExt = 'xlf';
                 $ret .= ' ('
                     .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.'.$fileExt.':Localize')
                     .' '.$new

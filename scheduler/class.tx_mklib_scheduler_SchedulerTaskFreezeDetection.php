@@ -73,9 +73,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
         //Nachrichten für den error mail versand
         $aMessages = $aUids = array();
         foreach ($aPossiblyFrozenTasks as $aPossiblyFrozenTask) {
-            $classname = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-                get_class(unserialize($aPossiblyFrozenTask['serialized_task_object'])) :
-                $aPossiblyFrozenTask['classname'];
+            $classname = get_class(unserialize($aPossiblyFrozenTask['serialized_task_object']));
 
             $aMessages[] = '"'.$classname.' (Task-Uid: '.$aPossiblyFrozenTask['uid'].')"';
             $aUids[] = $aPossiblyFrozenTask['uid'];
@@ -131,9 +129,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      */
     protected function getPossiblyFrozenTasks()
     {
-        $selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-            'uid,serialized_task_object' :
-            'uid,classname';
+        $selectFields = 'uid,serialized_task_object';
 
         return tx_rnbase_util_DB::doSelect(
             $selectFields,

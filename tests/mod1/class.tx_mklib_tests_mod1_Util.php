@@ -28,9 +28,6 @@
  * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_rnbase_util_TYPO3');
-if (!tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-    require_once PATH_site.'typo3/template.php';
-}
 
 /**
  * Statische Hilfsmethoden für Tests.
@@ -49,8 +46,8 @@ class tx_mklib_tests_mod1_Util
             $sString = str_replace('&amp;M=tools_txphpunitbeM1', '', $sString);
             $sString = str_replace('M%3Dtools_txphpunitbeM1', '', $sString);
             //für CC
-            $sString = str_replace('%2Ftypo3%2Fcli_dispatch.phpsh%3F&amp;', urlencode(PATH_site).'typo3%2Fcli_dispatch.phpsh&amp;', $sString);
-            $sString = str_replace('%2Ftypo3%2Fcli_dispatch.phpsh%3F%26', urlencode(PATH_site).'typo3%2Fcli_dispatch.phpsh%3F', $sString);
+            $sString = str_replace('%2Ftypo3%2Fcli_dispatch.phpsh%3F&amp;', urlencode(\Sys25\RnBase\Utility\Environment::getPublicPath()).'typo3%2Fcli_dispatch.phpsh&amp;', $sString);
+            $sString = str_replace('%2Ftypo3%2Fcli_dispatch.phpsh%3F%26', urlencode(\Sys25\RnBase\Utility\Environment::getPublicPath()).'typo3%2Fcli_dispatch.phpsh%3F', $sString);
         }
 
         return $sString;
@@ -65,9 +62,9 @@ class tx_mklib_tests_mod1_Util
         //und deren Funktionalität sollte nicht hier getestet werden
         //auf der cli über cc ist der formtoken um 2 zeichen länger
         //den formToken gibt es erst ab TYPO3 4.5
-        $sVcAndFormTokenRegex = (tx_rnbase_util_TYPO3::isTYPO45OrHigher()) ? '/&amp;vC=(.*?)&formToken=(.*?)\'\)/' : '/&amp;vC=(.*?)\'\)/';
+        $sVcAndFormTokenRegex = '/&amp;vC=(.*?)&formToken=(.*?)\'\)/';
         $sString = preg_replace($sVcAndFormTokenRegex, '\')', $sString);
-        $moduleTokenRegex = (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) ? '/%26moduleToken%3D(.*?)&amp/' : '//';
+        $moduleTokenRegex = '/%26moduleToken%3D(.*?)&amp/';
         $sString = preg_replace($moduleTokenRegex, '&amp', $sString);
         $sString = str_replace('=1&amp;', '=1\'', $sString);
     }

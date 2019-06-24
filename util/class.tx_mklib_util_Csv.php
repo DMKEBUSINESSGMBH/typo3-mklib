@@ -79,10 +79,10 @@ class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
      */
     public function setCsvRow($csvRow, $delimiter = ',', $quote = '"')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $csvLine = \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($csvRow, $delimiter, $quote);
+        if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $csvLine = \TYPO3\CMS\Core\Utility\CsvUtility::csvValues($csvRow, $delimiter, $quote);
         } else {
-            $csvLine = t3lib_div::csvValues($csvRow, $delimiter, $quote);
+            $csvLine = \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($csvRow, $delimiter, $quote);
         }
         $this->csvLines[] = $csvLine;
     }

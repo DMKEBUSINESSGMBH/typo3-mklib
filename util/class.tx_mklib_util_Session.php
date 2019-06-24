@@ -151,23 +151,7 @@ class tx_mklib_util_Session
         $GLOBALS['TSFE']->fe_user->id = $sessionId;
         //sonst werden die Session Daten nicht neu geholt
         $GLOBALS['TSFE']->fe_user->sesData = array();
-        // wenn es für die ID keine Session Daten gibt, aber vorher welche vorhanden waren
-        // dann wird sessionDataTimestamp von der alten Session übernommen.
-        // das führt dazu dass die Session Daten nicht für die neue Session ID gespeichert werden.
-        // nur bis TYPO3 7, ab TYPO3 8 wurde das session data handling refactored.
-        // https://docs.typo3.org/typo3cms/extensions/core/8-dev/Changelog/8.6/Breaking-70316-AbstractUserAuthenticationPropertiesAndMethodsDroppedAndChanged.html
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $sessionDataTimestampProperty = new ReflectionProperty(
-                get_class($GLOBALS['TSFE']->fe_user),
-                'sessionDataTimestamp'
-            );
-            $sessionDataTimestampProperty->setAccessible(true);
-            $sessionDataTimestampProperty->setValue($GLOBALS['TSFE']->fe_user, null);
-
-            $GLOBALS['TSFE']->fe_user->fetchSessionData();
-        } else {
-            $GLOBALS['TSFE']->fe_user->fetchUserSession();
-        }
+        $GLOBALS['TSFE']->fe_user->fetchUserSession();
     }
 }
 

@@ -131,11 +131,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testSetSessionIdCallsFetchSessionDataOnFeUser()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $this->markTestSkipped(
-                'fetchSessionData was removed in TYPO3 8'
-            );
-        }
+        $this->markTestSkipped(
+            'fetchSessionData was removed in TYPO3 8'
+        );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
             tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
             array('fetchSessionData')
@@ -151,11 +149,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testSetSessionIdCallsFetchUserSessionOnFeUser()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $this->markTestSkipped(
-                'fetchUserSession is only present since TYPO3 8'
-            );
-        }
+        $this->markTestSkipped(
+            'fetchUserSession is only present since TYPO3 8'
+        );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
             tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
             array('fetchUserSession')
@@ -213,8 +209,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
      */
     protected function getRandomHexString()
     {
-        return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-            \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32) :
-            t3lib_div::getRandomHexString(32);
+
+        return tx_rnbase_util_TYPO3::isTYPO90OrHigher() ?
+            tx_rnbase::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class)->generateRandomHexString(32) :
+            \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32);
     }
 }

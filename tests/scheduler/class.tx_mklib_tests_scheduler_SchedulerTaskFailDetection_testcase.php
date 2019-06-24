@@ -113,9 +113,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
     {
         $databaseUtility = $this->getDatabaseConnection();
 
-        $selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-            'uid,serialized_task_object' :
-            'uid,classname';
+        $selectFields = 'uid,serialized_task_object';
         $databaseUtility->expects(self::once())
             ->method('doSelect')
             ->with(

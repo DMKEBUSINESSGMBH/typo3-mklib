@@ -68,9 +68,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
     /**
      * Gets additional fields to render in the form to add/edit a task.
      *
-     * @param array                      &$taskInfo       Values of the fields from the add/edit task form
-     * @param Tx_Rnbase_Scheduler_Task   $task            The task object being edited. Null when adding a task!
-     * @param tx_mklib_scheduler_Generic $schedulerModule Reference to the scheduler backend module
+     * @param array                                                     &$taskInfo       Values of the fields from the add/edit task form
+     * @param Tx_Rnbase_Scheduler_Task                                  $task            The task object being edited. Null when adding a task!
+     * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      *
      * @return array
      */
@@ -84,7 +84,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
         foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
             // Initialize extra field value
             if (empty($taskInfo[$sKey])) {
-                if ('edit' == $schedulerModule->CMD) {
+                $action = \tx_rnbase_util_TYPO3::isTYPO90OrHigher() ?
+                    $schedulerModule->getCurrentAction() : $schedulerModule->CMD;
+                if ('edit' == $action) {
                     // In case of edit, and editing a test task, set to internal value if not data was submitted already
                     $taskInfo[$sKey] = $task->getOption($sKey);
                 } else /*if ($parentObject->CMD == 'add') */{
@@ -219,7 +221,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
                 $sMessage = $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
                 $sMessage = $sMessage ? $sMessage : ucfirst($sKey).' has to eval '.$sEval.'.';
                 $flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageClass();
-                $schedulerModule->addMessage($sMessage, $flashMessageClass::ERROR);
+                tx_rnbase_util_Misc::addFlashMessage($sMessage, '', $flashMessageClass::ERROR);
                 $bError = true;
                 continue;
             }

@@ -398,12 +398,9 @@ class tx_mklib_util_TCA
         if (!empty($items)) {
             foreach ($items as &$item) {
                 $label = &$item[0];
-                $label = $GLOBALS['LANG']->csConvObj->crop(
-                    $GLOBALS['LANG']->charSet,
-                    $label,
-                    $labelLength,
-                    '...'
-                );
+                if (mb_strlen($label, 'utf-8') > $labelLength) {
+                    $label = mb_substr($label, 0, $labelLength, 'utf-8').'...';
+                }
             }
         }
     }
@@ -467,17 +464,13 @@ class tx_mklib_util_TCA
     public static function getMediaTCA($ref, $options = array())
     {
         tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            tx_rnbase::load('tx_rnbase_util_TSFAL');
-            // in DAM wurde immer noch _field beim Typ verlangt, bei FAL nicht mehr
-            if (isset($options['type'])) {
-                $options['type'] = str_replace('_field', '', $options['type']);
-            }
-
-            return tx_rnbase_util_TSFAL::getMediaTCA($ref, $options);
-        } else {
-            return static::getDamMediaTCA($ref, $options);
+        tx_rnbase::load('tx_rnbase_util_TSFAL');
+        // in DAM wurde immer noch _field beim Typ verlangt, bei FAL nicht mehr
+        if (isset($options['type'])) {
+            $options['type'] = str_replace('_field', '', $options['type']);
         }
+
+        return tx_rnbase_util_TSFAL::getMediaTCA($ref, $options);
     }
 }
 

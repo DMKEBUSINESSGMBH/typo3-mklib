@@ -156,7 +156,7 @@ abstract class abstract_ext_update
             return 'No queries found. ('.$updateKey.')';
         }
         foreach ($querys as $query) {
-            $GLOBALS['TYPO3_DB']->admin_query($query);
+            \Tx_Rnbase_Database_Connection::getInstance()->doQuery($query);
         }
 
         return true;
@@ -178,11 +178,7 @@ abstract class abstract_ext_update
     private function getCharsetsConversion()
     {
         if (!$this->csconv) {
-            if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-                $charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
-            } else {
-                $charsetConverterClass = 't3lib_cs';
-            }
+            $charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
             $this->csconv = tx_rnbase::makeInstance($charsetConverterClass);
         }
 
@@ -216,7 +212,13 @@ abstract class abstract_ext_update
                 $value = $this->getCharsetsConversion()->conv($value, 'utf-8', $destEncoding);
                 $fields_values[$col[0]] = $value;
             }
-            $query = $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values);
+            $query = \Tx_Rnbase_Database_Connection::getInstance()->doUpdate(
+                $table,
+                $where,
+                $fields_values,
+                ['sqlonly' => true]
+            );
+
         }
 
         return $query;

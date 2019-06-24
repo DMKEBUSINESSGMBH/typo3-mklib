@@ -92,10 +92,10 @@ class tx_mklib_util_Debug
         $file = $file ? $file : 'mklib_debug_'.date('Y-m-d_H-i-s', time()).'.txt';
         if (!$path) {
             $path = 'typo3temp/mklib/';
-            if (!is_writable(PATH_site.$path)) {
-                tx_rnbase_util_Files::mkdir_deep(PATH_site, $path);
+            if (!is_writable(\Sys25\RnBase\Utility\Environment::getPublicPath().$path)) {
+                tx_rnbase_util_Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $path);
             }
-            $path = PATH_site.$path;
+            $path = \Sys25\RnBase\Utility\Environment::getPublicPath().$path;
         }
 
         self::$file = fopen($path.$file, 'a');

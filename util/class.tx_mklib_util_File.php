@@ -67,9 +67,6 @@ class tx_mklib_util_File
             self::$ftInstances[$key] = tx_rnbase::makeInstance(
                 tx_rnbase_util_Typo3Classes::getBasicFileUtilityClass()
             );
-            if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-                self::$ftInstances[$key]->init($mounts, $f_ext);
-            }
         }
 
         return self::$ftInstances[$key];
@@ -167,7 +164,7 @@ class tx_mklib_util_File
         if (false === self::$documentRoot) {
             if (!self::$documentRoot = tx_rnbase_util_Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT')) {
                 // happens for example on the CLI
-                self::$documentRoot = PATH_site;
+                self::$documentRoot = \Sys25\RnBase\Utility\Environment::getPublicPath();
             }
         }
 
@@ -297,11 +294,7 @@ class tx_mklib_util_File
     public function isDirectory($theDir)
     {
         if (Tx_Rnbase_Utility_T3General::validPathStr($theDir)) {
-            if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-                $theDir = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
-            } else {
-                $theDir = preg_replace('/[\/\. ]*$/', '', str_replace('//', '/', $theDir));
-            }
+            $theDir = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
             if (@is_dir($theDir)) {
                 return $theDir;
             }

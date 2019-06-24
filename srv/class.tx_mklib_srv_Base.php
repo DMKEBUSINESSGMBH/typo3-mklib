@@ -108,8 +108,8 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
                 $languages[] = '-1'; // for all languages
                 // Wenn eine bestimmte Sprache gesetzt ist,
                 // laden wir diese ebenfalls.
-                if (is_object($tsfe) && $tsfe->sys_language_content) {
-                    $languages[] = $tsfe->sys_language_content;
+                if (is_object($tsfe) && \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
+                    $languages[] = \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe);
                 } // andernfalls nutzen wir die default sprache
                 else {
                     $languages[] = '0'; // default language
@@ -371,7 +371,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
         $uid = $model->getUid();
 
         if (!$where) {
-            $where = '1=1 AND `'.$table.'`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+            $where = '1=1 AND `'.$table.'`.`uid`='.\Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($uid, $table);
         }
 
         // remove uid if exists
@@ -432,7 +432,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
         $uid = $model->getUid();
 
         if (!$where) {
-            $where = '1=1 AND `'.$table.'`.`uid`='.$GLOBALS['TYPO3_DB']->fullQuoteStr($uid, $table);
+            $where = '1=1 AND `'.$table.'`.`uid`='.\Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($uid, $table);
         }
 
         $this->delete($table, $where, $mode);

@@ -138,36 +138,13 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
 
     public function flushCache()
     {
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $this->flushCacheForTypo6AndHigher();
-        } else {
-            $this->flushCacheForTypo4AndLower();
-        }
-    }
-
-    private function flushCacheForTypo6AndHigher()
-    {
-        $commonCacheDirectory = tx_rnbase_util_TYPO3::isTYPO86OrHigher() ? 'typo3temp/var/Cache' : 'typo3temp/Cache';
-        \TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory(PATH_site.$commonCacheDirectory, true, true);
+        $commonCacheDirectory = 'typo3temp/var/Cache';
+        \TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory(\Sys25\RnBase\Utility\Environment::getPublicPath().$commonCacheDirectory, true, true);
 
         $cacheManager = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
         $cacheManager->flushCaches();
 
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Service\\OpcodeCacheService')->clearAllActive();
-        } else {
-            \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive();
-        }
-    }
-
-    private function flushCacheForTypo4AndLower()
-    {
-        $tce = t3lib_div::makeInstance('t3lib_TCEmain');
-
-        $tce->start(array(), array());
-        $tce->clear_cacheCmd('all');
-        $tce->clear_cacheCmd('temp_CACHED');
+        tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Service\\OpcodeCacheService')->clearAllActive();
     }
 }
 
