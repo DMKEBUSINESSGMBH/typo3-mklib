@@ -209,7 +209,6 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
      */
     protected function getRandomHexString()
     {
-
         return tx_rnbase_util_TYPO3::isTYPO90OrHigher() ?
             tx_rnbase::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class)->generateRandomHexString(32) :
             \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32);

@@ -80,7 +80,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
      *  file_name, file_dl_name, file_path, file_size, file_type, file_ctime, file_mtime,
      *  file_hash, file_mime_type, file_mime_subtype, file_status, index_type, parent_id.
      *
-     * @param tx_mklib_model_Dam        $item
+     * @param tx_mklib_model_Media      $item
      * @param array                     $record
      * @param tx_rnbase_util_FormatUtil $formatter
      * @param string                    $confId
@@ -91,7 +91,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
     public function parseTemplate($template, &$item, &$formatter, $confId, $marker = 'FILE')
     {
         if (!is_object($item)) {
-            $item = self::getEmptyInstance('tx_mklib_model_Dam');
+            $item = self::getEmptyInstance('tx_mklib_model_Media');
         }
 
         $item->fillPath('file_path_name');
@@ -127,7 +127,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
      * Icon für den Typ hinzufügen.
      *
      * @param string                    $template
-     * @param tx_mklib_model_Dam        $item
+     * @param tx_mklib_model_Media      $item
      * @param tx_rnbase_util_FormatUtil $formatter
      * @param string                    $confId
      * @param string                    $marker
@@ -145,7 +145,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         //@TODO: implement if needet
         /*
             ###TS
-        
+
             icon = IMAGE
             icon {
                 ### welches feld soll für das mapping genutzt werden? (file_mime_type, file_mime_subtype, file_type )
@@ -203,7 +203,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
     /**
      * Links vorbereiten.
      *
-     * @param tx_mklib_model_Dam        $item
+     * @param tx_mklib_model_Media      $item
      * @param string                    $marker
      * @param array                     $markerArray
      * @param array                     $wrappedSubpartArray

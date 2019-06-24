@@ -218,7 +218,6 @@ abstract class abstract_ext_update
                 $fields_values,
                 ['sqlonly' => true]
             );
-
         }
 
         return $query;
