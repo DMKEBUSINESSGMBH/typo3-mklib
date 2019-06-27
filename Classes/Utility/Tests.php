@@ -1,7 +1,8 @@
 <?php
+
 namespace DMK\Mklib\Utility;
 
-/**
+/*
  * @package tx_mklib
  * @subpackage tx_mklib_tests
  * @author Hannes Bochmann
@@ -28,16 +29,11 @@ namespace DMK\Mklib\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-\tx_rnbase::load('tx_rnbase_util_Strings');
-\tx_rnbase::load('tx_rnbase_cache_Manager');
-\tx_rnbase::load('tx_rnbase_util_TYPO3');
-\tx_rnbase::load('tx_rnbase_util_Spyc');
+use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 
 /**
- * DMK\Mklib\Utility$Tests
+ * DMK\Mklib\Utility$Tests.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -49,10 +45,9 @@ class Tests
     private static $sCacheFile;
 
     /**
-     * Stores the RN_Base Hooks from the Extension/Hook
+     * Stores the RN_Base Hooks from the Extension/Hook.
      *
      * @param unknown $sExtKey
-     * @return void
      */
     public static function storeHooks($sExtKey)
     {
@@ -60,10 +55,9 @@ class Tests
     }
 
     /**
-     * Loads the RN_Base Hooks from the Cache
+     * Loads the RN_Base Hooks from the Cache.
      *
      * @param unknown $sExtKey
-     * @return void
      */
     public static function loadHooks($sExtKey)
     {
@@ -73,15 +67,14 @@ class Tests
     }
 
     /**
-     * Removes Extension Hooks from the Global Configuration
+     * Removes Extension Hooks from the Global Configuration.
      *
      * @param string $sExtKey
      * @param string $sHookKey
-     * @return void
      */
     public static function removeHooks($sExtKey, $sHookKey = null)
     {
-        if (! $sHookKey) {
+        if (!$sHookKey) {
             unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey]);
         } else {
             if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey]) {
@@ -95,7 +88,7 @@ class Tests
      * Wurde bereits eine Extension Konfiguration gesichert,
      * wird diese nur überschrieben wenn bOverwrite wahr ist!
      *
-     * @param string    $sExtKey
+     * @param string $sExtKey
      * @param bool   $bOverwrite
      */
     public static function storeExtConf($sExtKey = 'mklib', $bOverwrite = false)
@@ -109,7 +102,8 @@ class Tests
      * Setzt eine gesicherte Extension Konfiguration zurück.
      *
      * @param string $sExtKey
-     * @return bool      wurde die Konfiguration zurückgesetzt?
+     *
+     * @return bool wurde die Konfiguration zurückgesetzt?
      */
     public static function restoreExtConf($sExtKey = 'mklib')
     {
@@ -125,9 +119,10 @@ class Tests
     /**
      * Setzt eine Vaiable in die Extension Konfiguration.
      * Achtung im setUp sollte storeExtConf und im tearDown restoreExtConf aufgerufen werden.
-     * @param string    $sCfgKey
-     * @param string    $sCfgValue
-     * @param string    $sExtKey
+     *
+     * @param string $sCfgKey
+     * @param string $sCfgValue
+     * @param string $sExtKey
      */
     public static function setExtConfVar($sCfgKey, $sCfgValue, $sExtKey = 'mklib')
     {
@@ -144,10 +139,12 @@ class Tests
     }
 
     /**
-     * Liefert eine DateiNamen
+     * Liefert eine DateiNamen.
+     *
      * @param $filename
      * @param $dir
      * @param $extKey
+     *
      * @return string
      */
     public static function getFixturePath($filename, $dir = 'tests/fixtures/', $extKey = 'mklib')
@@ -157,10 +154,10 @@ class Tests
 
     /**
      * Disabled das Logging über die Devlog Extension für die
-     * gegebene Extension
+     * gegebene Extension.
      *
-     * @param   string  $extKey
-     * @param   bool     $bDisable
+     * @param string $extKey
+     * @param bool   $bDisable
      */
     public static function disableDevlog($extKey = 'devlog', $bDisable = true)
     {
@@ -168,7 +165,8 @@ class Tests
     }
 
     /**
-     * Führt eine beliebige DB-Query aus
+     * Führt eine beliebige DB-Query aus.
+     *
      * @param string $sqlFile
      */
     public static function queryDB($sqlFile, $statementType = false, $bIgnoreStatementType = false)
@@ -177,17 +175,18 @@ class Tests
         if (empty($sql)) {
             throw new Exception('SQL-Datei nicht gefunden');
         }
+        $databaseConnection = \Tx_Rnbase_Database_Connection::getInstance();
         if ($statementType || $bIgnoreStatementType) {
             $statements = self::getSqlStatementArrayDependendOnTypo3Version($sql);
             foreach ($statements as $statement) {
                 if (!$bIgnoreStatementType && \tx_rnbase_util_Strings::isFirstPartOfStr($statement, $statementType)) {
-                    $GLOBALS['TYPO3_DB']->admin_query($statement);
+                    $databaseConnection->doQuery($statement);
                 } elseif ($bIgnoreStatementType) {//alle gefundenen statements ausführen
-                    $GLOBALS['TYPO3_DB']->admin_query($statement);
+                    $databaseConnection->doQuery($statement);
                 }
             }
         } else {
-            $GLOBALS['TYPO3_DB']->admin_query($sql);
+            $databaseConnection->doQuery($sql);
         }
     }
 
@@ -198,42 +197,35 @@ class Tests
      */
     private static function getSqlStatementArrayDependendOnTypo3Version($sql)
     {
-        \tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (\tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $dbHandler = \tx_rnbase::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
-        } elseif (\tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $dbHandler = \tx_rnbase::makeInstance('t3lib_install_Sql');
-        } else {
-            $dbHandler = \tx_rnbase::makeInstance('t3lib_install');
-        }
+        $dbHandler = \tx_rnbase::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
 
         return $dbHandler->getStatementArray($sql, 1);
     }
 
     /**
-     * Lädt den Inhalt einer Datei
+     * Lädt den Inhalt einer Datei.
+     *
      * @param string $filename
-     * @param array $options
+     * @param array  $options
      */
     public function loadTemplate($filename, $configurations, $extKey = 'mklib', $subpart = null, $dir = 'tests/fixtures/')
     {
         $path = self::getFixturePath($filename, $dir, $extKey);
 
-        $cObj =& $configurations->getCObj();
+        $markerTemplateService = \tx_rnbase::makeInstance(MarkerBasedTemplateService::class);
         $templateCode = file_get_contents($path);
         if ($subpart) {
-            $templateCode = $cObj->getSubpart($templateCode, $subpart);
+            $templateCode = $markerTemplateService->getSubpart($templateCode, $subpart);
         }
 
         return $templateCode;
     }
 
     /**
-     * Setzt das fe_user objekt, falls es noch nicht gesetzt wurde
+     * Setzt das fe_user objekt, falls es noch nicht gesetzt wurde.
      *
-     * @param   tslib_feuserauth    $oFeUser    Erzeugt das tslib_feuserauth Objekt wenn nix übergeben wurde
-     * @param   bool             $bForce     Setzt das fe_user Objekt auch, wenn es bereits gesetzt ist.
-     * @return  void
+     * @param tslib_feuserauth $oFeUser Erzeugt das tslib_feuserauth Objekt wenn nix übergeben wurde
+     * @param bool             $bForce  setzt das fe_user Objekt auch, wenn es bereits gesetzt ist
      */
     public static function setFeUserObject($oFeUser = null, $bForce = false)
     {
@@ -252,11 +244,10 @@ class Tests
     }
 
     /**
-     * Setzt Sprach-Labels
+     * Setzt Sprach-Labels.
      *
-     * @param   array   $labels
-     * @param   string  $lang
-     * @return  void
+     * @param array  $labels
+     * @param string $lang
      */
     public static function setLocallangLabels($labels = array(), $lang = 'default')
     {
@@ -264,17 +255,12 @@ class Tests
         $GLOBALS['LANG']->lang = $lang;
         //ab typo 4.6 ist das mit den lang labels anders
         foreach ($labels as $key => $label) {
-            if (\tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-                $LOCAL_LANG[$lang][$key][0]['target'] = $label;
-            } else {
-                $LOCAL_LANG[$lang][$key] = $label;
-            }
+            $LOCAL_LANG[$lang][$key][0]['target'] = $label;
         }
     }
 
-
     /**
-     * Speichert den Cache
+     * Speichert den Cache.
      */
     public static function storeCacheFile()
     {
@@ -283,7 +269,7 @@ class Tests
     }
 
     /**
-     * Reaktiviert den Cache
+     * Reaktiviert den Cache.
      */
     public static function restoreCacheFile()
     {
@@ -295,7 +281,7 @@ class Tests
      * Deaktiviert den Cache
      * damit nicht 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.' kommt.
      * wenn der text mit einem mkforms formular ist, dann muss auch der testmode gesetzt sein.
-     * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2
+     * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2.
      */
     public static function deactivateCacheFile()
     {
@@ -309,13 +295,13 @@ class Tests
      * Dabei wird automatisch handleRequest aufgerufen.
      * Parameter können frei gesetzt werden.
      *
-     * @param   string          $action
-     * @param   array           $aConfig
-     * @param   string          $sExtKey
-     * @param   array           $aParams
-     * @param   bool         $execute
-     * @param   string          $frontendOutput hier wird die rückgabe der action reingeschrieben
-     * @param   string          $viewData hier werden die viewData reingeschrieben
+     * @param string $action
+     * @param array  $aConfig
+     * @param string $sExtKey
+     * @param array  $aParams
+     * @param bool   $execute
+     * @param string $frontendOutput hier wird die rückgabe der action reingeschrieben
+     * @param string $viewData       hier werden die viewData reingeschrieben
      *
      * @return \tx_rnbase_action_BaseIOC
      */
@@ -370,7 +356,7 @@ class Tests
              */
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'] as $k => $v) {
-                    if ($v == 'tx_phpmyadmin_utilities->pmaLogOff') {
+                    if ('tx_phpmyadmin_utilities->pmaLogOff' == $v) {
                         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'][$k]);
                     }
                 }
@@ -382,7 +368,7 @@ class Tests
             $frontendOutput = $handleRequest->invokeArgs(
                 $action,
                 array(
-                        &$parameters, &$configurations, &$viewData
+                        &$parameters, &$configurations, &$viewData,
                     )
             );
         }
@@ -391,9 +377,8 @@ class Tests
     }
 
     /**
-     *
      * @param array $options
-     *          initFEuser: verhindert das Schreiben von Headerdaten
+     *                       initFEuser: verhindert das Schreiben von Headerdaten
      */
     public static function prepareTSFE(array $options = array())
     {
@@ -411,7 +396,6 @@ class Tests
             $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] = 0;
         }
 
-        \tx_rnbase::load('tx_rnbase_util_Misc');
         \tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
         $loaded = true;
 
@@ -433,9 +417,7 @@ class Tests
      * deaktiviert extbase. kann notwendig sein damit die meldung
      * 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.'
      * nicht erscheint.
-     * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2
-     *
-     * @return void
+     * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2.
      */
     public static function deactivateExtbase()
     {
@@ -452,13 +434,14 @@ class Tests
      *
      * @param string $originalClassName
      * @param string $mockClassName
+     *
      * @return object
      */
     public static function generateUniqueMockClassName($originalClassName, $mockClassName = '')
     {
-        if ($mockClassName == '') {
+        if ('' == $mockClassName) {
             do {
-                $mockClassName = 'Mock_' . $originalClassName . '_' .
+                $mockClassName = 'Mock_'.$originalClassName.'_'.
                 substr(md5(microtime()), 0, 8);
             } while (class_exists($mockClassName, false));
         }
@@ -470,13 +453,10 @@ class Tests
      * damit nicht
      * PHP Fatal error:  Call to a member function getHash() on a non-object in
      * typo3/sysext/cms/tslib/class.tslib_content.php on line 1814
-     * auftritt. passiert zb bei link generierung
-     *
-     * @return void
+     * auftritt. passiert zb bei link generierung.
      */
     public static function setSysPageToTsfe()
     {
-        \tx_rnbase::load('tx_rnbase_util_TYPO3');
         self::prepareTSFE();
         $GLOBALS['TSFE']->sys_page = \tx_rnbase_util_TYPO3::getSysPage();
     }
@@ -486,7 +466,7 @@ class Tests
      * in file C:\xampp\htdocs\typo3\typo3conf\ext\phpmyadmin\res\class.tx_phpmyadmin_utilities.php
      * on line 66:
      * Message:
-     * Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\typo3\typo3conf\ext\phpunit\mod1\class.tx_phpunit_module1.php:112)
+     * Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\typo3\typo3conf\ext\phpunit\mod1\class.tx_phpunit_module1.php:112).
      *
      * Diese Fehler passiert, wenn die usersession ausgelesen wird. der feuser hat natürlich keine.
      * Das Ganze passiert in der t3lib_userauth->fetchUserSession.
@@ -506,21 +486,18 @@ class Tests
 
     /**
      * @param int $pageId
-     *
-     * @return void
      */
     public static function enableLinkCreation($pageId = 1)
     {
         \tx_rnbase_util_Misc::prepareTSFE();
 
         $GLOBALS['TSFE']->sys_page = \tx_rnbase_util_TYPO3::getSysPage();
-        $GLOBALS['TSFE']->initTemplate();
-
         $GLOBALS['TSFE']->id = $pageId;
     }
 
     /**
      * @param string $extKey
+     *
      * @deprecated use self::prepareTSFE()
      */
     public static function simulateFrontendEnviroment($extKey = 'mklib')
@@ -530,6 +507,7 @@ class Tests
 
     /**
      * @param string $pdfPath
+     *
      * @return string
      */
     public static function removeCreationDateFromPdfContent($pdfPath)
@@ -543,5 +521,5 @@ class Tests
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php'];
 }

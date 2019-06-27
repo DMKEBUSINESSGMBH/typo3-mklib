@@ -1,42 +1,15 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- * All rights reserved
- *
- * This script is part of the TYPO3 project. The TYPO3 project is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * This copyright notice MUST APPEAR in all copies of the script!
- */
-
 
 /**
- * Xml Element
+ * Xml Element.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_xml_Element extends SimpleXMLElement
 {
-
     /**
-     *
      * @param string $path
+     *
      * @return tx_mklib_util_xml_Element
      */
     public function getNodeFromPath($paths)
@@ -64,6 +37,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 
     /**
      * @param string $path
+     *
      * @return string
      */
     public function getAttributeFromPath($path)
@@ -71,20 +45,21 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
         $paths = explode('.', $path);
         $atribute = array_pop($paths);
 
-
         $xml = empty($paths) ? $this : $this->getNodeFromPath($paths);
 
         if ($xml instanceof tx_mklib_util_xml_Element
                 && isset($xml[$atribute])) {
-            return (string)  $xml[$atribute];
+            return (string) $xml[$atribute];
         }
 
         return null;
     }
 
     /**
-     * Existiert ein Wert für den angegebenen Pfad
+     * Existiert ein Wert für den angegebenen Pfad.
+     *
      * @param string $path
+     *
      * @return bool
      */
     public function hasValueForPath($path)
@@ -98,11 +73,10 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
         );
     }
 
-
     /**
-     *
      * @param string $path
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function getValueFromPath($path, $default = null)
@@ -118,13 +92,14 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 
     /**
      * Liefert ein Datumsobjekt anhand eines Strings im XML.
+     *
      * @param string $path
+     *
      * @return DateTime
      */
     public function getDateTimeFromPath($path)
     {
         $date = $this->getValueFromPath($path);
-        tx_rnbase::load('tx_mklib_util_Date');
         $date = tx_mklib_util_Date::getDateTime($date);
 
         return $date;
@@ -132,7 +107,9 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 
     /**
      * Liefert ein double anhand eines Strings im XML.
+     *
      * @param string $path
+     *
      * @return float
      */
     public function getIntFromPath($path)
@@ -153,24 +130,29 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      * @TODO: kommazahlen abtrennen und umwandeln!
      *
      * @param string $path
+     *
      * @return float
      */
     public function getBigIntFromPath($path)
     {
         return null;
     }
+
     /**
-     * Prüft, ob das Tag Attribute oder ChildNodes hat
+     * Prüft, ob das Tag Attribute oder ChildNodes hat.
+     *
      * @return bool
      */
     public function isEmpty()
     {
-        return count($this->children()) == 0 && count($this->attributes()) == 0;
+        return 0 == count($this->children()) && 0 == count($this->attributes());
     }
 
     /**
      * Liefert ein double anhand eines Strings im XML.
+     *
      * @param string $path
+     *
      * @return float
      */
     public function getFloatFromPath($path)
@@ -189,8 +171,9 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      * Liefert ein double anhand eines Strings im XML.
      *
      * @param string $path
-     * @param int $digits bei 2 wird aus 1999 19,99.
-     *      Die Preise sollten also als Centbeträge im Code stehen.
+     * @param int    $digits bei 2 wird aus 1999 19,99.
+     *                       Die Preise sollten also als Centbeträge im Code stehen.
+     *
      * @return float
      */
     public function getPriceFromPath($path, $digits = 2)
@@ -282,5 +265,5 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/xml/class.tx_mklib_util_xml_Element.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/xml/class.tx_mklib_util_xml_Element.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/xml/class.tx_mklib_util_xml_Element.php'];
 }

@@ -23,23 +23,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableT3Service');
 
 /**
  * Enter description here ...
+ *
  * @author Hannes Bochmann
  */
 class tx_mklib_tests_abstract_ObservableT3Service_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
      * Enter description here ...
+     *
      * @var tx_mklib_tests_fixtures_classes_ObservableT3Service
      */
     protected $oObservable;
+
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     public function setUp()
@@ -69,7 +71,7 @@ class tx_mklib_tests_abstract_ObservableT3Service_testcase extends Tx_Phpunit_Te
 
         //richtige observer registiert?
         self::assertEquals(array(
-            'tx_mklib_tests_fixtures_classes_FirstObserver' => $oFirstObserver
+            'tx_mklib_tests_fixtures_classes_FirstObserver' => $oFirstObserver,
         ), $this->oObservable->getObservers(), 'Falsche Observer registiert!');
 
         $this->oObservable->doSomething(array('thirdTestData' => 'jimmy doe'));
@@ -78,18 +80,18 @@ class tx_mklib_tests_abstract_ObservableT3Service_testcase extends Tx_Phpunit_Te
         self::assertEquals(array(
             array('firstTestData' => 'john doe'),
             array('secondTestData' => 'fran doe'),
-            array('thirdTestData' => 'jimmy doe')
+            array('thirdTestData' => 'jimmy doe'),
         ), $oFirstObserver->aNotified, 'Die daten wurden nicht korrekt an den ersten observer übergeben!');
         self::assertEquals(3, $oFirstObserver->iNotified, 'notify wurde beim ersten Observer nicht oft genug aufgerufen!');
 
         self::assertEquals(array(
             array('firstTestData' => 'john doe'),
-            array('secondTestData' => 'fran doe')
+            array('secondTestData' => 'fran doe'),
         ), $oSecondObserver->aNotified, 'Die daten wurden nicht korrekt an den zweiten observer übergeben!');
         self::assertEquals(2, $oSecondObserver->iNotified, 'notify wurde beim zweiten Observer nicht oft genug aufgerufen!');
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php'];
 }

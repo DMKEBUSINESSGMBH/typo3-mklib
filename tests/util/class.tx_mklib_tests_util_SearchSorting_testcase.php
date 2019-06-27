@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,13 +25,11 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_util_SearchSorting');
-
 /**
- * Kindklasse der eigentlichen UtilDB, um die Variable $log von setzen zu können
+ * Kindklasse der eigentlichen UtilDB, um die Variable $log von setzen zu können.
  */
 class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
 {
@@ -42,6 +38,7 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
                 'tableAliases' => '', 'joinedFields' => '',
                 'customFields' => '', 'options' => '',
             );
+
     public static function registerSortingAliases(array $tableAliases)
     {
         // klassenname überschreiben
@@ -50,14 +47,16 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
         self::$hooked = false;
         parent::registerSortingAliases($tableAliases);
     }
+
     public static function callHook($bTest = false)
     {
         self::$test = $bTest;
         // hook aufrufen!!
         tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', self::$data);
 
-        return self::$test === false;
+        return false === self::$test;
     }
+
     public static function handleTableMapping(&$params, &$searcher)
     {
         if (self::$test) {
@@ -71,9 +70,7 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
 }
 
 /**
- * SearchSorting util tests
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * SearchSorting util tests.
  */
 class tx_mklib_tests_util_SearchSorting_testcase extends Tx_Phpunit_TestCase
 {
@@ -87,6 +84,7 @@ class tx_mklib_tests_util_SearchSorting_testcase extends Tx_Phpunit_TestCase
         unset($GLOBALS['T3_VAR']['callUserFunction']['&tx_mklib_util_testSearchSorting->handleTableMapping']);
         unset($GLOBALS['T3_VAR']['callUserFunction']['&tx_mklib_util_SearchSorting->handleTableMapping']);
     }
+
     public function tearDown()
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'] = self::$hooks;
@@ -110,17 +108,17 @@ class tx_mklib_tests_util_SearchSorting_testcase extends Tx_Phpunit_TestCase
         $tableAliases = array('TESTALIAS' => array(), 'ALIAS3' => array(), 'ALIAS4' => array());
         $options = array();
         $tableMappings = array(
-            'table1' => 'ALIAS4'
+            'table1' => 'ALIAS4',
         );
         tx_mklib_util_testSearchSorting::$data = array(
                 'tableAliases' => &$tableAliases, 'joinedFields' => '',
                 'customFields' => '', 'options' => &$options,
-                'tableMappings' => $tableMappings
+                'tableMappings' => $tableMappings,
             );
         tx_mklib_util_testSearchSorting::registerSortingAliases(
             array(
                 'TESTALIAS', 'ALIAS2', 'ALIAS3' => 'title',
-                'ALIAS4.table1' => 'sorting', 'ALIAS4.table2' => 'sorting2'
+                'ALIAS4.table1' => 'sorting', 'ALIAS4.table2' => 'sorting2',
             )
         );
         tx_mklib_util_testSearchSorting::callHook();
@@ -151,5 +149,5 @@ class tx_mklib_tests_util_SearchSorting_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_SearchSorting_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_SearchSorting_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_SearchSorting_testcase.php'];
 }

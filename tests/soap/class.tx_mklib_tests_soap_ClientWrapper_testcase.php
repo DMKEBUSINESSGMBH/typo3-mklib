@@ -23,10 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_soap_ClientWrapper');
-tx_rnbase::load('tx_mklib_tests_Util');
-
 /**
  * @author Hannes Bochmann
  */
@@ -41,7 +37,7 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTes
             $this->markTestSkipped('Skipped because soap is not installed.');
         }
 
-        tx_mklib_tests_Util::disableDevlog();
+        \DMK\Mklib\Utility\Tests::disableDevlog();
     }
 
     /**
@@ -87,7 +83,7 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTes
 
     /**
      * @group unit
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionCode 987654321
      * @expectedExceptionMessage There was a Soap Exception
      */
@@ -108,7 +104,7 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTes
 
     /**
      * @group unit
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionCode 987654321
      * @expectedExceptionMessage There was a Soap Fault
      */
@@ -126,9 +122,10 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTes
             array($expectedSoapMethodParams)
         );
     }
+
     /**
      * @group unit
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionCode 0
      * @expectedExceptionMessage There was a Soap Fault
      */
@@ -149,7 +146,8 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTes
 
     /**
      * @param string $soapMethodReturnValue
-     * @param array $expectedParams
+     * @param array  $expectedParams
+     *
      * @return tx_mklib_soap_ClientWrapper
      */
     private function getSoapClientWrapper(
@@ -174,7 +172,8 @@ class tx_mklib_tests_soap_ClientWrapper_testcase extends tx_rnbase_tests_BaseTes
 
     /**
      * @param string $soapMethodReturnValue
-     * @param array $expectedParams
+     * @param array  $expectedParams
+     *
      * @return SoapClient
      */
     private function getSoapClientMock(

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package TYPO3
- * @subpackage tx_mkdifu
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
  *  Copyright notice
@@ -25,10 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
-tx_rnbase::load('tx_rnbase_filter_BaseFilter');
-tx_rnbase::load('tx_rnbase_util_Strings');
 
 /**
  * BITTE INS WIKI SCHAUEN FÜR EINEN BEISPIEL TESTCASE,
@@ -57,42 +51,41 @@ tx_rnbase::load('tx_rnbase_util_Strings');
  */
 class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
 {
-
     /**
      * @var string
      */
     protected $sortConfId = 'sort.';
 
     /**
-     * ausgehend von $sortConfId
+     * ausgehend von $sortConfId.
      *
      * @var string
      */
     protected $allowedFieldsConfId = 'fields';
 
     /**
-     * ausgehend von $sortConfId
+     * ausgehend von $sortConfId.
      *
      * @var string
      */
     protected $defaultConfigurationConfId = 'default.';
 
     /**
-     * ausgehend von $defaultConfigurationConfId
+     * ausgehend von $defaultConfigurationConfId.
      *
      * @var string
      */
     protected $defaultFieldConfId = 'field';
 
     /**
-     * ausgehend von $defaultConfigurationConfId
+     * ausgehend von $defaultConfigurationConfId.
      *
      * @var string
      */
     protected $defaultSortOrderConfId = 'sortOrder';
 
     /**
-     * ausgehend von $sortConfId
+     * ausgehend von $sortConfId.
      *
      * @var string
      */
@@ -123,16 +116,15 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
      */
     private $sortOrder;
 
-
     /**
      * @var null || boolean
      */
     private $initiatedSorting = null;
 
     /**
-     * setzt $this->sortBy und $this->sortOrder
+     * setzt $this->sortBy und $this->sortOrder.
      *
-     * @param   tx_rnbase_IParameters   $parameters
+     * @param tx_rnbase_IParameters $parameters
      *
      * @return bool
      */
@@ -197,7 +189,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
     private function getDefaultValue($confId)
     {
         $defaultConfigurationConfId =
-            $this->getConfId() . $this->sortConfId . $this->defaultConfigurationConfId;
+            $this->getConfId().$this->sortConfId.$this->defaultConfigurationConfId;
         $configurations = $this->getConfigurations();
 
         return $configurations->get($defaultConfigurationConfId.$confId);
@@ -210,7 +202,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
      */
     private function assureSortOrderIsValid($sortOrder)
     {
-        return ($sortOrder == 'desc') ? 'desc' : 'asc';
+        return ('desc' == $sortOrder) ? 'desc' : 'asc';
     }
 
     /**
@@ -254,16 +246,16 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
     }
 
     /**
-     * @param string $template HTML template
+     * @param string                    $template  HTML template
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
-     * @param string $marker
+     * @param string                    $confId
+     * @param string                    $marker
      *
      * @return string
      */
     public function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER')
     {
-        $markerArray = $subpartArray  = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = array();
 
         $this->initSorting();
         $this->insertMarkersForSorting(
@@ -281,15 +273,13 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
     }
 
     /**
-     * @param string $template HTML template
-     * @param array $markerArray
-     * @param array $subpartArray
-     * @param array $wrappedSubpartArray
+     * @param string                    $template            HTML template
+     * @param array                     $markerArray
+     * @param array                     $subpartArray
+     * @param array                     $wrappedSubpartArray
      * @param tx_rnbase_util_FormatUtil $formatter
-     * @param string $confId
-     * @param string $marker
-     *
-     * @return void
+     * @param string                    $confId
+     * @param string                    $marker
      */
     private function insertMarkersForSorting($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$formatter, $confId)
     {
@@ -299,7 +289,6 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
         $sortFields = $this->getAllowedSortFields();
 
         if (!empty($sortFields)) {
-            tx_rnbase::load('tx_rnbase_util_BaseMarker');
             $token = md5(microtime());
             $markOrders = array();
             foreach ($sortFields as $field) {
@@ -315,7 +304,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
                     // sortierungslinks ausgeben
                     $params = array(
                             'sortBy' => $field,
-                            'sortOrder' => $isField && ($this->getSortOrder() == 'asc') ? 'desc' : 'asc',
+                            'sortOrder' => $isField && ('asc' == $this->getSortOrder()) ? 'desc' : 'asc',
                         );
                     $link = $configurations->createLink();
                     $link->label($token);

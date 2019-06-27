@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,29 +25,18 @@
  */
 
 /**
- * benötigte Klassen einbinden
- */
-
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_repository_Abstract');
-tx_rnbase::load('tx_mklib_model_WordlistEntry');
-tx_rnbase::load('tx_mklib_search_Wordlist');
-tx_rnbase::load('Tx_Mklib_Database_Connection');
-
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_tests
+ * benötigte Klassen einbinden.
  */
 class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTestCase
 {
     protected function setUp()
     {
         if (empty($GLOBALS['TCA']['tx_mklib_wordlist'])) {
-            tx_rnbase::load('tx_mklib_srv_Wordlist');
             tx_mklib_srv_Wordlist::loadTca();
             $GLOBALS['TCA']['tx_mklib_wordlist']['test'] = true;
         }
     }
+
     protected function tearDown()
     {
         if (!empty($GLOBALS['TCA']['tx_mklib_wordlist']['test'])) {
@@ -85,7 +72,7 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
             array(array('enablefieldsoff' => true), array('enablefieldsoff' => true)),
             array(array('enablefieldsbe' => true), array('enablefieldsbe' => true)),
             array(array('enablefieldsfe' => true), array('enablefieldsfe' => true)),
-            array(array(), array('enablefieldsbe' => true))
+            array(array(), array('enablefieldsbe' => true)),
         );
     }
 
@@ -296,7 +283,7 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
         $repository = $this->getRepositoryMock();
 
         $data = array(
-            'field1' => 'value1', 'field2' => 'value2','field3' => 'value3'
+            'field1' => 'value1', 'field2' => 'value2', 'field3' => 'value3',
         );
 
         $method = new ReflectionMethod(
@@ -322,7 +309,7 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
         $repository = $this->getRepositoryMock();
 
         $data = array(
-            'field1' => '<p>value1</p>', 'field2' => '<b>value2</b>','field3' => 'value3'
+            'field1' => '<p>value1</p>', 'field2' => '<b>value2</b>', 'field3' => 'value3',
         );
 
         $model->expects(self::once())
@@ -333,7 +320,6 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
             ->method('getFieldsToBeStripped')
             ->will(self::returnValue(array('field1', 'field2')));
 
-
         $method = new ReflectionMethod(
             'tx_mklib_repository_Abstract',
             'secureFromCrossSiteScripting'
@@ -341,7 +327,7 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
         $method->setAccessible(true);
 
         $returnArray = $method->invoke($repository, $model, $data);
-        $expectedReturnArray = array('field1' => 'value1', 'field2' => '<b>value2</b>','field3' => 'value3');
+        $expectedReturnArray = array('field1' => 'value1', 'field2' => '<b>value2</b>', 'field3' => 'value3');
         self::assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
     }
 
@@ -601,6 +587,7 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
 
     /**
      * @param array $mockedMethods
+     *
      * @return tx_mklib_repository_Abstract
      */
     private function getRepositoryMock($mockedMethods = array('getSearchClass'))
@@ -624,6 +611,7 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
 
     /**
      * @param array $mockedMethods
+     *
      * @return Tx_Mklib_Database_Connection
      */
     private function getDatabaseConnectionMock(array $mockedMethods)
@@ -633,6 +621,7 @@ class tx_mklib_tests_repository_Abstract_testcase extends tx_rnbase_tests_BaseTe
 
     /**
      * @param array $mockedMethods
+     *
      * @return tx_mklib_repository_Abstract
      */
     private function getModelMock($rowOrUid = array(), $mockedMethods = array())

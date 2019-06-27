@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,22 +25,14 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_util_HttpRequest');
-tx_rnbase::load('tx_mklib_tests_Util');
-
 /**
- * Http Request Object Tests
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Http Request Object Tests.
  */
 class tx_mklib_tests_util_HttpRequest_testcase extends Tx_Phpunit_TestCase
 {
-
-
     /**
      * @group integration
      */
@@ -52,7 +42,7 @@ class tx_mklib_tests_util_HttpRequest_testcase extends Tx_Phpunit_TestCase
 
         $url = 'https://phpunit.project.dmknet.de/tests/httprequest.php?method=POST';
         $config = array(
-            'sslcainfo' => tx_mklib_tests_Util::getFixturePath('project.dmknet.de.crt'),
+            'sslcainfo' => \DMK\Mklib\Utility\Tests::getFixturePath('project.dmknet.de.crt'),
         );
 
         $request = new tx_mklib_util_HttpRequest($url, $config);
@@ -68,5 +58,5 @@ class tx_mklib_tests_util_HttpRequest_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_HttpRequest_testcase.php'];
 }

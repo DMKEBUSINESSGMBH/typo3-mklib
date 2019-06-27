@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,16 +25,11 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_rnbase_mod_BaseModule');
-
 /**
- * Backend Modul für mklib
- *
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
+ * Backend Modul für mklib.
  */
 class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
 {
@@ -44,9 +37,9 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
     public $tabs;
 
     /**
-     * Method to get the extension key
+     * Method to get the extension key.
      *
-     * @return  string Extension key
+     * @return string Extension key
      */
     public function getExtensionKey()
     {
@@ -55,7 +48,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
 
     /**
      * Method to set the tabs for the mainmenu
-     * Umstellung von SelectBox auf Menu
+     * Umstellung von SelectBox auf Menu.
      */
     protected function getFuncMenu()
     {
@@ -65,7 +58,8 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
     }
 
     /**
-     * Returns the module ident name
+     * Returns the module ident name.
+     *
      * @return string
      */
     public function getName()
@@ -78,7 +72,8 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
      * In ->main() wird aber auch das rendering ausgeführt, was dann zu ungewollten Ausgaben,
      * Fehlern etc. führt.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_rnbase_mod_BaseModule::getDoc()
      */
     public function getDoc()
@@ -96,5 +91,5 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/index.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/index.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/index.php'];
 }

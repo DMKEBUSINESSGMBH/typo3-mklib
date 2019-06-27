@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,23 +21,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_SearchGeneric');
-tx_rnbase::load('tx_mklib_repository_Pages');
-tx_rnbase::load('tx_rnbase_model_base');
 
 /**
  * Tests for tx_mklib_repository_Pages.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
     protected function getRepository()
@@ -61,7 +53,6 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
     /**
      * Test the getSearchClass method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -80,7 +71,6 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
     /**
      * Test the getEmptyModel method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -104,7 +94,6 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
     /**
      * Test the getChildren method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -150,7 +139,6 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
             )
             ->will(self::returnValue(array()));
 
-
         $page = $this->getModel(array('uid' => 57), 'tx_mklib_model_Page');
 
         self::assertTrue(is_array($repo->getChildren($page)));
@@ -159,7 +147,6 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
     /**
      * Test the getSearchdef method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -183,7 +170,6 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
     /**
      * Test the search method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -198,7 +184,7 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
                 'NEWALIAS' => array(
                     'table' => 'tx_new_table',
                     'join' => 'JOIN tx_new_table AS NEWALIAS ON PAGES.new_field = NEWALIAS.uid',
-                )
+                ),
             ),
         );
 
@@ -251,13 +237,10 @@ class tx_mklib_tests_repository_Pages_testcase extends tx_rnbase_tests_BaseTestC
         self::assertTrue(is_array($repo->search($fields, $options)));
     }
 
-
-
     /**
      * checks the searchdev options.
      *
      * @param array $searchdef
-     * @access protected only public for php5.3 and missing $this usage in closures.
      */
     public static function assertSearchDef($searchdef)
     {

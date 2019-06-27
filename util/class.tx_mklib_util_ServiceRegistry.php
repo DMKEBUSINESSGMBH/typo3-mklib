@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,26 +25,22 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-
 /**
- * Class to access services
- *
- * @package tx_mklib
- * @subpackage tx_mklib_util
+ * Class to access services.
  */
 class tx_mklib_util_ServiceRegistry
 {
-
     /**
-     * @var    string  Extensionkey
+     * @var string Extensionkey
      */
     private static $extKey = 'mklib';
+
     /**
-     * Return wordlist service
+     * Return wordlist service.
+     *
      * @return tx_mklib_srv_Wordlist
      */
     public static function getWordlistService()
@@ -55,14 +49,15 @@ class tx_mklib_util_ServiceRegistry
     }
 
     /**
-     * Return wordlist service
+     * Return wordlist service.
+     *
      * @return tx_mklib_srv_Finance
      */
     public static function getFinanceService()
     {
         return tx_rnbase_util_Misc::getService(self::$extKey, 'finance');
     }
-    
+
     /**
      * @return tx_mklib_srv_StaticCountries
      */
@@ -70,7 +65,7 @@ class tx_mklib_util_ServiceRegistry
     {
         return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountries');
     }
-    
+
     /**
      * @return tx_mklib_srv_StaticCountryZones
      */
@@ -81,5 +76,5 @@ class tx_mklib_util_ServiceRegistry
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php'];
 }

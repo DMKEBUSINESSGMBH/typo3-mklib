@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_srv
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,25 +25,17 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
-tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_srv_Wordlist');
-
 /**
- * Generic form view test
+ * Generic form view test.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_srv
  *
  * @group integration
  */
 class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @group unit
      */
@@ -80,7 +70,8 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob getWordlistEntryByWord null zurück gibt wenn nichts gefunden wurde
+     * Testen ob getWordlistEntryByWord null zurück gibt wenn nichts gefunden wurde.
+     *
      * @group integration
      */
     public function testGetWordlistEntryByWordReturnsEmptyIfNoMatch()
@@ -96,7 +87,8 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob getWordlistEntryByWord mehrere Treffer zurück gibt im normale Modus
+     * Testen ob getWordlistEntryByWord mehrere Treffer zurück gibt im normale Modus.
+     *
      * @group integration
      */
     public function testGetWordlistEntryByWordReturnsMatches()
@@ -118,7 +110,8 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob getWordlistEntryByWord einen Treffer zurück gibt im none greedy Modus
+     * Testen ob getWordlistEntryByWord einen Treffer zurück gibt im none greedy Modus.
+     *
      * @group integration
      */
     public function testGetWordlistEntryByWordReturns1MatchIfInNoneGreedyMode()
@@ -135,7 +128,8 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob getWordlistEntryByWord einen Treffer zurück gibt wenn es einen gibt
+     * Testen ob getWordlistEntryByWord einen Treffer zurück gibt wenn es einen gibt.
+     *
      * @group integration
      */
     public function testGetWordlistEntryByWordReturnsMatchWithComplexString()
@@ -151,7 +145,8 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob getWordlistEntryByWord einen Eintrag zurück liefert
+     * Testen ob getWordlistEntryByWord einen Eintrag zurück liefert.
+     *
      * @group integration
      */
     public function testGetWordlistEntryByBlacklistedWordReturnsCorrectData()
@@ -187,7 +182,8 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * Testen ob getWordlistEntryByWord einen Eintrag zurück liefert
+     * Testen ob getWordlistEntryByWord einen Eintrag zurück liefert.
+     *
      * @group integration
      */
     public function testGetWordlistEntryByWhitelistedWordReturnsCorrectData()
@@ -238,11 +234,11 @@ class tx_mklib_tests_srv_Wordlist_testcase extends tx_rnbase_tests_BaseTestCase
             4 => tx_rnbase::makeInstance(
                 'tx_mklib_model_WordlistEntry',
                 array('uid' => 5, 'word' => 'shit', 'blacklisted' => 1)
-            )
+            ),
         );
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_Wordlist_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_Wordlist_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_Wordlist_testcase.php'];
 }

@@ -1,39 +1,8 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- *  Copyright notice
- *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
-
-
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_mklib_util_Encoding');
 
 /**
- * Class for encodings
+ * Class for encodings.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_tests
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
@@ -41,18 +10,19 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     /**
      * Dies ist die in Hex umgewandelte Form des Strings
      * mit der ISO-8859-1 Zeichen codierung.
+     *
      * @var string
      */
     private static $hexIso88591 = 'c4e4d6f6dcfcdf';
     /**
      * Dies ist die in Hex umgewandelte Form des Strings
      * mit der UTF-8 Zeichen codierung.
+     *
      * @var string
      */
     private static $hexUtf8 = 'c384c3a4c396c3b6c39cc3bcc39f';
 
     /**
-     *
      * @group integration
      */
     public function test_is_encoding()
@@ -80,7 +50,7 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
                     'is utf8' => tx_mklib_util_Encoding::isEncoding($strUtf8, 'UTF-8'),
                     'is iso88591' => tx_mklib_util_Encoding::isEncoding($strUtf8, 'ISO-8859-1'),
                 ),
-                'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__
+                'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__,
             ), true).'</pre>';
         } // @TODO: remove me
 
@@ -104,7 +74,6 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     *
      * @group integration
      */
     public function test_convert_string_from_ISO_8859_1_to_UTF_8()
@@ -136,7 +105,6 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     *
      * @group integration
      */
     public function test_convert_string_from_UTF_8_to_ISO_8859_1()
@@ -168,7 +136,6 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     *
      * @depends test_convert_string_from_ISO_8859_1_to_UTF_8
      * @group integration
      */
@@ -212,7 +179,6 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     *
      * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
      * @group integration
      */
@@ -250,7 +216,6 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     *
      * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
      * @group integration
      */
@@ -290,7 +255,6 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     *
      * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
      * @group integration
      */
@@ -345,7 +309,7 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
     }
 
     /**
-     * @expectedException     InvalidArgumentException
+     * @expectedException     \InvalidArgumentException
      * @expectedExceptionCode 4005
      * @group integration
      */
@@ -361,8 +325,6 @@ class tx_mklib_tests_util_Encoding_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE')
-    && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-        ['ext/mklib/tests/util/class.tx_mklib_tests_util_Encoding_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-        ['ext/mklib/tests/util/class.tx_mklib_tests_util_Encoding_testcase.php']);
+    && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Encoding_testcase.php']) {
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Encoding_testcase.php'];
 }

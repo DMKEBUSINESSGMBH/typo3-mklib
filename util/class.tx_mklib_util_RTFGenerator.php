@@ -1,8 +1,5 @@
 <?php
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -28,19 +25,14 @@
  ***************************************************************/
 
 /**
- * erforderliche Klassen laden
+ * erforderliche Klassen laden.
  */
 
-tx_rnbase::load('tx_mklib_util_MiscTools');
-
 /**
- * RTF-Generator
- * @package tx_mklib
- * @subpackage tx_mklib_util
+ * RTF-Generator.
  */
 class tx_mklib_util_RTFGenerator
 {
-
     // {\colortbl;\red 0\green 0\blue 0;\red 255\green 0\ blue0;\red0 ...}
     private $colour_table = array();
     private $colour_rgb;
@@ -122,7 +114,7 @@ class tx_mklib_util_RTFGenerator
 
     /**
      * Klassen-Konstruktor
-     * Setzt die notwendigen Konfigurationen
+     * Setzt die notwendigen Konfigurationen.
      *
      * @param array $params
      */
@@ -143,6 +135,7 @@ class tx_mklib_util_RTFGenerator
 
     /**
      * Soll die Info table ausgegeben werden?
+     *
      * @param bool $bSetInfoPart
      */
     private function exportInfoTable($bSetInfoPart)
@@ -159,7 +152,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * RTF-Version des Dokuments setzen
+     * RTF-Version des Dokuments setzen.
+     *
      * @param int $versionNumber
      */
     public function setRTFVersion($versionNumber)
@@ -170,7 +164,8 @@ class tx_mklib_util_RTFGenerator
 
     /**
      * Standardmäßige Schriftart setzen
-     * entspricht dem key in $aFonts (getFontTable-Methode) der Schriftart in der colortable
+     * entspricht dem key in $aFonts (getFontTable-Methode) der Schriftart in der colortable.
+     *
      * @param int $face
      */
     public function setDefaultFontFace($face)
@@ -180,7 +175,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Standmäßige Schriftgröße setzen
+     * Standmäßige Schriftgröße setzen.
+     *
      * @param int $size
      */
     public function setDefaultFontSize($size)
@@ -189,7 +185,7 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * aktuelle Erstellungszeit setzen
+     * aktuelle Erstellungszeit setzen.
      */
     public function setCreateTime()
     {
@@ -203,7 +199,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Format der Ausgabe setzen
+     * Format der Ausgabe setzen.
+     *
      * @param int $size
      */
     public function setPaperSize($size = 0)
@@ -270,7 +267,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Ausrichtung der Ausgabe
+     * Ausrichtung der Ausgabe.
+     *
      * @param int $orientation
      */
     public function setPaperOrientation($orientation = 1)
@@ -290,7 +288,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Farbe in der colortable hinzufügen
+     * Farbe in der colortable hinzufügen.
+     *
      * @param string $hexcode
      */
     public function addColour($hexcode)
@@ -300,14 +299,15 @@ class tx_mklib_util_RTFGenerator
 
         // Register in the colour table array
         $this->colour_table[] = array(
-            'red'    =>    $this->colour_rgb['red'],
-            'green'    =>    $this->colour_rgb['green'],
-            'blue'    =>    $this->colour_rgb['blue']
+            'red' => $this->colour_rgb['red'],
+            'green' => $this->colour_rgb['green'],
+            'blue' => $this->colour_rgb['blue'],
         );
     }
 
     /**
-     * Konvertiert HEX Farbwerte zu RGB-Werten (#FFFFFF => r255 g255 b255)
+     * Konvertiert HEX Farbwerte zu RGB-Werten (#FFFFFF => r255 g255 b255).
+     *
      * @param string $hexcode
      */
     private function hex2rgb($hexcode)
@@ -322,7 +322,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Konvertiert neue Zeilen in \par
+     * Konvertiert neue Zeilen in \par.
+     *
      * @param string $text
      */
     private function nl2par($text)
@@ -335,7 +336,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Text zum Dokument hinzufügen
+     * Text zum Dokument hinzufügen.
+     *
      * @param string $text
      */
     public function addText($text)
@@ -348,7 +350,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Den gesamten RTF-inhalt erzeugen
+     * Den gesamten RTF-inhalt erzeugen.
+     *
      * @param string $text
      */
     public function getRTF($text)
@@ -376,7 +379,7 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Gibt den gesamten Kopf der Datei zurück
+     * Gibt den gesamten Kopf der Datei zurück.
      */
     private function getHeader()
     {
@@ -389,23 +392,23 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Gibt die Font-Table zurück
+     * Gibt die Font-Table zurück.
      */
     private function getFontTable()
     {
         $aFonts = array(
             0 => array(
-                'name'        =>    'Arial',
-                'family'    =>    'nil',
-                'charset'    =>    0
+                'name' => 'Arial',
+                'family' => 'nil',
+                'charset' => 0,
             ),
             1 => array(
-                'name'        =>    'Wingdings',
-                'family'    =>    'nil',
-                'charset'    =>    0
-            )
+                'name' => 'Wingdings',
+                'family' => 'nil',
+                'charset' => 0,
+            ),
         );
-        $font_buffer = "{\\fonttbl";
+        $font_buffer = '{\\fonttbl';
         foreach ($aFonts as $fnum => $farray) {
             $font_buffer .= "{\\f{$fnum}\\fcharset{$farray['charset']}\\f{$farray['family']} {$farray['name']};}";
         }
@@ -415,7 +418,7 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Gibt die colortable zurück
+     * Gibt die colortable zurück.
      */
     private function getColourTable()
     {
@@ -432,7 +435,7 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Gibt den Informationsteil zurück
+     * Gibt den Informationsteil zurück.
      */
     private function getInformation()
     {
@@ -449,7 +452,7 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * gibt die Schriftarteinstellung zurück
+     * gibt die Schriftarteinstellung zurück.
      */
     private function getDefaultFont($withTrailingSpace = true)
     {
@@ -463,7 +466,7 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * gibt die Schriftarteinstellung zurück
+     * gibt die Schriftarteinstellung zurück.
      */
     private function getWindingsFont()
     {
@@ -475,7 +478,8 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Konvertiert spezielle Zeichen zu ASCII
+     * Konvertiert spezielle Zeichen zu ASCII.
+     *
      * @param string $text
      */
     private function specialCharacters($text)
@@ -495,7 +499,7 @@ class tx_mklib_util_RTFGenerator
     }
 
     /**
-     * Konvertiert HTML-Zeichen zur entsprechenden RTF-Formatierung
+     * Konvertiert HTML-Zeichen zur entsprechenden RTF-Formatierung.
      */
     private function parseDocument()
     {
@@ -534,5 +538,5 @@ class tx_mklib_util_RTFGenerator
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_RTFGenerator.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_RTFGenerator.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_RTFGenerator.php'];
 }

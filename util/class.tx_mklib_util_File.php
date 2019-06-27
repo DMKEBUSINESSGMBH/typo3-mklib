@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -26,37 +24,30 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_util_Misc');
-tx_rnbase::load('tx_rnbase_util_Files');
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-
 /**
  * Util Methoden für Datei handling.
  *
  * @author mwagner
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 class tx_mklib_util_File
 {
-
     /**
-     * @var    array[\TYPO3\CMS\Core\Utility\File\BasicFileUtility]
+     * @var array[\TYPO3\CMS\Core\Utility\File\BasicFileUtility]
      */
     private static $ftInstances = array();
     /**
-     * @var    string  cache
+     * @var string cache
      */
     private static $siteUrl = false;
     /**
-     * @var    string  cache
+     * @var string cache
      */
     private static $documentRoot = false;
 
     /**
-     * Liefert eine Instanz der basicFileFunctions von t3lib
-     * @return  \TYPO3\CMS\Core\Utility\File\BasicFileUtility
+     * Liefert eine Instanz der basicFileFunctions von t3lib.
+     *
+     * @return \TYPO3\CMS\Core\Utility\File\BasicFileUtility
      */
     public static function getFileTool($mounts = false, $f_ext = false)
     {
@@ -72,24 +63,21 @@ class tx_mklib_util_File
             self::$ftInstances[$key] = tx_rnbase::makeInstance(
                 tx_rnbase_util_Typo3Classes::getBasicFileUtilityClass()
             );
-            if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-                self::$ftInstances[$key]->init($mounts, $f_ext);
-            }
         }
 
         return self::$ftInstances[$key];
     }
-
 
     /**
      * Löscht alle Dateien im in einem typo3temp Verzeichnis.
      *
      * @TODO: fehlerbehandlung integrieren!
      *
-     * @param   string  $sDirectory
-     * @param   array   $aOptions
-     * @param   array   $aUnlinkedFiles Hier werden die Dateien eingetragen, welche gelöscht wurden.
-     * @return  int
+     * @param string $sDirectory
+     * @param array  $aOptions
+     * @param array  $aUnlinkedFiles hier werden die Dateien eingetragen, welche gelöscht wurden
+     *
+     * @return int
      */
     public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles = array())
     {
@@ -99,7 +87,7 @@ class tx_mklib_util_File
         }
 
         //nur innerhalb von typo3temp zulassen
-        if (!$aOptions['skiptypo3tempcheck'] && strpos($sDirectory, $directoryCheckDir) === false) {
+        if (!$aOptions['skiptypo3tempcheck'] && false === strpos($sDirectory, $directoryCheckDir)) {
             return 0;
         }
 
@@ -112,8 +100,8 @@ class tx_mklib_util_File
 
         if (@is_dir($sDirectory)) {
             $iHandle = opendir($sDirectory);
-            while (($sFile = readdir($iHandle)) !== false) {
-                if ($sFile === '.' || $sFile === '..') {
+            while (false !== ($sFile = readdir($iHandle))) {
+                if ('.' === $sFile || '..' === $sFile) {
                     continue;
                 }
 
@@ -133,7 +121,7 @@ class tx_mklib_util_File
                         // löschen!
                         @unlink($sFilePath);
                         // count erhöhen
-                        $iCount++;
+                        ++$iCount;
                     }
                 } // Es handelt sich um ein Verzeichniss.
                 elseif ($bRecursive && @is_dir($sFilePath)) {
@@ -149,27 +137,30 @@ class tx_mklib_util_File
 
     /**
      * Liefert die URL zur Typo3 Seite
-     * http://www.typo3.de
-     * @return  string
+     * http://www.typo3.de.
+     *
+     * @return string
      */
     public static function getSiteUrl()
     {
-        if (self::$siteUrl === false) {
+        if (false === self::$siteUrl) {
             self::$siteUrl = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL');
         }
 
         return self::$siteUrl;
     }
+
     /**
      * Liefert den Absoluten Server Pfad zum Root.
-     * @return  string
+     *
+     * @return string
      */
     public static function getDocumentRoot($slashPath = true)
     {
-        if (self::$documentRoot === false) {
+        if (false === self::$documentRoot) {
             if (!self::$documentRoot = tx_rnbase_util_Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT')) {
                 // happens for example on the CLI
-                self::$documentRoot = PATH_site;
+                self::$documentRoot = \Sys25\RnBase\Utility\Environment::getPublicPath();
             }
         }
 
@@ -181,9 +172,11 @@ class tx_mklib_util_File
     }
 
     /**
-     * Entfernt doppelte slashes. Das Schema wird hierbei berücksichtigt
-     * @param   string  $sPath
-     * @return  string
+     * Entfernt doppelte slashes. Das Schema wird hierbei berücksichtigt.
+     *
+     * @param string $sPath
+     *
+     * @return string
      */
     public function removeDoubleSlash($sPath)
     {
@@ -195,28 +188,37 @@ class tx_mklib_util_File
 
         return $uI['scheme'].'://'.self::removeDoubleSlash(substr($sPath, strlen($uI['scheme']) + 3));
     }
+
     /**
-     * Entfernt ein führenden Splash (/)
-     * @param   string  $sPath
-     * @return  string
+     * Entfernt ein führenden Splash (/).
+     *
+     * @param string $sPath
+     *
+     * @return string
      */
     public static function removeStartingSlash($sPath)
     {
-        return ($sPath{0} === '/') ? substr($sPath, 1) : $sPath;
+        return ('/' === $sPath[0]) ? substr($sPath, 1) : $sPath;
     }
+
     /**
-     * Entfernt ein Splash (/) am ende des Strings
-     * @param   string  $sPath
-     * @return  string
+     * Entfernt ein Splash (/) am ende des Strings.
+     *
+     * @param string $sPath
+     *
+     * @return string
      */
     public static function removeEndingSlash($sPath)
     {
-        return (substr($sPath, -1) === '/') ? substr($sPath, 0, -1) : $sPath;
+        return ('/' === substr($sPath, -1)) ? substr($sPath, 0, -1) : $sPath;
     }
+
     /**
-     * Entfernt ein führenden Splash (/) und einen am Ende des Strings
-     * @param   string  $sPath
-     * @return  string
+     * Entfernt ein führenden Splash (/) und einen am Ende des Strings.
+     *
+     * @param string $sPath
+     *
+     * @return string
      */
     public static function trimSlashes($sPath)
     {
@@ -225,13 +227,14 @@ class tx_mklib_util_File
 
     /**
      * Behebt eventuelle Fehler im Pfad.
-     * @param   string  $sPath
-     * @param   bool     $slashPath
-     * @return  string
+     *
+     * @param string $sPath
+     * @param bool   $slashPath
+     *
+     * @return string
      */
     public static function fixPath($sPath, $slashPath = true)
     {
-
         // stellt sicher, das keine backslashes vorhanden sind.
         $sPath = str_replace('\\', '/', $sPath);
 
@@ -253,23 +256,24 @@ class tx_mklib_util_File
     }
 
     /**
-     * // Bei Verzeichnissen sicherstellen, das ein slash (/) am ende steht
+     * // Bei Verzeichnissen sicherstellen, das ein slash (/) am ende steht.
      *
-     * @param   string  $sPath
-     * @param   bool $directoryCheck prüfen, ob das Verzeichnis existiert.
-     * @return  string
+     * @param string $sPath
+     * @param bool   $directoryCheck prüfen, ob das Verzeichnis existiert
+     *
+     * @return string
      */
     public static function slashPath($sPath, $directoryCheck = true)
     {
         // entfernt überflüssige slashes
         $sPath = self::trimSlashes($sPath);
         // beginnenden slash hinzufügen
-        if (!self::isAbsWebPath($sPath) && ((TYPO3_OS == 'WIN' && substr($sPath, 1, 2) != ':/') || TYPO3_OS != 'WIN')) {
-            $sPath = ($sPath{0} != '/' ? '/' : '').$sPath;
+        if (!self::isAbsWebPath($sPath) && ((TYPO3_OS == 'WIN' && ':/' != substr($sPath, 1, 2)) || TYPO3_OS != 'WIN')) {
+            $sPath = ('/' != $sPath[0] ? '/' : '').$sPath;
         }
         if (!$directoryCheck || self::getInstance()->isDirectory($sPath)) {
-            if (substr($sPath, -1) != '/') {
-                return $sPath . '/';
+            if ('/' != substr($sPath, -1)) {
+                return $sPath.'/';
             }
         }
 
@@ -281,16 +285,12 @@ class tx_mklib_util_File
      *
      * @param string Directory path to check
      *
-     * @return string Returns the cleaned up directory name if OK, otherwise FALSE.
+     * @return string returns the cleaned up directory name if OK, otherwise FALSE
      */
     public function isDirectory($theDir)
     {
         if (Tx_Rnbase_Utility_T3General::validPathStr($theDir)) {
-            if (tx_rnbase_util_TYPO3::isTYPO62OrHigher()) {
-                $theDir = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
-            } else {
-                $theDir = preg_replace('/[\/\. ]*$/', '', str_replace('//', '/', $theDir));
-            }
+            $theDir = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
             if (@is_dir($theDir)) {
                 return $theDir;
             }
@@ -301,19 +301,24 @@ class tx_mklib_util_File
 
     /**
      * Prüft ob es sich um einen absoluten Server-Pfad handelt.
-     * @param   $sPath
-     * @return  bool
+     *
+     * @param $sPath
+     *
+     * @return bool
      */
     public static function isAbsServerPath($sPath)
     {
         $sServerRoot = self::removeStartingSlash(self::getDocumentRoot());
 
-        return (substr(self::removeStartingSlash($sPath), 0, strlen($sServerRoot)) === $sServerRoot);
+        return substr(self::removeStartingSlash($sPath), 0, strlen($sServerRoot)) === $sServerRoot;
     }
+
     /**
      * Prüft ob es sich um einen absoluten Web-Pfad handelt.
-     * @param   $sPath
-     * @return  bool
+     *
+     * @param $sPath
+     *
+     * @return bool
      */
     public static function isAbsWebPath($sPath)
     {
@@ -328,10 +333,10 @@ class tx_mklib_util_File
     /**
      * Gibt einen relativen Pfad zurück.
      *
-     * @param   string  $path
-     * @param   bool $removeStartingSlash
+     * @param string $path
+     * @param bool   $removeStartingSlash
      *
-     * @return  string
+     * @return string
      */
     public static function getRelPath($path = '/', $removeStartingSlash = false)
     {
@@ -342,7 +347,7 @@ class tx_mklib_util_File
         $path = self::fixPath($path);
 
         // Web-Pfad abschneiden
-        if (self::isAbsWebPath($path) && strpos($path, self::getSiteUrl()) !== false) {
+        if (self::isAbsWebPath($path) && false !== strpos($path, self::getSiteUrl())) {
             $path = str_replace(self::getSiteUrl(), '', $path);
         }
 
@@ -355,10 +360,10 @@ class tx_mklib_util_File
         );
 
         // gegebenenfals ein slash anfügen wenn dieser nicht entfernt werden soll
-        if ($removeStartingSlash && $path{0} == '/') {
+        if ($removeStartingSlash && '/' == $path[0]) {
             $path = self::removeStartingSlash($path);
-        } elseif ($path{0} != '/') {
-            $path = '/' . $path;
+        } elseif ('/' != $path[0]) {
+            $path = '/'.$path;
         }
 
         return $path;
@@ -367,8 +372,9 @@ class tx_mklib_util_File
     /**
      * Gibt einen absoluten Server Pfad zurück.
      *
-     * @param   string  $sPath
-     * @return  string
+     * @param string $sPath
+     *
+     * @return string
      */
     public static function getServerPath($sPath = '/')
     {
@@ -396,8 +402,9 @@ class tx_mklib_util_File
     /**
      * Gibt einen absoluten Web Pfad zurück.
      *
-     * @param   string  $sPath
-     * @return  string
+     * @param string $sPath
+     *
+     * @return string
      */
     public static function getWebPath($sPath = '/')
     {
@@ -406,7 +413,7 @@ class tx_mklib_util_File
         }
         $sPath = self::removeEndingSlash(
             self::getSiteUrl()
-        ). '/' . self::removeStartingSlash(
+        ).'/'.self::removeStartingSlash(
             self::getRelPath($sPath)
         );
         //@TODO: das funktioniert beim webpfad nicht!
@@ -414,14 +421,12 @@ class tx_mklib_util_File
     }
 
     /**
-     * Schreibt HTTP-Header um eine Datei zum Download anzubieten
+     * Schreibt HTTP-Header um eine Datei zum Download anzubieten.
      *
      * @todo Output Tests schreiben
      *
      * @param string $sFilename
      * @param string $sContentType
-     *
-     * @return void
      */
     public static function writeDownloadHeaders($sFilename, $sContentType = 'application/download', $sDisposition = 'attachment')
     {
@@ -433,34 +438,34 @@ class tx_mklib_util_File
         header('Cache-Control: post-check=0, pre-check=0', false);
         header('Expires: 0');
     }
+
     /**
      * Mit diesem Header wird der übergebene Ausgabestring
-     * direkt als Datei zum Download angeboten
+     * direkt als Datei zum Download angeboten.
      *
      * @todo Output Tests schreiben
      *
      * @param string $sOutput
      * @param string $sFilename
      * @param string $sContentType
-     *
-     * @return void
      */
     public static function offerFileForDownload($sOutput, $sFilename, $sContentType = 'application/download')
     {
         self::writeDownloadHeaders($sFilename, $sContentType);
         header('Content-length: '.strlen($sOutput));
         //jetzt die Datei zum Download anbieten
-        print $sOutput;
+        echo $sOutput;
         //und TYPO3 hindern noch irgend etwas auszugeben
         exit;
     }
 
     /**
-     * Erzeugt eine URL anhand von den uri parts
+     * Erzeugt eine URL anhand von den uri parts.
      *
      * http://www.php.net/manual/en/function.parse-url.php
      *
      * @param array $parts
+     *
      * @return string
      */
     public static function parseUrlFromParts(array $parts)
@@ -472,16 +477,16 @@ class tx_mklib_util_File
         ), $parts);
 
         $password = strlen($parts['pass']) > 0 ? ':'.$parts['pass'] : '';
-        $auth = strlen($parts['user']) > 0 ? $parts['user'] . $password . '@' : '';
+        $auth = strlen($parts['user']) > 0 ? $parts['user'].$password.'@' : '';
         $port = strlen($parts['port']) > 0 ? ':'.$parts['port'] : '';
         // check excisting ? ???
         //$query = strlen($parts['query']) > 0 ? ($parts['query'][0] == '?' ? $parts['query'] : '?'.$parts['query']) : '';
         $query = strlen($parts['query']) > 0 ? '?'.$parts['query'] : '';
         $fragment = strlen($parts['fragment']) > 0 ? '#'.$parts['fragment'] : '';
 
-        return $parts['scheme'] . '://' . $auth
-            . $parts['host'] . $port
-            . $parts['path'] . $query . $fragment;
+        return $parts['scheme'].'://'.$auth
+            .$parts['host'].$port
+            .$parts['path'].$query.$fragment;
     }
 
     /**
@@ -489,6 +494,7 @@ class tx_mklib_util_File
      *
      * @param string $path
      * @param string $content
+     *
      * @return bool
      */
     public static function createDenyHtaccess($path, $content = null)
@@ -497,12 +503,12 @@ class tx_mklib_util_File
         if (@is_file($theFile)) {
             return false;
         }
-        $content = $content ? $content :    'order deny,allow'.PHP_EOL.
+        $content = $content ? $content : 'order deny,allow'.PHP_EOL.
                 'deny from all'.PHP_EOL.
                 'allow from 127.0.0.1'.PHP_EOL;
-                // Das funktioniert bei den meisten Clustern nicht,
-                // da der LoadBallancer die Anfragen intern weiterleitet!
-                // 'allow from 192.168'.PHP_EOL
+        // Das funktioniert bei den meisten Clustern nicht,
+        // da der LoadBallancer die Anfragen intern weiterleitet!
+        // 'allow from 192.168'.PHP_EOL
 
         tx_rnbase_util_Files::writeFile($theFile, $content);
 
@@ -523,5 +529,5 @@ class tx_mklib_util_File
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_File.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_File.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_File.php'];
 }

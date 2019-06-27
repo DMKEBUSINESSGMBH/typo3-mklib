@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -25,26 +23,21 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_util_Network');
-tx_rnbase::load('tx_rnbase_util_Misc');
 
 /**
- * Miscellaneous common methods
- *
- * @package tx_mklib
- * @subpackage tx_mklib_util
+ * Miscellaneous common methods.
  */
 class tx_mklib_util_MiscTools
 {
-
     /**
      * Liefert einen Wert aus der Extension-Konfiguration.
      * Gibt es für die angegebene Extension keine Konfiguration,
      * wird als Fallback der Wert von mklib zurückgegeben.
      *
-     * @param string    $sValueKey
-     * @param string    $sExtKey
+     * @param string $sValueKey
+     * @param string $sExtKey
      * @param bool   $bFallback
+     *
      * @return mixed
      */
     public static function getExtensionValue($sValueKey, $sExtKey = 'mklib', $bFallback = false)
@@ -52,9 +45,8 @@ class tx_mklib_util_MiscTools
         if (!$sExtKey) {
             $sExtKey = 'mklib';
         }
-        tx_rnbase::load('tx_rnbase_configurations');
         $mValue = tx_rnbase_configurations::getExtensionCfgValue($sExtKey, $sValueKey);
-        if ($bFallback && $mValue === false && $sExtKey != 'mklib') {
+        if ($bFallback && false === $mValue && 'mklib' != $sExtKey) {
             $mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey);
         }
 
@@ -65,8 +57,9 @@ class tx_mklib_util_MiscTools
      * Liefert eine BE-Account.
      * Dieser Nutzer wird für TCE Operationen verwendet. Er sollte Admin-Rechte haben.
      *
-     * @param string    $sExtKey
+     * @param string $sExtKey
      * @param bool   $bFallback
+     *
      * @return int
      */
     public static function getProxyBeUserId($sExtKey = 'mklib', $bFallback = true)
@@ -77,8 +70,9 @@ class tx_mklib_util_MiscTools
     /**
      * Liefert den Pfad zu den Bildern.
      *
-     * @param string    $sExtKey
+     * @param string $sExtKey
      * @param bool   $bFallback
+     *
      * @return int
      */
     public static function getPicturesUploadPath($sExtKey = 'mklib', $bFallback = true)
@@ -89,8 +83,9 @@ class tx_mklib_util_MiscTools
     /**
      * Liefert die Page-ID, wo alle Portaldaten gespeichert sind.
      *
-     * @param string    $sExtKey
+     * @param string $sExtKey
      * @param bool   $bFallback
+     *
      * @return int
      */
     public static function getPortalPageId($sExtKey = 'mklib', $bFallback = true)
@@ -103,8 +98,9 @@ class tx_mklib_util_MiscTools
      * Diese wird aber lediglich angegeben. Die Mehrwertsteuer wird durch die Extension
      * Konfiguration NICHT angelegt!
      *
-     * @param string    $sExtKey
+     * @param string $sExtKey
      * @param bool   $bFallback
+     *
      * @return int
      */
     public static function getSpecialCharMarker($sExtKey = 'mklib', $bFallback = true)
@@ -113,13 +109,15 @@ class tx_mklib_util_MiscTools
     }
 
     /**
-     * IP-based Access restrictions
+     * IP-based Access restrictions.
      *
      * @TODO: in util_dev auslagern!?
      *
-     * @param   string      $remoteAddress
-     * @param   string      $devIPmask
-     * @return  bool
+     * @param string $remoteAddress
+     * @param string $devIPmask
+     *
+     * @return bool
+     *
      * @deprecated use tx_rnbase_util_Network::isDevelopmentIp
      */
     public static function isDevIpMask($remoteAddress = '', $devIPmask = '')
@@ -128,7 +126,7 @@ class tx_mklib_util_MiscTools
     }
 
     /**
-     * workaround for HTTP authorization in CGI environment
+     * workaround for HTTP authorization in CGI environment.
      *
      * Requires Redirect in .htaccess:
      *   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -148,5 +146,5 @@ class tx_mklib_util_MiscTools
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php'];
 }

@@ -22,17 +22,14 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_Base');
-
 /**
- * Iban Model and Validatort based on jschaedl/Iban
+ * Iban Model and Validatort based on jschaedl/Iban.
  *
- * @package TYPO3
- * @subpackage Tx_Mklib
  * @author Michael Wagner
  * @author Jan Schaedlich <schaedlich.jan@gmail.com>
  * @copyright 2013 Jan Schaedlich
- * @link https://github.com/jschaedl/Iban
+ *
+ * @see https://github.com/jschaedl/Iban
  */
 class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
 {
@@ -73,7 +70,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         23 => 'W',
         24 => 'X',
         25 => 'Y',
-        26 => 'Z'
+        26 => 'Z',
     );
 
     protected static $ibanFormatMap = array(
@@ -130,7 +127,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         'TN' => '[0-9]{20}',
         'TR' => '[0-9]{5}[0-9A-Z]{17}',
         'AE' => '[0-9]{19}',
-        'GB' => '[A-Z]{4}[0-9]{14}'
+        'GB' => '[A-Z]{4}[0-9]{14}',
     );
 
     public function validate()
@@ -172,7 +169,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
     {
         return sprintf(
             '%s %s %s %s %s %s',
-            $this->getLocaleCode() . $this->getChecksum(),
+            $this->getLocaleCode().$this->getChecksum(),
             substr($this->getInstituteIdentification(), 0, 4),
             substr($this->getInstituteIdentification(), 4, 4),
             substr($this->getBankAccountNumber(), 0, 4),
@@ -215,7 +212,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
     {
         $localeCode = $this->getLocaleCode();
 
-        return !(isset(self::$ibanFormatMap[$localeCode]) === false);
+        return !(false === isset(self::$ibanFormatMap[$localeCode]));
     }
 
     private function isFormatValid()
@@ -223,7 +220,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         $localeCode = $this->getLocaleCode();
         $accountIdentification = $this->getAccountIdentification();
 
-        return !(preg_match('/' . self::$ibanFormatMap[$localeCode] . '/', $accountIdentification) !== 1);
+        return !(1 !== preg_match('/'.self::$ibanFormatMap[$localeCode].'/', $accountIdentification));
     }
 
     private function isChecksumValid()
@@ -233,9 +230,9 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         $accountIdentification = $this->getAccountIdentification();
         $numericLocalCode = $this->getNumericLocaleCode($localeCode);
         $numericAccountIdentification = $this->getNumericAccountIdentification($accountIdentification);
-        $invertedIban = $numericAccountIdentification . $numericLocalCode . $checksum;
+        $invertedIban = $numericAccountIdentification.$numericLocalCode.$checksum;
 
-        return $this->local_bcmod($invertedIban, 97) === '1';
+        return '1' === $this->local_bcmod($invertedIban, 97);
     }
 
     private function getNumericLocaleCode($localeCode)
@@ -269,7 +266,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
             // or http://php.net/manual/en/function.bcmod.php#110896
             // not working!
             throw new Exception(
-                'BC-Math module not installed.' .
+                'BC-Math module not installed.'.
                 ' BC-Math functions are required for IBAN validation.'
             );
         }

@@ -1,32 +1,7 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib
- *
- *  Copyright notice
- *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
 /*
@@ -38,13 +13,13 @@
  */
 // wenn mklib installiert wird, funktioniert der aufruf extPath natürlich nicht und wirft eine exception
 if (tx_rnbase_util_Extensions::isLoaded('mklib')) {
-    require_once(tx_rnbase_util_Extensions::extPath('mklib', 'class.abstract_ext_update.php'));
+    require_once tx_rnbase_util_Extensions::extPath('mklib', 'class.abstract_ext_update.php');
 } // ist de pfad bereits gesetzt?
 elseif (isset($GLOBALS['absPath'])) {
-    require_once($GLOBALS['absPath'] . 'class.abstract_ext_update.php');
+    require_once $GLOBALS['absPath'].'class.abstract_ext_update.php';
 } // ist de pfad bereits gesetzt?
 elseif (isset($absPath)) {
-    require_once($absPath . 'class.abstract_ext_update.php');
+    require_once $absPath.'class.abstract_ext_update.php';
 } // weitere ausführung abbrechen
 else {
     // klasse mus erstellt. access liefert false um weitere aufrufe zu verhindern
@@ -60,16 +35,16 @@ else {
 }
 
 /**
- * Class for updating the db
+ * Class for updating the db.
  *
  * @author   Michael Wagner <michael.wagner@dmk-ebusiness.de>
  * @author   Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class ext_update extends abstract_ext_update
 {
-
     /**
-     * Liefert den Namen der Extension für die
+     * Liefert den Namen der Extension für die.
+     *
      * @return string
      */
     protected function getExtensionName()
@@ -78,16 +53,18 @@ class ext_update extends abstract_ext_update
     }
 
     /**
-     * Liefert die Nachricht, was gemacht werden soll
+     * Liefert die Nachricht, was gemacht werden soll.
+     *
      * @return string
      */
     protected function getInfoMsg()
     {
         return '<p>Update the Static Info Tables with new zip code rules.<br /></p>';
     }
-    
+
     /**
-     * Liefert die Nachricht, was gemacht werden soll
+     * Liefert die Nachricht, was gemacht werden soll.
+     *
      * @return string
      */
     protected function getSuccessMsg()
@@ -98,5 +75,5 @@ class ext_update extends abstract_ext_update
 
 // Include extension?
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php'];
 }

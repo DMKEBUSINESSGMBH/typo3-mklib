@@ -23,30 +23,25 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
-tx_rnbase::load('tx_mklib_interface_IObservable');
-tx_rnbase::load('Tx_Rnbase_Service_Base');
-
 /**
- * Interface für ein Subject Objekt bei Verwendung des Subject/Observer Patterns
+ * Interface für ein Subject Objekt bei Verwendung des Subject/Observer Patterns.
  *
  * erbt von Tx_Rnbase_Service_Base um die klasse in services nutzen zu können
  *
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author René Nitzsche
  */
 abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_Base implements tx_mklib_interface_IObservable
 {
-
     /**
-     * alle registrierten Observer
+     * alle registrierten Observer.
+     *
      * @var array[tx_mklib_interface_IObserver]
      */
     protected $aObservers = array();
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_interface_IObservable::notifyObservers()
      */
     public function notifyObservers()
@@ -59,7 +54,8 @@ abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_B
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_interface_IObservable::registerObserver()
      */
     public function registerObserver(tx_mklib_interface_IObserver $oObserver)
@@ -68,7 +64,8 @@ abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_B
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_interface_IObservable::unregisterObserver()
      */
     public function unregisterObserver(tx_mklib_interface_IObserver $oObserver)
@@ -79,7 +76,8 @@ abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_B
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_interface_IObservable::getObservers()
      */
     public function getObservers()
@@ -89,5 +87,5 @@ abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_B
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php'];
 }

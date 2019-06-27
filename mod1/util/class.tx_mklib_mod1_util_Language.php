@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,34 +22,27 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_mod_Util');
-tx_rnbase::load('Tx_Rnbase_Backend_Utility_Icons');
-
 /**
- *
- * @package TYPO3
- * @subpackage Tx_Mkhogaimport
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_mod1_util_Language
 {
     /**
-     * cached language records
+     * cached language records.
      *
      * @var array
      */
     private static $sysLanguageRecords = array();
 
     /**
-     *
      * @param int $uid
+     *
      * @return array
      */
     public static function getLangRecord($uid)
     {
         $uid = (int) $uid;
         if (empty(static::$sysLanguageRecords[$uid])) {
-            tx_rnbase::load('tx_rnbase_util_DB');
             static::$sysLanguageRecords[$uid] = tx_rnbase_util_DB::getRecord(
                 'sys_language',
                 $uid
@@ -58,9 +51,10 @@ class tx_mklib_mod1_util_Language
 
         return static::$sysLanguageRecords[$uid];
     }
+
     /**
-     *
      * @param int $pageId
+     *
      * @return array
      */
     public static function getLangRecords($pageId)
@@ -68,7 +62,6 @@ class tx_mklib_mod1_util_Language
         static $sysLanguageRecordAll = false;
         if (!$sysLanguageRecordAll) {
             $sysLanguageRecordAll = true;
-            tx_rnbase::load('tx_rnbase_util_DB');
             $records = tx_rnbase_util_DB::doSelect('*', 'sys_language', array());
             foreach ($records as $record) {
                 static::$sysLanguageRecords[(int) $record['uid']] = $record;
@@ -83,8 +76,8 @@ class tx_mklib_mod1_util_Language
                 array('sys_language,pages_language_overlay', 'sys_language'),
                 array(
                     'where' => 'pages_language_overlay.sys_language_uid=sys_language.uid'
-                    . ' AND pages_language_overlay.pid=' . (int) $pageId
-                    . Tx_Rnbase_Backend_Utility::deleteClause('pages_language_overlay'),
+                    .' AND pages_language_overlay.pid='.(int) $pageId
+                    .Tx_Rnbase_Backend_Utility::deleteClause('pages_language_overlay'),
                     'orderby' => 'sys_language.title ASC',
                 )
             );
@@ -102,11 +95,11 @@ class tx_mklib_mod1_util_Language
      * returns the sprite icon for the given sys language record.
      *
      * @param array|int $recordOrUid
+     *
      * @return Ambigous <string, multitype:>
      */
     public static function getLangSpriteIcon($recordOrUid, $options = null)
     {
-        tx_rnbase::load('tx_rnbase_model_data');
         $options = tx_rnbase_model_data::getInstance($options);
 
         if (!is_array($recordOrUid)) {
@@ -127,17 +120,17 @@ class tx_mklib_mod1_util_Language
             $spriteIconName
         );
         // add title per default (typo3 equivalent)!
-        if ($options->getShowTitle() !== false) {
+        if (false !== $options->getShowTitle()) {
             $langTitle = 'N/A';
-            if ($langUid === -1) {
+            if (-1 === $langUid) {
                 $langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.allLanguages';
-            } elseif ($langUid === 0) {
+            } elseif (0 === $langUid) {
                 $langTitle = 'LLL:EXT:lang/locallang_general.xml:LGL.default_value';
             } elseif (!empty($record['title'])) {
                 $langTitle = $record['title'];
             }
 
-            $out .= '&nbsp;' . htmlspecialchars($GLOBALS['LANG']->sL($langTitle));
+            $out .= '&nbsp;'.htmlspecialchars($GLOBALS['LANG']->sL($langTitle));
         }
 
         return $out;
@@ -149,7 +142,7 @@ class tx_mklib_mod1_util_Language
     ) {
         if (// the item already are an translated item!
             $item->getUid() != $item->getProperty('uid')
-            || $item->getSysLanguageUid() !== 0
+            || 0 !== $item->getSysLanguageUid()
         ) {
             return '';
         }
@@ -162,7 +155,6 @@ class tx_mklib_mod1_util_Language
             }
 
             // skip, if a overlay for this language allready exists
-            tx_rnbase::load('tx_rnbase_util_TCA');
             $parentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($item->getTableName());
             $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($item->getTableName());
             $overlays = tx_rnbase_util_DB::doSelect(
@@ -172,8 +164,8 @@ class tx_mklib_mod1_util_Language
                     'where' => implode(
                         ' AND ',
                         array(
-                            $parentField . '=' . $item->getUid(),
-                            $sysLanguageUidField . '=' . (int) $lang['uid'],
+                            $parentField.'='.$item->getUid(),
+                            $sysLanguageUidField.'='.(int) $lang['uid'],
                         )
                     ),
                     'limit' => 1,
@@ -189,9 +181,9 @@ class tx_mklib_mod1_util_Language
             }
 
             $onclick = $mod->issueCommand(
-                '&cmd[' . $item->getTableName() . '][' . $item->getUid() . '][localize]=' . $lang['uid']
+                '&cmd['.$item->getTableName().']['.$item->getUid().'][localize]='.$lang['uid']
             );
-            $onclick = 'window.location.href=\'' . $onclick . '\'; return false;';
+            $onclick = 'window.location.href=\''.$onclick.'\'; return false;';
 
             $out .= sprintf(
                 '<a href="#" onclick="%1$s">%2$s</a>',

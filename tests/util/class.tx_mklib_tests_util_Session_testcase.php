@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *  All rights reserved
@@ -21,21 +21,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_util_Session');
 
 /**
- * tx_mklib_tests_util_Session_testcase
+ * tx_mklib_tests_util_Session_testcase.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
      * @var array
      */
@@ -47,7 +42,8 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
     private $feUserBackUp = array();
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -59,7 +55,8 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -132,11 +129,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testSetSessionIdCallsFetchSessionDataOnFeUser()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $this->markTestSkipped(
-                'fetchSessionData was removed in TYPO3 8'
-            );
-        }
+        $this->markTestSkipped(
+            'fetchSessionData was removed in TYPO3 8'
+        );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
             tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
             array('fetchSessionData')
@@ -152,11 +147,9 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
      */
     public function testSetSessionIdCallsFetchUserSessionOnFeUser()
     {
-        if (!tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            $this->markTestSkipped(
-                'fetchUserSession is only present since TYPO3 8'
-            );
-        }
+        $this->markTestSkipped(
+            'fetchUserSession is only present since TYPO3 8'
+        );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
             tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
             array('fetchUserSession')
@@ -214,8 +207,8 @@ class tx_mklib_tests_util_Session_testcase extends tx_rnbase_tests_BaseTestCase
      */
     protected function getRandomHexString()
     {
-        return tx_rnbase_util_TYPO3::isTYPO60OrHigher() ?
-            \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32) :
-            t3lib_div::getRandomHexString(32);
+        return tx_rnbase_util_TYPO3::isTYPO90OrHigher() ?
+            tx_rnbase::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class)->generateRandomHexString(32) :
+            \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(32);
     }
 }

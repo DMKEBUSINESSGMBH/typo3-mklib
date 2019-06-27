@@ -24,18 +24,17 @@
  */
 
 /**
- * Interface für ein Subject welches die daten für einen oberserver bereit stellt
+ * Interface für ein Subject welches die daten für einen oberserver bereit stellt.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author Hannes Bochmann
  */
 interface tx_mklib_tests_fixtures_classes_ObservableInterface
 {
     public function getDataForObservers();
+
     public function setDataForObservers();
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/interface/class.tx_mklib_interface_IZipCountry.php'];
 }

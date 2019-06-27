@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -26,17 +24,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
-tx_rnbase::load('tx_rnbase_util_SearchBase');
-
 /**
- * Class to search constants from database
+ * Class to search constants from database.
  */
 abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getTableMappings()
      */
     protected function getTableMappings()
@@ -48,7 +43,8 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::useAlias()
      */
     protected function useAlias()
@@ -57,7 +53,8 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getBaseTableAlias()
      */
     public function getBaseTableAlias()
@@ -66,13 +63,15 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase
     }
 
     /**
-     * Liefert die Tabelle, welche die Konstantentypen enthält
+     * Liefert die Tabelle, welche die Konstantentypen enthält.
+     *
      * @return string
      */
     abstract protected function getConstantTypesTable();
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_rnbase_util_SearchBase::getJoins()
      */
     protected function getJoins($tableAliases)
@@ -88,5 +87,5 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Constant.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Constant.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Constant.php'];
 }

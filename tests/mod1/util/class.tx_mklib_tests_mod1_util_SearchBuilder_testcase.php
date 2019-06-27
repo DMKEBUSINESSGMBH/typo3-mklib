@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -26,18 +24,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
-tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
-
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends Tx_Phpunit_TestCase
 {
-
     /**
      * @dataProvider providerMakeWildcardTerm
      */
@@ -77,11 +68,11 @@ class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends Tx_Phpunit_TestCas
     public function testBuildFreeTextWithSearchWordAndCols()
     {
         $fields = array();
-        $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test', array('TEST1.col1','TEST1.col2','TEST2.col1'));
+        $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test', array('TEST1.col1', 'TEST1.col2', 'TEST2.col1'));
 
         self::assertTrue($result, 'es wurde trotz Suchbegriff nicht true zurück gegeben.');
         self::assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
-        $aExpectedCols = array('TEST1.col1','TEST1.col2','TEST2.col1');
+        $aExpectedCols = array('TEST1.col1', 'TEST1.col2', 'TEST2.col1');
         self::assertEquals($aExpectedCols, $fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
         self::assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
     }
@@ -97,5 +88,5 @@ class tx_mklib_tests_mod1_util_SearchBuilder_testcase extends Tx_Phpunit_TestCas
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php'];
 }

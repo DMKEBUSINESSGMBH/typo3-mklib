@@ -1,6 +1,6 @@
 <?php
 /**
- *  Copyright notice
+ *  Copyright notice.
  *
  *  (c) 2011 DMK E-BUSINESS GmbH  <dev@dmk-ebusiness.de>
  *  All rights reserved
@@ -22,23 +22,18 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
-
 // tx_rnbase_util_Extensions::addLLrefForTCAdescr('_MOD_tools_txschedulerM1', tx_rnbase_util_Extensions::extPath($_EXTKEY).'scheduler/locallang.xml');
 
 /**
- * Fügt Felder im scheduler task hinzu
+ * Fügt Felder im scheduler task hinzu.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider extends tx_mklib_scheduler_GenericFieldProvider
 {
-
     /**
+     * @return array
      *
-     * @return  array
      * @todo CSH einfügen
      */
     protected function getAdditionalFieldConfig()
@@ -68,10 +63,11 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider extends tx_mk
 
     /**
      * der threshold sollte nicht kleiner als 10 sekunden sein. dsa
-     * prüfen wir hier
+     * prüfen wir hier.
      *
-     * @param  string $sPath
-     * @return  mixed
+     * @param string $sPath
+     *
+     * @return mixed
      */
     protected function minThreshold($iThreshold)
     {
@@ -80,5 +76,5 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider extends tx_mk
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider.php'];
 }

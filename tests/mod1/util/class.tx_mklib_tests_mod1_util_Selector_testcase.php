@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,16 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_mod1_util_SearchBuilder');
 tx_rnbase::load('tx_mklib_tests_mod1_Util');
-tx_rnbase::load('tx_rnbase_util_TYPO3');
 
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_mod1_util
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTestCase
@@ -87,24 +78,15 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         //ab typo 4.6 ist das mit den lang labels anders
         $mHideEntry = 'Hide hidden entries';
         $mShowEntry = 'Show hidden entries';
-        if (tx_rnbase_util_TYPO3::isTYPO46OrHigher()) {
-            $LOCAL_LANG['default']['label_select_hide_hidden'][0]['target'] = $mHideEntry;
-            $LOCAL_LANG['default']['label_select_show_hidden'][0]['target'] = $mShowEntry;
-        } else {
-            $LOCAL_LANG['default']['label_select_hide_hidden'] = $mHideEntry;
-            $LOCAL_LANG['default']['label_select_show_hidden'] = $mShowEntry;
-        }
+        $LOCAL_LANG['default']['label_select_hide_hidden'][0]['target'] = $mHideEntry;
+        $LOCAL_LANG['default']['label_select_show_hidden'][0]['target'] = $mShowEntry;
 
-        // sonst fehler die icon klassen
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher() && !tx_rnbase_util_TYPO3::isTYPO80OrHigher()) {
-            \TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
-        }
-
-        $this->whitespaceByTypo3Version = tx_rnbase_util_TYPO3::isTYPO76OrHigher() ? ' ' : '&nbsp;';
+        $this->whitespaceByTypo3Version = ' ';
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -134,11 +116,11 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             'search' => array(
                 'field' => 'testField 1',
                 'button' => 'testButton 1',
-                'label' => 'testLabel 1'
+                'label' => 'testLabel 1',
             ),
             'hidden' => array(
                 'field' => 'testField 2',
-                'button' => 'testButton 2'
+                'button' => 'testButton 2',
             ),
         );
         $sResult = $this->oSelector->buildFilterTable($aData);
@@ -220,7 +202,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
         $this->oSelector->setValueToModuleData($this->oMod->getName(), array('newTestSearch' => 'john doe'));
         //es sollten auch die neuen Daten da sein
-        self::assertEquals(array('testSearch' => 'joh316','newTestSearch' => 'john doe'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
+        self::assertEquals(array('testSearch' => 'joh316', 'newTestSearch' => 'john doe'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
     }
 
     public function testShowHiddenSelectorWithDefaultId()
@@ -259,7 +241,6 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         $options = array('id' => $this->sModuleKey);
         $return = $this->oSelector->showHiddenSelector($data, $options);
 
-
         self::assertRegExp(
             '/<select (?(?=>)|.*)name="SET\[testSearch\]" onchange="jumpToUrl\(/',
             $data['selector'],
@@ -283,7 +264,6 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         self::assertEquals(1, $return, 'falscher return value');
     }
 
-
     /**
      * @group unit
      */
@@ -296,8 +276,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
 
         $returnArray = $method->invoke($selector, '2013-07-08T00:00:00Z', '2013-07-09T00:00:00Z');
         $expectedReturnArray = array(
-            'from'    => 1373241600,
-            'to'    => 1373414400
+            'from' => 1373241600,
+            'to' => 1373414400,
         );
         self::assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
     }
@@ -314,8 +294,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
 
         $returnArray = $method->invoke($selector, '', '');
         $expectedReturnArray = array(
-            'from'    => 0,
-            'to'    => 0
+            'from' => 0,
+            'to' => 0,
         );
         self::assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
     }
@@ -414,8 +394,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         $timestampArray = $selector->showDateRangeSelector($out, $key);
 
         $expectedReturnArray = array(
-            'from'    => 0,
-            'to'    => 0
+            'from' => 0,
+            'to' => 0,
         );
         self::assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
     }
@@ -444,8 +424,8 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
             ->will(self::returnValue($formTool));
 
         $expectedReturnArray = array(
-            'from'    => 1373234400 ,
-            'to'    => 1373407200
+            'from' => 1373234400,
+            'to' => 1373407200,
         );
         $selector->expects(self::once())
             ->method('getCrDateReturnArray')
@@ -562,7 +542,7 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
         $key = 'test';
         $selector->expects(self::any())
             ->method('setValueToModuleData')
-            ->with('dummyMod', array($key . '_from' => $_POST['test_from'], $key . '_to' => $_POST['test_to']));
+            ->with('dummyMod', array($key.'_from' => $_POST['test_from'], $key.'_to' => $_POST['test_to']));
 
         $out = array('field' => '');
         $selector->showDateRangeSelector($out, $key);
@@ -570,5 +550,5 @@ class tx_mklib_tests_mod1_util_Selector_testcase extends tx_rnbase_tests_BaseTes
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilder_testcase.php'];
 }

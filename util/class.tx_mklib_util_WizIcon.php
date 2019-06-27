@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -25,12 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('Tx_Rnbase_Utility_T3General');
-tx_rnbase::load('tx_rnbase_util_Typo3Classes');
-tx_rnbase::load('tx_rnbase_util_Wizicon');
 
 /**
- * Diese Klasse fügt das Wizzard Icon hinzu
+ * Diese Klasse fügt das Wizzard Icon hinzu.
  *
  * Folgendes muss in die ext_tables.php, um das Icon zu registrieren!
  * // Wizzard Icon
@@ -41,24 +36,21 @@ tx_rnbase::load('tx_rnbase_util_Wizicon');
  *      plugin.mklib.label
  *      plugin.mklib.description
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  */
 class tx_mklib_util_WizIcon extends tx_rnbase_util_Wizicon
 {
-
     /**
      * Das muss von der Kindklasse überschrieben werden!!
      *
-     * @var     string
+     * @var string
      */
     protected $extKey = 'mklib';
 
     /**
      * Der Pfad zum Icon, kann Überschrieben werden, wenn nötig.
      *
-     * @var     string
+     * @var string
      */
     protected $iconPath = '/ext_icon.gif';
 
@@ -68,11 +60,11 @@ class tx_mklib_util_WizIcon extends tx_rnbase_util_Wizicon
     protected function getPluginData()
     {
         return array(
-            'tx_' . $this->extKey => array(
-                'icon'        => tx_rnbase_util_Extensions::extRelPath($this->extKey) . 'ext_icon.gif',
-                'title'       => 'plugin.' . $this->extKey . '.label',
-                'description' => 'plugin.' . $this->extKey . '.description'
-            )
+            'tx_'.$this->extKey => array(
+                'icon' => 'EXT:'.$this->extkey.'/ext_icon.gif',
+                'title' => 'plugin.'.$this->extKey.'.label',
+                'description' => 'plugin.'.$this->extKey.'.description',
+            ),
         );
     }
 
@@ -81,6 +73,6 @@ class tx_mklib_util_WizIcon extends tx_rnbase_util_Wizicon
      */
     protected function getLLFile()
     {
-        return tx_rnbase_util_Extensions::extPath($this->extKey) . 'locallang_db.xml';
+        return tx_rnbase_util_Extensions::extPath($this->extKey).'locallang_db.xml';
     }
 }

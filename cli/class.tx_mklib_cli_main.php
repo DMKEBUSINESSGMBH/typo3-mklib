@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_cli
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,26 +23,21 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
 if (!tx_rnbase_util_TYPO3::isCliMode()) {
     die('You cannot run this script directly!');
 }
-tx_rnbase::load('Tx_Rnbase_CommandLine_Controller');
 
 /**
- * tx_mklib_cli_main
+ * tx_mklib_cli_main.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
 {
-
     /**
-     * @var array $commands
+     * @var array
      */
     protected $commands = array(
         'flush' => array(
@@ -66,7 +59,7 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
                 'desc' => 'Show possible options',
                 'name' => '--help',
             ),
-        )
+        ),
     );
 
     /**
@@ -89,7 +82,7 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
 
         $this->cli_help = array_merge($this->cli_help, array(
             'name' => 'MKLib CLI',
-                'synopsis' => $this->extKey . ' command ###OPTIONS###',
+                'synopsis' => $this->extKey.' command ###OPTIONS###',
                 'description' => 'Classes with several functions. Check the --help or documentation which are available.',
                 'examples' => 'typo3/cli_dispatch.phpsh mklib --flush-cache',
                 'author' => '(c) 2015 DMK E-BUSINESS GmbH Hannes Bochmann <dev@dmk-ebusiness.de>',
@@ -97,21 +90,21 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
     }
 
     /**
-     * Error-Funktion, die aufgerufen wird wenn ein unbekannter Task übergeben wurde
+     * Error-Funktion, die aufgerufen wird wenn ein unbekannter Task übergeben wurde.
      *
      * @param string $error
      */
     public function exitWithError($error = 'Unknown Task!')
     {
-        $this->cli_echo("ERROR:\t" . $error . chr(10) . 'Show help with [-h] or [--help]' . chr(10));
+        $this->cli_echo("ERROR:\t".$error.chr(10).'Show help with [-h] or [--help]'.chr(10));
         $this->cli_validateArgs();
         exit;
     }
 
     /**
-     * CLI engine
+     * CLI engine.
      *
-     * @return  string
+     * @return string
      */
     public function main()
     {
@@ -137,52 +130,20 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
             $this->exitWithError();
         } else {
             $this->cli_echo(utf8_decode(
-                "Command '" . $commandDescription . "' executed successfully.\n"
+                "Command '".$commandDescription."' executed successfully.\n"
             ));
         }
     }
 
-    /**
-     * @return void
-     */
     public function flushCache()
     {
-        tx_rnbase::load('tx_rnbase_util_TYPO3');
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $this->flushCacheForTypo6AndHigher();
-        } else {
-            $this->flushCacheForTypo4AndLower();
-        }
-    }
-
-    /**
-     * @return void
-     */
-    private function flushCacheForTypo6AndHigher()
-    {
-        $commonCacheDirectory = tx_rnbase_util_TYPO3::isTYPO86OrHigher() ? 'typo3temp/var/Cache' : 'typo3temp/Cache';
-        \TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory(PATH_site . $commonCacheDirectory, true, true);
+        $commonCacheDirectory = 'typo3temp/var/Cache';
+        \TYPO3\CMS\Core\Utility\GeneralUtility::flushDirectory(\Sys25\RnBase\Utility\Environment::getPublicPath().$commonCacheDirectory, true, true);
 
         $cacheManager = tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
         $cacheManager->flushCaches();
 
-        if (tx_rnbase_util_TYPO3::isTYPO76OrHigher()) {
-            tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Service\\OpcodeCacheService')->clearAllActive();
-        } else {
-            \TYPO3\CMS\Core\Utility\OpcodeCacheUtility::clearAllActive();
-        }
-    }
-
-    /**
-     * @return void
-     */
-    private function flushCacheForTypo4AndLower()
-    {
-        $tce = t3lib_div::makeInstance('t3lib_TCEmain');
-
-        $tce->start(array(), array());
-        $tce->clear_cacheCmd('all');
-        $tce->clear_cacheCmd('temp_CACHED');
+        tx_rnbase::makeInstance('TYPO3\\CMS\\Core\\Service\\OpcodeCacheService')->clearAllActive();
     }
 }
 

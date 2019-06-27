@@ -22,33 +22,24 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_util_ListBuilder');
-tx_rnbase::load('tx_mklib_mod1_export_Util');
-tx_rnbase::load('tx_rnbase_util_Templates');
-
 /**
  * Der Listbuilder erzeugt die ausgabe für den export.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner
  */
 class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
 {
-
     /**
-     * Die ist leider private und muss überschrieben werden
+     * Die ist leider private und muss überschrieben werden.
      *
      * @var array
      */
     private $callbacks = array();
 
     /**
-     * Add a visitor callback. It is called for each item before rendering
+     * Add a visitor callback. It is called for each item before rendering.
      *
      * @param array $callback
-     *
-     * @return void
      */
     public function addVisitor(array $callback)
     {
@@ -56,9 +47,9 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
     }
 
     /**
-     * Render each element
+     * Render each element.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @see tx_rnbase_util_ListBuilder::renderEach()
      */
@@ -75,7 +66,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
         $outerMarker = $this->getOuterMarker($marker, $template);
 
         // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
-        list($header, $footer) = $this->getWrapForSubpart($template, $outerMarker . 'S');
+        list($header, $footer) = $this->getWrapForSubpart($template, $outerMarker.'S');
 
         tx_mklib_mod1_export_Util::doOutPut($header);
 
@@ -87,7 +78,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
 
         $templateList = tx_rnbase_util_Templates::getSubpart(
             $template,
-            '###' . $outerMarker . 'S###'
+            '###'.$outerMarker.'S###'
         );
         list($listHeader, $listFooter) = $this->getWrapForSubpart(
             $templateList,
@@ -95,7 +86,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
         );
         $templateEntry = tx_rnbase_util_Templates::getSubpart(
             $templateList,
-            '###' . $marker . '###'
+            '###'.$marker.'###'
         );
 
         tx_mklib_mod1_export_Util::doOutPut($listHeader);
@@ -118,11 +109,11 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
     }
 
     /**
-     * Returns the Wrap for the subpart
+     * Returns the Wrap for the subpart.
      *
      * @param string $template
      * @param string $marker
-     * @param bool $required
+     * @param bool   $required
      *
      * @throws Exception
      *
@@ -134,20 +125,20 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
         $required = true
     ) {
         // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
-        $token = md5(time()) . md5(get_class());
+        $token = md5(time()).md5(get_class());
         $wrap = tx_rnbase_util_Templates::substituteSubpart(
             $template,
-            '###' . $marker . '###',
+            '###'.$marker.'###',
             $token,
             0
         );
         $wrap = explode($token, $wrap);
 
-        if ($required && count($wrap) != 2) {
+        if ($required && 2 != count($wrap)) {
             // es ist etwas schiefgelaufen, wir sollten immer 2 teile haben
             // einmal header und einmal footer
             throw new Exception(
-                'Marker ' . $marker . ' not fount in Template',
+                'Marker '.$marker.' not fount in Template',
                 1361171589
             );
         }
@@ -156,9 +147,9 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
     }
 
     /**
-     * Renders the element
+     * Renders the element.
      *
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @see tx_rnbase_util_ListBuilder::render()
      */
@@ -187,9 +178,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
 
 if ((
     defined('TYPO3_MODE')
-    && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-        ['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php']
+    && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php']
 )) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-        ['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php'];
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/export/class.tx_mklib_mod1_export_ListBuilder.php'];
 }

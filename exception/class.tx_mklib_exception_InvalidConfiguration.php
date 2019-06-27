@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_exception
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,15 +25,12 @@
  */
 
 /**
- * Exception "faulty params"
- *
- * @package tx_mklib
- * @subpackage tx_mklib_exception
+ * Exception "faulty params".
  */
 class tx_mklib_exception_InvalidConfiguration extends Exception
 {
     /**
-     * Error code
+     * Error code.
      *
      * @var int
      */
@@ -43,5 +38,5 @@ class tx_mklib_exception_InvalidConfiguration extends Exception
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_InvalidConfiguration.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_InvalidConfiguration.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_InvalidConfiguration.php'];
 }

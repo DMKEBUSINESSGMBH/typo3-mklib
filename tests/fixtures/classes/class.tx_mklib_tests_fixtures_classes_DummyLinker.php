@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,22 +25,17 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_mod1_linker_Base');
-
 /**
- * Hilfsklassen um nach Gewinnspielen im BE zu suchen
- *
- * @package tx_mklib
- * @subpackage tx_mklib_mod1
+ * Hilfsklassen um nach Gewinnspielen im BE zu suchen.
  */
 class tx_mklib_tests_fixtures_classes_DummyLinker extends tx_mklib_mod1_linker_Base
 {
-    
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_mod1_linker_Base::getActionName()
      */
     protected function getActionName()
@@ -52,5 +45,5 @@ class tx_mklib_tests_fixtures_classes_DummyLinker extends tx_mklib_mod1_linker_B
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php'];
 }

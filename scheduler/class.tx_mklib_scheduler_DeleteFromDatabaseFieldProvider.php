@@ -24,22 +24,16 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_mklib_scheduler_GenericFieldProvider');
-tx_rnbase::load('Tx_Mklib_Database_Connection');
-
 /**
- * Fügt Felder im scheduler task hinzu
+ * Fügt Felder im scheduler task hinzu.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider extends tx_mklib_scheduler_GenericFieldProvider
 {
-
     /**
+     * @return array
      *
-     * @return  array
      * @todo CSH einfügen
      */
     protected function getAdditionalFieldConfig()
@@ -56,13 +50,13 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider extends tx_mklib_schedu
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_selectFields',
                 'eval' => 'trim',
-                'default' => 'uid'
+                'default' => 'uid',
             ),
             'uidField' => array(
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_uid',
                 'eval' => 'required,trim',
-                'default' => 'uid'
+                'default' => 'uid',
             ),
             'where' => array(
                 'type' => 'input',
@@ -72,13 +66,10 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider extends tx_mklib_schedu
             ),
             'mode' => array(
                 'type' => 'select',
-                'items'    => array(
-                    Tx_Mklib_Database_Connection::DELETION_MODE_HIDE =>
-                        $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_hidden'),
-                    Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE
-                         => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete'),
-                    Tx_Mklib_Database_Connection::DELETION_MODE_REALLYDELETE
-                         => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete_hard')
+                'items' => array(
+                    Tx_Mklib_Database_Connection::DELETION_MODE_HIDE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_hidden'),
+                    Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete'),
+                    Tx_Mklib_Database_Connection::DELETION_MODE_REALLYDELETE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete_hard'),
                 ),
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode',
             ),
@@ -87,5 +78,5 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider extends tx_mklib_schedu
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabaseFieldProvider.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabaseFieldProvider.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabaseFieldProvider.php'];
 }

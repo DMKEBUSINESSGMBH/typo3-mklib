@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -25,15 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_Util');
-tx_rnbase::load('Tx_Mklib_Database_Connection');
 tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
 
 /**
- * Tx_Mklib_Database_ConnectionDatabaseTest
+ * Tx_Mklib_Database_ConnectionDatabaseTest.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -47,7 +41,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     private $ignoreTablesBackup;
 
     /**
-     * Klassenkonstruktor
+     * Klassenkonstruktor.
      *
      * @param string $name
      */
@@ -57,7 +51,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 
         // devlog erstmal deaktivieren,
         // da Prozesse auserhalb des Tests auch darauf zugreifen!
-        tx_mklib_tests_Util::disableDevlog();
+        \DMK\Mklib\Utility\Tests::disableDevlog();
     }
 
     /**
@@ -67,12 +61,11 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     {
         parent::setUp();
 
-        $ttContentExtension = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ? 'frontend' : 'cms';
-        $this->importExtensions(array($ttContentExtension));
+        $this->importExtensions(array('frontend'));
 
         // logging aktivieren
-        tx_mklib_tests_Util::storeExtConf();
-        tx_mklib_tests_Util::setExtConfVar('logDbHandler', 1);
+        \DMK\Mklib\Utility\Tests::storeExtConf();
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbHandler', 1);
 
         // Hooks leer machen da die aus anderen extensions stören könnten
         self::$hooks['rn_base']['util_db_do_insert_post'] =
@@ -87,7 +80,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_update_post'] = array();
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_delete_pre'] = array();
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['devLog'] = array(
-            'Tx_Mklib_Database_ConnectionDatabaseTestDevlog->devLog'
+            'Tx_Mklib_Database_ConnectionDatabaseTestDevlog->devLog',
         );
 
         $property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'log');
@@ -106,7 +99,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     {
         parent::tearDown();
 
-        tx_mklib_tests_Util::restoreExtConf();
+        \DMK\Mklib\Utility\Tests::restoreExtConf();
 
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['util_db_do_insert_post'] =
             self::$hooks['rn_base']['util_db_do_insert_post'];
@@ -124,9 +117,6 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         $this->restoreIgnoreTablesProperty();
     }
 
-    /**
-     * @return void
-     */
     protected function restoreIgnoreTablesProperty()
     {
         $property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'ignoreTables');
@@ -140,16 +130,16 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     public function testInsertTtContent()
     {
         // logging deaktivieren
-        tx_mklib_tests_Util::setExtConfVar('logDbHandler', 0);
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbHandler', 0);
 
         $aValues = array(
                 'uid' => 20,
                 'pid' => 128,
                 'hidden' => 0,
                 'deleted' => 0,
-                'bodytext' => 'Test!'
+                'bodytext' => 'Test!',
             );
-        Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before insert ' . __METHOD__));
+        Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before insert '.__METHOD__));
         tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
         $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
@@ -159,7 +149,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         self::assertEquals(128, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
         self::assertEquals(
-            array('before insert ' . __METHOD__),
+            array('before insert '.__METHOD__),
             Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData,
             'Es wurde ein neuer Eintrag ans devlog gegeben nachdem insert'
         );
@@ -171,16 +161,16 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
     public function testInsertTtContentWithDevLogAndIgnoreTable()
     {
         // logging für tt_content deaktivieren
-        tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbIgnoreTables', 'tt_content');
 
         $aValues = array(
                 'uid' => 20,
                 'pid' => 128,
                 'hidden' => 0,
                 'deleted' => 0,
-                'bodytext' => 'Test!'
+                'bodytext' => 'Test!',
             );
-        Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before insert ' . __METHOD__));
+        Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before insert '.__METHOD__));
         tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
         $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
@@ -190,7 +180,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         self::assertEquals(128, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
         self::assertEquals(
-            array('before insert ' . __METHOD__),
+            array('before insert '.__METHOD__),
             Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData,
             'Es wurde ein neuer Eintrag ans devlog gegeben nachdem insert'
         );
@@ -206,7 +196,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
                 'pid' => 128,
                 'hidden' => 0,
                 'deleted' => 0,
-                'bodytext' => 'Test!'
+                'bodytext' => 'Test!',
             );
         tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
@@ -234,7 +224,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 
         $aValues = array(
                 'pid' => 256,
-                'bodytext' => 'geändert!'
+                'bodytext' => 'geändert!',
             );
         tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
@@ -260,15 +250,15 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         // Daten eintragen!
         $this->testInsertTtContentWithDevLog();
         // logging für tt_content deaktivieren
-        tx_mklib_tests_Util::setExtConfVar('logDbIgnoreTables', 'tt_content');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('logDbIgnoreTables', 'tt_content');
 
         $this->restoreIgnoreTablesProperty();
 
         $aValues = array(
                 'pid' => 256,
-                'bodytext' => 'geändert!'
+                'bodytext' => 'geändert!',
             );
-        Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before update ' . __METHOD__));
+        Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(array('before update '.__METHOD__));
         tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
         $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', array('enablefieldsoff' => true));
@@ -278,7 +268,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
         self::assertEquals(256, $ttContent[0]['pid'], 'tt_content hat die Falsche PID!');
 
         self::assertEquals(
-            array('before update ' . __METHOD__),
+            array('before update '.__METHOD__),
             Tx_Mklib_Database_ConnectionDatabaseTestDevlog::$lastLogData,
             'Es wurde ein neuer Eintrag ans devlog gegeben nachdem update'
         );
@@ -287,7 +277,6 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_mklib_tests_DBTestCase
 
 class Tx_Mklib_Database_ConnectionDatabaseTestDevlog
 {
-
     /**
      * @var array
      */
@@ -295,7 +284,6 @@ class Tx_Mklib_Database_ConnectionDatabaseTestDevlog
 
     /**
      * @param array $logData
-     * @return void
      */
     public static function devLog(array $logData)
     {

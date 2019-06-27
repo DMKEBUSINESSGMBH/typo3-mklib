@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,21 +25,16 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_util_Var');
-    
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * Generic form view test.
  */
 class tx_mklib_tests_util_Var_testcase extends Tx_Phpunit_TestCase
 {
-    
     /**
-     * isTrue testen
+     * isTrue testen.
      */
     public function testIsTrueVal()
     {
@@ -55,8 +48,9 @@ class tx_mklib_tests_util_Var_testcase extends Tx_Phpunit_TestCase
         self::assertFalse(tx_mklib_util_Var::isTrueVal('0'));
         self::assertFalse(tx_mklib_util_Var::isTrueVal(0));
     }
+
     /**
-     * isFalseVal testen
+     * isFalseVal testen.
      */
     public function testIsFalseVal()
     {
@@ -73,5 +67,5 @@ class tx_mklib_tests_util_Var_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_Var_testcase.php'];
 }

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -26,56 +24,41 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_model_base');
-
 /**
- * Model eines DAM-Records
+ * Model eines DAM-Records.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_model
  * @author Michael Wagner
  */
 class tx_mklib_model_Media extends tx_rnbase_model_base
 {
     /**
-     * Liefert den Namen der Datenbanktabelle
+     * Liefert den Namen der Datenbanktabelle.
      *
      * @return string
      */
     public function getTableName()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            return 'sys_file';
-        } else {
-            return 'tx_dam';
-        }
+        return 'sys_file';
     }
 
     /**
-     * Befüllt den Record Pfaden
+     * Befüllt den Record Pfaden.
      *
      * @param string $sPath
-     * @return tx_mklib_model_Dam
+     *
+     * @return tx_mklib_model_Media
      */
     public function fillPath($sPath = false)
     {
         // Pathname immer setzen!
         if (!$this->hasFilePathName()) {
-            if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-                $this->setFilePathName(
-                    $this->getUrl()
-                );
-            } else {
-                $this->setFilePathName(
-                    $this->getFilePath() . $this->getFileName()
-                );
-            }
+            $this->setFilePathName(
+                $this->getUrl()
+            );
         }
 
-        tx_rnbase::load('tx_mklib_util_File');
-
         // webpath setzen
-        if ((!$sPath || $sPath == 'webpath')
+        if ((!$sPath || 'webpath' == $sPath)
             && !$this->hasFileWebpath()
         ) {
             $this->setFileWebpath(
@@ -86,7 +69,7 @@ class tx_mklib_model_Media extends tx_rnbase_model_base
         }
 
         // serverpath setzen
-        if ((!$sPath || $sPath == 'serverpath')
+        if ((!$sPath || 'serverpath' == $sPath)
             && !$this->hasFileServerpath()
         ) {
             $this->setFileServerpath(
@@ -99,7 +82,7 @@ class tx_mklib_model_Media extends tx_rnbase_model_base
         }
 
         // relpath setzen
-        if ((!$sPath || $sPath == 'relpath')
+        if ((!$sPath || 'relpath' == $sPath)
             && !$this->hasFileRelpath()
         ) {
             $this->setFileRelpath(
@@ -112,8 +95,4 @@ class tx_mklib_model_Media extends tx_rnbase_model_base
 
         return $this;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/model/class.tx_mklib_model_Dam.php']);
 }

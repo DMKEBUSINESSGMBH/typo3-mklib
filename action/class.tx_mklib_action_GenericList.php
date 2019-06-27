@@ -1,43 +1,13 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_action
- *
- *  Copyright notice
- *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
-tx_rnbase::load('tx_rnbase_action_BaseIOC');
-tx_rnbase::load('tx_rnbase_filter_BaseFilter');
 
 /**
  * Controller
- * Generische Klasse für List Views
+ * Generische Klasse für List Views.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_action
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
@@ -45,10 +15,10 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
     protected $confIdExtended = 'default.';
 
     /**
-     *
-     * @param tx_rnbase_IParameters $parameters
+     * @param tx_rnbase_IParameters    $parameters
      * @param tx_rnbase_configurations $configurations
-     * @param ArrayObject $viewData
+     * @param ArrayObject              $viewData
+     *
      * @return string error msg or null
      */
     public function handleRequest(&$parameters, &$configurations, &$viewData)
@@ -66,7 +36,6 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
 
         // Searcher instanzieren. Konfiguriert wird er über die options['searchdef']
         /* @var $searcher tx_rnbase_util_SearchGeneric */
-        tx_rnbase::load('tx_rnbase_util_SearchBase');
         $searcher = tx_rnbase_util_SearchBase::getInstance('tx_rnbase_util_SearchGeneric');
 
         // Dem Filter den Searcher übergeben, fall er diese Möglichkeit bietet.
@@ -120,7 +89,8 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
     }
 
     /**
-     * Liefert die Erweiterte ConfId für den View
+     * Liefert die Erweiterte ConfId für den View.
+     *
      * @return string
      */
     public function getExtendedConfId()
@@ -132,15 +102,17 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
      * Liefert den Default-Namen des Templates. Über diesen Namen
      * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
      * geprüft. Dessen Key wird aus dem Name und dem String "Template"
-     * gebildet: [tmpname]Template
+     * gebildet: [tmpname]Template.
+     *
      * @return string
      */
     public function getTemplateName()
     {
         return 'genericlist';
     }
+
     /**
-     * Gibt den Name der zugehörigen View-Klasse zurück
+     * Gibt den Name der zugehörigen View-Klasse zurück.
      *
      * @return string
      */
@@ -151,5 +123,5 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_GenericList.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_GenericList.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_GenericList.php'];
 }

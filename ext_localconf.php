@@ -1,8 +1,6 @@
 <?php
 /**
  * lokale Config laden.
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 
 /**
@@ -14,11 +12,12 @@ if (!defined('TYPO3_MODE')) {
 
 $_EXTKEY = 'mklib';
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:'.$_EXTKEY.'/cli/class.tx_mklib_cli_main.php','_CLI_'.$_EXTKEY);
+if (!tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = array('EXT:'.$_EXTKEY.'/cli/class.tx_mklib_cli_main.php', '_CLI_'.$_EXTKEY);
+}
 
-require_once(tx_rnbase_util_Extensions::extPath($_EXTKEY).'scheduler/ext_localconf.php');
-require_once(tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/ext_localconf.php');
-require_once(tx_rnbase_util_Extensions::extPath($_EXTKEY).'hooks/ext_localconf.php');
+require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'scheduler/ext_localconf.php';
+require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/ext_localconf.php';
 
 //das ist nur eine info für entwickler welcher basis exception code
 //für diese extension verwendet wird. in diesem fall 400.

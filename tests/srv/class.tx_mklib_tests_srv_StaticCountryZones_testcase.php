@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_srv
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,22 +25,17 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_util_ServiceRegistry');
-tx_rnbase::load('tx_mklib_tests_Util');
-
 /**
- * Generic form view test
- * @package tx_mklib
- * @subpackage tx_mklib_tests_srv
+ * Generic form view test.
  */
 class tx_mklib_tests_srv_StaticCountryZones_testcase extends Tx_Phpunit_TestCase
 {
-    
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -51,14 +44,14 @@ class tx_mklib_tests_srv_StaticCountryZones_testcase extends Tx_Phpunit_TestCase
             $this->markTestSkipped('static_info_tables nicht installiert.');
         }
     }
-    
+
     /**
      * @group integration
      */
     public function testGetByZnCode()
     {
         $service = tx_mklib_util_ServiceRegistry::getStaticCountryZonesService();
-        $models = $service->getByZnCode('al');//Alabama
+        $models = $service->getByZnCode('al'); //Alabama
         $model = $models[0];
 
         self::assertInstanceOf(

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2014 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
  * All rights reserved
@@ -22,24 +22,18 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
-
 /**
- * Schreibt CSV Dateien
+ * Schreibt CSV Dateien.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_csv_writer
 {
-
     /**
      * @var string
      */
     private $file = '';
     /**
-     *
      * @var ressource
      */
     private $handle = false;
@@ -68,18 +62,18 @@ class tx_mklib_util_csv_writer
     private $columns = array();
 
     /**
-     * Gibt an ob letzter Zeilenumbruch geschrieben werden soll
+     * Gibt an ob letzter Zeilenumbruch geschrieben werden soll.
      *
      * @var bool
      */
     private $trailingLineBreak = true;
 
     /**
-     *
      * @param string $file
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
+     *
      * @throws Exception
      */
     public function __construct(
@@ -89,7 +83,7 @@ class tx_mklib_util_csv_writer
         $escape = '\\'
     ) {
         $this->handle = @fopen($file, 'w');
-        if ($this->handle === false) {
+        if (false === $this->handle) {
             throw new Exception('Could not open file for csv writer. File: '.$file);
         }
         $this->file = $file;
@@ -120,9 +114,9 @@ class tx_mklib_util_csv_writer
     }
 
     /**
-     * Schreibt die Spaltenüberschriften in die Datei
+     * Schreibt die Spaltenüberschriften in die Datei.
      *
-     * @return int Returns the length of the written string or FALSE on failure.
+     * @return int returns the length of the written string or FALSE on failure
      */
     public function writeHeader()
     {
@@ -130,10 +124,11 @@ class tx_mklib_util_csv_writer
     }
 
     /**
-     * Fügt einen Datensatz zur CSV-Datei hinzu
+     * Fügt einen Datensatz zur CSV-Datei hinzu.
      *
      * @param array $record
-     * @return int Returns the length of the written string or FALSE on failure.
+     *
+     * @return int returns the length of the written string or FALSE on failure
      */
     public function addRow(array $row)
     {
@@ -141,16 +136,17 @@ class tx_mklib_util_csv_writer
         foreach ($this->columns as $field) {
             $fields[$field] = empty($row[$field]) ? '' : $row[$field];
         }
-        $this->rowCount++;
+        ++$this->rowCount;
 
         return $this->putRow($fields);
     }
 
     /**
-     * Schreibt eine zeile in die CSV-Datei
+     * Schreibt eine zeile in die CSV-Datei.
      *
      * @param array $row
-     * @return int Returns the length of the written string or FALSE on failure.
+     *
+     * @return int returns the length of the written string or FALSE on failure
      */
     protected function putRow(array $row)
     {
@@ -163,7 +159,7 @@ class tx_mklib_util_csv_writer
     }
 
     /**
-     * Setzt Option um letzten Zeilenumbruch zu schreiben
+     * Setzt Option um letzten Zeilenumbruch zu schreiben.
      *
      * @param bool $removal
      */
@@ -173,7 +169,7 @@ class tx_mklib_util_csv_writer
     }
 
     /**
-     * Entfernt letzten Zeilenumbruch, der durch fputcsv automatisch generiert wird
+     * Entfernt letzten Zeilenumbruch, der durch fputcsv automatisch generiert wird.
      */
     protected function removeTrailingLineBreak()
     {
@@ -187,5 +183,5 @@ class tx_mklib_util_csv_writer
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_writer.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_writer.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_csv_writer.php'];
 }

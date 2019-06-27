@@ -22,27 +22,20 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('Tx_Mklib_Domain_Model_Iso_SwiftBic');
-
 /**
- * iso tests
+ * iso tests.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 class Tx_Mklib_Domain_Model_Iso_SwiftBicTest extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * Test the validate method
+     * Test the validate method.
      *
      * @param string $value
-     * @param bool $valid
-     * @return void
+     * @param bool   $valid
      *
      * @group unit
      * @test

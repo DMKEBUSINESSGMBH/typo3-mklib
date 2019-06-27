@@ -21,46 +21,39 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_mklib_interface_Repository');
-tx_rnbase::load('Tx_Rnbase_Interface_Singleton');
 
 /**
- * Abstracte Repository Klasse
+ * Abstracte Repository Klasse.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_repository
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Repository, Tx_Rnbase_Interface_Singleton
 {
-
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
     const DELETION_MODE_HIDE = 0;
     const DELETION_MODE_SOFTDELETE = 1;
     const DELETION_MODE_REALLYDELETE = 2;
 
     /**
-     * Liefert den Namen der Suchklasse
+     * Liefert den Namen der Suchklasse.
      *
-     * @return  string
+     * @return string
      */
     abstract protected function getSearchClass();
 
     /**
-     * Liefert den Searcher
+     * Liefert den Searcher.
      *
-     * @return  tx_rnbase_util_SearchBase
+     * @return tx_rnbase_util_SearchBase
      */
     protected function getSearcher()
     {
-        tx_rnbase::load('tx_rnbase_util_SearchBase');
         $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof tx_rnbase_util_SearchBase) {
             throw new Exception(
-                get_class($this) . '->getSearchClass() has to return a classname' .
+                get_class($this).'->getSearchClass() has to return a classname'.
                 ' of class which extends tx_rnbase_util_SearchBase!'
             );
         }
@@ -71,7 +64,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     /**
      * Liefert die Model Klasse.
      *
-     * @return  string
+     * @return string
      */
     protected function getWrapperClass()
     {
@@ -82,6 +75,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      * Holt einen bestimmten Datensatz aus dem Repo.
      *
      * @param int|array $rowOrUid
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface|null
      *
      * @TODO use handleEnableFieldsOptions to get hidden records in BE
@@ -106,10 +100,11 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     }
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
     public function search(array $fields, array $options)
@@ -121,26 +116,26 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     }
 
     /**
-     * Search database
+     * Search database.
      *
      * @param array $fields
      * @param array $options
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface
      */
     public function searchSingle(array $fields = array(), array $options = array())
     {
         $options['limit'] = 1;
-        $items =  $this->search($fields, $options);
+        $items = $this->search($fields, $options);
 
         return !empty($items[0]) ? $items[0] : null;
     }
 
     /**
-     * On default, return hidden and deleted fields in backend
+     * On default, return hidden and deleted fields in backend.
      *
      * @param array &$fields
      * @param array &$options
-     * @return void
      */
     protected function prepareFieldsAndOptions(&$fields, &$options)
     {
@@ -148,13 +143,11 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
         $this->handleLanguageOptions($fields, $options);
     }
 
-
     /**
-     * On default, return hidden and deleted fields in backend
+     * On default, return hidden and deleted fields in backend.
      *
      * @param array &$fields
      * @param array &$options
-     * @return void
      */
     protected function handleEnableFieldsOptions(&$fields, &$options)
     {
@@ -173,7 +166,6 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      *
      * @param array &$fields
      * @param array &$options
-     * @return void
      */
     protected function handleLanguageOptions(&$fields, &$options)
     {
@@ -193,8 +185,8 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
                 $languages[] = '-1'; // for all languages
                 // Wenn eine bestimmte Sprache gesetzt ist,
                 // laden wir diese ebenfalls.
-                if (is_object($tsfe) && $tsfe->sys_language_content) {
-                    $languages[] = $tsfe->sys_language_content;
+                if (is_object($tsfe) && \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
+                    $languages[] = \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe);
                 } // andernfalls nutzen wir die default sprache
                 else {
                     $languages[] = '0'; // default language
@@ -205,10 +197,11 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     }
 
     /**
-     * Modifiziert die Ergebisliste
+     * Modifiziert die Ergebisliste.
      *
      * @param array $items
      * @param array $options
+     *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
     protected function prepareItems($items, $options)
@@ -225,8 +218,9 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      * Entfernt alle doppelten Datensatze, wenn die Option distinct gesetzt ist.
      * Dabei werden die Sprachoverlays bevorzugt.
      *
-     * @param array $items
+     * @param array        $items
      * @param unknown_type $options
+     *
      * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
      */
     protected function uniqueItems(array $items, $options)
@@ -251,7 +245,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
             // merge master and overlays and keep the order!
             $new = array();
             // uniquemode can be master or overlay!
-            $preferOverlay = empty($options['uniquemode']) || strtolower($options['uniquemode']) !== 'master';
+            $preferOverlay = empty($options['uniquemode']) || 'master' !== strtolower($options['uniquemode']);
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
                 $new[$uid] = !empty($overlay[$uid]) && $preferOverlay ? $overlay[$uid] : $master[$uid];
@@ -262,13 +256,12 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
         return $items;
     }
 
-
     /************************
      * Manipulation methods *
      ************************/
 
     /**
-     * Return an instantiated dummy model without any content
+     * Return an instantiated dummy model without any content.
      *
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
@@ -284,35 +277,31 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      * Liefert die PageId für diese Tabelle.
      * Dies kann überschrieben werden, um individuelle pid's zu setzen.
      *
-     * @return  int
+     * @return int
      */
     protected function getPid()
     {
-        tx_rnbase::load('tx_mklib_util_MiscTools');
-
         return tx_mklib_util_MiscTools::getPortalPageId();
     }
 
     /**
-     * Create a new record
+     * Create a new record.
      *
      * Note that the PID derived from the EXT:mklib constant "portalPageId"
      * is inserted.
      *
      * @TODO: should be protected, not public. handleCreation is public!
      *
-     * @access protected
+     * @param array  $data
+     * @param string $table
      *
-     * @param array     $data
-     * @param string    $table
-     * @return int  UID of just created record
+     * @return int UID of just created record
      */
     public function create(array $data)
     {
         $model = $this->getEmptyModel();
         $table = $model->getTableName();
 
-        tx_rnbase::load('tx_mklib_util_TCA');
         $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
@@ -329,17 +318,18 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     }
 
     /**
-     * Save model with new data
+     * Save model with new data.
      *
      * Overwrite this method to specify a specialised method signature,
      * and just call THIS method via parent::handleUpdate().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
-     * @param array $data New data
-     * @param string $where Override default restriction by defining an explicite where clause
-     * @param int $debug Set to 1 to debug sql-String
-     * @param mixed $noQuoteFields  Array or commaseparated string with fieldnames
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $model         this model is being updated
+     * @param array                                  $data          New data
+     * @param string                                 $where         Override default restriction by defining an explicite where clause
+     * @param int                                    $debug         Set to 1 to debug sql-String
+     * @param mixed                                  $noQuoteFields Array or commaseparated string with fieldnames
+     *
      * @return Tx_Rnbase_Domain_Model_RecordInterface Updated model
      */
     public function handleUpdate(
@@ -367,7 +357,6 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
         }
 
         // Eleminate columns not in TCA
-        tx_rnbase::load('tx_mklib_util_TCA');
         $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
@@ -387,18 +376,16 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     }
 
     /**
-     * Wrapper for actual deletion
+     * Wrapper for actual deletion.
      *
      * Delete records according to given ready-constructed "where" condition and deletion mode
      *
      * @TODO: use tx_mklib_util_TCA::getEnableColumn to get enablecolumns!
      * @TODO: should be protected, not public. handleDelete is public!
      *
-     * @access protected
-     *
-     * @param string    $table
-     * @param string    $where      Ready-to-use where condition containing uid restriction
-     * @param int       $mode       @see self::handleDelete()
+     * @param string $table
+     * @param string $where Ready-to-use where condition containing uid restriction
+     * @param int    $mode  @see self::handleDelete()
      *
      * @return int anzahl der betroffenen zeilen
      */
@@ -409,17 +396,18 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     }
 
     /**
-     * Delete one model
+     * Delete one model.
      *
      * Overwrite this method to specify a specialised method signature,
      * and just call THIS method via parent::handleDelete().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model This model is being updated.
-     * @param string $where Override default restriction by defining an explicite where clause
-     * @param int $mode Deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record.
-     * @param int $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
-     * @return Tx_Rnbase_Domain_Model_RecordInterface Updated (on success actually empty) model.
+     * @param Tx_Rnbase_Domain_Model_RecordInterface $model this model is being updated
+     * @param string                                 $where Override default restriction by defining an explicite where clause
+     * @param int                                    $mode  deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record
+     * @param int                                    $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+     *
+     * @return Tx_Rnbase_Domain_Model_RecordInterface updated (on success actually empty) model
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
@@ -445,14 +433,15 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     }
 
     /**
-     * Einen Datensatz in der DB anlegen
+     * Einen Datensatz in der DB anlegen.
      *
      * Diese Methode kann in Child-Klassen einfach überschrieben werden um zusätzliche Funktionen
      * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
      * aufzurufen ;)
      *
      * @param array $data
-     * @return Tx_Rnbase_Domain_Model_RecordInterface Created model.
+     *
+     * @return Tx_Rnbase_Domain_Model_RecordInterface created model
      */
     public function handleCreation(array $data)
     {
@@ -463,6 +452,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
 
         return $model;
     }
+
     /**
      * Clears the complete table.
      */
@@ -470,16 +460,17 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     {
         $table = $this->getEmptyModel()->getTableName();
 
-        return $this->getDatabaseUtility()->doQuery('TRUNCATE TABLE ' . $table);
+        return $this->getDatabaseUtility()->doQuery('TRUNCATE TABLE '.$table);
     }
 
     /**
-     * Schützt die Felder vor Cross-Site-Scripting
+     * Schützt die Felder vor Cross-Site-Scripting.
      *
      * @TODO: model has to implement interface!
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $model
-     * @param array $data
+     * @param array                                  $data
+     *
      * @return array
      */
     protected function secureFromCrossSiteScripting($model, array $data)
@@ -499,5 +490,5 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract'];
 }

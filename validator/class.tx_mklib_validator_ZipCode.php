@@ -23,20 +23,17 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
-
 /**
  * Die Klasse stellt Funktionen für die Validierung von Postleitzahlen zur Verfügung.
  *
  * @author René Nitzsche
- * @package tx_mklib
- * @subpackage tx_mklib_validator
  */
 class tx_mklib_validator_ZipCode
 {
     public static $instance = null;
+
     /**
-     * Liefert eine instanz des Validators
+     * Liefert eine instanz des Validators.
      *
      * @return tx_mklib_validator_ZipCode
      */
@@ -48,15 +45,17 @@ class tx_mklib_validator_ZipCode
 
         return self::$instance;
     }
+
     /**
      * Liefert für ein Land einen Hinweistext für das PLZ-Format.
      *
      * @param tx_mklib_interface_IZipCountry $country
+     *
      * @return string
      */
     public static function getFormatInfo(tx_mklib_interface_IZipCountry $country)
     {
-        $rule = $country->getZipRule() == 9 ? $country->getZipRule().'_'.$country->getISO2() : $country->getZipRule();
+        $rule = 9 == $country->getZipRule() ? $country->getZipRule().'_'.$country->getISO2() : $country->getZipRule();
         $labelKey = 'LLL:EXT:mklib/locallang.xml:label_ziperror_r'.$rule;
         $llObj = (TYPO3_MODE == 'BE') ? $GLOBALS['LANG'] : $GLOBALS['TSFE'];
         $label = sprintf($llObj->sL($labelKey), $country->getZipLength());
@@ -66,8 +65,10 @@ class tx_mklib_validator_ZipCode
 
     /**
      * Validiert einen PLZ-String für ein Land.
+     *
      * @param tx_mklib_interface_IZipCountry $land
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     public static function validate(tx_mklib_interface_IZipCountry $country, $zip)
@@ -75,9 +76,8 @@ class tx_mklib_validator_ZipCode
         switch ($country->getZipRule()) {
             case 0: // no rule set
                 $result = true;
-                tx_rnbase::load('tx_rnbase_util_Logger');
                 if (tx_rnbase_util_Logger::isNoticeEnabled()) {
-                    tx_rnbase_util_Logger::notice('No zip rule for country defined.', 'mklib', array('zip' => $zip,'getISO2' => $country->getISO2(),'getZipLength' => $country->getZipLength(),'getZipRule' => $country->getZipRule()));
+                    tx_rnbase_util_Logger::notice('No zip rule for country defined.', 'mklib', array('zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()));
                 }
                 break;
             case 1: // maximum length without gaps
@@ -114,11 +114,13 @@ class tx_mklib_validator_ZipCode
 
         return $result;
     }
+
     /**
-     * http://help.sap.com/saphelp_nw2004s/helpdata/en/0d/40bb3acf19c731e10000000a114084/content.htm
+     * http://help.sap.com/saphelp_nw2004s/helpdata/en/0d/40bb3acf19c731e10000000a114084/content.htm.
      *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateSpecial($country, $zip)
@@ -151,20 +153,22 @@ class tx_mklib_validator_ZipCode
 
         return $result;
     }
+
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateMaxLengthWG($country, $zip)
     {
         return preg_match('/^[A-Za-z0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
     }
+
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateMaxLengthNumWG($country, $zip)
@@ -173,59 +177,64 @@ class tx_mklib_validator_ZipCode
     }
 
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateLengthWG($country, $zip)
     {
         return preg_match('/^[A-Za-z0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
     }
+
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateLengthNumWG($country, $zip)
     {
         return preg_match('/^[0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
     }
+
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateMaxLength($country, $zip)
     {
         return preg_match('/^[ A-Za-z0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
     }
+
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateMaxLengthNum($country, $zip)
     {
         return preg_match('/^[ 0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
     }
+
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateLength($country, $zip)
     {
         return preg_match('/^[ A-Za-z0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
     }
+
     /**
-     *
      * @param tx_mklib_interface_IZipCountry $country
-     * @param string $zip
+     * @param string                         $zip
+     *
      * @return bool
      */
     private static function validateLengthNum($country, $zip)
@@ -234,5 +243,5 @@ class tx_mklib_validator_ZipCode
     }
 }
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_ZipCode.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_ZipCode.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/validator/class.tx_mklib_validator_ZipCode.php'];
 }

@@ -22,9 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-tx_rnbase::load('tx_rnbase_util_Logger');
-
 /**
  * Soap Client Basis. Im Prinzip nur ein Wrapper für SoapClient.
  *
@@ -32,21 +29,22 @@ tx_rnbase::load('tx_rnbase_util_Logger');
  */
 class tx_mklib_soap_ClientWrapper
 {
-
     /**
      * @var string
      */
     protected $url;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $soapVersion = SOAP_1_1;
 
     /**
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return array
+     *
      * @throws RuntimeException
      */
     public function callSoapMethod($method, array $args = array())
@@ -65,7 +63,7 @@ class tx_mklib_soap_ClientWrapper
 
     /**
      * don't reuse existing objects. always use a fresh instance.
-     * (@see http://php.blogaboutwhatever.com/2011/11/error-fetching-http-headers/)
+     * (@see http://php.blogaboutwhatever.com/2011/11/error-fetching-http-headers/).
      *
      * @return SoapClient
      */
@@ -74,20 +72,20 @@ class tx_mklib_soap_ClientWrapper
         return new SoapClient(
             $this->getUrl(),
             array(
-                'location'        => $this->getUrl(),
-                'uri'            => '',
-                'soap_version'    => $this->soapVersion,
-                'trace'            => 1,
-                'exceptions'    => 1,
-                'compression'    => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP
+                'location' => $this->getUrl(),
+                'uri' => '',
+                'soap_version' => $this->soapVersion,
+                'trace' => 1,
+                'exceptions' => 1,
+                'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
             )
         );
     }
 
     /**
      * @param Exception $soapFault
-     * @param array $args
-     * @return void
+     * @param array     $args
+     *
      * @throws RuntimeException
      */
     protected function handleException(Exception $exception, array $args = array())
@@ -98,8 +96,7 @@ class tx_mklib_soap_ClientWrapper
 
     /**
      * @param Exception $exception
-     * @param array $args
-     * @return void
+     * @param array     $args
      */
     protected function logException(Exception $exception, array $args = array())
     {
@@ -107,14 +104,14 @@ class tx_mklib_soap_ClientWrapper
 
         if ($soapClient instanceof SoapClient) {
             tx_rnbase_util_Logger::fatal(
-                'Access to Soap Interface failed: ' . $exception->getMessage(),
+                'Access to Soap Interface failed: '.$exception->getMessage(),
                 'mklib',
                 array(
                     'Fehler',
-                    'functions'    =>    $soapClient->__getFunctions(),
-                    'response'    =>    $soapClient->__getLastResponse(),
-                    'request'    =>    $soapClient->__getLastRequest(),
-                    'args'        =>    $args
+                    'functions' => $soapClient->__getFunctions(),
+                    'response' => $soapClient->__getLastResponse(),
+                    'request' => $soapClient->__getLastRequest(),
+                    'args' => $args,
                 )
             );
         } else {
@@ -124,8 +121,8 @@ class tx_mklib_soap_ClientWrapper
 
     /**
      * @param Exception $exception
+     *
      * @throws RuntimeException
-     * @return void
      */
     protected function throwRuntimeException(Exception $exception)
     {

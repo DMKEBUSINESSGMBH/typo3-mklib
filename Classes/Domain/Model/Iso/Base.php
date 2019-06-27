@@ -23,18 +23,14 @@
  ***************************************************************/
 
 /**
- * base methods for iso models
+ * base methods for iso models.
  *
- * @package TYPO3
- * @subpackage Tx_Mklib
  * @author Michael Wagner
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 abstract class Tx_Mklib_Domain_Model_Iso_Base
 {
-
-
     /**
      * The iso value.
      *
@@ -44,6 +40,7 @@ abstract class Tx_Mklib_Domain_Model_Iso_Base
 
     /**
      * Returns the iso value.
+     *
      * @return string
      */
     public function getValue()
@@ -55,6 +52,7 @@ abstract class Tx_Mklib_Domain_Model_Iso_Base
      * Make an instanceof ISO model.
      *
      * @param string $value
+     *
      * @return Tx_Mklib_Domain_Model_Iso_Base
      */
     public static function getInstance($value)
@@ -73,16 +71,17 @@ abstract class Tx_Mklib_Domain_Model_Iso_Base
     }
 
     /**
-     * Validates the ISO Value
+     * Validates the ISO Value.
      *
      * @return bool
      */
     abstract public function validate();
 
     /**
-     * Normalize the value
+     * Normalize the value.
      *
      * @param string $iban
+     *
      * @return string
      */
     private function normalize($value)

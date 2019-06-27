@@ -1,11 +1,11 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
 // static_info_tables um PLZ regeln erweitern
 if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
-    tx_rnbase::load('tx_rnbase_util_TYPO3');
     tx_rnbase_util_Extensions::addTCAcolumns(
         'static_countries',
         array(
@@ -16,7 +16,7 @@ if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
                     'type' => 'input',
                     'size' => '1',
                     'eval' => 'trim,int',
-                )
+                ),
             ),
             'zipcode_length' => array(
                 'exclude' => '0',
@@ -25,10 +25,10 @@ if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
                     'type' => 'input',
                     'size' => '2',
                     'eval' => 'trim,int',
-                )
+                ),
             ),
         ),
-        !tx_rnbase_util_TYPO3::isTYPO62OrHigher()
+        false
     );
     tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_rule');
     tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_length');

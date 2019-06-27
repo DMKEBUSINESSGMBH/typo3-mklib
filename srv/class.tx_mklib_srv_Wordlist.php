@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_srv
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,27 +25,20 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
-
-tx_rnbase::load('tx_mklib_srv_Base');
 
 /**
- * Service for accessing ad entries
- *
- * @package tx_mklib
- * @subpackage tx_mklib_srv
+ * Service for accessing ad entries.
  */
-class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
+class tx_mklib_srv_Wordlist extends tx_mklib_srv_Base
 {
-
     /**
-     * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
+     * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt.
      *
      * @param $word
      * @param $greedy | alle oder nur ein Treffer?
      * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-     * @return null || array
      */
     public function getWordlistEntryByWord($word, $greedy = true, $sanitizeWord = true)
     {
@@ -56,12 +47,11 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
 
     /**
      * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
-     * nur Einträge die blacklisted sind
+     * nur Einträge die blacklisted sind.
      *
      * @param $word
      * @param $greedy | alle oder nur ein Treffer?
      * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-     * @return null || array
      */
     public function getBlacklistEntryByWord($word, $greedy = true, $sanitizeWord = true)
     {
@@ -75,12 +65,11 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
 
     /**
      * Holt die Wordlist aus der DB und prüft ob ein Wort der Wortliste im gegebenen String vorkommt
-     * nur Einträge die whitelisted sind
+     * nur Einträge die whitelisted sind.
      *
      * @param $word
      * @param $greedy | alle oder nur ein Treffer?
      * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-     * @return null || array
      */
     public function getWhitelistEntryByWord($word, $greedy = true, $sanitizeWord = true)
     {
@@ -93,9 +82,10 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
     }
 
     /**
-     * Gibt die gesamte Wordlist zurück
+     * Gibt die gesamte Wordlist zurück.
      *
      * @param array $fields
+     *
      * @return array
      */
     protected function getWordlist(array $fields = array())
@@ -111,14 +101,12 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
     }
 
     /**
-     * Prüft ob ein Wort der Wortliste im gegebenen String vorkommt
+     * Prüft ob ein Wort der Wortliste im gegebenen String vorkommt.
      *
      * @param string $word
      * @param $wordlist
      * @param $greedy | alle oder nur ein Treffer?
      * @param $sanitizeWord | alle Sonderzeichen vor der Prüfung entfernen
-     *
-     * @return null || array | string
      */
     private function checkForWordInWordlist($word, $wordlist, $greedy = true, $sanitizeWord = true)
     {
@@ -144,12 +132,11 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
             if (!$greedy && preg_match('/\b('.$sEntry.' )\b/i', $word, $matches)) {//nur einen treffer?
                 return $matches[0];
             }
-            $sWordlist .= '|';//für die regexp
+            $sWordlist .= '|'; //für die regexp
         }
         // '\b' bedeutet das nur nach ganzen Wörtern gesucht wird. ist fuck
         //geblacklisted wird sfuck nicht bemängelt
         if ($greedy && preg_match_all('/\b('.$sWordlist.')\b/i', $word, $matches)) {//alle treffer?
-            tx_rnbase::load('tx_mklib_util_Array');
             //preg_mactch_all gibt ein array zurück, was auch viele leere Werte für die Nicht-Treffer enthält. Diese stören und werden bereinigt
             return tx_mklib_util_Array::removeEmptyArrayValuesSimple($matches[0]);
         }
@@ -168,11 +155,11 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
         );
     }
 
-  /**
-   * Liefert die zugehörige Search-Klasse zurück
-   *
-   * @return string
-   */
+    /**
+     * Liefert die zugehörige Search-Klasse zurück.
+     *
+     * @return string
+     */
     public function getSearchClass()
     {
         return 'tx_mklib_search_Wordlist';
@@ -180,5 +167,5 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_base
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'];
 }

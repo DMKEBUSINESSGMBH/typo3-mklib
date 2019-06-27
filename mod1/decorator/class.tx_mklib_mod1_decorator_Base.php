@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2011 - 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -22,19 +22,14 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-tx_rnbase::load('tx_rnbase_mod_IDecorator');
-
 /**
  * Diese Klasse ist für die Darstellung von Elementen im Backend verantwortlich.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Hannes Bochmann
  * @author Michael Wagner
  */
 class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
 {
-
     /**
      * @var tx_rnbase_mod_IModule
      */
@@ -45,8 +40,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     private $options = null;
 
     /**
-     *
-     * @param   tx_rnbase_mod_IModule   $mod
+     * @param tx_rnbase_mod_IModule $mod
      */
     public function __construct(tx_rnbase_mod_IModule $mod, array $options = array())
     {
@@ -55,10 +49,9 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     }
 
     /**
-     *
-     * @param string $value
-     * @param string $colName
-     * @param array $record
+     * @param string                                 $value
+     * @param string                                 $colName
+     * @param array                                  $record
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
      */
     public function format($value, $colName, $record, tx_rnbase_model_base $item)
@@ -97,23 +90,25 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      * renders the uid column.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     *
      * @return string
      */
     protected function getUidColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
     {
-        $wrap = $item->isHidden() ? array('<del>','</del>') : array('','');
-        $ret = $wrap[0] . $item->getProperty('uid') . $wrap[1];
+        $wrap = $item->isHidden() ? array('<del>', '</del>') : array('', '');
+        $ret = $wrap[0].$item->getProperty('uid').$wrap[1];
         $dates = array();
         $dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
         $dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
 
-        return '<span title="Creation: '.$dates['crdate']." \nLast Change: ".$dates['tstamp'].' ">'.$ret .'</span>';
+        return '<span title="Creation: '.$dates['crdate']." \nLast Change: ".$dates['tstamp'].' ">'.$ret.'</span>';
     }
 
     /**
      * renders the label column.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     *
      * @return string
      */
     protected function getLabelColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
@@ -137,12 +132,12 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      * Renders some links to create the overlay too.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     *
      * @return string
      */
     protected function getSysLanguageColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
     {
         if ($item->getTableName()) {
-            tx_rnbase::load('tx_mklib_mod1_util_Language');
             $ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
                 $item->getSysLanguageUid(),
                 array('show_title' => true)
@@ -153,11 +148,11 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
             );
 
             if (!empty($new)) {
-                $fileExt = tx_rnbase_util_TYPO3::isTYPO60OrHigher() ? 'xlf' : 'xml';
+                $fileExt = 'xlf';
                 $ret .= ' ('
-                    . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.' . $fileExt . ':Localize')
-                    . ' ' . $new
-                    . ')';
+                    .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.'.$fileExt.':Localize')
+                    .' '.$new
+                    .')';
             }
         }
 
@@ -165,8 +160,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     }
 
     /**
-     * Liefert die möglichen Optionen für die actions
+     * Liefert die möglichen Optionen für die actions.
+     *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     *
      * @return array
      */
     protected function getActionOptions($item = null)
@@ -195,7 +192,8 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      * $options = array('hide'=>'ausblenden,'edit'=>'bearbeiten,'remove'=>'löschen','history'='history','info'=>'info','move'=>'verschieben');
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param array $options
+     * @param array                                  $options
+     *
      * @return string
      */
     protected function getActions(Tx_Rnbase_Domain_Model_RecordInterface $item, array $options)
@@ -210,7 +208,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                     $ret .= $this->getFormTool()->createEditLink($tableName, $uid, $bTitle);
                     break;
                 case 'hide':
-                    tx_rnbase::load('tx_mklib_util_TCA');
                     $sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($tableName, 'disabled', 'hidden');
                     $ret .= $this->getFormTool()->createHideLink($tableName, $uid, $item->record[$sHiddenColumn]);
                     break;
@@ -246,11 +243,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             $prevId,
                             array(
                                 'label' => '',
-                                'title' => 'Move ' . $fromUid . ' after ' . $prevId,
+                                'title' => 'Move '.$fromUid.' after '.$prevId,
                             )
                         );
                     } else {
-                        tx_rnbase::load('tx_rnbase_mod_Util');
                         $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
                     }
                     break;
@@ -266,11 +262,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             $nextId,
                             array(
                                 'label' => '',
-                                'title' => 'Move ' . $uid . ' after ' . $nextId,
+                                'title' => 'Move '.$uid.' after '.$nextId,
                             )
                         );
                     } else {
-                        tx_rnbase::load('tx_rnbase_mod_Util');
                         $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
                     }
                     break;
@@ -283,8 +278,8 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     }
 
     /**
-     *
      * @param string $output
+     *
      * @return string
      */
     protected function wrapValue(
@@ -304,16 +299,17 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
         }
 
         if (!empty($stateClass)) {
-            $output = '<div class="' . implode(' ', $stateClass) . '">' . $output . '</div>';
+            $output = '<div class="'.implode(' ', $stateClass).'">'.$output.'</div>';
         }
 
         return $output;
     }
 
     /**
-     * liefert die items map und setzten den pointer auf das aktuelle element
+     * liefert die items map und setzten den pointer auf das aktuelle element.
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     *
      * @return array
      */
     protected function getItemsMap(Tx_Rnbase_Domain_Model_RecordInterface $item)
@@ -324,7 +320,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
         $currentId = $item->getUid();
         $map = $this->options['items_map'];
 
-        while (key($map) !== null && key($map) != $currentId) {
+        while (null !== key($map) && key($map) != $currentId) {
             next($map);
         }
 
@@ -332,7 +328,8 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     }
 
     /**
-     * Returns the module
+     * Returns the module.
+     *
      * @return tx_rnbase_mod_IModule
      */
     protected function getModule()
@@ -341,9 +338,9 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_util_FormTool
+     * @return tx_rnbase_util_FormTool
      */
     protected function getFormTool()
     {
@@ -351,7 +348,6 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     }
 }
 
-
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/decorator/class.tx_mklib_mod1_decorator_Base.php'];
 }

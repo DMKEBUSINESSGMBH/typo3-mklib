@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,35 +25,30 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_util_RTFParser');
-    
 /**
- * RTFParser util tests
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * RTFParser util tests.
  */
 class tx_mklib_tests_util_RTFParser_testcase extends Tx_Phpunit_TestCase
 {
-    
     /**
      * Enter description here ...
      */
     public function setUp()
     {
-        tx_mklib_tests_Util::storeExtConf('mklib');
-        tx_mklib_tests_Util::setExtConfVar('specialCharMarker', 'SPECIALCHAR_', 'mklib');
+        \DMK\Mklib\Utility\Tests::storeExtConf('mklib');
+        \DMK\Mklib\Utility\Tests::setExtConfVar('specialCharMarker', 'SPECIALCHAR_', 'mklib');
     }
-    
+
     public function tearDown()
     {
-        tx_mklib_tests_Util::restoreExtConf('mklib');
+        \DMK\Mklib\Utility\Tests::restoreExtConf('mklib');
     }
-    
+
     /**
-     * Prüft ob korrekter text zurück gegeben wird
+     * Prüft ob korrekter text zurück gegeben wird.
      */
     public function testParseReturnsCorrectPlainText()
     {
@@ -65,9 +58,9 @@ class tx_mklib_tests_util_RTFParser_testcase extends Tx_Phpunit_TestCase
         );
         self::assertEquals('Das ist unsere erste Kleinanzeige', $rtfParser->parse(), 'Der geparste text ist falsch. Vielleicht Magic Quotes ausgeschaltet oder Ähnliches?');
     }
-    
+
     /**
-     * Prüft ob korrekter text zurück gegeben wird
+     * Prüft ob korrekter text zurück gegeben wird.
      */
     public function testParseReturnsCorrectPlainTextInHtmlMode()
     {
@@ -78,9 +71,9 @@ class tx_mklib_tests_util_RTFParser_testcase extends Tx_Phpunit_TestCase
         $rtfParser->setOutputType('html');
         self::assertEquals('<div align="left"><span class="f0s21"><b>Das ist unsere </b><div align="left"><span class="f0s21">erste Kleinanzeige', $rtfParser->parse(), 'Der geparste text ist falsch. Vielleicht Magic Quotes ausgeschaltet oder Ähnliches?');
     }
-    
+
     /**
-     * Prüft ob korrekter text zurück gegeben wird
+     * Prüft ob korrekter text zurück gegeben wird.
      */
     public function testParseReturnsCorrectPlainTextInXmlMode()
     {
@@ -91,9 +84,9 @@ class tx_mklib_tests_util_RTFParser_testcase extends Tx_Phpunit_TestCase
         $rtfParser->setOutputType('xml');
         self::assertEquals('<rtf><group><control word="rtf" param="1"/><control word="ansi"/><control word="deff" param="0"/><group><control word="fonttbl"/><group><control word="f" param="0"/><control word="fcharset" param="0"/><control word="fnil"/></group></group><group><control word="info"/><group><control word="version" param="1"/></group><group><control word="creatim"/><control word="yr" param="2011"/><control word="mo" param="02"/><control word="dy" param="25"/><control word="hr" param="16"/><control word="min" param="10"/><control word="sec" param="0"/></group></group><group><control word="f" param="0"/><control word="fs" param="21"/><control word="dn" param="0"/></group><group><control word="b"/><control word="f" param="0"/><control word="fs" param="21"/><control word="dn" param="0"/><plain>Das ist unsere </plain></group><group><control word="f" param="0"/><control word="fs" param="21"/><control word="dn" param="0"/><plain>erste Kleinanzeige</plain></group></group></rtf>', $rtfParser->parse(), 'Der geparste text ist falsch. Vielleicht Magic Quotes ausgeschaltet oder Ähnliches?');
     }
-    
+
     /**
-     * Prüft ob korrekter text zurück gegeben wird
+     * Prüft ob korrekter text zurück gegeben wird.
      */
     public function testParseReturnsCorrectPlainTextWhenCleaningInput()
     {
@@ -107,5 +100,5 @@ class tx_mklib_tests_util_RTFParser_testcase extends Tx_Phpunit_TestCase
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_RTFParser_testcase.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_RTFParser_testcase.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_RTFParser_testcase.php'];
 }

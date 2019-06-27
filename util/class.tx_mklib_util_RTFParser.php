@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -113,10 +111,7 @@ This class and all work done here is dedicated to Tatjana.
  This class and all work done here is dedicated to Tatjana.
  */
 /**
- * RTF Parser
- *
- * @package tx_mklib
- * @subpackage tx_mklib_util
+ * RTF Parser.
  */
 class tx_mklib_util_RTFParser
 {
@@ -145,8 +140,8 @@ class tx_mklib_util_RTFParser
     protected $stack = array();    // group stack
 
     /**
-     * Sonderzeichen, die ersetzt werden müssen
-
+     * Sonderzeichen, die ersetzt werden müssen.
+     *
      * @var array
      */
     protected $aSpecialChars = array(
@@ -210,41 +205,41 @@ class tx_mklib_util_RTFParser
         'trwWithA(-?[0-9]+)?',
         'trwWithB(-?[0-9]+)?',
         'trwWith(-?[0-9]+)?',
-        'spectspecifygen(-?[0-9]+)?'
+        'spectspecifygen(-?[0-9]+)?',
     );
 
     protected $charset_table = array(
-        '0'    =>    'ANSI',
-        '1'    =>    'Default',
-        '2'    =>    'Symbol',
-        '77' =>    'Mac',
-        '128' =>    'Shift Jis',
-        '129' =>    'Hangul',
-        '130' =>    'Johab',
-        '134' =>    'GB2312',
-        '136' =>    'Big5',
-        '161' =>    'Greek',
-        '162' =>    'Turkish',
-        '163' =>    'Vietnamese',
-        '177' =>    'Hebrew',
-        '178' =>    'Arabic',
-        '179' =>    'Arabic Traditional',
-        '180' =>    'Arabic user',
-        '181' =>    'Hebrew user',
-        '186' =>    'Baltic',
-        '204' =>    'Russion',
-        '222' =>    'Thai',
-        '238' =>    'Eastern European',
-        '255' =>    'PC 437',
-        '255' =>    'OEM'
+        '0' => 'ANSI',
+        '1' => 'Default',
+        '2' => 'Symbol',
+        '77' => 'Mac',
+        '128' => 'Shift Jis',
+        '129' => 'Hangul',
+        '130' => 'Johab',
+        '134' => 'GB2312',
+        '136' => 'Big5',
+        '161' => 'Greek',
+        '162' => 'Turkish',
+        '163' => 'Vietnamese',
+        '177' => 'Hebrew',
+        '178' => 'Arabic',
+        '179' => 'Arabic Traditional',
+        '180' => 'Arabic user',
+        '181' => 'Hebrew user',
+        '186' => 'Baltic',
+        '204' => 'Russion',
+        '222' => 'Thai',
+        '238' => 'Eastern European',
+        '255' => 'PC 437',
+        '255' => 'OEM',
     );
 
     /* note: the only conversion table used */
     protected $fontmodifier_table = array(
-        'bold'    =>    'b',
-        'italic'    => 'i',
-        'underlined'    => 'u',
-        'strikethru'    => 'strike'
+        'bold' => 'b',
+        'italic' => 'i',
+        'underlined' => 'u',
+        'strikethru' => 'strike',
     );
 
     /*
@@ -299,7 +294,7 @@ class tx_mklib_util_RTFParser
         $this->styles = array();
         $this->text = '';
 
-        if ($this->len == 0) {
+        if (0 == $this->len) {
             array_push($this->err, 'No data in stream found');
         }
     }
@@ -310,8 +305,8 @@ class tx_mklib_util_RTFParser
          Default values according to the specs
          */
         $this->flags = array(
-            'fontsize'    =>    24,
-            'beginparagraph'    => true
+            'fontsize' => 24,
+            'beginparagraph' => true,
         );
     }
 
@@ -328,7 +323,7 @@ class tx_mklib_util_RTFParser
                 $this->wantHTML = true;
                 break;
             default:
-                break;//plain text
+                break; //plain text
         }
     }
 
@@ -377,9 +372,10 @@ class tx_mklib_util_RTFParser
                 // bold
             case 'bnone':
                 $parameter = '0';
+                // no break
             case 'b':
                 // haven'y yet figured out WHY I need a (string)-cast here ... hm
-                if ((string)$parameter == '0') {
+                if ('0' == (string) $parameter) {
                     $this->flags['bold'] = false;
                 } else {
                     $this->flags['bold'] = true;
@@ -389,8 +385,9 @@ class tx_mklib_util_RTFParser
                 // underlined
             case 'ulnone':
                 $parameter = '0';
+                // no break
             case 'ul':
-                if ((string)$parameter == '0') {
+                if ('0' == (string) $parameter) {
                     $this->flags['underlined'] = false;
                 } else {
                     $this->flags['underlined'] = true;
@@ -400,8 +397,9 @@ class tx_mklib_util_RTFParser
                 // italic
             case 'inone':
                 $parameter = '0';
+                // no break
             case 'i':
-                if ((string)$parameter == '0') {
+                if ('0' == (string) $parameter) {
                     $this->flags['italic'] = false;
                 } else {
                     $this->flags['italic'] = true;
@@ -411,8 +409,9 @@ class tx_mklib_util_RTFParser
                 // strikethru
             case 'strikenone':
                 $parameter = '0';
+                // no break
             case 'strike':
-                if ((string)$parameter == '0') {
+                if ('0' == (string) $parameter) {
                     $this->flags['strikethru'] = false;
                 } else {
                     $this->flags['strikethru'] = true;
@@ -434,8 +433,9 @@ class tx_mklib_util_RTFParser
                 // sub and superscription
             case 'subnone':
                 $parameter = '0';
+                // no break
             case 'sub':
-                if ((string)$parameter == '0') {
+                if ('0' == (string) $parameter) {
                     $this->flags['subscription'] = false;
                 } else {
                     $this->flags['subscription'] = true;
@@ -444,8 +444,9 @@ class tx_mklib_util_RTFParser
 
             case 'supernone':
                 $parameter = '0';
+                // no break
             case 'super':
-                if ((string)$parameter == '0') {
+                if ('0' == (string) $parameter) {
                     $this->flags['superscription'] = false;
                 } else {
                     $this->flags['superscription'] = true;
@@ -488,7 +489,7 @@ class tx_mklib_util_RTFParser
      */
     protected function flushGroup($state)
     {
-        if ($state == 'open') {
+        if ('open' == $state) {
             /* push onto the stack */
             array_push($this->stack, $this->flags);
 
@@ -496,7 +497,7 @@ class tx_mklib_util_RTFParser
                 $this->out .= '<group>';
             }
         }
-        if ($state == 'close') {
+        if ('close' == $state) {
             /* pop from the stack */
             $this->last_flags = $this->flags;
             $this->flags = array_pop($this->stack);
@@ -528,12 +529,11 @@ class tx_mklib_util_RTFParser
         }
     }
 
-
     protected function checkHtmlSpanContent($command)
     {
         foreach ($this->fontmodifier_table as $rtf => $html) {
-            if ($this->flags[$rtf] == true) {
-                if ($command == 'start') {
+            if (true == $this->flags[$rtf]) {
+                if ('start' == $command) {
                     $this->out .= '<'.$html.'>';
                 } else {
                     $this->out .= '</'.$html.'>';
@@ -541,6 +541,7 @@ class tx_mklib_util_RTFParser
             }
         }
     }
+
     /*
      flush text in queue
      */
@@ -567,7 +568,7 @@ class tx_mklib_util_RTFParser
                     // only output html if a valid (for now, just numeric;) fonttable is given
                     //if( ereg( "^[0-9]+$", $this->flags["fonttbl_current_read"])) {
                     if (preg_match('/^[0-9]+$/', $this->flags['fonttbl_current_read'])) {
-                        if ($this->flags['beginparagraph'] == true) {
+                        if (true == $this->flags['beginparagraph']) {
                             $this->flags['beginparagraph'] = false;
                             $this->out .= '<div align="';
                             switch ($this->flags['alignment']) {
@@ -611,7 +612,7 @@ class tx_mklib_util_RTFParser
      */
     protected function flushSpecial($special)
     {
-        if (strlen($special) == 2) {
+        if (2 == strlen($special)) {
             if ($this->wantXML) {
                 $this->out .= '<special value="'.$special.'"/>';
             } elseif ($this->wantHTML) {
@@ -805,7 +806,7 @@ class tx_mklib_util_RTFParser
 
         $i = 0;
         $this->cw = false;    // flag if control word is currently parsed
-        $this->cfirst = false;// first control character ?
+        $this->cfirst = false; // first control character ?
         $this->cword = '';    // last or current control word ( depends on $this->cw
 
         $this->queue = '';        // plain text data found during parsing
@@ -853,7 +854,7 @@ class tx_mklib_util_RTFParser
                     $this->cword = '';
                     break;
                 default:
-                    if ((ord($this->rtf[$i]) == 10) || (ord($this->rtf[$i]) == 13)) {
+                    if ((10 == ord($this->rtf[$i])) || (13 == ord($this->rtf[$i]))) {
                         break;
                     } // eat line breaks
                     if ($this->cw) {    // active control word ?
@@ -862,7 +863,7 @@ class tx_mklib_util_RTFParser
                         the control word (but actually its ignored by flushControl)
                         */
                         if (preg_match('/^[a-zA-Z0-9-]?$/', $this->rtf[$i])) { // continue parsing
-                        //if( ereg( "^[a-zA-Z0-9-]?$", $this->rtf[$i])) { // continue parsing
+                            //if( ereg( "^[a-zA-Z0-9-]?$", $this->rtf[$i])) { // continue parsing
                             $this->cword .= $this->rtf[$i];
                             $this->cfirst = false;
                         } else {
@@ -871,7 +872,7 @@ class tx_mklib_util_RTFParser
                                 */
                             $specialmatch = false;
                             if ($this->cfirst) {
-                                if ($this->rtf[$i] == '\'') { // expect to get some special chars
+                                if ('\'' == $this->rtf[$i]) { // expect to get some special chars
                                     $this->flushQueue();
                                     $this->flushSpecial($this->rtf[$i + 1].$this->rtf[$i + 2]);
                                     $i += 2;
@@ -886,13 +887,13 @@ class tx_mklib_util_RTFParser
                                 }
                                 $this->cfirst = false;
                             } else {
-                                if ($this->rtf[$i] == ' ') {    // space delimtes control words, so just discard it and flush the controlword
+                                if (' ' == $this->rtf[$i]) {    // space delimtes control words, so just discard it and flush the controlword
                                     $this->cw = false;
                                     $this->flushControl();
                                     break;
                                 }
                             }
-                            if (! $specialmatch) {
+                            if (!$specialmatch) {
                                 $this->flushControl();
                                 $this->cw = false;
                                 $this->cfirst = false;
@@ -901,7 +902,7 @@ class tx_mklib_util_RTFParser
                                  part of the control word so we hop one step back
                                  in the stream and process it again
                                     */
-                                $i--;
+                                --$i;
                             }
                         }
                     } else {
@@ -923,7 +924,7 @@ class tx_mklib_util_RTFParser
                         }
                     }
             }
-            $i++;
+            ++$i;
         }
         $this->flushQueue();
         $this->flushErrors();
@@ -950,5 +951,5 @@ class tx_mklib_util_RTFParser
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_RTFParser.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_RTFParser.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_RTFParser.php'];
 }

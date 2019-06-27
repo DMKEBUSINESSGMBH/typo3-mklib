@@ -1,30 +1,4 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- *  Copyright notice
- *
- *  (c) 2010 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
-tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Debug Util.
@@ -53,67 +27,73 @@ tx_rnbase::load('tx_rnbase_util_Files');
  *  //der gesammelte bug im fe ausgegeben werden
  *  tx_mklib_util_Debug::t3Debug();
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_Debug
 {
-
     /**
-     * enthält die debugmeldungen
-     * @var     array
+     * enthält die debugmeldungen.
+     *
+     * @var array
      */
     private static $aDebug = array();
     /**
-     * memory beim initialisieren
-     * @var     int
+     * memory beim initialisieren.
+     *
+     * @var int
      */
     private static $iMemory = 0;
     /**
-     * zeitstempel beim initialisieren
-     * @var     int
+     * zeitstempel beim initialisieren.
+     *
+     * @var int
      */
     private static $iMicroTime = 0;
     /**
-     * memory beim letzten addDebug aufruf
-     * @var     int
+     * memory beim letzten addDebug aufruf.
+     *
+     * @var int
      */
     private static $iLastMemory = 0;
     /**
-     * zeitstempel beim letzten addDebug aufruf
-     * @var     int
+     * zeitstempel beim letzten addDebug aufruf.
+     *
+     * @var int
      */
     private static $iLastMicroTime = 0;
     /**
-     * Pointer auf die debug datei
-     * @var  int
+     * Pointer auf die debug datei.
+     *
+     * @var int
      */
     private static $file = 0;
+
     /**
-     * setzt initiale variablen
+     * setzt initiale variablen.
      */
     public static function init()
     {
         self::$iMicroTime = self::$iLastMicroTime = microtime(true);
         self::$iMemory = self::$iLastMemory = memory_get_usage();
     }
+
     /**
      * Öffnet eine Datei für den debug.
      *
-     * @param   string  $path
-     * @param   string  $file
-     * @return  int
+     * @param string $path
+     * @param string $file
+     *
+     * @return int
      */
     public static function openFile($path = '', $file = '')
     {
         $file = $file ? $file : 'mklib_debug_'.date('Y-m-d_H-i-s', time()).'.txt';
         if (!$path) {
             $path = 'typo3temp/mklib/';
-            if (!is_writable(PATH_site.$path)) {
-                tx_rnbase_util_Files::mkdir_deep(PATH_site, $path);
+            if (!is_writable(\Sys25\RnBase\Utility\Environment::getPublicPath().$path)) {
+                tx_rnbase_util_Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $path);
             }
-            $path = PATH_site.$path;
+            $path = \Sys25\RnBase\Utility\Environment::getPublicPath().$path;
         }
 
         self::$file = fopen($path.$file, 'a');
@@ -122,10 +102,13 @@ class tx_mklib_util_Debug
 
         return self::$file;
     }
+
     /**
-     * Schreibt in die Debugdatei
-     * @param   string  $content
-     * @return  int
+     * Schreibt in die Debugdatei.
+     *
+     * @param string $content
+     *
+     * @return int
      */
     public static function writeFile($content)
     {
@@ -136,9 +119,11 @@ class tx_mklib_util_Debug
         }
         unset($content);
     }
+
     /**
-     * Schließt die debug datei
-     * @return  bool
+     * Schließt die debug datei.
+     *
+     * @return bool
      */
     public static function closeFile()
     {
@@ -153,7 +138,7 @@ class tx_mklib_util_Debug
      * Fügt eine Debug ausgabe hinzu.
      *
      * @param unknown_type $msg
-     * @param array $data
+     * @param array        $data
      */
     public static function addDebug($msg, array $data = array())
     {
@@ -184,6 +169,7 @@ class tx_mklib_util_Debug
         unset($iMicroTime);
         unset($iMemory);
     }
+
     /**
      * Gibt die gesammelten Debug meldungen aus
      * Funktioiniert nur, wenn die debugs nicht in eine datie geschrieben wird.
@@ -192,6 +178,7 @@ class tx_mklib_util_Debug
     {
         tx_rnbase_util_Debug::debug(self::$aDebug, 'tx_mklib_util_Debug', 'mklib Debug'); // @TODO: remove me
     }
+
     /**
      * Gibt die gesammelten Debug meldungen aus
      * Funktioiniert nur, wenn die debugs nicht in eine datie geschrieben wird.
@@ -200,10 +187,12 @@ class tx_mklib_util_Debug
     {
         return self::$aDebug;
     }
+
     public static function registerShutdownFunction()
     {
-        register_shutdown_function(array(get_class(),'shutDown'));
+        register_shutdown_function(array(get_class(), 'shutDown'));
     }
+
     public static function shutDown()
     {
         self::writeFile('tx_mklib_util_Debug::shutDown called.');
@@ -211,14 +200,16 @@ class tx_mklib_util_Debug
             self::closeFile();
         }
     }
+
     public static function registerErrorHandler()
     {
-        set_error_handler(array(get_class(),'errorHandler'));
+        set_error_handler(array(get_class(), 'errorHandler'));
     }
+
     public static function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
     {
         // throw new ErrorException($string, null, $code, $file, $line);
-        if ($errno != E_ERROR && strpos($errstr, 'Allowed memory') === false) {
+        if (E_ERROR != $errno && false === strpos($errstr, 'Allowed memory')) {
             return true;
         }
         self::addDebug($errstr, array('error' => array($errno, $errstr, $errfile, $errline)));
@@ -229,5 +220,5 @@ class tx_mklib_util_Debug
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Debug.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Debug.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Debug.php'];
 }

@@ -21,23 +21,19 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_mklib_repository_Abstract');
-tx_rnbase::load('tx_rnbase_util_Arrays');
 
 /**
- * tt_news Repository
+ * tt_news Repository.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_repository
  * @author Hannes Bochmann
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_mklib_repository_Abstract::getSearchClass()
      */
     protected function getSearchClass()
@@ -46,7 +42,8 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_mklib_repository_Abstract::getEmptyModel()
      */
     public function getEmptyModel()
@@ -55,7 +52,8 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_mklib_repository_Abstract::getWrapperClass()
      */
     protected function getWrapperClass()
@@ -64,7 +62,8 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_mklib_repository_Abstract::search()
      */
     public function search(array $fields = array(), array $options = array())
@@ -73,7 +72,8 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see tx_mklib_repository_Abstract::searchSingle()
      */
     public function searchSingle(array $fields = array(), array $options = array())
@@ -83,6 +83,7 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
 
     /**
      * @param array $options
+     *
      * @return array
      */
     protected function insertSearchDefinition(array $options)
@@ -101,7 +102,6 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
     }
 
     /**
-     *
      * @return array
      */
     protected function getSearchDefinition()
@@ -113,9 +113,9 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
             'wrapperclass' => $this->getWrapperClass(),
             'alias' => array(
                 'NEWS' => array(
-                    'table' => 'tt_news'
+                    'table' => 'tt_news',
                 ),
-            )
+            ),
         );
     }
 }

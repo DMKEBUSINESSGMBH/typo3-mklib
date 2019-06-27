@@ -21,21 +21,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-tx_rnbase::load('tx_mklib_action_AbstractList');
 
 /**
- *
- * @package TYPO3
- * @subpackage tx_mkgesundheit
  * @author Thomas Reuleke
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_action_ListPages extends tx_mklib_action_AbstractList
 {
-
     /**
-     * Liefert die Service Klasse, welche das Suchen übernimmt
+     * Liefert die Service Klasse, welche das Suchen übernimmt.
      *
      * @return tx_mklib_interface_Repository
      */
@@ -48,7 +43,8 @@ class tx_mklib_action_ListPages extends tx_mklib_action_AbstractList
      * Liefert den Default-Namen des Templates. Über diesen Namen
      * wird per Konvention auch auf ein per TS konfiguriertes HTML-Template
      * geprüft. Dessen Key wird aus dem Name und dem String "Template"
-     * gebildet: [tmpname]Template
+     * gebildet: [tmpname]Template.
+     *
      * @return string
      */
     protected function getTemplateName()

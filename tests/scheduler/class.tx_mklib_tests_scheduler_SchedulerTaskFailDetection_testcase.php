@@ -25,18 +25,12 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_scheduler_SchedulerTaskFailDetection');
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_mklib_tests_Util');
-
 /**
- * tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase
+ * tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann <dev@dmk-ebusiness.de>
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
@@ -50,23 +44,25 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
      */
     private $options = array(
         'failDetectionRememberAfter' => 3600,
-        'failDetectionReceiver' => 'dev@dmk-ebusiness.de'
+        'failDetectionReceiver' => 'dev@dmk-ebusiness.de',
     );
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
     {
-        tx_mklib_tests_Util::disableDevlog();
+        \DMK\Mklib\Utility\Tests::disableDevlog();
         $this->languageBackup = $GLOBALS['LANG']->lang;
 
         $GLOBALS['LANG']->lang = 'default';
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
     protected function tearDown()
@@ -101,7 +97,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
         self::assertEquals(
             array(
                 'failDetectionRememberAfter' => '1 Stunde ',
-                'failDetectionReceiver' => 'dev@dmk-ebusiness.de'
+                'failDetectionReceiver' => 'dev@dmk-ebusiness.de',
             ),
             $options
         );
@@ -114,9 +110,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
     {
         $databaseUtility = $this->getDatabaseConnection();
 
-        $selectFields = tx_rnbase_util_TYPO3::isTYPO62OrHigher() ?
-            'uid,serialized_task_object' :
-            'uid,classname';
+        $selectFields = 'uid,serialized_task_object';
         $databaseUtility->expects(self::once())
             ->method('doSelect')
             ->with(
@@ -124,10 +118,10 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
                 'tx_scheduler_task',
                 array(
                     'enablefieldsoff' => true,
-                    'where' =>    'uid != 123 AND ' .
-                                'faildetected = 0 AND ' .
-                                'lastexecution_failure != "" AND ' .
-                                'disable = 0'
+                    'where' => 'uid != 123 AND '.
+                                'faildetected = 0 AND '.
+                                'lastexecution_failure != "" AND '.
+                                'disable = 0',
                 )
             )
             ->will(self::returnValue(array('failedTasks')));
@@ -191,16 +185,16 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
             0 => array(
                 'serialized_task_object' => serialize($scheduler),
                 'classname' => 'tx_mklib_scheduler_SchedulerTaskFailDetection',
-                'uid' => 123
+                'uid' => 123,
             ),
             1 => array(
                 'serialized_task_object' => serialize($scheduler),
                 'classname' => 'tx_mklib_scheduler_SchedulerTaskFailDetection',
-                'uid' => 456
+                'uid' => 456,
             ),
         );
-        $expectedMessage =    'Die folgenden Scheduler Tasks sind fehlgeschlagen : ' .
-                            '"tx_mklib_scheduler_SchedulerTaskFailDetection (Task-Uid: 123)"' .
+        $expectedMessage = 'Die folgenden Scheduler Tasks sind fehlgeschlagen : '.
+                            '"tx_mklib_scheduler_SchedulerTaskFailDetection (Task-Uid: 123)"'.
                             ', "tx_mklib_scheduler_SchedulerTaskFailDetection (Task-Uid: 456)"';
         $expectedException = new Exception($expectedMessage, 0);
 
@@ -249,7 +243,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
             ->method('doUpdate')
             ->with(
                 'tx_scheduler_task',
-                'faildetected < ' . ($GLOBALS['EXEC_TIME'] - 3600),
+                'faildetected < '.($GLOBALS['EXEC_TIME'] - 3600),
                 array('faildetected' => 0)
             );
         $scheduler = $this->getSchedulerByDbUtil($databaseUtility);
@@ -314,7 +308,6 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
             ->with('failedTasks')
             ->will(self::returnValue('tasks failed'));
 
-
         $devLog = array();
         $method = new ReflectionMethod(
             'tx_mklib_scheduler_SchedulerTaskFailDetection',
@@ -330,7 +323,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetection_testcase extends tx_rn
 
     /**
      * @param string $databaseUtility
-     * @param array $methods
+     * @param array  $methods
      *
      * @return tx_mklib_scheduler_SchedulerTaskFailDetection
      */

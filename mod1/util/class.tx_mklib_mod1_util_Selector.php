@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2012 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -23,10 +23,8 @@
  */
 
 /**
- * Die Klasse stellt Auswahlmenus zur Verfügung
+ * Die Klasse stellt Auswahlmenus zur Verfügung.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner
  * @author Hannes Bochmann
  */
@@ -53,21 +51,22 @@ class tx_mklib_mod1_util_Selector
      * Method to display a form with an input array, a description and a submit button.
      * Keys are 'field' and 'button'.
      *
-     * @param   string  $out                HTML string
-     * @param   string  $key                mod key
-     * @param   array   $options
-     *              string  buttonName      name of the submit button. default is key.
-     *              string  buttonValue     value of the sumbit button. default is LLL:label_button_search.
-     *              string  label           label of the sumbit button. default is LLL:label_search.
-     * @return  string                      search term
+     * @param string $out     HTML string
+     * @param string $key     mod key
+     * @param array  $options
+     *                        string  buttonName      name of the submit button. default is key.
+     *                        string  buttonValue     value of the sumbit button. default is LLL:label_button_search.
+     *                        string  label           label of the sumbit button. default is LLL:label_search.
+     *
+     * @return string search term
      */
     public function showFreeTextSearchForm(&$out, $key, array $options = array())
     {
         $searchstring = $this->getValueFromModuleData($key);
 
         // Erst das Suchfeld, danach der Button.
-        $out['field']    = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
-        $out['button']    = empty($options['submit']) ? '' : $this->getFormTool()->createSubmit(
+        $out['field'] = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
+        $out['button'] = empty($options['submit']) ? '' : $this->getFormTool()->createSubmit(
             $options['buttonName'] ? $options['buttonName'] : $key,
             $options['buttonValue'] ? $options['buttonValue'] : $GLOBALS['LANG']->getLL('label_button_search')
         );
@@ -78,9 +77,11 @@ class tx_mklib_mod1_util_Selector
 
     /**
      * Returns a delete select box. All data is stored in array $data.
-     * @param   array   $data
-     * @param   array   $options
-     * @return  bool
+     *
+     * @param array $data
+     * @param array $options
+     *
+     * @return bool
      */
     public function showHiddenSelector(&$data, $options = array())
     {
@@ -96,9 +97,11 @@ class tx_mklib_mod1_util_Selector
 
     /**
      * Returns a delete select box. All data is stored in array $data.
-     * @param   array   $data
-     * @param   array   $options
-     * @return  bool
+     *
+     * @param array $data
+     * @param array $options
+     *
+     * @return bool
      */
     public function showLanguageSelector(&$data, $options = array())
     {
@@ -108,7 +111,6 @@ class tx_mklib_mod1_util_Selector
             0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value'),
         );
 
-        tx_rnbase::load('tx_mklib_mod1_util_Language');
         $langs = tx_mklib_mod1_util_Language::getLangRecords($options['pid']);
         foreach ($langs as $lang) {
             $items[(int) $lang['uid']] = $lang['title'];
@@ -121,10 +123,12 @@ class tx_mklib_mod1_util_Selector
 
     /**
      * Zeigt eine Datumsauswahl mit einzelnen Selects für Tag, Monat und Jahr.
-     * @param array $aItems Array mit den werten der Auswahlbox
-     * @param string $sDefId ID-String des Elements
-     * @param array $aData enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
-     * @param array $aOptions zusätzliche Optionen: yearfrom, yearto,
+     *
+     * @param array  $aItems   Array mit den werten der Auswahlbox
+     * @param string $sDefId   ID-String des Elements
+     * @param array  $aData    enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
+     * @param array  $aOptions zusätzliche Optionen: yearfrom, yearto,
+     *
      * @return DateTime selected day
      */
     public function showDateSelector($sDefId, &$aData, $aOptions = array())
@@ -144,7 +148,7 @@ class tx_mklib_mod1_util_Selector
         // Monate
         $tmpDataMonth = array();
         $items = array();
-        for ($i = 1; $i < 13; $i++) {
+        for ($i = 1; $i < 13; ++$i) {
             $date = new DateTime();
             $items[$i] = $date->setDate(2000, $i, 1)->format('F');
         }
@@ -165,7 +169,7 @@ class tx_mklib_mod1_util_Selector
 
         $tmpDataYear = array();
         $items = array();
-        for ($i = $from; $i < $to; $i++) {
+        for ($i = $from; $i < $to; ++$i) {
             $items[$i] = $i;
         }
         $selectedYear = $this->getValueFromModuleData($yearId);
@@ -175,7 +179,7 @@ class tx_mklib_mod1_util_Selector
         $tmpDataDay = array();
         $items = array();
         $totalDays = date('t', mktime(0, 0, 0, $selectedMonth, 1, $selectedYear));
-        for ($i = 1; $i < $totalDays + 1; $i++) {
+        for ($i = 1; $i < $totalDays + 1; ++$i) {
             $items[$i] = $i;
         }
         $selectedDay = $this->getValueFromModuleData($dayId);
@@ -193,14 +197,13 @@ class tx_mklib_mod1_util_Selector
         return $ret;
     }
 
-
-
     /**
-     * Gibt einen selector mit den models im gegebenen array zurück
+     * Gibt einen selector mit den models im gegebenen array zurück.
      *
      * @param Traversable|array $items
-     * @param array $data enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
-     * @param array $options zusätzliche Optionen: label, id
+     * @param array             $data    enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
+     * @param array             $options zusätzliche Optionen: label, id
+     *
      * @return string selected item
      */
     protected function showSelectorByModels(
@@ -210,7 +213,7 @@ class tx_mklib_mod1_util_Selector
     ) {
         if (!(is_array($items) || $items instanceof Traversable)) {
             throw new Exception(
-                'Argument 1 passed to' . __METHOD__ . '() must be of the type array or Traversable.'
+                'Argument 1 passed to'.__METHOD__.'() must be of the type array or Traversable.'
             );
         }
 
@@ -242,7 +245,7 @@ class tx_mklib_mod1_util_Selector
         // Build select box items
         $data['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
             $pid,
-            'SET[' . $id . ']',
+            'SET['.$id.']',
             $selectedItem,
             $itemMenu
         );
@@ -251,11 +254,13 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * Gibt einen selector mit den elementen im gegebenen array zurück
-     * @param array $aItems Array mit den werten der Auswahlbox
-     * @param string $sDefId ID-String des Elements
-     * @param array $aData enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
-     * @param array $aOptions zusätzliche Optionen: label, id
+     * Gibt einen selector mit den elementen im gegebenen array zurück.
+     *
+     * @param array  $aItems   Array mit den werten der Auswahlbox
+     * @param string $sDefId   ID-String des Elements
+     * @param array  $aData    enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
+     * @param array  $aOptions zusätzliche Optionen: label, id
+     *
      * @return string selected item
      */
     protected function showSelectorByArray($aItems, $sDefId, &$aData, $aOptions = array())
@@ -283,7 +288,8 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * Gibt einen selector mit den elementen im gegebenen array zurück
+     * Gibt einen selector mit den elementen im gegebenen array zurück.
+     *
      * @return string selected item
      */
     protected function showSelectorByTCA($sDefId, $table, $column, &$aData, $aOptions = array())
@@ -302,16 +308,16 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule
+     * Returns an instance of tx_rnbase_mod_IModule.
      *
-     * @return  tx_rnbase_mod_IModule
+     * @return tx_rnbase_mod_IModule
      */
     protected function getMod()
     {
         return $this->mod;
     }
+
     /**
-     *
      * @return tx_rnbase_util_FormTool
      */
     protected function getFormTool()
@@ -320,10 +326,11 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * Return requested value from module data
+     * Return requested value from module data.
      *
-     * @param   string $key
-     * @return  mixed
+     * @param string $key
+     *
+     * @return mixed
      */
     public function getValueFromModuleData($key)
     {
@@ -342,10 +349,9 @@ class tx_mklib_mod1_util_Selector
 
     /**
      * Setzt einen Wert in den Modul Daten. Dabei werden die bestehenden
-     * ergänzt oder ggf. überschrieben
+     * ergänzt oder ggf. überschrieben.
      *
-     * @param   array $aModuleData
-     * @return  void
+     * @param array $aModuleData
      */
     public function setValueToModuleData($sModuleName, $aModuleData = array())
     {
@@ -358,11 +364,10 @@ class tx_mklib_mod1_util_Selector
         $GLOBALS['BE_USER']->pushModuleData($sModuleName, $aExistingModuleData);
     }
 
-
     /**
+     * @param array $data
      *
-     * @param   array   $data
-     * @return  string
+     * @return string
      */
     public function buildFilterTable(array $data)
     {
@@ -371,9 +376,9 @@ class tx_mklib_mod1_util_Selector
             $out .= '<table class="filters">';
             foreach ($data as $label => $filter) {
                 $out .= '<tr>';
-                $out .= '<td>'. (isset($filter['label']) ? $filter['label'] : $label).'</td>';
+                $out .= '<td>'.(isset($filter['label']) ? $filter['label'] : $label).'</td>';
                 unset($filter['label']);
-                $out .= '<td>'. implode(' ', $filter) .'</td>';
+                $out .= '<td>'.implode(' ', $filter).'</td>';
 
                 $out .= '</tr>';
             }
@@ -384,20 +389,21 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * @param   array   $out                HTML string
-     * @param   string  $key                mod key
-     * @param   array   $options            some options like label
-     * @return  array[to => int, from => int]
+     * @param array  $out     HTML string
+     * @param string $key     mod key
+     * @param array  $options some options like label
+     *
+     * @return array[to => int, from => int]
      */
     public function showDateRangeSelector(&$out, $key, $options = array())
     {
-        $fromValue = $this->getDateFieldByKey($key . '_from', $out);
-        $toValue = $this->getDateFieldByKey($key . '_to', $out);
+        $fromValue = $this->getDateFieldByKey($key.'_from', $out);
+        $toValue = $this->getDateFieldByKey($key.'_to', $out);
         $out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_daterange');
 
         $this->setValueToModuleData(
             $this->getMod()->getName(),
-            array($key . '_from' => $fromValue, $key . '_to' => $toValue)
+            array($key.'_from' => $fromValue, $key.'_to' => $toValue)
         );
 
         return $this->getCrDateReturnArray($fromValue, $toValue);
@@ -419,7 +425,7 @@ class tx_mklib_mod1_util_Selector
 
     /**
      * @param string $fromValue d-m-Y
-     * @param string $toValue d-m-Y
+     * @param string $toValue   d-m-Y
      *
      * @return array[to => int, from => int]
      */
@@ -458,5 +464,5 @@ class tx_mklib_mod1_util_Selector
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/util/class.tx_mklib_mod1_util_Selector.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/util/class.tx_mklib_mod1_util_Selector.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/util/class.tx_mklib_mod1_util_Selector.php'];
 }

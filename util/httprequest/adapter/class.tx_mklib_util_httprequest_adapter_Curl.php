@@ -1,63 +1,18 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- *
- * Copyright notice
- *
- * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- * All rights reserved
- *
- * This script is part of the TYPO3 project. The TYPO3 project is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * This copyright notice MUST APPEAR in all copies of the script!
- */
-
-
-tx_rnbase::load('tx_mklib_util_httprequest_adapter_Interface');
 
 /**
- * HttpRequest
+ * HttpRequest.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httprequest_adapter_Interface
 {
-
-
     /**
-     * Parameters array
+     * Parameters array.
      *
      * @var array
      */
     protected $config = array();
-
 
     /**
      * What host are we connected to?
@@ -74,25 +29,23 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
     protected $port = null;
 
     /**
-     * The curl session handle
+     * The curl session handle.
      *
      * @var resource|null
      */
     protected $curl = null;
 
     /**
-     * Response gotten from server
+     * Response gotten from server.
      *
      * @var string
      */
     protected $response = null;
 
     /**
-     * Adapter constructor
+     * Adapter constructor.
      *
      * Config is set using setConfig()
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -102,7 +55,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
     }
 
     /**
-     * Set the configuration array for the adapter
+     * Set the configuration array for the adapter.
      *
      * @param array $config
      */
@@ -132,8 +85,9 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
     /**
      * Direct setter for cURL adapter related options.
      *
-     * @param  string|int $option
-     * @param  mixed $value
+     * @param string|int $option
+     * @param mixed      $value
+     *
      * @return Zend_Http_Adapter_Curl
      */
     protected function setCurlOption($option, $value)
@@ -146,14 +100,13 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         return $this;
     }
 
-
     /**
-     * Initialize curl
+     * Initialize curl.
      *
-     * @param  string  $host
-     * @param  int   $port
-     * @param  bool $secure
-     * @return void
+     * @param string $host
+     * @param int    $port
+     * @param bool   $secure
+     *
      * @throws Zend_Http_Client_Adapter_Exception if unable to connect
      */
     public function connect($host, $port = 80, $secure = false)
@@ -175,7 +128,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
 
         // Do the actual connection
         $this->curl = curl_init();
-        if ($port != 80) {
+        if (80 != $port) {
             curl_setopt($this->curl, CURLOPT_PORT, (int) $port);
         }
 
@@ -189,10 +142,10 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
 
         if (!$this->curl) {
             $this->close();
-            throw new Exception('Unable to Connect to ' .  $host . ':' . $port);
+            throw new Exception('Unable to Connect to '.$host.':'.$port);
         }
 
-        if ($secure !== false) {
+        if (false !== $secure) {
             // we use an private key!
             if (isset($this->config['sslcert'])) {
                 curl_setopt($this->curl, CURLOPT_SSLCERT, $this->config['sslcert']);
@@ -214,16 +167,15 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         $this->port = $port;
     }
 
-
-
     /**
-     * Send request to the remote server
+     * Send request to the remote server.
      *
-     * @param  string $method
-     * @param  string $uri
-     * @param  float $http_ver
-     * @param  array $headers
-     * @param  string $body
+     * @param string $method
+     * @param string $uri
+     * @param float  $http_ver
+     * @param array  $headers
+     * @param string $body
+     *
      * @return string $request
      */
     public function write($method, $uri, $headers = array(), $body = '')
@@ -256,7 +208,6 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
                 throw new Exception('Method currently not supported');
         }
 
-
         // mark as HTTP request and set HTTP method
         curl_setopt($this->curl, CURL_HTTP_VERSION_1_1, true);
         curl_setopt($this->curl, $curlMethod, true);
@@ -271,18 +222,18 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         $headers['Accept'] = '';
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $headers);
 
-        /**
+        /*
          * Make sure POSTFIELDS is set after $curlMethod is set:
          * @link http://de2.php.net/manual/en/function.curl-setopt.php#81161
          */
-        if ($method == tx_mklib_util_HttpRequest::METHOD_POST) {
+        if (tx_mklib_util_HttpRequest::METHOD_POST == $method) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, $body);
         }
 
         // set additional curl options
         if (isset($this->config['curloptions'])) {
             foreach ((array) $this->config['curloptions'] as $k => $v) {
-                if (curl_setopt($this->curl, $k, $v) == false) {
+                if (false == curl_setopt($this->curl, $k, $v)) {
                     throw new Exception('Unknown or erroreous cURL option "'.$k.'" set');
                 }
             }
@@ -293,11 +244,11 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
 
         $this->response = $response;
 
-        $request  = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
+        $request = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
         $request .= $body;
 
         if (empty($this->response)) {
-            throw new Exception('Error in cURL request: ' . curl_error($this->curl));
+            throw new Exception('Error in cURL request: '.curl_error($this->curl));
         }
 
         // cURL automatically decodes chunked-messages, this means we have to disallow the response to do it again
@@ -306,7 +257,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         }
 
         // cURL automatically handles Proxy rewrites, remove the "HTTP/1.0 200 Connection established" string:
-        if (stripos($this->response, "HTTP/1.0 200 Connection established\r\n\r\n") !== false) {
+        if (false !== stripos($this->response, "HTTP/1.0 200 Connection established\r\n\r\n")) {
             $this->response = str_ireplace("HTTP/1.0 200 Connection established\r\n\r\n", '', $this->response);
         }
 
@@ -314,7 +265,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
     }
 
     /**
-     * Return read response from server
+     * Return read response from server.
      *
      * @return string
      */
@@ -324,7 +275,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
     }
 
     /**
-     * Close the connection to the server
+     * Close the connection to the server.
      */
     public function close()
     {
@@ -337,5 +288,5 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php'];
 }

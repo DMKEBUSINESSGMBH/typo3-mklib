@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_search
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,30 +25,23 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-
-tx_rnbase::load('tx_rnbase_util_SearchBase');
-
-
 /**
- * Class to search ads from database
- *
- * @package tx_mklib
- * @subpackage tx_mklib_search
+ * Class to search ads from database.
  */
 class tx_mklib_search_StaticCountries extends tx_rnbase_util_SearchBase
 {
     /**
-     * getTableMappings()
+     * getTableMappings().
      */
     protected function getTableMappings()
     {
     }
 
     /**
-     * useAlias()
+     * useAlias().
      */
     protected function useAlias()
     {
@@ -58,7 +49,7 @@ class tx_mklib_search_StaticCountries extends tx_rnbase_util_SearchBase
     }
 
     /**
-     * getBaseTableAlias()
+     * getBaseTableAlias().
      */
     protected function getBaseTableAlias()
     {
@@ -66,7 +57,7 @@ class tx_mklib_search_StaticCountries extends tx_rnbase_util_SearchBase
     }
 
     /**
-     * getBaseTable()
+     * getBaseTable().
      */
     protected function getBaseTable()
     {
@@ -74,7 +65,7 @@ class tx_mklib_search_StaticCountries extends tx_rnbase_util_SearchBase
     }
 
     /**
-     * getWrapperClass()
+     * getWrapperClass().
      */
     public function getWrapperClass()
     {
@@ -82,9 +73,10 @@ class tx_mklib_search_StaticCountries extends tx_rnbase_util_SearchBase
     }
 
     /**
-     * Liefert alle JOINS zurück
+     * Liefert alle JOINS zurück.
      *
      * @param array $tableAliases
+     *
      * @return string
      */
     protected function getJoins($tableAliases)

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,47 +25,45 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-
 /**
- * Klasse enthält allgemeine Funktionen für Variablen
+ * Klasse enthält allgemeine Funktionen für Variablen.
  *
  * @author mwagner
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 class tx_mklib_util_Var
 {
-
     /**
-     * Prüft, ob der Wert TRUE ist
+     * Prüft, ob der Wert TRUE ist.
      *
      * @author mwagner
      *
      * @param   mixed       Der zu prüfende Wert
-     * @return  bool     Ist der Wert TRUE
+     *
+     * @return bool Ist der Wert TRUE
      */
     public static function isTrueVal($mVal)
     {
-        return (($mVal === true) || ($mVal == '1') || (strtoupper($mVal) == 'TRUE'));
+        return (true === $mVal) || ('1' == $mVal) || ('TRUE' == strtoupper($mVal));
     }
 
     /**
-     * Prüft, ob der Wert FALSE ist
+     * Prüft, ob der Wert FALSE ist.
      *
      * @author mwagner
      *
      * @param   mixed       Der zu prüfende Wert
-     * @return  bool     Ist der Wert FALSE
+     *
+     * @return bool Ist der Wert FALSE
      */
     public static function isFalseVal($mVal)
     {
-        return (($mVal == false) || ($mVal == '0') || (strtoupper($mVal) == 'FALSE'));
+        return (false == $mVal) || ('0' == $mVal) || ('FALSE' == strtoupper($mVal));
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Var.php'];
 }

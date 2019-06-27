@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_tests
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -29,17 +27,16 @@
 // backwards compatibility for TYPO3 version where the autoloading through
 // composer is not fully implemented
 if (!class_exists('DMK\Mklib\Utility\Tests')) {
-    require_once \tx_rnbase_util_Extensions::extPath('mklib') . 'Classes/Utility/Tests.php';
+    require_once \tx_rnbase_util_Extensions::extPath('mklib').'Classes/Utility/Tests.php';
 }
 
 /**
- * tx_mklib_tests_Util
+ * tx_mklib_tests_Util.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
+ *
  * @deprecated use \DMK\Mklib\Utility\Tests instead
  */
 class tx_mklib_tests_Util extends \DMK\Mklib\Utility\Tests
@@ -47,5 +44,5 @@ class tx_mklib_tests_Util extends \DMK\Mklib\Utility\Tests
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php'];
 }

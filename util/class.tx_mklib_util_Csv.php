@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -25,17 +23,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
  * Die Klasse ermöglicht direkt eine CSV Datei
- * mit den Boardmitteln von TYPO3 zu schreiben
+ * mit den Boardmitteln von TYPO3 zu schreiben.
  */
 class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
 {
-
     /**
-     * Gibt die Csv Zeilen zurück, die gesetzt wurden
+     * Gibt die Csv Zeilen zurück, die gesetzt wurden.
+     *
      * @return array
      */
     public function getCsvLines()
@@ -44,11 +41,11 @@ class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
     }
 
     /**
-     * Schreibt die ganzen CSV Zeilen in eine Datei
+     * Schreibt die ganzen CSV Zeilen in eine Datei.
      *
      * @param string $sDir
      * @param string $sPrefix
-     * @param array $aData
+     * @param array  $aData
      * @param string $sFileName | gibt es einen festen dateinamen?
      *
      * @return string | Name der Datei
@@ -75,22 +72,21 @@ class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
     }
 
     /**
-     * @param array $csvRow
+     * @param array  $csvRow
      * @param string $delimiter
      * @param string $quote
-     * @return void
      */
     public function setCsvRow($csvRow, $delimiter = ',', $quote = '"')
     {
-        if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-            $csvLine = \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($csvRow, $delimiter, $quote);
+        if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
+            $csvLine = \TYPO3\CMS\Core\Utility\CsvUtility::csvValues($csvRow, $delimiter, $quote);
         } else {
-            $csvLine = t3lib_div::csvValues($csvRow, $delimiter, $quote);
+            $csvLine = \TYPO3\CMS\Core\Utility\GeneralUtility::csvValues($csvRow, $delimiter, $quote);
         }
         $this->csvLines[] = $csvLine;
     }
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Csv.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Csv.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Csv.php'];
 }

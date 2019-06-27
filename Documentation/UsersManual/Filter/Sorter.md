@@ -39,7 +39,6 @@ Example filter class
 --------------------
 
 ~~~~ {.sourceCode .ts}
-tx_rnbase::load('tx_mklib_filter_Sorter');
 
 class Tx_Mkexample_Filter_Projects extends tx_mklib_filter_Sorter {
 

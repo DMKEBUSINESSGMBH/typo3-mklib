@@ -1,22 +1,6 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- *
- *
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -38,62 +22,54 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
-
-
 /**
- * HttpRequest
+ * HttpRequest.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 interface tx_mklib_util_httprequest_adapter_Interface
 {
-
-
     /**
-     * Set the configuration array for the adapter
+     * Set the configuration array for the adapter.
      *
      * @param array $config
      */
     public function setConfig(array $config = array());
 
-
     /**
-     * Connect to the remote server
+     * Connect to the remote server.
      *
-     * @param string  $host
+     * @param string $host
      * @param int    $port
-     * @param bool $secure
+     * @param bool   $secure
      */
     public function connect($host, $port = 80, $secure = false);
 
-
     /**
-     * Send request to the remote server
+     * Send request to the remote server.
      *
      * @param string $method
      * @param string $url
-     * @param array $headers
+     * @param array  $headers
      * @param string $body
+     *
      * @return string Request as text
      */
     public function write($method, $url, $headers = array(), $body = '');
 
-
     /**
-     * Read response from server
+     * Read response from server.
      *
      * @return string
      */
     public function read();
 
     /**
-     * Close the connection to the server
+     * Close the connection to the server.
      */
     public function close();
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_adapter_Interface.php'];
 }

@@ -22,23 +22,15 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_mklib_util_File');
-tx_rnbase::load('tx_mklib_scheduler_Generic');
-
 /**
- *
- * @package tx_mklib
- * @subpackage tx_mklib_scheduler
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_scheduler_cleanupTempFiles extends tx_mklib_scheduler_Generic
 {
-
-
     /**
+     * @param array $options
      *
-     * @param   array   $options
-     * @return  string
+     * @return string
      */
     protected function executeTask(array $aOptions, array &$aDevLog)
     {
@@ -50,9 +42,9 @@ class tx_mklib_scheduler_cleanupTempFiles extends tx_mklib_scheduler_Generic
     }
 
     /**
-     * This method returns the destination mail address as additional information
+     * This method returns the destination mail address as additional information.
      *
-     * @return  string  Information to display
+     * @return string Information to display
      */
     public function getAdditionalInformation($info = '')
     {
@@ -63,5 +55,5 @@ class tx_mklib_scheduler_cleanupTempFiles extends tx_mklib_scheduler_Generic
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_cleanupTempFiles.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_cleanupTempFiles.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_cleanupTempFiles.php'];
 }

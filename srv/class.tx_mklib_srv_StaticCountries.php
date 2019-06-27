@@ -22,26 +22,20 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-tx_rnbase::load('tx_mklib_srv_Base');
-
 /**
  * @author Hannes Bochmann
  */
 class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
 {
-
     /**
      * @param int $isoNumber
-     *
-     * @return null || tx_mklib_model_StaticCountry
      */
     public function getCountryByIsoNr($isoNumber)
     {
         $options = array();
 
         $fields = array(
-            'STATICCOUNTRY.cn_iso_nr' => array(OP_EQ_INT => $isoNumber)
+            'STATICCOUNTRY.cn_iso_nr' => array(OP_EQ_INT => $isoNumber),
         );
 
         return $this->searchSingle($fields, $options);
@@ -49,22 +43,21 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
 
     /**
      * @param string $germanShortName
-     *
-     * @return null || tx_mklib_model_StaticCountry
      */
     public function getCountryByGermanShortName($germanShortName)
     {
         $options = array();
 
         $fields = array(
-            'STATICCOUNTRY.cn_short_de' => array(OP_EQ => $germanShortName)
+            'STATICCOUNTRY.cn_short_de' => array(OP_EQ => $germanShortName),
         );
 
         return $this->searchSingle($fields, $options);
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::search()
      */
     public function search($fields, $options)
@@ -75,7 +68,6 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
         return parent::search($fields, $options);
     }
 
-
     /**
      * @return string
      */
@@ -85,51 +77,50 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::create()
      */
     public function create(array $data)
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'creating a static country via the service can\'t be done.'
+            'creating a static country via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::handleUpdate()
      */
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'updating a static country via the service can\'t be done.'
+            'updating a static country via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::handleDelete()
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'deleting a static country via the service can\'t be done.'
+            'deleting a static country via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::handleCreation()
      */
     public function handleCreation(array $data)
     {
-        tx_rnbase::load('tx_rnbase_util_Debug');
         tx_rnbase_util_Debug::debug(array(
-            'creating a static country via the service can\'t be done.'
+            'creating a static country via the service can\'t be done.',
         ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 }

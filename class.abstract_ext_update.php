@@ -1,64 +1,34 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib
- *
- *  Copyright notice
- *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
-tx_rnbase::load('tx_rnbase_util_Strings');
-tx_rnbase::load('tx_rnbase_util_Network');
-tx_rnbase::load('tx_rnbase_util_Link');
 
 /**
- * Class for updating the db
+ * Class for updating the db.
  *
  * @author   Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
 abstract class abstract_ext_update
 {
-
     /**
-     *
      * @var \TYPO3\CMS\Core\Charset\CharsetConverter or t3lib_cs
      */
     private $csconv = false;
 
     /**
-     * Main function, returning the HTML content of the update module
+     * Main function, returning the HTML content of the update module.
      *
-     * @return  string      HTML
+     * @return string HTML
      */
     public function main()
     {
         $fieldsets = array();
-        $fieldsets['Character encoding']    = $this->getDestEncodingSelect();
-        $fieldsets['Update Static Info Tables']    = $this->handleUpdateStaticInfoTables();
+        $fieldsets['Character encoding'] = $this->getDestEncodingSelect();
+        $fieldsets['Update Static Info Tables'] = $this->handleUpdateStaticInfoTables();
 
-        $content  = '';
+        $content = '';
         $content .= '<form action="'.htmlspecialchars(tx_rnbase_util_Link::linkThisScript()).'" method="post">';
         foreach ($fieldsets as $legend => $fieldset) {
             $content .= '<fieldset>';
             if ($legend && !is_numeric($legend)) {
-                $content .=  '<legend><strong>&nbsp;'.$legend.'&nbsp;</strong></legend>';
+                $content .= '<legend><strong>&nbsp;'.$legend.'&nbsp;</strong></legend>';
             }
             $content .= $fieldset;
             $content .= '</fieldset>';
@@ -72,13 +42,14 @@ abstract class abstract_ext_update
     }
 
     /**
-     * Erzeugt die Selectbox für das encoding
-     * @return  string
+     * Erzeugt die Selectbox für das encoding.
+     *
+     * @return string
      */
     private function getDestEncodingSelect()
     {
-        require_once(tx_rnbase_util_Extensions::extPath('static_info_tables', 'class.tx_staticinfotables_encoding.php'));
-        $content  = '';
+        require_once tx_rnbase_util_Extensions::extPath('static_info_tables', 'class.tx_staticinfotables_encoding.php');
+        $content = '';
         $content .= '<label>Destination character encoding:</label>';
         $content .= tx_staticinfotables_encoding::getEncodingSelect('dest_encoding', '', 'utf-8');
         $content .= '<p>(The character encoding must match the encoding of the existing tables data. By default this is UTF-8.)</p>';
@@ -100,20 +71,20 @@ abstract class abstract_ext_update
     /**
      * @TODO prüfen ob der import bereits durchgeführt wurde.
      *
-     * @return  string
+     * @return string
      */
     private function handleUpdateStaticInfoTables()
     {
         $updateKey = $this->getStatementKey();
 
-        $content  = '';
+        $content = '';
         $content .= $this->getInfoMsg();
 
         if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
             $content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
         } else {
             if (tx_rnbase_parameters::getPostOrGetParameter($updateKey)) {
-                if (($ret = $this->queryDB($updateKey)) === true) {
+                if (true === ($ret = $this->queryDB($updateKey))) {
                     $content .= $this->getSuccessMsg();
                 } else {
                     $content .= '<p><big><strong>'.$ret.'</strong></big></p>';
@@ -177,11 +148,11 @@ abstract class abstract_ext_update
                 // alles ok
         }
 
-        if (count($querys) === 0) {
+        if (0 === count($querys)) {
             return 'No queries found. ('.$updateKey.')';
         }
         foreach ($querys as $query) {
-            $GLOBALS['TYPO3_DB']->admin_query($query);
+            \Tx_Rnbase_Database_Connection::getInstance()->doQuery($query);
         }
 
         return true;
@@ -189,6 +160,7 @@ abstract class abstract_ext_update
 
     /**
      * Sollen Updates, Inserts ausgeführt werden?
+     *
      * @return string
      */
     protected function getSqlMode()
@@ -202,11 +174,7 @@ abstract class abstract_ext_update
     private function getCharsetsConversion()
     {
         if (!$this->csconv) {
-            if (tx_rnbase_util_TYPO3::isTYPO60OrHigher()) {
-                $charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
-            } else {
-                $charsetConverterClass = 't3lib_cs';
-            }
+            $charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
             $this->csconv = tx_rnbase::makeInstance($charsetConverterClass);
         }
 
@@ -216,13 +184,14 @@ abstract class abstract_ext_update
     /**
      * Convert the values of a SQL update statement to a different encoding than UTF-8.
      *
-     * @param   string $query Update statement like: UPDATE static_countries SET zipcode_rule='2', zipcode_length='5' WHERE cn_iso_2='DE';
-     * @param   string $destEncoding Destination encoding
-     * @return  string Converted update statement
+     * @param string $query        Update statement like: UPDATE static_countries SET zipcode_rule='2', zipcode_length='5' WHERE cn_iso_2='DE';
+     * @param string $destEncoding Destination encoding
+     *
+     * @return string Converted update statement
      */
     private function getUpdateEncoded($query, $destEncoding)
     {
-        if (!($destEncoding === 'utf-8')) {
+        if (!('utf-8' === $destEncoding)) {
             $queryElements = explode('WHERE', $query);
             $where = preg_replace('#;$#', '', trim($queryElements[1]));
             $queryElements = explode('SET', $queryElements[0]);
@@ -239,7 +208,12 @@ abstract class abstract_ext_update
                 $value = $this->getCharsetsConversion()->conv($value, 'utf-8', $destEncoding);
                 $fields_values[$col[0]] = $value;
             }
-            $query = $GLOBALS['TYPO3_DB']->UPDATEquery($table, $where, $fields_values);
+            $query = \Tx_Rnbase_Database_Connection::getInstance()->doUpdate(
+                $table,
+                $where,
+                $fields_values,
+                ['sqlonly' => true]
+            );
         }
 
         return $query;
@@ -251,7 +225,8 @@ abstract class abstract_ext_update
     }
 
     /**
-     * Liefert den Namen der Datei, welche die Update Statements beinhaltet
+     * Liefert den Namen der Datei, welche die Update Statements beinhaltet.
+     *
      * @return string
      */
     protected function getSqlFileName()
@@ -268,19 +243,22 @@ abstract class abstract_ext_update
     }
 
     /**
-     * Liefert den Namen der Extension für die
+     * Liefert den Namen der Extension für die.
+     *
      * @return string
      */
     abstract protected function getExtensionName();
 
     /**
-     * Liefert die Nachricht, was gemacht werden soll
+     * Liefert die Nachricht, was gemacht werden soll.
+     *
      * @return string
      */
     abstract protected function getInfoMsg();
 
     /**
-     * Liefert die Nachricht für den Erfolgsfall
+     * Liefert die Nachricht für den Erfolgsfall.
+     *
      * @return string
      */
     abstract protected function getSuccessMsg();
@@ -288,5 +266,5 @@ abstract class abstract_ext_update
 
 // Include extension?
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php'];
 }

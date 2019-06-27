@@ -1,54 +1,12 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_util
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- *
- * Copyright notice
- *
- * (c) 2013 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- * All rights reserved
- *
- * This script is part of the TYPO3 project. The TYPO3 project is
- * free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
- *
- * This script is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * This copyright notice MUST APPEAR in all copies of the script!
- */
-
-
 
 /**
- * HttpRequest
+ * HttpRequest.
  *
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
 class tx_mklib_util_httprequest_Response
 {
-
     /**
      * List of all known HTTP response codes - used by responseCodeAsText() to
      * translate numeric codes to messages.
@@ -106,18 +64,18 @@ class tx_mklib_util_httprequest_Response
         503 => 'Service Unavailable',
         504 => 'Gateway Timeout',
         505 => 'HTTP Version Not Supported',
-        509 => 'Bandwidth Limit Exceeded'
+        509 => 'Bandwidth Limit Exceeded',
     );
 
     /**
-     * The HTTP version (1.0, 1.1)
+     * The HTTP version (1.0, 1.1).
      *
      * @var string
      */
     protected $version;
 
     /**
-     * The HTTP response code
+     * The HTTP response code.
      *
      * @var int
      */
@@ -125,28 +83,28 @@ class tx_mklib_util_httprequest_Response
 
     /**
      * The HTTP response code as string
-     * (e.g. 'Not Found' for 404 or 'Internal Server Error' for 500)
+     * (e.g. 'Not Found' for 404 or 'Internal Server Error' for 500).
      *
      * @var string
      */
     protected $message;
 
     /**
-     * The HTTP response headers array
+     * The HTTP response headers array.
      *
      * @var array
      */
     protected $headers = array();
 
     /**
-     * The HTTP response body
+     * The HTTP response body.
      *
      * @var string
      */
     protected $body;
 
     /**
-     * HTTP response constructor
+     * HTTP response constructor.
      *
      * In most cases, you would use tx_mklib_util_httprequest_Response::fromString to parse an HTTP
      * response string and create a new tx_mklib_util_httprequest_Response object.
@@ -157,17 +115,17 @@ class tx_mklib_util_httprequest_Response
      *
      * If no message is passed, the message will be guessed according to the response code.
      *
-     * @param int    $code Response code (200, 404, ...)
+     * @param int    $code    Response code (200, 404, ...)
      * @param array  $headers Headers array
-     * @param string $body Response body
+     * @param string $body    Response body
      * @param string $message Response code as text
      * @param string $version HTTP version
      */
     public function __construct($code, array $headers, $body = null, $message = null, $version = '1.1')
     {
         // Make sure the response code is valid and set it
-        if (self::responseCodeAsText($code) === null) {
-            throw new Exception($code . ' is not a valid HTTP response code');
+        if (null === self::responseCodeAsText($code)) {
+            throw new Exception($code.' is not a valid HTTP response code');
         }
 
         $this->code = $code;
@@ -175,11 +133,11 @@ class tx_mklib_util_httprequest_Response
         foreach ($headers as $name => $value) {
             if (is_int($name)) {
                 $header = explode(':', $value, 2);
-                if (count($header) != 2) {
-                    throw new Exception('"' . $value . '" is not a valid HTTP header');
+                if (2 != count($header)) {
+                    throw new Exception('"'.$value.'" is not a valid HTTP header');
                 }
 
-                $name  = trim($header[0]);
+                $name = trim($header[0]);
                 $value = trim($header[1]);
             }
 
@@ -190,8 +148,8 @@ class tx_mklib_util_httprequest_Response
         $this->body = $body;
 
         // Set the HTTP version
-        if (! preg_match('|^\d\.\d$|', $version)) {
-            throw new Exception('Invalid HTTP response version: ' . $version);
+        if (!preg_match('|^\d\.\d$|', $version)) {
+            throw new Exception('Invalid HTTP response version: '.$version);
         }
 
         $this->version = $version;
@@ -206,14 +164,14 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Check whether the response is an error
+     * Check whether the response is an error.
      *
      * @return bool
      */
     public function isError()
     {
         $restype = floor($this->code / 100);
-        if ($restype == 4 || $restype == 5) {
+        if (4 == $restype || 5 == $restype) {
             return true;
         }
 
@@ -221,14 +179,14 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Check whether the response in successful
+     * Check whether the response in successful.
      *
      * @return bool
      */
     public function isSuccessful()
     {
         $restype = floor($this->code / 100);
-        if ($restype == 2 || $restype == 1) { // Shouldn't 3xx count as success as well ???
+        if (2 == $restype || 1 == $restype) { // Shouldn't 3xx count as success as well ???
             return true;
         }
 
@@ -236,14 +194,14 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Check whether the response is a redirection
+     * Check whether the response is a redirection.
      *
      * @return bool
      */
     public function isRedirect()
     {
         $restype = floor($this->code / 100);
-        if ($restype == 3) {
+        if (3 == $restype) {
             return true;
         }
 
@@ -251,7 +209,7 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get the response body as string
+     * Get the response body as string.
      *
      * This method returns the body of the HTTP response (the content), as it
      * should be in it's readable version - that is, after decoding it (if it
@@ -298,7 +256,7 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get the raw response body (as transfered "on wire") as string
+     * Get the raw response body (as transfered "on wire") as string.
      *
      * If the body is encoded (with Transfer-Encoding, not content-encoding -
      * IE "chunked" body), gzip compressed, etc. it will not be decoded.
@@ -311,7 +269,7 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get the HTTP version of the response
+     * Get the HTTP version of the response.
      *
      * @return string
      */
@@ -321,7 +279,7 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get the HTTP response status code
+     * Get the HTTP response status code.
      *
      * @return int
      */
@@ -332,7 +290,7 @@ class tx_mklib_util_httprequest_Response
 
     /**
      * Return a message describing the HTTP response code
-     * (Eg. "OK", "Not Found", "Moved Permanently")
+     * (Eg. "OK", "Not Found", "Moved Permanently").
      *
      * @return string
      */
@@ -342,7 +300,7 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get the response headers
+     * Get the response headers.
      *
      * @return array
      */
@@ -352,15 +310,16 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get a specific header as string, or null if it is not set
+     * Get a specific header as string, or null if it is not set.
      *
      * @param string$header
+     *
      * @return string|array|null
      */
     public function getHeader($header)
     {
         $header = ucwords(strtolower($header));
-        if (! is_string($header) || ! isset($this->headers[$header])) {
+        if (!is_string($header) || !isset($this->headers[$header])) {
             return null;
         }
 
@@ -368,10 +327,11 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get all headers as string
+     * Get all headers as string.
      *
-     * @param bool $status_line Whether to return the first status line (IE "HTTP 200 OK")
-     * @param string $br Line breaks (eg. "\n", "\r\n", "<br />")
+     * @param bool   $status_line Whether to return the first status line (IE "HTTP 200 OK")
+     * @param string $br          Line breaks (eg. "\n", "\r\n", "<br />")
+     *
      * @return string
      */
     public function getHeadersAsString($status_line = true, $br = "\n")
@@ -397,18 +357,19 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Get the entire response as string
+     * Get the entire response as string.
      *
      * @param string $br Line breaks (eg. "\n", "\r\n", "<br />")
+     *
      * @return string
      */
     public function asString($br = "\n")
     {
-        return $this->getHeadersAsString(true, $br) . $br . $this->getRawBody();
+        return $this->getHeadersAsString(true, $br).$br.$this->getRawBody();
     }
 
     /**
-     * Implements magic __toString()
+     * Implements magic __toString().
      *
      * @return string
      */
@@ -425,18 +386,19 @@ class tx_mklib_util_httprequest_Response
      * Conforms to HTTP/1.1 as defined in RFC 2616 (except for 'Unknown')
      * See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10 for reference
      *
-     * @param int $code HTTP response code
+     * @param int  $code   HTTP response code
      * @param bool $http11 Use HTTP version 1.1
+     *
      * @return string
      */
     public static function responseCodeAsText($code = null, $http11 = true)
     {
         $messages = self::$messages;
-        if (! $http11) {
+        if (!$http11) {
             $messages[302] = 'Moved Temporarily';
         }
 
-        if ($code === null) {
+        if (null === $code) {
             return $messages;
         } elseif (isset($messages[$code])) {
             return $messages[$code];
@@ -446,9 +408,10 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Extract the response code from a response string
+     * Extract the response code from a response string.
      *
      * @param string $response_str
+     *
      * @return int
      */
     public static function extractCode($response_str)
@@ -463,9 +426,10 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Extract the HTTP message from a response
+     * Extract the HTTP message from a response.
      *
      * @param string $response_str
+     *
      * @return string
      */
     public static function extractMessage($response_str)
@@ -480,9 +444,10 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Extract the HTTP version from a response
+     * Extract the HTTP version from a response.
      *
      * @param string $response_str
+     *
      * @return string
      */
     public static function extractVersion($response_str)
@@ -497,10 +462,11 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Extract the headers from a response string
+     * Extract the headers from a response string.
      *
-     * @param   string $response_str
-     * @return  array
+     * @param string $response_str
+     *
+     * @return array
      */
     public static function extractHeaders($response_str)
     {
@@ -508,7 +474,7 @@ class tx_mklib_util_httprequest_Response
 
         // First, split body and headers
         $parts = preg_split('|(?:\r?\n){2}|m', $response_str, 2);
-        if (! $parts[0]) {
+        if (!$parts[0]) {
             return $headers;
         }
 
@@ -519,7 +485,7 @@ class tx_mklib_util_httprequest_Response
 
         foreach ($lines as $line) {
             $line = trim($line, "\r\n");
-            if ($line == '') {
+            if ('' == $line) {
                 break;
             }
 
@@ -530,7 +496,7 @@ class tx_mklib_util_httprequest_Response
                 $h_value = $m[2];
 
                 if (isset($headers[$h_name])) {
-                    if (! is_array($headers[$h_name])) {
+                    if (!is_array($headers[$h_name])) {
                         $headers[$h_name] = array($headers[$h_name]);
                     }
 
@@ -539,7 +505,7 @@ class tx_mklib_util_httprequest_Response
                     $headers[$h_name] = $h_value;
                 }
                 $last_header = $h_name;
-            } elseif (preg_match('|^\s+(.+)$|', $line, $m) && $last_header !== null) {
+            } elseif (preg_match('|^\s+(.+)$|', $line, $m) && null !== $last_header) {
                 if (is_array($headers[$last_header])) {
                     end($headers[$last_header]);
                     $last_header_key = key($headers[$last_header]);
@@ -554,9 +520,10 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Extract the body from a response string
+     * Extract the body from a response string.
      *
      * @param string $response_str
+     *
      * @return string
      */
     public static function extractBody($response_str)
@@ -570,9 +537,10 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Decode a "chunked" transfer-encoded body and return the decoded text
+     * Decode a "chunked" transfer-encoded body and return the decoded text.
      *
      * @param string $body
+     *
      * @return string
      */
     public static function decodeChunkedBody($body)
@@ -588,7 +556,7 @@ class tx_mklib_util_httprequest_Response
         }
 
         while (trim($body)) {
-            if (! preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $body, $m)) {
+            if (!preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $body, $m)) {
                 throw new Exception("Error parsing body - doesn't seem to be a chunked message");
             }
 
@@ -606,16 +574,17 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Decode a gzip encoded message (when Content-encoding = gzip)
+     * Decode a gzip encoded message (when Content-encoding = gzip).
      *
      * Currently requires PHP with zlib support
      *
      * @param string $body
+     *
      * @return string
      */
     public static function decodeGzip($body)
     {
-        if (! function_exists('gzinflate')) {
+        if (!function_exists('gzinflate')) {
             throw new Exception(
                 'zlib extension is required in order to decode "gzip" encoding'
             );
@@ -625,16 +594,17 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Decode a zlib deflated message (when Content-encoding = deflate)
+     * Decode a zlib deflated message (when Content-encoding = deflate).
      *
      * Currently requires PHP with zlib support
      *
      * @param string $body
+     *
      * @return string
      */
     public static function decodeDeflate($body)
     {
-        if (! function_exists('gzuncompress')) {
+        if (!function_exists('gzuncompress')) {
             throw new Exception(
                 'zlib extension is required in order to decode "deflate" encoding'
             );
@@ -649,7 +619,7 @@ class tx_mklib_util_httprequest_Response
          *
          * This method was adapted from PEAR HTTP_Request2 by (c) Alexey Borzov
          *
-         * @link http://framework.zend.com/issues/browse/ZF-6040
+         * @see http://framework.zend.com/issues/browse/ZF-6040
          */
         $zlibHeader = unpack('n', substr($body, 0, 2));
         if ($zlibHeader[1] % 31 == 0) {
@@ -660,16 +630,17 @@ class tx_mklib_util_httprequest_Response
     }
 
     /**
-     * Create a new tx_mklib_util_httprequest_Response object from a string
+     * Create a new tx_mklib_util_httprequest_Response object from a string.
      *
      * @param string $response_str
+     *
      * @return tx_mklib_util_httprequest_Response
      */
     public static function fromString($response_str)
     {
-        $code    = self::extractCode($response_str);
+        $code = self::extractCode($response_str);
         $headers = self::extractHeaders($response_str);
-        $body    = self::extractBody($response_str);
+        $body = self::extractBody($response_str);
         $version = self::extractVersion($response_str);
         $message = self::extractMessage($response_str);
 
@@ -678,5 +649,5 @@ class tx_mklib_util_httprequest_Response
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_Response.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_Response.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_Response.php'];
 }

@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_srv
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,22 +25,17 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-tx_rnbase::load('tx_mklib_srv_Base');
-
 /**
- * Dummy Service um uns DB Abfragen zu ersparen
- *
- * @package tx_mklib
- * @subpackage tx_mklib_srv
+ * Dummy Service um uns DB Abfragen zu ersparen.
  */
 class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see tx_mklib_srv_Base::search()
      */
     public function search($fields, $options)
@@ -64,7 +57,7 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
         }//reicht um zu sehen ob die Sortierung anspringt
 
         //versteckte zurück geben?
-        if ($GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden'] == 1) {
+        if (1 == $GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden']) {
             $aResults[5] = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 6, 'hidden' => 1));
         }
 
@@ -75,11 +68,11 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
         return $aResults;
     }
 
-  /**
-   * Liefert die zugehörige Search-Klasse zurück
-   *
-   * @return string
-   */
+    /**
+     * Liefert die zugehörige Search-Klasse zurück.
+     *
+     * @return string
+     */
     public function getSearchClass()
     {
         return 'tx_mklib_search_Wordlist';
@@ -87,5 +80,5 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'];
 }

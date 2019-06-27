@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright notice
+ * Copyright notice.
  *
  * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
@@ -21,25 +21,19 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_SearchGeneric');
-tx_rnbase::load('tx_mklib_repository_TtNews');
-tx_rnbase::load('tx_rnbase_model_base');
 
 /**
- * tx_mklib_tests_repository_TtNews_testcase
+ * tx_mklib_tests_repository_TtNews_testcase.
  *
- * @package         TYPO3
- * @subpackage      mklib
  * @author          Hannes Bochmann
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
 class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -50,7 +44,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
     }
 
     /**
-     *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
     protected function getRepository()
@@ -74,7 +67,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
     /**
      * Test the getSearchClass method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -93,7 +85,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
     /**
      * Test the getEmptyModel method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -117,7 +108,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
     /**
      * Test the getSearchdef method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -141,7 +131,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
     /**
      * Test the search method.
      *
-     * @return void
      *
      * @group unit
      * @test
@@ -156,7 +145,7 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
                 'NEWALIAS' => array(
                     'table' => 'tx_new_table',
                     'join' => 'JOIN tx_new_table AS NEWALIAS ON NEWS.new_field = NEWALIAS.uid',
-                )
+                ),
             ),
         );
 
@@ -210,8 +199,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
     }
 
     /**
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -258,8 +245,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
     }
 
     /**
-     * @return void
-     *
      * @group unit
      * @test
      */
@@ -309,7 +294,6 @@ class tx_mklib_tests_repository_TtNews_testcase extends tx_rnbase_tests_BaseTest
      * checks the searchdev options.
      *
      * @param array $searchdef
-     * @access protected only public for php5.3 and missing $this usage in closures.
      */
     public static function assertSearchDefiniton($searchDefinition)
     {

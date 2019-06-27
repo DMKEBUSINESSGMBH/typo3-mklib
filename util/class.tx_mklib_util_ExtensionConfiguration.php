@@ -22,22 +22,18 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
-tx_rnbase::load('tx_rnbase_configurations');
-
 /**
- * Soap Client um auf das CRM von tegut zuzugreifen
+ * Soap Client um auf das CRM von tegut zuzugreifen.
  *
  * @author Hannes Bochmann
  */
 class tx_mklib_util_ExtensionConfiguration
 {
-
     /**
      * @var string
      */
     protected $extKey = 'mklib';
-    
+
     /**
      * @return mixed
      */

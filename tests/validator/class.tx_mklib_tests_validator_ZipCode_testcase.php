@@ -1,47 +1,17 @@
 <?php
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_validator
- *
- *  Copyright notice
- *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- */
-
-tx_rnbase::load('tx_rnbase_tests_BaseTestCase');
-tx_rnbase::load('tx_rnbase_util_Files');
 
 /**
- * Testfälle für tx_mklib_validator_ZipCode
+ * Testfälle für tx_mklib_validator_ZipCode.
  *
  * @author   Michael Wagner <michael.wagner@dmk-ebusiness.de>
- * @package tx_mklib
- * @subpackage tx_mklib_tests_validator
  *
  * @group integration
  */
 class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTestCase
 {
-
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
@@ -60,7 +30,7 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
         if (@is_file($sqlFilename)) {
             try {
                 //alle statements importieren
-                tx_mklib_tests_Util::queryDB($sqlFilename, false, true);
+                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true);
             } catch (RuntimeException $e) {
                 $this->markTestSkipped('ext_tables_static_update failed.');
             }
@@ -102,9 +72,10 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
 
     /**
      * @dataProvider providerValidatorRules
-     * @param   string      $zip
-     * @param   int         $countryUid
-     * @param   boolean     $result
+     *
+     * @param string $zip
+     * @param int    $countryUid
+     * @param bool   $result
      *
      * @group integration
      */
@@ -154,7 +125,6 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
                 __LINE__ => array('666666', (46 /*CN*/), true),
                 __LINE__ => array('66666', (46 /*CN*/), false),
                 __LINE__ => array('6666666', (46 /*CN*/), false),
-
             ) as $key => $row) {
             $key = 'Line:'.strtolower($key).' Zip:'.$row[0].' Country:'.intval($row[1]).' Return:'.intval($row[2]);
             $return[$key] = $row;
@@ -168,20 +138,21 @@ class tx_mklib_tests_validator_ZipCode_testcase extends tx_rnbase_tests_BaseTest
      */
     private static function checkStaticCountries()
     {
-        $cnt = tx_rnbase_util_DB::doSelect('COUNT(uid) as cnt', 'static_countries', array('enablefieldsoff' => 1,/*'debug'=>1,*/ 'where' => 'zipcode_rule > 0'));
+        $cnt = tx_rnbase_util_DB::doSelect('COUNT(uid) as cnt', 'static_countries', array('enablefieldsoff' => 1, /*'debug'=>1,*/ 'where' => 'zipcode_rule > 0'));
         $loaded = intval($cnt[0]['cnt']) > 0;
 
         if (!$loaded) {
             // zur Sicherheit die Zip Code Rules einfügen
             $sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(tx_rnbase_util_Extensions::extPath('mklib', 'ext_tables_static_update.sql'));
             if (@is_file($sqlFilename)) {
-                tx_mklib_tests_Util::queryDB($sqlFilename, false, true);//alle statements importieren
+                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); //alle statements importieren
             }
         }
     }
 
     /**
-     * @param   mixed $rowOrUid
+     * @param mixed $rowOrUid
+     *
      * @return tx_mklib_model_StaticCountry
      */
     private static function getStaticCountryModel($rowOrUid)

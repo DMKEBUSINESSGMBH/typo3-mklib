@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Michael Wagner
  *
  *  Copyright notice
@@ -27,13 +25,7 @@
  */
 
 /**
- * benötigte Klassen einbinden
- */
-
-    
-/**
- * @package tx_mklib
- * @subpackage tx_mklib_tests_util
+ * benötigte Klassen einbinden.
  */
 class tx_mklib_tests_util_ExtensionConfiguration_testcase extends Tx_Phpunit_TestCase
 {
@@ -42,25 +34,23 @@ class tx_mklib_tests_util_ExtensionConfiguration_testcase extends Tx_Phpunit_Tes
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dummyExtension'] = serialize(
             array('testConfig' => 'testConfigValue')
         );
-        
+
         $extensionConfiguration =
             tx_rnbase::makeInstance('tx_mklib_util_ExtensionConfigurationTest');
-            
+
         $testConfigValue = $extensionConfiguration->getTestConfig();
 
         self::assertEquals('testConfigValue', $testConfigValue);
     }
 }
 
-tx_rnbase::load('tx_mklib_util_ExtensionConfiguration');
 class tx_mklib_util_ExtensionConfigurationTest extends tx_mklib_util_ExtensionConfiguration
 {
-    
     /**
      * @var string
      */
     protected $extKey = 'dummyExtension';
-    
+
     public function getTestConfig()
     {
         return $this->getExtensionCfgValue('testConfig');

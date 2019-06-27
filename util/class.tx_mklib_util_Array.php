@@ -1,7 +1,5 @@
 <?php
 /**
- * @package tx_mklib
- * @subpackage tx_mklib_util
  * @author Hannes Bochmann
  *
  *  Copyright notice
@@ -27,20 +25,16 @@
  */
 
 /**
- * benötigte Klassen einbinden
+ * benötigte Klassen einbinden.
  */
 
-
 /**
- * Array Service
+ * Array Service.
  *
  * @author hbochmann
- * @package tx_mklib
- * @subpackage tx_mklib_util
  */
 class tx_mklib_util_Array
 {
-
     /**
      * Bereinigt ein Array von allen Werten die leer sind.
      * Leere Arrays innerhalb des zu bereinigenden Arrays werden ebenfalls entfernt.
@@ -52,14 +46,14 @@ class tx_mklib_util_Array
      * @author 2011 hbochmann
      *
      * @param array $array
-     * @param array $emptys Alle Werte, die einen leeren Zustand definieren.
-     * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
+     * @param array $emptys alle Werte, die einen leeren Zustand definieren
+     * @param bool  $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
      *
      * @return array
      */
     public static function removeEmptyArrayValuesSimple(
         array $array,
-        array $emptys = array('',0,'0',null,false,array()),
+        array $emptys = array('', 0, '0', null, false, array()),
         $strict = true
     ) {
         $ret = array();
@@ -83,9 +77,9 @@ class tx_mklib_util_Array
      * @author 2011 mwagner
      *
      * @param array $array
-     * @param bool $resetIndexSetzt Die Array Keys zurück, falls sie numerisch sind.
-     * @param mixed $emptys Single value for empty or array with multiple empty values
-     * @param bool $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
+     * @param bool  $resetIndexSetzt die Array Keys zurück, falls sie numerisch sind
+     * @param mixed $emptys          Single value for empty or array with multiple empty values
+     * @param bool  $strict          Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
      *
      * @return array
      */
@@ -104,11 +98,13 @@ class tx_mklib_util_Array
     }
 
     /**
-     * Entfernt alle Keys welche nicht in needle vorhanden sind
+     * Entfernt alle Keys welche nicht in needle vorhanden sind.
      *
-     * @param   array   $data       Zu filternde Daten
-     * @param   array   $needle Enthält die erlaubten Keys
-     * @return  array
+     * @param array $data   Zu filternde Daten
+     * @param array $needle Enthält die erlaubten Keys
+     *
+     * @return array
+     *
      * @deprecated use tx_rnbase_util_Arrays::removeNotIn instead
      */
     public static function removeNotIn(array $data, array $needle)
@@ -121,9 +117,9 @@ class tx_mklib_util_Array
      *
      * @author 2011 mwagner
      *
-     * @param mixed     $mNeedle
-     * @param array     $aHaystack
-     * @param bool   $bStrict
+     * @param mixed $mNeedle
+     * @param array $aHaystack
+     * @param bool  $bStrict
      */
     public static function inArray($mNeedle, array $aHaystack, $bStrict = false)
     {
@@ -140,12 +136,13 @@ class tx_mklib_util_Array
     }
 
     /**
-     * Erstellt anhand einer Liste von Models/Arrays ein Array mit Werten einer Spalte
+     * Erstellt anhand einer Liste von Models/Arrays ein Array mit Werten einer Spalte.
      *
      * @author 2011 mwagner
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
-     * @param string $attr
+     * @param string                                       $attr
+     *
      * @return array
      */
     public static function fieldsToArray($aObj, $sAttr = 'uid')
@@ -162,13 +159,14 @@ class tx_mklib_util_Array
     }
 
     /**
-     * Erstellt anhand einer Liste von Models/Arrays ein String mit Werten einer Spalte
+     * Erstellt anhand einer Liste von Models/Arrays ein String mit Werten einer Spalte.
      *
      * @author 2011 mwagner
      *
      * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
-     * @param string $attr
-     * @param string $delimiter
+     * @param string                                       $attr
+     * @param string                                       $delimiter
+     *
      * @return string
      */
     public static function fieldsToString($aObj, $sAttr = 'uid', $sDelimiter = ',')
@@ -238,5 +236,5 @@ class tx_mklib_util_Array
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php'];
 }

@@ -22,20 +22,15 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-tx_rnbase::load('tx_mklib_util_list_output_Interface');
-
 /**
  * Buffer Handler.
  * Collects all the output internal.
  * Output can be accessed by get Output method.
  *
- * @package TYPO3
- * @subpackage tx_mklib
  * @author Michael Wagner
  */
 class tx_mklib_util_list_output_Buffer implements tx_mklib_util_list_output_Interface
 {
-
     /**
      * @var string
      */
@@ -47,15 +42,13 @@ class tx_mklib_util_list_output_Buffer implements tx_mklib_util_list_output_Inte
     }
 
     /**
-     * Do the output
-     *
-     * @return void
+     * Do the output.
      */
     public function handleOutput()
     {
         if (func_num_args() > 0) {
             foreach (func_get_args() as $output) {
-                if ($output != '') {
+                if ('' != $output) {
                     $this->output .= $output;
                 }
             }
@@ -64,5 +57,5 @@ class tx_mklib_util_list_output_Buffer implements tx_mklib_util_list_output_Inte
 }
 
 if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php']) {
-    include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php']);
+    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php'];
 }

@@ -30,7 +30,6 @@ deriving class example
 ----------------------
 
 ~~~~ {.sourceCode .php}
-tx_rnbase::load('tx_mklib_action_ShowSingeItem');
 class tx_mkdemo_action_ShowDataset extends tx_mklib_action_ShowSingeItem {
 
    /**
