@@ -5,6 +5,21 @@ The following is a very high level overview of the changes in this extension.
 
 |Version|Changes|
 |-------|-------|
+|9.5.0| added support for TYPO3 9.5|
+|3.0.12| bugfixes|
+|3.0.11| bugfixes|
+|3.0.10| allow Tx_Rnbase_Domain_Repository_AbstractRepository in tx_mklib_action_ShowSingeItem|
+|3.0.8| bugfixes|
+|3.0.7| bugfixes|
+|3.0.6| bugfixes|
+|| new option to disable sourceopt in development TypoScript|
+|3.0.5| bugfixes|
+|3.0.4| bugfixes|
+|| moved tests utility to \DMK\Mklib\Utility\Tests|
+|3.0.3| minor bugfixes|
+|| fixed clearing cache in TYPO3 7.6 via CLI|
+|3.0.2| fixed PHP 7 depreactions|
+|3.0.1| clean up temp files scheduler is able to handle files in fileadmin|
 |3.0.0| Initial TYPO3 8.7 LTS Support|
 |2.0.8| bugfix for tx_mklib_util_File::getDocumentRoot() on CLI|
 |2.0.6| make subparts for be export templates optionaly|
