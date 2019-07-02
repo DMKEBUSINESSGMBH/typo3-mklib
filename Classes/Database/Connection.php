@@ -196,7 +196,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      * @param string $sqlQuery
      * @param int    $debug
      *
-     * @return booloolean
+     * @return bool
      */
     public function doQuery($query, array $options = array())
     {
