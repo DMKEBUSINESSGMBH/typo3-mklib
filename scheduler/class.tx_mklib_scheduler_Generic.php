@@ -71,7 +71,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      */
     public function __wakeup()
     {
-        if (method_exists(parent, '__wakeup')) {
+        if (method_exists(get_parent_class($this), '__wakeup')) {
             parent::__wakeup();
         }
 
