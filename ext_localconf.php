@@ -23,4 +23,3 @@ require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/ext_localconf.php
 //für diese extension verwendet wird. in diesem fall 400.
 //also könnte ein valider exception code dieser extension 4001 sein
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['baseExceptionCode'] = 400;
-define('ERROR_CODE_MKLIB', 400);

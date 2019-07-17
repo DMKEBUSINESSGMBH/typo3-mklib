@@ -31,7 +31,8 @@
         "digedag/rn-base": ">=1.10.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~2@stable"
+        "friendsofphp/php-cs-fixer": "~2@stable",
+        "nimut/testing-framework": "^4.0"
     },
     "autoload": {
         "classmap": [
@@ -55,6 +56,9 @@
             "tca/",
             "view/",
             "repository/"
+        ],
+        "files": [
+          "Classes/Constants.php"
         ]
     },
     "config": {

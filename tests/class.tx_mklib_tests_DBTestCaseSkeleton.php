@@ -24,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * benötigte Klassen einbinden.
  */
@@ -31,7 +33,7 @@
 /**
  * Model eines wordlist eintrages.
  */
-abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_TestCase
+abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
 {
     protected $workspaceIdAtStart;
     /**
@@ -80,10 +82,12 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends Tx_Phpunit_Database_Tes
     {
         global $TYPO3_DB, $BE_USER;
         parent::__construct($name, $data, $dataName);
-        $TYPO3_DB->debugOutput = true;
+        // TODO: fix Creating default object from empty value
+//        $TYPO3_DB->debugOutput = true;
 
         $this->workspaceIdAtStart = $BE_USER->workspace;
-        $BE_USER->setWorkspace(0);
+        // TODO: fix methos does not exist!
+//         $BE_USER->setWorkspace(0);
     }
 
     /**
