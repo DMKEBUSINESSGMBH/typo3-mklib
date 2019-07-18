@@ -23,6 +23,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableT3Service');
+
 /**
  * Enter description here ...
  *
@@ -44,10 +46,6 @@ class tx_mklib_tests_abstract_ObservableT3ServiceTest extends tx_rnbase_tests_Ba
      */
     public function setUp()
     {
-        self::markTestIncomplete(
-            "Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_ObservableT3Service"
-        );
-
         $this->oObservable = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_ObservableT3Service');
     }
 

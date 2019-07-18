@@ -23,7 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
+tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
+tx_rnbase::load('tx_mklib_tests_mod1_Util');
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
@@ -47,7 +48,6 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
 
         tx_mklib_srv_Wordlist::loadTca();
 
-        self::markTestIncomplete("Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyMod");
         $this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         $this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher', $this->mod);
         $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');

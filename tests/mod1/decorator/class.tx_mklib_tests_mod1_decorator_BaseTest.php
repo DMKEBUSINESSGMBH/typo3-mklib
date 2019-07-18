@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
+tx_rnbase::load('tx_mklib_tests_mod1_Util');
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
@@ -224,8 +224,6 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends tx_rnbase_tests_BaseTestCas
      */
     protected function getDecoratorMock()
     {
-        self::markTestIncomplete("Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyMod");
-
         $mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         //zurücksetzen aus anderen Tests
         tx_mklib_tests_mod1_Util::unsetSorting($mod);

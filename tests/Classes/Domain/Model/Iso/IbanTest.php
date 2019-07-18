@@ -48,7 +48,7 @@ class Tx_Mklib_Domain_Model_Iso_IbanTest extends tx_rnbase_tests_BaseTestCase
         }
 
         $model = Tx_Mklib_Domain_Model_Iso_Iban::getInstance($iban);
-        self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_Iban, $model);
+        self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_Iban::class, $model);
         self::assertSame($model->validate(), $valid);
     }
 

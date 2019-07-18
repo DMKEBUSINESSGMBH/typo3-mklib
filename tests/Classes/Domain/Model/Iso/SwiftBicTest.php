@@ -44,7 +44,7 @@ class Tx_Mklib_Domain_Model_Iso_SwiftBicTest extends tx_rnbase_tests_BaseTestCas
     public function testValidate($value, $valid)
     {
         $model = Tx_Mklib_Domain_Model_Iso_SwiftBic::getInstance($value);
-        self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_SwiftBic, $model);
+        self::assertInstanceOf(Tx_Mklib_Domain_Model_Iso_SwiftBic::class, $model);
         self::assertSame($model->validate(), $valid);
     }
 

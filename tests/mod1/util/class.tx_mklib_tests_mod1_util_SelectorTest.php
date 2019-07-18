@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-
+tx_rnbase::load('tx_mklib_tests_mod1_Util');
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
@@ -57,7 +57,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
     public function setUp()
     {
         $this->oSelector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
-        self::markTestIncomplete("Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyMod");
+        self::markTestIncomplete("Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0");
         $this->oMod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         $this->oSelector->init($this->oMod);
         $this->sModuleKey = 'testSearch';
