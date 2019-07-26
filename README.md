@@ -1,6 +1,11 @@
 mklib
 =======
 
+[![Latest Stable Version](https://img.shields.io/packagist/v/dmk/mklib.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/dmk/mklib)
+[![Total Downloads](https://img.shields.io/packagist/dt/dmk/mklib.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/dmk/mklib)
+[![Build Status](https://img.shields.io/travis/DMKEBUSINESSGMBH/typo3-mklib.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/DMKEBUSINESSGMBH/typo3-mklib)
+[![License](https://img.shields.io/packagist/l/dmk/mklib.svg?maxAge=3600&style=flat-square)](https://packagist.org/packages/dmk/mklib)
+
 What does it do?
 ----------------
 
