@@ -23,3 +23,8 @@ require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/ext_localconf.php
 //für diese extension verwendet wird. in diesem fall 400.
 //also könnte ein valider exception code dieser extension 4001 sein
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['baseExceptionCode'] = 400;
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_mklib_tca_eval_priceDecimalSeperator'] =
+    'tx_mklib_tca_eval_priceDecimalSeperator';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_mklib_tca_eval_isoDate'] =
+    'tx_mklib_tca_eval_isoDate';
