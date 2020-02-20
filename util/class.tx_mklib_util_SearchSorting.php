@@ -112,7 +112,7 @@ class tx_mklib_util_SearchSorting
             // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = 'EXT:mklib/util/class.tx_mklib_util_SearchSorting.php:&tx_mklib_util_SearchSorting->handleTableMapping';
 
             // Die Klasse ist schon geladen, wir brauchen den Pfad also nicht.
-            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = '&'.self::$className.'->handleTableMapping';
+            $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = self::$className.'->handleTableMapping';
 
             self::$hooked = true;
         }
