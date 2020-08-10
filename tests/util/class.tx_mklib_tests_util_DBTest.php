@@ -85,7 +85,7 @@ class tx_mklib_tests_util_DBTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testClassHasNoMoreMethodsExceptCallStatic()
     {
-        self::assertEquals(array('__callstatic'), get_class_methods('tx_mklib_util_DB'));
+        self::assertEquals(array('__callStatic'), get_class_methods('tx_mklib_util_DB'));
     }
 
     /**
