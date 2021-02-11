@@ -77,7 +77,7 @@ class tx_mklib_validator_ZipCode
             case 0: // no rule set
                 $result = true;
                 if (tx_rnbase_util_Logger::isNoticeEnabled()) {
-                    tx_rnbase_util_Logger::notice('No zip rule for country defined.', 'mklib', array('zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()));
+                    tx_rnbase_util_Logger::notice('No zip rule for country defined.', 'mklib', ['zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()]);
                 }
                 break;
             case 1: // maximum length without gaps

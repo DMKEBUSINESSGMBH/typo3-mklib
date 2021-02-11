@@ -43,7 +43,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      *
      * @var array
      */
-    protected $importExtensions = array();
+    protected $importExtensions = [];
 
     /**
      * Sollen Abhängigkeiten in Extension mit importiert werden?
@@ -67,7 +67,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      *
      * @var array
      */
-    protected $importDataSet = array();
+    protected $importDataSet = [];
 
     /**
      * Constructs a test case with the given name.
@@ -78,7 +78,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      * @param array  $data
      * @param string $dataName
      */
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         global $TYPO3_DB, $BE_USER;
         parent::__construct($name, $data, $dataName);
@@ -98,7 +98,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      */
     protected static function importStaticTables(
         $extKey = 'mklib',
-        $files = array('ext_tables_static+adt.sql')
+        $files = ['ext_tables_static+adt.sql']
     ) {
         foreach ($files as $file) {
             // read sql file content
@@ -138,7 +138,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
         // extensions laden
         if (count($this->importExtensions)) {
             foreach ($this->importExtensions as $extension) {
-                $this->importExtensions(array($extension), $this->importDependencies);
+                $this->importExtensions([$extension], $this->importDependencies);
                 // static tables in die db importieren
                 if ($this->importStaticTables) {
                     self::importStaticTables($extension);

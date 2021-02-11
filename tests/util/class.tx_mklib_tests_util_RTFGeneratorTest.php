@@ -53,15 +53,15 @@ class tx_mklib_tests_util_RTFGeneratorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGeneratorReturnsCorrectPlainText()
     {
-        self::markTestIncomplete("Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)");
+        self::markTestIncomplete('Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
-        $aParams = array(
+        $aParams = [
             'defaultFontFace' => 0,
             'defaultFontSize' => 22,
             'paperOrientation' => 1,
             'rtfVersion' => 1,
             'exportInfoTable' => 1,
-        );
+        ];
         $oRTFGenerator = tx_rnbase::makeInstance('tx_mklib_util_RTFGenerator', $aParams);
         $sRTFText = $oRTFGenerator->getRTF('###SPECIALCHAR_(###<strong>Das ist ein schöner Testtext.</strong> Auch mit ###SPECIALCHAR_)### verschiedenen ßonderzeichen und Ähnlichem. Sogar einem ###SPECIALCHAR_*###');
 
@@ -74,14 +74,14 @@ class tx_mklib_tests_util_RTFGeneratorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGeneratorReturnsCorrectPlainTextWhenNoInfoTable()
     {
-        self::markTestIncomplete("Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)");
+        self::markTestIncomplete('Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
-        $aParams = array(
+        $aParams = [
             'defaultFontFace' => 0,
             'defaultFontSize' => 22,
             'paperOrientation' => 1,
             'rtfVersion' => 1,
-        );
+        ];
         $oRTFGenerator = tx_rnbase::makeInstance('tx_mklib_util_RTFGenerator', $aParams);
         $sRTFText = $oRTFGenerator->getRTF('###SPECIALCHAR_(###<strong>Das ist ein schöner Testtext.</strong> Auch mit ###SPECIALCHAR_)### verschiedenen ßonderzeichen und Ähnlichem. Sogar einem ###SPECIALCHAR_*###');
 

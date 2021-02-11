@@ -56,11 +56,11 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCallSoapMethodWithValidMethodAndParamsAsArrayReturnsExpectedResult()
     {
-        $expectedSoapMethodParams = array('someParam' => 'usedInSoapMethod');
+        $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapClientWrapper = $this->getSoapClientWrapper($expectedSoapMethodParams);
         $soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
             self::SOAP_TEST_METHOD,
-            array($expectedSoapMethodParams)
+            [$expectedSoapMethodParams]
         );
 
         self::assertEquals(self::SOAP_TEST_METHOD_RETURN_VALUE, $soapMethodReturnValue);
@@ -75,7 +75,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
         $soapClientWrapper = $this->getSoapClientWrapper($expectedSoapMethodParams);
         $soapMethodReturnValue = $soapClientWrapper->callSoapMethod(
             self::SOAP_TEST_METHOD,
-            array($expectedSoapMethodParams)
+            [$expectedSoapMethodParams]
         );
 
         self::assertEquals(self::SOAP_TEST_METHOD_RETURN_VALUE, $soapMethodReturnValue);
@@ -90,10 +90,10 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
     public function testCallSoapMethodWithInvalidMethodThrowsCorrectException()
     {
         self::markTestIncomplete(
-            "GeneralUtility::devLog() will be removed with TYPO3 v10.0."
+            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
         );
 
-        $expectedSoapMethodParams = array('someParam' => 'usedInSoapMethod');
+        $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapException = new Exception('There was a Soap Exception', 987654321);
         $soapClientWrapper = $this->getSoapClientWrapper(
             $expectedSoapMethodParams,
@@ -102,7 +102,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
         );
         $soapClientWrapper->callSoapMethod(
             self::SOAP_TEST_METHOD,
-            array($expectedSoapMethodParams)
+            [$expectedSoapMethodParams]
         );
     }
 
@@ -115,10 +115,10 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
     public function testCallSoapMethodHandlesSoapFaultCorrect()
     {
         self::markTestIncomplete(
-            "GeneralUtility::devLog() will be removed with TYPO3 v10.0."
+            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
         );
 
-        $expectedSoapMethodParams = array('someParam' => 'usedInSoapMethod');
+        $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapException = new SoapFault('987654321', 'There was a Soap Fault');
         $soapClientWrapper = $this->getSoapClientWrapper(
             $expectedSoapMethodParams,
@@ -127,7 +127,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
         );
         $soapClientWrapper->callSoapMethod(
             self::SOAP_TEST_METHOD,
-            array($expectedSoapMethodParams)
+            [$expectedSoapMethodParams]
         );
     }
 
@@ -140,10 +140,10 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
     public function testCallSoapMethodHandlesSoapFaultWithStringCodeCorrect()
     {
         self::markTestIncomplete(
-            "GeneralUtility::devLog() will be removed with TYPO3 v10.0."
+            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
         );
 
-        $expectedSoapMethodParams = array('someParam' => 'usedInSoapMethod');
+        $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapException = new SoapFault('a string code', 'There was a Soap Fault');
         $soapClientWrapper = $this->getSoapClientWrapper(
             $expectedSoapMethodParams,
@@ -152,7 +152,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
         );
         $soapClientWrapper->callSoapMethod(
             self::SOAP_TEST_METHOD,
-            array($expectedSoapMethodParams)
+            [$expectedSoapMethodParams]
         );
     }
 
@@ -163,13 +163,13 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
      * @return tx_mklib_soap_ClientWrapper
      */
     private function getSoapClientWrapper(
-        $expectedParams = array(),
+        $expectedParams = [],
         $exceptionToThrow = null,
         $getSoapClientInvocationCount = null
     ) {
         $soapClient = $this->getSoapClientMock($expectedParams, $exceptionToThrow);
 
-        $soapClientWrapper = $this->getMock('tx_mklib_soap_ClientWrapper', array('getSoapClient'));
+        $soapClientWrapper = $this->getMock('tx_mklib_soap_ClientWrapper', ['getSoapClient']);
 
         if (!$getSoapClientInvocationCount) {
             $getSoapClientInvocationCount = self::once();
@@ -189,13 +189,13 @@ class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
      * @return SoapClient
      */
     private function getSoapClientMock(
-        $expectedParams = array(),
+        $expectedParams = [],
         $exceptionToThrow = null
     ) {
         $soapClient = $this->getMock(
             'SoapClient',
-            array(self::SOAP_TEST_METHOD),
-            array(),
+            [self::SOAP_TEST_METHOD],
+            [],
             '',
             false
         );

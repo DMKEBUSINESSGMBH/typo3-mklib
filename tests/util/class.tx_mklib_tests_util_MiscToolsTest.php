@@ -57,7 +57,7 @@ class tx_mklib_tests_util_MiscToolsTest extends tx_rnbase_tests_BaseTestCase
     public function testGetProxyBeUserId()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         \DMK\Mklib\Utility\Tests::setExtConfVar('proxyBeUserId', 2, 'mklib');
@@ -90,13 +90,13 @@ class tx_mklib_tests_util_MiscToolsTest extends tx_rnbase_tests_BaseTestCase
     public function testGetPicturesUploadPath()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         \DMK\Mklib\Utility\Tests::setExtConfVar('picturesUploadPath', 'uploads/tx_mklib', 'mklib');
 
         self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
-        self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath(array()), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
+        self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath([]), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
         self::assertEquals(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest'), 'uploads/tx_mklib', 'Falscher Pfad geliefert.');
         self::assertFalse(tx_mklib_util_MiscTools::getPicturesUploadPath('mktest', false), 'Es wurde ein Pfad geliefert.');
 
@@ -112,7 +112,7 @@ class tx_mklib_tests_util_MiscToolsTest extends tx_rnbase_tests_BaseTestCase
     public function testGetPortalPageId()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         \DMK\Mklib\Utility\Tests::setExtConfVar('portalPageId', 2, 'mklib');

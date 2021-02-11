@@ -59,10 +59,7 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
             && !$singleItemRepository instanceof tx_mklib_srv_Base
             && !$singleItemRepository instanceof Tx_Rnbase_Domain_Repository_AbstractRepository
         ) {
-            throw new Exception(
-                'Das Repository, welches von getSingleItemRepository() geliefert '.
-                'wird, muss von tx_mklib_repository_Abstract erben!'
-            );
+            throw new Exception('Das Repository, welches von getSingleItemRepository() geliefert '.'wird, muss von tx_mklib_repository_Abstract erben!');
         }
 
         if (!($item = $singleItemRepository->findByUid($itemUid))) {
@@ -115,10 +112,7 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
     protected function throwItemNotFound404Exception()
     {
         if (!$this->getConfigurations()->get($this->getConfId().'disable404ExceptionIfNoItemFound')) {
-            throw tx_rnbase::makeInstance(
-                'tx_rnbase_exception_ItemNotFound404',
-                $this->getItemNotFound404Message()
-            );
+            throw tx_rnbase::makeInstance('tx_rnbase_exception_ItemNotFound404', $this->getItemNotFound404Message());
         }
     }
 

@@ -34,26 +34,26 @@
 class tx_mklib_util_RTFGenerator
 {
     // {\colortbl;\red 0\green 0\blue 0;\red 255\green 0\ blue0;\red0 ...}
-    private $colour_table = array();
+    private $colour_table = [];
     private $colour_rgb;
     private $font_face;
     private $windings_font_face;
     private $font_size;
     // {\info {\title <title>} {\author <author>} {\operator <operator>}}
-    private $info_table = array();
+    private $info_table = [];
     private $page_width;
     private $page_height;
     private $page_size;
     private $page_orientation;
     private $rtf_version;
     private $tab_width;
-    private $margins = array();
+    private $margins = [];
 
     private $document;
     private $buffer;
     private $shouldInfoTableBeExported;
 
-    protected $aSpecialChars = array(
+    protected $aSpecialChars = [
             '&Aacute;' => 'c1',
             '&aacute;' => 'e1',
             '&Agrave;' => 'c0',
@@ -110,7 +110,7 @@ class tx_mklib_util_RTFGenerator
             '&ordf;' => 'aa',
             '&sup2;' => 'b2',
             '&sup3;' => 'b3',
-    );
+    ];
 
     /**
      * Klassen-Konstruktor
@@ -298,11 +298,11 @@ class tx_mklib_util_RTFGenerator
         $this->hex2rgb($hexcode);
 
         // Register in the colour table array
-        $this->colour_table[] = array(
+        $this->colour_table[] = [
             'red' => $this->colour_rgb['red'],
             'green' => $this->colour_rgb['green'],
             'blue' => $this->colour_rgb['blue'],
-        );
+        ];
     }
 
     /**
@@ -313,7 +313,7 @@ class tx_mklib_util_RTFGenerator
     private function hex2rgb($hexcode)
     {
         $hexcode = str_replace('#', '', $hexcode);
-        $rgb = array();
+        $rgb = [];
         $rgb['red'] = hexdec(substr($hexcode, 0, 2));
         $rgb['green'] = hexdec(substr($hexcode, 2, 2));
         $rgb['blue'] = hexdec(substr($hexcode, 4, 2));
@@ -396,18 +396,18 @@ class tx_mklib_util_RTFGenerator
      */
     private function getFontTable()
     {
-        $aFonts = array(
-            0 => array(
+        $aFonts = [
+            0 => [
                 'name' => 'Arial',
                 'family' => 'nil',
                 'charset' => 0,
-            ),
-            1 => array(
+            ],
+            1 => [
                 'name' => 'Wingdings',
                 'family' => 'nil',
                 'charset' => 0,
-            ),
-        );
+            ],
+        ];
         $font_buffer = '{\\fonttbl';
         foreach ($aFonts as $fnum => $farray) {
             $font_buffer .= "{\\f{$fnum}\\fcharset{$farray['charset']}\\f{$farray['family']} {$farray['name']};}";

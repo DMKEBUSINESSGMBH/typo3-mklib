@@ -66,7 +66,7 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
      *
      * @see tx_mklib_repository_Abstract::search()
      */
-    public function search(array $fields = array(), array $options = array())
+    public function search(array $fields = [], array $options = [])
     {
         return parent::search($fields, $this->insertSearchDefinition($options));
     }
@@ -76,7 +76,7 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
      *
      * @see tx_mklib_repository_Abstract::searchSingle()
      */
-    public function searchSingle(array $fields = array(), array $options = array())
+    public function searchSingle(array $fields = [], array $options = [])
     {
         return parent::searchSingle($fields, $this->insertSearchDefinition($options));
     }
@@ -89,7 +89,7 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
     protected function insertSearchDefinition(array $options)
     {
         if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
-            $options['searchdef'] = array();
+            $options['searchdef'] = [];
         }
         $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
             // default sercher config
@@ -106,16 +106,16 @@ class tx_mklib_repository_TtNews extends tx_mklib_repository_Abstract
      */
     protected function getSearchDefinition()
     {
-        return array(
+        return [
             'usealias' => '1',
             'basetable' => 'tt_news',
             'basetablealias' => 'NEWS',
             'wrapperclass' => $this->getWrapperClass(),
-            'alias' => array(
-                'NEWS' => array(
+            'alias' => [
+                'NEWS' => [
                     'table' => 'tt_news',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

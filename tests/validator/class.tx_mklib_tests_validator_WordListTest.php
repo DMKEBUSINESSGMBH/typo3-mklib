@@ -53,7 +53,7 @@ class tx_mklib_tests_validator_WordListTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistServiceIfPropertyNotAlreadySet()
     {
-        self::markTestIncomplete("GeneralUtility::devLog() will be removed with TYPO3 v10.0.");
+        self::markTestIncomplete('GeneralUtility::devLog() will be removed with TYPO3 v10.0.');
 
         $method = new ReflectionMethod('tx_mklib_validator_WordList', 'getWordlistService');
         $method->setAccessible(true);
@@ -139,7 +139,7 @@ class tx_mklib_tests_validator_WordListTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testStringContainsNoBlacklistedWordsRetrunsMatchesIfWordsAreBlacklisted()
     {
-        $this->setWordlistService(array('fuck', 'shit'), 'sfuck fuck shit');
+        $this->setWordlistService(['fuck', 'shit'], 'sfuck fuck shit');
         $ret = tx_mklib_validator_WordList::stringContainsNoBlacklistedWords('sfuck fuck shit');
 
         self::assertEquals(2, count($ret), 'Das Treffer Array hat nicht die korrekte Größe!');
@@ -162,7 +162,7 @@ class tx_mklib_tests_validator_WordListTest extends tx_rnbase_tests_BaseTestCase
     {
         $wordlistServiceMock = $this->getMock(
             'tx_mklib_srv_Wordlist',
-            array('getBlacklistEntryByWord')
+            ['getBlacklistEntryByWord']
         );
         if (null === $returnValue) {
             $wordlistServiceMock->expects(self::never())

@@ -4,54 +4,54 @@
  * TCA.
  */
 if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
+    exit('Access denied.');
 }
 
-$TCA['tx_mklib_wordlist'] = array(
+$TCA['tx_mklib_wordlist'] = [
   'ctrl' => $TCA['tx_mklib_wordlist']['ctrl'],
-  'interface' => array(
+  'interface' => [
     'showRecordFieldList' => 'hidden,blacklisted,whitelisted,word',
-  ),
+  ],
   'feInterface' => $TCA['tx_mklib_wordlist']['feInterface'],
-  'columns' => array(
-    'hidden' => array(
+  'columns' => [
+    'hidden' => [
       'exclude' => 1,
       'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-      'config' => array(
+      'config' => [
         'type' => 'check',
         'default' => '0',
-      ),
-    ),
-    'blacklisted' => array(
+      ],
+    ],
+    'blacklisted' => [
       'exclude' => 1,
       'label' => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist.blacklisted',
-      'config' => array(
+      'config' => [
         'type' => 'check',
         'default' => '1',
-      ),
-    ),
-    'whitelisted' => array(
+      ],
+    ],
+    'whitelisted' => [
       'exclude' => 1,
       'label' => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist.whitelisted',
-      'config' => array(
+      'config' => [
         'type' => 'check',
         'default' => '0',
-      ),
-    ),
-    'word' => array(
+      ],
+    ],
+    'word' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:mklib/locallang_db.xml:tx_mklib_wordlist.word',
-        'config' => array(
+        'config' => [
             'type' => 'input',
             'size' => '30',
             'eval' => 'required',
-        ),
-    ),
-  ),
-  'types' => array(
-    '0' => array('showitem' => 'hidden;;1;;1-1-1,blacklisted,whitelisted,word'),
-  ),
-  'palettes' => array(
-    '1' => array('showitem' => ''),
-  ),
-);
+        ],
+    ],
+  ],
+  'types' => [
+    '0' => ['showitem' => 'hidden;;1;;1-1-1,blacklisted,whitelisted,word'],
+  ],
+  'palettes' => [
+    '1' => ['showitem' => ''],
+  ],
+];

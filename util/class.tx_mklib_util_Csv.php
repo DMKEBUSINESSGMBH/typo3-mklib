@@ -50,7 +50,7 @@ class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
      *
      * @return string | Name der Datei
      */
-    public function writeCsv($sDir, $sPrefix = '', $aData = array(), $sFileName = '')
+    public function writeCsv($sDir, $sPrefix = '', $aData = [], $sFileName = '')
     {
         if (empty($aData)) {
             $aData = $this->getCsvLines();

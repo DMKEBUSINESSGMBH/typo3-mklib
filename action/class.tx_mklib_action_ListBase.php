@@ -41,8 +41,8 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC
         //Filter setzen
         $filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId.($this->isOldFilterMode() ? '' : 'filter.'));
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         //suche initialisieren
         if ($filter->init($fields, $options)) {
             // @TODO: charbrowser integrieren
@@ -53,7 +53,7 @@ abstract class tx_mklib_action_ListBase extends tx_rnbase_action_BaseIOC
                 $viewData,
                 $fields,
                 $options,
-                array('searchcallback' => array($srv, $sSearchCallback))
+                ['searchcallback' => [$srv, $sSearchCallback]]
             );
 
             $items = $srv->$sSearchCallback($fields, $options);

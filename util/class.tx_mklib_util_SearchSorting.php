@@ -63,7 +63,7 @@ class tx_mklib_util_SearchSorting
      *
      * @var array
      */
-    private static $sortingTables = array();
+    private static $sortingTables = [];
 
     /**
      * Fügt Tabellen für das Sortieren hinzu und registriert den Hook.
@@ -90,11 +90,11 @@ class tx_mklib_util_SearchSorting
                 if (empty($tableAlias)) {
                     continue;
                 }
-                self::$sortingTables[] = array(
+                self::$sortingTables[] = [
                     'alias' => $tableAlias,
                     'column' => $sortingCol,
                     'table' => $tableName,
-                );
+                ];
             }
             // den hook registrieren
             if (count(self::$sortingTables)) {
@@ -146,10 +146,10 @@ class tx_mklib_util_SearchSorting
                 ) {
                     // orderby muss ein array sein
                     if (!is_array($options['orderby'])) {
-                        $options['orderby'] = array();
+                        $options['orderby'] = [];
                     }
                     // immer zuerst anhand von sorting sortieren!!!
-                    $options['orderby'] = array($field => 'ASC') + $options['orderby'];
+                    $options['orderby'] = [$field => 'ASC'] + $options['orderby'];
                 }
             }
         }

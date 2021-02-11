@@ -34,12 +34,12 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @var array
      */
-    private $cookiesBackup = array();
+    private $cookiesBackup = [];
 
     /**
      * @var array
      */
-    private $feUserBackUp = array();
+    private $feUserBackUp = [];
 
     /**
      * (non-PHPdoc).
@@ -52,7 +52,7 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
         $this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
 
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
-        \DMK\Mklib\Utility\Tests::prepareTSFE(array('initFEuser' => true, 'force' => true));
+        \DMK\Mklib\Utility\Tests::prepareTSFE(['initFEuser' => true, 'force' => true]);
     }
 
     /**
@@ -92,12 +92,12 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function getCookies()
     {
-        return array(
-            array(array('fe_typo_user' => ''), true, false),
-            array(array('fe_typo_user' => '123'), true, false),
-            array(array(), false, true),
-            array(array('fe_typo_user' => '123'), true, true),
-        );
+        return [
+            [['fe_typo_user' => ''], true, false],
+            [['fe_typo_user' => '123'], true, false],
+            [[], false, true],
+            [['fe_typo_user' => '123'], true, true],
+        ];
     }
 
     /**
@@ -107,7 +107,7 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
     {
         $oldRandomSessionId = uniqid();
         $GLOBALS['TSFE']->fe_user->id = $oldRandomSessionId;
-        $GLOBALS['TSFE']->fe_user->sesData = array('something');
+        $GLOBALS['TSFE']->fe_user->sesData = ['something'];
 
         $newRandomSessionId = uniqid();
         tx_mklib_util_Session::setSessionId($newRandomSessionId);
@@ -119,7 +119,7 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
         );
 
         self::assertEquals(
-            array(),
+            [],
             $GLOBALS['TSFE']->fe_user->sesData,
             'session data für neue id nicht leer'
         );
@@ -135,7 +135,7 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
         );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
             tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
-            array('fetchSessionData')
+            ['fetchSessionData']
         );
         $GLOBALS['TSFE']->fe_user->expects(self::once())
             ->method('fetchSessionData');
@@ -153,7 +153,7 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
         );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
             tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
-            array('fetchUserSession')
+            ['fetchUserSession']
         );
         $GLOBALS['TSFE']->fe_user->expects(self::once())
             ->method('fetchUserSession');

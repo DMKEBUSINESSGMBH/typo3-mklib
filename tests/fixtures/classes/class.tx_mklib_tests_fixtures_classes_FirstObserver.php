@@ -38,7 +38,7 @@ class tx_mklib_tests_fixtures_classes_FirstObserver implements tx_mklib_interfac
      *
      * @var array
      */
-    public $aNotified = array();
+    public $aNotified = [];
 
     /**
      * wie oft wurde notify aufgerufen?

@@ -38,7 +38,7 @@ class tx_mklib_tests_fixtures_classes_SecondObserver implements tx_mklib_interfa
      *
      * @var array
      */
-    public $aNotified = array();
+    public $aNotified = [];
 
     /**
      * wie oft wurde notify aufgerufen?

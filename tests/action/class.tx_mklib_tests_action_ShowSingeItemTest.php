@@ -52,7 +52,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     public function testGetSingleItemUidParameterKeyIfNoneConfigured()
     {
         $action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
-        $configurations = $this->createConfigurations(array(), 'mklib');
+        $configurations = $this->createConfigurations([], 'mklib');
         $action->setConfigurations($configurations);
 
         self::assertEquals(
@@ -71,18 +71,18 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     {
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getConfId')
+            ['getConfId']
         );
         $action->expects(self::once())
             ->method('getConfId')
             ->will(self::returnValue('myAction.'));
         $configurations = $this->createConfigurations(
-            array('myAction.' => array('uidParameterKey' => 'item')),
+            ['myAction.' => ['uidParameterKey' => 'item']],
             'mklib'
         );
         $action->setConfigurations($configurations);
@@ -101,10 +101,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
      */
     public function testGetItemNotFound404MessageIfNoMessageConfiguredInConfigurations()
     {
-        self::markTestIncomplete("Uncaught require(dmk/typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)");
+        self::markTestIncomplete('Uncaught require(dmk/typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
         $action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
-        $configurations = $this->createConfigurations(array(), 'mklib');
+        $configurations = $this->createConfigurations([], 'mklib');
         $action->setConfigurations($configurations);
 
         self::assertEquals(
@@ -123,18 +123,18 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     {
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getConfId')
+            ['getConfId']
         );
         $action->expects(self::once())
             ->method('getConfId')
             ->will(self::returnValue('myAction.'));
         $configurations = $this->createConfigurations(
-            array('myAction.' => array('notfound' => 'Model nicht gefunden.')),
+            ['myAction.' => ['notfound' => 'Model nicht gefunden.']],
             'mklib'
         );
         $action->setConfigurations($configurations);
@@ -155,10 +155,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
      */
     public function testThrowItemNotFound404Exception()
     {
-        self::markTestIncomplete("Uncaught require(dmk/typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)");
+        self::markTestIncomplete('Uncaught require(dmk/typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
         $action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
-        $configurations = $this->createConfigurations(array(), 'mklib');
+        $configurations = $this->createConfigurations([], 'mklib');
         $action->setConfigurations($configurations);
         $this->callInaccessibleMethod($action, 'throwItemNotFound404Exception');
     }
@@ -168,12 +168,12 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
      */
     public function testThrowItemNotFound404ExceptionIfDisabled()
     {
-        self::markTestIncomplete("This test did not perform any assertions!");
+        self::markTestIncomplete('This test did not perform any assertions!');
 
         $action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
         $configurations = $this->createConfigurations(
-            array(
-                '.' => array('disable404ExceptionIfNoItemFound' => true), ),
+            [
+                '.' => ['disable404ExceptionIfNoItemFound' => true], ],
             'mklib'
         );
         $action->setConfigurations($configurations);
@@ -192,18 +192,18 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getSingleItemRepository')
+            ['getSingleItemRepository']
         );
         $action->expects(self::never())->method('getSingleItemRepository');
 
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters', array());
+        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters', []);
         $configurations = $this->createConfigurations(
-            array(),
+            [],
             'mklib',
             'mklib',
             $parameters
@@ -212,8 +212,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
-            array($action, 'handleRequest'),
-            array(&$parameters, &$configurations, &$viewData)
+            [$action, 'handleRequest'],
+            [&$parameters, &$configurations, &$viewData]
         );
     }
 
@@ -227,21 +227,21 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     {
         $repository = $this->getMockForAbstractClass(
             'stdClass',
-            array(),
+            [],
             '',
             false,
             false,
             false,
-            array('findByUid')
+            ['findByUid']
         );
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getSingleItemRepository')
+            ['getSingleItemRepository']
         );
         $action->expects(self::once())
             ->method('getSingleItemRepository')
@@ -249,10 +249,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $parameters = tx_rnbase::makeInstance(
             'tx_rnbase_parameters',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
-            array(),
+            [],
             'mklib',
             'mklib',
             $parameters
@@ -261,8 +261,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
-            array($action, 'handleRequest'),
-            array(&$parameters, &$configurations, &$viewData)
+            [$action, 'handleRequest'],
+            [&$parameters, &$configurations, &$viewData]
         );
     }
 
@@ -274,16 +274,16 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
      */
     public function testHandleRequestThrowsItemNotFound404ExceptionIfItemNotFound()
     {
-        self::markTestIncomplete("Uncaught require(dmk/typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)");
+        self::markTestIncomplete('Uncaught require(dmk/typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
-            array(),
+            [],
             '',
             false,
             false,
             false,
-            array('findByUid')
+            ['findByUid']
         );
         $repository->expects(self::once())
             ->method('findByUid')
@@ -291,12 +291,12 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->will(self::returnValue(null));
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getSingleItemRepository')
+            ['getSingleItemRepository']
         );
         $action->expects(self::once())
             ->method('getSingleItemRepository')
@@ -304,10 +304,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $parameters = tx_rnbase::makeInstance(
             'tx_rnbase_parameters',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
-            array(),
+            [],
             'mklib',
             'mklib',
             $parameters
@@ -316,8 +316,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
-            array($action, 'handleRequest'),
-            array(&$parameters, &$configurations, &$viewData)
+            [$action, 'handleRequest'],
+            [&$parameters, &$configurations, &$viewData]
         );
     }
 
@@ -328,16 +328,16 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     {
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
-            array(),
+            [],
             '',
             false,
             false,
             false,
-            array('findByUid')
+            ['findByUid']
         );
         $model = tx_rnbase::makeInstance(
             'tx_mklib_model_Page',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $repository->expects(self::once())
             ->method('findByUid')
@@ -345,12 +345,12 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->will(self::returnValue($model));
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getSingleItemRepository')
+            ['getSingleItemRepository']
         );
         $action->expects(self::once())
             ->method('getSingleItemRepository')
@@ -358,10 +358,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $parameters = tx_rnbase::makeInstance(
             'tx_rnbase_parameters',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
-            array(),
+            [],
             'mklib',
             'mklib',
             $parameters
@@ -370,8 +370,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
-            array($action, 'handleRequest'),
-            array(&$parameters, &$configurations, &$viewData)
+            [$action, 'handleRequest'],
+            [&$parameters, &$configurations, &$viewData]
         );
 
         self::assertEquals($model, $viewData->offsetGet('item'));
@@ -384,12 +384,12 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     {
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
-            array(),
+            [],
             '',
             false,
             false,
             false,
-            array('findByUid')
+            ['findByUid']
         );
         $repository->expects(self::once())
             ->method('findByUid')
@@ -397,12 +397,12 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->will(self::returnValue('model'));
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getSingleItemRepository')
+            ['getSingleItemRepository']
         );
         $action->expects(self::once())
             ->method('getSingleItemRepository')
@@ -410,10 +410,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $parameters = tx_rnbase::makeInstance(
             'tx_rnbase_parameters',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
-            array('.' => array('uid' => 123456789)),
+            ['.' => ['uid' => 123456789]],
             'mklib',
             'mklib',
             $parameters
@@ -422,8 +422,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
-            array($action, 'handleRequest'),
-            array(&$parameters, &$configurations, &$viewData)
+            [$action, 'handleRequest'],
+            [&$parameters, &$configurations, &$viewData]
         );
     }
 
@@ -438,28 +438,28 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
-            array(),
+            [],
             '',
             false,
             false,
             false,
-            array('findByUid')
+            ['findByUid']
         );
         $model = tx_rnbase::makeInstance(
             'tx_mklib_model_Page',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $repository->expects(self::once())
             ->method('findByUid')
             ->will(self::returnValue($model));
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getSingleItemRepository')
+            ['getSingleItemRepository']
         );
         $action->expects(self::once())
             ->method('getSingleItemRepository')
@@ -467,10 +467,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $parameters = tx_rnbase::makeInstance(
             'tx_rnbase_parameters',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
-            array(),
+            [],
             'mklib',
             'mklib',
             $parameters
@@ -479,8 +479,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
-            array($action, 'handleRequest'),
-            array(&$parameters, &$configurations, &$viewData)
+            [$action, 'handleRequest'],
+            [&$parameters, &$configurations, &$viewData]
         );
 
         self::assertNotEquals(
@@ -506,16 +506,16 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
-            array(),
+            [],
             '',
             false,
             false,
             false,
-            array('findByUid')
+            ['findByUid']
         );
         $model = tx_rnbase::makeInstance(
             'tx_mklib_model_Page',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $repository->expects(self::once())
             ->method('findByUid')
@@ -523,12 +523,12 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $action = $this->getMockForAbstractClass(
             'tx_mklib_action_ShowSingeItem',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('getSingleItemRepository', 'getConfId')
+            ['getSingleItemRepository', 'getConfId']
         );
         $action->expects(self::once())
             ->method('getSingleItemRepository')
@@ -540,10 +540,10 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         $parameters = tx_rnbase::makeInstance(
             'tx_rnbase_parameters',
-            array('uid' => 987654321)
+            ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
-            array('myAction.' => array('substitutePageTitle' => true)),
+            ['myAction.' => ['substitutePageTitle' => true]],
             'mklib',
             'mklib',
             $parameters
@@ -552,8 +552,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         $action->setConfigurations($configurations);
 
         $this->callInaccessibleMethod(
-            array($action, 'handleRequest'),
-            array(&$parameters, &$configurations, &$viewData)
+            [$action, 'handleRequest'],
+            [&$parameters, &$configurations, &$viewData]
         );
 
         self::assertEquals(

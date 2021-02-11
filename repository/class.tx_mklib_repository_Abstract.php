@@ -52,10 +52,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
     {
         $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof tx_rnbase_util_SearchBase) {
-            throw new Exception(
-                get_class($this).'->getSearchClass() has to return a classname'.
-                ' of class which extends tx_rnbase_util_SearchBase!'
-            );
+            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends tx_rnbase_util_SearchBase!');
         }
 
         return $searcher;
@@ -96,7 +93,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      */
     public function findAll()
     {
-        return $this->search(array(), array());
+        return $this->search([], []);
     }
 
     /**
@@ -123,7 +120,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
      *
      * @return Tx_Rnbase_Domain_Model_RecordInterface
      */
-    public function searchSingle(array $fields = array(), array $options = array())
+    public function searchSingle(array $fields = [], array $options = [])
     {
         $options['limit'] = 1;
         $items = $this->search($fields, $options);
@@ -178,7 +175,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
                 $tsfe = tx_rnbase_util_TYPO3::getTSFE();
-                $languages = array();
+                $languages = [];
                 if (isset($options['additionali18n'])) {
                     $languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], true);
                 }
@@ -231,7 +228,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
             && $options['distinct']
         ) {
             // seperate master and overlays
-            $master = $overlay = array();
+            $master = $overlay = [];
             /* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
@@ -243,7 +240,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
                 }
             }
             // merge master and overlays and keep the order!
-            $new = array();
+            $new = [];
             // uniquemode can be master or overlay!
             $preferOverlay = empty($options['uniquemode']) || 'master' !== strtolower($options['uniquemode']);
             foreach ($items as $item) {

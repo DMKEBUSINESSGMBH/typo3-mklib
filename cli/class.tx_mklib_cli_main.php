@@ -24,7 +24,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 if (!tx_rnbase_util_TYPO3::isCliMode()) {
-    die('You cannot run this script directly!');
+    exit('You cannot run this script directly!');
 }
 
 /**
@@ -39,28 +39,28 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
     /**
      * @var array
      */
-    protected $commands = array(
-        'flush' => array(
-            'short' => array(
+    protected $commands = [
+        'flush' => [
+            'short' => [
                 'desc' => 'The same as --flush-cache',
                 'name' => '-fc',
-            ),
-            'long' => array(
+            ],
+            'long' => [
                 'desc' => 'Clear the whole TYPO3 Cache',
                 'name' => '--flush-cache',
-            ),
-        ),
-        'help' => array(
-            'short' => array(
+            ],
+        ],
+        'help' => [
+            'short' => [
                 'desc' => 'The same as --help',
                 'name' => '-h',
-            ),
-            'long' => array(
+            ],
+            'long' => [
                 'desc' => 'Show possible options',
                 'name' => '--help',
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
     /**
      * @return tx_mklib_cli_main
@@ -73,20 +73,20 @@ class tx_mklib_cli_main extends Tx_Rnbase_CommandLine_Controller
 
         parent::__construct();
 
-        $this->cli_options = array_merge($this->cli_options, array());
+        $this->cli_options = array_merge($this->cli_options, []);
 
-        $this->cli_options[] = array($this->commands['flush']['long']['name'], $this->commands['flush']['long']['desc']);
-        $this->cli_options[] = array($this->commands['flush']['short']['name'], $this->commands['flush']['short']['desc']);
-        $this->cli_options[] = array($this->commands['help']['long']['name'], $this->commands['help']['long']['desc']);
-        $this->cli_options[] = array($this->commands['help']['short']['name'], $this->commands['help']['short']['desc']);
+        $this->cli_options[] = [$this->commands['flush']['long']['name'], $this->commands['flush']['long']['desc']];
+        $this->cli_options[] = [$this->commands['flush']['short']['name'], $this->commands['flush']['short']['desc']];
+        $this->cli_options[] = [$this->commands['help']['long']['name'], $this->commands['help']['long']['desc']];
+        $this->cli_options[] = [$this->commands['help']['short']['name'], $this->commands['help']['short']['desc']];
 
-        $this->cli_help = array_merge($this->cli_help, array(
+        $this->cli_help = array_merge($this->cli_help, [
             'name' => 'MKLib CLI',
                 'synopsis' => $this->extKey.' command ###OPTIONS###',
                 'description' => 'Classes with several functions. Check the --help or documentation which are available.',
                 'examples' => 'typo3/cli_dispatch.phpsh mklib --flush-cache',
                 'author' => '(c) 2015 DMK E-BUSINESS GmbH Hannes Bochmann <dev@dmk-ebusiness.de>',
-        ));
+        ]);
     }
 
     /**

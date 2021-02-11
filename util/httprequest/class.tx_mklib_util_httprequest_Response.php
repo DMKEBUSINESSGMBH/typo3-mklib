@@ -13,7 +13,7 @@ class tx_mklib_util_httprequest_Response
      *
      * @var array
      */
-    protected static $messages = array(
+    protected static $messages = [
         // Informational 1xx
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -65,7 +65,7 @@ class tx_mklib_util_httprequest_Response
         504 => 'Gateway Timeout',
         505 => 'HTTP Version Not Supported',
         509 => 'Bandwidth Limit Exceeded',
-    );
+    ];
 
     /**
      * The HTTP version (1.0, 1.1).
@@ -94,7 +94,7 @@ class tx_mklib_util_httprequest_Response
      *
      * @var array
      */
-    protected $headers = array();
+    protected $headers = [];
 
     /**
      * The HTTP response body.
@@ -470,7 +470,7 @@ class tx_mklib_util_httprequest_Response
      */
     public static function extractHeaders($response_str)
     {
-        $headers = array();
+        $headers = [];
 
         // First, split body and headers
         $parts = preg_split('|(?:\r?\n){2}|m', $response_str, 2);
@@ -497,7 +497,7 @@ class tx_mklib_util_httprequest_Response
 
                 if (isset($headers[$h_name])) {
                     if (!is_array($headers[$h_name])) {
-                        $headers[$h_name] = array($headers[$h_name]);
+                        $headers[$h_name] = [$headers[$h_name]];
                     }
 
                     $headers[$h_name][] = $h_value;
@@ -585,9 +585,7 @@ class tx_mklib_util_httprequest_Response
     public static function decodeGzip($body)
     {
         if (!function_exists('gzinflate')) {
-            throw new Exception(
-                'zlib extension is required in order to decode "gzip" encoding'
-            );
+            throw new Exception('zlib extension is required in order to decode "gzip" encoding');
         }
 
         return gzinflate(substr($body, 10));
@@ -605,9 +603,7 @@ class tx_mklib_util_httprequest_Response
     public static function decodeDeflate($body)
     {
         if (!function_exists('gzuncompress')) {
-            throw new Exception(
-                'zlib extension is required in order to decode "deflate" encoding'
-            );
+            throw new Exception('zlib extension is required in order to decode "deflate" encoding');
         }
 
         /**

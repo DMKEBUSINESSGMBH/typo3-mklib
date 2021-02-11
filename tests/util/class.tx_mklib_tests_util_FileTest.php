@@ -33,7 +33,7 @@
  */
 class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
 {
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
         // methoden aufrufen, die einmalig speicherplatz benötigen
@@ -54,16 +54,16 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
     private static function createTestfiles($testfolder)
     {
         tx_rnbase_util_Files::mkdir_deep($testfolder);
-        $files = array(
-            array($testfolder.'/', 'test.zip'),
-            array($testfolder.'/', 'test.xml'),
-            array($testfolder.'/', 'test.tmp'),
-            array($testfolder.'/', 'test.dat'),
-            array($testfolder.'/sub/', 'test.zip'),
-            array($testfolder.'/sub/', 'test.tmp'),
-            array($testfolder.'/sub/sub/', 'test.xml'),
-            array($testfolder.'/sub/sub/', 'test.dat'),
-        );
+        $files = [
+            [$testfolder.'/', 'test.zip'],
+            [$testfolder.'/', 'test.xml'],
+            [$testfolder.'/', 'test.tmp'],
+            [$testfolder.'/', 'test.dat'],
+            [$testfolder.'/sub/', 'test.zip'],
+            [$testfolder.'/sub/', 'test.tmp'],
+            [$testfolder.'/sub/sub/', 'test.xml'],
+            [$testfolder.'/sub/sub/', 'test.dat'],
+        ];
         foreach ($files as $file) {
             $path = $file[0];
             $file = $file[1];
@@ -84,12 +84,12 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
         self::createTestfiles($testfolder);
 
         // das aufräumen!
-        $count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
+        $count = tx_mklib_util_File::cleanupFiles($testfolder.'/', [
             // die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
             'lifetime' => -10800,
             'recursive' => '0',
             'filetypes' => 'zip, xml',
-        ));
+        ]);
         self::assertEquals(0, $count, 'wrong deleted count.');
         // weider löschen
         tx_rnbase_util_Files::rmdir($testfolder, true);
@@ -103,13 +103,13 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
         self::createTestfiles($testfolder);
 
         // das aufräumen!
-        $count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
+        $count = tx_mklib_util_File::cleanupFiles($testfolder.'/', [
             // die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
             'lifetime' => -10800,
             'recursive' => '0',
             'filetypes' => 'zip, xml',
             'skiptypo3tempcheck' => '1',
-        ));
+        ]);
         self::assertEquals(2, $count, 'wrong deleted count.');
         // weider löschen
         tx_rnbase_util_Files::rmdir($testfolder, true);
@@ -123,13 +123,13 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
         self::createTestfiles($testfolder);
 
         // das aufräumen!
-        $count = tx_mklib_util_File::cleanupFiles($testfolder.'/', array(
+        $count = tx_mklib_util_File::cleanupFiles($testfolder.'/', [
             // die dateien werden erst nach der $GLOBALS['EXEC_TIME'] generiert.
             'lifetime' => -10800,
             'recursive' => '1',
             'filetypes' => 'zip, xml',
             'skiptypo3tempcheck' => '1',
-        ));
+        ]);
         self::assertEquals(4, $count, 'wrong deleted count. testfolder: '.$testfolder);
         // weider löschen
         tx_rnbase_util_Files::rmdir($testfolder, true);
@@ -257,11 +257,11 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
      */
     public function getFiles()
     {
-        return array(
-            array(tx_mklib_util_File::getServerPath(''), false),
-            array(tx_mklib_util_File::getServerPath('EXT:mklib/tests'), false),
-            array(tx_mklib_util_File::getServerPath('EXT:mklib/tests/phpunit.xml'), true),
-        );
+        return [
+            [tx_mklib_util_File::getServerPath(''), false],
+            [tx_mklib_util_File::getServerPath('EXT:mklib/tests'), false],
+            [tx_mklib_util_File::getServerPath('EXT:mklib/tests/phpunit.xml'), true],
+        ];
     }
 
     /**

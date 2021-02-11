@@ -55,57 +55,57 @@ class Tx_Mklib_Domain_Model_Iso_SwiftBicTest extends tx_rnbase_tests_BaseTestCas
      */
     public function getValidateData()
     {
-        return array(
+        return [
             // invalid SwiftBic
-            __LINE__ => array(
+            __LINE__ => [
                 'value' => 'CE1EL2LLFFF',
                 'valid' => false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => 'E31DCLLFFF',
                 'valid' => false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => '',
                 'valid' => false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => '  ',
                 'valid' => false,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => null,
                 'valid' => false,
-            ),
+            ],
             // valid SwiftBic
-            __LINE__ => array(
+            __LINE__ => [
                 'value' => 'RBOSGGSX',
                 'valid' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => ' RZTIAT22263',
                 'valid' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => 'BCEELULL',
                 'valid' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => 'MARKDEFF',
                 'valid' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => 'GENODEF1JEV',
                 'valid' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => 'UBSWCHZH80A',
                 'valid' => true,
-            ),
-            __LINE__ => array(
+            ],
+            __LINE__ => [
                 'value' => 'CEDELULLXXX',
                 'valid' => true,
-            ),
-        );
+            ],
+        ];
     }
 }

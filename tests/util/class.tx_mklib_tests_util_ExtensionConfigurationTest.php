@@ -31,10 +31,10 @@ class tx_mklib_tests_util_ExtensionConfigurationTest extends tx_rnbase_tests_Bas
 {
     public function testGetExtensionCfgValue()
     {
-        self::markTestIncomplete("Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)");
+        self::markTestIncomplete('Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
         $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['dummyExtension'] = serialize(
-            array('testConfig' => 'testConfigValue')
+            ['testConfig' => 'testConfigValue']
         );
 
         $extensionConfiguration =

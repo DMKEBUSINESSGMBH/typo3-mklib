@@ -36,7 +36,7 @@ class tx_mklib_util_StaticCache
      *
      * @var array
      */
-    private static $staticCache = array();
+    private static $staticCache = [];
 
     /**
      * Set static cache value.
@@ -48,7 +48,7 @@ class tx_mklib_util_StaticCache
     public static function set($key, $value, $extKey = 'mklib')
     {
         if (!is_array(self::$staticCache[$extKey])) {
-            self::$staticCache[$extKey] = array();
+            self::$staticCache[$extKey] = [];
         }
         self::$staticCache[$extKey][$key] = $value;
     }
@@ -64,7 +64,7 @@ class tx_mklib_util_StaticCache
     public static function get($key, $extKey = 'mklib')
     {
         if (!is_array(self::$staticCache[$extKey])) {
-            self::$staticCache[$extKey] = array();
+            self::$staticCache[$extKey] = [];
         }
 
         return array_key_exists($key, self::$staticCache[$extKey]) ? self::$staticCache[$extKey][$key] : null;

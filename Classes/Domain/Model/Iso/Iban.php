@@ -44,7 +44,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
     const BANKACCOUNTNUMBER_LENGTH = 10;
     const IBAN_MIN_LENGTH = 15;
 
-    protected static $letterMapping = array(
+    protected static $letterMapping = [
         1 => 'A',
         2 => 'B',
         3 => 'C',
@@ -71,9 +71,9 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         24 => 'X',
         25 => 'Y',
         26 => 'Z',
-    );
+    ];
 
-    protected static $ibanFormatMap = array(
+    protected static $ibanFormatMap = [
         'AL' => '[0-9]{8}[0-9A-Z]{16}',
         'AD' => '[0-9]{8}[0-9A-Z]{12}',
         'AT' => '[0-9]{16}',
@@ -128,7 +128,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         'TR' => '[0-9]{5}[0-9A-Z]{17}',
         'AE' => '[0-9]{19}',
         'GB' => '[A-Z]{4}[0-9]{14}',
-    );
+    ];
 
     public function validate()
     {
@@ -265,10 +265,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
             // workaround http://php.net/manual/en/function.bcmod.php#38474
             // or http://php.net/manual/en/function.bcmod.php#110896
             // not working!
-            throw new Exception(
-                'BC-Math module not installed.'.
-                ' BC-Math functions are required for IBAN validation.'
-            );
+            throw new Exception('BC-Math module not installed.'.' BC-Math functions are required for IBAN validation.');
         }
 
         return bcmod($x, $y);

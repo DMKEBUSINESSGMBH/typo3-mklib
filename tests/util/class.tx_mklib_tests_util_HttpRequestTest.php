@@ -41,13 +41,13 @@ class tx_mklib_tests_util_HttpRequestTest extends tx_rnbase_tests_BaseTestCase
         $time = time();
 
         $url = 'https://phpunit.project.dmknet.de/tests/httprequest.php?method=POST';
-        $config = array(
+        $config = [
             'sslcainfo' => \DMK\Mklib\Utility\Tests::getFixturePath('project.dmknet.de.crt'),
-        );
+        ];
 
         $request = new tx_mklib_util_HttpRequest($url, $config);
 
-        $request->addParameter('httprequest', array('time' => $time, 'return' => 'time'));
+        $request->addParameter('httprequest', ['time' => $time, 'return' => 'time']);
         $request->setMethod($request::METHOD_POST);
         $response = $request->request();
 

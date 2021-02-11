@@ -36,11 +36,11 @@
  */
 class tx_mklib_model_Currency
 {
-    private $record = array();
+    private $record = [];
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
-        $data = array();
+        $data = [];
         $data['symbol'] = $options['symbol'] ? $options['symbol'] : '';
         $data['symbolHtmlEntity'] = $options['symbolHtmlEntity'] ?
                 $options['symbolHtmlEntity'] : htmlentities($data['symbol'], ENT_QUOTES, 'UTF-8');
@@ -57,7 +57,7 @@ class tx_mklib_model_Currency
      *
      * @return tx_mklib_model_Currency
      */
-    protected static function makeInstance(array $options = array())
+    protected static function makeInstance(array $options = [])
     {
         // @TODO: caching umstellen, wenn in den options mehr als nur das symbol steckt.
         // $key = md5(serialize($options));
@@ -83,10 +83,7 @@ class tx_mklib_model_Currency
         if ('DE' === $country) {
             return self::getByCurrencyCode('EUR');
         } else {
-            throw tx_rnbase::makeInstance(
-                'tx_mklib_exception_InvalidConfiguration',
-                __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!'
-            );
+            throw tx_rnbase::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
         }
 
         return null;
@@ -104,7 +101,7 @@ class tx_mklib_model_Currency
     public static function getByCurrencyCode($currency = 'EUR')
     {
         if ('EUR' === $currency) {
-            $options = array();
+            $options = [];
             $options['symbol'] = '€';
             $options['plusSign'] = false;
             $options['format'] = '{sign}{value} {currency}';
@@ -112,10 +109,7 @@ class tx_mklib_model_Currency
             $options['delimiter'] = ',';
             $options['thousands'] = '.';
         } else {
-            throw tx_rnbase::makeInstance(
-                'tx_mklib_exception_InvalidConfiguration',
-                __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!'
-            );
+            throw tx_rnbase::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
         }
 
         return self::makeInstance($options);
@@ -146,11 +140,11 @@ class tx_mklib_model_Currency
         $neg = doubleval($value) < 0;
         $value = $this->numberFormat(abs($value));
 
-        $replaceArray = array(
+        $replaceArray = [
                 '{sign}' => '%1$s', // string
                 '{value}' => '%2$s', // string
                 '{currency}' => '%3$s', // string
-            );
+            ];
 
         $format = str_replace(array_keys($replaceArray), array_values($replaceArray), $this->record['format']);
 

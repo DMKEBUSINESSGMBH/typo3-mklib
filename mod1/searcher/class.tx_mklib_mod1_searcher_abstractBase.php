@@ -52,7 +52,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Current search term.
@@ -79,7 +79,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * @param tx_rnbase_mod_IModule $mod
      * @param array                 $options
      */
-    public function __construct(tx_rnbase_mod_IModule $mod, array $options = array())
+    public function __construct(tx_rnbase_mod_IModule $mod, array $options = [])
     {
         $this->init($mod, $options);
     }
@@ -182,14 +182,14 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function getFilterTableDataForSearchForm()
     {
-        $data = array();
-        $options = array('pid' => $this->options['pid']);
+        $data = [];
+        $options = ['pid' => $this->options['pid']];
         $selector = $this->getSelector();
 
         $this->currentSearchWord = $selector->showFreeTextSearchForm(
             $data['search'],
             $this->getSearcherId().'Search',
-            array_merge(array('submit' => 1), $options)
+            array_merge(['submit' => 1], $options)
         );
 
         // @TODO: check, if the table is internationalable and remove the option!
@@ -206,10 +206,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         );
 
         if ($updateButton = $this->getSearchButton()) {
-            $data['updatebutton'] = array(
+            $data['updatebutton'] = [
                 'label' => '',
                 'button' => $updateButton,
-            );
+            ];
         }
 
         return $data;
@@ -242,7 +242,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         list($fields, $options) = $this->getFieldsAndOptions();
         /* @var $provider tx_rnbase_util_ListProvider */
         $provider = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
-        $provider->initBySearch(array($this->getService(), 'search'), $fields, $options);
+        $provider->initBySearch([$this->getService(), 'search'], $fields, $options);
 
         return $provider;
     }
@@ -277,13 +277,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         $search = $this->searchItems($fields, $options);
         $items = &$search['items'];
         $content = '';
-        $this->showItems($content, $items, array('items_map' => $search['map']));
+        $this->showItems($content, $items, ['items_map' => $search['map']]);
 
-        $data = array(
+        $data = [
             'table' => $content,
             'totalsize' => $cnt,
             'items' => $items,
-        );
+        ];
 
         if ($pager) {
             $pagerData = $pager->render();
@@ -357,24 +357,24 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         }
 
         // build uidmap
-        $map = array();
+        $map = [];
         if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-            $map[$firstPrev->getUid()] = array();
+            $map[$firstPrev->getUid()] = [];
         }
         if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-            $map[$secondPrev->getUid()] = array();
+            $map[$secondPrev->getUid()] = [];
         }
         foreach ($items as $item) {
-            $map[$item->getUid()] = array();
+            $map[$item->getUid()] = [];
         }
         if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
-            $map[$lastNext->getUid()] = array();
+            $map[$lastNext->getUid()] = [];
         }
 
-        return array(
+        return [
             'items' => $items,
             'map' => $map,
-        );
+        ];
     }
 
     protected function usePager()
@@ -394,7 +394,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function getFieldsAndOptions()
     {
-        $fields = $options = array();
+        $fields = $options = [];
         if (!empty($this->options['baseOptions'])
             && is_array($this->options['baseOptions'])) {
             $options = $this->options['baseOptions'];
@@ -410,7 +410,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         $this->prepareSorting($options);
         $this->prepareFieldsAndOptions($fields, $options);
 
-        return array($fields, $options);
+        return [$fields, $options];
     }
 
     /**
@@ -420,14 +420,14 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     private function prepareSorting(&$options)
     {
-        $sortedCols = array();
+        $sortedCols = [];
         if (tx_rnbase_parameters::getPostOrGetParameter('sortField') && tx_rnbase_parameters::getPostOrGetParameter('sortRev')) {
-            $sortedCols = array(tx_rnbase_parameters::getPostOrGetParameter('sortField') => tx_rnbase_parameters::getPostOrGetParameter('sortRev'));
+            $sortedCols = [tx_rnbase_parameters::getPostOrGetParameter('sortField') => tx_rnbase_parameters::getPostOrGetParameter('sortRev')];
             //wir setzen die daten noch für das Modul um bei einem seiten wechsel
             //weiterhin die richtige sortierung zu haben
             $this->getSelector()->setValueToModuleData(
                 $this->getModule()->getName(),
-                array($this->getSearcherId().'orderby' => $sortedCols)
+                [$this->getSearcherId().'orderby' => $sortedCols]
             );
         } elseif ($aOrderByByModuleData = $this->getSelector()->getValueFromModuleData($this->getSearcherId().'orderby')) {
             $sortedCols = $aOrderByByModuleData;
@@ -498,7 +498,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function getSearchColumns()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -513,12 +513,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function showItems(
         &$content,
         $items,
-        array $options = array()
+        array $options = []
     ) {
         if (!(is_array($items) || $items instanceof Traversable)) {
-            throw new Exception(
-                'Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.'
-            );
+            throw new Exception('Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.');
         }
 
         if (!(array) $items) {
@@ -550,7 +548,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      *
      * @return tx_mklib_mod1_decorator_Base
      */
-    protected function getDecorator(&$mod, array $options = array())
+    protected function getDecorator(&$mod, array $options = [])
     {
         return tx_rnbase::makeInstance(
             $this->getDecoratorClass(),
@@ -584,7 +582,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function getDecoratorColumns(&$oDecorator)
     {
-        $columns = array();
+        $columns = [];
         $this
             ->addDecoratorColumnLabel($columns, $oDecorator)
             ->addDecoratorColumnLanguage($columns, $oDecorator)
@@ -605,10 +603,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         array &$columns,
         tx_rnbase_mod_IDecorator &$oDecorator = null
     ) {
-        $columns['uid'] = array(
+        $columns['uid'] = [
             'title' => 'label_tableheader_uid',
             'decorator' => &$oDecorator,
-        );
+        ];
 
         return $this;
     }
@@ -628,10 +626,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         if (!empty($this->options['baseTableName'])) {
             $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($this->options['baseTableName']);
             if (!empty($labelField)) {
-                $columns['label'] = array(
+                $columns['label'] = [
                     'title' => 'label_tableheader_title',
                     'decorator' => &$oDecorator,
-                );
+                ];
             }
         }
         // fallback, the uid column
@@ -657,10 +655,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         if (!empty($this->options['baseTableName'])) {
             $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($this->options['baseTableName']);
             if (!empty($sysLanguageUidField)) {
-                $columns['sys_language_uid'] = array(
+                $columns['sys_language_uid'] = [
                     'title' => 'label_tableheader_language',
                     'decorator' => &$oDecorator,
-                );
+                ];
             }
         }
 
@@ -680,10 +678,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         array &$columns,
         tx_rnbase_mod_IDecorator &$oDecorator = null
     ) {
-        $columns['actions'] = array(
+        $columns['actions'] = [
             'title' => 'label_tableheader_actions',
             'decorator' => &$oDecorator,
-        );
+        ];
 
         return $this;
     }

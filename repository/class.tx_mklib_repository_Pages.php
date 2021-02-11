@@ -74,7 +74,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     public function getChildren(
         tx_mklib_model_Page $page
     ) {
-        $fields = $options = array();
+        $fields = $options = [];
         $fields['PAGES.pid'][OP_EQ_INT] = $page->getUid();
 
         return $this->search($fields, $options);
@@ -91,7 +91,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     public function search(array $fields, array $options)
     {
         if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
-            $options['searchdef'] = array();
+            $options['searchdef'] = [];
         }
         $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
             // default sercher config
@@ -108,21 +108,21 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
      */
     protected function getSearchdef()
     {
-        return array(
+        return [
             'usealias' => '1',
             'basetable' => 'pages',
             'basetablealias' => 'PAGES',
             'wrapperclass' => $this->getWrapperClass(),
-            'alias' => array(
-                'PAGES' => array(
+            'alias' => [
+                'PAGES' => [
                     'table' => 'pages',
-                ),
-                'PAGESPARENT' => array(
+                ],
+                'PAGESPARENT' => [
                     'table' => 'pages',
                     'join' => 'JOIN pages AS PAGESPARENT ON PAGES.pid = PAGESPARENT.uid',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }
 

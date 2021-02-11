@@ -12,7 +12,7 @@ class tx_mklib_mod1_export_Util
      *
      * @param array $options
      */
-    public static function sendHeaders(array $options = array())
+    public static function sendHeaders(array $options = [])
     {
         $fileName = empty($options['filename']) ? 'export.dat' : $options['filename'];
         $contentType = empty($options['contenttype']) ? 'application/octet-stream' : $options['contenttype'];

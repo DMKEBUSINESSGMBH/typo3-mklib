@@ -41,15 +41,15 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
     public function search($fields, $options)
     {
         if ($GLOBALS['emptyTestResult']) {
-            $aResults = array();
+            $aResults = [];
         } else {
-            $aResults = array(
-                0 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 1)),
-                1 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 2)),
-                2 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 3)),
-                3 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 4)),
-                4 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 5)),
-            );
+            $aResults = [
+                0 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 1]),
+                1 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 2]),
+                2 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 3]),
+                3 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 4]),
+                4 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 5]),
+            ];
         }
         //sortieren?
         if (!empty($options['orderby'])) {
@@ -58,7 +58,7 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
 
         //versteckte zurück geben?
         if (1 == $GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden']) {
-            $aResults[5] = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 6, 'hidden' => 1));
+            $aResults[5] = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 6, 'hidden' => 1]);
         }
 
         if ($options['count']) {

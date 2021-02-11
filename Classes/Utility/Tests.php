@@ -40,8 +40,8 @@ use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
  */
 class Tests
 {
-    private static $aExtConf = array();
-    private static $aHooks = array();
+    private static $aExtConf = [];
+    private static $aHooks = [];
     private static $sCacheFile;
 
     /**
@@ -130,7 +130,7 @@ class Tests
         $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$sExtKey]);
         // wenn keine Konfiguration existiert, legen wir eine an.
         if (!is_array($extConfig)) {
-            $extConfig = array();
+            $extConfig = [];
         }
         // neuen Wert setzen
         $extConfig[$sCfgKey] = $sCfgValue;
@@ -237,7 +237,7 @@ class Tests
                 $oFeUser = \tx_rnbase::makeInstance($frontendUserAuthenticationClass);
             }
             if (!is_object($GLOBALS['TSFE'])) {
-                self::prepareTSFE(array('force' => true));
+                self::prepareTSFE(['force' => true]);
             }
             $GLOBALS['TSFE']->fe_user = $oFeUser;
         }
@@ -249,7 +249,7 @@ class Tests
      * @param array  $labels
      * @param string $lang
      */
-    public static function setLocallangLabels($labels = array(), $lang = 'default')
+    public static function setLocallangLabels($labels = [], $lang = 'default')
     {
         global $LOCAL_LANG;
         $GLOBALS['LANG']->lang = $lang;
@@ -309,7 +309,7 @@ class Tests
         $action,
         $aConfig,
         $sExtKey,
-        $aParams = array(),
+        $aParams = [],
         $execute = true,
         &$frontendOutput = '',
         &$viewData = null
@@ -367,9 +367,9 @@ class Tests
             $viewData = $configurations->getViewData();
             $frontendOutput = $handleRequest->invokeArgs(
                 $action,
-                array(
+                [
                         &$parameters, &$configurations, &$viewData,
-                    )
+                    ]
             );
         }
 
@@ -380,7 +380,7 @@ class Tests
      * @param array $options
      *                       initFEuser: verhindert das Schreiben von Headerdaten
      */
-    public static function prepareTSFE(array $options = array())
+    public static function prepareTSFE(array $options = [])
     {
         static $loaded = false;
         if ($loaded && !isset($options['force'])) {
@@ -396,7 +396,7 @@ class Tests
             $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] = 0;
         }
 
-        \tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
+        \tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
         $loaded = true;
 
         if (isset($options['initFEuser'])) {
@@ -502,7 +502,7 @@ class Tests
      */
     public static function simulateFrontendEnviroment($extKey = 'mklib')
     {
-        self::prepareTSFE(array('force' => true));
+        self::prepareTSFE(['force' => true]);
     }
 
     /**

@@ -37,7 +37,7 @@ abstract class tx_mklib_filter_SingleItem extends tx_rnbase_filter_BaseFilter
     protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
     {
         $singleItemUid = $parameters->getInt($this->getParameterName());
-        $fields[$this->getSearchAlias().'.uid'] = array(OP_EQ_INT => $singleItemUid);
+        $fields[$this->getSearchAlias().'.uid'] = [OP_EQ_INT => $singleItemUid];
         $options['limit'] = 1;
 
         return true;

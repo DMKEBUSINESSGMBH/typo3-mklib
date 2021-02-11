@@ -59,7 +59,7 @@ class tx_mklib_util_csv_writer
      *
      * @var array
      */
-    private $columns = array();
+    private $columns = [];
 
     /**
      * Gibt an ob letzter Zeilenumbruch geschrieben werden soll.
@@ -132,7 +132,7 @@ class tx_mklib_util_csv_writer
      */
     public function addRow(array $row)
     {
-        $fields = array();
+        $fields = [];
         foreach ($this->columns as $field) {
             $fields[$field] = empty($row[$field]) ? '' : $row[$field];
         }

@@ -12,7 +12,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      *
      * @var array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * What host are we connected to?
@@ -59,7 +59,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      *
      * @param array $config
      */
-    public function setConfig(array $config = array())
+    public function setConfig(array $config = [])
     {
         if (isset($config['proxy_user']) && isset($config['proxy_pass'])) {
             $this->setCurlOption(CURLOPT_PROXYUSERPWD, $config['proxy_user'].':'.$config['proxy_pass']);
@@ -93,7 +93,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
     protected function setCurlOption($option, $value)
     {
         if (!isset($this->config['curloptions'])) {
-            $this->config['curloptions'] = array();
+            $this->config['curloptions'] = [];
         }
         $this->config['curloptions'][$option] = $value;
 
@@ -178,7 +178,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      *
      * @return string $request
      */
-    public function write($method, $uri, $headers = array(), $body = '')
+    public function write($method, $uri, $headers = [], $body = '')
     {
         // Make sure we're properly connected
         if (!$this->curl) {

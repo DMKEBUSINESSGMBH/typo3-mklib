@@ -38,27 +38,27 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetectionFieldProvider extends tx_mk
      */
     protected function getAdditionalFieldConfig()
     {
-        return array(
-            'receiver' => array(
+        return [
+            'receiver' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
                 'default' => $GLOBALS['BE_USER']->user['email'], // default is 7 days
                 'eval' => 'required,email',
-            ),
-            'threshold' => array(
+            ],
+            'threshold' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_threshold',
                 'default' => 90, // jeder task sollte nach 90 sekunden fertig sein
                 'eval' => 'int,minThreshold',
-            ),
-            'rememberAfter' => array(
+            ],
+            'rememberAfter' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter',
                 'cshLabel' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter', // key aus der ssh locallang zu cshKey
                 'default' => 3600, // nach 1 h erneut mail schicken
                 'eval' => 'int',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

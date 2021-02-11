@@ -34,7 +34,7 @@ interface tx_mklib_util_httprequest_adapter_Interface
      *
      * @param array $config
      */
-    public function setConfig(array $config = array());
+    public function setConfig(array $config = []);
 
     /**
      * Connect to the remote server.
@@ -55,7 +55,7 @@ interface tx_mklib_util_httprequest_adapter_Interface
      *
      * @return string Request as text
      */
-    public function write($method, $url, $headers = array(), $body = '');
+    public function write($method, $url, $headers = [], $body = '');
 
     /**
      * Read response from server.

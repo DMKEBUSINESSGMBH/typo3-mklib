@@ -38,7 +38,7 @@ class tx_mklib_tests_util_DateTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetTimestampByCalendarWeekDayAndYearReturnsCorrectTimestamps()
     {
-        self::markTestIncomplete("Failed asserting that 1577664000 matches expected 1577660400.");
+        self::markTestIncomplete('Failed asserting that 1577664000 matches expected 1577660400.');
 
         self::assertEquals(1577660400, tx_mklib_util_Date::getTimestampByCalendarWeekDayAndYear(1, 1, 2020), 'Der zurückgegebene timestamp für den ersten Montag in der ersten Kalenderwoche 2020 ist nicht korrekt.');
         self::assertEquals(1434060000, tx_mklib_util_Date::getTimestampByCalendarWeekDayAndYear(5, 24, 2015), 'Der zurückgegebene timestamp für den ersten Freitag in der 24. Kalenderwoche 2015 ist nicht korrekt.');
@@ -90,7 +90,7 @@ class tx_mklib_tests_util_DateTest extends tx_rnbase_tests_BaseTestCase
     public function testGetTimesInTimeRangeReturnsCorrectDays()
     {
         self::markTestIncomplete(
-            "Failed asserting that two strings are equal.".
+            'Failed asserting that two strings are equal.'.
             "-'39|2011'".
             "+'38|2011'"
         );

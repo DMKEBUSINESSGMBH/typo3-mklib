@@ -30,7 +30,7 @@ class tx_mklib_util_TS
         $extKey,
         $extKeyTs = null,
         $sStaticPath = '',
-        $aConfig = array(),
+        $aConfig = [],
         $resolveReferences = false,
         $forceTsfePreparation = false
     ) {
@@ -44,14 +44,14 @@ class tx_mklib_util_TS
             tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
         }
 
-        $tsfePreparationOptions = array();
+        $tsfePreparationOptions = [];
         if ($forceTsfePreparation) {
             $tsfePreparationOptions['force'] = true;
         }
 
         // Ist bei Aufruf aus BE notwendig! (@TODO: sicher???)
         tx_rnbase_util_Misc::prepareTSFE($tsfePreparationOptions);
-        $GLOBALS['TSFE']->config = array();
+        $GLOBALS['TSFE']->config = [];
 
         $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
 
@@ -134,14 +134,14 @@ class tx_mklib_util_TS
         if (isset($GLOBALS['TSFE'])) {
             // tsfe config setzen (wird in der tx_rnbase_configurations gebraucht (language))
             $GLOBALS['TSFE']->tmpl->setup = array_merge(
-                is_array($GLOBALS['TSFE']->config) ? $GLOBALS['TSFE']->config : array(),
-                is_array($tsObj->setup['config.']) ? $tsObj->setup['config.'] : array()
+                is_array($GLOBALS['TSFE']->config) ? $GLOBALS['TSFE']->config : [],
+                is_array($tsObj->setup['config.']) ? $tsObj->setup['config.'] : []
             );
             // tsfe config setzen (ansonsten funktionieren refereznen nicht (fpdf <= lib.fpdf))
             // @TODO: Konfigurierbar machen
             $GLOBALS['TSFE']->tmpl->setup = array_merge(
-                is_array($tsObj->setup) ? $tsObj->setup : array(),
-                is_array($GLOBALS['TSFE']->tmpl->setup) ? $GLOBALS['TSFE']->tmpl->setup : array()
+                is_array($tsObj->setup) ? $tsObj->setup : [],
+                is_array($GLOBALS['TSFE']->tmpl->setup) ? $GLOBALS['TSFE']->tmpl->setup : []
             );
         }
 

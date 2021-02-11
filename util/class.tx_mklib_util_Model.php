@@ -95,7 +95,7 @@ class tx_mklib_util_Model
      */
     public static function uniqueModels($aModels)
     {
-        $aUniques = array();
+        $aUniques = [];
         if (is_array($aModels)) {
             foreach ($aModels as $oModel) {
                 if (!isset($aUniques[$oModel->getUid()])) {
@@ -124,7 +124,7 @@ class tx_mklib_util_Model
         $oInstance = tx_mklib_util_StaticCache::get($key);
 
         if (!is_object($oInstance)) {
-            $oInstance = tx_rnbase::makeInstance($sClassName, array('uid' => 0));
+            $oInstance = tx_rnbase::makeInstance($sClassName, ['uid' => 0]);
             $aColumns = $oInstance->getColumnNames();
             foreach ($aColumns as $sColumn) {
                 $oInstance->record[$sColumn] = '';

@@ -41,19 +41,18 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
     protected function setUp()
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
-        tx_rnbase_util_Misc::prepareTSFE(array('force' => true));
+        tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
 
         //tq_seo extension hat einen hook der auf das folgende feld zugreift.
         //wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
         //wir verhindern wollen!
         if (!is_array($GLOBALS['TSFE']->rootLine)) {
-            $GLOBALS['TSFE']->rootLine = array();
+            $GLOBALS['TSFE']->rootLine = [];
         }
         if (!is_array($GLOBALS['TSFE']->rootLine[0])) {
-            $GLOBALS['TSFE']->rootLine[0] = array();
+            $GLOBALS['TSFE']->rootLine[0] = [];
         }
         $GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
-
     }
 
     /**
@@ -95,8 +94,8 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
             $confId
         );
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         $filter->init($fields, $options);
 
         $formatter = $configurations->getFormatter();
@@ -111,50 +110,50 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
      */
     public function getExpectedParsedLinks()
     {
-        return array(
+        return [
             // auf grund der default config sollte das orderBy nicht auf asc sondern auf desc stehen
-            array(
+            [
                 '###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
                 '',
                 '',
-            ),
+            ],
             // da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
-            array(
+            [
                 '###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
                 'firstField',
                 'asc',
-            ),
+            ],
             //normaler Link mit asc wenn anderes sortBy gewählt
-            array(
+            [
                 '###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
                 'unknownField',
                 'asc',
-            ),
+            ],
             // Links werden ohne default config immer asc sortiert
-            array(
+            [
                 '###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',
                 '',
                 '',
-            ),
+            ],
             // da nach dem feld asc sortiert wurde, sollte sich die sortOrder auf desc ändern
-            array(
+            [
                 '###SORT_SECONDFIELD_LINK###link###SORT_SECONDFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=secondField&amp;mklib%5BsortOrder%5D=desc"\>link\<\/a\>)/',
                 'secondField',
                 'asc',
-            ),
+            ],
             // unbekannte Felder werden nicht geparsed
-            array(
+            [
                 '###SORT_UNKNOWN_LINK###link###SORT_UNKNOWN_LINK###',
                 '/(###SORT_UNKNOWN_LINK###link###SORT_UNKNOWN_LINK###)/',
                 '',
                 '',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -179,24 +178,24 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
 
         $configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
         $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
-        $config = array(
-            'myConfId.' => array(
-                'filter.' => array(
-                    'sort.' => array(
+        $config = [
+            'myConfId.' => [
+                'filter.' => [
+                    'sort.' => [
                         'fields' => 'firstField,secondField',
-                        'link.' => array(
+                        'link.' => [
                             'noHash' => 1,
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         if ($defaultConfig) {
-            $config['myConfId.']['filter.']['sort.']['default.'] = array(
+            $config['myConfId.']['filter.']['sort.']['default.'] = [
                 'field' => 'firstField',
                 'sortOrder' => 'asc',
-            );
+            ];
         }
 
         $configurations->init($config, $cObj, 'mklib', 'mklib');
@@ -220,8 +219,8 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
             $confId
         );
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         $filterReturn = $filter->init($fields, $options);
         self::assertEquals('0  ', $filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
     }
@@ -245,8 +244,8 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
             $confId
         );
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         $filterReturn = $filter->init($fields, $options);
         self::assertEquals('1 firstField desc', $filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
     }
@@ -267,8 +266,8 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
             $confId
         );
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         $filterReturn = $filter->init($fields, $options);
         self::assertEquals('1 firstField asc', $filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
     }
@@ -292,8 +291,8 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
             $confId
         );
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         $filterReturn = $filter->init($fields, $options);
         self::assertEquals('1 firstField desc', $filterReturn, 'orderby und sortby nicht korrekt gesetzt.');
     }

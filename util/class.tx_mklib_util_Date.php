@@ -36,7 +36,7 @@
  */
 class tx_mklib_util_Date
 {
-    public static $days = array(
+    public static $days = [
                         1 => 'Monday',
                         2 => 'Tuesday',
                         3 => 'Wednesday',
@@ -44,10 +44,10 @@ class tx_mklib_util_Date
                         5 => 'Friday',
                         6 => 'Saturday',
                         7 => 'Sunday',
-                    );
+                    ];
     // @TODO: wär das nicht besser in der locallang.xml aufgehoben!?
     // tx_rnbase_configurations::getLL()
-    public static $aGermanDays = array(
+    public static $aGermanDays = [
                         1 => 'Montag',
                         2 => 'Dienstag',
                         3 => 'Mittwoch',
@@ -55,7 +55,7 @@ class tx_mklib_util_Date
                         5 => 'Freitag',
                         6 => 'Samstag',
                         7 => 'Sonntag',
-                    );
+                    ];
 
     /**
      * Gibt einen Unixtimestamp für einen Wochentag, eine Kalenderwoche und ein Jahr zurück.

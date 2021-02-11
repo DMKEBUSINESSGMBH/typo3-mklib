@@ -32,11 +32,11 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
      */
     public function getCountryByIsoNr($isoNumber)
     {
-        $options = array();
+        $options = [];
 
-        $fields = array(
-            'STATICCOUNTRY.cn_iso_nr' => array(OP_EQ_INT => $isoNumber),
-        );
+        $fields = [
+            'STATICCOUNTRY.cn_iso_nr' => [OP_EQ_INT => $isoNumber],
+        ];
 
         return $this->searchSingle($fields, $options);
     }
@@ -46,11 +46,11 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
      */
     public function getCountryByGermanShortName($germanShortName)
     {
-        $options = array();
+        $options = [];
 
-        $fields = array(
-            'STATICCOUNTRY.cn_short_de' => array(OP_EQ => $germanShortName),
-        );
+        $fields = [
+            'STATICCOUNTRY.cn_short_de' => [OP_EQ => $germanShortName],
+        ];
 
         return $this->searchSingle($fields, $options);
     }
@@ -83,9 +83,9 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
      */
     public function create(array $data)
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'creating a static country via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
@@ -95,9 +95,9 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
      */
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'updating a static country via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
@@ -107,9 +107,9 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'deleting a static country via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
@@ -119,8 +119,8 @@ class tx_mklib_srv_StaticCountries extends tx_mklib_srv_Base
      */
     public function handleCreation(array $data)
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'creating a static country via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 }

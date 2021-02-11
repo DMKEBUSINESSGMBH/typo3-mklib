@@ -42,16 +42,16 @@ class tx_mklib_tests_fixtures_classes_DummyFilter extends tx_rnbase_filter_BaseF
         return true;
     }
 
-    public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = array())
+    public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = [])
     {
         //damit wir im test sehen ob alles korrekt übergeben wurde
-        $viewdata->offsetSet('pageBrowserConfig', array(
+        $viewdata->offsetSet('pageBrowserConfig', [
             'config' => $configurations,
             'confid' => $confid,
             'fields' => $fields,
             'options' => $options,
             'cfg' => $cfg,
-        ));
+        ]);
     }
 }
 

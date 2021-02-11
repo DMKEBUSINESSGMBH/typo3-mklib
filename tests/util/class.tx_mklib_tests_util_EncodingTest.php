@@ -31,8 +31,8 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
         $strIso88591 = pack('H*', self::$hexIso88591);
 
         if (false) {
-            echo '<pre>'.var_export(array(
-                'iso88591' => array(
+            echo '<pre>'.var_export([
+                'iso88591' => [
                     'string' => $strIso88591,
                     'utf8 level' => tx_rnbase_util_Strings::isUtf8String($strIso88591),
                     'utf8 encoding' => tx_mklib_util_Encoding::detectUtfEncoding($strIso88591),
@@ -40,8 +40,8 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
                     'bin2hex' => bin2hex($strIso88591),
                     'is utf8' => tx_mklib_util_Encoding::isEncoding($strIso88591, 'UTF-8'),
                     'is iso88591' => tx_mklib_util_Encoding::isEncoding($strIso88591, 'ISO-8859-1'),
-                ),
-                'utf8' => array(
+                ],
+                'utf8' => [
                     'string' => $strUtf8,
                     'utf8 level' => tx_rnbase_util_Strings::isUtf8String($strUtf8),
                     'utf8 encoding' => tx_mklib_util_Encoding::detectUtfEncoding($strUtf8),
@@ -49,9 +49,9 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
                     'bin2hex' => bin2hex($strUtf8),
                     'is utf8' => tx_mklib_util_Encoding::isEncoding($strUtf8, 'UTF-8'),
                     'is iso88591' => tx_mklib_util_Encoding::isEncoding($strUtf8, 'ISO-8859-1'),
-                ),
+                ],
                 'DEBUG: '.__FILE__.'&'.__METHOD__.' Line: '.__LINE__,
-            ), true).'</pre>';
+            ], true).'</pre>';
         } // @TODO: remove me
 
         self::assertTrue(
@@ -144,26 +144,26 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
         $stringIso = pack('H*', self::$hexIso88591);
         $stringUtf8 = pack('H*', self::$hexUtf8);
 
-        $arrayFrom = array(
+        $arrayFrom = [
             'var' => $stringIso,
-            'array' => array(
+            'array' => [
                 'var' => $stringIso,
-                'array' => array(
+                'array' => [
                     'var1' => $stringIso,
                     'var2' => $stringIso,
-                ),
-            ),
-        );
-        $arrayTo = array(
+                ],
+            ],
+        ];
+        $arrayTo = [
             'var' => $stringUtf8,
-            'array' => array(
+            'array' => [
                 'var' => $stringUtf8,
-                'array' => array(
+                'array' => [
                     'var1' => $stringUtf8,
                     'var2' => $stringUtf8,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $arrayFrom = tx_mklib_util_Encoding::convertEncoding(
             $arrayFrom,
@@ -188,18 +188,18 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
         $stringUtf8 = pack('H*', self::$hexUtf8);
 
         $modelFrom = new ArrayObject(
-            array(
+            [
                 'uid' => 1,
                 'title' => $stringIso,
                 'description' => $stringIso,
-            )
+            ]
         );
         $modelTo = new ArrayObject(
-            array(
+            [
                 'uid' => 1,
                 'title' => $stringUtf8,
                 'description' => $stringUtf8,
-            )
+            ]
         );
 
         $modelFrom = tx_mklib_util_Encoding::convertEncoding(
@@ -226,19 +226,19 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
 
         $modelFrom = tx_rnbase::makeInstance(
             'tx_rnbase_model_base',
-            array(
+            [
                 'uid' => 1,
                 'title' => $stringIso,
                 'description' => $stringIso,
-            )
+            ]
         );
         $modelTo = tx_rnbase::makeInstance(
             'tx_rnbase_model_base',
-            array(
+            [
                 'uid' => 1,
                 'title' => $stringUtf8,
                 'description' => $stringUtf8,
-            )
+            ]
         );
 
         $modelFrom = tx_mklib_util_Encoding::convertEncoding(
@@ -265,30 +265,30 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
 
         $modelTo = tx_rnbase::makeInstance(
             'tx_rnbase_model_base',
-            array(
+            [
                 'uid' => 1,
                 'title' => $stringUtf8,
                 'description' => $stringUtf8,
-            )
+            ]
         );
-        $data = array(
+        $data = [
             'one' => tx_rnbase::makeInstance(
                 'tx_rnbase_model_base',
-                array(
+                [
                         'uid' => 1,
                         'title' => $stringIso,
                         'description' => $stringIso,
-                    )
+                    ]
             ),
             'twoe' => tx_rnbase::makeInstance(
                 'tx_rnbase_model_base',
-                array(
+                [
                         'uid' => 1,
                         'title' => $stringIso,
                         'description' => $stringIso,
-                    )
+                    ]
             ),
-        );
+        ];
 
         $data = tx_mklib_util_Encoding::convertEncoding(
             $data,
@@ -315,7 +315,7 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
      */
     public function test_convert_model_throws_exception()
     {
-        self::markTestIncomplete("Failed asserting that 5 is equal to expected exception code 4005.");
+        self::markTestIncomplete('Failed asserting that 5 is equal to expected exception code 4005.');
 
         // aufruf mittels falschem object
         tx_mklib_util_Encoding::convertEncoding(

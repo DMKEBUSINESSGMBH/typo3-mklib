@@ -117,7 +117,7 @@ class tx_mklib_util_RTFParser
 {
     protected $rtf;        // rtf core stream
     protected $len;        // length in characters of the stream (get performace due avoiding calling strlen everytime)
-    protected $err = array();        // array of error message, no entities on no error
+    protected $err = [];        // array of error message, no entities on no error
 
     protected $wantXML;    // convert to XML
     protected $wantHTML;    // convert to HTML
@@ -133,18 +133,18 @@ class tx_mklib_util_RTFParser
     protected $cw;        // are we currently parsing a control word ?
     protected $cfirst;    // could this be the first character ? so watch out for control symbols
 
-    protected $flags = array();        // parser flags
+    protected $flags = [];        // parser flags
 
     protected $queue;        // every character which is no sepcial char, not belongs to a control word/symbol; is generally considered being 'plain'
 
-    protected $stack = array();    // group stack
+    protected $stack = [];    // group stack
 
     /**
      * Sonderzeichen, die ersetzt werden müssen.
      *
      * @var array
      */
-    protected $aSpecialChars = array(
+    protected $aSpecialChars = [
             'c1' => '&Aacute;',
             'e1' => '&aacute;',
             'c0' => '&Agrave;',
@@ -186,11 +186,11 @@ class tx_mklib_util_RTFParser
             'b2' => '&sup2;',
             'b3' => '&sup3;',
             'df' => '&szlig;',
-    );
+    ];
 
     /* keywords which don't follw the specification (used by Word '97 - 2000) */
     // not yet used
-    protected $control_exception = array(
+    protected $control_exception = [
         'clFitText',
         'clftsWidth(-?[0-9]+)?',
         'clNoWrap(-?[0-9]+)?',
@@ -206,9 +206,9 @@ class tx_mklib_util_RTFParser
         'trwWithB(-?[0-9]+)?',
         'trwWith(-?[0-9]+)?',
         'spectspecifygen(-?[0-9]+)?',
-    );
+    ];
 
-    protected $charset_table = array(
+    protected $charset_table = [
         '0' => 'ANSI',
         '1' => 'Default',
         '2' => 'Symbol',
@@ -232,15 +232,15 @@ class tx_mklib_util_RTFParser
         '238' => 'Eastern European',
         '255' => 'PC 437',
         '255' => 'OEM',
-    );
+    ];
 
     /* note: the only conversion table used */
-    protected $fontmodifier_table = array(
+    protected $fontmodifier_table = [
         'bold' => 'b',
         'italic' => 'i',
         'underlined' => 'u',
         'strikethru' => 'strike',
-    );
+    ];
 
     /*
      Class Constructor:
@@ -291,7 +291,7 @@ class tx_mklib_util_RTFParser
 
         $this->out = '';
         $this->outstyles = '';
-        $this->styles = array();
+        $this->styles = [];
         $this->text = '';
 
         if (0 == $this->len) {
@@ -304,10 +304,10 @@ class tx_mklib_util_RTFParser
         /*
          Default values according to the specs
          */
-        $this->flags = array(
+        $this->flags = [
             'fontsize' => 24,
             'beginparagraph' => true,
-        );
+        ];
     }
 
     /*
@@ -597,7 +597,6 @@ class tx_mklib_util_RTFParser
                         /* close modifiers */
                         $this->checkHtmlSpanContent('stop');
                         /* close span */
-                        '</span>';
                     }
                 } else {//plain output
                     $this->out .= $this->queue;

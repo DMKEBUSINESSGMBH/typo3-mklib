@@ -76,7 +76,7 @@ class Tx_Mklib_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $util->expects(self::once())
             ->method('doUpdate')
-            ->with('pages', 'someWhereClause', array('hidden' => 1));
+            ->with('pages', 'someWhereClause', ['hidden' => 1]);
 
         $util->delete('pages', 'someWhereClause', Tx_Mklib_Database_Connection::DELETION_MODE_HIDE);
     }
@@ -95,7 +95,7 @@ class Tx_Mklib_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
 
         $util->expects(self::once())
             ->method('doUpdate')
-            ->with('pages', 'someWhereClause', array('deleted' => 1));
+            ->with('pages', 'someWhereClause', ['deleted' => 1]);
 
         $util->delete('pages', 'someWhereClause', Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE);
     }
@@ -121,6 +121,6 @@ class Tx_Mklib_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     private function getUtilMock()
     {
-        return $this->getMock('Tx_Mklib_Database_Connection', array('doUpdate', 'doDelete'));
+        return $this->getMock('Tx_Mklib_Database_Connection', ['doUpdate', 'doDelete']);
     }
 }

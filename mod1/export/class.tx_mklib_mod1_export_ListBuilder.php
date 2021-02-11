@@ -34,7 +34,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
      *
      * @var array
      */
-    private $callbacks = array();
+    private $callbacks = [];
 
     /**
      * Add a visitor callback. It is called for each item before rendering.
@@ -137,10 +137,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
         if ($required && 2 != count($wrap)) {
             // es ist etwas schiefgelaufen, wir sollten immer 2 teile haben
             // einmal header und einmal footer
-            throw new Exception(
-                'Marker '.$marker.' not fount in Template',
-                1361171589
-            );
+            throw new Exception('Marker '.$marker.' not fount in Template', 1361171589);
         }
 
         return $wrap;

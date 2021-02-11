@@ -57,7 +57,7 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function getByIso2Code($iso)
     {
-        $fields = $options = array();
+        $fields = $options = [];
         $fields['STATICCOUNTRYZONE.zn_country_iso_2'][OP_EQ] = strtoupper($iso);
 
         return $this->search($fields, $options);
@@ -70,7 +70,7 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function getByZnCode($znCode)
     {
-        $fields = $options = array();
+        $fields = $options = [];
         $fields['STATICCOUNTRYZONE.zn_code'][OP_EQ] = strtoupper($znCode);
 
         return $this->search($fields, $options);
@@ -83,9 +83,9 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function create(array $data)
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'creating a static country zone via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
@@ -95,9 +95,9 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'updating a static country zone via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
@@ -107,9 +107,9 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'deleting a static country zone via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
     /**
@@ -119,8 +119,8 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function handleCreation(array $data)
     {
-        tx_rnbase_util_Debug::debug(array(
+        tx_rnbase_util_Debug::debug([
             'creating a static country zone via the service can\'t be done.',
-        ), __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 }

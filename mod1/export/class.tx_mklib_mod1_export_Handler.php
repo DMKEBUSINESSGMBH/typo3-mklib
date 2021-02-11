@@ -27,60 +27,6 @@
  *
  * BeispielTS: EXT:mkextension/mod1/pageTSconfig.txt
  *
-    mod {
-        mkextension {
-            funcmodule {
-                template = EXT:mkhoga/mod1/templates/funccompanies.html
-                export.types {
-                    excel {
-                        ### Label des Buttons, kann auch: ###LABEL_*
-                        label = Excel
-                        ### Diese Beschreibung wird als ToolTip beim Hovern über den Button ausgegeben. Kann auch: ###LABEL_*
-                        description = Firmen mit Hauptkontakt und Anzahl geschaltener Anzeigen
-                        ### ein für Typo3 bekanntes Sprite Icon. Siehe tx_rnbase_mod_Util::debugSprites
-                        spriteIcon = mimetypes-excel
-                        ### Wenn gesetzt, wird das BOM (Byte Order Mark) an den Anfang der Ausgabe gesetzt.
-                        ### Das ist z.B. bei UTF-8 Ausgaben nötig für eine korrekte Darstellung in MS Excel.
-                        BOM = 0
-                        ### konfiguration für das template
-                        template {
-                            ### Pfad zum Template
-                            template = EXT:mkhoga/mod1/templates/export/data.xls
-                            ### Marker für den Subpart
-                            subpart = ###DATALIST###
-                            ### Item Pfad, wird für die confid (lowercase) und den markernamen (uppercase) genutzt. Default ist item
-                            itempath = data
-                            ### Markerklasse, wleche die daten rendert. Default ist tx_rnbase_util_SimpleMarker
-                            markerclass = tx_mkhoga_marker_Data
-                        }
-                        ### Header konfiguration. Diese header werden gesendet, wenn ein export statfindet.
-                        headers {
-                            ### der Dateiname
-                            filename = companies.xls
-                            ### es kann auch eine USER Func oder sonstiges TypoScript verwendet werden.
-                            ### Bei einer userFunc muss man sich nur selbst darum kümmern die Klasse
-                            ### zu laden da ein filename.includeLibs = EXT:myext/Classes/Utility/Backend.php nicht
-                            ### funktioniert. Das kann mit autoload gemacht werden.
-                            #filename = USER
-                            #filename.userFunc = Tx_Myext_Utility_Backend->getFileNameForExport
-                            ### der contenttype
-                            contenttype = application/vnd.ms-excel
-                            ### zusätzliche Headerdaten ($key: $value)
-                            additional {
-                                ### daraus wird location: http://www.das-medienkombinat.de/
-                                #location = http://www.das-medienkombinat.de/
-                            }
-                        }
-                    }
-                    csv {
-                        label = CSV
-                        spriteIcon = mimetypes-text-csv
-                    }
-                }
-            }
-        }
-    }
- *
  * @author Michael Wagner
  */
 class tx_mklib_mod1_export_Handler
@@ -224,7 +170,7 @@ class tx_mklib_mod1_export_Handler
             $buttons = $this->getButtonStyles().$buttons;
         }
 
-        $markerArray = array();
+        $markerArray = [];
         $markerArray['###EXPORT_BUTTONS###'] = $buttons;
 
         return tx_rnbase_util_Templates::substituteMarkerArrayCached(
@@ -306,11 +252,7 @@ class tx_mklib_mod1_export_Handler
     {
         $searcher = $this->getModFunc()->getSearcher();
         if (!$searcher instanceof tx_mklib_mod1_export_ISearcher) {
-            throw new Exception(
-                'The searcher "'.get_class($searcher).'" has to implement'.
-                ' the interface "tx_mklib_mod1_export_ISearcher"',
-                1361174776
-            );
+            throw new Exception('The searcher "'.get_class($searcher).'" has to implement'.' the interface "tx_mklib_mod1_export_ISearcher"', 1361174776);
         }
         // wir setzen optional den export handler
         if ($searcher instanceof tx_mklib_mod1_export_IInjectHandler) {
@@ -398,7 +340,7 @@ class tx_mklib_mod1_export_Handler
         }
 
         if ($configuration->getBool($confId.'callModules')) {
-            $markerArray = $subpartArray = $wrappedSubpartArray = $params = array();
+            $markerArray = $subpartArray = $wrappedSubpartArray = $params = [];
             tx_rnbase_util_BaseMarker::callModules(
                 $template,
                 $markerArray,
@@ -468,7 +410,7 @@ class tx_mklib_mod1_export_Handler
             true
         );
 
-        return is_array($headers) ? $headers : array();
+        return is_array($headers) ? $headers : [];
     }
 
     /**
@@ -520,7 +462,7 @@ class tx_mklib_mod1_export_Handler
         $template,
         $timeStart = 0,
         $memStart = 0,
-        array $markerArr = array()
+        array $markerArr = []
     ) {
         if (empty($template)) {
             return false;
@@ -536,7 +478,7 @@ class tx_mklib_mod1_export_Handler
         // die anzahl der ausgegebenen Datensätze ermitteln.
         $provider = $this->getListProvider();
         if ($provider instanceof tx_rnbase_util_ListProvider) {
-            $params = array($provider->fields, $provider->options);
+            $params = [$provider->fields, $provider->options];
             $params[1]['count'] = 1;
             $count = call_user_func_array($provider->searchCallback, $params);
             $markerArr['###DEBUG_ITEMCOUNT###'] = $count;
@@ -591,7 +533,7 @@ class tx_mklib_mod1_export_Handler
         }
         </style>';
         // alle umbrüche und tabs entfernen
-        return str_replace(array("\t", "\n", "\r"), '', $css);
+        return str_replace(["\t", "\n", "\r"], '', $css);
     }
 }
 

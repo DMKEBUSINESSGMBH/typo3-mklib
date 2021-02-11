@@ -41,15 +41,15 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base
      *
      * @return tx_mklib_models_Constants
      */
-    public function getConstantsByType($type, array $fields = array(), array $options = array())
+    public function getConstantsByType($type, array $fields = [], array $options = [])
     {
         if (is_array($type)) {
-            $fields['CONSTANT.type'] = array(OP_IN_INT => implode(',', $type));
+            $fields['CONSTANT.type'] = [OP_IN_INT => implode(',', $type)];
         } else {
-            $fields['CONSTANT.type'] = array(OP_EQ_INT => $type);
+            $fields['CONSTANT.type'] = [OP_EQ_INT => $type];
         }
         if (!array_key_exists('ORDERBY', $options)) {
-            $options['ORDERBY'] = array('CONSTANT.NAME' => 'ASC');
+            $options['ORDERBY'] = ['CONSTANT.NAME' => 'ASC'];
         }
 
         return $this->search($fields, $options);
@@ -68,8 +68,8 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base
      */
     public function getSpecificValue_YesNo($yesOrNo)
     {
-        $fields = array('CONSTANT.alias1' => array(OP_EQ_INT => (bool) $yesOrNo));
-        $options = array('what' => 'name', 'ORDERBY' => null, 'LIMIT' => 1);
+        $fields = ['CONSTANT.alias1' => [OP_EQ_INT => (bool) $yesOrNo]];
+        $options = ['what' => 'name', 'ORDERBY' => null, 'LIMIT' => 1];
         $foo = $this->getConstantsByType(100, $fields, $options);
         if (count($foo)) {
             return $foo[0]['name'];

@@ -38,20 +38,20 @@ class tx_mklib_scheduler_SchedulerTaskFailDetectionFieldProvider extends tx_mkli
      */
     protected function getAdditionalFieldConfig()
     {
-        return array(
-            'failDetectionReceiver' => array(
+        return [
+            'failDetectionReceiver' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_receiver',
                 'default' => $GLOBALS['BE_USER']->user['email'],
                 'eval' => 'email,required',
-            ),
-            'failDetectionRememberAfter' => array(
+            ],
+            'failDetectionRememberAfter' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter',
                 'cshLabel' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_field_rememberAfter', // key aus der ssh locallang zu cshKey
                 'default' => 3600, // nach 1 h erneut mail schicken
                 'eval' => 'int',
-            ),
-        );
+            ],
+        ];
     }
 }

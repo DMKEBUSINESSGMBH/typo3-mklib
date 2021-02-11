@@ -53,7 +53,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
      *
      * @return string der float wert als String
      */
-    public static function floatVal($number, array $config = array())
+    public static function floatVal($number, array $config = [])
     {
         $float = self::parseFloat($number);
         $string = (string) $float;
@@ -65,7 +65,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
             // die vordefinierte Konfiguration
             // Nur Punkt als dezimalzeichen und Minus als Negativzeichen.
             // Das ist der technische Wert, der Beispielsweise für DB abfragen benötigt wird.
-            array(
+            [
                 'decimal_point' => '.',
                 'mon_decimal_point' => '.',
                 'thousands_sep' => '',
@@ -74,7 +74,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
                 'currency_symbol' => '',
                 'positive_sign' => '',
                 'negative_sign' => '-',
-            ),
+            ],
             // spezielle Konfiguration, welche dem Aufruf mitgegeben wurde.
             $config
         );
@@ -83,18 +83,18 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
         $string = preg_replace('/\s/', '', $string);
         // Jetzt ersetzen wir Currencies und Signs! (EUR $ + -)
         $string = str_replace(
-            array(
+            [
                 $local['int_curr_symbol'],
                 $local['currency_symbol'],
                 $local['positive_sign'],
                 $local['negative_sign'],
-            ),
-            array(
+            ],
+            [
                 $config['int_curr_symbol'],
                 $config['currency_symbol'],
                 $config['positive_sign'],
                 $config['negative_sign'],
-            ),
+            ],
             $string
         );
 
@@ -102,14 +102,14 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
         // Wir müssen anhand eines pregreplace, die Werte teilen.
         // Das machen wir, da wir mit string replace aus 4.999,95
         // immer 4.999.95 oder 4,999,95 machen würden.
-        $mapping = array(
+        $mapping = [
             // Für geldbeträge
             $local['mon_decimal_point'] => $config['mon_decimal_point'],
             $local['mon_thousands_sep'] => $config['mon_thousands_sep'],
             // Für normale Werte (Überschreiben ggf. die Geldwerte)
             $local['decimal_point'] => $config['decimal_point'],
             $local['thousands_sep'] => $config['thousands_sep'],
-        );
+        ];
         // Wir entfernen leere Einträge.
         // Die können nicht ersetzt werden und verursachen Fehler
         $preg = tx_mklib_util_Array::removeEmptyValues(array_keys($mapping));

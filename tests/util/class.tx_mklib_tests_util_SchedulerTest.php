@@ -66,7 +66,7 @@ class tx_mklib_tests_util_SchedulerTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetFormattedTime()
     {
-        self::markTestIncomplete("Error: Call to undefined method stdClass::sL()");
+        self::markTestIncomplete('Error: Call to undefined method stdClass::sL()');
 
         self::assertEquals(
             '1 Stunde ',

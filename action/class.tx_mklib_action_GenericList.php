@@ -32,7 +32,7 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
         // Filter erstellen.
         /* @var $filter tx_rnbase_filter_BaseFilter */
         $filter = tx_rnbase_filter_BaseFilter::createFilter($parameters, $configurations, $viewData, $confId.'filter.');
-        $fields = $options = array();
+        $fields = $options = [];
 
         // Searcher instanzieren. Konfiguriert wird er über die options['searchdef']
         /* @var $searcher tx_rnbase_util_SearchGeneric */
@@ -47,7 +47,7 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
         if ($doSearch = $filter->init($fields, $options)) {
             // Soll ein PageBrowser verwendet werden?
             if ($configurations->get($confId.'pagebrowser')) {
-                $pbOptions = array('searchcallback' => array($searcher, 'search'));
+                $pbOptions = ['searchcallback' => [$searcher, 'search']];
                 $cbOptions['pbid'] = ($var = $configurations->get($confId.'pagebrowser.cbid')) ? $var : 'pb'.$this->confIdExtended;
                 $filter->handlePageBrowser(
                     $configurations,
@@ -62,7 +62,7 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
             // Soll ein CharBrowser verwendet werden?
             if ($configurations->get($confId.'charbrowser')) {
                 // optionen sammeln
-                $cbOptions = array('searchcallback' => array($searcher, 'search'));
+                $cbOptions = ['searchcallback' => [$searcher, 'search']];
                 $cbOptions['colname'] = ($var = $configurations->get($confId.'charbrowser.colname')) ? $var : 'title';
                 $cbOptions['specials'] = ($var = $configurations->get($confId.'charbrowser.specials')) ? $var : 'last';
                 $cbOptions['cbid'] = ($var = $configurations->get($confId.'charbrowser.cbid')) ? $var : 'cb'.$this->confIdExtended;
@@ -79,7 +79,7 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
             // items besorgen.
             $items = $searcher->search($fields, $options);
         } else {
-            $items = array();
+            $items = [];
         }
 
         $viewData->offsetSet('items', $items);

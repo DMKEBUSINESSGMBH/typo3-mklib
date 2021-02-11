@@ -90,7 +90,7 @@ class tx_mklib_tests_util_RTFParserTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testParseReturnsCorrectPlainTextWhenCleaningInput()
     {
-        self::markTestIncomplete("Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)");
+        self::markTestIncomplete('Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
         $rtfParser = tx_rnbase::makeInstance(
             'tx_mklib_util_RTFParser',

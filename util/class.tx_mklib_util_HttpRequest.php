@@ -39,14 +39,14 @@ class tx_mklib_util_HttpRequest
      *
      * @var array
      */
-    protected $headers = array();
+    protected $headers = [];
 
     /**
      * Associative array of request headers.
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * HTTP Authentication settings.
@@ -65,7 +65,7 @@ class tx_mklib_util_HttpRequest
      *
      * @var array
      */
-    protected $config = array(
+    protected $config = [
         'useragent' => 'tx_mklib_util_HttpRequest',
         'timeout' => 10,
         'adapter' => 'tx_mklib_util_httprequest_adapter_Curl',
@@ -74,7 +74,7 @@ class tx_mklib_util_HttpRequest
         'rfc3986_strict' => false,
         'sslcert' => null,
         'sslpassphrase' => null,
-    );
+    ];
 
     /**
      * Constructor method. Will create a new HTTP client. Accepts the target
@@ -98,7 +98,7 @@ class tx_mklib_util_HttpRequest
      *
      * @return tx_mklib_util_HttpRequest
      */
-    public function setConfig(array $config = array())
+    public function setConfig(array $config = [])
     {
         foreach ($config as $k => $v) {
             $this->config[strtolower($k)] = $v;
@@ -156,11 +156,11 @@ class tx_mklib_util_HttpRequest
 
         // Else, set up authentication
         } else {
-            $this->auth = array(
+            $this->auth = [
                 'user' => (string) $user,
                 'password' => (string) $password,
                 'type' => 'basic',
-            );
+            ];
         }
 
         return $this;
@@ -192,7 +192,7 @@ class tx_mklib_util_HttpRequest
             if (is_string($value)) {
                 $value = trim($value);
             }
-            $this->headers[$normalized_name] = array($name, $value);
+            $this->headers[$normalized_name] = [$name, $value];
         }
 
         return $this;
@@ -313,7 +313,7 @@ class tx_mklib_util_HttpRequest
      */
     protected function prepareHeaders()
     {
-        $headers = array();
+        $headers = [];
 
         // Set the connection header
         if (!isset($this->headers['connection'])) {

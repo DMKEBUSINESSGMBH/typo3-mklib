@@ -37,7 +37,7 @@ abstract class tx_mklib_abstract_ObservableT3Service extends Tx_Rnbase_Service_B
      *
      * @var array[tx_mklib_interface_IObserver]
      */
-    protected $aObservers = array();
+    protected $aObservers = [];
 
     /**
      * (non-PHPdoc).

@@ -25,7 +25,6 @@
 
 //in abstrakten klassen lassen sich keine nicht-abstrakten methoden mocken
 // @todo remove. since phpunit 5 this is working
-use PHPUnit\Framework\TestCase;
 
 abstract class ListBaseWithNewFilterMode extends tx_mklib_action_ListBase
 {
@@ -42,7 +41,7 @@ abstract class ListBaseWithNewFilterMode extends tx_mklib_action_ListBase
  */
 class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
 {
-    protected function getConfigurations($aConfig = array())
+    protected function getConfigurations($aConfig = [])
     {
         $configurations = tx_rnbase::makeInstance('Tx_Rnbase_Configuration_Processor');
         $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
@@ -59,17 +58,17 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         return $configurations;
     }
 
-    protected function getSrvMock($expectedFields = array(), $returnValue = array('result' => array('firstItem')))
+    protected function getSrvMock($expectedFields = [], $returnValue = ['result' => ['firstItem']])
     {
-        $oSrv = $this->getMock('dummySrv', array('search'));
+        $oSrv = $this->getMock('dummySrv', ['search']);
 
         if (!empty($expectedFields)) {
             $this->expectedFields = $expectedFields;
         } else {
-            $this->expectedFields = array('ANOTHERTEST.ANOTHERFIELD' => array(OP_EQ => 'anotherValue'), 'test' => 'value');
+            $this->expectedFields = ['ANOTHERTEST.ANOTHERFIELD' => [OP_EQ => 'anotherValue'], 'test' => 'value'];
         }
 
-        $this->expectedOptions = array('orderby' => 'someOrderBy');
+        $this->expectedOptions = ['orderby' => 'someOrderBy'];
         $oSrv->expects(self::once())
         ->method('search')
         //damit testen wir ob search mit den daten aus dem filter aufgerufen wird
@@ -120,7 +119,7 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
 
     public function testHandleRequestCallsFilterPageBrowserAndSearchServiceCorrectWithOldFilterMode()
     {
-        self::markTestIncomplete("Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilter");
+        self::markTestIncomplete('Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilter');
 
         //mock für den searcher
         $oSrv = $this->getSrvMock();
@@ -129,29 +128,29 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         $oListBase = $this->getActionMock($oSrv);
 
         //jetzt den aufruf der action simulieren
-        $aConfig = array(
-            'dummyconfig.' => array(
+        $aConfig = [
+            'dummyconfig.' => [
                 'filter' => 'tx_mklib_tests_fixtures_classes_DummyFilter',
                 //fields und options sollte übernommen werden
-                'fields.' => array(
-                    'anotherTest.' => array(
-                        'anotherField.' => array(
+                'fields.' => [
+                    'anotherTest.' => [
+                        'anotherField.' => [
                             'OP_EQ' => 'anotherValue',
-                        ),
-                    ),
-                ),
-                'options.' => array(
+                        ],
+                    ],
+                ],
+                'options.' => [
                     'orderby' => 'someOrderBy',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $configurations = $this->getConfigurations($aConfig);
 
         //handle request sollte nichts zurück geben
         self::assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()), 'handleRequest hat doch etwas zurück gegeben!');
 
         //view daten mit den daten des searchers gefüllt?
-        self::assertEquals(array('result' => array('firstItem')), $configurations->getViewData()->offsetGet('items'), 'View daten falsch!');
+        self::assertEquals(['result' => ['firstItem']], $configurations->getViewData()->offsetGet('items'), 'View daten falsch!');
 
         $pageBrowserConfig = $configurations->getViewData()->offsetGet('pageBrowserConfig');
         //daten die dem pagebrowser übergeben wurden korrekt?
@@ -159,12 +158,12 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals($configurations, $pageBrowserConfig['config'], 'daten für den page browser falsch: config falsch!');
         self::assertEquals($this->expectedFields, $pageBrowserConfig['fields'], 'daten für den page browser falsch: fields falsch!');
         self::assertEquals($this->expectedOptions, $pageBrowserConfig['options'], 'daten für den page browser falsch: options falsch!');
-        self::assertEquals(array('searchcallback' => array($oSrv, 'search')), $pageBrowserConfig['cfg'], 'daten für den page browser falsch: cfg falsch!');
+        self::assertEquals(['searchcallback' => [$oSrv, 'search']], $pageBrowserConfig['cfg'], 'daten für den page browser falsch: cfg falsch!');
     }
 
     public function testHandleRequestCallsFilterPageBrowserAndSearchServiceCorrectWithNewFilterMode()
     {
-        self::markTestIncomplete("Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilter");
+        self::markTestIncomplete('Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilter');
 
         //mock für den searcher
         $oSrv = $this->getSrvMock();
@@ -173,31 +172,31 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         $oListBase = $this->getActionMock($oSrv, 'ListBaseWithNewFilterMode', false);
 
         //jetzt den aufruf der action simulieren
-        $aConfig = array(
-            'dummyconfig.' => array(
-                'filter.' => array(
+        $aConfig = [
+            'dummyconfig.' => [
+                'filter.' => [
                     'class' => 'tx_mklib_tests_fixtures_classes_DummyFilter',
                     //fields und options sollte übernommen werden
-                    'fields.' => array(
-                        'anotherTest.' => array(
-                            'anotherField.' => array(
+                    'fields.' => [
+                        'anotherTest.' => [
+                            'anotherField.' => [
                                 'OP_EQ' => 'anotherValue',
-                            ),
-                        ),
-                    ),
-                    'options.' => array(
+                            ],
+                        ],
+                    ],
+                    'options.' => [
                         'orderby' => 'someOrderBy',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         $configurations = $this->getConfigurations($aConfig);
 
         //handle request sollte nichts zurück geben
         self::assertNull($oListBase->handleRequest($configurations->getParameters(), $configurations, $configurations->getViewData()), 'handleRequest hat doch etwas zurück gegeben!');
 
         //view daten mit den daten des searchers gefüllt?
-        self::assertEquals(array('result' => array('firstItem')), $configurations->getViewData()->offsetGet('items'), 'View daten falsch!');
+        self::assertEquals(['result' => ['firstItem']], $configurations->getViewData()->offsetGet('items'), 'View daten falsch!');
 
         $pageBrowserConfig = $configurations->getViewData()->offsetGet('pageBrowserConfig');
         //daten die dem pagebrowser übergeben wurden korrekt?
@@ -205,12 +204,12 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals($configurations, $pageBrowserConfig['config'], 'daten für den page browser falsch: config falsch!');
         self::assertEquals($this->expectedFields, $pageBrowserConfig['fields'], 'daten für den page browser falsch: fields falsch!');
         self::assertEquals($this->expectedOptions, $pageBrowserConfig['options'], 'daten für den page browser falsch: options falsch!');
-        self::assertEquals(array('searchcallback' => array($oSrv, 'search')), $pageBrowserConfig['cfg'], 'daten für den page browser falsch: cfg falsch!');
+        self::assertEquals(['searchcallback' => [$oSrv, 'search']], $pageBrowserConfig['cfg'], 'daten für den page browser falsch: cfg falsch!');
     }
 
     public function testHandleRequestSetsNoViewDataIfServiceReturnsNothing()
     {
-        self::markTestIncomplete("Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilter");
+        self::markTestIncomplete('Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilter');
 
         //mock für den searcher
         $oSrv = $this->getSrvMock(null, null);
@@ -219,22 +218,22 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         $oListBase = $this->getActionMock($oSrv);
 
         //jetzt den aufruf der action simulieren
-        $aConfig = array(
-            'dummyconfig.' => array(
+        $aConfig = [
+            'dummyconfig.' => [
                 'filter' => 'tx_mklib_tests_fixtures_classes_DummyFilter',
                 //fields und options sollte übernommen werden
-                'fields.' => array(
-                    'anotherTest.' => array(
-                        'anotherField.' => array(
+                'fields.' => [
+                    'anotherTest.' => [
+                        'anotherField.' => [
                             'OP_EQ' => 'anotherValue',
-                        ),
-                    ),
-                ),
-                'options.' => array(
+                        ],
+                    ],
+                ],
+                'options.' => [
                     'orderby' => 'someOrderBy',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
         $configurations = $this->getConfigurations($aConfig);
 
         //handle request sollte nichts zurück geben
@@ -249,7 +248,7 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals($configurations, $pageBrowserConfig['config'], 'daten für den page browser falsch: config falsch!');
         self::assertEquals($this->expectedFields, $pageBrowserConfig['fields'], 'daten für den page browser falsch: fields falsch!');
         self::assertEquals($this->expectedOptions, $pageBrowserConfig['options'], 'daten für den page browser falsch: options falsch!');
-        self::assertEquals(array('searchcallback' => array($oSrv, 'search')), $pageBrowserConfig['cfg'], 'daten für den page browser falsch: cfg falsch!');
+        self::assertEquals(['searchcallback' => [$oSrv, 'search']], $pageBrowserConfig['cfg'], 'daten für den page browser falsch: cfg falsch!');
     }
 
     /**
@@ -259,10 +258,10 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testHandleRequestThrowsExceptionIfServiceDoesNotSupportSearchCallback()
     {
-        self::markTestIncomplete("Failed asserting that 1 is equal to expected exception code 4001.");
+        self::markTestIncomplete('Failed asserting that 1 is equal to expected exception code 4001.');
 
         //mock für den searcher
-        $oSrv = $this->getMock('dummySrv', array('__toString'));
+        $oSrv = $this->getMock('dummySrv', ['__toString']);
         $oSrv->expects(self::once())
         ->method('__toString')
         //kommt die exception message richtig ist
@@ -283,10 +282,10 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
 
     public function testHandleRequestCallsNotSearchIfFilterInitReturnedFalse()
     {
-        self::markTestIncomplete("Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilterWithReturnFalse");
+        self::markTestIncomplete('Exception: No extension key found for classname: tx_mklib_tests_fixtures_classes_DummyFilterWithReturnFalse');
 
         //mock für den searcher
-        $oSrv = $this->getMock('dummySrv', array('search'));
+        $oSrv = $this->getMock('dummySrv', ['search']);
         $oSrv->expects(self::never())
             ->method('search');
 
@@ -294,11 +293,11 @@ class tx_mklib_tests_action_ListBaseTest extends tx_rnbase_tests_BaseTestCase
         $oListBase = $this->getActionMock($oSrv);
 
         //jetzt den aufruf der action simulieren
-        $aConfig = array(
-            'dummyconfig.' => array(
+        $aConfig = [
+            'dummyconfig.' => [
                 'filter' => 'tx_mklib_tests_fixtures_classes_DummyFilterWithReturnFalse',
-            ),
-        );
+            ],
+        ];
         $configurations = $this->getConfigurations($aConfig);
 
         //handle request sollte nichts zurück geben

@@ -32,7 +32,7 @@ class tx_mklib_mod1_util_Language
      *
      * @var array
      */
-    private static $sysLanguageRecords = array();
+    private static $sysLanguageRecords = [];
 
     /**
      * @param int $uid
@@ -62,7 +62,7 @@ class tx_mklib_mod1_util_Language
         static $sysLanguageRecordAll = false;
         if (!$sysLanguageRecordAll) {
             $sysLanguageRecordAll = true;
-            $records = tx_rnbase_util_DB::doSelect('*', 'sys_language', array());
+            $records = tx_rnbase_util_DB::doSelect('*', 'sys_language', []);
             foreach ($records as $record) {
                 static::$sysLanguageRecords[(int) $record['uid']] = $record;
             }
@@ -73,15 +73,15 @@ class tx_mklib_mod1_util_Language
             // check all page overlays to get all available languages for the page
             $available = tx_rnbase_util_DB::doSelect(
                 'sys_language.uid',
-                array('sys_language,pages_language_overlay', 'sys_language'),
-                array(
+                ['sys_language,pages_language_overlay', 'sys_language'],
+                [
                     'where' => 'pages_language_overlay.sys_language_uid=sys_language.uid'
                     .' AND pages_language_overlay.pid='.(int) $pageId
                     .Tx_Rnbase_Backend_Utility::deleteClause('pages_language_overlay'),
                     'orderby' => 'sys_language.title ASC',
-                )
+                ]
             );
-            $records = array();
+            $records = [];
             foreach ($available as $langRow) {
                 $langUid = (int) $langRow['uid'];
                 $records[$langUid] = self::getLangRecord($langUid);
@@ -160,16 +160,16 @@ class tx_mklib_mod1_util_Language
             $overlays = tx_rnbase_util_DB::doSelect(
                 'uid',
                 $item->getTableName(),
-                array(
+                [
                     'where' => implode(
                         ' AND ',
-                        array(
+                        [
                             $parentField.'='.$item->getUid(),
                             $sysLanguageUidField.'='.(int) $lang['uid'],
-                        )
+                        ]
                     ),
                     'limit' => 1,
-                )
+                ]
             );
             if (!empty($overlays)) {
                 continue;
@@ -192,7 +192,7 @@ class tx_mklib_mod1_util_Language
                 ),
                 self::getLangSpriteIcon(
                     $lang,
-                    array('show_title' => false)
+                    ['show_title' => false]
                 )
             );
         }

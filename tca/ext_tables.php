@@ -3,11 +3,11 @@
  * lokale Config laden.
  */
 
-/**
+/*
  * alle benötigten Klassen einbinden etc.
  */
 if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
+    exit('Access denied.');
 }
 
 // Nur für für tests wichtig.

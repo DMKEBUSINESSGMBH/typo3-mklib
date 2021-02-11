@@ -48,19 +48,19 @@ class tx_mklib_tests_filter_SingleItemTest extends tx_rnbase_tests_BaseTestCase
         $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
         $filter = $this->getFilter($parameters);
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         $filterReturn = $filter->init($fields, $options);
         self::assertTrue($filterReturn, 'filter gibt nicht true zurück.');
 
-        $expectedFields = array(
-            $this->testSearchAlias.'.uid' => array(OP_EQ_INT => 0),
-        );
+        $expectedFields = [
+            $this->testSearchAlias.'.uid' => [OP_EQ_INT => 0],
+        ];
         self::assertEquals($expectedFields, $fields, 'fields nicht leer');
 
-        $expectedOptions = array(
+        $expectedOptions = [
             'limit' => 1,
-        );
+        ];
         self::assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
     }
 
@@ -76,19 +76,19 @@ class tx_mklib_tests_filter_SingleItemTest extends tx_rnbase_tests_BaseTestCase
         $parameters->offsetSet($this->testParamName, $itemUid);
         $filter = $this->getFilter($parameters);
 
-        $fields = array();
-        $options = array();
+        $fields = [];
+        $options = [];
         $filterReturn = $filter->init($fields, $options);
         self::assertTrue($filterReturn, 'filter gibt nicht true zurück.');
 
-        $expectedFields = array(
-            $this->testSearchAlias.'.uid' => array(OP_EQ_INT => $itemUid),
-        );
+        $expectedFields = [
+            $this->testSearchAlias.'.uid' => [OP_EQ_INT => $itemUid],
+        ];
         self::assertEquals($expectedFields, $fields, 'fields nicht leer');
 
-        $expectedOptions = array(
+        $expectedOptions = [
             'limit' => 1,
-        );
+        ];
         self::assertEquals($expectedOptions, $options, 'options nicht richtig gesetzt.');
     }
 
@@ -102,7 +102,7 @@ class tx_mklib_tests_filter_SingleItemTest extends tx_rnbase_tests_BaseTestCase
         $confId = 'doesNotMatter.';
         $filter = $this->getMockForAbstractClass(
             'tx_mklib_filter_SingleItem',
-            array(&$parameters, &$configurations, $confId)
+            [&$parameters, &$configurations, $confId]
         );
         $filter->expects(self::once())
             ->method('getParameterName')

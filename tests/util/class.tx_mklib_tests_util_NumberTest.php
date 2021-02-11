@@ -27,7 +27,7 @@ class tx_mklib_tests_util_NumberTest extends tx_rnbase_tests_BaseTestCase
     public function testFloatVal($expected, $actual, $config)
     {
         if (!is_array($config)) {
-            $config = array();
+            $config = [];
         }
 
         // bei einem normalen float sollte nun eine Kommazahl herauskommen.
@@ -49,19 +49,19 @@ class tx_mklib_tests_util_NumberTest extends tx_rnbase_tests_BaseTestCase
 
     public function providerFloatVal()
     {
-        return array(
+        return [
             // über die parseFloat, sollte genau das herauskommen, was wir benötigen
             // ein Float mit einem Punkt als Dezimaltrennzeichen.
-            'Line:'.__LINE__ => array('5.43', '5.43', array()),
-            'Line:'.__LINE__ => array('-5.43', '-5.43', array()),
-            'Line:'.__LINE__ => array('5.43', '5,43', array()),
-            'Line:'.__LINE__ => array('-5.43', '-5,43', array()),
+            'Line:'.__LINE__ => ['5.43', '5.43', []],
+            'Line:'.__LINE__ => ['-5.43', '-5.43', []],
+            'Line:'.__LINE__ => ['5.43', '5,43', []],
+            'Line:'.__LINE__ => ['-5.43', '-5,43', []],
             // hierzu muss erst der Todo aus parseFloat abgearbeidet werden.
             // 'Line:'.__LINE__ => array('5435.55', '5.435,55', array()),
             // 'Line:'.__LINE__ => array('5435.55', '5,435.55', array()),
             // Jetzt wollen wir eine Pipe als Dezimaltrennzeichen, nur so zum Spaß ;)
-            'Line:'.__LINE__ => array('5|43', '5.43', array('decimal_point' => '|')),
-        );
+            'Line:'.__LINE__ => ['5|43', '5.43', ['decimal_point' => '|']],
+        ];
     }
 }
 

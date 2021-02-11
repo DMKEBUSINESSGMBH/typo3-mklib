@@ -8,7 +8,7 @@
 class tx_mklib_util_list_Builder extends tx_rnbase_util_ListBuilder
 {
     // die ist leider private und muss überschrieben werden
-    private $callbacks = array();
+    private $callbacks = [];
 
     /**
      * @var tx_mklib_util_list_output_Interface
@@ -19,7 +19,7 @@ class tx_mklib_util_list_Builder extends tx_rnbase_util_ListBuilder
      * @param tx_mklib_util_list_output_Interface $outputHandler
      * @param array                               $data
      */
-    public function __construct(tx_mklib_util_list_output_Interface $outputHandler, $data = array())
+    public function __construct(tx_mklib_util_list_output_Interface $outputHandler, $data = [])
     {
         $this->output = $outputHandler;
 

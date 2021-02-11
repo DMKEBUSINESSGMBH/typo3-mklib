@@ -36,44 +36,44 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_schedule
      */
     protected function getAdditionalFieldConfig()
     {
-        return array(
-            'lifetime' => array(
+        return [
+            'lifetime' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_lifetime',
                 'default' => 604800, // default is 7 days
                 'eval' => 'trim,int',
-            ),
-            'directorycheckdir' => array(
+            ],
+            'directorycheckdir' => [
                 'type' => 'select',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_directorycheckdir',
-                'items' => array(
+                'items' => [
                     // $value => $caption
                     'typo3temp' => 'typo3temp',
                     'uploads' => 'uploads',
                     'fileadmin' => 'fileadmin',
-                ),
+                ],
                 'default' => '',
                 'eval' => 'required',
-            ),
-            'folder' => array(
+            ],
+            'folder' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder',
                 'default' => '',
                 'eval' => 'trim,folder,validateFolder',
-            ),
-            'filetypes' => array(
+            ],
+            'filetypes' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_filetypes',
                 'default' => '',
                 'eval' => 'trim',
-            ),
-            'recursive' => array(
+            ],
+            'recursive' => [
                 'type' => 'check',
                 'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_recursive',
                 'default' => '',
                 'eval' => '',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

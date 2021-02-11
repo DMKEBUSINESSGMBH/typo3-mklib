@@ -69,9 +69,7 @@ class tx_mklib_util_csv_reader implements Iterator
     ) {
         $this->handle = @fopen($file, 'r');
         if (false === $this->handle) {
-            throw new Exception(
-                'Could not open file for csv reader. File: '.$file
-            );
+            throw new Exception('Could not open file for csv reader. File: '.$file);
         }
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;

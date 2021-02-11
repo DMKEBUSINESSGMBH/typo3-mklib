@@ -37,7 +37,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
      *
      * @var array
      */
-    protected $optionsToFormat = array('failDetectionRememberAfter');
+    protected $optionsToFormat = ['failDetectionRememberAfter'];
 
     /**
      * (non-PHPdoc).
@@ -64,7 +64,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
         $this->getDatabaseConnection()->doUpdate(
             'tx_scheduler_task',
             'faildetected < '.($GLOBALS['EXEC_TIME'] - $this->getOption('failDetectionRememberAfter')),
-            array('faildetected' => 0)
+            ['faildetected' => 0]
         );
     }
 
@@ -82,7 +82,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
     protected function handleFailedTasks($failedTasks)
     {
         //Nachrichten für den error mail versand
-        $messages = $aUids = array();
+        $messages = $aUids = [];
         foreach ($failedTasks as $failedTask) {
             $classname = get_class(unserialize($failedTask['serialized_task_object']));
 
@@ -96,17 +96,17 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
 
         $exception = new Exception($message, 0);
         //die Mail soll immer geschickt werden
-        $options = array('ignoremaillock' => true);
+        $options = ['ignoremaillock' => true];
         // wir rufen die Methode mit call_user_func_array auf, da sie
         // statisch ist, womit wir diese nicht mocken könnten
         call_user_func_array(
-            array($this->getMiscUtility(), 'sendErrorMail'),
-            array(
+            [$this->getMiscUtility(), 'sendErrorMail'],
+            [
                 $this->getOption('failDetectionReceiver'),
                 'tx_mklib_scheduler_SchedulerTaskFailDetection',
                 $exception,
                 $options,
-            )
+            ]
         );
 
         $this->setFailDetected($uids);
@@ -130,7 +130,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
         $this->getDatabaseConnection()->doUpdate(
             'tx_scheduler_task',
             'uid IN ('.implode(',', $uids).')',
-            array('faildetected' => $GLOBALS['EXEC_TIME'])
+            ['faildetected' => $GLOBALS['EXEC_TIME']]
         );
     }
 
@@ -146,7 +146,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
         return $this->getDatabaseConnection()->doSelect(
             $selectFields,
             'tx_scheduler_task',
-            array(
+            [
                 //hat keine TCA
                 'enablefieldsoff' => true,
                 //nicht unser eigener Task, keine deaktivierten und alle mit Fehler
@@ -154,7 +154,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
                             'faildetected = 0 AND '.
                             'lastexecution_failure != "" AND '.
                             'disable = 0',
-            )
+            ]
         );
     }
 

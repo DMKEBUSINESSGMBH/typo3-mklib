@@ -60,7 +60,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return string search term
      */
-    public function showFreeTextSearchForm(&$out, $key, array $options = array())
+    public function showFreeTextSearchForm(&$out, $key, array $options = [])
     {
         $searchstring = $this->getValueFromModuleData($key);
 
@@ -83,12 +83,12 @@ class tx_mklib_mod1_util_Selector
      *
      * @return bool
      */
-    public function showHiddenSelector(&$data, $options = array())
+    public function showHiddenSelector(&$data, $options = [])
     {
-        $items = array(
+        $items = [
             0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
             1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
-        );
+        ];
 
         $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
 
@@ -103,13 +103,13 @@ class tx_mklib_mod1_util_Selector
      *
      * @return bool
      */
-    public function showLanguageSelector(&$data, $options = array())
+    public function showLanguageSelector(&$data, $options = [])
     {
-        $items = array(
+        $items = [
             '' => '',
             -1 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages'),
             0 => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.default_value'),
-        );
+        ];
 
         $langs = tx_mklib_mod1_util_Language::getLangRecords($options['pid']);
         foreach ($langs as $lang) {
@@ -131,7 +131,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return DateTime selected day
      */
-    public function showDateSelector($sDefId, &$aData, $aOptions = array())
+    public function showDateSelector($sDefId, &$aData, $aOptions = [])
     {
         $baseId = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
         // Da es drei Felder gibt, benötigen wir drei IDs
@@ -146,14 +146,14 @@ class tx_mklib_mod1_util_Selector
             unset($aOptions['id']);
         }
         // Monate
-        $tmpDataMonth = array();
-        $items = array();
+        $tmpDataMonth = [];
+        $items = [];
         for ($i = 1; $i < 13; ++$i) {
             $date = new DateTime();
             $items[$i] = $date->setDate(2000, $i, 1)->format('F');
         }
         $selectedMonth = $this->getValueFromModuleData($monthId);
-        $selectedMonth = $this->showSelectorByArray($items, $monthId, $tmpDataMonth, array('forcevalue' => ($selectedMonth) ? $selectedMonth : $aDefault[1]));
+        $selectedMonth = $this->showSelectorByArray($items, $monthId, $tmpDataMonth, ['forcevalue' => ($selectedMonth) ? $selectedMonth : $aDefault[1]]);
 
         // Jahre
         $today = new DateTime();
@@ -167,24 +167,24 @@ class tx_mklib_mod1_util_Selector
             $to = intval($today->format('Y'));
         }
 
-        $tmpDataYear = array();
-        $items = array();
+        $tmpDataYear = [];
+        $items = [];
         for ($i = $from; $i < $to; ++$i) {
             $items[$i] = $i;
         }
         $selectedYear = $this->getValueFromModuleData($yearId);
-        $selectedYear = $this->showSelectorByArray($items, $yearId, $tmpDataYear, array('forcevalue' => ($selectedYear) ? $selectedYear : $aDefault[0]));
+        $selectedYear = $this->showSelectorByArray($items, $yearId, $tmpDataYear, ['forcevalue' => ($selectedYear) ? $selectedYear : $aDefault[0]]);
 
         // Tage
-        $tmpDataDay = array();
-        $items = array();
+        $tmpDataDay = [];
+        $items = [];
         $totalDays = date('t', mktime(0, 0, 0, $selectedMonth, 1, $selectedYear));
         for ($i = 1; $i < $totalDays + 1; ++$i) {
             $items[$i] = $i;
         }
         $selectedDay = $this->getValueFromModuleData($dayId);
         $selectedDay = ($selectedDay > $totalDays) ? $totalDays : $selectedDay;
-        $selectedDay = $this->showSelectorByArray($items, $dayId, $tmpDataDay, array('forcevalue' => ($selectedDay) ? $selectedDay : $aDefault[2]));
+        $selectedDay = $this->showSelectorByArray($items, $dayId, $tmpDataDay, ['forcevalue' => ($selectedDay) ? $selectedDay : $aDefault[2]]);
 
         // Rückgabe
         $aData['day_selector'] = $tmpDataDay['selector'];
@@ -209,12 +209,10 @@ class tx_mklib_mod1_util_Selector
     protected function showSelectorByModels(
         $items,
         array &$data,
-        array $options = array()
+        array $options = []
     ) {
         if (!(is_array($items) || $items instanceof Traversable)) {
-            throw new Exception(
-                'Argument 1 passed to'.__METHOD__.'() must be of the type array or Traversable.'
-            );
+            throw new Exception('Argument 1 passed to'.__METHOD__.'() must be of the type array or Traversable.');
         }
 
         $id = $options['id'];
@@ -224,7 +222,7 @@ class tx_mklib_mod1_util_Selector
 
         $pid = $options['pid'] ? $options['pid'] : 0;
 
-        $itemMenu = array();
+        $itemMenu = [];
         if (isset($options['entryall'])) {
             $itemMenu['0'] = is_string($options['entryall']) ? $options['entryall'] : $GLOBALS['LANG']->getLL('label_select_all_entries');
         }
@@ -263,7 +261,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return string selected item
      */
-    protected function showSelectorByArray($aItems, $sDefId, &$aData, $aOptions = array())
+    protected function showSelectorByArray($aItems, $sDefId, &$aData, $aOptions = [])
     {
         $id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
 
@@ -292,9 +290,9 @@ class tx_mklib_mod1_util_Selector
      *
      * @return string selected item
      */
-    protected function showSelectorByTCA($sDefId, $table, $column, &$aData, $aOptions = array())
+    protected function showSelectorByTCA($sDefId, $table, $column, &$aData, $aOptions = [])
     {
-        $items = array();
+        $items = [];
         if (is_array($aOptions['additionalItems'])) {
             $items = $aOptions['additionalItems'];
         }
@@ -336,7 +334,7 @@ class tx_mklib_mod1_util_Selector
     {
         // Fetch selected company trade
         $modData = Tx_Rnbase_Backend_Utility::getModuleData(
-            array($key => ''),
+            [$key => ''],
             tx_rnbase_parameters::getPostOrGetParameter('SET'),
             $this->getMod()->getName()
         );
@@ -353,7 +351,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @param array $aModuleData
      */
-    public function setValueToModuleData($sModuleName, $aModuleData = array())
+    public function setValueToModuleData($sModuleName, $aModuleData = [])
     {
         $aExistingModuleData = $GLOBALS['BE_USER']->getModuleData($sModuleName);
         if (!empty($aModuleData)) {
@@ -395,7 +393,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return array[to => int, from => int]
      */
-    public function showDateRangeSelector(&$out, $key, $options = array())
+    public function showDateRangeSelector(&$out, $key, $options = [])
     {
         $fromValue = $this->getDateFieldByKey($key.'_from', $out);
         $toValue = $this->getDateFieldByKey($key.'_to', $out);
@@ -403,7 +401,7 @@ class tx_mklib_mod1_util_Selector
 
         $this->setValueToModuleData(
             $this->getMod()->getName(),
-            array($key.'_from' => $fromValue, $key.'_to' => $toValue)
+            [$key.'_from' => $fromValue, $key.'_to' => $toValue]
         );
 
         return $this->getCrDateReturnArray($fromValue, $toValue);
@@ -449,7 +447,7 @@ class tx_mklib_mod1_util_Selector
             $toTimestamp = $this->moveTimestampToTheEndOfTheDay($toTimestamp);
         }
 
-        return array('from' => $fromTimestamp, 'to' => $toTimestamp);
+        return ['from' => $fromTimestamp, 'to' => $toTimestamp];
     }
 
     /**

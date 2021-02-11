@@ -44,7 +44,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      *
      * @deprecated can be removed including the __wakeup() method when support for TYPO3 8.7 and below is dropped.
      */
-    private $options = array();
+    private $options = [];
 
     /**
      * The options of the scheduler task.
@@ -97,7 +97,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
             tx_rnbase_util_Logger::LOGLEVEL_FATAL => $devLog
         );
         */
-        $devLog = array();
+        $devLog = [];
         $options = $this->getOptions();
         $startTimeInMilliseconds = tx_rnbase_util_Misc::milliseconds();
         $memoryUsageAtStart = memory_get_usage();
@@ -138,14 +138,14 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
                 }
             }
         } catch (Exception $exception) {
-            $dataVar = array(
+            $dataVar = [
                 'errorcode' => $exception->getCode(),
                 'errormsg' => $exception->getMessage(),
                 'trace' => $exception->getTraceAsString(),
                 'options' => $options,
                 // bisherige logs mitgeben
                 'devlog' => $devLog,
-            );
+            ];
             if ($exception instanceof tx_rnbase_util_Exception) {
                 $dataVar['exception_data'] = $exception->getAdditional(false);
             }
@@ -185,12 +185,12 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
         tx_rnbase_util_Logger::info(
             '['.get_class($this).']: Scheduler ends successful ',
             $this->getExtKey(),
-            array(
+            [
                 'Execution Time' => (tx_rnbase_util_Misc::milliseconds() - $startTimeInMilliseconds).' ms',
                 'Memory Start' => $memoryUsageAtStart.' Bytes',
                 'Memory End' => $memoryUsageAtEnd.' Bytes',
                 'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart).' Bytes',
-            )
+            ]
         );
 
         return true;
@@ -220,7 +220,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     public function getAdditionalInformation($info = '')
     {
         $info .= CRLF.' Options: ';
-        $info .= tx_rnbase_util_Arrays::arrayToLogString($this->getOptions(), array(), 64);
+        $info .= tx_rnbase_util_Arrays::arrayToLogString($this->getOptions(), [], 64);
 
         return $info;
     }
@@ -270,7 +270,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     public function getOptions()
     {
         // wir brauchen per default ein array
-        return is_array($this->schedulerOptions) ? $this->schedulerOptions : array();
+        return is_array($this->schedulerOptions) ? $this->schedulerOptions : [];
     }
 
     /**
@@ -281,7 +281,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     protected function getLastRunTime()
     {
         if (false === $this->lastRun) {
-            $options = array();
+            $options = [];
             $options['enablefieldsoff'] = 1;
             $options['where'] = 'uid='.(int) $this->getTaskUid();
             $options['limit'] = 1;
@@ -316,9 +316,9 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
             $return = @tx_rnbase_util_DB::doUpdate(
                 'tx_scheduler_task',
                 'uid='.(int) $this->getTaskUid(),
-                array(
+                [
                     'tx_mklib_lastrun' => $lastRun->format('Y-m-d H:i:s'),
-                )
+                ]
             );
         } catch (Exception $e) {
             $return = 0;
@@ -335,7 +335,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
      */
     protected function sendErrorMail($email, Exception $exception)
     {
-        $options = array('ignoremaillock' => true);
+        $options = ['ignoremaillock' => true];
         tx_rnbase_util_Misc::sendErrorMail($email, get_class($this), $exception, $options);
     }
 }

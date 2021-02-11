@@ -55,10 +55,10 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_Base
      */
     public function getBlacklistEntryByWord($word, $greedy = true, $sanitizeWord = true)
     {
-        $fields = array(
-            'WORDLIST.blacklisted' => array(OP_EQ_INT => 1),
-            'WORDLIST.whitelisted' => array(OP_EQ_INT => 0),
-        );
+        $fields = [
+            'WORDLIST.blacklisted' => [OP_EQ_INT => 1],
+            'WORDLIST.whitelisted' => [OP_EQ_INT => 0],
+        ];
 
         return $this->checkForWordInWordlist($word, $this->getWordlist($fields), $greedy, $sanitizeWord);
     }
@@ -73,10 +73,10 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_Base
      */
     public function getWhitelistEntryByWord($word, $greedy = true, $sanitizeWord = true)
     {
-        $fields = array(
-            'WORDLIST.blacklisted' => array(OP_EQ_INT => 0),
-            'WORDLIST.whitelisted' => array(OP_EQ_INT => 1),
-        );
+        $fields = [
+            'WORDLIST.blacklisted' => [OP_EQ_INT => 0],
+            'WORDLIST.whitelisted' => [OP_EQ_INT => 1],
+        ];
 
         return $this->checkForWordInWordlist($word, $this->getWordlist($fields), $greedy, $sanitizeWord);
     }
@@ -88,9 +88,9 @@ class tx_mklib_srv_Wordlist extends tx_mklib_srv_Base
      *
      * @return array
      */
-    protected function getWordlist(array $fields = array())
+    protected function getWordlist(array $fields = [])
     {
-        $options = array(/*'debug' => 1*/);
+        $options = [/*'debug' => 1*/];
 
         $foo = $this->search($fields, $options);
         if (count($foo)) {

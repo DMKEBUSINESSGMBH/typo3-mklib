@@ -33,7 +33,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      *
      * @var array
      */
-    protected $aOptionsToFormat = array('threshold', 'rememberAfter');
+    protected $aOptionsToFormat = ['threshold', 'rememberAfter'];
 
     /**
      * @param array $options
@@ -66,7 +66,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
     protected function handleFrozenTasks($aPossiblyFrozenTasks)
     {
         //Nachrichten für den error mail versand
-        $aMessages = $aUids = array();
+        $aMessages = $aUids = [];
         foreach ($aPossiblyFrozenTasks as $aPossiblyFrozenTask) {
             $classname = get_class(unserialize($aPossiblyFrozenTask['serialized_task_object']));
 
@@ -79,7 +79,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
             tx_mklib_util_Scheduler::getFormattedTime($this->getOption('threshold')).' : '.implode(', ', $aMessages);
         $oException = new Exception($sMsg, 0);
         //die Mail soll immer geschickt werden
-        $aOptions = array('ignoremaillock' => true);
+        $aOptions = ['ignoremaillock' => true];
         tx_rnbase_util_Misc::sendErrorMail($this->getOption('receiver'), 'tx_mklib_scheduler_CheckRunningTasks', $oException, $aOptions);
 
         //bei allen hängen geblibenen tasks freezedetected setzen
@@ -99,7 +99,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
         tx_rnbase_util_DB::doUpdate(
             'tx_scheduler_task',
             'uid IN ('.implode(',', $aUids).')',
-            array('freezedetected' => $GLOBALS['EXEC_TIME'])
+            ['freezedetected' => $GLOBALS['EXEC_TIME']]
         );
     }
 
@@ -112,7 +112,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
         tx_rnbase_util_DB::doUpdate(
             'tx_scheduler_task',
             'LENGTH(serialized_executions) = 0 OR freezedetected < '.($GLOBALS['EXEC_TIME'] - $this->getOption('rememberAfter')),
-            array('freezedetected' => 0)
+            ['freezedetected' => 0]
         );
     }
 
@@ -128,7 +128,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
         return tx_rnbase_util_DB::doSelect(
             $selectFields,
             'tx_scheduler_task',
-            array(
+            [
                 //hat keine TCA
                 'enablefieldsoff' => true,
                 //nicht unser eigener Task und nur aktuell laufende, die vor dem
@@ -137,7 +137,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
                 ' AND LENGTH(serialized_executions) > 0'.
                 ' AND freezedetected = 0'.
                 ' AND lastexecution_time < '.($GLOBALS['EXEC_TIME'] - $this->getOption('threshold')),
-            )
+            ]
         );
     }
 

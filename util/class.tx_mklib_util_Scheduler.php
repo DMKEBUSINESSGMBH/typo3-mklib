@@ -19,7 +19,7 @@ class tx_mklib_util_Scheduler
      */
     public static function getFormattedTime($seconds)
     {
-        $time = array();
+        $time = [];
         $time['hours'] = floor($seconds / 3600);
         $time['minutes'] = floor(($seconds - $time['hours'] * 3600) / 60);
         $time['seconds'] = $seconds - $time['hours'] * 3600 - $time['minutes'] * 60;

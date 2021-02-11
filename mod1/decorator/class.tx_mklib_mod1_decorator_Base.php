@@ -42,7 +42,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     /**
      * @param tx_rnbase_mod_IModule $mod
      */
-    public function __construct(tx_rnbase_mod_IModule $mod, array $options = array())
+    public function __construct(tx_rnbase_mod_IModule $mod, array $options = [])
     {
         $this->mod = $mod;
         $this->options = $options;
@@ -95,9 +95,9 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      */
     protected function getUidColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
     {
-        $wrap = $item->isHidden() ? array('<del>', '</del>') : array('', '');
+        $wrap = $item->isHidden() ? ['<del>', '</del>'] : ['', ''];
         $ret = $wrap[0].$item->getProperty('uid').$wrap[1];
-        $dates = array();
+        $dates = [];
         $dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
         $dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
 
@@ -140,7 +140,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
         if ($item->getTableName()) {
             $ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
                 $item->getSysLanguageUid(),
-                array('show_title' => true)
+                ['show_title' => true]
             );
             $new = tx_mklib_mod1_util_Language::getAddLocalizationLinks(
                 $item,
@@ -168,10 +168,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      */
     protected function getActionOptions($item = null)
     {
-        $cols = array(
+        $cols = [
             'edit' => '',
             'hide' => '',
-        );
+        ];
 
         if ($item && tx_rnbase_util_TCA::getSortbyFieldForTable($item->getTableName())) {
             $cols['moveup'] = '';
@@ -216,7 +216,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                     //in der BE-Modul locallang.xml der jeweiligen Extension im Schlüssel
                     //'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein
                     //Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
-                    $ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle, array('confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')));
+                    $ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle, ['confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')]);
                     break;
                 case 'moveup':
                     $fromUid = $uid;
@@ -241,10 +241,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             $tableName,
                             $fromUid,
                             $prevId,
-                            array(
+                            [
                                 'label' => '',
                                 'title' => 'Move '.$fromUid.' after '.$prevId,
-                            )
+                            ]
                         );
                     } else {
                         $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
@@ -260,10 +260,10 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             $tableName,
                             $uid,
                             $nextId,
-                            array(
+                            [
                                 'label' => '',
                                 'title' => 'Move '.$uid.' after '.$nextId,
-                            )
+                            ]
                         );
                     } else {
                         $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
@@ -289,7 +289,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
         $record,
         Tx_Rnbase_Domain_Model_RecordInterface $item
     ) {
-        $stateClass = array();
+        $stateClass = [];
 
         if ($item->isHidden()) {
             $stateClass[] = 'ef-hidden';
@@ -315,7 +315,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     protected function getItemsMap(Tx_Rnbase_Domain_Model_RecordInterface $item)
     {
         if (empty($this->options['items_map'])) {
-            return array();
+            return [];
         }
         $currentId = $item->getUid();
         $map = $this->options['items_map'];

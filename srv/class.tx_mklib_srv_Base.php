@@ -97,7 +97,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
                 $tsfe = tx_rnbase_util_TYPO3::getTSFE();
-                $languages = array();
+                $languages = [];
                 if (isset($options['additionali18n'])) {
                     $languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], true);
                 }
@@ -149,7 +149,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
             && isset($options['distinct'])
             && $options['distinct']
         ) {
-            $master = $overlay = array();
+            $master = $overlay = [];
             /* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
             foreach ($items as $item) {
                 $uid = $item->getUid();
@@ -216,7 +216,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
      *
      * @return array
      */
-    protected function limitResults(array $items, $limit, array $options = array())
+    protected function limitResults(array $items, $limit, array $options = [])
     {
         // Leer, wir haben nichts zu tun.
         if (empty($items)) {
@@ -271,7 +271,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
      */
     public function findAll()
     {
-        return $this->search(array(), array());
+        return $this->search([], []);
     }
 
     /************************
@@ -296,7 +296,7 @@ abstract class tx_mklib_srv_Base extends Tx_Rnbase_Service_Base
     protected function getDummyModel()
     {
         if (!$this->dummyModel) {
-            $this->dummyModel = tx_rnbase::makeInstance($this->getWrapperClass(), array('uid' => 0));
+            $this->dummyModel = tx_rnbase::makeInstance($this->getWrapperClass(), ['uid' => 0]);
         }
 
         return $this->dummyModel;

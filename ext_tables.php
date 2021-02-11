@@ -4,11 +4,11 @@
  * DB-Felder, die im BE bearbeitbar sind.
  */
 
-/**
+/*
  * alle benötigten Klassen einbinden etc.
  */
 if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
+    exit('Access denied.');
 }
 $_EXTKEY = 'mklib';
 
@@ -30,11 +30,11 @@ $TCA['tt_content']['types']['list']['subtypes_addlist']['tx_mklib'] = 'pi_flexfo
 tx_rnbase_util_Extensions::addPiFlexFormValue('tx_mklib', 'FILE:EXT:'.$_EXTKEY.'/flexform_main.xml');
 
 tx_rnbase_util_Extensions::addPlugin(
-    array(
+    [
         'LLL:EXT:'.$_EXTKEY.'/locallang_db.php:plugin.mklib.label',
         'tx_mklib',
         'EXT:'.$_EXTKEY.'/ext_icon.gif',
-    ),
+    ],
     'list_type',
     $_EXTKEY
 );

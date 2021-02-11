@@ -59,13 +59,13 @@ class tx_mklib_util_WizIcon extends tx_rnbase_util_Wizicon
      */
     protected function getPluginData()
     {
-        return array(
-            'tx_'.$this->extKey => array(
+        return [
+            'tx_'.$this->extKey => [
                 'icon' => 'EXT:'.$this->extkey.'/ext_icon.gif',
                 'title' => 'plugin.'.$this->extKey.'.label',
                 'description' => 'plugin.'.$this->extKey.'.description',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

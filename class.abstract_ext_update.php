@@ -19,7 +19,7 @@ abstract class abstract_ext_update
      */
     public function main()
     {
-        $fieldsets = array();
+        $fieldsets = [];
         $fieldsets['Character encoding'] = $this->getDestEncodingSelect();
         $fieldsets['Update Static Info Tables'] = $this->handleUpdateStaticInfoTables();
 
@@ -115,7 +115,7 @@ abstract class abstract_ext_update
         }
 
         $destEncoding = $this->getDestEncoding();
-        $querys = array();
+        $querys = [];
         $keyQuery = 0;
         foreach ($fileContent as $line) {
             $line = trim($line);
@@ -200,7 +200,7 @@ abstract class abstract_ext_update
             $queryElements = tx_rnbase_util_Strings::trimExplode('UPDATE', $queryElements[0], 1);
             $table = $queryElements[0];
 
-            $fields_values = array();
+            $fields_values = [];
             $queryFieldsArray = tx_rnbase_util_Strings::trimExplode(',', $queryFields, 1);
             foreach ($queryFieldsArray as $fieldsSet) {
                 $col = tx_rnbase_util_Strings::trimExplode('=', $fieldsSet, 1);

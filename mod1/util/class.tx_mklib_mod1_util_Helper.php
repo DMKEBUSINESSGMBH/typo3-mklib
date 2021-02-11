@@ -33,8 +33,8 @@ class tx_mklib_mod1_util_Helper
             return false;
         }
         // Daten mit Modul abgleichen
-        $changed = $itemid ? array($dataKey => $itemid) : array();
-        $data = Tx_Rnbase_Backend_Utility::getModuleData(array($dataKey => ''), $changed, $module->getName());
+        $changed = $itemid ? [$dataKey => $itemid] : [];
+        $data = Tx_Rnbase_Backend_Utility::getModuleData([$dataKey => ''], $changed, $module->getName());
         $itemid = $data[$dataKey];
         if (!$itemid) {
             return false;

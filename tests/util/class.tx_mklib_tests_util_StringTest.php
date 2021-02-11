@@ -34,10 +34,10 @@ class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetShortenedText()
     {
-        $aRecord = array(
+        $aRecord = [
             'othertext' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
             'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
-        );
+        ];
 
         self::assertEquals(
             'ein ganz langer text mit vielen worten und noch viel',
@@ -135,7 +135,7 @@ class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
 
         self::assertEquals(
             'test.mail&#8203;(at)&#8203ein-host.de',
-            tx_mklib_util_String::obfusicateEmail(array(0 => 'test.mail@ein-host.de')),
+            tx_mklib_util_String::obfusicateEmail([0 => 'test.mail@ein-host.de']),
             'Mail falsch verschleiert'
         );
     }
@@ -174,7 +174,7 @@ class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
         $expectedLink = str_replace('" \>', '"\>', $expectedLink);
         self::assertRegExp(
             $expectedLink,
-            tx_mklib_util_String::convertEmailToMailToLink(array(0 => 'test.mail@ein-host.de')),
+            tx_mklib_util_String::convertEmailToMailToLink([0 => 'test.mail@ein-host.de']),
             'Mailto Link falsch'
         );
     }
@@ -222,10 +222,10 @@ class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
         //wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
         //wir verhindern wollen!
         if (!is_array($GLOBALS['TSFE']->rootLine)) {
-            $GLOBALS['TSFE']->rootLine = array();
+            $GLOBALS['TSFE']->rootLine = [];
         }
         if (!is_array($GLOBALS['TSFE']->rootLine[0])) {
-            $GLOBALS['TSFE']->rootLine[0] = array();
+            $GLOBALS['TSFE']->rootLine[0] = [];
         }
         $GLOBALS['TSFE']->rootLine[0]['uid'] = 1;
     }
@@ -270,28 +270,28 @@ class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
      */
     public function getUrls()
     {
-        return array(
-            array('text mit www.google.de link', '', 'text mit <a  href="http://www.google.de" >www.google.de</a> link'),
-            array('www.google.de link', 'target="_blank"', '<a target="_blank" href="http://www.google.de" >www.google.de</a> link'),
-            array('www.google.de?param1=value1&param2=value2-#anchor link', '', '<a  href="http://www.google.de?param1=value1&param2=value2-#anchor" >www.google.de?param1=value1&param2=value2-#anchor</a> link'),
-            array('text mit www.google.de', '', 'text mit <a  href="http://www.google.de" >www.google.de</a>'),
-            array('text mit http://www.google.de link', '', 'text mit <a  href="http://www.google.de" >http://www.google.de</a> link'),
-            array('http://www.google.de link', '', '<a  href="http://www.google.de" >http://www.google.de</a> link'),
-            array('text mit http://www.google.de', '', 'text mit <a  href="http://www.google.de" >http://www.google.de</a>'),
-            array('text mit https://www.google.de link', '', 'text mit <a  href="https://www.google.de" >https://www.google.de</a> link'),
-            array('https://www.google.de link', '', '<a  href="https://www.google.de" >https://www.google.de</a> link'),
-            array('text mit https://www.google.de', '', 'text mit <a  href="https://www.google.de" >https://www.google.de</a>'),
-            array('text mit <a href="https://www.google.de">link</a>', '', 'text mit <a href="https://www.google.de">link</a>'),
-            array('<p>http://www.difu.de</p>', '', '<p><a  href="http://www.difu.de" >http://www.difu.de</a></p>'),
-            array('<p>www.difu.de</p>', '', '<p><a  href="http://www.difu.de" >www.difu.de</a></p>'),
-            array('<p> http://www.difu.de </p>', '', '<p> <a  href="http://www.difu.de" >http://www.difu.de</a> </p>'),
-            array('mail@dummy.com', '', '<a href="mailto:mail@dummy.com">mail@dummy.com</a>'),
-            array('<p>mail@dummy.com</p>', '', '<p><a href="mailto:mail@dummy.com">mail@dummy.com</a></p>'),
-            array('(www.difu.de)', '', '(<a  href="http://www.difu.de" >www.difu.de</a>)'),
-            array('-www.difu.de?test-test', '', '-<a  href="http://www.difu.de?test-test" >www.difu.de?test-test</a>'),
-            array('_www.difu.de?test_test', '', '_<a  href="http://www.difu.de?test_test" >www.difu.de?test_test</a>'),
-            array('*www.difu.de', '', '*<a  href="http://www.difu.de" >www.difu.de</a>'),
-        );
+        return [
+            ['text mit www.google.de link', '', 'text mit <a  href="http://www.google.de" >www.google.de</a> link'],
+            ['www.google.de link', 'target="_blank"', '<a target="_blank" href="http://www.google.de" >www.google.de</a> link'],
+            ['www.google.de?param1=value1&param2=value2-#anchor link', '', '<a  href="http://www.google.de?param1=value1&param2=value2-#anchor" >www.google.de?param1=value1&param2=value2-#anchor</a> link'],
+            ['text mit www.google.de', '', 'text mit <a  href="http://www.google.de" >www.google.de</a>'],
+            ['text mit http://www.google.de link', '', 'text mit <a  href="http://www.google.de" >http://www.google.de</a> link'],
+            ['http://www.google.de link', '', '<a  href="http://www.google.de" >http://www.google.de</a> link'],
+            ['text mit http://www.google.de', '', 'text mit <a  href="http://www.google.de" >http://www.google.de</a>'],
+            ['text mit https://www.google.de link', '', 'text mit <a  href="https://www.google.de" >https://www.google.de</a> link'],
+            ['https://www.google.de link', '', '<a  href="https://www.google.de" >https://www.google.de</a> link'],
+            ['text mit https://www.google.de', '', 'text mit <a  href="https://www.google.de" >https://www.google.de</a>'],
+            ['text mit <a href="https://www.google.de">link</a>', '', 'text mit <a href="https://www.google.de">link</a>'],
+            ['<p>http://www.difu.de</p>', '', '<p><a  href="http://www.difu.de" >http://www.difu.de</a></p>'],
+            ['<p>www.difu.de</p>', '', '<p><a  href="http://www.difu.de" >www.difu.de</a></p>'],
+            ['<p> http://www.difu.de </p>', '', '<p> <a  href="http://www.difu.de" >http://www.difu.de</a> </p>'],
+            ['mail@dummy.com', '', '<a href="mailto:mail@dummy.com">mail@dummy.com</a>'],
+            ['<p>mail@dummy.com</p>', '', '<p><a href="mailto:mail@dummy.com">mail@dummy.com</a></p>'],
+            ['(www.difu.de)', '', '(<a  href="http://www.difu.de" >www.difu.de</a>)'],
+            ['-www.difu.de?test-test', '', '-<a  href="http://www.difu.de?test-test" >www.difu.de?test-test</a>'],
+            ['_www.difu.de?test_test', '', '_<a  href="http://www.difu.de?test_test" >www.difu.de?test_test</a>'],
+            ['*www.difu.de', '', '*<a  href="http://www.difu.de" >www.difu.de</a>'],
+        ];
     }
 
     /**

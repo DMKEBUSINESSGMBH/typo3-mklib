@@ -34,7 +34,7 @@ class tx_mklib_util_File
     /**
      * @var array[\TYPO3\CMS\Core\Utility\File\BasicFileUtility]
      */
-    private static $ftInstances = array();
+    private static $ftInstances = [];
     /**
      * @var string cache
      */
@@ -79,11 +79,11 @@ class tx_mklib_util_File
      *
      * @return int
      */
-    public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles = array())
+    public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles = [])
     {
         $directoryCheckDir = isset($aOptions['directorycheckdir']) ? $aOptions['directorycheckdir'] : 'typo3temp';
         if (!is_array($aUnlinkedFiles)) {
-            $aUnlinkedFiles = array();
+            $aUnlinkedFiles = [];
         }
 
         //nur innerhalb von typo3temp zulassen
@@ -93,7 +93,7 @@ class tx_mklib_util_File
 
         // optionen sammeln.
         $iLifetime = $aOptions['lifetime'] ? $aOptions['lifetime'] : 0;
-        $aFiletypes = $aOptions['filetypes'] ? tx_rnbase_util_Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : array();
+        $aFiletypes = $aOptions['filetypes'] ? tx_rnbase_util_Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : [];
         $bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
 
         $iCount = 0;
@@ -470,11 +470,11 @@ class tx_mklib_util_File
      */
     public static function parseUrlFromParts(array $parts)
     {
-        $parts = array_merge(array(
+        $parts = array_merge([
             'scheme' => '', 'host' => '', 'port' => '',
             'user' => '', 'pass' => '',
             'path' => '', 'query' => '', 'fragment' => '',
-        ), $parts);
+        ], $parts);
 
         $password = strlen($parts['pass']) > 0 ? ':'.$parts['pass'] : '';
         $auth = strlen($parts['user']) > 0 ? $parts['user'].$password.'@' : '';

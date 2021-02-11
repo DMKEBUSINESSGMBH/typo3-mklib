@@ -54,7 +54,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
     /**
      * @return tx_mklib_mod1_decorator_Base
      */
-    protected function getDecorator(&$mod, array $options = array())
+    protected function getDecorator(&$mod, array $options = [])
     {
         return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod, $options);
     }
@@ -68,17 +68,17 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
      */
     protected function getDecoratorColumns(&$oDecorator)
     {
-        return array(
-                'uid' => array(
+        return [
+                'uid' => [
                     'title' => 'label_tableheader_uid',
                     'decorator' => &$oDecorator,
                     'sortable' => 'WORDLIST.',
-                ),
-                'actions' => array(
+                ],
+                'actions' => [
                     'title' => 'label_tableheader_actions',
                     'decorator' => &$oDecorator,
-                ),
-            );
+                ],
+            ];
     }
 
     /**
@@ -88,7 +88,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
      */
     protected function getCols()
     {
-        return array('WORDLIST.uid');
+        return ['WORDLIST.uid'];
     }
 }
 

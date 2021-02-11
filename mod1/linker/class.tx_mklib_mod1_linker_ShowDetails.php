@@ -59,9 +59,7 @@ class tx_mklib_mod1_linker_ShowDetails
     public function __construct($identifier)
     {
         if (empty($identifier)) {
-            throw new InvalidArgumentException(
-                'Constructor needs a valid identifier'
-            );
+            throw new InvalidArgumentException('Constructor needs a valid identifier');
         }
         $this->identifier = $identifier;
     }
@@ -76,7 +74,7 @@ class tx_mklib_mod1_linker_ShowDetails
     public function makeLink(
             Tx_Rnbase_Domain_Model_RecordInterface $item,
             tx_rnbase_util_FormTool $formTool,
-            $options = array()
+            $options = []
     ) {
         $out = $formTool->createSubmit(
                 'showDetails['.$this->identifier.']['.$item->getUid().']',
@@ -98,7 +96,7 @@ class tx_mklib_mod1_linker_ShowDetails
             // wird eigentlich nicht benötigt.
             Tx_Rnbase_Domain_Model_RecordInterface $item,
             tx_rnbase_util_FormTool $formTool,
-            $options = array()
+            $options = []
     ) {
         $out = $formTool->createSubmit(
                 'showDetails['.$this->identifier.'][clear]',
@@ -116,12 +114,12 @@ class tx_mklib_mod1_linker_ShowDetails
     public function getCurrentUid(
         tx_rnbase_mod_IModule $mod
     ) {
-        $modSettings = array(
+        $modSettings = [
             $this->identifier => '0',
-        );
+        ];
 
         $params = tx_rnbase_parameters::getPostOrGetParameter('showDetails');
-        $params = is_array($params) ? $params : array();
+        $params = is_array($params) ? $params : [];
         list($model, $uid) = each($params);
         if (is_array($uid)) {
             list($uid) = each($uid);
@@ -145,9 +143,9 @@ class tx_mklib_mod1_linker_ShowDetails
         $data = Tx_Rnbase_Backend_Utility::getModuleData(
             $modSettings,
             $uid
-                ? array(
+                ? [
                     $this->identifier => $uid,
-                ) : array(),
+                ] : [],
             $mod->getName()
         );
 

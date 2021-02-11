@@ -53,10 +53,10 @@ class tx_mklib_util_Array
      */
     public static function removeEmptyArrayValuesSimple(
         array $array,
-        array $emptys = array('', 0, '0', null, false, array()),
+        array $emptys = ['', 0, '0', null, false, []],
         $strict = true
     ) {
-        $ret = array();
+        $ret = [];
         foreach ($array as $key => $value) {
             if (!in_array($value, $emptys, $strict)) {
                 $ret[] = $value;
@@ -147,9 +147,9 @@ class tx_mklib_util_Array
      */
     public static function fieldsToArray($aObj, $sAttr = 'uid')
     {
-        $fieldsArray = array();
+        $fieldsArray = [];
         foreach ($aObj as $oObj) {
-            $aRecord = is_object($oObj) ? $oObj->record : (is_array($oObj) ? $oObj : array());
+            $aRecord = is_object($oObj) ? $oObj->record : (is_array($oObj) ? $oObj : []);
             if (isset($aRecord[$sAttr])) {
                 $fieldsArray[] = $aRecord[$sAttr];
             }
@@ -204,7 +204,7 @@ class tx_mklib_util_Array
      */
     public static function castObjectToArrayViaReflection($object)
     {
-        $result = array();
+        $result = [];
 
         $reflectedObject = new ReflectionObject($object);
 
@@ -228,7 +228,7 @@ class tx_mklib_util_Array
      */
     protected static function fixProtectedInstanceVariableNames($variableName)
     {
-        $matches = array();
+        $matches = [];
         preg_match('/^\x00(?:.*?)\x00(.+)/', $variableName, $matches);
 
         return $matches ? $matches[1] : $variableName;

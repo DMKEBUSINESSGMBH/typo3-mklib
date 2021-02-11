@@ -40,23 +40,23 @@ class tx_mklib_tests_mod1_util_SearchBuilderTest extends tx_rnbase_tests_BaseTes
 
     public function providerMakeWildcardTerm()
     {
-        return array(
-            'ds 01' => array('test', '', false, '+"test"*'),
-            'ds 02' => array('test', '', true, '+*"test"*'),
-            'ds 03' => array('test', 'myfield', false, '+myfield:"test"*'),
-            'ds 04' => array('Test', 'myfield', false, '+myfield:"test"*'),
-            'ds 05' => array('test', 'myfield', true, '+myfield:*"test"*'),
-            'ds 06' => array('Bad Ar', 'fieldname', false, '+fieldname:"bad"* +fieldname:"ar"*'),
-            'ds 07' => array('Bad Ar', 'fieldname', true, '+fieldname:*"bad"* +fieldname:*"ar"*'),
-            'ds 08' => array('Dussmann AG & Co.KGaA', 'sfr_companyname', true, '+sfr_companyname:*"dussmann"* +sfr_companyname:*"ag"* +sfr_companyname:*"co"* +sfr_companyname:*"kgaa"*'),
-            'ds 09' => array('\'test\'+-&|!(){}\[]^"~+*?:', 'sfr_companyname', true, '+sfr_companyname:*"test"*'),
-            'ds 10' => array('c # sharp', 'testfield', false, '+testfield:"c"* +testfield:"sharp"*'),
-        );
+        return [
+            'ds 01' => ['test', '', false, '+"test"*'],
+            'ds 02' => ['test', '', true, '+*"test"*'],
+            'ds 03' => ['test', 'myfield', false, '+myfield:"test"*'],
+            'ds 04' => ['Test', 'myfield', false, '+myfield:"test"*'],
+            'ds 05' => ['test', 'myfield', true, '+myfield:*"test"*'],
+            'ds 06' => ['Bad Ar', 'fieldname', false, '+fieldname:"bad"* +fieldname:"ar"*'],
+            'ds 07' => ['Bad Ar', 'fieldname', true, '+fieldname:*"bad"* +fieldname:*"ar"*'],
+            'ds 08' => ['Dussmann AG & Co.KGaA', 'sfr_companyname', true, '+sfr_companyname:*"dussmann"* +sfr_companyname:*"ag"* +sfr_companyname:*"co"* +sfr_companyname:*"kgaa"*'],
+            'ds 09' => ['\'test\'+-&|!(){}\[]^"~+*?:', 'sfr_companyname', true, '+sfr_companyname:*"test"*'],
+            'ds 10' => ['c # sharp', 'testfield', false, '+testfield:"c"* +testfield:"sharp"*'],
+        ];
     }
 
     public function testBuildFreeTextWithSearchWordAndNoCols()
     {
-        $fields = array();
+        $fields = [];
         $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test');
 
         self::assertTrue($result, 'es wurde trotz Suchbegriff nicht true zurück gegeben.');
@@ -67,19 +67,19 @@ class tx_mklib_tests_mod1_util_SearchBuilderTest extends tx_rnbase_tests_BaseTes
 
     public function testBuildFreeTextWithSearchWordAndCols()
     {
-        $fields = array();
-        $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test', array('TEST1.col1', 'TEST1.col2', 'TEST2.col1'));
+        $fields = [];
+        $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, 'test', ['TEST1.col1', 'TEST1.col2', 'TEST2.col1']);
 
         self::assertTrue($result, 'es wurde trotz Suchbegriff nicht true zurück gegeben.');
         self::assertEquals('test', $fields['JOINED'][0]['value'], 'fields[JOINED][0][value] ist nicht korrekt');
-        $aExpectedCols = array('TEST1.col1', 'TEST1.col2', 'TEST2.col1');
+        $aExpectedCols = ['TEST1.col1', 'TEST1.col2', 'TEST2.col1'];
         self::assertEquals($aExpectedCols, $fields['JOINED'][0]['cols'], 'fields[JOINED][0][cols] ist nicht korrekt');
         self::assertEquals('LIKE', $fields['JOINED'][0]['operator'], 'fields[JOINED][0][operator] ist nicht korrekt');
     }
 
     public function testBuildFreeTextWithoutSearchWord()
     {
-        $fields = array();
+        $fields = [];
         $result = tx_mklib_mod1_util_SearchBuilder::buildFreeText($fields, '');
 
         self::assertFalse($result, 'es wurde trotz Suchbegriff nicht true zurück gegeben.');

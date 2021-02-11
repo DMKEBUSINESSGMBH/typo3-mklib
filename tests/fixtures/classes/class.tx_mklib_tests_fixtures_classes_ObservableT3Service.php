@@ -24,7 +24,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-/**
+/*
  * benötigte Klassen einbinden.
  */
 tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableInterface');
@@ -34,19 +34,19 @@ tx_rnbase::load('tx_mklib_tests_fixtures_classes_ObservableInterface');
  */
 class tx_mklib_tests_fixtures_classes_ObservableT3Service extends tx_mklib_abstract_ObservableT3Service implements tx_mklib_tests_fixtures_classes_ObservableInterface
 {
-    protected $aData = array();
+    protected $aData = [];
 
     public function getDataForObservers()
     {
         return $this->aData;
     }
 
-    public function setDataForObservers($aData = array())
+    public function setDataForObservers($aData = [])
     {
         $this->aData = $aData;
     }
 
-    public function doSomething($aData = array())
+    public function doSomething($aData = [])
     {
         $this->setDataForObservers($aData);
         $this->notifyObservers();

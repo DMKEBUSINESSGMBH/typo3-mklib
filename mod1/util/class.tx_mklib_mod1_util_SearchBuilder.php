@@ -41,7 +41,7 @@ class tx_mklib_mod1_util_SearchBuilder
         $result = false;
         if (strlen(trim($searchword))) {
             $joined['value'] = trim($searchword);
-            $joined['cols'] = array('FEUSER.uid', 'FEUSER.LAST_NAME', 'FEUSER.FIRST_NAME', 'FEUSER.username', 'FEUSER.email');
+            $joined['cols'] = ['FEUSER.uid', 'FEUSER.LAST_NAME', 'FEUSER.FIRST_NAME', 'FEUSER.username', 'FEUSER.email'];
             $joined['operator'] = OP_LIKE;
             $fields[SEARCH_FIELD_JOINED][] = $joined;
             $result = true;
@@ -78,7 +78,7 @@ class tx_mklib_mod1_util_SearchBuilder
         $pattern = '/[\s%,.&*+-\/\'!?#()\[\]\{\}"^|:\\\~]+/';
         $arr = preg_split($pattern, $term);
 
-        $terms = array();
+        $terms = [];
         $field = $fieldName ? $fieldName.':' : '';
         foreach ($arr as $term) {
             // einen leeren string ignorieren
@@ -108,10 +108,10 @@ class tx_mklib_mod1_util_SearchBuilder
      *
      * @return string
      */
-    public static function getSearchForm($funcId, &$currentSearchWord, &$currentShowHidden, $selector, array &$data = array())
+    public static function getSearchForm($funcId, &$currentSearchWord, &$currentShowHidden, $selector, array &$data = [])
     {
         $currentSearchWord = $selector->showFreeTextSearchForm($data, $funcId, 'search'.$funcId, $GLOBALS['LANG']->getLL('label_button_search'));
-        $currentShowHidden = $selector->showHiddenSelector($data, array('id' => 'showhidden'.$funcId));
+        $currentShowHidden = $selector->showHiddenSelector($data, ['id' => 'showhidden'.$funcId]);
         $out = '';
         $out .= '<div>Suche: '.$data['field'].$data['selector'].$data['misc'].$data['button'].'</div>';
 
@@ -128,7 +128,7 @@ class tx_mklib_mod1_util_SearchBuilder
      */
     public static function addMiscColumns(&$columns, tx_mklib_mod1_decorator_Base $decorator)
     {
-        $columns['actions'] = array('title' => 'label_tableheader_actions', 'decorator' => $decorator, 'width' => 90);
+        $columns['actions'] = ['title' => 'label_tableheader_actions', 'decorator' => $decorator, 'width' => 90];
     }
 
     /**
@@ -139,7 +139,7 @@ class tx_mklib_mod1_util_SearchBuilder
      * @param string $searchword
      * @param array  $cols
      */
-    public static function buildFreeText(&$fields, $searchword, array $cols = array())
+    public static function buildFreeText(&$fields, $searchword, array $cols = [])
     {
         $result = false;
         if (strlen(trim($searchword))) {
@@ -165,7 +165,7 @@ class tx_mklib_mod1_util_SearchBuilder
      *
      * @return string
      */
-    public static function getResultList(tx_mklib_mod1_searcher_Base $callingClass, $srv, array &$fields = array(), array &$options = array())
+    public static function getResultList(tx_mklib_mod1_searcher_Base $callingClass, $srv, array &$fields = [], array &$options = [])
     {
         $funcId = $callingClass->getFuncId();
         $pager = tx_rnbase::makeInstance('tx_rnbase_util_BEPager', $funcId.'Pager', $callingClass->getModule()->getName(), 0);
@@ -181,7 +181,7 @@ class tx_mklib_mod1_util_SearchBuilder
 
         // Get data
         $items = $srv->search($fields, $options);
-        $ret = array();
+        $ret = [];
         $content = '';
         $callingClass->showItems($content, $items);
         $ret['table'] = $content;

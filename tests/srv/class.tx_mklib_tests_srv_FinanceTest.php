@@ -46,7 +46,7 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
     public function testGetCurrency()
     {
         self::markTestIncomplete(
-          "GeneralUtility::devLog() will be removed with TYPO3 v10.0."
+          'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
         );
 
         $oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
@@ -59,7 +59,7 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
     public function testGetFormattedCurrency()
     {
         self::markTestIncomplete(
-            "GeneralUtility::devLog() will be removed with TYPO3 v10.0."
+            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
         );
 
         $oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
@@ -76,7 +76,7 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
     public function testRoundDouble()
     {
         self::markTestIncomplete(
-            "GeneralUtility::devLog() will be removed with TYPO3 v10.0."
+            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
         );
 
         $oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
@@ -99,7 +99,7 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
     public function testValidateVatRegNo($country, $vatregno, $expected)
     {
         self::markTestIncomplete(
-            "GeneralUtility::devLog() will be removed with TYPO3 v10.0."
+            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
         );
 
         $srv = tx_mklib_util_ServiceRegistry::getFinanceService();
@@ -116,44 +116,44 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
      */
     public function getValidateVatRegNoData()
     {
-        return array(
+        return [
             // test country by uid
-            __LINE__ => array('country' => tx_rnbase_util_Extensions::isLoaded('static_info_tables') ? '54' : 'de', 'vatregno' => 'DE123456789', 'expected' => true),
+            __LINE__ => ['country' => tx_rnbase_util_Extensions::isLoaded('static_info_tables') ? '54' : 'de', 'vatregno' => 'DE123456789', 'expected' => true],
             // test country model
-            __LINE__ => array('country' => $this->getModel(array('cn_iso_2' => 'DE')), 'vatregno' => 'DE123456789', 'expected' => true),
+            __LINE__ => ['country' => $this->getModel(['cn_iso_2' => 'DE']), 'vatregno' => 'DE123456789', 'expected' => true],
             // all the other static tests
-            __LINE__ => array('country' => 'de', 'vatregno' => 'DE123456789', 'expected' => true),
-            __LINE__ => array('country' => 'de', 'vatregno' => 'DE12345', 'expected' => false),
-            __LINE__ => array('country' => 'de', 'vatregno' => 'DE12ABG', 'expected' => false),
-            __LINE__ => array('country' => 'PL', 'vatregno' => 'PL1234567890', 'expected' => true),
-            __LINE__ => array('country' => 'PL', 'vatregno' => 'PL12345', 'expected' => false),
-            __LINE__ => array('country' => 'PL', 'vatregno' => 'PL12ABG', 'expected' => false),
-            __LINE__ => array('country' => 'FR', 'vatregno' => 'FR1A 123456789', 'expected' => true),
-            __LINE__ => array('country' => 'FR', 'vatregno' => 'FR1A 123', 'expected' => false),
-            __LINE__ => array('country' => 'FR', 'vatregno' => 'FR12A 123456789', 'expected' => false),
-            __LINE__ => array('country' => 'LU', 'vatregno' => 'LU12345678', 'expected' => true),
-            __LINE__ => array('country' => 'LU', 'vatregno' => 'LU123', 'expected' => false),
-            __LINE__ => array('country' => 'LU', 'vatregno' => 'LU123456789', 'expected' => false),
-            __LINE__ => array('country' => 'LU', 'vatregno' => 'LU123ABG', 'expected' => false),
-            __LINE__ => array('country' => 'BE', 'vatregno' => 'BE1234567890', 'expected' => true),
-            __LINE__ => array('country' => 'BE', 'vatregno' => 'BE12345', 'expected' => false),
-            __LINE__ => array('country' => 'BE', 'vatregno' => 'BE12ABG', 'expected' => false),
-            __LINE__ => array('country' => 'NL', 'vatregno' => 'NL123ABG456z', 'expected' => true),
-            __LINE__ => array('country' => 'NL', 'vatregno' => 'NL123ABG', 'expected' => false),
-            __LINE__ => array('country' => 'NL', 'vatregno' => 'NL123456ASDFGH', 'expected' => false),
-            __LINE__ => array('country' => 'DK', 'vatregno' => 'DK12 34 56 78', 'expected' => true),
-            __LINE__ => array('country' => 'DK', 'vatregno' => 'DK12 34 56 78 90', 'expected' => false),
-            __LINE__ => array('country' => 'DK', 'vatregno' => 'DK12345678', 'expected' => false),
-            __LINE__ => array('country' => 'DK', 'vatregno' => 'DKAB CD EF GH', 'expected' => false),
-            __LINE__ => array('country' => 'CZ', 'vatregno' => 'CZ12345678', 'expected' => true),
-            __LINE__ => array('country' => 'cz', 'vatregno' => 'CZ123456789', 'expected' => true),
-            __LINE__ => array('country' => 'CZ', 'vatregno' => 'CZ1234567890', 'expected' => true),
-            __LINE__ => array('country' => 'CZ', 'vatregno' => 'CZ12345', 'expected' => false),
-            __LINE__ => array('country' => 'CZ', 'vatregno' => 'CZ123456ASDFGH', 'expected' => false),
-            __LINE__ => array('country' => 'AT', 'vatregno' => 'ATU123ABG4z', 'expected' => true),
-            __LINE__ => array('country' => 'AT', 'vatregno' => 'ATU123ABG', 'expected' => false),
-            __LINE__ => array('country' => 'AT', 'vatregno' => 'ATU123456ASDFGH', 'expected' => false),
-        );
+            __LINE__ => ['country' => 'de', 'vatregno' => 'DE123456789', 'expected' => true],
+            __LINE__ => ['country' => 'de', 'vatregno' => 'DE12345', 'expected' => false],
+            __LINE__ => ['country' => 'de', 'vatregno' => 'DE12ABG', 'expected' => false],
+            __LINE__ => ['country' => 'PL', 'vatregno' => 'PL1234567890', 'expected' => true],
+            __LINE__ => ['country' => 'PL', 'vatregno' => 'PL12345', 'expected' => false],
+            __LINE__ => ['country' => 'PL', 'vatregno' => 'PL12ABG', 'expected' => false],
+            __LINE__ => ['country' => 'FR', 'vatregno' => 'FR1A 123456789', 'expected' => true],
+            __LINE__ => ['country' => 'FR', 'vatregno' => 'FR1A 123', 'expected' => false],
+            __LINE__ => ['country' => 'FR', 'vatregno' => 'FR12A 123456789', 'expected' => false],
+            __LINE__ => ['country' => 'LU', 'vatregno' => 'LU12345678', 'expected' => true],
+            __LINE__ => ['country' => 'LU', 'vatregno' => 'LU123', 'expected' => false],
+            __LINE__ => ['country' => 'LU', 'vatregno' => 'LU123456789', 'expected' => false],
+            __LINE__ => ['country' => 'LU', 'vatregno' => 'LU123ABG', 'expected' => false],
+            __LINE__ => ['country' => 'BE', 'vatregno' => 'BE1234567890', 'expected' => true],
+            __LINE__ => ['country' => 'BE', 'vatregno' => 'BE12345', 'expected' => false],
+            __LINE__ => ['country' => 'BE', 'vatregno' => 'BE12ABG', 'expected' => false],
+            __LINE__ => ['country' => 'NL', 'vatregno' => 'NL123ABG456z', 'expected' => true],
+            __LINE__ => ['country' => 'NL', 'vatregno' => 'NL123ABG', 'expected' => false],
+            __LINE__ => ['country' => 'NL', 'vatregno' => 'NL123456ASDFGH', 'expected' => false],
+            __LINE__ => ['country' => 'DK', 'vatregno' => 'DK12 34 56 78', 'expected' => true],
+            __LINE__ => ['country' => 'DK', 'vatregno' => 'DK12 34 56 78 90', 'expected' => false],
+            __LINE__ => ['country' => 'DK', 'vatregno' => 'DK12345678', 'expected' => false],
+            __LINE__ => ['country' => 'DK', 'vatregno' => 'DKAB CD EF GH', 'expected' => false],
+            __LINE__ => ['country' => 'CZ', 'vatregno' => 'CZ12345678', 'expected' => true],
+            __LINE__ => ['country' => 'cz', 'vatregno' => 'CZ123456789', 'expected' => true],
+            __LINE__ => ['country' => 'CZ', 'vatregno' => 'CZ1234567890', 'expected' => true],
+            __LINE__ => ['country' => 'CZ', 'vatregno' => 'CZ12345', 'expected' => false],
+            __LINE__ => ['country' => 'CZ', 'vatregno' => 'CZ123456ASDFGH', 'expected' => false],
+            __LINE__ => ['country' => 'AT', 'vatregno' => 'ATU123ABG4z', 'expected' => true],
+            __LINE__ => ['country' => 'AT', 'vatregno' => 'ATU123ABG', 'expected' => false],
+            __LINE__ => ['country' => 'AT', 'vatregno' => 'ATU123456ASDFGH', 'expected' => false],
+        ];
     }
 }
 

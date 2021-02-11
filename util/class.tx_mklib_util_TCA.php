@@ -43,7 +43,7 @@ class tx_mklib_util_TCA
      *
      * @var array
      */
-    private static $tcaAdditionsLoaded = array();
+    private static $tcaAdditionsLoaded = [];
 
     /**
      * Get DAM TCA for ONE file.
@@ -61,10 +61,10 @@ class tx_mklib_util_TCA
      *
      * @return array
      */
-    public static function getDamMediaTCA($ref, $options = array())
+    public static function getDamMediaTCA($ref, $options = [])
     {
         if (!is_array($options)) {
-            $options = array('type' => $options);
+            $options = ['type' => $options];
         }
         $tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, isset($options['type']) ? $options['type'] : 'image_field');
         unset($options['type']);
@@ -72,7 +72,7 @@ class tx_mklib_util_TCA
             foreach ($options as $key => $option) {
                 if (is_array($option)) {
                     if (!isset($tca[$key])) {
-                        $tca[$key] = array();
+                        $tca[$key] = [];
                     }
                     foreach ($option as $subkey => $suboption) {
                         $tca[$key][$subkey] = $suboption;
@@ -94,7 +94,7 @@ class tx_mklib_util_TCA
      *
      * @return array
      */
-    public static function getDamMediaTCAOnePic($ref, $options = array())
+    public static function getDamMediaTCAOnePic($ref, $options = [])
     {
         $options['type'] = 'image_field';
         $options['config']['maxitems'] = 1;
@@ -109,7 +109,7 @@ class tx_mklib_util_TCA
             foreach ($options as $key => $option) {
                 if (is_array($option)) {
                     if (!isset($tca[$key])) {
-                        $tca[$key] = array();
+                        $tca[$key] = [];
                     }
                     foreach ($option as $subkey => $suboption) {
                         $tca[$key][$subkey] = $suboption;
@@ -131,7 +131,7 @@ class tx_mklib_util_TCA
      *
      * @return array
      */
-    public static function getDamMediaTCAOneFile($ref, $options = array())
+    public static function getDamMediaTCAOneFile($ref, $options = [])
     {
         $options['type'] = 'media_field';
         $options['config']['maxitems'] = 1;
@@ -146,7 +146,7 @@ class tx_mklib_util_TCA
             foreach ($options as $key => $option) {
                 if (is_array($option)) {
                     if (!isset($tca[$key])) {
-                        $tca[$key] = array();
+                        $tca[$key] = [];
                     }
                     foreach ($option as $subkey => $suboption) {
                         $tca[$key][$subkey] = $suboption;
@@ -194,7 +194,7 @@ class tx_mklib_util_TCA
 
         return tx_mklib_util_Array::removeNotIn(
             $data,
-            empty($TCA[$table]['columns']) ? array() : array_keys($TCA[$table]['columns'])
+            empty($TCA[$table]['columns']) ? [] : array_keys($TCA[$table]['columns'])
         );
     }
 
@@ -219,13 +219,10 @@ class tx_mklib_util_TCA
             'enablecolumns',
             // wenn ein defaultwert definiert ist,
             // wollen wir als fallback immer ein array!
-            null === $default ? null : array()
+            null === $default ? null : []
         );
         if (!(is_array($fields) && isset($fields[$column])) && null === $default) {
-            throw new LogicException(
-                'The enablecolumn "'.$column.'" does not exists in TCA for for table "'.$tableName.'".',
-                intval(ERROR_CODE_MKLIB. 3002)
-            );
+            throw new LogicException('The enablecolumn "'.$column.'" does not exists in TCA for for table "'.$tableName.'".', intval(ERROR_CODE_MKLIB. 3002));
         }
 
         return isset($fields[$column]) ? $fields[$column] : $default;
@@ -246,10 +243,7 @@ class tx_mklib_util_TCA
             if (null !== $default) {
                 return $default;
             }
-            throw new LogicException(
-                'The table "'.$tableName.'" not found in TCA!',
-                intval(ERROR_CODE_MKLIB. 3001)
-            );
+            throw new LogicException('The table "'.$tableName.'" not found in TCA!', intval(ERROR_CODE_MKLIB. 3001));
         }
 
         return isset($TCA[$tableName]['ctrl'][$field]) ? $TCA[$tableName]['ctrl'][$field] : $default;
@@ -336,7 +330,7 @@ class tx_mklib_util_TCA
      *
      * @deprecated use Tx_Rnbase_Utility_TcaTool::getWizards
      */
-    public static function getWizards($sTable, array $options = array())
+    public static function getWizards($sTable, array $options = [])
     {
         return Tx_Rnbase_Utility_TcaTool::getWizards($sTable, $options);
     }
@@ -362,7 +356,7 @@ class tx_mklib_util_TCA
      */
     private static function getQueryParametersFromReturnUrl()
     {
-        $parsedQueryParameters = array();
+        $parsedQueryParameters = [];
 
         if (($returnUrl = tx_rnbase_parameters::getPostOrGetParameter('returnUrl')) &&
             ($parsedUrl = parse_url($returnUrl)) &&
@@ -419,20 +413,20 @@ class tx_mklib_util_TCA
      */
     public static function getGermanStatesField($isRequired = false)
     {
-        $tcaFieldConfig = array(
+        $tcaFieldConfig = [
             'exclude' => 1,
             'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:mklib/locallang_db.xml:please_choose', ''],
+                ],
                 'foreign_table' => 'static_country_zones',
                 'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
                 'size' => 1,
-            ),
-        );
+            ],
+        ];
 
         if ($isRequired) {
             $tcaFieldConfig['config']['minitems'] = 1;
@@ -451,7 +445,7 @@ class tx_mklib_util_TCA
      *
      * @return array
      */
-    public static function getMediaTCA($ref, $options = array())
+    public static function getMediaTCA($ref, $options = [])
     {
         // in DAM wurde immer noch _field beim Typ verlangt, bei FAL nicht mehr
         if (isset($options['type'])) {

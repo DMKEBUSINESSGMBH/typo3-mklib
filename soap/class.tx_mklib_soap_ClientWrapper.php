@@ -47,11 +47,11 @@ class tx_mklib_soap_ClientWrapper
      *
      * @throws RuntimeException
      */
-    public function callSoapMethod($method, array $args = array())
+    public function callSoapMethod($method, array $args = [])
     {
         try {
             $methodResult = call_user_func_array(
-                array($this->getSoapClient(), $method),
+                [$this->getSoapClient(), $method],
                 $args
             );
         } catch (Exception $exception) {
@@ -71,14 +71,14 @@ class tx_mklib_soap_ClientWrapper
     {
         return new SoapClient(
             $this->getUrl(),
-            array(
+            [
                 'location' => $this->getUrl(),
                 'uri' => '',
                 'soap_version' => $this->soapVersion,
                 'trace' => 1,
                 'exceptions' => 1,
                 'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP,
-            )
+            ]
         );
     }
 
@@ -88,7 +88,7 @@ class tx_mklib_soap_ClientWrapper
      *
      * @throws RuntimeException
      */
-    protected function handleException(Exception $exception, array $args = array())
+    protected function handleException(Exception $exception, array $args = [])
     {
         $this->logException($exception, $args);
         $this->throwRuntimeException($exception);
@@ -98,7 +98,7 @@ class tx_mklib_soap_ClientWrapper
      * @param Exception $exception
      * @param array     $args
      */
-    protected function logException(Exception $exception, array $args = array())
+    protected function logException(Exception $exception, array $args = [])
     {
         $soapClient = $this->getSoapClient();
 
@@ -106,13 +106,13 @@ class tx_mklib_soap_ClientWrapper
             tx_rnbase_util_Logger::fatal(
                 'Access to Soap Interface failed: '.$exception->getMessage(),
                 'mklib',
-                array(
+                [
                     'Fehler',
                     'functions' => $soapClient->__getFunctions(),
                     'response' => $soapClient->__getLastResponse(),
                     'request' => $soapClient->__getLastRequest(),
                     'args' => $args,
-                )
+                ]
             );
         } else {
             tx_rnbase_util_Logger::fatal('Soap Client was not instanciated!', 'mklib');
@@ -134,11 +134,7 @@ class tx_mklib_soap_ClientWrapper
         // Der ErrorCode eine SOAP-Fault kann auch ein String sein.
         $errorCode = intval($errorCode) == $errorCode ? intval($errorCode) : -1;
 
-        throw new RuntimeException(
-            $exception->getMessage(),
-            $errorCode,
-            $exception
-        );
+        throw new RuntimeException($exception->getMessage(), $errorCode, $exception);
     }
 
     /**

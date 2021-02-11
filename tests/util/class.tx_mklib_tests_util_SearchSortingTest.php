@@ -34,10 +34,10 @@
 class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
 {
     private static $test = false;
-    public static $data = array(
+    public static $data = [
                 'tableAliases' => '', 'joinedFields' => '',
                 'customFields' => '', 'options' => '',
-            );
+            ];
 
     public static function registerSortingAliases(array $tableAliases)
     {
@@ -74,13 +74,13 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
  */
 class tx_mklib_tests_util_SearchSortingTest extends tx_rnbase_tests_BaseTestCase
 {
-    private static $hooks = array();
+    private static $hooks = [];
 
     public function setUp()
     {
         // alle vorherigen hooks löschen
         self::$hooks = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'] = array();
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'] = [];
         unset($GLOBALS['T3_VAR']['callUserFunction']['&tx_mklib_util_testSearchSorting->handleTableMapping']);
         unset($GLOBALS['T3_VAR']['callUserFunction']['&tx_mklib_util_SearchSorting->handleTableMapping']);
     }
@@ -95,9 +95,9 @@ class tx_mklib_tests_util_SearchSortingTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testRegisterHook()
     {
-        self::markTestIncomplete("InvalidArgumentException: No class named &tx_mklib_util_testSearchSorting");
+        self::markTestIncomplete('InvalidArgumentException: No class named &tx_mklib_util_testSearchSorting');
 
-        tx_mklib_util_testSearchSorting::registerSortingAliases(array('TESTALIAS'));
+        tx_mklib_util_testSearchSorting::registerSortingAliases(['TESTALIAS']);
         $isHook = tx_mklib_util_testSearchSorting::callHook(true);
         self::assertTrue($isHook, 'Der Hook wurde nicht richtig registriert oder aufgerufen.');
     }
@@ -107,23 +107,23 @@ class tx_mklib_tests_util_SearchSortingTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testAddSorting()
     {
-        self::markTestIncomplete("InvalidArgumentException: No class named &tx_mklib_util_testSearchSorting");
+        self::markTestIncomplete('InvalidArgumentException: No class named &tx_mklib_util_testSearchSorting');
 
-        $tableAliases = array('TESTALIAS' => array(), 'ALIAS3' => array(), 'ALIAS4' => array());
-        $options = array();
-        $tableMappings = array(
+        $tableAliases = ['TESTALIAS' => [], 'ALIAS3' => [], 'ALIAS4' => []];
+        $options = [];
+        $tableMappings = [
             'table1' => 'ALIAS4',
-        );
-        tx_mklib_util_testSearchSorting::$data = array(
+        ];
+        tx_mklib_util_testSearchSorting::$data = [
                 'tableAliases' => &$tableAliases, 'joinedFields' => '',
                 'customFields' => '', 'options' => &$options,
                 'tableMappings' => $tableMappings,
-            );
+            ];
         tx_mklib_util_testSearchSorting::registerSortingAliases(
-            array(
+            [
                 'TESTALIAS', 'ALIAS2', 'ALIAS3' => 'title',
                 'ALIAS4.table1' => 'sorting', 'ALIAS4.table2' => 'sorting2',
-            )
+            ]
         );
         tx_mklib_util_testSearchSorting::callHook();
 

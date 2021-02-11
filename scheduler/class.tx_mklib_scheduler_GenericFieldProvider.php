@@ -79,7 +79,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
         $this->task = &$task;
         $this->schedulerModule = &$schedulerModule;
 
-        $additionalFields = array();
+        $additionalFields = [];
         foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
             // Initialize extra field value
             if (empty($taskInfo[$sKey])) {
@@ -88,7 +88,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
                 if ('edit' == $action) {
                     // In case of edit, and editing a test task, set to internal value if not data was submitted already
                     $taskInfo[$sKey] = $task->getOption($sKey);
-                } else /*if ($parentObject->CMD == 'add') */{
+                } else /*if ($parentObject->CMD == 'add') */ {
                     // In case of new task and if field is empty, set default.
                     $taskInfo[$sKey] = $aOptions['default'];
                 }
@@ -112,12 +112,12 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
                     $fieldCode = '<input type="text" name="tx_scheduler['.$sKey.']" id="'.$fieldID.'" value="'.$taskInfo[$sKey].'" size="30" />';
                     break;
             }
-            $additionalFields[$fieldID] = array(
+            $additionalFields[$fieldID] = [
                     'code' => $fieldCode,
                     'label' => $aOptions['label'] ? $aOptions['label'] : $sKey,
                     'cshKey' => $aOptions['cshKey'] ? $aOptions['cshKey'] : 'tx_mklib_scheduler_cleanupTempFiles',
                     'cshLabel' => ($aOptions['cshLabel'] ? $aOptions['cshLabel'] : $sKey).'_csh',
-            );
+            ];
         }
 
         return $additionalFields;

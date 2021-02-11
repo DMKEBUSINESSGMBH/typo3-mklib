@@ -36,11 +36,11 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     /**
      * @var array
      */
-    private $options = array(
+    private $options = [
         'table' => 'someTable',
         'where' => 'someWhereClause',
         'mode' => Tx_Mklib_Database_Connection::DELETION_MODE_HIDE,
-    );
+    ];
 
     /**
      * (non-PHPdoc).
@@ -58,7 +58,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     public function testGetDatabaseConnection()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         self::assertInstanceOf(
@@ -77,7 +77,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     public function testExecuteCallsDoSelectOnDatabaseUtilityCorrect()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         $databaseConnection = $this->getDatabaseConnectionMock();
@@ -88,10 +88,10 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
             ->with(
                 'uid',
                 $this->options['table'],
-                array(
+                [
                     'where' => $this->options['where'], 'enablefieldsoff' => true,
-                    'callback' => array($scheduler, 'deleteRow'),
-                )
+                    'callback' => [$scheduler, 'deleteRow'],
+                ]
             );
 
         $scheduler->execute();
@@ -103,7 +103,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     public function testExecuteCallsDoSelectOnDatabaseUtilityCorrectIfSelectFieldsConfigured()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         $databaseConnection = $this->getDatabaseConnectionMock();
@@ -115,10 +115,10 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
             ->with(
                 $this->options['selectFields'].',uid',
                 $this->options['table'],
-                array(
+                [
                     'where' => $this->options['where'], 'enablefieldsoff' => true,
-                    'callback' => array($scheduler, 'deleteRow'),
-                )
+                    'callback' => [$scheduler, 'deleteRow'],
+                ]
             );
 
         $scheduler->execute();
@@ -130,10 +130,10 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrect()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
-        $databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr'));
+        $databaseConnection = $this->getDatabaseConnectionMock(['fullQuoteStr']);
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
@@ -148,7 +148,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
             );
 
         $scheduler = $this->getSchedulerByDbUtil($databaseConnection);
-        $row = array('uid' => 123);
+        $row = ['uid' => 123];
         $scheduler->deleteRow($row);
     }
 
@@ -158,11 +158,11 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     public function testDeleteRowCallsDeleteOnDatabaseUtilityCorrectWhenSelectFieldsDifferentToUid()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         $this->options['uidField'] = 'otherField';
-        $databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr'));
+        $databaseConnection = $this->getDatabaseConnectionMock(['fullQuoteStr']);
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
@@ -176,7 +176,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
             );
 
         $scheduler = $this->getSchedulerByDbUtil($databaseConnection);
-        $row = array($this->options['uidField'] => 123);
+        $row = [$this->options['uidField'] => 123];
         $scheduler->deleteRow($row);
     }
 
@@ -186,18 +186,18 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     public function testDeleteRowSetsAffectedRowsPropertyCorrect()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
-        $databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr'));
+        $databaseConnection = $this->getDatabaseConnectionMock(['fullQuoteStr']);
         $databaseConnection->expects(self::exactly(2))
             ->method('fullQuoteStr')
             ->with(self::logicalOr('123', '456'))
             ->will(self::returnArgument(0));
         $scheduler = $this->getSchedulerByDbUtil($databaseConnection);
 
-        $scheduler->deleteRow(array('uid' => 123));
-        $scheduler->deleteRow(array('uid' => 456));
+        $scheduler->deleteRow(['uid' => 123]);
+        $scheduler->deleteRow(['uid' => 456]);
 
         $affectedRows = new ReflectionProperty(
             'tx_mklib_scheduler_DeleteFromDatabase',
@@ -206,7 +206,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
         $affectedRows->setAccessible(true);
 
         self::assertEquals(
-            array(array('uid' => 123), array('uid' => 456)),
+            [['uid' => 123], ['uid' => 456]],
             $affectedRows->getValue($scheduler),
             'affectedRows falsch gesetzt'
         );
@@ -218,7 +218,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     public function testExecuteTaskSetsDevLogCorrect()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         $databaseConnection = $this->getDatabaseConnectionMock();
@@ -229,23 +229,23 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
             'affectedRows'
         );
         $affectedRows->setAccessible(true);
-        $affectedRows->setValue($scheduler, array(array('uid' => 1), array('uid' => 2)));
+        $affectedRows->setValue($scheduler, [['uid' => 1], ['uid' => 2]]);
 
-        $devLog = array();
+        $devLog = [];
         $method = new ReflectionMethod('tx_mklib_scheduler_DeleteFromDatabase', 'executeTask');
         $method->setAccessible(true);
-        $method->invokeArgs($scheduler, array($this->options, &$devLog));
+        $method->invokeArgs($scheduler, [$this->options, &$devLog]);
 
-        $expectedDevLog = array(
-            tx_rnbase_util_Logger::LOGLEVEL_INFO => array(
+        $expectedDevLog = [
+            tx_rnbase_util_Logger::LOGLEVEL_INFO => [
                 'message' => '2 Datensätze wurden in '.
                                 'someTable mit der Bedingung '.
                                 'someWhereClause und dem Modus 0 entfernt',
-                'dataVar' => array(
-                    'betroffene Datensätze' => array(array('uid' => 1), array('uid' => 2)),
-                ),
-            ),
-        );
+                'dataVar' => [
+                    'betroffene Datensätze' => [['uid' => 1], ['uid' => 2]],
+                ],
+            ],
+        ];
 
         self::assertEquals(
             $expectedDevLog,
@@ -263,7 +263,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
     {
         $scheduler = $this->getMock(
             'tx_mklib_scheduler_DeleteFromDatabase',
-            array('getDatabaseConnection')
+            ['getDatabaseConnection']
         );
 
         $scheduler->expects(self::any())
@@ -279,13 +279,13 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
      * @return Tx_Mklib_Database_Connection
      */
     private function getDatabaseConnectionMock(
-        array $methods = array()
+        array $methods = []
     ) {
         return $this->getMock(
             'Tx_Mklib_Database_Connection',
             array_merge(
                 $methods,
-                array('doSelect', 'delete')
+                ['doSelect', 'delete']
             )
         );
     }

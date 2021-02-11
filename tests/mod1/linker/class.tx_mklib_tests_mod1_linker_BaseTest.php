@@ -31,7 +31,7 @@ class tx_mklib_tests_mod1_linker_BaseTest extends tx_rnbase_tests_BaseTestCase
 {
     public function testMakeLink()
     {
-        self::markTestIncomplete("Creating default object from empty value");
+        self::markTestIncomplete('Creating default object from empty value');
 
         //sprache auf default setzen damit wir die richtigen labels haben
         $GLOBALS['LANG']->lang = 'default';

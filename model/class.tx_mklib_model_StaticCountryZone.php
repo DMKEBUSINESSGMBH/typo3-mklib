@@ -8,7 +8,7 @@ class tx_mklib_model_StaticCountryZone extends tx_rnbase_model_base
     /**
      * @var array
      */
-    private static $instances = array();
+    private static $instances = [];
 
     /**
      * @param mixed $rowOrUid

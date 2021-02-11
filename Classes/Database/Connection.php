@@ -110,7 +110,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @return int UID of created record
      */
-    public function doInsert($tablename, $values, $debug = 0, array $options = array())
+    public function doInsert($tablename, $values, $debug = 0, array $options = [])
     {
         if ($options['eleminateNonTcaColumns']) {
             $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
@@ -137,7 +137,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @return int number of rows affected
      */
-    public function doUpdate($tablename, $where, $values, $debug = 0, $noQuoteFields = false, array $options = array())
+    public function doUpdate($tablename, $where, $values, $debug = 0, $noQuoteFields = false, array $options = [])
     {
         if ($options['eleminateNonTcaColumns']) {
             $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
@@ -198,7 +198,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @return bool
      */
-    public function doQuery($query, array $options = array())
+    public function doQuery($query, array $options = [])
     {
         return parent::doQuery($query);
     }
@@ -251,10 +251,10 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
             $this->mmGetData($sTable, $sField, $sLocalId, $iForeignId, true)
         );
 
-        $options = array(
+        $options = [
             'where' => $where,
             'enablefieldsoff' => true,
-        );
+        ];
 
         $ret = $this->doSelect('COUNT(*) as cnt', $sMmTable, $options);
 
@@ -273,7 +273,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      *
      * @return bool
      */
-    public function mmSelectForeign($sTable, $sField, $sLocalId, array $options = array())
+    public function mmSelectForeign($sTable, $sField, $sLocalId, array $options = [])
     {
         if (!$this->loadTCA($sTable)) {
             return false;
@@ -288,7 +288,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
 
         return $this->doSelect(
             $sForeignTable.'.*',
-            array($sJoin, $sForeignTable),
+            [$sJoin, $sForeignTable],
             $options
         );
     }
@@ -369,7 +369,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
         $sLocalField = isset($aFieldConfig['MM_opposite_field']) ? 'uid_foreign' : 'uid_local';
         $sForeignField = isset($aFieldConfig['MM_opposite_field']) ? 'uid_local' : 'uid_foreign';
 
-        $aData = is_array($aFieldConfig['MM_match_fields']) ? $aFieldConfig['MM_match_fields'] : array();
+        $aData = is_array($aFieldConfig['MM_match_fields']) ? $aFieldConfig['MM_match_fields'] : [];
         $aData = is_array($aFieldConfig['MM_insert_fields']) ? $aFieldConfig['MM_insert_fields'] : $aData;
         if ($sLocalId) {
             $aData[$sLocalField] = $sLocalId;
@@ -380,7 +380,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
 
         if ($bWhere) {
             // Anhand der Daten das WHERE aufbauen
-            $where = array();
+            $where = [];
             foreach ($aData as $sField => $sValue) {
                 $where[] = $sMmTable.'.'.$sField.' = '.Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($sValue, $sMmTable);
             }
@@ -447,7 +447,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
         // else
 
         // daten sammeln
-        $data = array();
+        $data = [];
         $data['fe_user'] = isset($GLOBALS['TSFE']->fe_user->user['uid']) ? $GLOBALS['TSFE']->fe_user->user['uid'] : 'none';
         $data['be_user'] = (array_key_exists('BE_USER', $GLOBALS) && is_object($GLOBALS['BE_USER'])) ? $GLOBALS['BE_USER']->user['uid'] : 'none';
         $data['tablename'] = $tablename;
@@ -500,13 +500,11 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
                 global $GLOBALS;
                 // Set hidden field according to $TCA
                 if (!isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
-                    throw new Exception(
-                        "Tx_Mklib_Database_Connection::delete(): Cannot hide records in table $table - no \$TCA entry found!"
-                    );
+                    throw new Exception("Tx_Mklib_Database_Connection::delete(): Cannot hide records in table $table - no \$TCA entry found!");
                 }
 
                 //else
-                $data = array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1);
+                $data = [$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1];
                 $affectedRows = $this->doUpdate($table, $where, $data);
                 break;
 
@@ -515,13 +513,11 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
                 global $GLOBALS;
                 // Set deleted field according to $TCA
                 if (!isset($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
-                    throw new Exception(
-                        "Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table $table - no \$TCA entry found!"
-                    );
+                    throw new Exception("Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table $table - no \$TCA entry found!");
                 }
 
                 //else
-                $data = array($GLOBALS['TCA'][$table]['ctrl']['delete'] => 1);
+                $data = [$GLOBALS['TCA'][$table]['ctrl']['delete'] => 1];
                 $affectedRows = $this->doUpdate($table, $where, $data);
                 break;
 

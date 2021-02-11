@@ -7,7 +7,7 @@
  */
 class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mklib_interface_IZipCountry
 {
-    private static $instances = array();
+    private static $instances = [];
 
     /**
      * @TODO: prüfen, ob die felder zipcode_rule, zipcode_length existieren!!!

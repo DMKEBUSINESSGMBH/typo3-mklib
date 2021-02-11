@@ -111,8 +111,8 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         // Fill marker array with data
         $ignore = self::findUnusedCols($item->record, $template, $marker);
         $markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId, $ignore, $marker.'_', $item->getColumnNames());
-        $wrappedSubpartArray = array();
-        $subpartArray = array();
+        $wrappedSubpartArray = [];
+        $subpartArray = [];
 
         $this->prepareLinks($item, $marker, $markerArray, $subpartArray, $wrappedSubpartArray, $confId, $formatter, $template);
 
@@ -227,7 +227,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
                 $token = self::getToken();
                 $linkObj = $configurations->createLink();
                 $linkObj->label($token);
-                $linkObj->initByTS($configurations, $confId.'link.', array());
+                $linkObj->initByTS($configurations, $confId.'link.', []);
                 $linkObj->destination($url);
                 // extTarget setzen, wenn im TS. rnbase macht das leider nicht.
                 if (($extTarget = $configurations->get($confId.'link.extTarget'))) {

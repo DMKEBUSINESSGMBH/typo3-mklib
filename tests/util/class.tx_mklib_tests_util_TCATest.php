@@ -65,13 +65,13 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
 
     public function testEleminateNonTcaColumns()
     {
-        $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array());
-        $data = array(
+        $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', []);
+        $data = [
             'blacklisted' => true,
             'whitelisted' => 0,
             'ich-muss-raus' => true,
             'ich-auch' => false,
-        );
+        ];
         $res = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
         self::assertEquals(2, count($res), 'falsche array größe');
         self::assertTrue($res['blacklisted'], 'blacklsited Feld ist nicht korrekt!');
@@ -82,12 +82,12 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
 
     public function testEleminateNonTcaColumnsByTable()
     {
-        $data = array(
+        $data = [
             'blacklisted' => true,
             'whitelisted' => 0,
             'ich-muss-raus' => true,
             'ich-auch' => false,
-        );
+        ];
         $res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('tx_mklib_wordlist', $data);
         self::assertEquals(2, count($res), 'falsche array größe');
         self::assertTrue($res['blacklisted'], 'blacklsited Feld ist nicht korrekt!');
@@ -124,7 +124,7 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetEnableColumnThrowsExceptionForNonExcitingColumn()
     {
-        $GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns'] = array();
+        $GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns'] = [];
         tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
     }
 
@@ -216,7 +216,7 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
     public function testCropLabelsWithDefaultLengthOf80CharsCorrect()
     {
         $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
-        $tcaTableInformation = array('items' => array(0 => array(0 => $labelWith81Chars)));
+        $tcaTableInformation = ['items' => [0 => [0 => $labelWith81Chars]]];
 
         tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
@@ -233,9 +233,9 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
      */
     public function testCropLabelsWithEmptyItems()
     {
-        self::markTestIncomplete("This test did not perform any assertions!");
+        self::markTestIncomplete('This test did not perform any assertions!');
 
-        $tcaTableInformation = array('items' => array());
+        $tcaTableInformation = ['items' => []];
         tx_mklib_util_TCA::cropLabels($tcaTableInformation);
         unset($tcaTableInformation['items']);
         tx_mklib_util_TCA::cropLabels($tcaTableInformation);
@@ -247,10 +247,10 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
     public function testCropLabelsWithConfiguredLengthOf40Chars()
     {
         $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
-        $tcaTableInformation = array(
-            'items' => array(0 => array(0 => $labelWith81Chars)),
-            'config' => array('labelLength' => 40),
-        );
+        $tcaTableInformation = [
+            'items' => [0 => [0 => $labelWith81Chars]],
+            'config' => ['labelLength' => 40],
+        ];
 
         tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
@@ -268,10 +268,10 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
     public function testCropLabelsUsesDefaultLengthIfConfiguredLengthIsNoIntegerGreaterThan0()
     {
         $labelWith81Chars = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmodss';
-        $tcaTableInformation = array(
-            'items' => array(0 => array(0 => $labelWith81Chars)),
-            'config' => array('labelLength' => 'test'),
-        );
+        $tcaTableInformation = [
+            'items' => [0 => [0 => $labelWith81Chars]],
+            'config' => ['labelLength' => 'test'],
+        ];
 
         tx_mklib_util_TCA::cropLabels($tcaTableInformation);
 
@@ -288,20 +288,20 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetGermanStatesFieldWithoutRequired()
     {
-        $expectedGermanStatesField = array(
+        $expectedGermanStatesField = [
             'exclude' => 1,
             'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:mklib/locallang_db.xml:please_choose', ''],
+                ],
                 'foreign_table' => 'static_country_zones',
                 'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
                 'size' => 1,
-            ),
-        );
+            ],
+        ];
 
         $germanStatesField = tx_mklib_util_TCA::getGermanStatesField();
 
@@ -317,23 +317,23 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetGermanStatesFieldWithRequired()
     {
-        $expectedGermanStatesField = array(
+        $expectedGermanStatesField = [
             'exclude' => 1,
             'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
-            'config' => array(
+            'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'items' => array(
-                    array('LLL:EXT:mklib/locallang_db.xml:please_choose', ''),
-                ),
+                'items' => [
+                    ['LLL:EXT:mklib/locallang_db.xml:please_choose', ''],
+                ],
                 'foreign_table' => 'static_country_zones',
                 'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
                 'size' => 1,
                 'minitems' => 1,
                 'maxitems' => 1,
                 'eval' => 'required',
-            ),
-        );
+            ],
+        ];
 
         $germanStatesField = tx_mklib_util_TCA::getGermanStatesField(true);
 

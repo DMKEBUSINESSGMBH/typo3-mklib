@@ -36,16 +36,16 @@ class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFi
      */
     protected function getAdditionalFieldConfig()
     {
-        return array(
+        return [
             // wir brauchen einen eindeutigen namen da es das email
             // feld schon im scheduler test task gibt. dieser überschreibt
             // dann unseren email wert da er später im quelltext auftaucht.
-            'mklibEmail' => array(
+            'mklibEmail' => [
                 'type' => 'input',
                 'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
                 'default' => $GLOBALS['BE_USER']->user['email'],
                 'eval' => 'email',
-            ),
-        );
+            ],
+        ];
     }
 }

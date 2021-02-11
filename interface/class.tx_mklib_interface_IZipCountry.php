@@ -39,14 +39,6 @@ interface tx_mklib_interface_IZipCountry
 
     /**
      * ID der Regel für die PLZ-Validierung.
-            1: maximum length without gaps
-            2: maximum length numerical without gaps
-            3: exact length without gaps
-            4: exact length numerical without gaps
-            5: maximum length with gaps
-            6: maximum length numerical with gaps
-            7: exact length with gaps
-            8: exact length numerical with gaps
             9: special rules
 
      * @return int 1-9

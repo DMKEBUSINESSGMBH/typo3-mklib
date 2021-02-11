@@ -32,7 +32,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
     /**
      * @var array
      */
-    private $affectedRows = array();
+    private $affectedRows = [];
 
     /**
      * (non-PHPdoc).
@@ -49,18 +49,18 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
         $databaseConnection->doSelect(
             $this->getSelectFields(),
             $table,
-            array(
+            [
                 'where' => $where, 'enablefieldsoff' => true,
-                'callback' => array($this, 'deleteRow'),
-            )
+                'callback' => [$this, 'deleteRow'],
+            ]
         );
 
-        $devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO] = array(
+        $devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO] = [
             'message' => count($this->affectedRows).' Datensätze wurden in '.
                             $table.' mit der Bedingung '.
                             $where.' und dem Modus '.$mode.' entfernt',
-            'dataVar' => array('betroffene Datensätze' => $this->affectedRows),
-        );
+            'dataVar' => ['betroffene Datensätze' => $this->affectedRows],
+        ];
     }
 
     /**

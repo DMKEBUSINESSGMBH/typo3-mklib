@@ -36,7 +36,7 @@ class tx_mklib_util_Debug
      *
      * @var array
      */
-    private static $aDebug = array();
+    private static $aDebug = [];
     /**
      * memory beim initialisieren.
      *
@@ -140,7 +140,7 @@ class tx_mklib_util_Debug
      * @param unknown_type $msg
      * @param array        $data
      */
-    public static function addDebug($msg, array $data = array())
+    public static function addDebug($msg, array $data = [])
     {
         $iMicroTime = microtime(true);
         $iMemory = memory_get_usage();
@@ -190,7 +190,7 @@ class tx_mklib_util_Debug
 
     public static function registerShutdownFunction()
     {
-        register_shutdown_function(array(get_class(), 'shutDown'));
+        register_shutdown_function([get_class(), 'shutDown']);
     }
 
     public static function shutDown()
@@ -203,7 +203,7 @@ class tx_mklib_util_Debug
 
     public static function registerErrorHandler()
     {
-        set_error_handler(array(get_class(), 'errorHandler'));
+        set_error_handler([get_class(), 'errorHandler']);
     }
 
     public static function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
@@ -212,7 +212,7 @@ class tx_mklib_util_Debug
         if (E_ERROR != $errno && false === strpos($errstr, 'Allowed memory')) {
             return true;
         }
-        self::addDebug($errstr, array('error' => array($errno, $errstr, $errfile, $errline)));
+        self::addDebug($errstr, ['error' => [$errno, $errstr, $errfile, $errline]]);
         self::debug();
 
         return false;

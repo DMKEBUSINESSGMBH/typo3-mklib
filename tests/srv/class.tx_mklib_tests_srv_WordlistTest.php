@@ -31,7 +31,6 @@
 /**
  * Generic form view test.
  *
- *
  * @group integration
  */
 class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
@@ -41,12 +40,12 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistIfNoResult()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('search'));
-        $fields = array('some fields');
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['search']);
+        $fields = ['some fields'];
         $wordlistSrv->expects(self::once())
             ->method('search')
-            ->with($fields, array())
-            ->will(self::returnValue(array()));
+            ->with($fields, [])
+            ->will(self::returnValue([]));
 
         self::assertNull($this->callInaccessibleMethod($wordlistSrv, 'getWordlist', $fields));
     }
@@ -56,15 +55,15 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistIfResult()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('search'));
-        $fields = array('some fields');
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['search']);
+        $fields = ['some fields'];
         $wordlistSrv->expects(self::once())
             ->method('search')
-            ->with($fields, array())
-            ->will(self::returnValue(array('result')));
+            ->with($fields, [])
+            ->will(self::returnValue(['result']));
 
         self::assertEquals(
-            array('result'),
+            ['result'],
             $this->callInaccessibleMethod($wordlistSrv, 'getWordlist', $fields)
         );
     }
@@ -76,7 +75,7 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistEntryByWordReturnsEmptyIfNoMatch()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['getWordlist']);
         $wordlistSrv->expects(self::once())
             ->method('getWordlist')
             ->will(self::returnValue($this->getTestWordlist()));
@@ -93,7 +92,7 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistEntryByWordReturnsMatches()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['getWordlist']);
         $wordlistSrv->expects(self::exactly(2))
             ->method('getWordlist')
             ->will(self::returnValue($this->getTestWordlist()));
@@ -116,7 +115,7 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistEntryByWordReturns1MatchIfInNoneGreedyMode()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['getWordlist']);
         $wordlistSrv->expects(self::exactly(2))
             ->method('getWordlist')
             ->will(self::returnValue($this->getTestWordlist()));
@@ -134,7 +133,7 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistEntryByWordReturnsMatchWithComplexString()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['getWordlist']);
         $wordlistSrv->expects(self::once())
             ->method('getWordlist')
             ->will(self::returnValue($this->getTestWordlist()));
@@ -151,7 +150,7 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistEntryByBlacklistedWordReturnsCorrectData()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['getWordlist']);
         $testWordList = $this->getTestWordlist();
         foreach ($testWordList as $index => $entry) {
             if (!$entry->getBlacklisted()) {
@@ -160,10 +159,10 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
         }
         $wordlistSrv->expects(self::exactly(2))
             ->method('getWordlist')
-            ->with(array(
-                'WORDLIST.blacklisted' => array(OP_EQ_INT => 1),
-                'WORDLIST.whitelisted' => array(OP_EQ_INT => 0),
-            ))
+            ->with([
+                'WORDLIST.blacklisted' => [OP_EQ_INT => 1],
+                'WORDLIST.whitelisted' => [OP_EQ_INT => 0],
+            ])
             ->will(self::returnValue($testWordList));
 
         $ret = $wordlistSrv->getBlacklistEntryByWord('fuck shit ass');
@@ -188,7 +187,7 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWordlistEntryByWhitelistedWordReturnsCorrectData()
     {
-        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', array('getWordlist'));
+        $wordlistSrv = $this->getMock('tx_mklib_srv_Wordlist', ['getWordlist']);
         $testWordList = $this->getTestWordlist();
         foreach ($testWordList as $index => $entry) {
             if (!$entry->getWhitelisted()) {
@@ -197,10 +196,10 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
         }
         $wordlistSrv->expects(self::once())
             ->method('getWordlist')
-            ->with(array(
-                'WORDLIST.blacklisted' => array(OP_EQ_INT => 0),
-                'WORDLIST.whitelisted' => array(OP_EQ_INT => 1),
-            ))
+            ->with([
+                'WORDLIST.blacklisted' => [OP_EQ_INT => 0],
+                'WORDLIST.whitelisted' => [OP_EQ_INT => 1],
+            ])
             ->will(self::returnValue($testWordList));
 
         $ret = $wordlistSrv->getWhitelistEntryByWord('nice');
@@ -214,28 +213,28 @@ class tx_mklib_tests_srv_WordlistTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function getTestWordlist()
     {
-        return array(
+        return [
             0 => tx_rnbase::makeInstance(
                 'tx_mklib_model_WordlistEntry',
-                array('uid' => 1, 'word' => 'some')
+                ['uid' => 1, 'word' => 'some']
             ),
             1 => tx_rnbase::makeInstance(
                 'tx_mklib_model_WordlistEntry',
-                array('uid' => 2, 'word' => 'fuck,ass', 'blacklisted' => 1)
+                ['uid' => 2, 'word' => 'fuck,ass', 'blacklisted' => 1]
             ),
             2 => tx_rnbase::makeInstance(
                 'tx_mklib_model_WordlistEntry',
-                array('uid' => 3, 'word' => 'nice', 'whitelisted' => 1)
+                ['uid' => 3, 'word' => 'nice', 'whitelisted' => 1]
             ),
             3 => tx_rnbase::makeInstance(
                 'tx_mklib_model_WordlistEntry',
-                array('uid' => 4, 'word' => 'bla,blub', 'whitelisted' => 1)
+                ['uid' => 4, 'word' => 'bla,blub', 'whitelisted' => 1]
             ),
             4 => tx_rnbase::makeInstance(
                 'tx_mklib_model_WordlistEntry',
-                array('uid' => 5, 'word' => 'shit', 'blacklisted' => 1)
+                ['uid' => 5, 'word' => 'shit', 'blacklisted' => 1]
             ),
-        );
+        ];
     }
 }
 

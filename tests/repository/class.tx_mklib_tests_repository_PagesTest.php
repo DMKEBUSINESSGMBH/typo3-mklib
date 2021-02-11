@@ -39,7 +39,7 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
         );
         $repo = $this->getMock(
             'tx_mklib_repository_Pages',
-            array('getSearcher')
+            ['getSearcher']
         );
 
         $repo
@@ -52,7 +52,6 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test the getSearchClass method.
-     *
      *
      * @group unit
      * @test
@@ -70,7 +69,6 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test the getEmptyModel method.
-     *
      *
      * @group unit
      * @test
@@ -94,13 +92,12 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test the getChildren method.
      *
-     *
      * @group unit
      * @test
      */
     public function testGetChildren()
     {
-        self::markTestIncomplete("Database tests are no longer supported. Please switch to functional tests");
+        self::markTestIncomplete('Database tests are no longer supported. Please switch to functional tests');
 
         $repo = $this->getRepository();
         $searcher = $this->callInaccessibleMethod(
@@ -139,16 +136,15 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
                     }
                 )
             )
-            ->will(self::returnValue(array()));
+            ->will(self::returnValue([]));
 
-        $page = $this->getModel(array('uid' => 57), 'tx_mklib_model_Page');
+        $page = $this->getModel(['uid' => 57], 'tx_mklib_model_Page');
 
         self::assertTrue(is_array($repo->getChildren($page)));
     }
 
     /**
      * Test the getSearchdef method.
-     *
      *
      * @group unit
      * @test
@@ -172,25 +168,24 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test the search method.
      *
-     *
      * @group unit
      * @test
      */
     public function testSearchWithDefSearcher()
     {
-        self::markTestIncomplete("Database tests are no longer supported. Please switch to functional tests");
+        self::markTestIncomplete('Database tests are no longer supported. Please switch to functional tests');
 
-        $fields = $options = array();
+        $fields = $options = [];
         $fields['NEWALIAS.uid'][OP_EQ] = 57;
         $options['sqlonly'] = true;
-        $options['searchdef'] = array(
-            'alias' => array(
-                'NEWALIAS' => array(
+        $options['searchdef'] = [
+            'alias' => [
+                'NEWALIAS' => [
                     'table' => 'tx_new_table',
                     'join' => 'JOIN tx_new_table AS NEWALIAS ON PAGES.new_field = NEWALIAS.uid',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $repo = $this->getRepository();
         $searcher = $this->callInaccessibleMethod(
@@ -236,7 +231,7 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
                     }
                 )
             )
-            ->will(self::returnValue(array()));
+            ->will(self::returnValue([]));
 
         self::assertTrue(is_array($repo->search($fields, $options)));
     }

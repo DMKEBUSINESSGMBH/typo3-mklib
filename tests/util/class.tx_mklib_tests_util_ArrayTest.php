@@ -39,7 +39,7 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testRemoveEmptyValues()
     {
-        $aArray = array('ich', 'bin', 1, '', 0, null, 'Array' => array(), 'Test', true, false);
+        $aArray = ['ich', 'bin', 1, '', 0, null, 'Array' => [], 'Test', true, false];
         $aNoEmptyValues = tx_mklib_util_Array::removeEmptyValues($aArray);
 
         self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
@@ -48,7 +48,7 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals('ich', $aNoEmptyValues[0], '1. wert falsch');
         self::assertEquals('bin', $aNoEmptyValues[1], '2. wert falsch');
         self::assertEquals(1, $aNoEmptyValues[2], '3. wert falsch');
-        self::assertEquals(array(), $aNoEmptyValues['Array'], '4. wert falsch');
+        self::assertEquals([], $aNoEmptyValues['Array'], '4. wert falsch');
         self::assertEquals('Test', $aNoEmptyValues[6], '5. wert falsch');
         self::assertEquals(true, $aNoEmptyValues[7], '6. wert falsch');
     }
@@ -59,7 +59,7 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testRemoveEmptyArrayValuesSimple()
     {
-        $aArray = array('ich', 'bin', 1, '', 0, null, 'Array' => array(), 'Test', true, false);
+        $aArray = ['ich', 'bin', 1, '', 0, null, 'Array' => [], 'Test', true, false];
         $aNoEmptyValues = tx_mklib_util_Array::removeEmptyArrayValuesSimple($aArray);
 
         self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
@@ -74,11 +74,11 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
 
     public function testFieldsToArray()
     {
-        $aArray = array(
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 2, 'name' => 'Model Nr. 2')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5, 'name' => 'Model Nr. 5')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 6, 'name' => 'Model Nr. 6')),
-                    );
+        $aArray = [
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 2, 'name' => 'Model Nr. 2']),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 6, 'name' => 'Model Nr. 6']),
+                    ];
         $aFields = tx_mklib_util_Array::fieldsToArray($aArray, 'name');
         self::assertTrue(is_array($aFields), 'No array given.');
         self::assertEquals(count($aFields), 3, 'Array has a wrong count of entries.');
@@ -89,7 +89,7 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
 
     public function testinArray()
     {
-        $aArray = array('wert1' => 1, 'zwei', 3, 'wert4' => 'vier', '5');
+        $aArray = ['wert1' => 1, 'zwei', 3, 'wert4' => 'vier', '5'];
 
         self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray), '1 wurde nicht gefunden.');
         self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray, true), '1 wurde nicht gefunden.');
@@ -108,17 +108,17 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
         self::assertTrue(tx_mklib_util_Array::inArray(5, $aArray), '5 wurde nicht gefunden.');
         self::assertFalse(tx_mklib_util_Array::inArray(5, $aArray, true), '5 wurde gefunden.');
 
-        self::assertTrue(tx_mklib_util_Array::inArray(array('zwei', 5), $aArray), 'zwei oder 5 wurde nicht gefunden.');
-        self::assertFalse(tx_mklib_util_Array::inArray(array('3', 5), $aArray, true), '3 oder 5 wurde gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray(['zwei', 5], $aArray), 'zwei oder 5 wurde nicht gefunden.');
+        self::assertFalse(tx_mklib_util_Array::inArray(['3', 5], $aArray, true), '3 oder 5 wurde gefunden.');
     }
 
     public function testFieldsToString()
     {
-        $aArray = array(
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 2, 'name' => 'Model Nr. 2')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5, 'name' => 'Model Nr. 5')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 6, 'name' => 'Model Nr. 6')),
-                    );
+        $aArray = [
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 2, 'name' => 'Model Nr. 2']),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 6, 'name' => 'Model Nr. 6']),
+                    ];
         $sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
 
         self::assertTrue(is_string($sFields), 'No string given.');

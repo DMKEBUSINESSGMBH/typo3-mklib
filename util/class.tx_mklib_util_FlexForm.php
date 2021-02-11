@@ -32,7 +32,7 @@ class tx_mklib_util_FlexForm
     /**
      * @var array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * @param string $flexForm
@@ -53,7 +53,7 @@ class tx_mklib_util_FlexForm
     public function __construct($flexForm)
     {
         $flex = $this->xml2array($flexForm);
-        $this->data = empty($flex['data']) ? array() : $flex['data'];
+        $this->data = empty($flex['data']) ? [] : $flex['data'];
     }
 
     /**

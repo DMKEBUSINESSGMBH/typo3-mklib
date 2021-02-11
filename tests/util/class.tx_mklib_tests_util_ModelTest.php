@@ -39,7 +39,7 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testSplitTextIntoTitleAndRest()
     {
-        $aRecord = array('text' => 'ein ganz langer text mit vielen worten', 'htmltext' => 'ein <span> ganz </span> langer text mit vielen worten');
+        $aRecord = ['text' => 'ein ganz langer text mit vielen worten', 'htmltext' => 'ein <span> ganz </span> langer text mit vielen worten'];
         $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', $aRecord);
         tx_mklib_util_Model::splitTextIntoTitleAndRest($model, 'text', 2);
 
@@ -68,11 +68,11 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetShortenedText()
     {
-        $aRecord = array(
+        $aRecord = [
             'othertext' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
             'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
             'htmltext' => 'ein ganz langer text mit vielen worten und <span>noch viel viel</span> viel viel mehr',
-        );
+        ];
         $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', $aRecord);
         tx_mklib_util_Model::getShortenedText($model, 'othertext', 50);
         self::assertEquals('ein ganz langer text mit vielen worten und noch viel', $model->record['othertextshortened'], 'field:othertextshortened nicht korrekt');
@@ -92,12 +92,12 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
 
     public function testUniqueModelArray()
     {
-        $aArray = array(
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5, 'name' => 'Model Nr. 5')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 6, 'name' => 'Model Nr. 6')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 5, 'name' => 'Model Nr. 5')),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', array('uid' => 2, 'name' => 'Model Nr. 2')),
-                    );
+        $aArray = [
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 6, 'name' => 'Model Nr. 6']),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 2, 'name' => 'Model Nr. 2']),
+                    ];
         $aUnique = tx_mklib_util_Model::uniqueModels($aArray);
         self::assertTrue(is_array($aUnique), 'No array given.');
         self::assertEquals(count($aUnique), 3, 'Array has a wrong count of entries.');

@@ -150,7 +150,7 @@ class tx_mklib_util_Session
     {
         $GLOBALS['TSFE']->fe_user->id = $sessionId;
         //sonst werden die Session Daten nicht neu geholt
-        $GLOBALS['TSFE']->fe_user->sesData = array();
+        $GLOBALS['TSFE']->fe_user->sesData = [];
         $GLOBALS['TSFE']->fe_user->fetchUserSession();
     }
 }

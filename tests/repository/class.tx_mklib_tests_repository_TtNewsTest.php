@@ -53,7 +53,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
         );
         $repo = $this->getMock(
             'tx_mklib_repository_TtNews',
-            array('getSearcher')
+            ['getSearcher']
         );
 
         $repo
@@ -66,7 +66,6 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test the getSearchClass method.
-     *
      *
      * @group unit
      * @test
@@ -84,7 +83,6 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
 
     /**
      * Test the getEmptyModel method.
-     *
      *
      * @group unit
      * @test
@@ -108,7 +106,6 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test the getSearchdef method.
      *
-     *
      * @group unit
      * @test
      */
@@ -131,23 +128,22 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
     /**
      * Test the search method.
      *
-     *
      * @group unit
      * @test
      */
     public function testSearchWithGivenSearchDefinition()
     {
-        $fields = $options = array();
+        $fields = $options = [];
         $fields['NEWALIAS.uid'][OP_EQ] = 57;
         $options['sqlonly'] = true;
-        $options['searchdef'] = array(
-            'alias' => array(
-                'NEWALIAS' => array(
+        $options['searchdef'] = [
+            'alias' => [
+                'NEWALIAS' => [
                     'table' => 'tx_new_table',
                     'join' => 'JOIN tx_new_table AS NEWALIAS ON NEWS.new_field = NEWALIAS.uid',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $repo = $this->getRepository();
         $searcher = $this->callInaccessibleMethod(
@@ -193,7 +189,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
                     }
                 )
             )
-            ->will(self::returnValue(array()));
+            ->will(self::returnValue([]));
 
         self::assertTrue(is_array($repo->search($fields, $options)));
     }
@@ -204,7 +200,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testSearch()
     {
-        $fields = $options = array();
+        $fields = $options = [];
         $fields['NEWS.uid'][OP_EQ] = 57;
 
         $repo = $this->getRepository();
@@ -239,9 +235,9 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
                     }
                 )
             )
-            ->will(self::returnValue(array('test')));
+            ->will(self::returnValue(['test']));
 
-        self::assertEquals(array('test'), $repo->search($fields, $options));
+        self::assertEquals(['test'], $repo->search($fields, $options));
     }
 
     /**
@@ -250,7 +246,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testSearchSingle()
     {
-        $fields = $options = array();
+        $fields = $options = [];
         $fields['NEWS.uid'][OP_EQ] = 57;
 
         $repo = $this->getRepository();
@@ -285,7 +281,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
                     }
                 )
             )
-            ->will(self::returnValue(array(0 => 'test')));
+            ->will(self::returnValue([0 => 'test']));
 
         self::assertEquals('test', $repo->searchSingle($fields, $options));
     }

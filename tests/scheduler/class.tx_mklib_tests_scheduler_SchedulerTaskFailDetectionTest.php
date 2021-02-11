@@ -42,10 +42,10 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
     /**
      * @var array
      */
-    private $options = array(
+    private $options = [
         'failDetectionRememberAfter' => 3600,
         'failDetectionReceiver' => 'dev@dmk-ebusiness.de',
-    );
+    ];
 
     /**
      * (non-PHPdoc).
@@ -57,7 +57,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
         \DMK\Mklib\Utility\Tests::disableDevlog();
         $this->languageBackup = $GLOBALS['LANG']->lang;
 
-        self::markTestIncomplete("Creating default object from empty value");
+        self::markTestIncomplete('Creating default object from empty value');
         $GLOBALS['LANG']->lang = 'default';
     }
 
@@ -92,7 +92,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
     public function testGetOptions()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         $scheduler = tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection');
@@ -100,10 +100,10 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
         $options = $scheduler->getOptions();
 
         self::assertEquals(
-            array(
+            [
                 'failDetectionRememberAfter' => '1 Stunde ',
                 'failDetectionReceiver' => 'dev@dmk-ebusiness.de',
-            ),
+            ],
             $options
         );
     }
@@ -121,20 +121,20 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
             ->with(
                 $selectFields,
                 'tx_scheduler_task',
-                array(
+                [
                     'enablefieldsoff' => true,
                     'where' => 'uid != 123 AND '.
                                 'faildetected = 0 AND '.
                                 'lastexecution_failure != "" AND '.
                                 'disable = 0',
-                )
+                ]
             )
-            ->will(self::returnValue(array('failedTasks')));
+            ->will(self::returnValue(['failedTasks']));
         $scheduler = $this->getSchedulerByDbUtil($databaseUtility);
         $scheduler->setTaskUid(123);
 
         self::assertEquals(
-            array('failedTasks'),
+            ['failedTasks'],
             $this->callInaccessibleMethod(
                 $scheduler,
                 'getFailedTasks'
@@ -154,14 +154,14 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
             ->with(
                 'tx_scheduler_task',
                 'uid IN (1,2,3)',
-                array('faildetected' => $GLOBALS['EXEC_TIME'])
+                ['faildetected' => $GLOBALS['EXEC_TIME']]
             );
         $scheduler = $this->getSchedulerByDbUtil($databaseUtility);
 
         $this->callInaccessibleMethod(
             $scheduler,
             'setFailDetected',
-            array(1, 2, 3)
+            [1, 2, 3]
         );
     }
 
@@ -171,7 +171,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
     public function testGetMiscUtility()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         self::assertEquals(
@@ -190,22 +190,22 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
     public function testHandleFailedTasks()
     {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         $scheduler = tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection');
-        $failedTasks = array(
-            0 => array(
+        $failedTasks = [
+            0 => [
                 'serialized_task_object' => serialize($scheduler),
                 'classname' => 'tx_mklib_scheduler_SchedulerTaskFailDetection',
                 'uid' => 123,
-            ),
-            1 => array(
+            ],
+            1 => [
                 'serialized_task_object' => serialize($scheduler),
                 'classname' => 'tx_mklib_scheduler_SchedulerTaskFailDetection',
                 'uid' => 456,
-            ),
-        );
+            ],
+        ];
         $expectedMessage = 'Die folgenden Scheduler Tasks sind fehlgeschlagen : '.
                             '"tx_mklib_scheduler_SchedulerTaskFailDetection (Task-Uid: 123)"'.
                             ', "tx_mklib_scheduler_SchedulerTaskFailDetection (Task-Uid: 456)"';
@@ -213,11 +213,11 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
 
         $scheduler = $this->getSchedulerByDbUtil(
             null,
-            array('getMiscUtility', 'setFailDetected')
+            ['getMiscUtility', 'setFailDetected']
         );
         $miscUtility = $this->getMock(
             'stdClass',
-            array('sendErrorMail')
+            ['sendErrorMail']
         );
         $miscUtility->expects(self::once())
             ->method('sendErrorMail')
@@ -225,7 +225,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
                 'dev@dmk-ebusiness.de',
                 'tx_mklib_scheduler_SchedulerTaskFailDetection',
                 $expectedException,
-                array('ignoremaillock' => true)
+                ['ignoremaillock' => true]
             );
         $scheduler->expects(self::once())
             ->method('getMiscUtility')
@@ -233,7 +233,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
 
         $scheduler->expects(self::once())
             ->method('setFailDetected')
-            ->with(array(123, 456));
+            ->with([123, 456]);
 
         self::assertEquals(
             $expectedMessage,
@@ -257,7 +257,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
             ->with(
                 'tx_scheduler_task',
                 'faildetected < '.($GLOBALS['EXEC_TIME'] - 3600),
-                array('faildetected' => 0)
+                ['faildetected' => 0]
             );
         $scheduler = $this->getSchedulerByDbUtil($databaseUtility);
 
@@ -274,7 +274,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
     {
         $scheduler = $this->getSchedulerByDbUtil(
             null,
-            array('resetFailedTasksDetection', 'getFailedTasks', 'handleFailedTasks')
+            ['resetFailedTasksDetection', 'getFailedTasks', 'handleFailedTasks']
         );
 
         $scheduler->expects(self::once())
@@ -286,7 +286,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
         $scheduler->expects(self::never())
             ->method('handleFailedTasks');
 
-        $devLog = array();
+        $devLog = [];
         $method = new ReflectionMethod(
             'tx_mklib_scheduler_SchedulerTaskFailDetection',
             'executeTask'
@@ -294,7 +294,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
         $method->setAccessible(true);
         self::assertEquals(
             'keine fehlgeschlagenen Scheduler entdeckt!',
-            $method->invokeArgs($scheduler, array(array(), &$devLog))
+            $method->invokeArgs($scheduler, [[], &$devLog])
         );
         self::assertEmpty($devLog);
     }
@@ -306,7 +306,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
     {
         $scheduler = $this->getSchedulerByDbUtil(
             null,
-            array('resetFailedTasksDetection', 'getFailedTasks', 'handleFailedTasks')
+            ['resetFailedTasksDetection', 'getFailedTasks', 'handleFailedTasks']
         );
 
         $scheduler->expects(self::once())
@@ -321,7 +321,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
             ->with('failedTasks')
             ->will(self::returnValue('tasks failed'));
 
-        $devLog = array();
+        $devLog = [];
         $method = new ReflectionMethod(
             'tx_mklib_scheduler_SchedulerTaskFailDetection',
             'executeTask'
@@ -329,7 +329,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
         $method->setAccessible(true);
         self::assertEquals(
             'tasks failed',
-            $method->invokeArgs($scheduler, array(array(), &$devLog))
+            $method->invokeArgs($scheduler, [[], &$devLog])
         );
         self::assertEmpty($devLog);
     }
@@ -342,10 +342,10 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
      */
     private function getSchedulerByDbUtil(
         $databaseUtility,
-        $methods = array('getDatabaseConnection')
+        $methods = ['getDatabaseConnection']
     ) {
         self::markTestIncomplete(
-            "Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)"
+            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
         $scheduler = $this->getMock(
@@ -371,7 +371,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
     {
         return $this->getMock(
             'Tx_Mklib_Database_Connection',
-            array('doSelect', 'doUpdate')
+            ['doSelect', 'doUpdate']
         );
     }
 }

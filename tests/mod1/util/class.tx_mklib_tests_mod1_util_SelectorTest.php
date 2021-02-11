@@ -57,7 +57,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
     public function setUp()
     {
         $this->oSelector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
-        self::markTestIncomplete("Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0");
+        self::markTestIncomplete('Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0');
         $this->oMod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         $this->oSelector->init($this->oMod);
         $this->sModuleKey = 'testSearch';
@@ -106,23 +106,23 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
     public function testBuildFilerTableWithoutData()
     {
-        $aData = array();
+        $aData = [];
         self::assertEmpty($this->oSelector->buildFilterTable($aData), 'return nicht leer.');
     }
 
     public function testBuildFilerTableWithData()
     {
-        $aData = array(
-            'search' => array(
+        $aData = [
+            'search' => [
                 'field' => 'testField 1',
                 'button' => 'testButton 1',
                 'label' => 'testLabel 1',
-            ),
-            'hidden' => array(
+            ],
+            'hidden' => [
                 'field' => 'testField 2',
                 'button' => 'testButton 2',
-            ),
-        );
+            ],
+        ];
         $sResult = $this->oSelector->buildFilterTable($aData);
         $sExpected = '<table class="filters"><tr><td>testLabel 1</td><td>testField 1 testButton 1</td></tr><tr><td>hidden</td><td>testField 2 testButton 2</td></tr></table>';
         self::assertEquals($sExpected, $sResult, 'return nicht korrekt.');
@@ -130,13 +130,13 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
     public function testShowFreeTextSearchFormWithEmptySearchString()
     {
-        $out = array();
-        $options = array(
+        $out = [];
+        $options = [
             'buttonName' => 'testName',
             'buttonValue' => 'testSearchValue',
             'label' => 'testLabel',
             'submit' => true, // wird vom searcher abstractBase gesetzt
-        );
+        ];
         $sSearchString = $this->oSelector->showFreeTextSearchForm($out, $this->sModuleKey, $options);
 
         self::assertEmpty($sSearchString, 'suchstring ist nicht leer');
@@ -147,13 +147,13 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
     public function testShowFreeTextSearchFormWithSearchString()
     {
-        $out = array();
-        $options = array(
+        $out = [];
+        $options = [
             'buttonName' => 'testName',
             'buttonValue' => 'testSearchValue',
             'label' => 'testLabel',
             'submit' => true, // wird vom searcher abstractBase gesetzt
-        );
+        ];
         //suchstring setzen
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
 
@@ -193,21 +193,21 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
         $this->oSelector->setValueToModuleData($this->oMod->getName());
         //es sollten unr die vorhandenen Daten zurück kommen
-        self::assertEquals(array('testSearch' => 'joh316'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
+        self::assertEquals(['testSearch' => 'joh316'], $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
     }
 
     public function testSetValueToModuleDataWithData()
     {
         //vorhandene Daten
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
-        $this->oSelector->setValueToModuleData($this->oMod->getName(), array('newTestSearch' => 'john doe'));
+        $this->oSelector->setValueToModuleData($this->oMod->getName(), ['newTestSearch' => 'john doe']);
         //es sollten auch die neuen Daten da sein
-        self::assertEquals(array('testSearch' => 'joh316', 'newTestSearch' => 'john doe'), $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
+        self::assertEquals(['testSearch' => 'joh316', 'newTestSearch' => 'john doe'], $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
     }
 
     public function testShowHiddenSelectorWithDefaultId()
     {
-        $data = array();
+        $data = [];
         $return = $this->oSelector->showHiddenSelector($data);
 
         self::assertRegExp(
@@ -236,9 +236,9 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
     public function testShowHiddenSelectorWithOneSelected()
     {
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 1;
-        $this->oSelector->setValueToModuleData($this->oMod->getName(), array($this->sModuleKey => 1));
-        $data = array();
-        $options = array('id' => $this->sModuleKey);
+        $this->oSelector->setValueToModuleData($this->oMod->getName(), [$this->sModuleKey => 1]);
+        $data = [];
+        $options = ['id' => $this->sModuleKey];
         $return = $this->oSelector->showHiddenSelector($data, $options);
 
         self::assertRegExp(
@@ -275,10 +275,10 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
         $method->setAccessible(true);
 
         $returnArray = $method->invoke($selector, '2013-07-08T00:00:00Z', '2013-07-09T00:00:00Z');
-        $expectedReturnArray = array(
+        $expectedReturnArray = [
             'from' => 1373241600,
             'to' => 1373414400,
-        );
+        ];
         self::assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
     }
 
@@ -293,10 +293,10 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
         $method->setAccessible(true);
 
         $returnArray = $method->invoke($selector, '', '');
-        $expectedReturnArray = array(
+        $expectedReturnArray = [
             'from' => 0,
             'to' => 0,
-        );
+        ];
         self::assertEquals($expectedReturnArray, $returnArray, 'Datum falsch formatiert');
     }
 
@@ -306,14 +306,14 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
     public function testGetDateFieldByKeyWhenNoPost()
     {
         $key = 'test';
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
         $formTool
             ->expects(self::once())
             ->method('createDateInput')
             ->with($key, 'testValue')
             ->will(self::returnValue('created'));
 
-        $selector = $this->getMock('tx_mklib_mod1_util_Selector', array('getFormTool', 'getValueFromModuleData'));
+        $selector = $this->getMock('tx_mklib_mod1_util_Selector', ['getFormTool', 'getValueFromModuleData']);
         $selector
             ->expects(self::once())
             ->method('getFormTool')
@@ -326,11 +326,11 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
         $selector->init(tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
 
-        $out = array('field' => '');
+        $out = ['field' => ''];
 
         self::assertEquals(
             'testValue',
-            $this->callInaccessibleMethod(array($selector, 'getDateFieldByKey'), array($key, &$out))
+            $this->callInaccessibleMethod([$selector, 'getDateFieldByKey'], [$key, &$out])
         );
         self::assertEquals('created', $out['field']);
     }
@@ -342,14 +342,14 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
     {
         $key = 'test';
         $_POST[$key] = 'valueFromPost';
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
         $formTool
             ->expects(self::once())
             ->method('createDateInput')
             ->with($key, 'valueFromPost')
             ->will(self::returnValue('created'));
 
-        $selector = $this->getMock('tx_mklib_mod1_util_Selector', array('getFormTool', 'getValueFromModuleData'));
+        $selector = $this->getMock('tx_mklib_mod1_util_Selector', ['getFormTool', 'getValueFromModuleData']);
         $selector
             ->expects(self::once())
             ->method('getFormTool')
@@ -360,11 +360,11 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
         $selector->init(tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
 
-        $out = array('field' => '');
+        $out = ['field' => ''];
 
         self::assertEquals(
             'valueFromPost',
-            $this->callInaccessibleMethod(array($selector, 'getDateFieldByKey'), array($key, &$out))
+            $this->callInaccessibleMethod([$selector, 'getDateFieldByKey'], [$key, &$out])
         );
         self::assertEquals('created', $out['field']);
     }
@@ -374,14 +374,14 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorReturnsCorrectTimestampArray()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
         $formTool
             ->expects(self::any())
             ->method('createDateInput');
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('getFormTool')
+            ['getFormTool']
         );
         $selector->init($this->oMod);
 
@@ -390,13 +390,13 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue($formTool));
 
         $key = 'test';
-        $out = array('field' => '');
+        $out = ['field' => ''];
         $timestampArray = $selector->showDateRangeSelector($out, $key);
 
-        $expectedReturnArray = array(
+        $expectedReturnArray = [
             'from' => 0,
             'to' => 0,
-        );
+        ];
         self::assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
     }
 
@@ -405,7 +405,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorReturnsCorrectTimestampArrayWhenPostValuesSet()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
         $formTool
             ->expects(self::any())
             ->method('createDateInput');
@@ -415,7 +415,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('getFormTool', 'getCrDateReturnArray')
+            ['getFormTool', 'getCrDateReturnArray']
         );
         $selector->init($this->oMod);
 
@@ -423,17 +423,17 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
             ->method('getFormTool')
             ->will(self::returnValue($formTool));
 
-        $expectedReturnArray = array(
+        $expectedReturnArray = [
             'from' => 1373234400,
             'to' => 1373407200,
-        );
+        ];
         $selector->expects(self::once())
             ->method('getCrDateReturnArray')
             ->with('2013-07-08T00:00:00Z', '2013-07-09T00:00:00Z')
             ->will(self::returnValue($expectedReturnArray));
 
         $key = 'test';
-        $out = array('field' => '');
+        $out = ['field' => ''];
         $timestampArray = $selector->showDateRangeSelector($out, $key);
 
         self::assertEquals($expectedReturnArray, $timestampArray, 'Datum falsch formatiert');
@@ -444,7 +444,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorReturnsCorrectInputs()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
         $formTool
             ->expects(self::at(0))
             ->method('createDateInput')
@@ -458,7 +458,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('getFormTool')
+            ['getFormTool']
         );
         $selector->init($this->oMod);
 
@@ -467,7 +467,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue($formTool));
 
         $key = 'test';
-        $out = array('field' => '');
+        $out = ['field' => ''];
         $selector->showDateRangeSelector($out, $key);
 
         $fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
@@ -484,7 +484,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
         $_POST['test_from'] = '2013-07-08';
         $_POST['test_to'] = '2013-07-09';
 
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
         $formTool
             ->expects(self::at(0))
             ->method('createDateInput')
@@ -498,7 +498,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('getFormTool')
+            ['getFormTool']
         );
         $selector->init($this->oMod);
 
@@ -507,7 +507,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
             ->will(self::returnValue($formTool));
 
         $key = 'test';
-        $out = array('field' => '');
+        $out = ['field' => ''];
         $selector->showDateRangeSelector($out, $key);
 
         $fieldHtml = tx_mklib_util_String::removeMultipleWhitespaces($out['field']);
@@ -521,7 +521,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorSetModuleDataCorrect()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', array('createDateInput'));
+        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
         $formTool
             ->expects(self::any())
             ->method('createDateInput');
@@ -531,7 +531,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
         $selector = $this->getMock(
             'tx_mklib_mod1_util_Selector',
-            array('getFormTool', 'setValueToModuleData')
+            ['getFormTool', 'setValueToModuleData']
         );
         $selector->init($this->oMod);
 
@@ -542,9 +542,9 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
         $key = 'test';
         $selector->expects(self::any())
             ->method('setValueToModuleData')
-            ->with('dummyMod', array($key.'_from' => $_POST['test_from'], $key.'_to' => $_POST['test_to']));
+            ->with('dummyMod', [$key.'_from' => $_POST['test_from'], $key.'_to' => $_POST['test_to']]);
 
-        $out = array('field' => '');
+        $out = ['field' => ''];
         $selector->showDateRangeSelector($out, $key);
     }
 }

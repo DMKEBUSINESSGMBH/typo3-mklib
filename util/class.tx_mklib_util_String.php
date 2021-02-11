@@ -89,8 +89,8 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     {
         return html_entity_decode(
             preg_replace(
-                array('/(\s+|(<.*?>)+)/', '/<!--.*?-->/'),
-                array(' ', ''),
+                ['/(\s+|(<.*?>)+)/', '/<!--.*?-->/'],
+                [' ', ''],
                 $t
             ),
             ENT_QUOTES,
@@ -105,9 +105,9 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      * @param string $sHaystack
      * @param mixed  $mValue
      */
-    public static function removeRepeatedlyOccurrings($sHaystack, $mValue = array(' ', "\t", LF, CR, CRLF))
+    public static function removeRepeatedlyOccurrings($sHaystack, $mValue = [' ', "\t", LF, CR, CRLF])
     {
-        $mValue = is_array($mValue) ? $mValue : array($mValue);
+        $mValue = is_array($mValue) ? $mValue : [$mValue];
         // Alle Werte Prprüfen/ersetzen
         foreach ($mValue as $sValue) {
             // Ist der String mindestens 2x hintereinander enthalten
@@ -166,7 +166,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     {
         $text = preg_replace_callback(
             self::emailRegex,
-            array(self, 'obfusicateEmail'),
+            [self, 'obfusicateEmail'],
             $text
         );
 
@@ -200,7 +200,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     {
         $text = preg_replace_callback(
             self::emailRegex,
-            array(self, 'convertEmailToMailToLink'),
+            [self, 'convertEmailToMailToLink'],
             $text
         );
 

@@ -240,7 +240,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
         $configurations = $this->getConfigurations();
 
         $sortFields = $configurations->get($confId.$this->allowedFieldsConfId);
-        $sortFields = $sortFields ? tx_rnbase_util_Strings::trimExplode(',', $sortFields, true) : array();
+        $sortFields = $sortFields ? tx_rnbase_util_Strings::trimExplode(',', $sortFields, true) : [];
 
         return $sortFields;
     }
@@ -255,7 +255,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
      */
     public function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER')
     {
-        $markerArray = $subpartArray = $wrappedSubpartArray = array();
+        $markerArray = $subpartArray = $wrappedSubpartArray = [];
 
         $this->initSorting();
         $this->insertMarkersForSorting(
@@ -290,7 +290,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
 
         if (!empty($sortFields)) {
             $token = md5(microtime());
-            $markOrders = array();
+            $markOrders = [];
             foreach ($sortFields as $field) {
                 $isField = ($field == $this->getSortBy());
                 // sortOrder ausgeben
@@ -302,10 +302,10 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
                 // link generieren
                 if ($makeLink || $makeUrl) {
                     // sortierungslinks ausgeben
-                    $params = array(
+                    $params = [
                             'sortBy' => $field,
                             'sortOrder' => $isField && ('asc' == $this->getSortOrder()) ? 'desc' : 'asc',
-                        );
+                        ];
                     $link = $configurations->createLink();
                     $link->label($token);
                     $link->initByTS(

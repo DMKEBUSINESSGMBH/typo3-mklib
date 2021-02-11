@@ -57,8 +57,8 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
         $method = new ReflectionMethod('tx_mklib_repository_Abstract', 'handleEnableFieldsOptions');
         $method->setAccessible(true);
 
-        $fields = array();
-        $method->invokeArgs($repository, array(&$fields, &$options));
+        $fields = [];
+        $method->invokeArgs($repository, [&$fields, &$options]);
 
         self::assertEquals($expectedOptions, $options, 'options falsch');
     }
@@ -68,12 +68,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      */
     public function getOptions()
     {
-        return array(
-            array(array('enablefieldsoff' => true), array('enablefieldsoff' => true)),
-            array(array('enablefieldsbe' => true), array('enablefieldsbe' => true)),
-            array(array('enablefieldsfe' => true), array('enablefieldsfe' => true)),
-            array(array(), array('enablefieldsbe' => true)),
-        );
+        return [
+            [['enablefieldsoff' => true], ['enablefieldsoff' => true]],
+            [['enablefieldsbe' => true], ['enablefieldsbe' => true]],
+            [['enablefieldsfe' => true], ['enablefieldsfe' => true]],
+            [[], ['enablefieldsbe' => true]],
+        ];
     }
 
     /**
@@ -100,11 +100,11 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     {
         $repository = $this->getRepositoryMock();
 
-        $expectedModel = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', array('uid' => 123));
+        $expectedModel = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 123]);
 
         self::assertEquals(
             $expectedModel,
-            $repository->findByUid(array('uid' => 123)),
+            $repository->findByUid(['uid' => 123]),
             'model nicht zurück gegeben'
         );
     }
@@ -144,27 +144,27 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      */
     public function testSearchCallsSearcherCorrect()
     {
-        $repository = $this->getRepositoryMock(array('getSearcher'));
+        $repository = $this->getRepositoryMock(['getSearcher']);
 
-        $fields = array('someField' => 1);
-        $options = array('enablefieldsbe' => 1);
+        $fields = ['someField' => 1];
+        $options = ['enablefieldsbe' => 1];
 
         $searcher = $this->getMock(
             'tx_mklib_search_Wordlist',
-            array('search')
+            ['search']
         );
 
         $searcher->expects(self::once())
             ->method('search')
             ->with($fields, $options)
-            ->will(self::returnValue(array('searched')));
+            ->will(self::returnValue(['searched']));
 
         $repository->expects(self::any())
             ->method('getSearcher')
             ->will(self::returnValue($searcher));
 
         self::assertEquals(
-            array('searched'),
+            ['searched'],
             $repository->search($fields, $options),
             'falsch gesucht'
         );
@@ -175,13 +175,13 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      */
     public function testUniqueItemsReducesCorrect()
     {
-        self::markTestIncomplete("Failed asserting that actual size 2 matches expected size 1.");
+        self::markTestIncomplete('Failed asserting that actual size 2 matches expected size 1.');
 
         $repository = $this->getRepositoryMock();
         $master = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 123))
+            ['getTableName'],
+            [['uid' => 123]]
         );
         $master->expects(self::any())
             ->method('getTableName')
@@ -189,14 +189,14 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
 
         $overlay = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
+            ['getTableName'],
+            [['uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789]]
         );
         $overlay->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('tt_content'));
 
-        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array('distinct' => true));
+        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', [$master, $overlay], ['distinct' => true]);
 
         self::assertCount(1, $items);
         self::assertArrayHasKey(0, $items);
@@ -211,8 +211,8 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
         $repository = $this->getRepositoryMock();
         $master = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 123))
+            ['getTableName'],
+            [['uid' => 123]]
         );
         $master->expects(self::any())
             ->method('getTableName')
@@ -220,14 +220,14 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
 
         $overlay = $this->getMock(
             'tx_rnbase_model_base',
-            array('getTableName'),
-            array(array('uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789))
+            ['getTableName'],
+            [['uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789]]
         );
         $overlay->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('tt_content'));
 
-        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', array($master, $overlay), array());
+        $items = $this->callInaccessibleMethod($repository, 'uniqueItems', [$master, $overlay], []);
 
         self::assertCount(2, $items);
         self::assertArrayHasKey(0, $items);
@@ -241,15 +241,15 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      */
     public function testFindAll()
     {
-        $repository = $this->getRepositoryMock(array('search'));
+        $repository = $this->getRepositoryMock(['search']);
 
         $repository->expects(self::once())
             ->method('search')
-            ->with(array(), array())
-            ->will(self::returnValue(array('searched')));
+            ->with([], [])
+            ->will(self::returnValue(['searched']));
 
         self::assertEquals(
-            array('searched'),
+            ['searched'],
             $repository->findAll(),
             'falsch gesucht'
         );
@@ -260,17 +260,17 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      */
     public function testHandleCreation()
     {
-        $repository = $this->getRepositoryMock(array('create'));
+        $repository = $this->getRepositoryMock(['create']);
 
-        $data = array('field' => 'value');
+        $data = ['field' => 'value'];
 
         $repository->expects(self::once())
             ->method('create')
             ->with($data)
-            ->will(self::returnValue(array('created')));
+            ->will(self::returnValue(['created']));
 
         self::assertEquals(
-            array('created'),
+            ['created'],
             $repository->create($data),
             'not created'
         );
@@ -281,12 +281,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      */
     public function testSecureFromCrossSiteScriptingReturnsDataIfNoFieldsToBeStrippedAreDefined()
     {
-        $model = $this->getModelMock(array(), array('secureFromCrossSiteScripting'));
+        $model = $this->getModelMock([], ['secureFromCrossSiteScripting']);
         $repository = $this->getRepositoryMock();
 
-        $data = array(
+        $data = [
             'field1' => 'value1', 'field2' => 'value2', 'field3' => 'value3',
-        );
+        ];
 
         $method = new ReflectionMethod(
             'tx_mklib_repository_Abstract',
@@ -305,14 +305,14 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testSecureFromCrossSiteScriptingReturnsStrippedData()
     {
         $model = $this->getModelMock(
-            array(),
-            array('getTagsToBeIgnoredFromStripping', 'getFieldsToBeStripped')
+            [],
+            ['getTagsToBeIgnoredFromStripping', 'getFieldsToBeStripped']
         );
         $repository = $this->getRepositoryMock();
 
-        $data = array(
+        $data = [
             'field1' => '<p>value1</p>', 'field2' => '<b>value2</b>', 'field3' => 'value3',
-        );
+        ];
 
         $model->expects(self::once())
             ->method('getTagsToBeIgnoredFromStripping')
@@ -320,7 +320,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
 
         $model->expects(self::once())
             ->method('getFieldsToBeStripped')
-            ->will(self::returnValue(array('field1', 'field2')));
+            ->will(self::returnValue(['field1', 'field2']));
 
         $method = new ReflectionMethod(
             'tx_mklib_repository_Abstract',
@@ -329,7 +329,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
         $method->setAccessible(true);
 
         $returnArray = $method->invoke($repository, $model, $data);
-        $expectedReturnArray = array('field1' => 'value1', 'field2' => '<b>value2</b>', 'field3' => 'value3');
+        $expectedReturnArray = ['field1' => 'value1', 'field2' => '<b>value2</b>', 'field3' => 'value3'];
         self::assertEquals($expectedReturnArray, $returnArray, 'Daten falsch');
     }
 
@@ -351,12 +351,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testHandleUpdateBuildsWhereClauseWhenNoneGiven()
     {
         $model = $this->getModelMock(
-            array('uid' => 123),
-            array('getColumnNames', 'getTableName', 'reset')
+            ['uid' => 123],
+            ['getColumnNames', 'getTableName', 'reset']
         );
         $model->expects(self::once())
             ->method('getColumnNames')
-            ->will(self::returnValue(array('column_1')));
+            ->will(self::returnValue(['column_1']));
         $model->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('unknown'));
@@ -364,10 +364,10 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('reset');
 
         $repository = $this->getRepositoryMock(
-            array('getSearchClass', 'getDatabaseUtility')
+            ['getSearchClass', 'getDatabaseUtility']
         );
 
-        $databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+        $databaseConnection = $this->getDatabaseConnectionMock(['fullQuoteStr', 'doUpdate']);
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
@@ -380,7 +380,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('getDatabaseUtility')
             ->will(self::returnValue($databaseConnection));
 
-        $repository->handleUpdate($model, array());
+        $repository->handleUpdate($model, []);
     }
 
     /**
@@ -389,12 +389,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testHandleUpdateEliminatesNonTcaColumns()
     {
         $model = $this->getModelMock(
-            array('uid' => 123),
-            array('getColumnNames', 'getTableName', 'reset')
+            ['uid' => 123],
+            ['getColumnNames', 'getTableName', 'reset']
         );
         $model->expects(self::once())
             ->method('getColumnNames')
-            ->will(self::returnValue(array('column_1')));
+            ->will(self::returnValue(['column_1']));
         $model->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('unknown'));
@@ -402,11 +402,11 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('reset');
 
         $repository = $this->getRepositoryMock(
-            array('getSearchClass', 'getDatabaseUtility')
+            ['getSearchClass', 'getDatabaseUtility']
         );
 
-        $data = array('column_1' => 'new value', 'column_2' => 'new value');
-        $databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+        $data = ['column_1' => 'new value', 'column_2' => 'new value'];
+        $databaseConnection = $this->getDatabaseConnectionMock(['fullQuoteStr', 'doUpdate']);
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
@@ -416,7 +416,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->with(
                 'unknown',
                 '1=1 AND `unknown`.`uid`=\'quoted123\'',
-                array('column_1' => 'new value')
+                ['column_1' => 'new value']
             );
 
         $repository->expects(self::once())
@@ -432,12 +432,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testHandleUpdateCallsSecureFromCrossSiteScripting()
     {
         $model = $this->getModelMock(
-            array('uid' => 123),
-            array('getColumnNames', 'getTableName', 'reset')
+            ['uid' => 123],
+            ['getColumnNames', 'getTableName', 'reset']
         );
         $model->expects(self::once())
             ->method('getColumnNames')
-            ->will(self::returnValue(array('column_1')));
+            ->will(self::returnValue(['column_1']));
         $model->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('unknown'));
@@ -445,18 +445,18 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('reset');
 
         $repository = $this->getRepositoryMock(
-            array('getSearchClass', 'getDatabaseUtility', 'secureFromCrossSiteScripting')
+            ['getSearchClass', 'getDatabaseUtility', 'secureFromCrossSiteScripting']
         );
 
-        $data = array('column_1' => 'new value');
-        $databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+        $data = ['column_1' => 'new value'];
+        $databaseConnection = $this->getDatabaseConnectionMock(['fullQuoteStr', 'doUpdate']);
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
             ->will(self::returnValue('\'quoted123\''));
         $databaseConnection->expects(self::once())
             ->method('doUpdate')
-            ->with('unknown', '1=1 AND `unknown`.`uid`=\'quoted123\'', array('secured'));
+            ->with('unknown', '1=1 AND `unknown`.`uid`=\'quoted123\'', ['secured']);
 
         $repository->expects(self::once())
             ->method('getDatabaseUtility')
@@ -465,7 +465,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
         $repository->expects(self::once())
             ->method('secureFromCrossSiteScripting')
             ->with($model, $data)
-            ->will(self::returnValue(array('secured')));
+            ->will(self::returnValue(['secured']));
 
         $repository->handleUpdate($model, $data);
     }
@@ -476,12 +476,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testHandleUpdateRemovesUidColumn()
     {
         $model = $this->getModelMock(
-            array('uid' => 123),
-            array('getColumnNames', 'getTableName', 'reset')
+            ['uid' => 123],
+            ['getColumnNames', 'getTableName', 'reset']
         );
         $model->expects(self::once())
             ->method('getColumnNames')
-            ->will(self::returnValue(array('column_1')));
+            ->will(self::returnValue(['column_1']));
         $model->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('unknown'));
@@ -489,11 +489,11 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('reset');
 
         $repository = $this->getRepositoryMock(
-            array('getSearchClass', 'getDatabaseUtility')
+            ['getSearchClass', 'getDatabaseUtility']
         );
 
-        $data = array('column_1' => 'new value', 'uid' => 456);
-        $databaseConnection = $this->getDatabaseConnectionMock(array('fullQuoteStr', 'doUpdate'));
+        $data = ['column_1' => 'new value', 'uid' => 456];
+        $databaseConnection = $this->getDatabaseConnectionMock(['fullQuoteStr', 'doUpdate']);
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
@@ -503,7 +503,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->with(
                 'unknown',
                 '1=1 AND `unknown`.`uid`=\'quoted123\'',
-                array('column_1' => 'new value')
+                ['column_1' => 'new value']
             );
 
         $repository->expects(self::once())
@@ -519,12 +519,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testHandleUpdateUsesGivenWhere()
     {
         $model = $this->getModelMock(
-            array('uid' => 123),
-            array('getColumnNames', 'getTableName', 'reset')
+            ['uid' => 123],
+            ['getColumnNames', 'getTableName', 'reset']
         );
         $model->expects(self::once())
             ->method('getColumnNames')
-            ->will(self::returnValue(array('column_1')));
+            ->will(self::returnValue(['column_1']));
         $model->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('unknown'));
@@ -532,10 +532,10 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('reset');
 
         $repository = $this->getRepositoryMock(
-            array('getSearchClass', 'getDatabaseUtility')
+            ['getSearchClass', 'getDatabaseUtility']
         );
 
-        $databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+        $databaseConnection = $this->getDatabaseConnectionMock(['doUpdate']);
         $databaseConnection->expects(self::once())
             ->method('doUpdate')
             ->with('unknown', 'test where');
@@ -544,7 +544,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('getDatabaseUtility')
             ->will(self::returnValue($databaseConnection));
 
-        $repository->handleUpdate($model, array(), 'test where');
+        $repository->handleUpdate($model, [], 'test where');
     }
 
     /**
@@ -553,12 +553,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testHandleUpdateWhenDebugAndNoQuoteFieldsParametersGiven()
     {
         $model = $this->getModelMock(
-            array('uid' => 123),
-            array('getColumnNames', 'getTableName', 'reset')
+            ['uid' => 123],
+            ['getColumnNames', 'getTableName', 'reset']
         );
         $model->expects(self::once())
             ->method('getColumnNames')
-            ->will(self::returnValue(array('column_1')));
+            ->will(self::returnValue(['column_1']));
         $model->expects(self::any())
             ->method('getTableName')
             ->will(self::returnValue('unknown'));
@@ -566,13 +566,13 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->method('reset');
 
         $repository = $this->getRepositoryMock(
-            array('getSearchClass', 'getDatabaseUtility')
+            ['getSearchClass', 'getDatabaseUtility']
         );
 
-        $databaseConnection = $this->getDatabaseConnectionMock(array('doUpdate'));
+        $databaseConnection = $this->getDatabaseConnectionMock(['doUpdate']);
         $databaseConnection->expects(self::once())
             ->method('doUpdate')
-            ->with('unknown', 'test where', array(), 987, 'commaSeparatedFields');
+            ->with('unknown', 'test where', [], 987, 'commaSeparatedFields');
 
         $repository->expects(self::once())
             ->method('getDatabaseUtility')
@@ -580,7 +580,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
 
         $repository->handleUpdate(
             $model,
-            array(),
+            [],
             'test where',
             987,
             'commaSeparatedFields'
@@ -592,11 +592,11 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      *
      * @return tx_mklib_repository_Abstract
      */
-    private function getRepositoryMock($mockedMethods = array('getSearchClass'))
+    private function getRepositoryMock($mockedMethods = ['getSearchClass'])
     {
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
-            array(),
+            [],
             '',
             false,
             false,
@@ -626,12 +626,12 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      *
      * @return tx_mklib_repository_Abstract
      */
-    private function getModelMock($rowOrUid = array(), $mockedMethods = array())
+    private function getModelMock($rowOrUid = [], $mockedMethods = [])
     {
         $model = $this->getMock(
             'tx_rnbase_model_base',
             $mockedMethods,
-            array($rowOrUid)
+            [$rowOrUid]
         );
 
         return $model;
@@ -643,20 +643,20 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testSearchSingleIfItemsFound()
     {
         $repository = $this->getRepositoryMock(
-            array('search')
+            ['search']
         );
 
-        $expectedFields = array('fields');
-        $expectedOptions = array('orderby' => array(), 'limit' => 1);
+        $expectedFields = ['fields'];
+        $expectedOptions = ['orderby' => [], 'limit' => 1];
 
         $repository->expects(self::once())
             ->method('search')
             ->with($expectedFields, $expectedOptions)
-            ->will(self::returnValue(array(0 => 'test')));
+            ->will(self::returnValue([0 => 'test']));
 
         self::assertEquals(
             'test',
-            $repository->searchSingle($expectedFields, array('orderby' => array()))
+            $repository->searchSingle($expectedFields, ['orderby' => []])
         );
     }
 
@@ -666,19 +666,19 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     public function testSearchSingleIfNoItemsFound()
     {
         $repository = $this->getRepositoryMock(
-            array('search')
+            ['search']
         );
 
-        $expectedFields = array('fields');
-        $expectedOptions = array('orderby' => array(), 'limit' => 1);
+        $expectedFields = ['fields'];
+        $expectedOptions = ['orderby' => [], 'limit' => 1];
 
         $repository->expects(self::once())
             ->method('search')
             ->with($expectedFields, $expectedOptions)
-            ->will(self::returnValue(array()));
+            ->will(self::returnValue([]));
 
         self::assertNull(
-            $repository->searchSingle($expectedFields, array('orderby' => array()))
+            $repository->searchSingle($expectedFields, ['orderby' => []])
         );
     }
 }

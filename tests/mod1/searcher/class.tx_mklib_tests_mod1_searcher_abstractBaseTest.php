@@ -43,7 +43,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
     public function setUp()
     {
         //sprache auf default setzen damit wir die richtigen labels haben
-        self::markTestIncomplete("Creating default object from empty value");
+        self::markTestIncomplete('Creating default object from empty value');
         $GLOBALS['LANG']->lang = 'default';
 
         tx_mklib_srv_Wordlist::loadTca();
@@ -205,8 +205,8 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
         $aResultList = $this->searcher->getResultList();
 
         //Daten im Modul korrekt?
-        $aModuleData = Tx_Rnbase_Backend_Utility::getModuleData(array(), tx_rnbase_parameters::getPostOrGetParameter('SET'), $this->mod->getName());
-        self::assertEquals(array('uid' => 'asc'), $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
+        $aModuleData = Tx_Rnbase_Backend_Utility::getModuleData([], tx_rnbase_parameters::getPostOrGetParameter('SET'), $this->mod->getName());
+        self::assertEquals(['uid' => 'asc'], $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
         $result = $aResultList['table'];
         self::assertRegExp('/^<table/', $result, 'Table Tag fehlt.');
@@ -264,7 +264,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
     public function testGetResultListReturnsCorrectTableAndPagerIfSortingFromModuleDataAndSetsSortOptionToGetParams()
     {
         //daten fürs modul setzen
-        $GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['dummySearcherorderby'] = array('uid' => 'asc');
+        $GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['dummySearcherorderby'] = ['uid' => 'asc'];
 
         //damit currenShowHidden gesetzt wird
         $this->searcher->getSearchForm();
@@ -335,8 +335,8 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
         $res = $this->callInaccessibleMethod(
             $this->getSearchItemsSearcherMock(),
             'searchItems',
-            array(),
-            array()
+            [],
+            []
         );
 
         // alle 5 items müssen da sein
@@ -358,12 +358,12 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
     {
         $res = $this->callInaccessibleMethod(
             $this->getSearchItemsSearcherMock(
-                array(),
-                array('limit' => 5)
+                [],
+                ['limit' => 5]
             ),
             'searchItems',
-            array(),
-            array('limit' => 4)
+            [],
+            ['limit' => 4]
         );
 
         // das letzte item muss fehlen!
@@ -385,12 +385,12 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
     {
         $res = $this->callInaccessibleMethod(
             $this->getSearchItemsSearcherMock(
-                array(),
-                array('offset' => 1)
+                [],
+                ['offset' => 1]
             ),
             'searchItems',
-            array(),
-            array('offset' => 3)
+            [],
+            ['offset' => 3]
         );
 
         // die ersten zwei items müssen fehlen!
@@ -412,12 +412,12 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
     {
         $res = $this->callInaccessibleMethod(
             $this->getSearchItemsSearcherMock(
-                array(),
-                array('limit' => 5, 'offset' => 0)
+                [],
+                ['limit' => 5, 'offset' => 0]
             ),
             'searchItems',
-            array(),
-            array('limit' => 3, 'offset' => 1)
+            [],
+            ['limit' => 3, 'offset' => 1]
         );
 
         // das erste und letzte item muss fehlen!
@@ -442,12 +442,12 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
     {
         $res = $this->callInaccessibleMethod(
             $this->getSearchItemsSearcherMock(
-                array(),
-                array('limit' => 11, 'offset' => 0)
+                [],
+                ['limit' => 11, 'offset' => 0]
             ),
             'searchItems',
-            array(),
-            array('limit' => 10, 'offset' => 0)
+            [],
+            ['limit' => 10, 'offset' => 0]
         );
 
         self::assertTrue(is_array($res));
@@ -462,18 +462,18 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
     }
 
     protected function getSearchItemsSearcherMock(
-        array $expectedFields = array(),
-        array $expectedOptions = array(),
+        array $expectedFields = [],
+        array $expectedOptions = [],
         array $items = null
     ) {
         $service = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('search')
+            ['search']
         );
         $service
             ->expects(self::atLeastOnce())
@@ -484,24 +484,24 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
             )
             ->will(
                 self::returnValue(
-                    is_array($items) ? $items : array(
-                        $this->getModel(array('uid' => 1)),
-                        $this->getModel(array('uid' => 2)),
-                        $this->getModel(array('uid' => 3)),
-                        $this->getModel(array('uid' => 4)),
-                        $this->getModel(array('uid' => 5)),
-                    )
+                    is_array($items) ? $items : [
+                        $this->getModel(['uid' => 1]),
+                        $this->getModel(['uid' => 2]),
+                        $this->getModel(['uid' => 3]),
+                        $this->getModel(['uid' => 4]),
+                        $this->getModel(['uid' => 5]),
+                    ]
                 )
             );
 
         $searcher = $this->getMockForAbstractClass(
             'tx_mklib_mod1_searcher_abstractBase',
-            array($this->mod, array('baseTableName' => 'pages')),
+            [$this->mod, ['baseTableName' => 'pages']],
             '',
             true,
             true,
             true,
-            array('getService')
+            ['getService']
         );
         $searcher
             ->expects(self::atLeastOnce())
@@ -520,7 +520,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
         $this->setLocallangLabel('label_button_search', 'test search button');
         // gibt es noch nicht
         $this->setLocallangLabel('my_test_label', 'my test label');
-        $this->callInaccessibleMethod($this->searcher, 'init', $this->mod, array());
+        $this->callInaccessibleMethod($this->searcher, 'init', $this->mod, []);
 
         self::assertEquals('test search button', $this->getLocallangLabel('label_button_search'));
         self::assertEquals('my test label', $this->getLocallangLabel('my_test_label'));

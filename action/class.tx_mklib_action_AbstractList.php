@@ -59,11 +59,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
             // tx_mklib_interface_Repository is deprecated!
             $repo instanceof tx_mklib_interface_Repository
         )) {
-            throw new RuntimeException(
-                'the repository "'.get_class($repo).'" '.
-                'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!',
-                intval(ERROR_CODE_MKLIB.'1')
-            );
+            throw new RuntimeException('the repository "'.get_class($repo).'" '.'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!', intval(ERROR_CODE_MKLIB.'1'));
         }
 
         // create filter
@@ -74,7 +70,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
             $this->getConfId().'filter.'
         );
 
-        $fields = $options = array();
+        $fields = $options = [];
         // let the filter fill the fields end options
         if ($this->prepareFieldsAndOptions($fields, $options)
             && $filter->init($fields, $options)
@@ -86,7 +82,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
                     $this->getConfigurations()->getViewData(),
                     $fields,
                     $options,
-                    array('searchcallback' => array($repo, 'search'))
+                    ['searchcallback' => [$repo, 'search']]
                 );
             }
             // we search for the items
@@ -96,7 +92,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
             return false;
         }
 
-        return !(array) $items ? array() : $items;
+        return !(array) $items ? [] : $items;
     }
 
     /**
