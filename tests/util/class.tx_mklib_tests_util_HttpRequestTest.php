@@ -38,6 +38,8 @@ class tx_mklib_tests_util_HttpRequestTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testHttpRequestWithCurlAndSllAndServerAuth()
     {
+        $this->markTestIncomplete('phpunit.project.dmknet is no longer used.');
+
         $time = time();
 
         $url = 'https://phpunit.project.dmknet.de/tests/httprequest.php?method=POST';

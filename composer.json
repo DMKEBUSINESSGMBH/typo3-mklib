@@ -1,7 +1,6 @@
 {
     "name": "dmk/mklib",
     "description": "Utilities for extensions.",
-    "version": "9.5.6",
     "type": "typo3-cms-extension",
     "keywords": [
         "TYPO3 CMS",
@@ -27,10 +26,11 @@
     "require": {
         "typo3/cms-core": "^8.7 || ^9.5",
         "typo3/cms-scheduler": "^8.7 || ^9.5",
-        "digedag/rn-base": ">=1.10.0"
+        "digedag/rn-base": "^1.10.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "~2@stable",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "friendsofphp/php-cs-fixer": "^2",
         "nimut/testing-framework": "^1.1 || ^2.0 || ^4.0"
     },
     "autoload": {
@@ -76,6 +76,32 @@
         "post-autoload-dump": [
             "mkdir -p .Build/Web/typo3conf/ext/",
             "[ -L .Build/Web/typo3conf/ext/mklib ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/mklib"
+        ],
+        "lint:php": [
+            "[ -e .Build/bin/parallel-lint ] || composer update",
+            ".Build/bin/parallel-lint ./scheduler ./exception ./interface ./model ./util ./validator ./Classes ./srv ./action ./abstract ./cli ./filter ./marker ./interface ./mod1 ./search ./soap ./tca ./view ./repository ./tests ./*.php"
+        ],
+        "lint": [
+            "@lint:php"
+        ],
+        "test:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update --ansi",
+            ".Build/bin/php-cs-fixer fix -v --dry-run --diff --diff-format udiff --ansi"
+        ],
+        "test:phpunit": [
+            "[ -e .Build/bin/phpunit ] || composer update --ansi",
+            "export TYPO3_PATH_WEB=$PWD/.Build/Web && .Build/bin/phpunit -c phpunit.xml.dist --colors=always"
+        ],
+        "test": [
+            "@test:phpcs",
+            "@test:phpunit"
+        ],
+        "fix:phpcs": [
+            "[ -e .Build/bin/php-cs-fixer ] || composer update --ansi",
+            ".Build/bin/php-cs-fixer fix -v"
+        ],
+        "fix": [
+            "@fix:phpcs"
         ]
     },
     "extra": {
