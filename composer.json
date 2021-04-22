@@ -44,8 +44,6 @@
             "Classes/",
             "srv/",
             "action/",
-            "abstract/",
-            "cli/",
             "filter/",
             "marker/",
             "interface/",
@@ -79,7 +77,7 @@
         ],
         "lint:php": [
             "[ -e .Build/bin/parallel-lint ] || composer update",
-            ".Build/bin/parallel-lint ./scheduler ./exception ./interface ./model ./util ./validator ./Classes ./srv ./action ./abstract ./cli ./filter ./marker ./interface ./mod1 ./search ./soap ./tca ./view ./repository ./tests ./*.php"
+            ".Build/bin/parallel-lint ./scheduler ./exception ./interface ./model ./util ./validator ./Classes ./srv ./action ./filter ./marker ./interface ./mod1 ./search ./soap ./tca ./view ./repository ./tests ./*.php"
         ],
         "lint": [
             "@lint:php"
@@ -108,7 +106,8 @@
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "extension-key": "mklib",
-            "web-dir": ".Build/Web"
+            "web-dir": ".Build/Web",
+            "app-dir": ".Build"
         }
     }
 }

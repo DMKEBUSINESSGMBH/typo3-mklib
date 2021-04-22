@@ -42,22 +42,6 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
     }
 
     /**
-     * Formatiert einen Wert anhand der Wärung.
-     *
-     * @deprecated: direkt $this->getCurrency()->getFormatted($value) aufrufen,
-     *              ansonsten bekommen wir bei späterer erweiterung des currencies wahrscheinlich probleme!
-     *
-     * @param float $value
-     * @param bool  $htmlEntities
-     *
-     * @return string
-     */
-    public function getFormattedCurrency($value, $htmlEntities = true)
-    {
-        return $this->getCurrency()->getFormatted($value, $htmlEntities);
-    }
-
-    /**
      * Berechnet den Nettopreis anhand des Bruttopreises und des Steuersatzes.
      *
      * @param doubleval $gross
@@ -127,17 +111,7 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
             $this->getIntByDouble($price) * $quantity
         );
 
-        return $formatted ? $this->getFormattedCurrency($sum) : $sum;
-    }
-
-    /**
-     * @see         self::getSumPriceByPriceAndQuantity
-     * @deprecated  Die getSumPriceByPriceAndQuantity hatte einen Tippfehler.
-     *              Wenn nicht mehr verwendet, entfernen!
-     */
-    public function getSumPriceByPriceAndtQuantity($price, $quantity, $formatted = false)
-    {
-        return $this->getSumPriceByPriceAndQuantity($price, $quantity, $formatted);
+        return $formatted ? $this->getCurrency()->getFormatted($sum) : $sum;
     }
 
     /**
@@ -278,8 +252,4 @@ class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
 
         return $result;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Finance.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Finance.php'];
 }

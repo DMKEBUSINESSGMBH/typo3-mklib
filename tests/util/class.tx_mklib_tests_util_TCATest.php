@@ -45,10 +45,6 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
-        //es kann sein dass die TCA von der wordlist nicht geladen wurde.
-        //also stellen wir die TCA hier bereit
-        tx_mklib_srv_Wordlist::loadTca();
-
         $this->returnUrlBackup = $_GET['returnUrl'];
     }
 
@@ -63,35 +59,19 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
         unset($GLOBALS['TCA']['tt_mktest_table']);
     }
 
-    public function testEleminateNonTcaColumns()
-    {
-        $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', []);
-        $data = [
-            'blacklisted' => true,
-            'whitelisted' => 0,
-            'ich-muss-raus' => true,
-            'ich-auch' => false,
-        ];
-        $res = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
-        self::assertEquals(2, count($res), 'falsche array größe');
-        self::assertTrue($res['blacklisted'], 'blacklsited Feld ist nicht korrekt!');
-        self::assertEquals(0, $res['whitelisted'], 'whitelisted Feld ist nicht korrekt!');
-        self::assertTrue(empty($res['ich-muss-raus']), 'ich-muss-raus Feld wurde nicht entfernt!');
-        self::assertTrue(empty($res['ich-auch']), 'ich-auch Feld wurde nicht entfernt!');
-    }
-
     public function testEleminateNonTcaColumnsByTable()
     {
+        $GLOBALS['TCA']['dummy_table']['columns'] = ['title' => [], 'description' => []];
         $data = [
-            'blacklisted' => true,
-            'whitelisted' => 0,
+            'title' => true,
+            'description' => 0,
             'ich-muss-raus' => true,
             'ich-auch' => false,
         ];
-        $res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('tx_mklib_wordlist', $data);
+        $res = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable('dummy_table', $data);
         self::assertEquals(2, count($res), 'falsche array größe');
-        self::assertTrue($res['blacklisted'], 'blacklsited Feld ist nicht korrekt!');
-        self::assertEquals(0, $res['whitelisted'], 'whitelisted Feld ist nicht korrekt!');
+        self::assertTrue($res['title'], 'blacklsited Feld ist nicht korrekt!');
+        self::assertEquals(0, $res['description'], 'whitelisted Feld ist nicht korrekt!');
         self::assertFalse(isset($res['ich-muss-raus']), 'ich-muss-raus Feld wurde nicht entfernt!');
         self::assertFalse(isset($res['ich-auch']), 'ich-auch Feld wurde nicht entfernt!');
     }
@@ -343,8 +323,4 @@ class tx_mklib_tests_util_TCATest extends tx_rnbase_tests_BaseTestCase
             'TCA Feld falsch'
         );
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCATest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_TCATest.php'];
 }

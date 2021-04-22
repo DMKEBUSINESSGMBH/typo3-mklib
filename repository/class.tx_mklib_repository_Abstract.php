@@ -29,7 +29,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Repository, Tx_Rnbase_Interface_Singleton
+abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Repository_InterfaceSearch, Tx_Rnbase_Interface_Singleton
 {
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
     const DELETION_MODE_HIDE = 0;
@@ -299,7 +299,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
         $model = $this->getEmptyModel();
         $table = $model->getTableName();
 
-        $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
+        $data = tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
         // setzen wir nur, wenn noch nicht gesetzt!
@@ -354,7 +354,7 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
         }
 
         // Eleminate columns not in TCA
-        $data = tx_mklib_util_TCA::eleminateNonTcaColumns($model, $data);
+        $data = tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
         $db->doUpdate($table, $where, $data, $debug, $noQuoteFields);
@@ -484,8 +484,4 @@ abstract class tx_mklib_repository_Abstract implements tx_mklib_interface_Reposi
 
         return $data;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['tx_mklib_repository_Abstract'];
 }

@@ -165,24 +165,6 @@ class tx_mklib_util_TCA
      *
      * Doesn't do anything if no TCA columns are found.
      *
-     * @param array $data Data to be filtered
-     *
-     * @return array Data now containing only TCA-defined columns
-     *
-     * @deprecated use tx_rnbase_util_TCA::eleminateNonTcaColumns
-     */
-    public static function eleminateNonTcaColumns(
-        Tx_Rnbase_Domain_Model_RecordInterface $model,
-        array $data
-    ) {
-        return tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
-    }
-
-    /**
-     * Eleminate non-TCA-defined columns from given data.
-     *
-     * Doesn't do anything if no TCA columns are found.
-     *
      * @param array $dbColumns TCA columns
      * @param array $data      Data to be filtered
      *
@@ -190,11 +172,9 @@ class tx_mklib_util_TCA
      */
     public static function eleminateNonTcaColumnsByTable($table, array $data)
     {
-        global $TCA;
-
-        return tx_mklib_util_Array::removeNotIn(
+        return tx_rnbase_util_Arrays::removeNotIn(
             $data,
-            empty($TCA[$table]['columns']) ? [] : array_keys($TCA[$table]['columns'])
+            empty($GLOBALS['TCA'][$table]['columns']) ? [] : array_keys($GLOBALS['TCA'][$table]['columns'])
         );
     }
 
@@ -286,53 +266,6 @@ class tx_mklib_util_TCA
     public static function getTransOrigDiffSourceField($tableName, $default = null)
     {
         return self::getCtrlField($tableName, 'transOrigDiffSourceField', $default);
-    }
-
-    /**
-     * Taken from tx_div!
-     * Loads TCA additions of other extensions.
-     *
-     * Your extension may depend on fields that are added by other
-     * extensions. For reasons of performance parts of the TCA are only
-     * loaded on demand. To ensure that the extended TCA is loaded for
-     * the extensions yours depends you can apply this function.
-     *
-     * @author      Franz Holzinger
-     *
-     * @param   array       extension keys which have TCA additions to load
-     * @param   bool     force include
-     *
-     * @TODO this won't work in TYPO3 8.x
-     */
-    public static function loadTcaAdditions($ext_keys, $force = false)
-    {
-        global $_EXTKEY, $TCA;
-        //Merge all ext_keys
-        if (is_array($ext_keys)) {
-            for ($i = 0; $i < sizeof($ext_keys); ++$i) {
-                if ($force || !array_key_exists($ext_keys[$i], self::$tcaAdditionsLoaded)) {
-                    //Include the ext_table
-                    $_EXTKEY = $ext_keys[$i];
-                    include tx_rnbase_util_Extensions::extPath($ext_keys[$i], 'ext_tables.php');
-                    self::$tcaAdditionsLoaded[$ext_keys[$i]] = 1;
-                }
-            }
-        }
-    }
-
-    /**
-     * Liefert Wizard-Daten für die TCA.
-     *
-     * @param string $sTable
-     * @param array  $options
-     *
-     * @return array
-     *
-     * @deprecated use Tx_Rnbase_Utility_TcaTool::getWizards
-     */
-    public static function getWizards($sTable, array $options = [])
-    {
-        return Tx_Rnbase_Utility_TcaTool::getWizards($sTable, $options);
     }
 
     /**
@@ -454,8 +387,4 @@ class tx_mklib_util_TCA
 
         return tx_rnbase_util_TSFAL::getMediaTCA($ref, $options);
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TCA.php'];
 }

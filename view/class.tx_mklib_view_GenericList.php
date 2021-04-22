@@ -25,7 +25,7 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
     public function createOutput($template, &$viewData, &$configurations, &$formatter)
     {
         //View-Daten abholen
-        $items = &$viewData->offsetGet('items');
+        $items = $viewData->offsetGet('items');
         $confId = $this->getController()->getExtendedConfId();
 
         $itemPath = $this->getItemPath($configurations, $confId);
@@ -80,8 +80,4 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
 
         return $subpart;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/view/class.tx_mklib_view_GenericList.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/view/class.tx_mklib_view_GenericList.php'];
 }

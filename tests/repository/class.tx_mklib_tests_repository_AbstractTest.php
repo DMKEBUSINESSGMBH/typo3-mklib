@@ -29,21 +29,6 @@
  */
 class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCase
 {
-    protected function setUp()
-    {
-        if (empty($GLOBALS['TCA']['tx_mklib_wordlist'])) {
-            tx_mklib_srv_Wordlist::loadTca();
-            $GLOBALS['TCA']['tx_mklib_wordlist']['test'] = true;
-        }
-    }
-
-    protected function tearDown()
-    {
-        if (!empty($GLOBALS['TCA']['tx_mklib_wordlist']['test'])) {
-            unset($GLOBALS['TCA']['tx_mklib_wordlist']['test']);
-        }
-    }
-
     /**
      * @group unit
      * @dataProvider getOptions
@@ -87,7 +72,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
         $method->setAccessible(true);
 
         self::assertInstanceOf(
-            'tx_mklib_search_Wordlist',
+            'tx_mklib_search_StaticCountries',
             $method->invoke($repository),
             'falsche wrapper Klasse'
         );
@@ -100,7 +85,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     {
         $repository = $this->getRepositoryMock();
 
-        $expectedModel = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 123]);
+        $expectedModel = tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', ['uid' => 123]);
 
         self::assertEquals(
             $expectedModel,
@@ -133,7 +118,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
         $method->setAccessible(true);
 
         self::assertEquals(
-            'tx_mklib_model_WordlistEntry',
+            'tx_mklib_model_StaticCountry',
             $method->invoke($repository),
             'falsche wrapper Klasse'
         );
@@ -144,13 +129,14 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
      */
     public function testSearchCallsSearcherCorrect()
     {
+        $GLOBALS['TCA']['static_countries'] = [];
         $repository = $this->getRepositoryMock(['getSearcher']);
 
         $fields = ['someField' => 1];
         $options = ['enablefieldsbe' => 1];
 
         $searcher = $this->getMock(
-            'tx_mklib_search_Wordlist',
+            'tx_mklib_search_StaticCountries',
             ['search']
         );
 
@@ -606,7 +592,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
 
         $repository->expects(self::any())
             ->method('getSearchClass')
-            ->will(self::returnValue('tx_mklib_search_Wordlist'));
+            ->will(self::returnValue('tx_mklib_search_StaticCountries'));
 
         return $repository;
     }

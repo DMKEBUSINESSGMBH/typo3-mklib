@@ -139,7 +139,3 @@ class tx_mklib_tests_util_MiscToolsTest extends tx_rnbase_tests_BaseTestCase
         self::assertTrue(is_int($val), 'Es wurde kein Integer geliefert.');
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscToolsTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_MiscToolsTest.php'];
-}

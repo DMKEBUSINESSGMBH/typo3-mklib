@@ -117,11 +117,11 @@ class tx_mklib_util_TS
         $sDomainKey = 'plugin.'
     ) {
         // rootlines der pid auslesen
-        $sysPageObj = tx_rnbase_util_TYPO3::getSysPage();
-        $aRootLine = $sysPageObj->getRootLine(
+        $aRootLine = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Utility\RootlineUtility::class,
             // wenn ein alias übergeben wurde, müssen wir uns die uid besorgen
             is_numeric($mPageUid) ? intval($mPageUid) : $sysPageObj->getPageIdFromAlias($mPageUid)
-        );
+        )->get();
 
         // ts für die rootlines erzeugen
         /* @var $tsObj \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
@@ -157,8 +157,4 @@ class tx_mklib_util_TS
 
         return $configurations;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_TS.php'];
 }

@@ -56,20 +56,6 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals('tx_mklib_model_Currency', get_class($oCurrency));
     }
 
-    public function testGetFormattedCurrency()
-    {
-        self::markTestIncomplete(
-            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
-        );
-
-        $oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();
-
-        self::assertEquals('54.587,96 €', $oSrv->getFormattedCurrency('54587.957', false));
-        self::assertEquals('5,78 &euro;', $oSrv->getFormattedCurrency('5.7825', true));
-        self::assertEquals('6,00 €', $oSrv->getFormattedCurrency('6', false));
-        self::assertEquals('-3,60 &euro;', $oSrv->getFormattedCurrency('-3.6'));
-    }
-
     /**
      * Prüft ob richtig gerundet wird.
      */
@@ -155,8 +141,4 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
             __LINE__ => ['country' => 'AT', 'vatregno' => 'ATU123456ASDFGH', 'expected' => false],
         ];
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_FinanceTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/srv/class.tx_mklib_tests_srv_FinanceTest.php'];
 }

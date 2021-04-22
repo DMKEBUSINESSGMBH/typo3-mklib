@@ -203,25 +203,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
         return parent::doQuery($query);
     }
 
-    /**
-     * Läd die TCA für eine Tabelle.
-     * Optional kann geprüft werden, ob eine Spalte in der TCA für diese Tabelle existiert.
-     *
-     * @TODO: Änderung an der TCA durch fremde Extensions berücksichtigen.
-     * Vor dem aufruf muss tx_mklib_util_TCA::loadTcaAdditions(array('extkey')); aufgerufen werden.
-     *
-     * @param string $sTable
-     * @param string $sField false if no field check is needed
-     *
-     * @return bool returns true if field exists
-     *
-     * @deprecated Wird nicht mehr benötigt
-     */
-    private function loadTCA($sTable, $sField = false)
-    {
-        return (!$sField || ($sField && is_array($GLOBALS['TCA'][$sTable]['columns'][$sField]['config']))) ? true : false;
-    }
-
     /* *** ************ *** *
      * *** MM FUNCTIONS ***
      * *** ************ *** */
@@ -240,10 +221,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      */
     public function mmExists($sTable, $sField, $sLocalId, $iForeignId)
     {
-        if (!$this->loadTCA($sTable)) {
-            return false;
-        }
-
         $sMmTable = $this->mmGetTable($sTable, $sField);
 
         $where = implode(
@@ -275,10 +252,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      */
     public function mmSelectForeign($sTable, $sField, $sLocalId, array $options = [])
     {
-        if (!$this->loadTCA($sTable)) {
-            return false;
-        }
-
         $sMmTable = $this->mmGetTable($sTable, $sField);
         $sForeignTable = $this->mmGetTable($sTable, $sField, 'foreign_table');
         $where = implode(' AND ', $this->mmGetData($sTable, $sField, $sLocalId, false, true));
@@ -307,10 +280,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      */
     public function mmCreate($sTable, $sField, $sLocalId, $iForeignId)
     {
-        if (!$this->loadTCA($sTable)) {
-            return false;
-        }
-
         // Der mm Eintrag existiert bereits
         if ($this->mmExists($sTable, $sField, $sLocalId, $iForeignId)) {
             return true;
@@ -335,10 +304,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      */
     private function mmGetTable($sTable, $sField, $sCF = 'MM')
     {
-        if (!$this->loadTCA($sTable)) {
-            return false;
-        }
-
         return $GLOBALS['TCA'][$sTable]['columns'][$sField]['config'][$sCF];
     }
 
@@ -357,10 +322,6 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
      */
     private function mmGetData($sTable, $sField, $sLocalId = false, $iForeignId = false, $bWhere = false)
     {
-        if (!$this->loadTCA($sTable)) {
-            return false;
-        }
-
         $aFieldConfig = $GLOBALS['TCA'][$sTable]['columns'][$sField]['config'];
 
         $sMmTable = $aFieldConfig['MM'];
@@ -532,8 +493,4 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
 
         return $affectedRows;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/Classes/Database/Connection.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/Classes/Database/Connection.php'];
 }

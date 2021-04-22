@@ -109,23 +109,6 @@ class tx_mklib_util_MiscTools
     }
 
     /**
-     * IP-based Access restrictions.
-     *
-     * @TODO: in util_dev auslagern!?
-     *
-     * @param string $remoteAddress
-     * @param string $devIPmask
-     *
-     * @return bool
-     *
-     * @deprecated use tx_rnbase_util_Network::isDevelopmentIp
-     */
-    public static function isDevIpMask($remoteAddress = '', $devIPmask = '')
-    {
-        return tx_rnbase_util_Network::isDevelopmentIp($remoteAddress, $devIPmask);
-    }
-
-    /**
      * workaround for HTTP authorization in CGI environment.
      *
      * Requires Redirect in .htaccess:
@@ -143,8 +126,4 @@ class tx_mklib_util_MiscTools
                 );
         }
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mkmarketplace/util/class.tx_mklib_util_MiscTools.php'];
 }

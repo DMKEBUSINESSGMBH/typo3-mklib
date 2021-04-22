@@ -12,10 +12,6 @@ if (!defined('TYPO3_MODE')) {
 
 $_EXTKEY = 'mklib';
 
-if (!tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_EXTKEY] = ['EXT:'.$_EXTKEY.'/cli/class.tx_mklib_cli_main.php', '_CLI_'.$_EXTKEY];
-}
-
 require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'scheduler/ext_localconf.php';
 require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/ext_localconf.php';
 

@@ -86,7 +86,3 @@ class tx_mklib_tests_mod1_util_SearchBuilderTest extends tx_rnbase_tests_BaseTes
         self::assertEmpty($fields, 'fields ist nicht korrekt');
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilderTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilderTest.php'];
-}

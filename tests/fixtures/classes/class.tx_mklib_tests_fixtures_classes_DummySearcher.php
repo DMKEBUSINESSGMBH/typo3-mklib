@@ -66,7 +66,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
      *
      * @return array
      */
-    protected function getDecoratorColumns(&$oDecorator)
+    protected function getDecoratorColumns($oDecorator)
     {
         return [
                 'uid' => [
@@ -90,8 +90,4 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
     {
         return ['WORDLIST.uid'];
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_Regions.php'];
 }

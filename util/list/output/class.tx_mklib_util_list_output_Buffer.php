@@ -55,7 +55,3 @@ class tx_mklib_util_list_output_Buffer implements tx_mklib_util_list_output_Inte
         }
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/list/output/class.tx_mklib_util_list_output_Buffer.php'];
-}

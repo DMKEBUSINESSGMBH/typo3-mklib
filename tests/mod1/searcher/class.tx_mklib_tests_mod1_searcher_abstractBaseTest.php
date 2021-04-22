@@ -46,8 +46,6 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
         self::markTestIncomplete('Creating default object from empty value');
         $GLOBALS['LANG']->lang = 'default';
 
-        tx_mklib_srv_Wordlist::loadTca();
-
         $this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         $this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher', $this->mod);
         $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
@@ -549,8 +547,4 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
 
         return $label;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilderTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/mod1/util/class.tx_mklib_tests_mod1_util_SearchBuilderTest.php'];
 }

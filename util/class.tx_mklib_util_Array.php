@@ -98,21 +98,6 @@ class tx_mklib_util_Array
     }
 
     /**
-     * Entfernt alle Keys welche nicht in needle vorhanden sind.
-     *
-     * @param array $data   Zu filternde Daten
-     * @param array $needle Enthält die erlaubten Keys
-     *
-     * @return array
-     *
-     * @deprecated use tx_rnbase_util_Arrays::removeNotIn instead
-     */
-    public static function removeNotIn(array $data, array $needle)
-    {
-        return tx_rnbase_util_Arrays::removeNotIn($data, $needle);
-    }
-
-    /**
      * Prüft ob ein oder mehrere Werte in einem Array vorhanden sind.
      *
      * @author 2011 mwagner
@@ -233,8 +218,4 @@ class tx_mklib_util_Array
 
         return $matches ? $matches[1] : $variableName;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Array.php'];
 }

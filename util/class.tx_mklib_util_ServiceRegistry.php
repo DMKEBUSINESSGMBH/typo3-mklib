@@ -41,16 +41,6 @@ class tx_mklib_util_ServiceRegistry
     /**
      * Return wordlist service.
      *
-     * @return tx_mklib_srv_Wordlist
-     */
-    public static function getWordlistService()
-    {
-        return tx_rnbase_util_Misc::getService(self::$extKey, 'wordlist');
-    }
-
-    /**
-     * Return wordlist service.
-     *
      * @return tx_mklib_srv_Finance
      */
     public static function getFinanceService()
@@ -73,8 +63,4 @@ class tx_mklib_util_ServiceRegistry
     {
         return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountryZones');
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_ServiceRegistry.php'];
 }

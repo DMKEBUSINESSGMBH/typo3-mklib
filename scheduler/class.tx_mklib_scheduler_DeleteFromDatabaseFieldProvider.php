@@ -76,7 +76,3 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider extends tx_mklib_schedu
         ];
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabaseFieldProvider.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_DeleteFromDatabaseFieldProvider.php'];
-}

@@ -524,7 +524,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 
             return '';
         }
-        $columns = $this->getColumns($this->getDecorator($this->getModule(), $options));
+        $columns = $this->getDecoratorColumns($this->getDecorator($this->getModule(), $options));
         list($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
             $items,
             $columns,
@@ -566,21 +566,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * @deprecated bitte getDecoratorColumns nutzen
-     */
-    protected function getColumns(&$oDecorator)
-    {
-        return $this->getDecoratorColumns($oDecorator);
-    }
-
-    /**
      * Liefert die Spalten für den Decorator.
      *
      * @param tx_mklib_mod1_decorator_Base $oDecorator
      *
      * @return array
      */
-    protected function getDecoratorColumns(&$oDecorator)
+    protected function getDecoratorColumns($oDecorator)
     {
         $columns = [];
         $this
@@ -761,8 +753,4 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     {
         return '<p><strong>###LABEL_NO_'.strtoupper($this->getSearcherId()).'_FOUND###</strong></p><br/>';
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_abstractBase.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/mod1/searcher/class.tx_mklib_mod1_searcher_abstractBase.php'];
 }

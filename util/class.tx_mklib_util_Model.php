@@ -40,15 +40,15 @@ class tx_mklib_util_Model
      *
      * @author 2011 hbochmann
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model
+     * @param Tx_Rnbase_Domain_Model_DataInterface   $model
      * @param string                                 $textField  | das feld, welches den text enthält
      * @param unknown_type                           $wordCount  | die anzahl der worte nach denen abgeschnitten wird
      * @param bool                                   $bStripTags Html vor dem Zerschneiden entfernen?
      */
-    public static function splitTextIntoTitleAndRest(Tx_Rnbase_Domain_Model_RecordInterface $model, $textField = 'text', $wordCount = 3, $bStripTags = false)
+    public static function splitTextIntoTitleAndRest(Tx_Rnbase_Domain_Model_DataInterface $model, $textField = 'text', $wordCount = 3, $bStripTags = false)
     {
         //Html vorher entfernen? Wenn ja werden auch überflüssige Leerzeichen entfernt. aus "  " wird " "
-        $sText = ($bStripTags) ? preg_replace('/\s\s+/', ' ', strip_tags($model->record[$textField])) : $model->record[$textField];
+        $sText = ($bStripTags) ? preg_replace('/\s\s+/', ' ', strip_tags($model->getProperty($textField))) : $model->getProperty($textField);
         //nur wenn der text noch nicht aufgesplittet wurde, sprich alles schon vorher einmal aufgerufen wurde
         $textExploded = explode(' ', $sText); //anhand des Leerzeichens trennen
         foreach ($textExploded as $key => $value) {//Wörter in array mit ersten 3 Worten und Rest trennen
@@ -56,10 +56,10 @@ class tx_mklib_util_Model
             $tempText[$newKey][] = $value;
         }
         //strings wieder durch leerzeichen getrennt zusammensetzen
-        $model->record['titletext'] = implode(' ', $tempText['titletext']);
+        $model->setProperty('titletext', implode(' ', $tempText['titletext']));
         //gab es überhaupt mehr Wörter
         if (!empty($tempText['restaftertitle'])) {
-            $model->record['restaftertitle'] = implode(' ', $tempText['restaftertitle']);
+            $model->setProperty('restaftertitle', implode(' ', $tempText['restaftertitle']));
         }
     }
 
@@ -77,11 +77,11 @@ class tx_mklib_util_Model
      * @param bool                                   $bStripTags | Html vorher entfernen?
      * @param string                                 $suffix     für das neue Feld
      */
-    public static function getShortenedText(Tx_Rnbase_Domain_Model_RecordInterface $model, $textField = 'text', $charCount = 150, $bStripTags = false, $suffix = 'shortened')
+    public static function getShortenedText(Tx_Rnbase_Domain_Model_DataInterface $model, $textField = 'text', $charCount = 150, $bStripTags = false, $suffix = 'shortened')
     {
         //Html vorher entfernen?
-        $sText = ($bStripTags) ? strip_tags($model->record[$textField]) : $model->record[$textField];
-        $model->record[$textField.$suffix] = tx_mklib_util_String::crop($sText, $charCount);
+        $sText = ($bStripTags) ? strip_tags($model->getProperty($textField)) : $model->getProperty($textField);
+        $model->setProperty($textField.$suffix, tx_mklib_util_String::crop($sText, $charCount));
     }
 
     /**
@@ -134,8 +134,4 @@ class tx_mklib_util_Model
 
         return $oInstance;
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Model.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Model.php'];
 }

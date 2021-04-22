@@ -96,7 +96,3 @@ class tx_mklib_util_StaticCache
         unset(self::$staticCache[$extKey][$key]);
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_StaticCache.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_StaticCache.php'];
-}

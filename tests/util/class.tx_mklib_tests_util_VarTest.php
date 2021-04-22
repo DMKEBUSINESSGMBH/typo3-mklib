@@ -65,7 +65,3 @@ class tx_mklib_tests_util_VarTest extends tx_rnbase_tests_BaseTestCase
         self::assertFalse(tx_mklib_util_Var::isFalseVal(1));
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_VarTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_VarTest.php'];
-}

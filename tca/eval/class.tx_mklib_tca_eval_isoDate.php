@@ -71,7 +71,3 @@ LH;
         return $matches[1].'-'.$matches[2].'-'.$matches[3];
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_isoDate.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tca/eval/class.tx_mklib_tca_eval_isoDate.php'];
-}

@@ -100,16 +100,6 @@ class tx_mklib_util_Session
     }
 
     /**
-     * @deprecated use tx_mklib_util_Session::areCookiesActivated
-     *
-     * @return bool
-     */
-    public static function areCookiesActivatedInFrontend()
-    {
-        return self::areCookiesActivated();
-    }
-
-    /**
      * Diese Methode funktioniert nur wenn der aktuelle Request kein POST
      * Request ist. Wenn es ein POST Request ist, dann einfach vor dem
      * absenden mit JS einen Cookie setzen und ggf. noch checkedIfCookiesAreActivated=1
@@ -153,8 +143,4 @@ class tx_mklib_util_Session
         $GLOBALS['TSFE']->fe_user->sesData = [];
         $GLOBALS['TSFE']->fe_user->fetchUserSession();
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Session.php'];
 }

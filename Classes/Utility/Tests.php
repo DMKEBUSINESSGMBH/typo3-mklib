@@ -94,7 +94,7 @@ class Tests
     public static function storeExtConf($sExtKey = 'mklib', $bOverwrite = false)
     {
         if (!isset(self::$aExtConf[$sExtKey]) || $bOverwrite) {
-            self::$aExtConf[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$sExtKey];
+            self::$aExtConf[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey];
         }
     }
 
@@ -108,7 +108,7 @@ class Tests
     public static function restoreExtConf($sExtKey = 'mklib')
     {
         if (isset(self::$aExtConf[$sExtKey])) {
-            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$sExtKey] = self::$aExtConf[$sExtKey];
+            $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey] = self::$aExtConf[$sExtKey];
 
             return true;
         }
@@ -127,7 +127,7 @@ class Tests
     public static function setExtConfVar($sCfgKey, $sCfgValue, $sExtKey = 'mklib')
     {
         // aktuelle Konfiguration auslesen
-        $extConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$sExtKey]);
+        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey];
         // wenn keine Konfiguration existiert, legen wir eine an.
         if (!is_array($extConfig)) {
             $extConfig = [];
@@ -135,7 +135,7 @@ class Tests
         // neuen Wert setzen
         $extConfig[$sCfgKey] = $sCfgValue;
         // neue Konfiguration zurückschreiben
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$sExtKey] = serialize($extConfig);
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey] = $extConfig;
     }
 
     /**
@@ -496,16 +496,6 @@ class Tests
     }
 
     /**
-     * @param string $extKey
-     *
-     * @deprecated use self::prepareTSFE()
-     */
-    public static function simulateFrontendEnviroment($extKey = 'mklib')
-    {
-        self::prepareTSFE(['force' => true]);
-    }
-
-    /**
      * @param string $pdfPath
      *
      * @return string
@@ -518,8 +508,4 @@ class Tests
             file_get_contents($pdfPath)
         );
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/class.tx_mklib_tests_Util.php'];
 }

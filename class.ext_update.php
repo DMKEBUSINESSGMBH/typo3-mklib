@@ -72,8 +72,3 @@ class ext_update extends abstract_ext_update
         return '<p><big><strong>Import done.</strong></big></p>';
     }
 }
-
-// Include extension?
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php'];
-}

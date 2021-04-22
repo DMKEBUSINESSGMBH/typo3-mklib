@@ -263,7 +263,3 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 // 		return $array[$this->getName()];
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/xml/class.tx_mklib_util_xml_Element.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/xml/class.tx_mklib_util_xml_Element.php'];
-}

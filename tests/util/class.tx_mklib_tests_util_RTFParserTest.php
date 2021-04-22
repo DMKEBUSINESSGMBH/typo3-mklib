@@ -100,7 +100,3 @@ class tx_mklib_tests_util_RTFParserTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals('Wolfgang, 58 J., bin###SPECIALCHAR_)### e. netter Polizist, freundl. u. hilfsber., leider verw. u. suche e. liebensw. Frau, der ich viell. f&uuml;rs ganze Leben "Handschellen" anlegen darf. Ich freue mich auf Ihren Anruf. Tel. 0371/3367765 o. Post &uuml;. Inst. Katrin, Bergstr. 64, 09113 ;Chemnitz. ###SPECIALCHAR_*###', $rtfParser->parse(), 'Der geparste text ist falsch. Vielleicht Magic Quotes ausgeschaltet oder Ähnliches?');
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_RTFParserTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_RTFParserTest.php'];
-}

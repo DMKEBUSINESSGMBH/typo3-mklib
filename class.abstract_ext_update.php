@@ -65,7 +65,7 @@ abstract class abstract_ext_update
      */
     private function getDestEncoding()
     {
-        return tx_rnbase_parameters::getPostOrGetParameter('dest_encoding');
+        return \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('dest_encoding');
     }
 
     /**
@@ -83,7 +83,7 @@ abstract class abstract_ext_update
         if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
             $content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
         } else {
-            if (tx_rnbase_parameters::getPostOrGetParameter($updateKey)) {
+            if (\Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($updateKey)) {
                 if (true === ($ret = $this->queryDB($updateKey))) {
                     $content .= $this->getSuccessMsg();
                 } else {
@@ -262,9 +262,4 @@ abstract class abstract_ext_update
      * @return string
      */
     abstract protected function getSuccessMsg();
-}
-
-// Include extension?
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/class.ext_update.php'];
 }

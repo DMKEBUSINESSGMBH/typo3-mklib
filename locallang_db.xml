@@ -21,12 +21,6 @@
             <label index="plugin.mklib.flexform.tab.TSSetup">TS-Setup</label>
             <label index="plugin.mklib.flexform.tssetup">plugin.tx_mklib.</label>
 
-            <!-- TCA tx_mklib_wordlist -->
-            <label index="tx_mklib_wordlist">Wordlist</label>
-            <label index="tx_mklib_wordlist.blacklisted">explicitly forbidden</label>
-            <label index="tx_mklib_wordlist.whitelisted">explicitly allowed</label>
-            <label index="tx_mklib_wordlist.word">Word(s)</label>
-
             <!-- TCA static_countries -->
             <label index="static_countries.zipcode_rule">zip code rule</label>
             <label index="static_countries.zipcode_length">zip code length</label>
@@ -40,12 +34,6 @@
             <label index="plugin.mklib.label">MK Bibliothek</label>
 
             <label index="please_choose">==bitte wählen==</label>
-
-            <!-- TCA tx_mklib_wordlist -->
-            <label index="tx_mklib_wordlist">Wortliste</label>
-            <label index="tx_mklib_wordlist.blacklisted">explizit verboten</label>
-            <label index="tx_mklib_wordlist.whitelisted">explizit erlaubt</label>
-            <label index="tx_mklib_wordlist.word">Wort(e)</label>
 
             <!-- TCA static_countries -->
             <label index="static_countries.zipcode_rule">Postleitzahl-Regel</label>

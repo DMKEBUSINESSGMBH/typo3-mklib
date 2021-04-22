@@ -302,7 +302,3 @@ class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals(' ', tx_mklib_util_String::removeMultipleWhitespaces('   '));
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_StringTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_StringTest.php'];
-}

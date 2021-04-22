@@ -133,7 +133,3 @@ class tx_mklib_tests_util_DateTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals(count($daysUnique), count($days), 'Es wurden doppelte Tage erzeugt.');
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_DateTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_DateTest.php'];
-}

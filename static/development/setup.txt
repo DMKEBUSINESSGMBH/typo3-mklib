@@ -4,33 +4,33 @@ config.admPanel = 0
 ### Werte für eingeloggte BE-User setzen zur Entwicklung
 
 ### Admintool aktivieren
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:admin = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('admin') = 1]
     config.admPanel = 1
     config.no_cache = 1
     config.linkVars := addToList(admin)
-[global]
+[END]
 
 ### Nutzung von Cache unterdrücken
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nc = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('nc') = 1]
     config.no_cache = 1
     config.linkVars := addToList(nc)
-[global]
+[END]
 
 ### Realurl unterdrücken
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nru = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('nru') = 1]
     config.tx_realurl_enable = 0
     config.no_cache = 1
     config.linkVars := addToList(nru)
-[global]
+[END]
 
 ### debug-Variable kann zum durchschleifen bei Debugausgaben aus Code benutzt werden
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:debug = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('debug') = 1]
     config.linkVars := addToList(debug)
     config.no_cache = 1
-[global]
+[END]
 
 ### Scriptmerger
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:sm = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('sm') = 1]
     config.no_cache = 1
     ### Scriptmerger_configurieren
     #plugin.tx_scriptmerger >
@@ -41,8 +41,8 @@ config.admPanel = 0
         compressJs = 1
         concatenateJs = 1
     }
-[global]
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nsm = 1]
+[END]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('nsm') = 1]
     plugin.tx_scriptmerger >
     config {
         linkVars := addToList(sm)
@@ -52,36 +52,36 @@ config.admPanel = 0
         concatenateJs = 0
     }
     config.no_cache = 1
-[global]
+[END]
 
 ### php-ids
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:phpids = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('phpids') = 1]
     config.linkVars := addToList(phpids)
     page.8.General.debug_mode = 1
     config.no_cache = 1
-[global]
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:phpids = 2]
+[END]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('phpids') = 2]
     config.linkVars := addToList(phpids)
     page.8 >
     config.no_cache = 1
-[global]
+[END]
 
 ##CSS deaktivieren
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nocss = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('nocss') = 1]
     config.linkVars := addToList(nocss)
     page.includeCSS >
     config.no_cache = 1
-[global]
+[END]
 
 ##JS deaktivieren
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:nojs = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('nojs') = 1]
     config.linkVars := addToList(nojs)
     page.includeJS >
     config.no_cache = 1
-[global]
+[END]
 
 ### Grid einblenden zur Prüfung des Layouts
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:grid = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('grid') = 1]
     config.linkVars := addToList(grid)
     config.no_cache = 1
     page.includeCSS.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.css
@@ -108,32 +108,32 @@ config.admPanel = 0
 /*]]>*/
 </script>
 )
-[global]
+[END]
 
 ### sourceopt - format as less as possible
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP : sourceopt = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('sourceopt') = 1]
     config.sourceopt {
         formatHtml = 4
         formatHtml.tabSize = 2
     }
     config.linkVars := addToList(sourceopt)
     config.no_cache = 1
-[global]
+[END]
 ### deactivate sourceopt
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP : nosourceopt = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('nosourceopt') = 1]
     config {
         sourceopt.enabled = 0
         linkVars := addToList(nosourceopt)
         no_cache = 1
     }
-[global]
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:showprint = 1]
+[END]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('showprint') = 1]
     config.linkVars := addToList(GP:showprint)
     config.no_cache = 1
-[global]
+[END]
 
 ### Aktuelle url anzeigen, wenn z.B. Aufruf aus BE erfolgt.
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:showUrl = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('showUrl') = 1]
     page.1 = TEXT
     page.1 {
         value =
@@ -144,5 +144,5 @@ config.admPanel = 0
         typolink.forceAbsoluteUrl = 1
     }
     config.no_cache = 1
-[global]
+[END]
 

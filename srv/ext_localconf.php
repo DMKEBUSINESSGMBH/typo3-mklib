@@ -12,21 +12,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 tx_rnbase_util_Extensions::addService(
-    $_EXTKEY,
-    'mklib' /* sv type */ ,
-    'tx_mklib_srv_Wordlist' /* sv key */ ,
-    [
-    'title' => 'Wordlist services', 'description' => 'Service functions for handling wordlists',
-    'subtype' => 'wordlist',
-    'available' => true, 'priority' => 50, 'quality' => 50,
-    'os' => '', 'exec' => '',
-    'classFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/class.tx_mklib_srv_Wordlist.php',
-    'className' => 'tx_mklib_srv_Wordlist',
-    ]
-);
-
-tx_rnbase_util_Extensions::addService(
-    $_EXTKEY,
+    'mklib',
     'mklib' /* sv type */ ,
     'tx_mklib_srv_Finance' /* sv key */ ,
     [
@@ -34,13 +20,13 @@ tx_rnbase_util_Extensions::addService(
     'subtype' => 'finance',
     'available' => true, 'priority' => 50, 'quality' => 50,
     'os' => '', 'exec' => '',
-    'classFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/class.tx_mklib_srv_Finance.php',
+    'classFile' => tx_rnbase_util_Extensions::extPath('mklib').'srv/class.tx_mklib_srv_Finance.php',
     'className' => 'tx_mklib_srv_Finance',
     ]
 );
 
 tx_rnbase_util_Extensions::addService(
-    $_EXTKEY,
+    'mklib',
     'mklib' /* sv type */ ,
     'tx_mklib_srv_StaticCountries' /* sv key */ ,
     [
@@ -48,13 +34,13 @@ tx_rnbase_util_Extensions::addService(
     'subtype' => 'staticCountries',
     'available' => true, 'priority' => 50, 'quality' => 50,
     'os' => '', 'exec' => '',
-    'classFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/class.tx_mklib_srv_StaticCountries.php',
+    'classFile' => tx_rnbase_util_Extensions::extPath('mklib').'srv/class.tx_mklib_srv_StaticCountries.php',
     'className' => 'tx_mklib_srv_StaticCountries',
     ]
 );
 
 tx_rnbase_util_Extensions::addService(
-    $_EXTKEY,
+    'mklib',
     'mklib' /* sv type */ ,
     'tx_mklib_srv_StaticCountryZones' /* sv key */ ,
     [
@@ -62,7 +48,7 @@ tx_rnbase_util_Extensions::addService(
     'subtype' => 'staticCountryZones',
     'available' => true, 'priority' => 50, 'quality' => 50,
     'os' => '', 'exec' => '',
-    'classFile' => tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/class.tx_mklib_srv_StaticCountryZones.php',
+    'classFile' => tx_rnbase_util_Extensions::extPath('mklib').'srv/class.tx_mklib_srv_StaticCountryZones.php',
     'className' => 'tx_mklib_srv_StaticCountryZones',
     ]
 );

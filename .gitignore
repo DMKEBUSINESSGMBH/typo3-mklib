@@ -4,3 +4,4 @@
 /.idea
 /.Build
 /.php_cs.cache
+/composer.lock

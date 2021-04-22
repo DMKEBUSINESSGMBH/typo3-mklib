@@ -37,16 +37,6 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     protected $lastRun = false;
 
     /**
-     * Was used as the scheduler options before making the extension compatible with TYPO3 9. But as private
-     * class variables can't be serialized anymore (@see __makeUp() method) this variable can't be used anymore.
-     *
-     * @var array
-     *
-     * @deprecated can be removed including the __wakeup() method when support for TYPO3 8.7 and below is dropped.
-     */
-    private $options = [];
-
-    /**
      * The options of the scheduler task.
      *
      * @var array
@@ -61,23 +51,6 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     protected function getExtKey()
     {
         return 'mklib';
-    }
-
-    /**
-     * After the update to TYPO3 9 the private $options variable can't be serialized and therefore not saved in the
-     * database anymore as our parent implemented the __sleep() method to return the class variables which should be
-     * serialized/saved. So to keep the possibly saved $options we need to move them to $schedulerOptions if present.
-     * Otherwise the $options will be lost after the scheduler is executed/saved.
-     */
-    public function __wakeup()
-    {
-        if (method_exists(parent::class, '__wakeup')) {
-            parent::__wakeup();
-        }
-
-        if ($this->options && !$this->schedulerOptions) {
-            $this->schedulerOptions = $this->options;
-        }
     }
 
     /**
@@ -220,7 +193,9 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     public function getAdditionalInformation($info = '')
     {
         $info .= CRLF.' Options: ';
-        $info .= tx_rnbase_util_Arrays::arrayToLogString($this->getOptions(), [], 64);
+        foreach ($this->getOptions() as $key => $value) {
+            $info .= CRLF.$key.': '.$value;
+        }
 
         return $info;
     }
@@ -338,8 +313,4 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
         $options = ['ignoremaillock' => true];
         tx_rnbase_util_Misc::sendErrorMail($email, get_class($this), $exception, $options);
     }
-}
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_Generic.php']) {
-    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/mklib/scheduler/class.tx_mklib_scheduler_Generic.php'];
 }

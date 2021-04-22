@@ -39,7 +39,7 @@ class tx_mklib_util_ExtensionConfiguration
      */
     protected function getExtensionCfgValue($key)
     {
-        return tx_rnbase_configurations::getExtensionCfgValue(
+        return \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
             $this->extKey,
             $key
         );

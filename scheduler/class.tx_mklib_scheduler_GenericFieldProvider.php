@@ -83,8 +83,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
         foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
             // Initialize extra field value
             if (empty($taskInfo[$sKey])) {
-                $action = \tx_rnbase_util_TYPO3::isTYPO90OrHigher() ?
-                    $schedulerModule->getCurrentAction() : $schedulerModule->CMD;
+                $action = $schedulerModule->getCurrentAction();
                 if ('edit' == $action) {
                     // In case of edit, and editing a test task, set to internal value if not data was submitted already
                     $taskInfo[$sKey] = $task->getOption($sKey);

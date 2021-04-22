@@ -36,7 +36,3 @@ class tx_mklib_exception_InvalidConfiguration extends Exception
      */
     protected $code = 1;
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_InvalidConfiguration.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/exception/class.tx_mklib_exception_InvalidConfiguration.php'];
-}

@@ -54,11 +54,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
         $repo = $this->getRepository();
 
         // check the repo interface
-        if (!(
-            $repo instanceof Tx_Rnbase_Domain_Repository_InterfaceSearch ||
-            // tx_mklib_interface_Repository is deprecated!
-            $repo instanceof tx_mklib_interface_Repository
-        )) {
+        if (!($repo instanceof Tx_Rnbase_Domain_Repository_InterfaceSearch)) {
             throw new RuntimeException('the repository "'.get_class($repo).'" '.'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!', intval(ERROR_CODE_MKLIB.'1'));
         }
 
@@ -133,11 +129,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
     /**
      * Liefert die Service Klasse, welche das Suchen übernimmt.
      *
-     * @return tx_mklib_interface_Repository
+     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
      */
     abstract protected function getRepository();
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/action/class.tx_mklib_action_ListBase.php'];
 }

@@ -14,20 +14,7 @@ class tx_mklib_util_Encoding
      */
     public static function getTypo3Encoding()
     {
-        if (tx_rnbase_util_TYPO3::isTYPO90OrHigher()) {
-            // charset is always utf-8 since TYPO3 9
-            $charset = 'utf-8';
-        } else {
-            if (TYPO3_MODE == 'FE') {
-                $charset = $GLOBALS['TSFE']->renderCharset;
-            } elseif (is_object($GLOBALS['LANG'])) { // BE assumed:
-                $charset = $GLOBALS['LANG']->charSet;
-            } else { // best guess
-                $charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
-            }
-        }
-
-        return $charset;
+        return 'utf-8';
     }
 
     /**
@@ -148,9 +135,4 @@ class tx_mklib_util_Encoding
 
         return $encoding;
     }
-}
-
-if (defined('TYPO3_MODE')
-    && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Encoding.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_Encoding.php'];
 }

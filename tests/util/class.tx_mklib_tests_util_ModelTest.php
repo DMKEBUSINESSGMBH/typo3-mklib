@@ -40,26 +40,26 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
     public function testSplitTextIntoTitleAndRest()
     {
         $aRecord = ['text' => 'ein ganz langer text mit vielen worten', 'htmltext' => 'ein <span> ganz </span> langer text mit vielen worten'];
-        $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', $aRecord);
+        $model = tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', $aRecord);
         tx_mklib_util_Model::splitTextIntoTitleAndRest($model, 'text', 2);
 
-        self::assertEquals('ein ganz', $model->record['titletext'], 'field:titletext nicht korrekt');
-        self::assertEquals('langer text mit vielen worten', $model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+        self::assertEquals('ein ganz', $model->getProperty('titletext'), 'field:titletext nicht korrekt');
+        self::assertEquals('langer text mit vielen worten', $model->getProperty('restaftertitle'), 'field:restaftertitle nicht korrekt');
 
         tx_mklib_util_Model::splitTextIntoTitleAndRest($model, 'text', 3);
 
-        self::assertEquals('ein ganz langer', $model->record['titletext'], 'field:titletext nicht korrekt');
-        self::assertEquals('text mit vielen worten', $model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+        self::assertEquals('ein ganz langer', $model->getProperty('titletext'), 'field:titletext nicht korrekt');
+        self::assertEquals('text mit vielen worten', $model->getProperty('restaftertitle'), 'field:restaftertitle nicht korrekt');
 
         tx_mklib_util_Model::splitTextIntoTitleAndRest($model, 'htmltext', 3, false);
 
-        self::assertEquals('ein <span> ganz', $model->record['titletext'], 'field:titletext nicht korrekt');
-        self::assertEquals('</span> langer text mit vielen worten', $model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+        self::assertEquals('ein <span> ganz', $model->getProperty('titletext'), 'field:titletext nicht korrekt');
+        self::assertEquals('</span> langer text mit vielen worten', $model->getProperty('restaftertitle'), 'field:restaftertitle nicht korrekt');
 
         tx_mklib_util_Model::splitTextIntoTitleAndRest($model, 'htmltext', 3, true);
 
-        self::assertEquals('ein ganz langer', $model->record['titletext'], 'field:titletext nicht korrekt');
-        self::assertEquals('text mit vielen worten', $model->record['restaftertitle'], 'field:restaftertitle nicht korrekt');
+        self::assertEquals('ein ganz langer', $model->getProperty('titletext'), 'field:titletext nicht korrekt');
+        self::assertEquals('text mit vielen worten', $model->getProperty('restaftertitle'), 'field:restaftertitle nicht korrekt');
     }
 
     /**
@@ -73,21 +73,21 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
             'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
             'htmltext' => 'ein ganz langer text mit vielen worten und <span>noch viel viel</span> viel viel mehr',
         ];
-        $model = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', $aRecord);
+        $model = tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', $aRecord);
         tx_mklib_util_Model::getShortenedText($model, 'othertext', 50);
-        self::assertEquals('ein ganz langer text mit vielen worten und noch viel', $model->record['othertextshortened'], 'field:othertextshortened nicht korrekt');
+        self::assertEquals('ein ganz langer text mit vielen worten und noch viel', $model->getProperty('othertextshortened'), 'field:othertextshortened nicht korrekt');
 
         tx_mklib_util_Model::getShortenedText($model);
 
-        self::assertEquals('ein ganz langer text mit vielen worten und noch viel viel viel viel mehr', $model->record['textshortened'], 'field:textshortened nicht korrekt');
+        self::assertEquals('ein ganz langer text mit vielen worten und noch viel viel viel viel mehr', $model->getProperty('textshortened'), 'field:textshortened nicht korrekt');
 
         tx_mklib_util_Model::getShortenedText($model, 'htmltext', 50, false);
 
-        self::assertEquals('ein ganz langer text mit vielen worten und <span>noch', $model->record['htmltextshortened'], 'field:htmltextshortened nicht korrekt');
+        self::assertEquals('ein ganz langer text mit vielen worten und <span>noch', $model->getProperty('htmltextshortened'), 'field:htmltextshortened nicht korrekt');
 
         tx_mklib_util_Model::getShortenedText($model, 'htmltext', 50, true);
 
-        self::assertEquals('ein ganz langer text mit vielen worten und noch viel', $model->record['htmltextshortened'], 'field:htmltextshortened nicht korrekt');
+        self::assertEquals('ein ganz langer text mit vielen worten und noch viel', $model->getProperty('htmltextshortened'), 'field:htmltextshortened nicht korrekt');
     }
 
     public function testUniqueModelArray()
@@ -113,8 +113,4 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
 
         \DMK\Mklib\Utility\Tests::getFixturePath('dummyTCA.php');
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_ModelTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_ModelTest.php'];
 }

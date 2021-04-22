@@ -643,7 +643,3 @@ class tx_mklib_util_httprequest_Response
         return new tx_mklib_util_httprequest_Response($code, $headers, $body, $message, $version);
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_Response.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_httprequest_Response.php'];
-}

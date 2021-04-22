@@ -88,7 +88,3 @@ class tx_mklib_tests_util_RTFGeneratorTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals('{\rtf1\ansi\deff0{\fonttbl{\f0\fcharset0\fnil Arial;}{\f1\fcharset0\fnil Wingdings;}}{\f0\fs22\dn0 }{\f1\fs25\dn0 (}{\f0\fs22\dn0}{\b\f0\fs22\dn0 Das ist ein sch\\\'f6ner Testtext. }{\f0\fs22\dn0 Auch mit }{\f1\fs25\dn0 )}{\f0\fs22\dn0 verschiedenen \\\'dfonderzeichen und \\\'c4hnlichem. Sogar einem }{\f1\fs25\dn0 *}{\f0\fs22\dn0}}', $sRTFText, 'Der generierte Text ist falsch.');
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_RTFGeneratorTest.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_RTFGeneratorTest.php'];
-}

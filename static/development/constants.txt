@@ -8,7 +8,7 @@ GRID.rowheight = 0
 
 
 ##CSS für Print zeigen
-[globalVar = TSFE : beUserLogin > 0] && [globalVar = GP:showprint = 1]
+[backend.user.isLoggedIn] && [request.getPageArguments().get('showprint') = 1]
     cssAll = print
     cssPrint = all
-[global]
+[END]

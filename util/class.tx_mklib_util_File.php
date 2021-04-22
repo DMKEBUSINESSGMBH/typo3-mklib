@@ -268,7 +268,12 @@ class tx_mklib_util_File
         // entfernt überflüssige slashes
         $sPath = self::trimSlashes($sPath);
         // beginnenden slash hinzufügen
-        if (!self::isAbsWebPath($sPath) && ((TYPO3_OS == 'WIN' && ':/' != substr($sPath, 1, 2)) || TYPO3_OS != 'WIN')) {
+        if (!self::isAbsWebPath($sPath)
+            && (
+                (\TYPO3\CMS\Core\Core\Environment::isWindows() && ':/' != substr($sPath, 1, 2))
+                || !\TYPO3\CMS\Core\Core\Environment::isWindows()
+            )
+        ) {
             $sPath = ('/' != $sPath[0] ? '/' : '').$sPath;
         }
         if (!$directoryCheck || self::getInstance()->isDirectory($sPath)) {
@@ -526,8 +531,4 @@ class tx_mklib_util_File
     {
         return file_exists($filepath) && is_file($filepath);
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_File.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/util/class.tx_mklib_util_File.php'];
 }

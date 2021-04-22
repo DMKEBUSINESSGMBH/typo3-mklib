@@ -98,7 +98,3 @@ class tx_mklib_tests_util_FlexFormTest extends tx_rnbase_tests_BaseTestCase
 FF;
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_FlexFormTest.php']) {
-    require_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/tests/util/class.tx_mklib_tests_util_FlexFormTest.php'];
-}

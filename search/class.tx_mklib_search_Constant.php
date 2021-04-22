@@ -85,7 +85,3 @@ abstract class tx_mklib_search_Constant extends tx_rnbase_util_SearchBase
         return $join;
     }
 }
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Constant.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/search/class.tx_mklib_search_Constant.php'];
-}

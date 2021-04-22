@@ -44,11 +44,11 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
             $aResults = [];
         } else {
             $aResults = [
-                0 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 1]),
-                1 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 2]),
-                2 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 3]),
-                3 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 4]),
-                4 => tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 5]),
+                0 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 1]),
+                1 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 2]),
+                2 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 3]),
+                3 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 4]),
+                4 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 5]),
             ];
         }
         //sortieren?
@@ -58,7 +58,7 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
 
         //versteckte zurück geben?
         if (1 == $GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden']) {
-            $aResults[5] = tx_rnbase::makeInstance('tx_mklib_model_WordlistEntry', ['uid' => 6, 'hidden' => 1]);
+            $aResults[5] = tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 6, 'hidden' => 1]);
         }
 
         if ($options['count']) {
@@ -75,10 +75,6 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
      */
     public function getSearchClass()
     {
-        return 'tx_mklib_search_Wordlist';
+        return 'tx_mklib_search_StaticCountries';
     }
-}
-
-if (defined('TYPO3_MODE') && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php']) {
-    include_once $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/mklib/srv/class.tx_mklib_srv_Wordlist.php'];
 }
