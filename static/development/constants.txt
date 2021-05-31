@@ -8,7 +8,7 @@ GRID.rowheight = 0
 
 
 ##CSS für Print zeigen
-[backend.user.isLoggedIn && request.getPageArguments().get('showprint') == 1]
+[backend.user.isLoggedIn && request.getPageArguments() && request.getPageArguments().get('showprint') == 1]
     cssAll = print
     cssPrint = all
 [END]
