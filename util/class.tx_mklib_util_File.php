@@ -360,7 +360,7 @@ class tx_mklib_util_File
         $path = self::getServerPath($path);
         $path = str_replace(
             self::removeStartingSlash(self::getDocumentRoot()),
-            TYPO3_OS == 'WIN' ? '/' : '',
+            \TYPO3\CMS\Core\Core\Environment::isWindows() ? '/' : '',
             $path
         );
 
