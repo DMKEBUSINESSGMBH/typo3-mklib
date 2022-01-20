@@ -103,7 +103,7 @@ class tx_mklib_util_TS
     /**
      * load ts from page.
      *
-     * @param mixed  $mPageUid   alias or uid
+     * @param mixed  $mPageUid   page uid
      * @param string $sExtKey
      * @param string $sDomainKey
      *
@@ -119,19 +119,18 @@ class tx_mklib_util_TS
         // rootlines der pid auslesen
         $aRootLine = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             \TYPO3\CMS\Core\Utility\RootlineUtility::class,
-            // wenn ein alias übergeben wurde, müssen wir uns die uid besorgen
-            is_numeric($mPageUid) ? intval($mPageUid) : $sysPageObj->getPageIdFromAlias($mPageUid)
+            intval($mPageUid)
         )->get();
 
         // ts für die rootlines erzeugen
         /* @var $tsObj \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
         $tsObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getExtendedTypoScriptTemplateServiceClass());
         $tsObj->tt_track = 0;
-        $tsObj->init();
         $tsObj->runThroughTemplates($aRootLine);
         $tsObj->generateConfig();
 
         if (isset($GLOBALS['TSFE'])) {
+            $GLOBALS['TSFE']->tmpl = $tsObj;
             // tsfe config setzen (wird in der tx_rnbase_configurations gebraucht (language))
             $GLOBALS['TSFE']->tmpl->setup = array_merge(
                 is_array($GLOBALS['TSFE']->config) ? $GLOBALS['TSFE']->config : [],
