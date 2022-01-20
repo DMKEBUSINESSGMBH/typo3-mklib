@@ -6,9 +6,8 @@ GRID.gutterwidth = 20
 GRID.pagetopmargin = 10
 GRID.rowheight = 0
 
-
 ##CSS für Print zeigen
-[backend.user.isLoggedIn && request.getPageArguments() && request.getPageArguments().get('showprint') == 1]
+[backend.user.isLoggedIn && request.getQueryParams()['showprint'] == 1]
     cssAll = print
     cssPrint = all
 [END]
