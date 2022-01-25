@@ -3,7 +3,7 @@
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_model_StaticCountryZone extends tx_rnbase_model_base
+class tx_mklib_model_StaticCountryZone extends Sys25\RnBase\Domain\Model\BaseModel
 {
     /**
      * @var array
@@ -19,7 +19,7 @@ class tx_mklib_model_StaticCountryZone extends tx_rnbase_model_base
     {
         // Instanzieren, wenn nicht im Cache oder ein Record übergeben wurde.
         if (is_array($rowOrUid) || !isset(self::$instances[$rowOrUid])) {
-            $item = tx_rnbase::makeInstance('tx_mklib_model_StaticCountryZone', $rowOrUid);
+            $item = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_StaticCountryZone', $rowOrUid);
             // Nur das erzeugte Model zurückgeben
             if (is_array($rowOrUid)) {
                 return $item;

@@ -31,7 +31,7 @@
 /**
  * Model util tests.
  */
-class tx_mklib_tests_util_MiscToolsTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_MiscToolsTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * setUp() = Extension-Konfiguration speichern.

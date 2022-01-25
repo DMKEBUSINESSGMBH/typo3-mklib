@@ -31,7 +31,7 @@
 /**
  * RTFParser util tests.
  */
-class tx_mklib_tests_util_RTFParserTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_RTFParserTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * Enter description here ...
@@ -52,7 +52,7 @@ class tx_mklib_tests_util_RTFParserTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testParseReturnsCorrectPlainText()
     {
-        $rtfParser = tx_rnbase::makeInstance(
+        $rtfParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_util_RTFParser',
             '{\rtf1\ansi\deff0{\fonttbl{\f0\fcharset0\fnil Arial;}}{\info{\version1}{\creatim\yr2011\mo02\dy25\hr16\min10\sec0}}{\f0\fs21\dn0 }{\b\f0\fs21\dn0 Das ist unsere }{\f0\fs21\dn0 erste Kleinanzeige}}'
         );
@@ -64,7 +64,7 @@ class tx_mklib_tests_util_RTFParserTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testParseReturnsCorrectPlainTextInHtmlMode()
     {
-        $rtfParser = tx_rnbase::makeInstance(
+        $rtfParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_util_RTFParser',
             '{\rtf1\ansi\deff0{\fonttbl{\f0\fcharset0\fnil Arial;}}{\info{\version1}{\creatim\yr2011\mo02\dy25\hr16\min10\sec0}}{\f0\fs21\dn0 }{\b\f0\fs21\dn0 Das ist unsere }{\f0\fs21\dn0 erste Kleinanzeige}}'
         );
@@ -77,7 +77,7 @@ class tx_mklib_tests_util_RTFParserTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testParseReturnsCorrectPlainTextInXmlMode()
     {
-        $rtfParser = tx_rnbase::makeInstance(
+        $rtfParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_util_RTFParser',
             '{\rtf1\ansi\deff0{\fonttbl{\f0\fcharset0\fnil Arial;}}{\info{\version1}{\creatim\yr2011\mo02\dy25\hr16\min10\sec0}}{\f0\fs21\dn0 }{\b\f0\fs21\dn0 Das ist unsere }{\f0\fs21\dn0 erste Kleinanzeige}}'
         );
@@ -92,7 +92,7 @@ class tx_mklib_tests_util_RTFParserTest extends tx_rnbase_tests_BaseTestCase
     {
         self::markTestIncomplete('Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)');
 
-        $rtfParser = tx_rnbase::makeInstance(
+        $rtfParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_util_RTFParser',
             '{\rtf1\ansi\deff0{\fonttbl{\f0\fnil Arial;}{\f29\fnil Wingdings;}}{\colortbl\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue127;\red0\green127\blue127;\red0\green127\blue0;\red127\green0\blue127;\red127\green0\blue0;\red127\green127\blue0;\red127\green127\blue127;\red192\green192\blue192}{\info{\title Frau}{\author Ilona Schr}{\creatim\yr0\mo2\dy3\hr2\min15\sec31}{\revtim\yr0\mo10\dy25\hr15\min14\sec0}{\printim\yr0\mo10\dy12\hr10\min35\sec0}{\version1}{\vern332832}}\paperw11898\paperh16840\margl566\margr6637\margt566\margb566\deftab850\pard\qj\li0\fi0\ri1037{\b\f0\fs22\cf0\up0\dn0 Wolfgang, 58 J., bin}{\f29\fs25\dn0 )}{\f0\fs22\cf0\up0\dn0  e. netter }\qj{\f0\fs22\cf0\up0\dn0 Polizist, freundl. u. hilfsber., leider }\qj{\f0\fs22\cf0\up0\dn0 verw. u. suche e. liebensw. Frau, der }\qj{\f0\fs22\cf0\up0\dn0 ich viell. f\'fcrs ganze Leben }\qj{\f0\fs22\cf0\up0\dn0 "Handschellen" anlegen darf. Ich }\qj{\f0\fs22\cf0\up0\dn0 freue mich auf Ihren Anruf. Tel. }\qj{\f0\fs22\cf0\up0\dn0 0371/3367765 o. Post \'fc. Inst. Katrin, }\qj{\f0\fs22\cf0\up0\dn0 Bergstr. 64, 09113 ;}}Chemnitz.} {\f29\fs25\dn0 *}}',
             true

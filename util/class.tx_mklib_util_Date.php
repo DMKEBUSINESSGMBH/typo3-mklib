@@ -46,7 +46,7 @@ class tx_mklib_util_Date
                         7 => 'Sunday',
                     ];
     // @TODO: wär das nicht besser in der locallang.xml aufgehoben!?
-    // tx_rnbase_configurations::getLL()
+    // \Sys25\RnBase\Configuration\Processor::getLL()
     public static $aGermanDays = [
                         1 => 'Montag',
                         2 => 'Dienstag',

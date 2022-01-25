@@ -35,7 +35,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     protected $languageBackup;
 
@@ -79,7 +79,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
         self::assertInstanceOf(
             'Tx_Mklib_Database_Connection',
             $this->callInaccessibleMethod(
-                tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection'),
+                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection'),
                 'getDatabaseConnection'
             ),
             'falsche Klasse'
@@ -95,7 +95,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
             'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
-        $scheduler = tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection');
+        $scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection');
         $scheduler->setOptions($this->options);
         $options = $scheduler->getOptions();
 
@@ -175,9 +175,9 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
         );
 
         self::assertEquals(
-            'tx_rnbase_util_Misc',
+            \Sys25\RnBase\Utility\Misc::class,
             $this->callInaccessibleMethod(
-                tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection'),
+                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection'),
                 'getMiscUtility'
             ),
             'falsche Klasse'
@@ -193,7 +193,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends tx_rnbase_
             'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
         );
 
-        $scheduler = tx_rnbase::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection');
+        $scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_scheduler_SchedulerTaskFailDetection');
         $failedTasks = [
             0 => [
                 'serialized_task_object' => serialize($scheduler),

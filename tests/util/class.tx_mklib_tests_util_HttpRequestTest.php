@@ -31,7 +31,7 @@
 /**
  * Http Request Object Tests.
  */
-class tx_mklib_tests_util_HttpRequestTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_HttpRequestTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @group integration

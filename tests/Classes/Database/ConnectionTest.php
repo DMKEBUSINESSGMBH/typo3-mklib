@@ -27,7 +27,7 @@
 /**
  * DB util tests.
  */
-class Tx_Mklib_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
+class Tx_Mklib_Database_ConnectionTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @expectedException \Exception
@@ -37,7 +37,7 @@ class Tx_Mklib_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDeleteWithUnknownModeThrowsException()
     {
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->delete('', '', 123);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('', '', 123);
     }
 
     /**
@@ -48,7 +48,7 @@ class Tx_Mklib_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDeleteWithModeHiddenThrowsExceptionIfNoDisableColumnInTca()
     {
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_HIDE);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_HIDE);
     }
 
     /**
@@ -59,7 +59,7 @@ class Tx_Mklib_Database_ConnectionTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testDeleteWithModeSoftDeleteThrowsExceptionIfNoDeleteColumnInTca()
     {
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE);
     }
 
     /**

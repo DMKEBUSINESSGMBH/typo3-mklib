@@ -23,11 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_mod1_Util');
+
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_mod1_util_SelectorTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @var tx_mklib_mod1_decorator_Base
@@ -56,9 +56,9 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
 
     public function setUp()
     {
-        $this->oSelector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+        $this->oSelector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_util_Selector');
         self::markTestIncomplete('Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0');
-        $this->oMod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
+        $this->oMod = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         $this->oSelector->init($this->oMod);
         $this->sModuleKey = 'testSearch';
 
@@ -67,7 +67,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
         $_GET['SET'] = null;
 
         //für cli
-        $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
+        $GLOBALS['TBE_TEMPLATE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Template\Override\DocumentTemplate::class);
         $GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
         //sprache auf default setzen damit wir die richtigen labels haben
@@ -269,7 +269,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetCrDateReturnArrayFormatsDatesCorrect()
     {
-        $selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+        $selector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_util_Selector');
 
         $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getCrDateReturnArray');
         $method->setAccessible(true);
@@ -287,7 +287,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetCrDateReturnArrayFormatsDatesCorrectIfValuesEmpty()
     {
-        $selector = tx_rnbase::makeInstance('tx_mklib_mod1_util_Selector');
+        $selector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_util_Selector');
 
         $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getCrDateReturnArray');
         $method->setAccessible(true);
@@ -306,7 +306,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
     public function testGetDateFieldByKeyWhenNoPost()
     {
         $key = 'test';
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
+        $formTool = $this->getMock(\Sys25\RnBase\Backend\Form\ToolBox::class, ['createDateInput']);
         $formTool
             ->expects(self::once())
             ->method('createDateInput')
@@ -324,7 +324,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
             ->with($key)
             ->will(self::returnValue('testValue'));
 
-        $selector->init(tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
+        $selector->init(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
 
         $out = ['field' => ''];
 
@@ -342,7 +342,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
     {
         $key = 'test';
         $_POST[$key] = 'valueFromPost';
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
+        $formTool = $this->getMock(\Sys25\RnBase\Backend\Form\ToolBox::class, ['createDateInput']);
         $formTool
             ->expects(self::once())
             ->method('createDateInput')
@@ -358,7 +358,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
             ->expects(self::never())
             ->method('getValueFromModuleData');
 
-        $selector->init(tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
+        $selector->init(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod'));
 
         $out = ['field' => ''];
 
@@ -374,7 +374,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorReturnsCorrectTimestampArray()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
+        $formTool = $this->getMock(\Sys25\RnBase\Backend\Form\ToolBox::class, ['createDateInput']);
         $formTool
             ->expects(self::any())
             ->method('createDateInput');
@@ -405,7 +405,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorReturnsCorrectTimestampArrayWhenPostValuesSet()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
+        $formTool = $this->getMock(\Sys25\RnBase\Backend\Form\ToolBox::class, ['createDateInput']);
         $formTool
             ->expects(self::any())
             ->method('createDateInput');
@@ -444,7 +444,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorReturnsCorrectInputs()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
+        $formTool = $this->getMock(\Sys25\RnBase\Backend\Form\ToolBox::class, ['createDateInput']);
         $formTool
             ->expects(self::at(0))
             ->method('createDateInput')
@@ -484,7 +484,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
         $_POST['test_from'] = '2013-07-08';
         $_POST['test_to'] = '2013-07-09';
 
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
+        $formTool = $this->getMock(\Sys25\RnBase\Backend\Form\ToolBox::class, ['createDateInput']);
         $formTool
             ->expects(self::at(0))
             ->method('createDateInput')
@@ -521,7 +521,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testShowDateRangeSelectorSetModuleDataCorrect()
     {
-        $formTool = $this->getMock('tx_rnbase_util_FormTool', ['createDateInput']);
+        $formTool = $this->getMock(\Sys25\RnBase\Backend\Form\ToolBox::class, ['createDateInput']);
         $formTool
             ->expects(self::any())
             ->method('createDateInput');

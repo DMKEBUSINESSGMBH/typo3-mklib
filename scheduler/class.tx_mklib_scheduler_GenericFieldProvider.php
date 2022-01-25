@@ -28,7 +28,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Scheduler_FieldProvider
+abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 {
     protected $taskInfo;
     protected $task;
@@ -68,12 +68,12 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
      * Gets additional fields to render in the form to add/edit a task.
      *
      * @param array                                                     &$taskInfo       Values of the fields from the add/edit task form
-     * @param Tx_Rnbase_Scheduler_Task                                  $task            The task object being edited. Null when adding a task!
+     * @param \TYPO3\CMS\Scheduler\Task\AbstractTask                                  $task            The task object being edited. Null when adding a task!
      * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      *
      * @return array
      */
-    protected function _getAdditionalFields(array &$taskInfo, $task, $schedulerModule)
+    public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
     {
         $this->taskInfo = &$taskInfo;
         $this->task = &$task;
@@ -130,7 +130,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
      *
      * @return bool TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
      */
-    protected function _validateAdditionalFields(array &$submittedData, $schedulerModule)
+    public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule)
     {
         $bError = false;
         foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
@@ -144,7 +144,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
 
             // Die Einzelnen validatoren anwenden.
             if (!$bMessage) {
-                foreach (tx_rnbase_util_Strings::trimExplode(',', $aOptions['eval']) as $sEval) {
+                foreach (\Sys25\RnBase\Utility\Strings::trimExplode(',', $aOptions['eval']) as $sEval) {
                     $sLabelKey = ($aOptions['label'] ? $aOptions['label'] : $sKey).'_eval_'.$sEval;
                     switch ($sEval) {
                         case 'required':
@@ -168,7 +168,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
                                 $aEmails = explode(',', $mValue);
                                 $bMessage = false;
                                 foreach ($aEmails as $sEmail) {
-                                    if (!tx_rnbase_util_Strings::validEmail($sEmail)) {
+                                    if (!\Sys25\RnBase\Utility\Strings::validEmail($sEmail)) {
                                         $bMessage = true;
                                     }
                                 }
@@ -190,7 +190,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
                             }
                             break;
                         case 'url':
-                            $bMessage = !tx_rnbase_util_Network::isValidUrl($mValue);
+                            $bMessage = !\Sys25\RnBase\Utility\Network::isValidUrl($mValue);
                             break;
                         default:
                             // wir prüfen auf eine eigene validator methode in der Kindklasse.
@@ -216,8 +216,8 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
             if ($bMessage) {
                 $sMessage = $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
                 $sMessage = $sMessage ? $sMessage : ucfirst($sKey).' has to eval '.$sEval.'.';
-                $flashMessageClass = tx_rnbase_util_Typo3Classes::getFlashMessageClass();
-                tx_rnbase_util_Misc::addFlashMessage($sMessage, '', $flashMessageClass::ERROR);
+                $flashMessageClass = \Sys25\RnBase\Utility\Typo3Classes::getFlashMessageClass();
+                \Sys25\RnBase\Utility\Misc::addFlashMessage($sMessage, '', $flashMessageClass::ERROR);
                 $bError = true;
                 continue;
             }
@@ -232,7 +232,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider extends Tx_Rnbase_Schedul
      * @param array             $submittedData An array containing the data submitted by the add/edit task form
      * @param tx_scheduler_Task $task          Reference to the scheduler backend module
      */
-    protected function _saveAdditionalFields(array $submittedData, Tx_Rnbase_Scheduler_Task $task)
+    public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
     {
         foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
             $task->setOption($sKey, $submittedData[$sKey]);

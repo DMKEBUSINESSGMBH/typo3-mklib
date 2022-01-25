@@ -5,7 +5,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_util_list_Marker extends tx_rnbase_util_ListMarker
+class tx_mklib_util_list_Marker extends \Sys25\RnBase\Frontend\Marker\ListMarkerInfo
 {
     public $output = null;
 
@@ -26,9 +26,9 @@ class tx_mklib_util_list_Marker extends tx_rnbase_util_ListMarker
      */
     public function renderNext($data)
     {
-        $data->record['roll'] = $this->rowRollCnt;
-        $data->record['line'] = $this->i; // Marker für aktuelle Zeilenummer
-        $data->record['totalline'] = $this->i + $this->totalLineStart + $this->offset; // Marker für aktuelle Zeilenummer der Gesamtliste
+        $data->setProperty('roll', $this->rowRollCnt);
+        $data->setProperty('line', $this->i); // Marker für aktuelle Zeilenummer
+        $data->setProperty('totalline', $this->i + $this->totalLineStart + $this->offset); // Marker für aktuelle Zeilenummer der Gesamtliste
         $this->handleVisitors($data);
         $part = $this->entryMarker->parseTemplate($this->info->getTemplate($data), $data, $this->formatter, $this->confId, $this->marker);
 
@@ -60,7 +60,7 @@ class tx_mklib_util_list_Marker extends tx_rnbase_util_ListMarker
      * @param string                    $markerClassname
      * @param string                    $confId
      * @param string                    $marker
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      * @param mixed                     $markerParams
      * @param int                       $offset
      *

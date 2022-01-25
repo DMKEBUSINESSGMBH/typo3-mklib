@@ -44,9 +44,10 @@ class Tx_Mkexample_Filter_Projects extends tx_mklib_filter_Sorter {
 
    /**
     * (non-PHPdoc)
-    * @see tx_rnbase_filter_BaseFilter::initFilter()
+    * @see \Sys25\RnBase\Frontend\Filter\BaseFilter::initFilter()
     */
-   protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId) {
+   protected function initFilter(&$fields, &$options, \Sys25\RnBase\Frontend\Request\RequestInterface $request)
+   {
       if(!$this->initSorting()) {
          return true;
       }

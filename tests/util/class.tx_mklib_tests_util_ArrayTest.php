@@ -31,7 +31,7 @@
 /**
  * Array util tests.
  */
-class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_ArrayTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * Prüfen ob alle leeren Elemente außer dem array gelöscht werden
@@ -75,9 +75,9 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
     public function testFieldsToArray()
     {
         $aArray = [
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 2, 'name' => 'Model Nr. 2']),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 6, 'name' => 'Model Nr. 6']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2, 'name' => 'Model Nr. 2']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'name' => 'Model Nr. 6']),
                     ];
         $aFields = tx_mklib_util_Array::fieldsToArray($aArray, 'name');
         self::assertTrue(is_array($aFields), 'No array given.');
@@ -115,9 +115,9 @@ class tx_mklib_tests_util_ArrayTest extends tx_rnbase_tests_BaseTestCase
     public function testFieldsToString()
     {
         $aArray = [
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 2, 'name' => 'Model Nr. 2']),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 6, 'name' => 'Model Nr. 6']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2, 'name' => 'Model Nr. 2']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'name' => 'Model Nr. 6']),
                     ];
         $sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
 

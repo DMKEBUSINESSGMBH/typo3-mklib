@@ -85,9 +85,9 @@ class tx_mklib_mod1_export_Handler
         $itemPath = $this->getItemPath($type);
 
         // Der Subpart für Debug-Ausgaben wird am ende ausgegeben
-        $debug = tx_rnbase_util_Templates::getSubpart($template, '###DEBUG###');
+        $debug = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart($template, '###DEBUG###');
         if ($debug) {
-            $template = tx_rnbase_util_Templates::substituteSubpart(
+            $template = \Sys25\RnBase\Frontend\Marker\Templates::substituteSubpart(
                 $template,
                 '###DEBUG###',
                 ''
@@ -103,7 +103,7 @@ class tx_mklib_mod1_export_Handler
         }
 
         /* @var $listBuilder tx_mklib_mod1_export_ListBuilder */
-        $listBuilder = tx_rnbase::makeInstance(
+        $listBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_mod1_export_ListBuilder'
         );
         $listBuilder->renderEach(
@@ -129,7 +129,7 @@ class tx_mklib_mod1_export_Handler
      */
     public function getCurrentExportType()
     {
-        $parameters = tx_rnbase_parameters::getPostAndGetParametersMerged('mklib');
+        $parameters = \Sys25\RnBase\Frontend\Request\Parameters::getPostAndGetParametersMerged('mklib');
         if (empty($parameters['export'])) {
             return false;
         }
@@ -157,7 +157,7 @@ class tx_mklib_mod1_export_Handler
      */
     public function parseTemplate($template)
     {
-        if (!tx_rnbase_util_BaseMarker::containsMarker($template, 'EXPORT_BUTTONS')) {
+        if (!\Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, 'EXPORT_BUTTONS')) {
             return $template;
         }
 
@@ -173,7 +173,7 @@ class tx_mklib_mod1_export_Handler
         $markerArray = [];
         $markerArray['###EXPORT_BUTTONS###'] = $buttons;
 
-        return tx_rnbase_util_Templates::substituteMarkerArrayCached(
+        return \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached(
             $template,
             $markerArray
         );
@@ -191,7 +191,7 @@ class tx_mklib_mod1_export_Handler
         static $infoSprite = false;
 
         if (false == $infoSprite) {
-            $infoSprite = tx_rnbase_mod_Util::getSpriteIcon(
+            $infoSprite = \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon(
                 'status-dialog-information'
             );
         }
@@ -207,7 +207,7 @@ class tx_mklib_mod1_export_Handler
         );
 
         if ($sprite) {
-            $sprite = tx_rnbase_mod_Util::getSpriteIcon($sprite);
+            $sprite = \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon($sprite);
         }
         $description = $configuration->get($confId.$type.'.description');
         if ($description) {
@@ -265,15 +265,15 @@ class tx_mklib_mod1_export_Handler
     /**
      * Liefert den Provider für die Listenausgabe.
      *
-     * @return tx_rnbase_util_IListProvider
+     * @return \Sys25\RnBase\Frontend\Marker\IListProvider
      */
     protected function getListProvider()
     {
         $provider = $this->getSearcher()->getInitialisedListProvider();
-        if (!$provider instanceof tx_rnbase_util_IListProvider) {
+        if (!$provider instanceof \Sys25\RnBase\Frontend\Marker\IListProvider) {
             $this->getModule()->addMessage(
                 'The provider "'.get_class($provider).'" has to implement'.
-                ' the interface tx_rnbase_util_IListProvider',
+                ' the interface \Sys25\RnBase\Frontend\Marker\IListProvider',
                 'Subpart not found',
                 2
             );
@@ -285,9 +285,9 @@ class tx_mklib_mod1_export_Handler
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     protected function getModule()
     {
@@ -308,10 +308,10 @@ class tx_mklib_mod1_export_Handler
         $confId = $this->getConfId().'types.'.$type.'.template.';
 
         // template laden
-        $absPath = tx_rnbase_util_Files::getFileAbsFileName(
+        $absPath = \Sys25\RnBase\Utility\Files::getFileAbsFileName(
             $configuration->get($confId.'template')
         );
-        $template = tx_rnbase_util_Network::getUrl($absPath);
+        $template = \Sys25\RnBase\Utility\Network::getUrl($absPath);
         if (!$template) {
             $this->getModule()->addMessage(
                 'Could not find the template "'.$absPath.'"'.
@@ -326,7 +326,7 @@ class tx_mklib_mod1_export_Handler
         // subpart optional auslesen
         $subpart = $configuration->get($confId.'subpart');
         if ($subpart) {
-            $template = tx_rnbase_util_Templates::getSubpart($template, $subpart);
+            $template = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart($template, $subpart);
             if (!$template) {
                 $this->getModule()->addMessage(
                     'Could not find the the subpart "'.$subpart.'"'.
@@ -341,7 +341,7 @@ class tx_mklib_mod1_export_Handler
 
         if ($configuration->getBool($confId.'callModules')) {
             $markerArray = $subpartArray = $wrappedSubpartArray = $params = [];
-            tx_rnbase_util_BaseMarker::callModules(
+            \Sys25\RnBase\Frontend\Marker\BaseMarker::callModules(
                 $template,
                 $markerArray,
                 $subpartArray,
@@ -349,7 +349,7 @@ class tx_mklib_mod1_export_Handler
                 $params,
                 $this->getConfigurations()->getFormatter()
             );
-            $template = tx_rnbase_util_Templates::substituteMarkerArrayCached(
+            $template = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached(
                 $template,
                 $markerArray,
                 $subpartArray,
@@ -372,9 +372,9 @@ class tx_mklib_mod1_export_Handler
         $configuration = $this->getConfigurations();
         $confId = $this->getConfId().'types.'.$type.'.template.';
         $class = $configuration->get($confId.'markerclass');
-        $class = $class ? $class : 'tx_rnbase_util_SimpleMarker';
-        if (!tx_rnbase::load($class)) {
-            $class = 'tx_rnbase_util_SimpleMarker';
+        $class = $class ? $class : \Sys25\RnBase\Frontend\Marker\SimpleMarker::class;
+        if (!class_exists($class)) {
+            $class = \Sys25\RnBase\Frontend\Marker\SimpleMarker::class;
         }
 
         return $class;
@@ -431,7 +431,7 @@ class tx_mklib_mod1_export_Handler
     /**
      * The config object.
      *
-     * @return tx_rnbase_configurations
+     * @return \Sys25\RnBase\Configuration\Processor
      */
     protected function getConfigurations()
     {
@@ -477,13 +477,13 @@ class tx_mklib_mod1_export_Handler
         $markerArr['###DEBUG_ITEMCOUNT###'] = 'N/A';
         // die anzahl der ausgegebenen Datensätze ermitteln.
         $provider = $this->getListProvider();
-        if ($provider instanceof tx_rnbase_util_ListProvider) {
+        if ($provider instanceof \Sys25\RnBase\Frontend\Marker\ListProvider) {
             $params = [$provider->fields, $provider->options];
             $params[1]['count'] = 1;
             $count = call_user_func_array($provider->searchCallback, $params);
             $markerArr['###DEBUG_ITEMCOUNT###'] = $count;
         }
-        $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArr);
+        $out = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArr);
         echo $out;
 
         return true;

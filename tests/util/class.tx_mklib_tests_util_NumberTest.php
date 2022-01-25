@@ -5,7 +5,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_util_NumberTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_NumberTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     private $oldLocal = null;
 

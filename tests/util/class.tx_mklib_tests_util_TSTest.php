@@ -31,7 +31,7 @@
 /**
  * Generic form view test.
  */
-class tx_mklib_tests_util_TSTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_TSTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     public function testGetPagesTsConfigLoadsTsAlwaysNewIfTsAdded()
     {
@@ -43,7 +43,7 @@ class tx_mklib_tests_util_TSTest extends tx_rnbase_tests_BaseTestCase
 
         self::assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
 
-        tx_rnbase_util_Extensions::addPageTSConfig(
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
             '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mklib/static/basic/setup.txt">'
         );
 

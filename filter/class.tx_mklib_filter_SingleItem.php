@@ -27,16 +27,16 @@
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-abstract class tx_mklib_filter_SingleItem extends tx_rnbase_filter_BaseFilter
+abstract class tx_mklib_filter_SingleItem extends \Sys25\RnBase\Frontend\Filter\BaseFilter
 {
     /**
      * (non-PHPdoc).
      *
-     * @see tx_rnbase_filter_BaseFilter::initFilter()
+     * @see \Sys25\RnBase\Frontend\Filter\BaseFilter::initFilter()
      */
-    protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
+    protected function initFilter(&$fields, &$options, \Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        $singleItemUid = $parameters->getInt($this->getParameterName());
+        $singleItemUid = $request->getParameters()->getInt($this->getParameterName());
         $fields[$this->getSearchAlias().'.uid'] = [OP_EQ_INT => $singleItemUid];
         $options['limit'] = 1;
 

@@ -28,7 +28,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_model_Page extends tx_rnbase_model_base
+class tx_mklib_model_Page extends Sys25\RnBase\Domain\Model\BaseModel
 {
     /**
      * @var array[tx_mklib_model_Page]
@@ -66,6 +66,6 @@ class tx_mklib_model_Page extends tx_rnbase_model_base
      */
     protected function getRepository()
     {
-        return tx_rnbase::makeInstance('tx_mklib_repository_Pages');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_repository_Pages');
     }
 }

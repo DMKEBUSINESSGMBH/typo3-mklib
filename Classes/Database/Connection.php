@@ -27,7 +27,7 @@
  *
  * @author Michael Wagner
  */
-class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
+class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
 {
     /**
      * @var int
@@ -343,7 +343,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
             // Anhand der Daten das WHERE aufbauen
             $where = [];
             foreach ($aData as $sField => $sValue) {
-                $where[] = $sMmTable.'.'.$sField.' = '.Tx_Rnbase_Database_Connection::getInstance()->fullQuoteStr($sValue, $sMmTable);
+                $where[] = $sMmTable.'.'.$sField.' = '.\Sys25\RnBase\Database\Connection::getInstance()->fullQuoteStr($sValue, $sMmTable);
             }
 
             return $where;
@@ -367,17 +367,17 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
     {
         if (-1 == $this->log) {
             // erst die Extension Konfiguration fragen!
-            $this->log = intval(tx_rnbase_configurations::getExtensionCfgValue('mklib', 'logDbHandler'));
+            $this->log = intval(\Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'logDbHandler'));
             if ($this->log) {
-                $this->log = tx_rnbase_util_Logger::isNoticeEnabled();
+                $this->log = \Sys25\RnBase\Utility\Logger::isNoticeEnabled();
             }
         }
         if ($this->log) {
             // ignore tables besorgen
             if (!is_array($this->ignoreTables)) {
-                $this->ignoreTables = tx_rnbase_util_Strings::trimExplode(
+                $this->ignoreTables = \Sys25\RnBase\Utility\Strings::trimExplode(
                     ',',
-                    tx_rnbase_configurations::getExtensionCfgValue('mklib', 'logDbIgnoreTables'),
+                    \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'logDbIgnoreTables'),
                     true
                 );
             }
@@ -435,7 +435,7 @@ class Tx_Mklib_Database_Connection extends Tx_Rnbase_Database_Connection
         // tabellenname ergänzen
         $msg .= '('.$tablename.')';
 
-        tx_rnbase_util_Logger::notice($msg, 'mklib', $data);
+        \Sys25\RnBase\Utility\Logger::notice($msg, 'mklib', $data);
 
         return true;
     }

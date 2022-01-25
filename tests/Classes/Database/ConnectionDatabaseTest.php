@@ -23,7 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
+
 /**
  * Tx_Mklib_Database_ConnectionDatabaseTest.
  *
@@ -31,7 +31,7 @@ tx_rnbase::load('tx_mklib_tests_DBTestCaseSkeleton');
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestCase
+class Tx_Mklib_Database_ConnectionDatabaseTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     private static $hooks = [];
 
@@ -88,11 +88,11 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
 
         $property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'log');
         $property->setAccessible(true);
-        $this->logBackup = $property->getValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'));
+        $this->logBackup = $property->getValue(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection'));
 
         $property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'ignoreTables');
         $property->setAccessible(true);
-        $this->ignoreTablesBackup = $property->getValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'));
+        $this->ignoreTablesBackup = $property->getValue(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection'));
     }
 
     /**
@@ -115,7 +115,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
 
         $property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'log');
         $property->setAccessible(true);
-        $property->setValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'), $this->logBackup);
+        $property->setValue(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection'), $this->logBackup);
 
         $this->restoreIgnoreTablesProperty();
     }
@@ -124,7 +124,7 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
     {
         $property = new ReflectionProperty('Tx_Mklib_Database_Connection', 'ignoreTables');
         $property->setAccessible(true);
-        $property->setValue(tx_rnbase::makeInstance('Tx_Mklib_Database_Connection'), $this->ignoreTablesBackup);
+        $property->setValue(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection'), $this->ignoreTablesBackup);
     }
 
     /**
@@ -143,9 +143,9 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
                 'bodytext' => 'Test!',
             ];
         Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(['before insert '.__METHOD__]);
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-        $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
+        $ttContent = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
 
         self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
         self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -174,9 +174,9 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
                 'bodytext' => 'Test!',
             ];
         Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(['before insert '.__METHOD__]);
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-        $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
+        $ttContent = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
 
         self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
         self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -201,9 +201,9 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
                 'deleted' => 0,
                 'bodytext' => 'Test!',
             ];
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doInsert('tt_content', $aValues);
 
-        $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
+        $ttContent = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
 
         self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
         self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -229,9 +229,9 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
                 'pid' => 256,
                 'bodytext' => 'geändert!',
             ];
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
-        $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
+        $ttContent = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
 
         self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
         self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');
@@ -262,9 +262,9 @@ class Tx_Mklib_Database_ConnectionDatabaseTest extends tx_rnbase_tests_BaseTestC
                 'bodytext' => 'geändert!',
             ];
         Tx_Mklib_Database_ConnectionDatabaseTestDevlog::devLog(['before update '.__METHOD__]);
-        tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doUpdate('tt_content', 'uid=20', $aValues);
 
-        $ttContent = tx_rnbase::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
+        $ttContent = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->doSelect('*', 'tt_content', ['enablefieldsoff' => true]);
 
         self::assertEquals(1, count($ttContent), 'tt_content wurde nicht in die Datenbank eingefügt!');
         self::assertEquals(20, $ttContent[0]['uid'], 'tt_content hat die Falsche UID!');

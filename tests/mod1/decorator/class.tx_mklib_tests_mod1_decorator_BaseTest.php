@@ -23,11 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_mod1_Util');
+
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_decorator_BaseTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     protected $backup = [];
 
@@ -224,16 +224,15 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends tx_rnbase_tests_BaseTestCas
      */
     protected function getDecoratorMock()
     {
-        $mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
+        $mod = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
         //zurücksetzen aus anderen Tests
         tx_mklib_tests_mod1_Util::unsetSorting($mod);
 
-        return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
     }
 
     protected function replaceForCliAndremoveVcAndFormToken($string)
     {
-        tx_rnbase::load('tx_mklib_tests_mod1_Util');
         tx_mklib_tests_mod1_Util::replaceForCli($string);
         tx_mklib_tests_mod1_Util::removeVcAndFormToken($string);
 

@@ -29,7 +29,7 @@
  *
  * @author Michael Wagner
  */
-class tx_mklib_srv_Finance extends Tx_Rnbase_Service_Base
+class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractService
 {
     /**
      * @return tx_mklib_model_Currency

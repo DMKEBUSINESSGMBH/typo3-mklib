@@ -23,12 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummySearcher');
-tx_rnbase::load('tx_mklib_tests_mod1_Util');
+
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @var tx_mklib_tests_fixtures_classes_DummySearcher
@@ -46,9 +45,9 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
         self::markTestIncomplete('Creating default object from empty value');
         $GLOBALS['LANG']->lang = 'default';
 
-        $this->mod = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
-        $this->searcher = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher', $this->mod);
-        $GLOBALS['TBE_TEMPLATE'] = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
+        $this->mod = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
+        $this->searcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummySearcher', $this->mod);
+        $GLOBALS['TBE_TEMPLATE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Template\Override\DocumentTemplate::class);
         $GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
         $GLOBALS['emptyTestResult'] = false;
@@ -203,7 +202,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends tx_rnbase_tests_Base
         $aResultList = $this->searcher->getResultList();
 
         //Daten im Modul korrekt?
-        $aModuleData = Tx_Rnbase_Backend_Utility::getModuleData([], tx_rnbase_parameters::getPostOrGetParameter('SET'), $this->mod->getName());
+        $aModuleData = \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData([], \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'), $this->mod->getName());
         self::assertEquals(['uid' => 'asc'], $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
         $result = $aResultList['table'];

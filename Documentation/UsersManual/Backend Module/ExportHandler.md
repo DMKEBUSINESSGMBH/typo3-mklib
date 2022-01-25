@@ -31,7 +31,7 @@ Example implementation
 ~~~~ {.sourceCode .php}
 protected function showSearch($template, $configurations, $formTool, &$markerArray) {
    /* @var $exportHandler tx_mklib_mod1_export_Handler */
-   $exportHandler = tx_rnbase::makeInstance(
+   $exportHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
          'tx_mklib_mod1_export_Handler', $this
    );
    // check for exports
@@ -45,7 +45,7 @@ protected function showSearch($template, $configurations, $formTool, &$markerArr
    $markerArray['###LIST###'] = $data['table'];
    $markerArray['###SIZE###'] = $data['totalsize'];
    $markerArray['###PAGER###'] = $data['pager'];
-   $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray);
+   $out = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArray);
    return $out;
 }
 ~~~~
@@ -68,7 +68,7 @@ mod {
                label = Excel
                ### description for tool tip when hovering over button. possible, too: ###LABEL_*
                description = Your descriptive text
-               ### a sprite icon known by TYPO3 @see tx_rnbase_mod_Util::debugSprites
+               ### a sprite icon known by TYPO3 @see \Sys25\RnBase\Backend\Utility\ModuleUtility::debugSprites
                spriteIcon = mimetypes-excel
                ### configuration for the template
                template {
@@ -85,7 +85,7 @@ mod {
                   ### item path Pfad. user for the configuration ID (lowercase)
                   ### and the marker name (uppercase). Default is item
                   itempath = data
-                  ### marker class, which renders the data. Default is tx_rnbase_util_SimpleMarker
+                  ### marker class, which renders the data. Default is \Sys25\RnBase\Frontend\Marker\SimpleMarker
                   markerclass = tx_mkextension_marker_Data
                }
                ### Header configuration. Is sent during exports.

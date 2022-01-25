@@ -83,7 +83,7 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function create(array $data)
     {
-        tx_rnbase_util_Debug::debug([
+        \Sys25\RnBase\Utility\Debug::debug([
             'creating a static country zone via the service can\'t be done.',
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
@@ -93,9 +93,9 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      *
      * @see tx_mklib_srv_Base::handleUpdate()
      */
-    public function handleUpdate(Tx_Rnbase_Domain_Model_RecordInterface $model, array $data, $where = '')
+    public function handleUpdate(\Sys25\RnBase\Domain\Model\RecordInterface $model, array $data, $where = '')
     {
-        tx_rnbase_util_Debug::debug([
+        \Sys25\RnBase\Utility\Debug::debug([
             'updating a static country zone via the service can\'t be done.',
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
@@ -105,9 +105,9 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      *
      * @see tx_mklib_srv_Base::handleDelete()
      */
-    public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
+    public function handleDelete(\Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
-        tx_rnbase_util_Debug::debug([
+        \Sys25\RnBase\Utility\Debug::debug([
             'deleting a static country zone via the service can\'t be done.',
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
@@ -119,7 +119,7 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
      */
     public function handleCreation(array $data)
     {
-        tx_rnbase_util_Debug::debug([
+        \Sys25\RnBase\Utility\Debug::debug([
             'creating a static country zone via the service can\'t be done.',
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }

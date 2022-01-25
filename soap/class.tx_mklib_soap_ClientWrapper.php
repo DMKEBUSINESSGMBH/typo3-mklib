@@ -103,7 +103,7 @@ class tx_mklib_soap_ClientWrapper
         $soapClient = $this->getSoapClient();
 
         if ($soapClient instanceof SoapClient) {
-            tx_rnbase_util_Logger::fatal(
+            \Sys25\RnBase\Utility\Logger::fatal(
                 'Access to Soap Interface failed: '.$exception->getMessage(),
                 'mklib',
                 [
@@ -115,7 +115,7 @@ class tx_mklib_soap_ClientWrapper
                 ]
             );
         } else {
-            tx_rnbase_util_Logger::fatal('Soap Client was not instanciated!', 'mklib');
+            \Sys25\RnBase\Utility\Logger::fatal('Soap Client was not instanciated!', 'mklib');
         }
     }
 

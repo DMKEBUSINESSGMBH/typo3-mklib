@@ -27,7 +27,7 @@
 /**
  * Model einer Konstante.
  */
-abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
+abstract class tx_mklib_model_Constant extends Sys25\RnBase\Domain\Model\BaseModel
 {
     /**
      * returns the alias1 of this constant.
@@ -36,7 +36,7 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
      */
     public function getAlias1()
     {
-        return $this->record['alias1'];
+        return $this->getProperty('alias1');
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
      */
     public function getAlias2()
     {
-        return $this->record['alias2'];
+        return $this->getProperty('alias2');
     }
 
     /**
@@ -56,7 +56,7 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
      */
     public function getName()
     {
-        return $this->record['name'];
+        return $this->getProperty('name');
     }
 
     /**
@@ -66,7 +66,7 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
      */
     public function getTitle()
     {
-        return $this->record['name'];
+        return $this->getProperty('name');
     }
 
     /**
@@ -76,6 +76,6 @@ abstract class tx_mklib_model_Constant extends tx_rnbase_model_base
      */
     public function getTypeUid()
     {
-        return (int) $this->record['type'];
+        return (int) $this->getProperty('type');
     }
 }

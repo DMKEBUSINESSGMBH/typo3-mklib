@@ -102,7 +102,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
     ) {
         foreach ($files as $file) {
             // read sql file content
-            $sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(tx_rnbase_util_Extensions::extPath($extKey, $file));
+            $sqlFilename = \Sys25\RnBase\Utility\Files::getFileAbsFileName(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey, $file));
             if (@is_file($sqlFilename)) {
                 \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); //alle statements importieren
             }
@@ -148,7 +148,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
         // fixtures laden
         if (count($this->importDataSet)) {
             foreach ($this->importDataSet as $fixturePath) {
-                $this->importDataSet(tx_rnbase_util_Files::getFileAbsFileName($fixturePath));
+                $this->importDataSet(\Sys25\RnBase\Utility\Files::getFileAbsFileName($fixturePath));
             }
         }
     }

@@ -10,9 +10,9 @@ Here a little example for a request with HTTPS, post parameters and SSL certific
 ~~~~ {.sourceCode .php}
 $url = 'https://example.de/tests/';
 $config = array(
-   'sslcainfo' => tx_rnbase_util_Files::getFileAbsFileName('EXT:mkmyext/Resources/Private/example.de.crt'),
+   'sslcainfo' => \Sys25\RnBase\Utility\Files::getFileAbsFileName('EXT:mkmyext/Resources/Private/example.de.crt'),
 );
-$request = tx_rnbase::makeInstance('tx_mklib_util_HttpRequest', $url, $config);
+$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_util_HttpRequest', $url, $config);
 $request->addParameter('_POST', $_POST);
 $request->setAuth('user', 'pass');
 $request->setMethod($request::METHOD_POST);

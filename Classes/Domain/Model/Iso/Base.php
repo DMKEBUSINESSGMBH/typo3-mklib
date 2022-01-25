@@ -57,7 +57,7 @@ abstract class Tx_Mklib_Domain_Model_Iso_Base
      */
     public static function getInstance($value)
     {
-        return tx_rnbase::makeInstance(get_called_class(), $value);
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(get_called_class(), $value);
     }
 
     /**

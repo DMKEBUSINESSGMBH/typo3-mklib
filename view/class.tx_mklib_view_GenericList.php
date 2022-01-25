@@ -4,6 +4,9 @@
  * Generic list view.
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ *
+ * @deprecated Making this view compatible with rn_base >= 1.15.0 would mean a refactoring as we can't access the
+ * controller anymore. As this view is markerbased it's deprecated anyway.
  */
 class tx_mklib_view_GenericList extends tx_rnbase_view_List
 {
@@ -17,8 +20,8 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
      *
      * @param string                    $template
      * @param ArrayObject               $viewData
-     * @param tx_rnbase_configurations  $configurations
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param \Sys25\RnBase\Configuration\Processor  $configurations
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      *
      * @return mixed Ready rendered output or HTTP redirect
      */
@@ -32,7 +35,7 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
         $markerClass = $this->getMarkerClass($configurations, $confId);
 
         //Liste generieren
-        $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+        $listBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Marker\ListBuilder::class);
         $out = $listBuilder->render(
             $items,
             $viewData,

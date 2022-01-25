@@ -45,9 +45,9 @@ class tx_mklib_util_MiscTools
         if (!$sExtKey) {
             $sExtKey = 'mklib';
         }
-        $mValue = tx_rnbase_configurations::getExtensionCfgValue($sExtKey, $sValueKey);
+        $mValue = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue($sExtKey, $sValueKey);
         if ($bFallback && false === $mValue && 'mklib' != $sExtKey) {
-            $mValue = tx_rnbase_configurations::getExtensionCfgValue('mklib', $sValueKey);
+            $mValue = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', $sValueKey);
         }
 
         return $mValue;

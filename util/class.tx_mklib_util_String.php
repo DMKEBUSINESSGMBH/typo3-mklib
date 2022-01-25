@@ -183,7 +183,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         static $cObj;
 
         if (!$cObj) {
-            $cObj = tx_rnbase_util_TYPO3::getContentObject();
+            $cObj = \Sys25\RnBase\Utility\TYPO3::getContentObject();
         }
 
         $emailMailTo = $cObj->getMailTo($emailParts[0], $emailParts[0]);
@@ -219,8 +219,8 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         static $configurations;
 
         if (!$configurations) {
-            /* @var $configurations tx_rnbase_configurations */
-            $configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+            /* @var $configurations \Sys25\RnBase\Configuration\Processor */
+            $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
         }
 
         $link = $configurations->createLink();

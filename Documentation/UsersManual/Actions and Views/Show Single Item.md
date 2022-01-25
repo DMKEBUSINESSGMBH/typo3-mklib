@@ -43,7 +43,7 @@ class tx_mkdemo_action_ShowDataset extends tx_mklib_action_ShowSingeItem {
     * @return tx_mklib_repository_Abstract
     */
    protected function getSingleItemRepository() {
-       return tx_rnbase::makeInstance("tx_mkdemo_repository_Model");
+       return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("tx_mkdemo_repository_Model");
    }
 
    /**

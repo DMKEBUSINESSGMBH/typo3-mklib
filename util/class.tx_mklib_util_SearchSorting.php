@@ -29,7 +29,7 @@
  * Die Klasse registriert einen Hook für rnbase,
  * um SQL-Anfragen mit einer sortierung zu versehen.
  *
- * @see tx_rnbase_util_SearchBase::search -> searchbase_handleTableMapping
+ * @see \Sys25\RnBase\Search\SearchBase::search -> searchbase_handleTableMapping
  *
  * Nützlich ist dies, wenn Einträge immer nach dem Titel sortiert werden sollen,
  * oder die Ausgabe im FE wie im BE mittels der sorting Spalte sortiert werden sollen.
@@ -81,7 +81,7 @@ class tx_mklib_util_SearchSorting
     {
         if (count($tableAliases)) {
             foreach ($tableAliases as $tableAlias => $sortingCol) {
-                list($tableAlias, $tableName) = tx_rnbase_util_Strings::trimExplode('.', $tableAlias);
+                list($tableAlias, $tableName) = \Sys25\RnBase\Utility\Strings::trimExplode('.', $tableAlias);
                 // wenn der key numeric ist, wurde keine sorting col übergeben!
                 if (is_numeric($tableAlias) && $sortingCol) {
                     $tableAlias = $sortingCol;
@@ -119,10 +119,10 @@ class tx_mklib_util_SearchSorting
     }
 
     /**
-     * Wird von tx_rnbase_util_SearchBase aufgerufen um die Sortierung hinzuzufügen.
+     * Wird von \Sys25\RnBase\Search\SearchBase aufgerufen um die Sortierung hinzuzufügen.
      *
      * @param array                     $params
-     * @param tx_rnbase_util_SearchBase $searcher
+     * @param \Sys25\RnBase\Search\SearchBase $searcher
      */
     public static function handleTableMapping(&$params, &$searcher)
     {

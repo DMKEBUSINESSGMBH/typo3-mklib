@@ -45,7 +45,7 @@ class tx_mklib_util_ServiceRegistry
      */
     public static function getFinanceService()
     {
-        return tx_rnbase_util_Misc::getService(self::$extKey, 'finance');
+        return \Sys25\RnBase\Utility\Misc::getService(self::$extKey, 'finance');
     }
 
     /**
@@ -53,7 +53,7 @@ class tx_mklib_util_ServiceRegistry
      */
     public static function getStaticCountriesService()
     {
-        return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountries');
+        return \Sys25\RnBase\Utility\Misc::getService(self::$extKey, 'staticCountries');
     }
 
     /**
@@ -61,6 +61,6 @@ class tx_mklib_util_ServiceRegistry
      */
     public static function getStaticCountryZonesService()
     {
-        return tx_rnbase_util_Misc::getService(self::$extKey, 'staticCountryZones');
+        return \Sys25\RnBase\Utility\Misc::getService(self::$extKey, 'staticCountryZones');
     }
 }

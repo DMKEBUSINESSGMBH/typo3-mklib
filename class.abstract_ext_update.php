@@ -24,7 +24,7 @@ abstract class abstract_ext_update
         $fieldsets['Update Static Info Tables'] = $this->handleUpdateStaticInfoTables();
 
         $content = '';
-        $content .= '<form action="'.htmlspecialchars(tx_rnbase_util_Link::linkThisScript()).'" method="post">';
+        $content .= '<form action="'.htmlspecialchars(\Sys25\RnBase\Utility\Link::linkThisScript()).'" method="post">';
         foreach ($fieldsets as $legend => $fieldset) {
             $content .= '<fieldset>';
             if ($legend && !is_numeric($legend)) {
@@ -48,7 +48,7 @@ abstract class abstract_ext_update
      */
     private function getDestEncodingSelect()
     {
-        require_once tx_rnbase_util_Extensions::extPath('static_info_tables', 'class.tx_staticinfotables_encoding.php');
+        require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('static_info_tables', 'class.tx_staticinfotables_encoding.php');
         $content = '';
         $content .= '<label>Destination character encoding:</label>';
         $content .= tx_staticinfotables_encoding::getEncodingSelect('dest_encoding', '', 'utf-8');
@@ -80,7 +80,7 @@ abstract class abstract_ext_update
         $content = '';
         $content .= $this->getInfoMsg();
 
-        if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
+        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
             $content .= '<p><strong>The extension static_info_tables needs to be installed first!</strong></p>';
         } else {
             if (\Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($updateKey)) {
@@ -108,8 +108,8 @@ abstract class abstract_ext_update
 
     private function queryDB($updateKey)
     {
-        $file = tx_rnbase_util_Extensions::extPath($this->getExtensionName(), $this->getSqlFileName());
-        $fileContent = explode("\n", tx_rnbase_util_Network::getUrl($file));
+        $file = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->getExtensionName(), $this->getSqlFileName());
+        $fileContent = explode("\n", \Sys25\RnBase\Utility\Network::getUrl($file));
         if (!$fileContent) {
             return $this->getSqlFileName().' not found! ('.$file.')';
         }
@@ -120,12 +120,12 @@ abstract class abstract_ext_update
         foreach ($fileContent as $line) {
             $line = trim($line);
             // nach dem ende des update keys suchen
-            if ($keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
+            if ($keyQuery && \Sys25\RnBase\Utility\Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
                 $keyQuery = 2;
                 break; // alle satements gefunden schleife nicht mehr durchlaufen
             }
             // nach dem anfang des update keys suchen
-            if (!$keyQuery && tx_rnbase_util_Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
+            if (!$keyQuery && \Sys25\RnBase\Utility\Strings::isFirstPartOfStr($line, '#'.$updateKey)) {
                 $keyQuery = 1; // key gefunden, jetzt folgen die statements
                 continue;
             }
@@ -133,7 +133,7 @@ abstract class abstract_ext_update
             if (!$keyQuery) {
                 continue;
             }
-            if ($line && tx_rnbase_util_Strings::isFirstPartOfStr($line, $this->getSqlMode())) {
+            if ($line && \Sys25\RnBase\Utility\Strings::isFirstPartOfStr($line, $this->getSqlMode())) {
                 // ggf. das encoding ändern
                 $querys[] = $this->getUpdateEncoded($line, $destEncoding);
             }
@@ -152,7 +152,7 @@ abstract class abstract_ext_update
             return 'No queries found. ('.$updateKey.')';
         }
         foreach ($querys as $query) {
-            \Tx_Rnbase_Database_Connection::getInstance()->doQuery($query);
+            \Sys25\RnBase\Database\Connection::getInstance()->doQuery($query);
         }
 
         return true;
@@ -175,7 +175,7 @@ abstract class abstract_ext_update
     {
         if (!$this->csconv) {
             $charsetConverterClass = '\TYPO3\CMS\Core\Charset\CharsetConverter';
-            $this->csconv = tx_rnbase::makeInstance($charsetConverterClass);
+            $this->csconv = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($charsetConverterClass);
         }
 
         return $this->csconv;
@@ -197,18 +197,18 @@ abstract class abstract_ext_update
             $queryElements = explode('SET', $queryElements[0]);
             $queryFields = $queryElements[1];
 
-            $queryElements = tx_rnbase_util_Strings::trimExplode('UPDATE', $queryElements[0], 1);
+            $queryElements = \Sys25\RnBase\Utility\Strings::trimExplode('UPDATE', $queryElements[0], 1);
             $table = $queryElements[0];
 
             $fields_values = [];
-            $queryFieldsArray = tx_rnbase_util_Strings::trimExplode(',', $queryFields, 1);
+            $queryFieldsArray = \Sys25\RnBase\Utility\Strings::trimExplode(',', $queryFields, 1);
             foreach ($queryFieldsArray as $fieldsSet) {
-                $col = tx_rnbase_util_Strings::trimExplode('=', $fieldsSet, 1);
+                $col = \Sys25\RnBase\Utility\Strings::trimExplode('=', $fieldsSet, 1);
                 $value = stripslashes(substr($col[1], 1, strlen($col[1]) - 2));
                 $value = $this->getCharsetsConversion()->conv($value, 'utf-8', $destEncoding);
                 $fields_values[$col[0]] = $value;
             }
-            $query = \Tx_Rnbase_Database_Connection::getInstance()->doUpdate(
+            $query = \Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
                 $table,
                 $where,
                 $fields_values,

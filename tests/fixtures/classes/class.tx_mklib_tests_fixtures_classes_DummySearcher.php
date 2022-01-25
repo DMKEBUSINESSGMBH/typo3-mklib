@@ -48,7 +48,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
      */
     protected function getService()
     {
-        return tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_Dummy');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_Dummy');
     }
 
     /**
@@ -56,7 +56,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
      */
     protected function getDecorator(&$mod, array $options = [])
     {
-        return tx_rnbase::makeInstance('tx_mklib_mod1_decorator_Base', $mod, $options);
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_decorator_Base', $mod, $options);
     }
 
     /**

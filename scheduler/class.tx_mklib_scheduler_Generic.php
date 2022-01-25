@@ -27,7 +27,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
+abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
     /**
      * The DateTime Object with the last run time.
@@ -63,19 +63,19 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
         /* beispiel für das logging array.
         $devLog = array('message' => '', 'extKey' => 'mklib', 'dataVar' => FALSE);
         $devLog = array(
-            tx_rnbase_util_Logger::LOGLEVEL_DEBUG => $devLog,
-            tx_rnbase_util_Logger::LOGLEVEL_INFO => $devLog,
-            tx_rnbase_util_Logger::LOGLEVEL_NOTICE => $devLog,
-            tx_rnbase_util_Logger::LOGLEVEL_WARN => $devLog,
-            tx_rnbase_util_Logger::LOGLEVEL_FATAL => $devLog
+            \Sys25\RnBase\Utility\Logger::LOGLEVEL_DEBUG => $devLog,
+            \Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO => $devLog,
+            \Sys25\RnBase\Utility\Logger::LOGLEVEL_NOTICE => $devLog,
+            \Sys25\RnBase\Utility\Logger::LOGLEVEL_WARN => $devLog,
+            \Sys25\RnBase\Utility\Logger::LOGLEVEL_FATAL => $devLog
         );
         */
         $devLog = [];
         $options = $this->getOptions();
-        $startTimeInMilliseconds = tx_rnbase_util_Misc::milliseconds();
+        $startTimeInMilliseconds = \Sys25\RnBase\Utility\Misc::milliseconds();
         $memoryUsageAtStart = memory_get_usage();
 
-        tx_rnbase_util_Logger::info(
+        \Sys25\RnBase\Utility\Logger::info(
             '['.get_class($this).']: Scheduler starts',
             $this->getExtKey()
         );
@@ -86,23 +86,23 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
             $this->setLastRunTime();
 
             // devlog
-            if (tx_rnbase_util_Extensions::isLoaded('devlog')) {
+            if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('devlog')) {
                 if (// infolog setzen, wenn devlog leer
                     empty($devLog)
                     // infolog setzen, wenn infolog gesetzt, aber keine message vorhanden ist
                     || (
-                            isset($devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO])
-                            && empty($devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'])
+                            isset($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO])
+                            && empty($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'])
                         )
                     ) {
-                    $devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO]['message'] = $message;
+                    $devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'] = $message;
                 }
 
                 foreach ($devLog as $logLevel => $logData) {
                     if (empty($logData['message'])) {
                         continue;
                     }
-                    tx_rnbase_util_Logger::devLog(
+                    \Sys25\RnBase\Utility\Logger::devLog(
                         '['.get_class($this).']: '.$logData['message'],
                         isset($logData['extKey']) ? $logData['extKey'] : $this->getExtKey(),
                         $logLevel,
@@ -119,11 +119,11 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
                 // bisherige logs mitgeben
                 'devlog' => $devLog,
             ];
-            if ($exception instanceof tx_rnbase_util_Exception) {
+            if ($exception instanceof \Sys25\RnBase\Exception\AdditionalException) {
                 $dataVar['exception_data'] = $exception->getAdditional(false);
             }
-            if (tx_rnbase_util_Logger::isFatalEnabled()) {
-                tx_rnbase_util_Logger::fatal(
+            if (\Sys25\RnBase\Utility\Logger::isFatalEnabled()) {
+                \Sys25\RnBase\Utility\Logger::fatal(
                     'Task ['.get_class($this).'] failed.'.
                         ' Error('.$exception->getCode().'):'.
                         $exception->getMessage(),
@@ -132,7 +132,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
                 );
             }
             // Exception Mail an die Entwicker senden
-            $mail = tx_rnbase_configurations::getExtensionCfgValue(
+            $mail = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
                 'rn_base',
                 'sendEmailOnException'
             );
@@ -140,8 +140,8 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
                 $this->sendErrorMail(
                     $mail,
                     // Wir erstellen eine weitere Exception mit zusätzlichen Daten.
-                    tx_rnbase::makeInstance(
-                        'tx_rnbase_util_Exception',
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                        \Sys25\RnBase\Exception\AdditionalException::class,
                         get_class($exception).': '.$exception->getMessage(),
                         $exception->getCode(),
                         $dataVar,
@@ -155,11 +155,11 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
         }
 
         $memoryUsageAtEnd = memory_get_usage();
-        tx_rnbase_util_Logger::info(
+        \Sys25\RnBase\Utility\Logger::info(
             '['.get_class($this).']: Scheduler ends successful ',
             $this->getExtKey(),
             [
-                'Execution Time' => (tx_rnbase_util_Misc::milliseconds() - $startTimeInMilliseconds).' ms',
+                'Execution Time' => (\Sys25\RnBase\Utility\Misc::milliseconds() - $startTimeInMilliseconds).' ms',
                 'Memory Start' => $memoryUsageAtStart.' Bytes',
                 'Memory End' => $memoryUsageAtEnd.' Bytes',
                 'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart).' Bytes',
@@ -261,7 +261,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
             $options['where'] = 'uid='.(int) $this->getTaskUid();
             $options['limit'] = 1;
             try {
-                $ret = @tx_rnbase_util_DB::doSelect(
+                $ret = @\Sys25\RnBase\Database\Connection::getInstance()->doSelect(
                     'tx_mklib_lastrun',
                     'tx_scheduler_task',
                     $options
@@ -288,7 +288,7 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     {
         try {
             $lastRun = new DateTime();
-            $return = @tx_rnbase_util_DB::doUpdate(
+            $return = @\Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
                 'tx_scheduler_task',
                 'uid='.(int) $this->getTaskUid(),
                 [
@@ -311,6 +311,6 @@ abstract class tx_mklib_scheduler_Generic extends Tx_Rnbase_Scheduler_Task
     protected function sendErrorMail($email, Exception $exception)
     {
         $options = ['ignoremaillock' => true];
-        tx_rnbase_util_Misc::sendErrorMail($email, get_class($this), $exception, $options);
+        \Sys25\RnBase\Utility\Misc::sendErrorMail($email, get_class($this), $exception, $options);
     }
 }

@@ -5,7 +5,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_EncodingTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * Dies ist die in Hex umgewandelte Form des Strings
@@ -34,7 +34,7 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
             echo '<pre>'.var_export([
                 'iso88591' => [
                     'string' => $strIso88591,
-                    'utf8 level' => tx_rnbase_util_Strings::isUtf8String($strIso88591),
+                    'utf8 level' => \Sys25\RnBase\Utility\Strings::isUtf8String($strIso88591),
                     'utf8 encoding' => tx_mklib_util_Encoding::detectUtfEncoding($strIso88591),
                     'bytelength' => mb_strlen($strIso88591, '8bit'),
                     'bin2hex' => bin2hex($strIso88591),
@@ -43,7 +43,7 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
                 ],
                 'utf8' => [
                     'string' => $strUtf8,
-                    'utf8 level' => tx_rnbase_util_Strings::isUtf8String($strUtf8),
+                    'utf8 level' => \Sys25\RnBase\Utility\Strings::isUtf8String($strUtf8),
                     'utf8 encoding' => tx_mklib_util_Encoding::detectUtfEncoding($strUtf8),
                     'bytelength' => mb_strlen($strUtf8, '8bit'),
                     'bin2hex' => bin2hex($strUtf8),
@@ -224,16 +224,16 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
         $stringIso = pack('H*', self::$hexIso88591);
         $stringUtf8 = pack('H*', self::$hexUtf8);
 
-        $modelFrom = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+        $modelFrom = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             [
                 'uid' => 1,
                 'title' => $stringIso,
                 'description' => $stringIso,
             ]
         );
-        $modelTo = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+        $modelTo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             [
                 'uid' => 1,
                 'title' => $stringUtf8,
@@ -248,8 +248,8 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
         );
 
         self::assertEquals(
-            $modelTo->record,
-            $modelFrom->record,
+            $modelTo->getProperty(),
+            $modelFrom->getProperty(),
             '$array wurde nicht richtig nach UTF-8 codiert.'
         );
     }
@@ -263,8 +263,8 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
         $stringIso = pack('H*', self::$hexIso88591);
         $stringUtf8 = pack('H*', self::$hexUtf8);
 
-        $modelTo = tx_rnbase::makeInstance(
-            'tx_rnbase_model_base',
+        $modelTo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             [
                 'uid' => 1,
                 'title' => $stringUtf8,
@@ -272,16 +272,16 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
             ]
         );
         $data = [
-            'one' => tx_rnbase::makeInstance(
-                'tx_rnbase_model_base',
+            'one' => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                Sys25\RnBase\Domain\Model\BaseModel::class,
                 [
                         'uid' => 1,
                         'title' => $stringIso,
                         'description' => $stringIso,
                     ]
             ),
-            'twoe' => tx_rnbase::makeInstance(
-                'tx_rnbase_model_base',
+            'twoe' => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                Sys25\RnBase\Domain\Model\BaseModel::class,
                 [
                         'uid' => 1,
                         'title' => $stringIso,
@@ -297,13 +297,13 @@ class tx_mklib_tests_util_EncodingTest extends tx_rnbase_tests_BaseTestCase
         );
 
         self::assertEquals(
-            $modelTo->record,
-            $data['one']->record,
+            $modelTo->getProperty(),
+            $data['one']->getProperty(),
             '$array wurde nicht richtig nach UTF-8 codiert.'
         );
         self::assertEquals(
-            $modelTo->record,
-            $data['twoe']->record,
+            $modelTo->getProperty(),
+            $data['twoe']->getProperty(),
             '$array wurde nicht richtig nach UTF-8 codiert.'
         );
     }

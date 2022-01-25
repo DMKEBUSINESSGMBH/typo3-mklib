@@ -64,7 +64,7 @@ class tx_mklib_model_Currency
         $key = $options['symbol'];
         // @todo why is this non static variable used? is static $instances; missing?
         if (!$instances[$key]) {
-            $instances[$key] = tx_rnbase::makeInstance('tx_mklib_model_Currency', $options);
+            $instances[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_Currency', $options);
         }
 
         return $instances[$key];
@@ -83,7 +83,7 @@ class tx_mklib_model_Currency
         if ('DE' === $country) {
             return self::getByCurrencyCode('EUR');
         } else {
-            throw tx_rnbase::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
+            throw \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
         }
 
         return null;
@@ -109,7 +109,7 @@ class tx_mklib_model_Currency
             $options['delimiter'] = ',';
             $options['thousands'] = '.';
         } else {
-            throw tx_rnbase::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
+            throw \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
         }
 
         return self::makeInstance($options);

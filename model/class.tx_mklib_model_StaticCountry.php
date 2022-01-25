@@ -5,7 +5,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mklib_interface_IZipCountry
+class tx_mklib_model_StaticCountry extends Sys25\RnBase\Domain\Model\BaseModel implements tx_mklib_interface_IZipCountry
 {
     private static $instances = [];
 
@@ -20,7 +20,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
     {
         // Instanzieren, wenn nicht im Cache oder ein Record übergeben wurde.
         if (is_array($rowOrUid) || !isset(self::$instances[$rowOrUid])) {
-            $item = tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
+            $item = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
             // Nur das erzeugte Model zurückgeben
             if (is_array($rowOrUid)) {
                 return $item;
@@ -49,7 +49,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
      */
     public function getISO2()
     {
-        return $this->record['cn_iso_2'];
+        return $this->getProperty('cn_iso_2');
     }
 
     /**
@@ -59,7 +59,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
      */
     public function getZipRule()
     {
-        return intval($this->record['zipcode_rule']);
+        return intval($this->getProperty('zipcode_rule'));
     }
 
     /**
@@ -69,7 +69,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
      */
     public function getZipLength()
     {
-        return intval($this->record['zipcode_length']);
+        return intval($this->getProperty('zipcode_length'));
     }
 
     /**
@@ -77,7 +77,7 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
      */
     public function getGermanShortName()
     {
-        return $this->record['cn_short_de'];
+        return $this->getProperty('cn_short_de');
     }
 
     /**
@@ -85,6 +85,6 @@ class tx_mklib_model_StaticCountry extends tx_rnbase_model_base implements tx_mk
      */
     public function getIsoNumber()
     {
-        return $this->record['cn_iso_nr'];
+        return $this->getProperty('cn_iso_nr');
     }
 }

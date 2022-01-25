@@ -35,7 +35,7 @@ class tx_mklib_util_Encoding
      * @param bool $forceEncoding
      *                            Forces encoding, if mb_detect_encoding returns correct encoding
      *
-     * @return Ambigous <mixed, Traversable, Tx_Rnbase_Domain_Model_RecordInterface, string>
+     * @return Ambigous <mixed, Traversable, \Sys25\RnBase\Domain\Model\RecordInterface, string>
      */
     public static function convertEncoding(
         $var,
@@ -48,12 +48,12 @@ class tx_mklib_util_Encoding
             $toEncoding = self::getTypo3Encoding();
         }
         // convert array recursive
-        if ($var instanceof tx_rnbase_model_data) {
-            $var->record = self::convertEncoding(
-                $var->record,
+        if ($var instanceof \Sys25\RnBase\Domain\Model\DataModel) {
+            $var->setProperty(self::convertEncoding(
+                $var->getProperty(),
                 $toEncoding,
                 $fromEncoding
-            );
+            ));
         } elseif (is_array($var) || (is_object($var) && $var instanceof Traversable)) {
             foreach ($var as &$value) {
                 $value = self::convertEncoding(
@@ -64,7 +64,7 @@ class tx_mklib_util_Encoding
             }
         } // convert models record
         elseif (is_object($var)) {
-            throw new InvalidArgumentException('Object "'.get_class($var).'" was not supportet for convertEncoding.'.'Possible types are string, array or an object '.'(instanceof "Traversable" or "Tx_Rnbase_Domain_Model_RecordInterface").', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5');
+            throw new InvalidArgumentException('Object "'.get_class($var).'" was not supportet for convertEncoding.'.'Possible types are string, array or an object '.'(instanceof "Traversable" or "\Sys25\RnBase\Domain\Model\RecordInterface").', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5');
         } // do nothing, if we have an empty sting or a number
         elseif (empty($var) || is_numeric($var)) {
             //$var = $var;
@@ -119,7 +119,7 @@ class tx_mklib_util_Encoding
      */
     public static function detectUtfEncoding($var)
     {
-        $bytes = tx_rnbase_util_Strings::isUtf8String($var);
+        $bytes = \Sys25\RnBase\Utility\Strings::isUtf8String($var);
         $encoding = false;
         switch ($bytes) {
             case 2:

@@ -125,7 +125,7 @@ class tx_mklib_util_RTFGenerator
         $this->setPaperSize($params['paperSize']);
         $this->setPaperOrientation($params['paperOrientation']);
         $this->setRTFVersion($params['rtfVersion']);
-        //$this->tab_width = tx_rnbase_configurations::getExtensionCfgValue('mklib', 'tabWidth');
+        //$this->tab_width = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'tabWidth');
         //Erstellungszeit einfügen
         $this->setCreateTime();
         //Colour-Table einfügen

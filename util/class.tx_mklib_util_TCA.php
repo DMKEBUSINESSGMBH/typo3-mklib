@@ -46,121 +46,6 @@ class tx_mklib_util_TCA
     private static $tcaAdditionsLoaded = [];
 
     /**
-     * Get DAM TCA for ONE file.
-     *
-     *  $options = array(
-     *          'label' => 'Ein Bild',
-     *          'config' => array(
-     *                  'maxitems' => 2,
-     *                  'size' => 2,
-     *              ),
-     *      )
-     *
-     * @param array $ref
-     * @param array $options These options are merged into the resulting TCA
-     *
-     * @return array
-     */
-    public static function getDamMediaTCA($ref, $options = [])
-    {
-        if (!is_array($options)) {
-            $options = ['type' => $options];
-        }
-        $tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, isset($options['type']) ? $options['type'] : 'image_field');
-        unset($options['type']);
-        if ($options) {
-            foreach ($options as $key => $option) {
-                if (is_array($option)) {
-                    if (!isset($tca[$key])) {
-                        $tca[$key] = [];
-                    }
-                    foreach ($option as $subkey => $suboption) {
-                        $tca[$key][$subkey] = $suboption;
-                    }
-                } else {
-                    $tca[$key] = $option;
-                }
-            }
-        }
-
-        return $tca;
-    }
-
-    /**
-     * Get DAM TCA for ONE picture.
-     *
-     * @param string $ref
-     * @param array  $options These options are merged into the resulting TCA
-     *
-     * @return array
-     */
-    public static function getDamMediaTCAOnePic($ref, $options = [])
-    {
-        $options['type'] = 'image_field';
-        $options['config']['maxitems'] = 1;
-        $options['config']['size'] = 1;
-
-        return self::getDamMediaTCA($ref, $options);
-
-        $tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, 'image_field');
-        $tca['config']['maxitems'] = 1;
-        $tca['config']['size'] = 1;
-        if ($options) {
-            foreach ($options as $key => $option) {
-                if (is_array($option)) {
-                    if (!isset($tca[$key])) {
-                        $tca[$key] = [];
-                    }
-                    foreach ($option as $subkey => $suboption) {
-                        $tca[$key][$subkey] = $suboption;
-                    }
-                } else {
-                    $tca[$key] = $option;
-                }
-            }
-        }
-
-        return $tca;
-    }
-
-    /**
-     * Get DAM TCA for ONE file.
-     *
-     * @param array $ref
-     * @param array $options These options are merged into the resulting TCA
-     *
-     * @return array
-     */
-    public static function getDamMediaTCAOneFile($ref, $options = [])
-    {
-        $options['type'] = 'media_field';
-        $options['config']['maxitems'] = 1;
-        $options['config']['size'] = 1;
-
-        return self::getDamMediaTCA($ref, $options);
-
-        $tca = tx_rnbase_util_TSDAM::getMediaTCA($ref, 'media_field');
-        $tca['config']['maxitems'] = 1;
-        $tca['config']['size'] = 1;
-        if ($options) {
-            foreach ($options as $key => $option) {
-                if (is_array($option)) {
-                    if (!isset($tca[$key])) {
-                        $tca[$key] = [];
-                    }
-                    foreach ($option as $subkey => $suboption) {
-                        $tca[$key][$subkey] = $suboption;
-                    }
-                } else {
-                    $tca[$key] = $option;
-                }
-            }
-        }
-
-        return $tca;
-    }
-
-    /**
      * Eleminate non-TCA-defined columns from given data.
      *
      * Doesn't do anything if no TCA columns are found.
@@ -172,7 +57,7 @@ class tx_mklib_util_TCA
      */
     public static function eleminateNonTcaColumnsByTable($table, array $data)
     {
-        return tx_rnbase_util_Arrays::removeNotIn(
+        return \Sys25\RnBase\Utility\Arrays::removeNotIn(
             $data,
             empty($GLOBALS['TCA'][$table]['columns']) ? [] : array_keys($GLOBALS['TCA'][$table]['columns'])
         );
@@ -291,7 +176,7 @@ class tx_mklib_util_TCA
     {
         $parsedQueryParameters = [];
 
-        if (($returnUrl = tx_rnbase_parameters::getPostOrGetParameter('returnUrl')) &&
+        if (($returnUrl = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('returnUrl')) &&
             ($parsedUrl = parse_url($returnUrl)) &&
             isset($parsedUrl['query'])
         ) {
@@ -385,6 +270,6 @@ class tx_mklib_util_TCA
             $options['type'] = str_replace('_field', '', $options['type']);
         }
 
-        return tx_rnbase_util_TSFAL::getMediaTCA($ref, $options);
+        return \Sys25\RnBase\Utility\TSFAL::getMediaTCA($ref, $options);
     }
 }

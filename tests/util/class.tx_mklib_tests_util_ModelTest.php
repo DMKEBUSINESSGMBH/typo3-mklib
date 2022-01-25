@@ -31,7 +31,7 @@
 /**
  * Model util tests.
  */
-class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_ModelTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * Prüfen ob alle leeren Elemente außer dem array gelöscht werden
@@ -40,7 +40,7 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
     public function testSplitTextIntoTitleAndRest()
     {
         $aRecord = ['text' => 'ein ganz langer text mit vielen worten', 'htmltext' => 'ein <span> ganz </span> langer text mit vielen worten'];
-        $model = tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', $aRecord);
+        $model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\DataModel::class, $aRecord);
         tx_mklib_util_Model::splitTextIntoTitleAndRest($model, 'text', 2);
 
         self::assertEquals('ein ganz', $model->getProperty('titletext'), 'field:titletext nicht korrekt');
@@ -73,7 +73,7 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
             'text' => 'ein ganz langer text mit vielen worten und noch viel viel viel viel mehr',
             'htmltext' => 'ein ganz langer text mit vielen worten und <span>noch viel viel</span> viel viel mehr',
         ];
-        $model = tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Data', $aRecord);
+        $model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\DataModel::class, $aRecord);
         tx_mklib_util_Model::getShortenedText($model, 'othertext', 50);
         self::assertEquals('ein ganz langer text mit vielen worten und noch viel', $model->getProperty('othertextshortened'), 'field:othertextshortened nicht korrekt');
 
@@ -93,10 +93,10 @@ class tx_mklib_tests_util_ModelTest extends tx_rnbase_tests_BaseTestCase
     public function testUniqueModelArray()
     {
         $aArray = [
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 6, 'name' => 'Model Nr. 6']),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 5, 'name' => 'Model Nr. 5']),
-                        tx_rnbase::makeInstance('tx_rnbase_model_base', ['uid' => 2, 'name' => 'Model Nr. 2']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'name' => 'Model Nr. 6']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2, 'name' => 'Model Nr. 2']),
                     ];
         $aUnique = tx_mklib_util_Model::uniqueModels($aArray);
         self::assertTrue(is_array($aUnique), 'No array given.');

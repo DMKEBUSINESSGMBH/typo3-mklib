@@ -41,7 +41,7 @@ class tx_mklib_util_FlexForm
      */
     public static function getInstance($flexForm)
     {
-        return tx_rnbase::makeInstance(
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_util_FlexForm',
             $flexForm
         );

@@ -31,14 +31,14 @@
  * @author Hannes Bochmann
  * @author Michael Wagner
  */
-class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_srv_FinanceTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * This method is called before the first test of this test class is run.
      */
     public static function setUpBeforeClass()
     {
-        if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
             self::prepareLegacyTypo3DbGlobal();
         }
     }
@@ -104,7 +104,7 @@ class tx_mklib_tests_srv_FinanceTest extends tx_rnbase_tests_BaseTestCase
     {
         return [
             // test country by uid
-            __LINE__ => ['country' => tx_rnbase_util_Extensions::isLoaded('static_info_tables') ? '54' : 'de', 'vatregno' => 'DE123456789', 'expected' => true],
+            __LINE__ => ['country' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables') ? '54' : 'de', 'vatregno' => 'DE123456789', 'expected' => true],
             // test country model
             __LINE__ => ['country' => $this->getModel(['cn_iso_2' => 'DE']), 'vatregno' => 'DE123456789', 'expected' => true],
             // all the other static tests

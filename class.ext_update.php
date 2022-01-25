@@ -12,8 +12,8 @@
  * auf jeden fall sollte das umgestellt werden, das hier ist nur eine quick and dirty lösung!
  */
 // wenn mklib installiert wird, funktioniert der aufruf extPath natürlich nicht und wirft eine exception
-if (tx_rnbase_util_Extensions::isLoaded('mklib')) {
-    require_once tx_rnbase_util_Extensions::extPath('mklib', 'class.abstract_ext_update.php');
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('mklib')) {
+    require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'class.abstract_ext_update.php');
 } // ist de pfad bereits gesetzt?
 elseif (isset($GLOBALS['absPath'])) {
     require_once $GLOBALS['absPath'].'class.abstract_ext_update.php';

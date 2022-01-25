@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-// tx_rnbase_util_Extensions::addLLrefForTCAdescr('_MOD_tools_txschedulerM1', tx_rnbase_util_Extensions::extPath($_EXTKEY).'scheduler/locallang.xml');
+// \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_tools_txschedulerM1', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'scheduler/locallang.xml');
 
 /**
  * Fügt Felder im scheduler task hinzu.

@@ -24,7 +24,7 @@ class tx_mklib_util_TS
      *                                     und plugin.tx_$extKeyTS stehen aufgelöst werden?
      * @param bool   $forceTsfePreparation
      *
-     * @return tx_rnbase_configurations
+     * @return \Sys25\RnBase\Configuration\Processor
      */
     public static function loadConfig4BE(
         $extKey,
@@ -40,8 +40,8 @@ class tx_mklib_util_TS
             $sStaticPath = '/static/ts/setup.txt';
         }
 
-        if (file_exists(tx_rnbase_util_Files::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
-            tx_rnbase_util_Extensions::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
+        if (file_exists(\Sys25\RnBase\Utility\Files::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
         }
 
         $tsfePreparationOptions = [];
@@ -50,10 +50,10 @@ class tx_mklib_util_TS
         }
 
         // Ist bei Aufruf aus BE notwendig! (@TODO: sicher???)
-        tx_rnbase_util_Misc::prepareTSFE($tsfePreparationOptions);
+        \Sys25\RnBase\Utility\Misc::prepareTSFE($tsfePreparationOptions);
         $GLOBALS['TSFE']->config = [];
 
-        $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+        $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Utility\Typo3Classes::getContentObjectRendererClass());
 
         $pageTsConfig = self::getPagesTSconfig(0);
 
@@ -73,9 +73,9 @@ class tx_mklib_util_TS
         $qualifier = $pageTsConfig['qualifier'] ? $pageTsConfig['qualifier'] : $extKeyTs;
 
         // möglichkeit die default konfig zu überschreiben
-        $pageTsConfig = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule($pageTsConfig, $aConfig);
+        $pageTsConfig = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule($pageTsConfig, $aConfig);
 
-        $configurations = new tx_rnbase_configurations();
+        $configurations = new \Sys25\RnBase\Configuration\Processor();
         $configurations->init($pageTsConfig, $cObj, $extKeyTs, $qualifier);
 
         return $configurations;
@@ -97,7 +97,7 @@ class tx_mklib_util_TS
         // die gerade hinzugefügten TS Dateien nicht beachtet
         $rootLine = 1;
 
-        return Tx_Rnbase_Backend_Utility::getPagesTSconfig($pageId, $rootLine);
+        return \Sys25\RnBase\Backend\Utility\BackendUtility::getPagesTSconfig($pageId, $rootLine);
     }
 
     /**
@@ -107,7 +107,7 @@ class tx_mklib_util_TS
      * @param string $sExtKey
      * @param string $sDomainKey
      *
-     * @return tx_rnbase_configurations
+     * @return \Sys25\RnBase\Configuration\Processor
      *
      * @TODO: static caching integrieren!?
      */
@@ -124,14 +124,14 @@ class tx_mklib_util_TS
 
         // ts für die rootlines erzeugen
         /* @var $tsObj \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
-        $tsObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getExtendedTypoScriptTemplateServiceClass());
+        $tsObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Utility\Typo3Classes::getExtendedTypoScriptTemplateServiceClass());
         $tsObj->tt_track = 0;
         $tsObj->runThroughTemplates($aRootLine);
         $tsObj->generateConfig();
 
         if (isset($GLOBALS['TSFE'])) {
             $GLOBALS['TSFE']->tmpl = $tsObj;
-            // tsfe config setzen (wird in der tx_rnbase_configurations gebraucht (language))
+            // tsfe config setzen (wird in der \Sys25\RnBase\Configuration\Processor gebraucht (language))
             $GLOBALS['TSFE']->tmpl->setup = array_merge(
                 is_array($GLOBALS['TSFE']->config) ? $GLOBALS['TSFE']->config : [],
                 is_array($tsObj->setup['config.']) ? $tsObj->setup['config.'] : []
@@ -150,8 +150,8 @@ class tx_mklib_util_TS
         $qualifier = $pageTsConfig['qualifier'] ? $pageTsConfig['qualifier'] : $sExtKey;
 
         // konfiguration erzeugen
-        /* @var $configurations tx_rnbase_configurations */
-        $configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
+        /* @var $configurations \Sys25\RnBase\Configuration\Processor */
+        $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
         $configurations->init($pageTsConfig, $configurations->getCObj(1), $sExtKey, $qualifier);
 
         return $configurations;

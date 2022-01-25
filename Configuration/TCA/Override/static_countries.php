@@ -5,8 +5,8 @@ if (!defined('TYPO3_MODE')) {
 }
 
 // static_info_tables um PLZ regeln erweitern
-if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
-    tx_rnbase_util_Extensions::addTCAcolumns(
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
         'static_countries',
         [
             'zipcode_rule' => [
@@ -30,6 +30,6 @@ if (tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
         ],
         false
     );
-    tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_rule');
-    tx_rnbase_util_Extensions::addToAllTCAtypes('static_countries', 'zipcode_length');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('static_countries', 'zipcode_rule');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('static_countries', 'zipcode_length');
 }

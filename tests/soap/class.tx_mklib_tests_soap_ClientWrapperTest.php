@@ -26,7 +26,7 @@
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_soap_ClientWrapperTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     const SOAP_TEST_METHOD = 'mySoapTestMethod';
     const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';

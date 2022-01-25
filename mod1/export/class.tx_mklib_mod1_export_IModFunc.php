@@ -13,9 +13,9 @@ interface tx_mklib_mod1_export_IModFunc
     public function getConfId();
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     public function getModule();
 

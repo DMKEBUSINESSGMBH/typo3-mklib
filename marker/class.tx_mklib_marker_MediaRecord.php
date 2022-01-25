@@ -31,14 +31,14 @@
  *
  * @author Michael Wagner
  */
-class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
+class tx_mklib_marker_MediaRecord extends \Sys25\RnBase\Frontend\Marker\BaseMarker
 {
     /**
      * @return tx_mklib_marker_MediaRecord
      */
     public static function getInstance()
     {
-        return tx_rnbase::makeInstance('tx_mklib_marker_MediaRecord');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_marker_MediaRecord');
     }
 
     /**
@@ -46,7 +46,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
      *
      * @param string                        $template
      * @param tx_mkdownloads_model_Download $item
-     * @param tx_rnbase_util_FormatUtil     $formatter
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil     $formatter
      * @param string                        $confId
      * @param string                        $marker
      *
@@ -57,7 +57,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         if (!self::containsMarker($template, $marker.'S')) {
             return $template;
         }
-        $listBuilder = tx_rnbase::makeInstance('tx_rnbase_util_ListBuilder');
+        $listBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Marker\ListBuilder::class);
         $template = $listBuilder->render(
             $aRecords,
             $formatter->getConfigurations()->getViewData(),
@@ -80,7 +80,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
      *
      * @param tx_mklib_model_Media      $item
      * @param array                     $record
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      * @param string                    $confId
      * @param string                    $marker
      *
@@ -109,14 +109,16 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         $template = $this->addIcon($template, $item, $formatter, $confId, $marker);
 
         // Fill marker array with data
-        $ignore = self::findUnusedCols($item->record, $template, $marker);
-        $markerArray = $formatter->getItemMarkerArrayWrapped($item->record, $confId, $ignore, $marker.'_', $item->getColumnNames());
+        $record = $item->getProperty();
+        $ignore = self::findUnusedCols($record, $template, $marker);
+        $item->setProperty($record);
+        $markerArray = $formatter->getItemMarkerArrayWrapped($item->getProperty(), $confId, $ignore, $marker.'_', $item->getColumnNames());
         $wrappedSubpartArray = [];
         $subpartArray = [];
 
         $this->prepareLinks($item, $marker, $markerArray, $subpartArray, $wrappedSubpartArray, $confId, $formatter, $template);
 
-        $out = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+        $out = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 
         return $out;
     }
@@ -126,7 +128,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
      *
      * @param string                    $template
      * @param tx_mklib_model_Media      $item
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      * @param string                    $confId
      * @param string                    $marker
      *
@@ -137,7 +139,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         if (!$this->containsMarker($template, $marker.'_ICON')) {
             return $template;
         }
-        $item->record['icon'] = '';
+        $item->setProperty('icon', '');
 
         return $template;
         //@TODO: implement if needet
@@ -178,7 +180,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         $field = $field ? $field : 'fiel_type';
 
         $mapping = $configuration->get($confId.'icon.mapping');
-        $type = $item->record[$field];
+        $type = $item->getProperty($field);
 
         $default = $configuration->get($confId.'icon.default');
         $default = $default ? $default : $type;
@@ -189,13 +191,13 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
         $icon = $default.'.'.$fileExt;
         if (is_array($mapping)) {
             foreach ($mapping as $key => $value) {
-                if (tx_rnbase_util_Strings::inList($value, $type)) {
+                if (\Sys25\RnBase\Utility\Strings::inList($value, $type)) {
                     $icon = $key.'.'.$fileExt;
                     break;
                 }
             }
         }
-        $item->record['icon'] = $icon;
+        $item->setProperty('icon', $icon);
     }
 
     /**
@@ -206,7 +208,7 @@ class tx_mklib_marker_MediaRecord extends tx_rnbase_util_BaseMarker
      * @param array                     $markerArray
      * @param array                     $wrappedSubpartArray
      * @param string                    $confId
-     * @param tx_rnbase_util_formatUtil $formatter
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      */
     private function prepareLinks(&$item, $marker, &$markerArray, &$subpartArray, &$wrappedSubpartArray, $confId, &$formatter, $template)
     {

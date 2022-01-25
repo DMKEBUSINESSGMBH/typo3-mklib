@@ -27,7 +27,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_repository_PagesTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @return PHPUnit_Framework_MockObject_MockObject
@@ -35,7 +35,7 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
     protected function getRepository()
     {
         $searcher = $this->getMock(
-            'tx_rnbase_util_SearchGeneric'
+            \Sys25\RnBase\Search\SearchGeneric::class
         );
         $repo = $this->getMock(
             'tx_mklib_repository_Pages',
@@ -59,7 +59,7 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
     public function testGetSearchClassShouldBeGeneric()
     {
         self::assertEquals(
-            'tx_rnbase_util_SearchGeneric',
+            \Sys25\RnBase\Search\SearchGeneric::class,
             $this->callInaccessibleMethod(
                 $this->getRepository(),
                 'getSearchClass'
@@ -80,7 +80,7 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
             'getEmptyModel'
         );
         self::assertInstanceOf(
-            'tx_rnbase_model_base',
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             $model
         );
         self::assertEquals(
@@ -159,8 +159,8 @@ class tx_mklib_tests_repository_PagesTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals('pages', $searchdef['basetable']);
         self::assertArrayHasKey('wrapperclass', $searchdef);
         self::assertInstanceOf(
-            'tx_rnbase_model_base',
-            tx_rnbase::makeInstance($searchdef['wrapperclass'])
+            Sys25\RnBase\Domain\Model\BaseModel::class,
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($searchdef['wrapperclass'])
         );
         $this->assertSearchDef($searchdef);
     }

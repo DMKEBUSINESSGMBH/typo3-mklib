@@ -26,7 +26,7 @@
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_filter_SingleItemTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_filter_SingleItemTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @var string
@@ -45,7 +45,7 @@ class tx_mklib_tests_filter_SingleItemTest extends tx_rnbase_tests_BaseTestCase
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
 
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $filter = $this->getFilter($parameters);
 
         $fields = [];
@@ -71,7 +71,7 @@ class tx_mklib_tests_filter_SingleItemTest extends tx_rnbase_tests_BaseTestCase
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
 
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $itemUid = 123;
         $parameters->offsetSet($this->testParamName, $itemUid);
         $filter = $this->getFilter($parameters);

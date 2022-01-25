@@ -27,7 +27,7 @@
 /**
  * benötigte Klassen einbinden.
  */
-class tx_mklib_tests_util_ExtensionConfigurationTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_ExtensionConfigurationTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     public function testGetExtensionCfgValue()
     {
@@ -36,7 +36,7 @@ class tx_mklib_tests_util_ExtensionConfigurationTest extends tx_rnbase_tests_Bas
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['dummyExtension'] = ['testConfig' => 'testConfigValue'];
 
         $extensionConfiguration =
-            tx_rnbase::makeInstance('tx_mklib_util_ExtensionConfigurationTest');
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_util_ExtensionConfigurationTest');
 
         $testConfigValue = $extensionConfiguration->getTestConfig();
 

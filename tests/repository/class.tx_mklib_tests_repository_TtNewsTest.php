@@ -29,7 +29,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * {@inheritdoc}
@@ -38,7 +38,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
-        if (!tx_rnbase_util_Extensions::isLoaded('tt_news')) {
+        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_news')) {
             self::markTestSkipped('tt_news nicht installiert');
         }
     }
@@ -49,7 +49,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
     protected function getRepository()
     {
         $searcher = $this->getMock(
-            'tx_rnbase_util_SearchGeneric'
+            \Sys25\RnBase\Search\SearchGeneric::class
         );
         $repo = $this->getMock(
             'tx_mklib_repository_TtNews',
@@ -73,7 +73,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
     public function testGetSearchClassShouldBeGeneric()
     {
         self::assertEquals(
-            'tx_rnbase_util_SearchGeneric',
+            \Sys25\RnBase\Search\SearchGeneric::class,
             $this->callInaccessibleMethod(
                 $this->getRepository(),
                 'getSearchClass'
@@ -94,7 +94,7 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
             'getEmptyModel'
         );
         self::assertInstanceOf(
-            'tx_rnbase_model_base',
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             $model
         );
         self::assertEquals(
@@ -119,8 +119,8 @@ class tx_mklib_tests_repository_TtNewsTest extends tx_rnbase_tests_BaseTestCase
         self::assertEquals('tt_news', $searchdef['basetable']);
         self::assertArrayHasKey('wrapperclass', $searchdef);
         self::assertInstanceOf(
-            'tx_rnbase_model_base',
-            tx_rnbase::makeInstance($searchdef['wrapperclass'])
+            Sys25\RnBase\Domain\Model\BaseModel::class,
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($searchdef['wrapperclass'])
         );
         $this->assertSearchDefiniton($searchdef);
     }

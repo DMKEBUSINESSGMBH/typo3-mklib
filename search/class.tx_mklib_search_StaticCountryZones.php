@@ -31,7 +31,7 @@
 /**
  * Class to search ads from database.
  */
-class tx_mklib_search_StaticCountryZones extends tx_rnbase_util_SearchBase
+class tx_mklib_search_StaticCountryZones extends \Sys25\RnBase\Search\SearchBase
 {
     /**
      * getTableMappings().

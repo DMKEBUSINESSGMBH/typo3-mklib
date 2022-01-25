@@ -29,7 +29,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_action_ShowSingeItemTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @var string
@@ -52,14 +52,16 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     public function testGetSingleItemUidParameterKeyIfNoneConfigured()
     {
         $action = $this->getMockForAbstractClass('tx_mklib_action_ShowSingeItem');
-        $configurations = $this->createConfigurations([], 'mklib');
-        $action->setConfigurations($configurations);
+        $configurations = \Sys25\RnBase\Testing\TestUtility::createConfigurations([], 'mklib');
+        $parameters = new \Sys25\RnBase\Frontend\Request\Parameters();
+        $request = new \Sys25\RnBase\Frontend\Request\Request($parameters, $configurations, '');
 
         self::assertEquals(
             'uid',
             $this->callInaccessibleMethod(
                 $action,
-                'getSingleItemUidParameterKey'
+                'getSingleItemUidParameterKey',
+                $request
             )
         );
     }
@@ -85,13 +87,15 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ['myAction.' => ['uidParameterKey' => 'item']],
             'mklib'
         );
-        $action->setConfigurations($configurations);
+        $parameters = new \Sys25\RnBase\Frontend\Request\Parameters();
+        $request = new \Sys25\RnBase\Frontend\Request\Request($parameters, $configurations, '');
 
         self::assertEquals(
             'item',
             $this->callInaccessibleMethod(
                 $action,
-                'getSingleItemUidParameterKey'
+                'getSingleItemUidParameterKey',
+                $request
             )
         );
     }
@@ -137,20 +141,22 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ['myAction.' => ['notfound' => 'Model nicht gefunden.']],
             'mklib'
         );
-        $action->setConfigurations($configurations);
+        $parameters = new \Sys25\RnBase\Frontend\Request\Parameters();
+        $request = new \Sys25\RnBase\Frontend\Request\Request($parameters, $configurations, '');
 
         self::assertEquals(
             'Model nicht gefunden.',
             $this->callInaccessibleMethod(
                 $action,
-                'getItemNotFound404Message'
+                'getItemNotFound404Message',
+                $request
             )
         );
     }
 
     /**
      * @group unit
-     * @expectedException \tx_rnbase_exception_ItemNotFound404
+     * @expectedException \Sys25\RnBase\Exception\PageNotFound404
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testThrowItemNotFound404Exception()
@@ -183,7 +189,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     /**
      * @group unit
      *
-     * @expectedException \tx_rnbase_exception_ItemNotFound404
+     * @expectedException \Sys25\RnBase\Exception\PageNotFound404
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testHandleRequestThrowsItemNotFound404ExceptionIfNoItemId()
@@ -201,7 +207,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
         );
         $action->expects(self::never())->method('getSingleItemRepository');
 
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters', []);
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class, []);
         $configurations = $this->createConfigurations(
             [],
             'mklib',
@@ -247,8 +253,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->method('getSingleItemRepository')
             ->will(self::returnValue($repository));
 
-        $parameters = tx_rnbase::makeInstance(
-            'tx_rnbase_parameters',
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Sys25\RnBase\Frontend\Request\Parameters::class,
             ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
@@ -257,19 +263,19 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             'mklib',
             $parameters
         );
-        $viewData = $configurations->getViewData();
-        $action->setConfigurations($configurations);
+        $request = new \Sys25\RnBase\Frontend\Request\Request($parameters, $configurations, '');
+        $viewData = $request->getViewContext();
 
         $this->callInaccessibleMethod(
             [$action, 'handleRequest'],
-            [&$parameters, &$configurations, &$viewData]
+            [$request]
         );
     }
 
     /**
      * @group unit
      *
-     * @expectedException \tx_rnbase_exception_ItemNotFound404
+     * @expectedException \Sys25\RnBase\Exception\PageNotFound404
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testHandleRequestThrowsItemNotFound404ExceptionIfItemNotFound()
@@ -302,8 +308,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->method('getSingleItemRepository')
             ->will(self::returnValue($repository));
 
-        $parameters = tx_rnbase::makeInstance(
-            'tx_rnbase_parameters',
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Sys25\RnBase\Frontend\Request\Parameters::class,
             ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
@@ -335,7 +341,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             false,
             ['findByUid']
         );
-        $model = tx_rnbase::makeInstance(
+        $model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_model_Page',
             ['uid' => 987654321]
         );
@@ -356,8 +362,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->method('getSingleItemRepository')
             ->will(self::returnValue($repository));
 
-        $parameters = tx_rnbase::makeInstance(
-            'tx_rnbase_parameters',
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Sys25\RnBase\Frontend\Request\Parameters::class,
             ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
@@ -366,12 +372,12 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             'mklib',
             $parameters
         );
-        $viewData = $configurations->getViewData();
-        $action->setConfigurations($configurations);
+        $request = new \Sys25\RnBase\Frontend\Request\Request($parameters, $configurations, '');
+        $viewData = $request->getViewContext();
 
         $this->callInaccessibleMethod(
             [$action, 'handleRequest'],
-            [&$parameters, &$configurations, &$viewData]
+            [$request]
         );
 
         self::assertEquals($model, $viewData->offsetGet('item'));
@@ -408,8 +414,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->method('getSingleItemRepository')
             ->will(self::returnValue($repository));
 
-        $parameters = tx_rnbase::makeInstance(
-            'tx_rnbase_parameters',
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Sys25\RnBase\Frontend\Request\Parameters::class,
             ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
@@ -419,11 +425,11 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             $parameters
         );
         $viewData = $configurations->getViewData();
-        $action->setConfigurations($configurations);
+        $request = new \Sys25\RnBase\Frontend\Request\Request($parameters, $configurations, '');
 
         $this->callInaccessibleMethod(
             [$action, 'handleRequest'],
-            [&$parameters, &$configurations, &$viewData]
+            [$request]
         );
     }
 
@@ -434,7 +440,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
 
-        tx_rnbase_util_TYPO3::getTSFE()->getPageAndRootline();
+        \Sys25\RnBase\Utility\TYPO3::getTSFE()->getPageAndRootline();
 
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
@@ -445,7 +451,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             false,
             ['findByUid']
         );
-        $model = tx_rnbase::makeInstance(
+        $model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_model_Page',
             ['uid' => 987654321]
         );
@@ -465,8 +471,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->method('getSingleItemRepository')
             ->will(self::returnValue($repository));
 
-        $parameters = tx_rnbase::makeInstance(
-            'tx_rnbase_parameters',
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Sys25\RnBase\Frontend\Request\Parameters::class,
             ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
@@ -485,13 +491,13 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         self::assertNotEquals(
             $this->defaultSubstitutedPageTitle,
-            tx_rnbase_util_TYPO3::getTSFE()->page['title'],
-            'tx_rnbase_util_TYPO3::getTSFE()->page[\'title\'] doch ersetzt'
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->page['title'],
+            '\Sys25\RnBase\Utility\TYPO3::getTSFE()->page[\'title\'] doch ersetzt'
         );
         self::assertNotEquals(
             $this->defaultSubstitutedPageTitle,
-            tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle,
-            'tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle doch ersetzt'
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->indexedDocTitle,
+            '\Sys25\RnBase\Utility\TYPO3::getTSFE()->indexedDocTitle doch ersetzt'
         );
     }
 
@@ -502,7 +508,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
 
-        tx_rnbase_util_TYPO3::getTSFE()->getPageAndRootline();
+        \Sys25\RnBase\Utility\TYPO3::getTSFE()->getPageAndRootline();
 
         $repository = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
@@ -513,7 +519,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             false,
             ['findByUid']
         );
-        $model = tx_rnbase::makeInstance(
+        $model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_model_Page',
             ['uid' => 987654321]
         );
@@ -538,8 +544,8 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
             ->method('getConfId')
             ->will(self::returnValue('myAction.'));
 
-        $parameters = tx_rnbase::makeInstance(
-            'tx_rnbase_parameters',
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Sys25\RnBase\Frontend\Request\Parameters::class,
             ['uid' => 987654321]
         );
         $configurations = $this->createConfigurations(
@@ -558,13 +564,13 @@ class tx_mklib_tests_action_ShowSingeItemTest extends tx_rnbase_tests_BaseTestCa
 
         self::assertEquals(
             $this->defaultSubstitutedPageTitle,
-            tx_rnbase_util_TYPO3::getTSFE()->page['title'],
-            'tx_rnbase_util_TYPO3::getTSFE()->page[\'title\'] falsch ersetzt'
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->page['title'],
+            '\Sys25\RnBase\Utility\TYPO3::getTSFE()->page[\'title\'] falsch ersetzt'
         );
         self::assertEquals(
             $this->defaultSubstitutedPageTitle,
-            tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle,
-            'tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle falsch ersetzt'
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->indexedDocTitle,
+            '\Sys25\RnBase\Utility\TYPO3::getTSFE()->indexedDocTitle falsch ersetzt'
         );
     }
 }

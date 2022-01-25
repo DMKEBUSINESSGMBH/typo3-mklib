@@ -110,7 +110,7 @@ class tx_mklib_util_Session
      */
     public static function areCookiesActivated()
     {
-        if (!empty($_COOKIE) || tx_rnbase_parameters::getPostOrGetParameter('checkedIfCookiesAreActivated')) {
+        if (!empty($_COOKIE) || \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('checkedIfCookiesAreActivated')) {
             $cookiesActivated = !empty($_COOKIE);
         } else {
             // @TODO diesen Abschnitt testen, aber wie (vor allem auf CLI)?
@@ -119,12 +119,12 @@ class tx_mklib_util_Session
             // Wir setzen einen Parameter für den Reload,
             // um einen Infinite Redirect zu verhindern
             // falls keine Cookies erlaubt sind.
-            $parsedUrl = parse_url(tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_SCRIPT'));
+            $parsedUrl = parse_url(\Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_SCRIPT'));
             $checkedIfCookiesAreActivatedParameter = ($parsedUrl['query'] ? '&' : '?').'checkedIfCookiesAreActivated=1';
             // Und machen einen Reload um zu sehen ob Cookies gesetzt werden konnten.
             header(
                 'Location: /'.
-                tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_SCRIPT').
+                \Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_SCRIPT').
                 $checkedIfCookiesAreActivatedParameter
             );
             exit;

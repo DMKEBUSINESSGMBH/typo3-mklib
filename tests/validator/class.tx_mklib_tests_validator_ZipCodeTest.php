@@ -7,7 +7,7 @@
  *
  * @group integration
  */
-class tx_mklib_tests_validator_ZipCodeTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_validator_ZipCodeTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * (non-PHPdoc).
@@ -16,13 +16,13 @@ class tx_mklib_tests_validator_ZipCodeTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
-        if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
+        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
             $this->markTestSkipped('static_info_tables nicht installiert');
         }
 
         // zur Sicherheit die Zip Code Rules einfügen
-        $sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(
-            tx_rnbase_util_Extensions::extPath(
+        $sqlFilename = \Sys25\RnBase\Utility\Files::getFileAbsFileName(
+            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(
                 'mklib',
                 'ext_tables_static_update.sql'
             )
@@ -138,12 +138,12 @@ class tx_mklib_tests_validator_ZipCodeTest extends tx_rnbase_tests_BaseTestCase
      */
     private static function checkStaticCountries()
     {
-        $cnt = tx_rnbase_util_DB::doSelect('COUNT(uid) as cnt', 'static_countries', ['enablefieldsoff' => 1, /*'debug'=>1,*/ 'where' => 'zipcode_rule > 0']);
+        $cnt = \Sys25\RnBase\Database\Connection::getInstance()->doSelect('COUNT(uid) as cnt', 'static_countries', ['enablefieldsoff' => 1, /*'debug'=>1,*/ 'where' => 'zipcode_rule > 0']);
         $loaded = intval($cnt[0]['cnt']) > 0;
 
         if (!$loaded) {
             // zur Sicherheit die Zip Code Rules einfügen
-            $sqlFilename = tx_rnbase_util_Files::getFileAbsFileName(tx_rnbase_util_Extensions::extPath('mklib', 'ext_tables_static_update.sql'));
+            $sqlFilename = \Sys25\RnBase\Utility\Files::getFileAbsFileName(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'ext_tables_static_update.sql'));
             if (@is_file($sqlFilename)) {
                 \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); //alle statements importieren
             }
@@ -157,6 +157,6 @@ class tx_mklib_tests_validator_ZipCodeTest extends tx_rnbase_tests_BaseTestCase
      */
     private static function getStaticCountryModel($rowOrUid)
     {
-        return tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
     }
 }

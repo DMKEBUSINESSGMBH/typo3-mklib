@@ -35,7 +35,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_util_SchedulerTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_SchedulerTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     protected $languageBackup;
 

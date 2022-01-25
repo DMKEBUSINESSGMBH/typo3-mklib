@@ -40,7 +40,7 @@ class tx_mklib_validator_ZipCode
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = tx_rnbase::makeInstance('tx_mklib_validator_ZipCode');
+            self::$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_validator_ZipCode');
         }
 
         return self::$instance;
@@ -76,8 +76,8 @@ class tx_mklib_validator_ZipCode
         switch ($country->getZipRule()) {
             case 0: // no rule set
                 $result = true;
-                if (tx_rnbase_util_Logger::isNoticeEnabled()) {
-                    tx_rnbase_util_Logger::notice('No zip rule for country defined.', 'mklib', ['zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()]);
+                if (\Sys25\RnBase\Utility\Logger::isNoticeEnabled()) {
+                    \Sys25\RnBase\Utility\Logger::notice('No zip rule for country defined.', 'mklib', ['zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()]);
                 }
                 break;
             case 1: // maximum length without gaps

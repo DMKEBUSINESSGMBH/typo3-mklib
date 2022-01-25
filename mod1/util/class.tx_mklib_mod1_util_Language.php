@@ -43,7 +43,7 @@ class tx_mklib_mod1_util_Language
     {
         $uid = (int) $uid;
         if (empty(static::$sysLanguageRecords[$uid])) {
-            static::$sysLanguageRecords[$uid] = tx_rnbase_util_DB::getRecord(
+            static::$sysLanguageRecords[$uid] = \Sys25\RnBase\Database\Connection::getInstance()->getRecord(
                 'sys_language',
                 $uid
             );
@@ -62,7 +62,7 @@ class tx_mklib_mod1_util_Language
         static $sysLanguageRecordAll = false;
         if (!$sysLanguageRecordAll) {
             $sysLanguageRecordAll = true;
-            $records = tx_rnbase_util_DB::doSelect('*', 'sys_language', []);
+            $records = \Sys25\RnBase\Database\Connection::getInstance()->doSelect('*', 'sys_language', []);
             foreach ($records as $record) {
                 static::$sysLanguageRecords[(int) $record['uid']] = $record;
             }
@@ -71,13 +71,13 @@ class tx_mklib_mod1_util_Language
 
         if ($pageId) {
             // check all page overlays to get all available languages for the page
-            $available = tx_rnbase_util_DB::doSelect(
+            $available = \Sys25\RnBase\Database\Connection::getInstance()->doSelect(
                 'sys_language.uid',
                 ['sys_language,pages_language_overlay', 'sys_language'],
                 [
                     'where' => 'pages_language_overlay.sys_language_uid=sys_language.uid'
                     .' AND pages_language_overlay.pid='.(int) $pageId
-                    .Tx_Rnbase_Backend_Utility::deleteClause('pages_language_overlay'),
+                    .\Sys25\RnBase\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay'),
                     'orderby' => 'sys_language.title ASC',
                 ]
             );
@@ -100,7 +100,7 @@ class tx_mklib_mod1_util_Language
      */
     public static function getLangSpriteIcon($recordOrUid, $options = null)
     {
-        $options = tx_rnbase_model_data::getInstance($options);
+        $options = \Sys25\RnBase\Domain\Model\DataModel::getInstance($options);
 
         if (!is_array($recordOrUid)) {
             $langUid = (int) $recordOrUid;
@@ -111,12 +111,12 @@ class tx_mklib_mod1_util_Language
         }
         $spriteIconName = 'flags-multiple';
         if (!empty($record)) {
-            $spriteIconName = Tx_Rnbase_Backend_Utility_Icons::mapRecordTypeToSpriteIconName(
+            $spriteIconName = \Sys25\RnBase\Backend\Utility\BackendUtility_Icons::mapRecordTypeToSpriteIconName(
                 'sys_language',
                 $record
             );
         }
-        $out = tx_rnbase_mod_Util::getSpriteIcon(
+        $out = \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon(
             $spriteIconName
         );
         // add title per default (typo3 equivalent)!
@@ -137,8 +137,8 @@ class tx_mklib_mod1_util_Language
     }
 
     public static function getAddLocalizationLinks(
-        Tx_Rnbase_Domain_Model_RecordInterface $item,
-        tx_rnbase_mod_BaseModule $mod = null
+        \Sys25\RnBase\Domain\Model\RecordInterface $item,
+        \Sys25\RnBase\Backend\Module\BaseModule $mod = null
     ) {
         if (// the item already are an translated item!
             $item->getUid() != $item->getProperty('uid')
@@ -155,9 +155,9 @@ class tx_mklib_mod1_util_Language
             }
 
             // skip, if a overlay for this language allready exists
-            $parentField = tx_rnbase_util_TCA::getTransOrigPointerFieldForTable($item->getTableName());
-            $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($item->getTableName());
-            $overlays = tx_rnbase_util_DB::doSelect(
+            $parentField = \Sys25\RnBase\Backend\Utility\TCA::getTransOrigPointerFieldForTable($item->getTableName());
+            $sysLanguageUidField = \Sys25\RnBase\Backend\Utility\TCA::getLanguageFieldForTable($item->getTableName());
+            $overlays = \Sys25\RnBase\Database\Connection::getInstance()->doSelect(
                 'uid',
                 $item->getTableName(),
                 [
@@ -175,8 +175,8 @@ class tx_mklib_mod1_util_Language
                 continue;
             }
 
-            /* @var $mod tx_rnbase_mod_BaseModule */
-            if (!$mod instanceof tx_rnbase_mod_BaseModule) {
+            /* @var $mod \Sys25\RnBase\Backend\Module\BaseModule */
+            if (!$mod instanceof \Sys25\RnBase\Backend\Module\BaseModule) {
                 $mod = $GLOBALS['SOBE'];
             }
 

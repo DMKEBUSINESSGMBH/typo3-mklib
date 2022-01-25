@@ -38,7 +38,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
      */
     protected function getSearchClass()
     {
-        return 'tx_rnbase_util_SearchGeneric';
+        return \Sys25\RnBase\Search\SearchGeneric::class;
     }
 
     /**
@@ -57,7 +57,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface
+     * @return \Sys25\RnBase\Domain\Model\RecordInterface
      */
     public function getEmptyModel()
     {
@@ -86,14 +86,14 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
      * @param array $fields
      * @param array $options
      *
-     * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
+     * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
     public function search(array $fields, array $options)
     {
         if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
             $options['searchdef'] = [];
         }
-        $options['searchdef'] = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+        $options['searchdef'] = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
             // default sercher config
             $this->getSearchdef(),
             // searcher config overrides

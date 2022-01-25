@@ -31,7 +31,7 @@
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_filter_SorterTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * (non-PHPdoc).
@@ -41,7 +41,7 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
     protected function setUp()
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
-        tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
+        \Sys25\RnBase\Utility\Misc::prepareTSFE(['force' => true]);
 
         //tq_seo extension hat einen hook der auf das folgende feld zugreift.
         //wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
@@ -87,7 +87,7 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
         }
 
         $confId = 'myConfId.filter.';
-        $filter = tx_rnbase::makeInstance(
+        $filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_filter_Sorter',
             $parameters,
             $configurations,
@@ -157,11 +157,11 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
     }
 
     /**
-     * @return tx_rnbase_parameters
+     * @return \Sys25\RnBase\Frontend\Request\Parameters
      */
     private function getParameters()
     {
-        $parameters = tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->setQualifier('mklib');
 
         return $parameters;
@@ -170,14 +170,14 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
     /**
      * @param bool $defaultConfig
      *
-     * @return tx_rnbase_configurations
+     * @return \Sys25\RnBase\Configuration\Processor
      */
     private function getConfigurations($defaultConfig = false)
     {
-        tx_rnbase_util_Misc::prepareTSFE();
+        \Sys25\RnBase\Utility\Misc::prepareTSFE();
 
-        $configurations = tx_rnbase::makeInstance('tx_rnbase_configurations');
-        $cObj = tx_rnbase::makeInstance(tx_rnbase_util_Typo3Classes::getContentObjectRendererClass());
+        $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
+        $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Utility\Typo3Classes::getContentObjectRendererClass());
         $config = [
             'myConfId.' => [
                 'filter.' => [
@@ -212,7 +212,7 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
         $configurations = $this->getConfigurations();
 
         $confId = 'myConfId.filter.';
-        $filter = tx_rnbase::makeInstance(
+        $filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_tests_fixtures_classes_SorterFilter',
             $parameters,
             $configurations,
@@ -237,7 +237,7 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
         $parameters->offsetSet('sortOrder', 'desc');
 
         $confId = 'myConfId.filter.';
-        $filter = tx_rnbase::makeInstance(
+        $filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_tests_fixtures_classes_SorterFilter',
             $parameters,
             $configurations,
@@ -259,7 +259,7 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
         $configurations = $this->getConfigurations(true);
 
         $confId = 'myConfId.filter.';
-        $filter = tx_rnbase::makeInstance(
+        $filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_tests_fixtures_classes_SorterFilter',
             $parameters,
             $configurations,
@@ -284,7 +284,7 @@ class tx_mklib_tests_filter_SorterTest extends tx_rnbase_tests_BaseTestCase
         $parameters->offsetSet('sortOrder', 'desc');
 
         $confId = 'myConfId.filter.';
-        $filter = tx_rnbase::makeInstance(
+        $filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_tests_fixtures_classes_SorterFilter',
             $parameters,
             $configurations,

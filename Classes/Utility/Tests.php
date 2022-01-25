@@ -149,7 +149,7 @@ class Tests
      */
     public static function getFixturePath($filename, $dir = 'tests/fixtures/', $extKey = 'mklib')
     {
-        return \tx_rnbase_util_Extensions::extPath($extKey).$dir.$filename;
+        return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey).$dir.$filename;
     }
 
     /**
@@ -171,15 +171,15 @@ class Tests
      */
     public static function queryDB($sqlFile, $statementType = false, $bIgnoreStatementType = false)
     {
-        $sql = \tx_rnbase_util_Network::getUrl($sqlFile);
+        $sql = \Sys25\RnBase\Utility\Network::getUrl($sqlFile);
         if (empty($sql)) {
             throw new Exception('SQL-Datei nicht gefunden');
         }
-        $databaseConnection = \Tx_Rnbase_Database_Connection::getInstance();
+        $databaseConnection = \Sys25\RnBase\Database\Connection::getInstance();
         if ($statementType || $bIgnoreStatementType) {
             $statements = self::getSqlStatementArrayDependendOnTypo3Version($sql);
             foreach ($statements as $statement) {
-                if (!$bIgnoreStatementType && \tx_rnbase_util_Strings::isFirstPartOfStr($statement, $statementType)) {
+                if (!$bIgnoreStatementType && \Sys25\RnBase\Utility\Strings::isFirstPartOfStr($statement, $statementType)) {
                     $databaseConnection->doQuery($statement);
                 } elseif ($bIgnoreStatementType) {//alle gefundenen statements ausführen
                     $databaseConnection->doQuery($statement);
@@ -197,7 +197,7 @@ class Tests
      */
     private static function getSqlStatementArrayDependendOnTypo3Version($sql)
     {
-        $dbHandler = \tx_rnbase::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
+        $dbHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
 
         return $dbHandler->getStatementArray($sql, 1);
     }
@@ -212,7 +212,7 @@ class Tests
     {
         $path = self::getFixturePath($filename, $dir, $extKey);
 
-        $markerTemplateService = \tx_rnbase::makeInstance(MarkerBasedTemplateService::class);
+        $markerTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $templateCode = file_get_contents($path);
         if ($subpart) {
             $templateCode = $markerTemplateService->getSubpart($templateCode, $subpart);
@@ -229,12 +229,12 @@ class Tests
      */
     public static function setFeUserObject($oFeUser = null, $bForce = false)
     {
-        $frontendUserAuthenticationClass = \tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass();
+        $frontendUserAuthenticationClass = \Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass();
         if (!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass ||
             $bForce
         ) {
             if (!is_object($oFeUser)) {
-                $oFeUser = \tx_rnbase::makeInstance($frontendUserAuthenticationClass);
+                $oFeUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($frontendUserAuthenticationClass);
             }
             if (!is_object($GLOBALS['TSFE'])) {
                 self::prepareTSFE(['force' => true]);
@@ -303,7 +303,7 @@ class Tests
      * @param string $frontendOutput hier wird die rückgabe der action reingeschrieben
      * @param string $viewData       hier werden die viewData reingeschrieben
      *
-     * @return \tx_rnbase_action_BaseIOC
+     * @return \Sys25\RnBase\Frontend\Controller\AbstractAction
      */
     public static function &getAction(
         $action,
@@ -315,11 +315,11 @@ class Tests
         &$viewData = null
     ) {
         if (is_string($action)) {
-            $action = \tx_rnbase::makeInstance($action);
+            $action = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($action);
         }
 
-        $configurations = \tx_rnbase::makeInstance('tx_rnbase_configurations');
-        $parameters = \tx_rnbase::makeInstance('tx_rnbase_parameters');
+        $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
+        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
 
         $aConfig = (array) $aConfig;
         $configurations->init(
@@ -396,7 +396,7 @@ class Tests
             $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] = 0;
         }
 
-        \tx_rnbase_util_Misc::prepareTSFE(['force' => true]);
+        \Sys25\RnBase\Utility\Misc::prepareTSFE(['force' => true]);
         $loaded = true;
 
         if (isset($options['initFEuser'])) {
@@ -458,7 +458,7 @@ class Tests
     public static function setSysPageToTsfe()
     {
         self::prepareTSFE();
-        $GLOBALS['TSFE']->sys_page = \tx_rnbase_util_TYPO3::getSysPage();
+        $GLOBALS['TSFE']->sys_page = \Sys25\RnBase\Utility\TYPO3::getSysPage();
     }
 
     /**
@@ -489,9 +489,9 @@ class Tests
      */
     public static function enableLinkCreation($pageId = 1)
     {
-        \tx_rnbase_util_Misc::prepareTSFE();
+        \Sys25\RnBase\Utility\Misc::prepareTSFE();
 
-        $GLOBALS['TSFE']->sys_page = \tx_rnbase_util_TYPO3::getSysPage();
+        $GLOBALS['TSFE']->sys_page = \Sys25\RnBase\Utility\TYPO3::getSysPage();
         $GLOBALS['TSFE']->id = $pageId;
     }
 

@@ -27,7 +27,7 @@
 /**
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_util_SearchBuilderTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_mod1_util_SearchBuilderTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @dataProvider providerMakeWildcardTerm

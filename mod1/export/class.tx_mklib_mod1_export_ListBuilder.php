@@ -27,7 +27,7 @@
  *
  * @author Michael Wagner
  */
-class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
+class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\ListBuilder
 {
     /**
      * Die ist leider private und muss überschrieben werden.
@@ -51,10 +51,10 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
      *
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_ListBuilder::renderEach()
+     * @see \Sys25\RnBase\Frontend\Marker\ListBuilder::renderEach()
      */
     public function renderEach(
-        tx_rnbase_util_IListProvider $provider,
+        \Sys25\RnBase\Frontend\Marker\IListProvider $provider,
         $viewData,
         $template,
         $markerClassname,
@@ -71,12 +71,12 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
         tx_mklib_mod1_export_Util::doOutPut($header);
 
         /* @var $listMarker tx_mklib_mod1_export_ListMarker */
-        $listMarker = tx_rnbase::makeInstance(
+        $listMarker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_mod1_export_ListMarker',
             $this->info->getListMarkerInfo()
         );
 
-        $templateList = tx_rnbase_util_Templates::getSubpart(
+        $templateList = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart(
             $template,
             '###'.$outerMarker.'S###'
         );
@@ -84,7 +84,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
             $templateList,
             $marker
         );
-        $templateEntry = tx_rnbase_util_Templates::getSubpart(
+        $templateEntry = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart(
             $templateList,
             '###'.$marker.'###'
         );
@@ -126,7 +126,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
     ) {
         // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
         $token = md5(time()).md5(get_class());
-        $wrap = tx_rnbase_util_Templates::substituteSubpart(
+        $wrap = \Sys25\RnBase\Frontend\Marker\Templates::substituteSubpart(
             $template,
             '###'.$marker.'###',
             $token,
@@ -148,7 +148,7 @@ class tx_mklib_mod1_export_ListBuilder extends tx_rnbase_util_ListBuilder
      *
      * {@inheritdoc}
      *
-     * @see tx_rnbase_util_ListBuilder::render()
+     * @see \Sys25\RnBase\Frontend\Marker\ListBuilder::render()
      */
     public function render(
         &$dataArr,

@@ -32,6 +32,6 @@ class tx_mklib_util_Logger
      */
     public static function getDebugBacktrace()
     {
-        return tx_rnbase_util_Debug::getDebugTrail();
+        return \Sys25\RnBase\Utility\Debug::getDebugTrail();
     }
 }

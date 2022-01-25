@@ -31,7 +31,7 @@
 /**
  * Generic form view test.
  */
-class tx_mklib_tests_srv_StaticCountryZonesTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_srv_StaticCountryZonesTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * (non-PHPdoc).
@@ -40,7 +40,7 @@ class tx_mklib_tests_srv_StaticCountryZonesTest extends tx_rnbase_tests_BaseTest
      */
     protected function setUp()
     {
-        if (!tx_rnbase_util_Extensions::isLoaded('static_info_tables')) {
+        if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
             $this->markTestSkipped('static_info_tables nicht installiert.');
         }
     }

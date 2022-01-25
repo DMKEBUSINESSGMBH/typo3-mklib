@@ -29,7 +29,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Repository_InterfaceSearch, Tx_Rnbase_Interface_Singleton
+abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repository\SearchInterface, \TYPO3\CMS\Core\SingletonInterface
 {
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
     const DELETION_MODE_HIDE = 0;
@@ -46,13 +46,13 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
     /**
      * Liefert den Searcher.
      *
-     * @return tx_rnbase_util_SearchBase
+     * @return \Sys25\RnBase\Search\SearchBase
      */
     protected function getSearcher()
     {
-        $searcher = tx_rnbase_util_SearchBase::getInstance($this->getSearchClass());
-        if (!$searcher instanceof tx_rnbase_util_SearchBase) {
-            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends tx_rnbase_util_SearchBase!');
+        $searcher = \Sys25\RnBase\Search\SearchBase::getInstance($this->getSearchClass());
+        if (!$searcher instanceof \Sys25\RnBase\Search\SearchBase) {
+            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends \Sys25\RnBase\Search\SearchBase!');
         }
 
         return $searcher;
@@ -73,14 +73,14 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      *
      * @param int|array $rowOrUid
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface|null
+     * @return \Sys25\RnBase\Domain\Model\RecordInterface|null
      *
      * @TODO use handleEnableFieldsOptions to get hidden records in BE
      */
     public function findByUid($rowOrUid)
     {
-        /* @var $model Tx_Rnbase_Domain_Model_RecordInterface */
-        $model = tx_rnbase::makeInstance(
+        /* @var $model \Sys25\RnBase\Domain\Model\RecordInterface */
+        $model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             $this->getWrapperClass(),
             $rowOrUid
         );
@@ -89,7 +89,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
     }
 
     /**
-     * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
+     * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
     public function findAll()
     {
@@ -102,7 +102,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      * @param array $fields
      * @param array $options
      *
-     * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
+     * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
     public function search(array $fields, array $options)
     {
@@ -118,7 +118,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      * @param array $fields
      * @param array $options
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface
+     * @return \Sys25\RnBase\Domain\Model\RecordInterface
      */
     public function searchSingle(array $fields = [], array $options = [])
     {
@@ -174,10 +174,10 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
             $languageField = tx_mklib_util_TCA::getLanguageField($tableName);
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
-                $tsfe = tx_rnbase_util_TYPO3::getTSFE();
+                $tsfe = \Sys25\RnBase\Utility\TYPO3::getTSFE();
                 $languages = [];
                 if (isset($options['additionali18n'])) {
-                    $languages = tx_rnbase_util_Strings::trimExplode(',', $options['additionali18n'], true);
+                    $languages = \Sys25\RnBase\Utility\Strings::trimExplode(',', $options['additionali18n'], true);
                 }
                 $languages[] = '-1'; // for all languages
                 // Wenn eine bestimmte Sprache gesetzt ist,
@@ -199,7 +199,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      * @param array $items
      * @param array $options
      *
-     * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
+     * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
     protected function prepareItems($items, $options)
     {
@@ -218,18 +218,18 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      * @param array        $items
      * @param unknown_type $options
      *
-     * @return array[Tx_Rnbase_Domain_Model_RecordInterface]
+     * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
     protected function uniqueItems(array $items, $options)
     {
         // uniqueue, if there are models and the distinct option
-        if (reset($items) instanceof Tx_Rnbase_Domain_Model_RecordInterface
+        if (reset($items) instanceof \Sys25\RnBase\Domain\Model\RecordInterface
             && isset($options['distinct'])
             && $options['distinct']
         ) {
             // seperate master and overlays
             $master = $overlay = [];
-            /* @var $item Tx_Rnbase_Domain_Model_RecordInterface */
+            /* @var $item \Sys25\RnBase\Domain\Model\RecordInterface */
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
                 $realUid = (int) $item->getProperty('uid');
@@ -263,11 +263,11 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface
+     * @return \Sys25\RnBase\Domain\Model\RecordInterface
      */
     public function getEmptyModel()
     {
-        return tx_rnbase::makeInstance($this->getWrapperClass());
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getWrapperClass());
     }
 
     /**
@@ -299,7 +299,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
         $model = $this->getEmptyModel();
         $table = $model->getTableName();
 
-        $data = tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
+        $data = \Sys25\RnBase\Backend\Utility\TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
         // setzen wir nur, wenn noch nicht gesetzt!
@@ -321,16 +321,16 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      * and just call THIS method via parent::handleUpdate().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model         this model is being updated
+     * @param \Sys25\RnBase\Domain\Model\RecordInterface $model         this model is being updated
      * @param array                                  $data          New data
      * @param string                                 $where         Override default restriction by defining an explicite where clause
      * @param int                                    $debug         Set to 1 to debug sql-String
      * @param mixed                                  $noQuoteFields Array or commaseparated string with fieldnames
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface Updated model
+     * @return \Sys25\RnBase\Domain\Model\RecordInterface Updated model
      */
     public function handleUpdate(
-        Tx_Rnbase_Domain_Model_RecordInterface $model,
+        \Sys25\RnBase\Domain\Model\RecordInterface $model,
         array $data,
         $where = '',
         $debug = 0,
@@ -354,7 +354,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
         }
 
         // Eleminate columns not in TCA
-        $data = tx_rnbase_util_TCA::eleminateNonTcaColumns($model, $data);
+        $data = \Sys25\RnBase\Backend\Utility\TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
         $db->doUpdate($table, $where, $data, $debug, $noQuoteFields);
@@ -369,7 +369,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      */
     protected function getDatabaseUtility()
     {
-        return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
     }
 
     /**
@@ -399,14 +399,14 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      * and just call THIS method via parent::handleDelete().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model this model is being updated
+     * @param \Sys25\RnBase\Domain\Model\RecordInterface $model this model is being updated
      * @param string                                 $where Override default restriction by defining an explicite where clause
      * @param int                                    $mode  deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record
      * @param int                                    $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface updated (on success actually empty) model
+     * @return \Sys25\RnBase\Domain\Model\RecordInterface updated (on success actually empty) model
      */
-    public function handleDelete(Tx_Rnbase_Domain_Model_RecordInterface $model, $where = '', $mode = 0, $table = null)
+    public function handleDelete(\Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
         if (empty($table)) {
             $table = $model->getTableName();
@@ -438,7 +438,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      *
      * @param array $data
      *
-     * @return Tx_Rnbase_Domain_Model_RecordInterface created model
+     * @return \Sys25\RnBase\Domain\Model\RecordInterface created model
      */
     public function handleCreation(array $data)
     {
@@ -465,7 +465,7 @@ abstract class tx_mklib_repository_Abstract implements Tx_Rnbase_Domain_Reposito
      *
      * @TODO: model has to implement interface!
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $model
+     * @param \Sys25\RnBase\Domain\Model\RecordInterface $model
      * @param array                                  $data
      *
      * @return array

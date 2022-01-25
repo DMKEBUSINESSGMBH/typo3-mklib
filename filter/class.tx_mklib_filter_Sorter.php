@@ -49,7 +49,7 @@
  * @todo default sortierung per TypoScript konfigurierbar machen
  * @todo mehrfach sortierung unertsützen?
  */
-class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
+class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
 {
     /**
      * @var string
@@ -123,8 +123,6 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
 
     /**
      * setzt $this->sortBy und $this->sortOrder.
-     *
-     * @param tx_rnbase_IParameters $parameters
      *
      * @return bool
      */
@@ -240,14 +238,14 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
         $configurations = $this->getConfigurations();
 
         $sortFields = $configurations->get($confId.$this->allowedFieldsConfId);
-        $sortFields = $sortFields ? tx_rnbase_util_Strings::trimExplode(',', $sortFields, true) : [];
+        $sortFields = $sortFields ? \Sys25\RnBase\Utility\Strings::trimExplode(',', $sortFields, true) : [];
 
         return $sortFields;
     }
 
     /**
      * @param string                    $template  HTML template
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      * @param string                    $confId
      * @param string                    $marker
      *
@@ -267,7 +265,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
             $confId
         );
 
-        $template = tx_rnbase_util_Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
+        $template = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
 
         return $template;
     }
@@ -277,7 +275,7 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
      * @param array                     $markerArray
      * @param array                     $subpartArray
      * @param array                     $wrappedSubpartArray
-     * @param tx_rnbase_util_FormatUtil $formatter
+     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      * @param string                    $confId
      * @param string                    $marker
      */
@@ -297,8 +295,8 @@ class tx_mklib_filter_Sorter extends tx_rnbase_filter_BaseFilter
                 $markOrders[$field.'_order'] = $isField ? $this->getSortOrder() : '';
 
                 $fieldMarker = $this->markerPrefix.'_'.strtoupper($field).'_LINK';
-                $makeLink = tx_rnbase_util_BaseMarker::containsMarker($template, $fieldMarker);
-                $makeUrl = tx_rnbase_util_BaseMarker::containsMarker($template, $fieldMarker.'URL');
+                $makeLink = \Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker);
+                $makeUrl = \Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker.'URL');
                 // link generieren
                 if ($makeLink || $makeUrl) {
                     // sortierungslinks ausgeben

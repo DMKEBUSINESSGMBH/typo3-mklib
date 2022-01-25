@@ -125,7 +125,7 @@ class tx_mklib_util_HttpRequest
     public function setAdapter($adapter)
     {
         if (is_string($adapter)) {
-            $adapter = tx_rnbase::makeInstance($adapter);
+            $adapter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($adapter);
         }
 
         if (!$adapter instanceof tx_mklib_util_httprequest_adapter_Interface) {

@@ -125,7 +125,7 @@ class tx_mklib_util_Array
      *
      * @author 2011 mwagner
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
+     * @param \Sys25\RnBase\Domain\Model\RecordInterface|array $objs
      * @param string                                       $attr
      *
      * @return array
@@ -134,7 +134,7 @@ class tx_mklib_util_Array
     {
         $fieldsArray = [];
         foreach ($aObj as $oObj) {
-            $aRecord = is_object($oObj) ? $oObj->record : (is_array($oObj) ? $oObj : []);
+            $aRecord = is_object($oObj) ? $oObj->getProperty() : (is_array($oObj) ? $oObj : []);
             if (isset($aRecord[$sAttr])) {
                 $fieldsArray[] = $aRecord[$sAttr];
             }
@@ -148,7 +148,7 @@ class tx_mklib_util_Array
      *
      * @author 2011 mwagner
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface|array $objs
+     * @param \Sys25\RnBase\Domain\Model\RecordInterface|array $objs
      * @param string                                       $attr
      * @param string                                       $delimiter
      *

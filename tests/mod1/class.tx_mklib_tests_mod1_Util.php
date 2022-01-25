@@ -38,7 +38,7 @@ class tx_mklib_tests_mod1_Util
      */
     public static function replaceForCli(&$sString)
     {
-        if (tx_rnbase_util_TYPO3::isCliMode()) {
+        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
             //wir müssen noch mod.php durch cli_dispatch.phpsh ersetzen
             $sString = str_replace('mod.php', 'cli_dispatch.phpsh', $sString);
             //außerdem müssen die get parameter, die im BE gesetzt sind löschen
@@ -72,9 +72,9 @@ class tx_mklib_tests_mod1_Util
      * Löscht die gesetzten Sortierungsoptionen
      * Enter description here ...
      *
-     * @param tx_rnbase_mod_BaseModule $mod
+     * @param \Sys25\RnBase\Backend\Module\BaseModule $mod
      */
-    public static function unsetSorting(tx_rnbase_mod_BaseModule $mod)
+    public static function unsetSorting(\Sys25\RnBase\Backend\Module\BaseModule $mod)
     {
         unset($GLOBALS['BE_USER']->uc['moduleData'][$mod->getName()]['dummySearcherorderby']);
         if (isset($_GET['sortField'])) {

@@ -5,7 +5,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_util_list_Builder extends tx_rnbase_util_ListBuilder
+class tx_mklib_util_list_Builder extends \Sys25\RnBase\Frontend\Marker\ListBuilder
 {
     // die ist leider private und muss überschrieben werden
     private $callbacks = [];
@@ -39,7 +39,7 @@ class tx_mklib_util_list_Builder extends tx_rnbase_util_ListBuilder
     }
 
     public function renderEach(
-        tx_rnbase_util_IListProvider $provider,
+        \Sys25\RnBase\Frontend\Marker\IListProvider $provider,
         $viewData,
         $template,
         $markerClassname,
@@ -56,15 +56,15 @@ class tx_mklib_util_list_Builder extends tx_rnbase_util_ListBuilder
         $this->handleOutput($header);
 
         /* @var $listMarker tx_mklib_util_list_Marker */
-        $listMarker = tx_rnbase::makeInstance(
+        $listMarker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_util_list_Marker',
             $this->info->getListMarkerInfo(),
             $this->output
         );
 
-        $templateList = tx_rnbase_util_Templates::getSubpart($template, '###'.$outerMarker.'S###');
+        $templateList = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart($template, '###'.$outerMarker.'S###');
         list($listHeader, $listFooter) = $this->getWrapForSubpart($templateList, $marker);
-        $templateEntry = tx_rnbase_util_Templates::getSubpart($templateList, '###'.$marker.'###');
+        $templateEntry = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart($templateList, '###'.$marker.'###');
 
         $this->handleOutput($listHeader);
 
@@ -90,7 +90,7 @@ class tx_mklib_util_list_Builder extends tx_rnbase_util_ListBuilder
     {
         // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
         $token = md5(time()).md5(get_class());
-        $wrap = tx_rnbase_util_Templates::substituteSubpart(
+        $wrap = \Sys25\RnBase\Frontend\Marker\Templates::substituteSubpart(
             $template,
             '###'.$marker.'###',
             $token,

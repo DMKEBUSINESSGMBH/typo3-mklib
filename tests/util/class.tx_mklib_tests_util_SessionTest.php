@@ -29,7 +29,7 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_SessionTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @var array
@@ -134,7 +134,7 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
             'fetchSessionData was removed in TYPO3 8'
         );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
-            tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
+            \Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass(),
             ['fetchSessionData']
         );
         $GLOBALS['TSFE']->fe_user->expects(self::once())
@@ -152,7 +152,7 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
             'fetchUserSession is only present since TYPO3 8'
         );
         $GLOBALS['TSFE']->fe_user = $this->getMock(
-            tx_rnbase_util_Typo3Classes::getFrontendUserAuthenticationClass(),
+            \Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass(),
             ['fetchUserSession']
         );
         $GLOBALS['TSFE']->fe_user->expects(self::once())
@@ -208,6 +208,6 @@ class tx_mklib_tests_util_SessionTest extends tx_rnbase_tests_BaseTestCase
      */
     protected function getRandomHexString()
     {
-        return tx_rnbase::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class)->generateRandomHexString(32);
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Crypto\Random::class)->generateRandomHexString(32);
     }
 }

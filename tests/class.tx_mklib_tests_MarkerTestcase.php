@@ -30,11 +30,11 @@
 
 /**
  * Testklasse für Marker Klassen, die ihre Ausgabe über
- * tx_rnbase_util_Templates::substituteMarkerArrayCached erstellen.
+ * \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached erstellen.
  *
  * Bei den Tests sollte der Cache NIE genutzt werden!
  */
-class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_MarkerTestcase extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * (non-PHPdoc).
@@ -43,7 +43,7 @@ class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase
      */
     protected function setUp()
     {
-        tx_rnbase_util_Templates::disableSubstCache();
+        \Sys25\RnBase\Frontend\Marker\Templates::disableSubstCache();
     }
 
     /**
@@ -53,7 +53,7 @@ class tx_mklib_tests_MarkerTestcase extends tx_rnbase_tests_BaseTestCase
      */
     protected function tearDown()
     {
-        tx_rnbase_util_Templates::enableSubstCache();
+        \Sys25\RnBase\Frontend\Marker\Templates::enableSubstCache();
     }
 
     /**

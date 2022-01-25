@@ -28,10 +28,10 @@
  * @author Hannes Bochmann
  * @author Michael Wagner
  */
-class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
+class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
 {
     /**
-     * @var tx_rnbase_mod_IModule
+     * @var \Sys25\RnBase\Backend\Module\IModule
      */
     private $mod = null;
     /**
@@ -40,9 +40,9 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     private $options = null;
 
     /**
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      */
-    public function __construct(tx_rnbase_mod_IModule $mod, array $options = [])
+    public function __construct(\Sys25\RnBase\Backend\Module\IModule $mod, array $options = [])
     {
         $this->mod = $mod;
         $this->options = $options;
@@ -52,9 +52,9 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      * @param string                                 $value
      * @param string                                 $colName
      * @param array                                  $record
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      */
-    public function format($value, $colName, $record, tx_rnbase_model_base $item)
+    public function format($value, $colName, $record, \Sys25\RnBase\Domain\Model\DataInterface $item)
     {
         $ret = $value;
         switch ($colName) {
@@ -89,17 +89,17 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     /**
      * renders the uid column.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      *
      * @return string
      */
-    protected function getUidColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
+    protected function getUidColumn(\Sys25\RnBase\Domain\Model\DataInterface $item)
     {
         $wrap = $item->isHidden() ? ['<del>', '</del>'] : ['', ''];
         $ret = $wrap[0].$item->getProperty('uid').$wrap[1];
         $dates = [];
-        $dates['crdate'] = (array_key_exists('crdate', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['crdate'])) : '-';
-        $dates['tstamp'] = (array_key_exists('tstamp', $item->record)) ? strftime('%d.%m.%y %H:%M:%S', intval($item->record['tstamp'])) : '-';
+        $dates['crdate'] = $item->hasProperty('crdate') ? strftime('%d.%m.%y %H:%M:%S', intval($item->getProperty('crdate'))) : '-';
+        $dates['tstamp'] = $item->hasProperty('tstamp') ? strftime('%d.%m.%y %H:%M:%S', intval($item->getProperty('tstamp'))) : '-';
 
         return '<span title="Creation: '.$dates['crdate']." \nLast Change: ".$dates['tstamp'].' ">'.$ret.'</span>';
     }
@@ -107,11 +107,11 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     /**
      * renders the label column.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      *
      * @return string
      */
-    protected function getLabelColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
+    protected function getLabelColumn(\Sys25\RnBase\Domain\Model\DataInterface $item)
     {
         $lastModifyDateTime = $item->getLastModifyDateTime();
         $creationDateTime = $item->getCreationDateTime();
@@ -131,11 +131,11 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      * Renders the flag and the title of the sys language record.
      * Renders some links to create the overlay too.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      *
      * @return string
      */
-    protected function getSysLanguageColumn(Tx_Rnbase_Domain_Model_RecordInterface $item)
+    protected function getSysLanguageColumn(\Sys25\RnBase\Domain\Model\DataInterface $item)
     {
         if ($item->getTableName()) {
             $ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
@@ -162,7 +162,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     /**
      * Liefert die möglichen Optionen für die actions.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      *
      * @return array
      */
@@ -173,7 +173,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
             'hide' => '',
         ];
 
-        if ($item && tx_rnbase_util_TCA::getSortbyFieldForTable($item->getTableName())) {
+        if ($item && \Sys25\RnBase\Backend\Utility\TCA::getSortbyFieldForTable($item->getTableName())) {
             $cols['moveup'] = '';
             $cols['movedown'] = '';
         }
@@ -191,12 +191,12 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
      * @TODO: weitere links integrieren!
      * $options = array('hide'=>'ausblenden,'edit'=>'bearbeiten,'remove'=>'löschen','history'='history','info'=>'info','move'=>'verschieben');
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      * @param array                                  $options
      *
      * @return string
      */
-    protected function getActions(Tx_Rnbase_Domain_Model_RecordInterface $item, array $options)
+    protected function getActions(\Sys25\RnBase\Domain\Model\DataInterface $item, array $options)
     {
         $ret = '';
         $tableName = $item->getTableName();
@@ -209,7 +209,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                     break;
                 case 'hide':
                     $sHiddenColumn = tx_mklib_util_TCA::getEnableColumn($tableName, 'disabled', 'hidden');
-                    $ret .= $this->getFormTool()->createHideLink($tableName, $uid, $item->record[$sHiddenColumn]);
+                    $ret .= $this->getFormTool()->createHideLink($tableName, $uid, $item->getProperty($sHiddenColumn));
                     break;
                 case 'remove':
                     //Es wird immer ein Bestätigungsdialog ausgegeben!!! Dieser steht
@@ -247,7 +247,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             ]
                         );
                     } else {
-                        $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+                        $ret .= \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon('empty-icon');
                     }
                     break;
                 case 'movedown':
@@ -266,7 +266,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
                             ]
                         );
                     } else {
-                        $ret .= tx_rnbase_mod_Util::getSpriteIcon('empty-icon');
+                        $ret .= \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon('empty-icon');
                     }
                     break;
                 default:
@@ -287,7 +287,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
         $value,
         $colName,
         $record,
-        Tx_Rnbase_Domain_Model_RecordInterface $item
+        \Sys25\RnBase\Domain\Model\DataInterface $item
     ) {
         $stateClass = [];
 
@@ -308,11 +308,11 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     /**
      * liefert die items map und setzten den pointer auf das aktuelle element.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
+     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
      *
      * @return array
      */
-    protected function getItemsMap(Tx_Rnbase_Domain_Model_RecordInterface $item)
+    protected function getItemsMap(\Sys25\RnBase\Domain\Model\DataInterface $item)
     {
         if (empty($this->options['items_map'])) {
             return [];
@@ -330,7 +330,7 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     /**
      * Returns the module.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     protected function getModule()
     {
@@ -338,9 +338,9 @@ class tx_mklib_mod1_decorator_Base implements tx_rnbase_mod_IDecorator
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_util_FormTool
+     * @return \Sys25\RnBase\Backend\Form\ToolBox
      */
     protected function getFormTool()
     {

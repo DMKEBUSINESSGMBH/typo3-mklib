@@ -55,7 +55,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
             ]
         );
 
-        $devLog[tx_rnbase_util_Logger::LOGLEVEL_INFO] = [
+        $devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO] = [
             'message' => count($this->affectedRows).' Datensätze wurden in '.
                             $table.' mit der Bedingung '.
                             $where.' und dem Modus '.$mode.' entfernt',
@@ -83,7 +83,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
      */
     protected function getDatabaseConnection()
     {
-        return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
     }
 
     /**

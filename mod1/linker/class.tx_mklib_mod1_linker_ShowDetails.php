@@ -26,7 +26,7 @@
  * Generischer Linker für eine Detailseite.
  *
  * // Linker Instanz
- * $linker = tx_rnbase::makeInstance(
+ * $linker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
  *			'tx_mklib_mod1_linker_ShowDetails',
  *			'couponGroup'
  *		)
@@ -65,15 +65,15 @@ class tx_mklib_mod1_linker_ShowDetails
     }
 
     /**
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param tx_rnbase_util_FormTool                $formTool
+     * @param \Sys25\RnBase\Domain\Model\RecordInterface $item
+     * @param \Sys25\RnBase\Backend\Form\ToolBox                $formTool
      * @param array                                  $options
      *
      * @return string
      */
     public function makeLink(
-            Tx_Rnbase_Domain_Model_RecordInterface $item,
-            tx_rnbase_util_FormTool $formTool,
+            \Sys25\RnBase\Domain\Model\RecordInterface $item,
+            \Sys25\RnBase\Backend\Form\ToolBox $formTool,
             $options = []
     ) {
         $out = $formTool->createSubmit(
@@ -87,15 +87,15 @@ class tx_mklib_mod1_linker_ShowDetails
     }
 
     /**
-     * @param tx_rnbase_util_FormTool $formTool
+     * @param \Sys25\RnBase\Backend\Form\ToolBox $formTool
      * @param array                   $options
      *
      * @return string
      */
     public function makeClearLink(
             // wird eigentlich nicht benötigt.
-            Tx_Rnbase_Domain_Model_RecordInterface $item,
-            tx_rnbase_util_FormTool $formTool,
+            \Sys25\RnBase\Domain\Model\RecordInterface $item,
+            \Sys25\RnBase\Backend\Form\ToolBox $formTool,
             $options = []
     ) {
         $out = $formTool->createSubmit(
@@ -109,16 +109,16 @@ class tx_mklib_mod1_linker_ShowDetails
     }
 
     /**
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      */
     public function getCurrentUid(
-        tx_rnbase_mod_IModule $mod
+        \Sys25\RnBase\Backend\Module\IModule $mod
     ) {
         $modSettings = [
             $this->identifier => '0',
         ];
 
-        $params = tx_rnbase_parameters::getPostOrGetParameter('showDetails');
+        $params = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('showDetails');
         $params = is_array($params) ? $params : [];
         list($model, $uid) = each($params);
         if (is_array($uid)) {
@@ -129,7 +129,7 @@ class tx_mklib_mod1_linker_ShowDetails
             !empty($uid)
             && 'clear' === $uid
         ) {
-            Tx_Rnbase_Backend_Utility::getModuleData(
+            \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
                 $modSettings,
                 $modSettings,
                 $mod->getName()
@@ -140,7 +140,7 @@ class tx_mklib_mod1_linker_ShowDetails
         // else
 
         $uid = intval($uid);
-        $data = Tx_Rnbase_Backend_Utility::getModuleData(
+        $data = \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
             $modSettings,
             $uid
                 ? [

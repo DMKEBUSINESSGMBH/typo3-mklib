@@ -91,7 +91,7 @@ class tx_mklib_util_Debug
         if (!$path) {
             $path = 'typo3temp/mklib/';
             if (!is_writable(\Sys25\RnBase\Utility\Environment::getPublicPath().$path)) {
-                tx_rnbase_util_Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $path);
+                \Sys25\RnBase\Utility\Files::mkdir_deep(\Sys25\RnBase\Utility\Environment::getPublicPath(), $path);
             }
             $path = \Sys25\RnBase\Utility\Environment::getPublicPath().$path;
         }
@@ -176,7 +176,7 @@ class tx_mklib_util_Debug
      */
     public static function t3Debug()
     {
-        tx_rnbase_util_Debug::debug(self::$aDebug, 'tx_mklib_util_Debug', 'mklib Debug'); // @TODO: remove me
+        \Sys25\RnBase\Utility\Debug::debug(self::$aDebug, 'tx_mklib_util_Debug', 'mklib Debug'); // @TODO: remove me
     }
 
     /**

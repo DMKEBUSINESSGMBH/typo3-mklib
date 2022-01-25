@@ -45,13 +45,13 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      * @param unknown_type          $options
      * @param string                $sSelector
      *
      * @return unknown_type
      */
-    public function __construct(tx_rnbase_mod_IModule $mod, $options = [], $sSelector = 'tx_mklib_mod1_util_Selector')
+    public function __construct(\Sys25\RnBase\Backend\Module\IModule $mod, $options = [], $sSelector = 'tx_mklib_mod1_util_Selector')
     {
         $this->init($mod, $options);
     }
@@ -59,17 +59,17 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Init object.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      * @param array                 $options
      * @param string                $sSelector
      */
-    protected function init(tx_rnbase_mod_IModule $mod, $options, $sSelector = 'tx_mklib_mod1_util_Selector')
+    protected function init(\Sys25\RnBase\Backend\Module\IModule $mod, $options, $sSelector = 'tx_mklib_mod1_util_Selector')
     {
         $this->options = $options;
         $this->mod = $mod;
         $this->formTool = $mod->getFormTool();
 
-        $this->selector = tx_rnbase::makeInstance($sSelector);
+        $this->selector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($sSelector);
         $this->selector->init($mod);
     }
 
@@ -97,9 +97,9 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     public function getModule()
     {
@@ -107,9 +107,9 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     public function getOptions()
     {
@@ -117,9 +117,9 @@ class tx_mklib_mod1_searcher_Base
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     public function getFormTool()
     {

@@ -28,7 +28,7 @@
  * Die Klasse ermöglicht direkt eine CSV Datei
  * mit den Boardmitteln von TYPO3 zu schreiben.
  */
-class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
+class tx_mklib_util_Csv extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
 {
     /**
      * Gibt die Csv Zeilen zurück, die gesetzt wurden.
@@ -48,7 +48,7 @@ class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
      * @param array  $aData
      * @param string $sFileName | gibt es einen festen dateinamen?
      *
-     * @return string | Name der Datei
+     * @return string|Name der Datei
      */
     public function writeCsv($sDir, $sPrefix = '', $aData = [], $sFileName = '')
     {
@@ -64,7 +64,7 @@ class tx_mklib_util_Csv extends Tx_Rnbase_RecordList_DatabaseRecordList
         }
         $sCsvLines = implode(chr(13).chr(10), $aData);
 
-        if (tx_rnbase_util_Files::writeFile($sDir.$sFileName, $sCsvLines)) {
+        if (\Sys25\RnBase\Utility\Files::writeFile($sDir.$sFileName, $sCsvLines)) {
             return $sFileName;
         } else {
             return false;

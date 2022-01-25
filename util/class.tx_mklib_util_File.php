@@ -60,8 +60,8 @@ class tx_mklib_util_File
         }
         $key = $key ? 'base' : md5(serialize($mounts).serialize($f_ext));
         if (!self::$ftInstances[$key]) {
-            self::$ftInstances[$key] = tx_rnbase::makeInstance(
-                tx_rnbase_util_Typo3Classes::getBasicFileUtilityClass()
+            self::$ftInstances[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                \Sys25\RnBase\Utility\Typo3Classes::getBasicFileUtilityClass()
             );
         }
 
@@ -93,7 +93,7 @@ class tx_mklib_util_File
 
         // optionen sammeln.
         $iLifetime = $aOptions['lifetime'] ? $aOptions['lifetime'] : 0;
-        $aFiletypes = $aOptions['filetypes'] ? tx_rnbase_util_Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : [];
+        $aFiletypes = $aOptions['filetypes'] ? \Sys25\RnBase\Utility\Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : [];
         $bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
 
         $iCount = 0;
@@ -144,7 +144,7 @@ class tx_mklib_util_File
     public static function getSiteUrl()
     {
         if (false === self::$siteUrl) {
-            self::$siteUrl = tx_rnbase_util_Misc::getIndpEnv('TYPO3_SITE_URL');
+            self::$siteUrl = \Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_URL');
         }
 
         return self::$siteUrl;
@@ -158,7 +158,7 @@ class tx_mklib_util_File
     public static function getDocumentRoot($slashPath = true)
     {
         if (false === self::$documentRoot) {
-            if (!self::$documentRoot = tx_rnbase_util_Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT')) {
+            if (!self::$documentRoot = \Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT')) {
                 // happens for example on the CLI
                 self::$documentRoot = \Sys25\RnBase\Utility\Environment::getPublicPath();
             }
@@ -252,7 +252,7 @@ class tx_mklib_util_File
      */
     public static function getInstance()
     {
-        return tx_rnbase::makeInstance('tx_mklib_util_File');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_util_File');
     }
 
     /**
@@ -294,7 +294,7 @@ class tx_mklib_util_File
      */
     public function isDirectory($theDir)
     {
-        if (Tx_Rnbase_Utility_T3General::validPathStr($theDir)) {
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theDir)) {
             $theDir = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
             if (@is_dir($theDir)) {
                 return $theDir;
@@ -398,7 +398,7 @@ class tx_mklib_util_File
         // Nur in einen Absoluten Pfad umwandeln, wenn es noch keiner ist.
         if (!self::isAbsServerPath($sPath)) {
             // Absoluten Pfad generieren
-            $sPath = tx_rnbase_util_Files::getFileAbsFileName($sPath);
+            $sPath = \Sys25\RnBase\Utility\Files::getFileAbsFileName($sPath);
         }
 
         return self::slashPath($sPath);
@@ -515,7 +515,7 @@ class tx_mklib_util_File
         // da der LoadBallancer die Anfragen intern weiterleitet!
         // 'allow from 192.168'.PHP_EOL
 
-        tx_rnbase_util_Files::writeFile($theFile, $content);
+        \Sys25\RnBase\Utility\Files::writeFile($theFile, $content);
 
         return @is_file($theFile);
     }

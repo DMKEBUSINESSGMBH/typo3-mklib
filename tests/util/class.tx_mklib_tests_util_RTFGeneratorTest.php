@@ -31,7 +31,7 @@
 /**
  * RtfGenerator util tests.
  */
-class tx_mklib_tests_util_RTFGeneratorTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_RTFGeneratorTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * Enter description here ...
@@ -62,7 +62,7 @@ class tx_mklib_tests_util_RTFGeneratorTest extends tx_rnbase_tests_BaseTestCase
             'rtfVersion' => 1,
             'exportInfoTable' => 1,
         ];
-        $oRTFGenerator = tx_rnbase::makeInstance('tx_mklib_util_RTFGenerator', $aParams);
+        $oRTFGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_util_RTFGenerator', $aParams);
         $sRTFText = $oRTFGenerator->getRTF('###SPECIALCHAR_(###<strong>Das ist ein schöner Testtext.</strong> Auch mit ###SPECIALCHAR_)### verschiedenen ßonderzeichen und Ähnlichem. Sogar einem ###SPECIALCHAR_*###');
 
         self::assertEquals('{\rtf1\ansi\deff0{\fonttbl{\f0\fcharset0\fnil Arial;}{\f1\fcharset0\fnil Wingdings;}}{\info{\version1}{\creatim\yr'.date('Y').'\mo'.date('m').'\dy'.date('d').'\hr'.date('H').'\min'.date('i').'\sec0}}{\f0\fs22\dn0 }{\f1\fs25\dn0 (}{\f0\fs22\dn0}{\b\f0\fs22\dn0 Das ist ein sch\\\'f6ner Testtext. }{\f0\fs22\dn0 Auch mit }{\f1\fs25\dn0 )}{\f0\fs22\dn0 verschiedenen \\\'dfonderzeichen und \\\'c4hnlichem. Sogar einem }{\f1\fs25\dn0 *}{\f0\fs22\dn0}}', $sRTFText, 'Der generierte Text ist falsch.');
@@ -82,7 +82,7 @@ class tx_mklib_tests_util_RTFGeneratorTest extends tx_rnbase_tests_BaseTestCase
             'paperOrientation' => 1,
             'rtfVersion' => 1,
         ];
-        $oRTFGenerator = tx_rnbase::makeInstance('tx_mklib_util_RTFGenerator', $aParams);
+        $oRTFGenerator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_util_RTFGenerator', $aParams);
         $sRTFText = $oRTFGenerator->getRTF('###SPECIALCHAR_(###<strong>Das ist ein schöner Testtext.</strong> Auch mit ###SPECIALCHAR_)### verschiedenen ßonderzeichen und Ähnlichem. Sogar einem ###SPECIALCHAR_*###');
 
         self::assertEquals('{\rtf1\ansi\deff0{\fonttbl{\f0\fcharset0\fnil Arial;}{\f1\fcharset0\fnil Wingdings;}}{\f0\fs22\dn0 }{\f1\fs25\dn0 (}{\f0\fs22\dn0}{\b\f0\fs22\dn0 Das ist ein sch\\\'f6ner Testtext. }{\f0\fs22\dn0 Auch mit }{\f1\fs25\dn0 )}{\f0\fs22\dn0 verschiedenen \\\'dfonderzeichen und \\\'c4hnlichem. Sogar einem }{\f1\fs25\dn0 *}{\f0\fs22\dn0}}', $sRTFText, 'Der generierte Text ist falsch.');

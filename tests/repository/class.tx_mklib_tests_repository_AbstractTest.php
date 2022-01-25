@@ -27,7 +27,7 @@
 /**
  * benötigte Klassen einbinden.
  */
-class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_repository_AbstractTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @group unit
@@ -85,11 +85,14 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     {
         $repository = $this->getRepositoryMock();
 
-        $expectedModel = tx_rnbase::makeInstance('tx_mklib_model_StaticCountry', ['uid' => 123]);
+        $expectedModel = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'tx_mklib_model_StaticCountry',
+            ['uid' => 123, 'title' => 'dummy']
+        );
 
         self::assertEquals(
             $expectedModel,
-            $repository->findByUid(['uid' => 123]),
+            $repository->findByUid(['uid' => 123, 'title' => 'dummy']),
             'model nicht zurück gegeben'
         );
     }
@@ -165,7 +168,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
 
         $repository = $this->getRepositoryMock();
         $master = $this->getMock(
-            'tx_rnbase_model_base',
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             ['getTableName'],
             [['uid' => 123]]
         );
@@ -174,7 +177,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->will(self::returnValue('tt_content'));
 
         $overlay = $this->getMock(
-            'tx_rnbase_model_base',
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             ['getTableName'],
             [['uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789]]
         );
@@ -196,7 +199,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     {
         $repository = $this->getRepositoryMock();
         $master = $this->getMock(
-            'tx_rnbase_model_base',
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             ['getTableName'],
             [['uid' => 123]]
         );
@@ -205,7 +208,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
             ->will(self::returnValue('tt_content'));
 
         $overlay = $this->getMock(
-            'tx_rnbase_model_base',
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             ['getTableName'],
             [['uid' => 456, 'l18n_parent' => 123, 'sys_language_uid' => 789]]
         );
@@ -615,7 +618,7 @@ class tx_mklib_tests_repository_AbstractTest extends tx_rnbase_tests_BaseTestCas
     private function getModelMock($rowOrUid = [], $mockedMethods = [])
     {
         $model = $this->getMock(
-            'tx_rnbase_model_base',
+            Sys25\RnBase\Domain\Model\BaseModel::class,
             $mockedMethods,
             [$rowOrUid]
         );

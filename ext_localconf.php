@@ -12,8 +12,8 @@ if (!defined('TYPO3_MODE')) {
 
 $_EXTKEY = 'mklib';
 
-require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'scheduler/ext_localconf.php';
-require_once tx_rnbase_util_Extensions::extPath($_EXTKEY).'srv/ext_localconf.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'scheduler/ext_localconf.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'srv/ext_localconf.php';
 
 //das ist nur eine info für entwickler welcher basis exception code
 //für diese extension verwendet wird. in diesem fall 400.

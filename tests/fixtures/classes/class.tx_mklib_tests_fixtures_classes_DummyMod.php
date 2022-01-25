@@ -31,7 +31,7 @@
 /**
  * Backend Modul für mklib.
  */
-class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
+class tx_mklib_tests_fixtures_classes_DummyMod extends \Sys25\RnBase\Backend\Module\BaseModule
 {
     public $pageinfo;
     public $tabs;
@@ -74,7 +74,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
      *
      * {@inheritdoc}
      *
-     * @see tx_rnbase_mod_BaseModule::getDoc()
+     * @see \Sys25\RnBase\Backend\Module\BaseModule::getDoc()
      */
     public function getDoc()
     {
@@ -82,7 +82,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends tx_rnbase_mod_BaseModule
             if (isset($GLOBALS['TBE_TEMPLATE'])) {
                 $this->doc = $GLOBALS['TBE_TEMPLATE'];
             } else {
-                $this->doc = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Template_Override_DocumentTemplate');
+                $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Template\Override\DocumentTemplate::class);
             }
         }
 

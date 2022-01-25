@@ -52,7 +52,7 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
     {
         self::$test = $bTest;
         // hook aufrufen!!
-        tx_rnbase_util_Misc::callHook('rn_base', 'searchbase_handleTableMapping', self::$data);
+        \Sys25\RnBase\Utility\Misc::callHook('rn_base', 'searchbase_handleTableMapping', self::$data);
 
         return false === self::$test;
     }
@@ -72,7 +72,7 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
 /**
  * SearchSorting util tests.
  */
-class tx_mklib_tests_util_SearchSortingTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_SearchSortingTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     private static $hooks = [];
 

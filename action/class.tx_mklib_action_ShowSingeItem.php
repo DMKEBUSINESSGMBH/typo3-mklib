@@ -29,26 +29,28 @@
  * @license         http://www.gnu.org/licenses/lgpl.html
  *                  GNU Lesser General Public License, version 3 or later
  */
-abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
+abstract class tx_mklib_action_ShowSingeItem extends \Sys25\RnBase\Frontend\Controller\AbstractAction
 {
     /**
-     * Do the magic!
+     * @param \Sys25\RnBase\Frontend\Request\RequestInterface $request
      *
-     * @param tx_rnbase_IParameters    &$parameters
-     * @param tx_rnbase_configurations &$configurations
-     * @param ArrayObject              &$viewdata
+     * @return null
      *
-     * @return string Errorstring or NULL
+     * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
      */
-    protected function handleRequest(&$parameters, &$configurations, &$viewdata)
+    protected function handleRequest(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        $itemUid = $this->getSingleItemUidFromConfigurations();
+        $configurations = $request->getConfigurations();
+        $parameters = $request->getParameters();
+        $viewData = $request->getViewContext();
 
-        $itemParameterKey = $this->getSingleItemUidParameterKey();
+        $itemUid = $this->getSingleItemUidFromConfigurations($request);
+
+        $itemParameterKey = $this->getSingleItemUidParameterKey($request);
         if (!$itemUid &&
             !($itemUid = $parameters->getInt($itemParameterKey))
         ) {
-            $this->throwItemNotFound404Exception();
+            $this->throwItemNotFound404Exception($request);
         }
 
         $singleItemRepository = $this->getSingleItemRepository();
@@ -57,18 +59,18 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
         // as we need it
         if (!$singleItemRepository instanceof tx_mklib_repository_Abstract
             && !$singleItemRepository instanceof tx_mklib_srv_Base
-            && !$singleItemRepository instanceof Tx_Rnbase_Domain_Repository_AbstractRepository
+            && !$singleItemRepository instanceof \Sys25\RnBase\Domain\Repository\AbstractRepository
         ) {
             throw new Exception('Das Repository, welches von getSingleItemRepository() geliefert '.'wird, muss von tx_mklib_repository_Abstract erben!');
         }
 
         if (!($item = $singleItemRepository->findByUid($itemUid))) {
-            $this->throwItemNotFound404Exception();
+            $this->throwItemNotFound404Exception($request);
         }
 
-        $viewdata->offsetSet('item', $item);
+        $viewData->offsetSet('item', $item);
 
-        $this->substitutePageTitle();
+        $this->substitutePageTitle($request);
 
         return null;
     }
@@ -76,9 +78,9 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
     /**
      * @return int
      */
-    protected function getSingleItemUidFromConfigurations()
+    protected function getSingleItemUidFromConfigurations(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        return $this->getConfigurations()->get($this->getConfId().'uid');
+        return $request->getConfigurations()->get($this->getConfId().'uid');
     }
 
     /**
@@ -88,9 +90,9 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
      *
      * @return string
      */
-    protected function getSingleItemUidParameterKey()
+    protected function getSingleItemUidParameterKey(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        $uidParameterKey = $this->getConfigurations()->get(
+        $uidParameterKey = $request->getConfigurations()->get(
             $this->getConfId().'uidParameterKey'
         );
 
@@ -103,16 +105,12 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
     abstract protected function getSingleItemRepository();
 
     /**
-     * @throws tx_rnbase_exception_ItemNotFound404
-     *
-     * @todo wenn Kompatibilität zu TYPO3 7.6 hergestellt wird auf
-     * TYPO3\CMS\Core\Error\Http\PageNotFoundException umsteigen statt
-     * tx_rnbase_exception_ItemNotFound404
+     * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
      */
-    protected function throwItemNotFound404Exception()
+    protected function throwItemNotFound404Exception(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        if (!$this->getConfigurations()->get($this->getConfId().'disable404ExceptionIfNoItemFound')) {
-            throw tx_rnbase::makeInstance('tx_rnbase_exception_ItemNotFound404', $this->getItemNotFound404Message());
+        if (!$request->getConfigurations()->get($this->getConfId().'disable404ExceptionIfNoItemFound')) {
+            throw \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Error\Http\PageNotFoundException::class, $this->getItemNotFound404Message($request));
         }
     }
 
@@ -125,9 +123,9 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
      *
      * @return string
      */
-    protected function getItemNotFound404Message()
+    protected function getItemNotFound404Message(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        $message = $this->getConfigurations()->getCfgOrLL(
+        $message = $request->getConfigurations()->getCfgOrLL(
             $this->getConfId().'notfound'
         );
 
@@ -139,22 +137,22 @@ abstract class tx_mklib_action_ShowSingeItem extends tx_rnbase_action_BaseIOC
      */
     protected function getViewClassName()
     {
-        return 'tx_rnbase_view_Single';
+        return \Sys25\RnBase\Fluid\View\Action::class;
     }
 
-    protected function substitutePageTitle()
+    protected function substitutePageTitle(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        if ($this->getConfigurations()->get($this->getConfId().'substitutePageTitle')) {
-            $pageTitle = $this->getPageTitle();
-            tx_rnbase_util_TYPO3::getTSFE()->page['title'] = $pageTitle;
-            tx_rnbase_util_TYPO3::getTSFE()->indexedDocTitle = $pageTitle;
+        if ($request->getConfigurations()->get($this->getConfId().'substitutePageTitle')) {
+            $pageTitle = $this->getPageTitle($request);
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->page['title'] = $pageTitle;
+            \Sys25\RnBase\Utility\TYPO3::getTSFE()->indexedDocTitle = $pageTitle;
         }
     }
 
     /**
      * @return string
      */
-    protected function getPageTitle()
+    protected function getPageTitle(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
         return 'please provide the method getPageTitle in your action returning the desired page title';
     }

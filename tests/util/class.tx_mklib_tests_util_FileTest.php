@@ -31,7 +31,7 @@
 /**
  * Generic form view test.
  */
-class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -53,7 +53,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
 
     private static function createTestfiles($testfolder)
     {
-        tx_rnbase_util_Files::mkdir_deep($testfolder);
+        \Sys25\RnBase\Utility\Files::mkdir_deep($testfolder);
         $files = [
             [$testfolder.'/', 'test.zip'],
             [$testfolder.'/', 'test.xml'],
@@ -68,7 +68,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
             $path = $file[0];
             $file = $file[1];
             if (!is_dir($path)) {
-                tx_rnbase_util_Files::mkdir_deep($path);
+                \Sys25\RnBase\Utility\Files::mkdir_deep($path);
             }
             $iH = fopen($path.$file, 'w+');
             fwrite($iH, 'This is an automatic generated testfile and can be removed.');
@@ -80,7 +80,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
     {
         //@TODO: lifetime testen
         // testverzeichnis anlegen
-        $testfolder = tx_rnbase_util_Extensions::extPath('mklib', 'tests/fixtures/toremove');
+        $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
         self::createTestfiles($testfolder);
 
         // das aufräumen!
@@ -92,14 +92,14 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
         ]);
         self::assertEquals(0, $count, 'wrong deleted count.');
         // weider löschen
-        tx_rnbase_util_Files::rmdir($testfolder, true);
+        \Sys25\RnBase\Utility\Files::rmdir($testfolder, true);
     }
 
     public function testCleanupFilesWithZipAndXml()
     {
         //@TODO: lifetime testen
         // testverzeichnis anlegen
-        $testfolder = tx_rnbase_util_Extensions::extPath('mklib', 'tests/fixtures/toremove');
+        $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
         self::createTestfiles($testfolder);
 
         // das aufräumen!
@@ -112,14 +112,14 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
         ]);
         self::assertEquals(2, $count, 'wrong deleted count.');
         // weider löschen
-        tx_rnbase_util_Files::rmdir($testfolder, true);
+        \Sys25\RnBase\Utility\Files::rmdir($testfolder, true);
     }
 
     public function testCleanupFilesRecursiveWithZipAndXml()
     {
         //@TODO: lifetime testen
         // testverzeichnis anlegen
-        $testfolder = tx_rnbase_util_Extensions::extPath('mklib', 'tests/fixtures/toremove');
+        $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
         self::createTestfiles($testfolder);
 
         // das aufräumen!
@@ -132,7 +132,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
         ]);
         self::assertEquals(4, $count, 'wrong deleted count. testfolder: '.$testfolder);
         // weider löschen
-        tx_rnbase_util_Files::rmdir($testfolder, true);
+        \Sys25\RnBase\Utility\Files::rmdir($testfolder, true);
     }
 
     /**
@@ -140,7 +140,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetServerPath()
     {
-        if (tx_rnbase_util_TYPO3::isCliMode()) {
+        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();
@@ -155,7 +155,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetRelPath()
     {
-        if (tx_rnbase_util_TYPO3::isCliMode()) {
+        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();
@@ -170,7 +170,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetRelPathWithRemovedStartingSlashSetToTrue()
     {
-        if (tx_rnbase_util_TYPO3::isCliMode()) {
+        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();
@@ -198,7 +198,7 @@ class tx_mklib_tests_util_FileTest extends tx_rnbase_tests_BaseTestCase
      */
     public function testGetWebPath()
     {
-        if (tx_rnbase_util_TYPO3::isCliMode()) {
+        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
             $this->markTestSkipped('Geht leider nicht unter CLI.');
         }
         $pathSite = tx_mklib_util_File::getDocumentRoot();

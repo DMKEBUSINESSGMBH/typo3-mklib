@@ -22,20 +22,20 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  ***************************************************************/
 
-class tx_mklib_tests_fixtures_classes_DummyFilter extends tx_rnbase_filter_BaseFilter
+class tx_mklib_tests_fixtures_classes_DummyFilter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
 {
     /**
      * Abgeleitete Filter können diese Methode überschreiben und zusätzlich Filter setzen.
      *
      * @param array                    $fields
      * @param array                    $options
-     * @param tx_rnbase_parameters     $parameters
-     * @param tx_rnbase_configurations $configurations
+     * @param \Sys25\RnBase\Frontend\Request\Parameters     $parameters
+     * @param \Sys25\RnBase\Configuration\Processor $configurations
      * @param string                   $confId
      *
      * @return bool
      */
-    protected function initFilter(&$fields, &$options, &$parameters, &$configurations, $confId)
+    protected function initFilter(&$fields, &$options, \Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
         $fields['test'] = 'value';
 

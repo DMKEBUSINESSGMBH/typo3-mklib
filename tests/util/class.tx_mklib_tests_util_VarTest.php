@@ -31,7 +31,7 @@
 /**
  * Generic form view test.
  */
-class tx_mklib_tests_util_VarTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_VarTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * isTrue testen.

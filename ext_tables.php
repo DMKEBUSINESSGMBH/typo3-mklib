@@ -21,9 +21,9 @@ $TCA['tt_content']['types']['list']['subtypes_excludelist']['tx_mklib'] = 'layou
 // Das tt_content-Feld pi_flexform einblenden
 $TCA['tt_content']['types']['list']['subtypes_addlist']['tx_mklib'] = 'pi_flexform';
 
-tx_rnbase_util_Extensions::addPiFlexFormValue('tx_mklib', 'FILE:EXT:mklib/flexform_main.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('tx_mklib', 'FILE:EXT:mklib/flexform_main.xml');
 
-tx_rnbase_util_Extensions::addPlugin(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
     [
         'LLL:EXT:mklib/locallang_db.php:plugin.mklib.label',
         'tx_mklib',
@@ -33,5 +33,5 @@ tx_rnbase_util_Extensions::addPlugin(
     'mklib'
 );
 
-tx_rnbase_util_Extensions::addStaticFile($_EXTKEY, 'static/basic/', 'MK Lib - Basics');
-tx_rnbase_util_Extensions::addStaticFile($_EXTKEY, 'static/development/', 'MK Lib - Development');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'static/basic/', 'MK Lib - Basics');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'static/development/', 'MK Lib - Development');

@@ -73,7 +73,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
      */
     protected function getDatabaseConnection()
     {
-        return tx_rnbase::makeInstance('Tx_Mklib_Database_Connection');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
     }
 
     /**
@@ -119,7 +119,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
      */
     protected function getMiscUtility()
     {
-        return 'tx_rnbase_util_Misc';
+        return \Sys25\RnBase\Utility\Misc::class;
     }
 
     /**

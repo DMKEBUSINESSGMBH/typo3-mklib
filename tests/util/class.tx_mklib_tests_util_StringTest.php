@@ -27,7 +27,7 @@
 /**
  * Generic form view test.
  */
-class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_StringTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * Testen ob crop nur richtig kürzt.
@@ -213,7 +213,7 @@ class tx_mklib_tests_util_StringTest extends tx_rnbase_tests_BaseTestCase
     public static function initSpamProtectionConfig()
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
-        tx_rnbase_util_Misc::prepareTSFE();
+        \Sys25\RnBase\Utility\Misc::prepareTSFE();
 
         $GLOBALS['TSFE']->spamProtectEmailAddresses = 2;
         $GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst'] = '&#8203;(at)&#8203';

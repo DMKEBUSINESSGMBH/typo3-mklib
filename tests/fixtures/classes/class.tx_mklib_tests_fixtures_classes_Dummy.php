@@ -44,11 +44,11 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
             $aResults = [];
         } else {
             $aResults = [
-                0 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 1]),
-                1 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 2]),
-                2 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 3]),
-                3 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 4]),
-                4 => tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 5]),
+                0 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 1]),
+                1 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2]),
+                2 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 3]),
+                3 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 4]),
+                4 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5]),
             ];
         }
         //sortieren?
@@ -58,7 +58,7 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
 
         //versteckte zurück geben?
         if (1 == $GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden']) {
-            $aResults[5] = tx_rnbase::makeInstance('Tx_Rnbase_Domain_Model_Base', ['uid' => 6, 'hidden' => 1]);
+            $aResults[5] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'hidden' => 1]);
         }
 
         if ($options['count']) {

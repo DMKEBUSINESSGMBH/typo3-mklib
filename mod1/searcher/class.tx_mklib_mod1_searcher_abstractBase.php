@@ -38,7 +38,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Selector Klasse.
      *
-     * @var tx_rnbase_mod_IModule
+     * @var \Sys25\RnBase\Backend\Module\IModule
      */
     private $mod = null;
     /**
@@ -76,10 +76,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Constructor.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      * @param array                 $options
      */
-    public function __construct(tx_rnbase_mod_IModule $mod, array $options = [])
+    public function __construct(\Sys25\RnBase\Backend\Module\IModule $mod, array $options = [])
     {
         $this->init($mod, $options);
     }
@@ -87,10 +87,10 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Init object.
      *
-     * @param tx_rnbase_mod_IModule $mod
+     * @param \Sys25\RnBase\Backend\Module\IModule $mod
      * @param array                 $options
      */
-    protected function init(tx_rnbase_mod_IModule $mod, $options)
+    protected function init(\Sys25\RnBase\Backend\Module\IModule $mod, $options)
     {
         // locallang einlesen
         if (!self::$localLangLoaded) {
@@ -125,7 +125,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function loadOwnLocalLangNotOverwritingExistingLabels()
     {
         $labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml', false);
-        $labelsFromMklib = tx_rnbase_util_Arrays::mergeRecursiveWithOverrule(
+        $labelsFromMklib = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
             $labelsFromMklib,
             (array) $GLOBALS['LOCAL_LANG']
         );
@@ -233,15 +233,15 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Liefert den initialisierten Listbuilder.
      *
-     * @return tx_rnbase_util_ListProvider
+     * @return \Sys25\RnBase\Frontend\Marker\ListProvider
      */
     public function getInitialisedListProvider()
     {
         // Wir initialisieren das Formular und damit auch die Filter.
         $this->getFilterTableDataForSearchForm();
         list($fields, $options) = $this->getFieldsAndOptions();
-        /* @var $provider tx_rnbase_util_ListProvider */
-        $provider = tx_rnbase::makeInstance('tx_rnbase_util_ListProvider');
+        /* @var $provider \Sys25\RnBase\Frontend\Marker\ListProvider */
+        $provider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Marker\ListProvider::class);
         $provider->initBySearch([$this->getService(), 'search'], $fields, $options);
 
         return $provider;
@@ -254,9 +254,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     public function getResultList()
     {
-        /* @var $pager tx_rnbase_util_BEPager */
-        $pager = $this->usePager() ? tx_rnbase::makeInstance(
-            'tx_rnbase_util_BEPager',
+        /* @var $pager \Sys25\RnBase\Backend\Utility\BEPager */
+        $pager = $this->usePager() ? \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \Sys25\RnBase\Backend\Utility\BEPager::class,
             $this->getSearcherId().'Pager',
             $this->getModule()->getName(),
             // @TODO: die PageId solle noch konfigurierbar gemacht werden.
@@ -314,7 +314,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     {
         $firstPrev = $lastNext = false;
         if ($this->options['baseTableName']
-            && tx_rnbase_util_TCA::getSortbyFieldForTable($this->options['baseTableName'])
+            && \Sys25\RnBase\Backend\Utility\TCA::getSortbyFieldForTable($this->options['baseTableName'])
             && ($options['limit'] || $options['offset'])
         ) {
             // normalize limit and offset values to int
@@ -358,16 +358,16 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 
         // build uidmap
         $map = [];
-        if ($firstPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($firstPrev instanceof \Sys25\RnBase\Domain\Model\RecordInterface) {
             $map[$firstPrev->getUid()] = [];
         }
-        if ($secondPrev instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($secondPrev instanceof \Sys25\RnBase\Domain\Model\RecordInterface) {
             $map[$secondPrev->getUid()] = [];
         }
         foreach ($items as $item) {
             $map[$item->getUid()] = [];
         }
-        if ($lastNext instanceof Tx_Rnbase_Domain_Model_RecordInterface) {
+        if ($lastNext instanceof \Sys25\RnBase\Domain\Model\RecordInterface) {
             $map[$lastNext->getUid()] = [];
         }
 
@@ -421,8 +421,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     private function prepareSorting(&$options)
     {
         $sortedCols = [];
-        if (tx_rnbase_parameters::getPostOrGetParameter('sortField') && tx_rnbase_parameters::getPostOrGetParameter('sortRev')) {
-            $sortedCols = [tx_rnbase_parameters::getPostOrGetParameter('sortField') => tx_rnbase_parameters::getPostOrGetParameter('sortRev')];
+        if (\Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField') && \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev')) {
+            $sortedCols = [\Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField') => \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev')];
             //wir setzen die daten noch für das Modul um bei einem seiten wechsel
             //weiterhin die richtige sortierung zu haben
             $this->getSelector()->setValueToModuleData(
@@ -433,7 +433,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             $sortedCols = $aOrderByByModuleData;
             //wenn die sortierung aus dem Modul kommt, müssen wir die Sortierung in
             //den $_GET Daten setzen damit die richtigen Pfeile angezeigt werden
-            //siehe tx_rnbase_util_FormTool::createSortLink
+            //siehe \Sys25\RnBase\Backend\Form\ToolBox::createSortLink
             $aKeys = array_keys($aOrderByByModuleData);
             $_GET['sortField'] = $aKeys[0];
             $aValues = array_values($aOrderByByModuleData);
@@ -525,15 +525,15 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             return '';
         }
         $columns = $this->getDecoratorColumns($this->getDecorator($this->getModule(), $options));
-        list($tableData, $tableLayout) = tx_rnbase_mod_Tables::prepareTable(
+        list($tableData, $tableLayout) = \Sys25\RnBase\Backend\Utility\Tables::prepareTable(
             $items,
             $columns,
             $this->getFormTool(),
             $this->getOptions()
         );
 
-        /* @var $tables Tx_Rnbase_Backend_Utility_Tables */
-        $tables = tx_rnbase::makeInstance('Tx_Rnbase_Backend_Utility_Tables');
+        /* @var $tables \Sys25\RnBase\Backend\Utility\Tables */
+        $tables = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Utility\Tables::class);
         $out = $tables->buildTable($tableData, $tableLayout);
         $content .= $out;
 
@@ -543,14 +543,14 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * the decorator instace.
      *
-     * @param tx_rnbase_mod_IModule &$mod
+     * @param \Sys25\RnBase\Backend\Module\IModule &$mod
      * @param array                 $options
      *
      * @return tx_mklib_mod1_decorator_Base
      */
     protected function getDecorator(&$mod, array $options = [])
     {
-        return tx_rnbase::makeInstance(
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             $this->getDecoratorClass(),
             $mod,
             $options
@@ -587,13 +587,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * Adds the column 'uid' to the be list.
      *
      * @param array                    $columns
-     * @param tx_rnbase_mod_IDecorator $oDecorator
+     * @param \Sys25\RnBase\Backend\Decorator\InterfaceDecorator $oDecorator
      *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnUid(
         array &$columns,
-        tx_rnbase_mod_IDecorator &$oDecorator = null
+        \Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
     ) {
         $columns['uid'] = [
             'title' => 'label_tableheader_uid',
@@ -607,16 +607,16 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * Adds the column 'uid' to the be list.
      *
      * @param array                    $columns
-     * @param tx_rnbase_mod_IDecorator $oDecorator
+     * @param \Sys25\RnBase\Backend\Decorator\InterfaceDecorator $oDecorator
      *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnLabel(
         array &$columns,
-        tx_rnbase_mod_IDecorator &$oDecorator = null
+        \Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
     ) {
         if (!empty($this->options['baseTableName'])) {
-            $labelField = tx_rnbase_util_TCA::getLabelFieldForTable($this->options['baseTableName']);
+            $labelField = \Sys25\RnBase\Backend\Utility\TCA::getLabelFieldForTable($this->options['baseTableName']);
             if (!empty($labelField)) {
                 $columns['label'] = [
                     'title' => 'label_tableheader_title',
@@ -636,16 +636,16 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * Adds the column 'sys_language_uid' to the be list.
      *
      * @param array                    $columns
-     * @param tx_rnbase_mod_IDecorator $oDecorator
+     * @param \Sys25\RnBase\Backend\Decorator\InterfaceDecorator $oDecorator
      *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnLanguage(
         array &$columns,
-        tx_rnbase_mod_IDecorator &$oDecorator = null
+        \Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
     ) {
         if (!empty($this->options['baseTableName'])) {
-            $sysLanguageUidField = tx_rnbase_util_TCA::getLanguageFieldForTable($this->options['baseTableName']);
+            $sysLanguageUidField = \Sys25\RnBase\Backend\Utility\TCA::getLanguageFieldForTable($this->options['baseTableName']);
             if (!empty($sysLanguageUidField)) {
                 $columns['sys_language_uid'] = [
                     'title' => 'label_tableheader_language',
@@ -662,13 +662,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      * this column contains the edit, hide, remove, ... actions.
      *
      * @param array                    $columns
-     * @param tx_rnbase_mod_IDecorator $oDecorator
+     * @param \Sys25\RnBase\Backend\Decorator\InterfaceDecorator $oDecorator
      *
      * @return tx_mklib_mod1_searcher_abstractBase
      */
     protected function addDecoratorColumnActions(
         array &$columns,
-        tx_rnbase_mod_IDecorator &$oDecorator = null
+        \Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
     ) {
         $columns['actions'] = [
             'title' => 'label_tableheader_actions',
@@ -684,7 +684,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function getSelector()
     {
         if (!$this->selector) {
-            $this->selector = tx_rnbase::makeInstance($this->getSelectorClass());
+            $this->selector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getSelectorClass());
             $this->selector->init($this->getModule());
         }
 
@@ -715,9 +715,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     protected function getModule()
     {
@@ -725,9 +725,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     protected function getOptions()
     {
@@ -735,9 +735,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_util_FormTool
+     * @return \Sys25\RnBase\Backend\Form\ToolBox
      */
     protected function getFormTool()
     {

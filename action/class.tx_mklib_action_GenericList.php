@@ -9,6 +9,9 @@
  * Generische Klasse für List Views.
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ *
+ * @deprecated Making this action compatible with rn_base >= 1.15.0 would mean a refactoring as we can't use the
+ * view right now. As the view is markerbased it's deprecated anyway.
  */
 class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
 {
@@ -16,7 +19,7 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
 
     /**
      * @param tx_rnbase_IParameters    $parameters
-     * @param tx_rnbase_configurations $configurations
+     * @param \Sys25\RnBase\Configuration\Processor $configurations
      * @param ArrayObject              $viewData
      *
      * @return string error msg or null
@@ -35,8 +38,8 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
         $fields = $options = [];
 
         // Searcher instanzieren. Konfiguriert wird er über die options['searchdef']
-        /* @var $searcher tx_rnbase_util_SearchGeneric */
-        $searcher = tx_rnbase_util_SearchBase::getInstance('tx_rnbase_util_SearchGeneric');
+        /* @var $searcher \Sys25\RnBase\Search\SearchGeneric */
+        $searcher = \Sys25\RnBase\Search\SearchBase::getInstance(\Sys25\RnBase\Search\SearchGeneric::class);
 
         // Dem Filter den Searcher übergeben, fall er diese Möglichkeit bietet.
         if (method_exists($filter, 'setSearcher')) {

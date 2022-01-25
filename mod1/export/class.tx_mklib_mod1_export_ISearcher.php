@@ -10,7 +10,7 @@ interface tx_mklib_mod1_export_ISearcher
      * welcher die Ausgabe der einzelnen Datensätze generiert
      * und an den Listbuilder übergeben wird.
      *
-     * @return tx_rnbase_util_IListProvider
+     * @return \Sys25\RnBase\Frontend\Marker\IListProvider
      */
     public function getInitialisedListProvider();
 }

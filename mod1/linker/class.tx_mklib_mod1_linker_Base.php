@@ -43,12 +43,12 @@ abstract class tx_mklib_mod1_linker_Base
     /**
      * Linker Html ausgeben.
      *
-     * @param Tx_Rnbase_Domain_Model_RecordInterface $item
-     * @param tx_rnbase_util_FormTool                $formTool
+     * @param \Sys25\RnBase\Domain\Model\RecordInterface $item
+     * @param \Sys25\RnBase\Backend\Form\ToolBox                $formTool
      *
      * @return string
      */
-    public function makeLink(Tx_Rnbase_Domain_Model_RecordInterface $oItem, $oFormTool)
+    public function makeLink(\Sys25\RnBase\Domain\Model\RecordInterface $oItem, $oFormTool)
     {
         $sOut = $oFormTool->createSubmit(
             $this->getActionName().'['.get_class($oItem).'|'.$oItem->getUid().']',

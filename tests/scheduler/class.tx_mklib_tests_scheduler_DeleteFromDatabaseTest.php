@@ -31,7 +31,7 @@
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @var array
@@ -64,7 +64,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
         self::assertInstanceOf(
             'Tx_Mklib_Database_Connection',
             $this->callInaccessibleMethod(
-                tx_rnbase::makeInstance('tx_mklib_scheduler_DeleteFromDatabase'),
+                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_scheduler_DeleteFromDatabase'),
                 'getDatabaseConnection'
             ),
             'falsche Klasse'
@@ -237,7 +237,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends tx_rnbase_tests_Ba
         $method->invokeArgs($scheduler, [$this->options, &$devLog]);
 
         $expectedDevLog = [
-            tx_rnbase_util_Logger::LOGLEVEL_INFO => [
+            \Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO => [
                 'message' => '2 Datensätze wurden in '.
                                 'someTable mit der Bedingung '.
                                 'someWhereClause und dem Modus 0 entfernt',

@@ -29,7 +29,7 @@
  *
  * @author Michael Wagner
  */
-class tx_mklib_model_Media extends tx_rnbase_model_base
+class tx_mklib_model_Media extends Sys25\RnBase\Domain\Model\BaseModel
 {
     /**
      * Liefert den Namen der Datenbanktabelle.

@@ -31,7 +31,7 @@
 /**
  * Generic form view test.
  */
-class tx_mklib_tests_util_DateTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_util_DateTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * Testen ob getTimestampByCalendarWeekDayAndYear den korrekten timestamp zurück gibt.
@@ -126,8 +126,8 @@ class tx_mklib_tests_util_DateTest extends tx_rnbase_tests_BaseTestCase
     public function testGetTimesInTimeRangeHandlesSummertimeCorrect()
     {
         // In dieser Zeitspanne wurde der 30.11.2011 doppelt im Array geliefert (Tag 302).
-        $start = tx_rnbase_util_Dates::date_mysql2tstamp('2011-07-13');
-        $end = tx_rnbase_util_Dates::date_mysql2tstamp('2012-03-17');
+        $start = \Sys25\RnBase\Utility\Dates::date_mysql2tstamp('2011-07-13');
+        $end = \Sys25\RnBase\Utility\Dates::date_mysql2tstamp('2012-03-17');
         $days = tx_mklib_util_Date::getTimesInTimeRange($start, $end);
         $daysUnique = array_unique($days);
         self::assertEquals(count($daysUnique), count($days), 'Es wurden doppelte Tage erzeugt.');

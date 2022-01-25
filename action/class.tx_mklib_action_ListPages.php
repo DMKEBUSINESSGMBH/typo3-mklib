@@ -32,11 +32,11 @@ class tx_mklib_action_ListPages extends tx_mklib_action_AbstractList
     /**
      * Liefert die Service Klasse, welche das Suchen übernimmt.
      *
-     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
+     * @return \Sys25\RnBase\Domain\Repository\SearchInterface
      */
     protected function getRepository()
     {
-        return tx_rnbase::makeInstance('tx_mklib_repository_Pages');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_repository_Pages');
     }
 
     /**

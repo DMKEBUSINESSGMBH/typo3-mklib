@@ -23,11 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
-tx_rnbase::load('tx_mklib_tests_fixtures_classes_DummyLinker');
+
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  */
-class tx_mklib_tests_mod1_linker_BaseTest extends tx_rnbase_tests_BaseTestCase
+class tx_mklib_tests_mod1_linker_BaseTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     public function testMakeLink()
     {
@@ -39,13 +39,13 @@ class tx_mklib_tests_mod1_linker_BaseTest extends tx_rnbase_tests_BaseTestCase
         global $LOCAL_LANG;
         $label = 'Details';
         $LOCAL_LANG['default']['label_show_details'][0]['target'] = $label;
-        $oLinker = tx_rnbase::makeInstance('tx_mklib_tests_fixtures_classes_DummyLinker');
-        $oModel = tx_rnbase::makeInstance('tx_rnbase_model_base', 1);
+        $oLinker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummyLinker');
+        $oModel = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, 1);
         $oModel->uid = 1;
-        $oFormTool = tx_rnbase::makeInstance('tx_rnbase_util_FormTool');
+        $oFormTool = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Form\ToolBox::class);
 
         self::assertEquals(
-            '<input type="submit"  class="btn btn-default btn-sm" name="showTest[tx_rnbase_model_base|1]" value="'.$label.'" />',
+            '<input type="submit"  class="btn btn-default btn-sm" name="showTest[Sys25\RnBase\Domain\Model\BaseModel|1]" value="'.$label.'" />',
             $oLinker->makeLink($oModel, $oFormTool),
             'Falscher Link.'
         );

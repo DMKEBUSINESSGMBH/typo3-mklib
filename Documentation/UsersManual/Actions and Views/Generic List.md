@@ -21,7 +21,7 @@ plugin.tx_mklib {
             path = EXT:myext/Ressources/Private/Html/Ext/mklib/genericlist.pages.html
             subpart = ###LISTPAGE###
             itempath = page
-            markerclass = tx_rnbase_util_SimpleMarker
+            markerclass = \Sys25\RnBase\Frontend\Marker\SimpleMarker
          }
          ### filter configuration
          filter {
@@ -33,12 +33,12 @@ plugin.tx_mklib {
             }
             options {
                ###debug = 1
-               ### configure searcher (tx_rnbase_util_SearchGeneric)
+               ### configure searcher (\Sys25\RnBase\Search\SearchGeneric)
                searchdef {
                   usealias = 1
                   basetable = pages
                   basetablealias = PAGES
-                  wrapperclass = Tx_Rnbase_Domain_Model_Base
+                  wrapperclass = \Sys25\RnBase\Domain\Model\BaseModel
                   alias {
                      PAGES.table = pages
                      PAGESPARENT.table = pages

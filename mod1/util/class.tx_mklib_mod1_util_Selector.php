@@ -35,14 +35,14 @@ class tx_mklib_mod1_util_Selector
     public $modName;
 
     /**
-     * @var tx_rnbase_mod_IModule
+     * @var \Sys25\RnBase\Backend\Module\IModule
      */
     private $mod;
 
     /**
      * Initialisiert das Objekt mit dem Template und der Modul-Config.
      */
-    public function init(tx_rnbase_mod_IModule $module)
+    public function init(\Sys25\RnBase\Backend\Module\IModule $module)
     {
         $this->mod = $module;
     }
@@ -241,7 +241,7 @@ class tx_mklib_mod1_util_Selector
         $selectedItem = $this->getValueFromModuleData($id);
 
         // Build select box items
-        $data['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
+        $data['selector'] = \Sys25\RnBase\Backend\Utility\BackendUtility::getFuncMenu(
             $pid,
             'SET['.$id.']',
             $selectedItem,
@@ -270,7 +270,7 @@ class tx_mklib_mod1_util_Selector
         $pid = $aOptions['pid'] ? $aOptions['pid'] : 0;
 
         // Build select box items
-        $aData['selector'] = Tx_Rnbase_Backend_Utility::getFuncMenu(
+        $aData['selector'] = \Sys25\RnBase\Backend\Utility\BackendUtility::getFuncMenu(
             $pid,
             'SET['.$id.']',
             $selectedItem,
@@ -306,9 +306,9 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * Returns an instance of tx_rnbase_mod_IModule.
+     * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return tx_rnbase_mod_IModule
+     * @return \Sys25\RnBase\Backend\Module\IModule
      */
     protected function getMod()
     {
@@ -316,7 +316,7 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * @return tx_rnbase_util_FormTool
+     * @return \Sys25\RnBase\Backend\Form\ToolBox
      */
     protected function getFormTool()
     {
@@ -333,9 +333,9 @@ class tx_mklib_mod1_util_Selector
     public function getValueFromModuleData($key)
     {
         // Fetch selected company trade
-        $modData = Tx_Rnbase_Backend_Utility::getModuleData(
+        $modData = \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
             [$key => ''],
-            tx_rnbase_parameters::getPostOrGetParameter('SET'),
+            \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'),
             $this->getMod()->getName()
         );
         if (isset($modData[$key])) {
@@ -415,7 +415,7 @@ class tx_mklib_mod1_util_Selector
     private function getDateFieldByKey($key, &$out)
     {
         $value = isset($_POST[$key]) ?
-            tx_rnbase_parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
+            \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
         $out['field'] .= $this->getFormTool()->createDateInput($key, $value);
 
         return $value;

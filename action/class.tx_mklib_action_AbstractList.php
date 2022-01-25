@@ -6,27 +6,23 @@
  *
  * @author Michael Wagner
  */
-abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
+abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Controller\AbstractAction
 {
     /**
-     * Do the magic!
+     * @param \Sys25\RnBase\Frontend\Request\RequestInterface $request
      *
-     * @param tx_rnbase_parameters     &$parameters
-     * @param tx_rnbase_configurations &$configurations
-     * @param ArrayObject              &$viewData
-     *
-     * @return string error msg or null
+     * @return string|null
      */
-    public function handleRequest(&$parameters, &$configurations, &$viewData)
+    public function handleRequest(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
-        $out = $this->prepareRequest();
+        $out = $this->prepareRequest($request);
         if (null !== $out) {
             return $out;
         }
 
-        $items = $this->getItems();
-        $viewData->offsetSet('items', $items);
-        $viewData->offsetSet('searched', false !== $items);
+        $items = $this->getItems($request);
+        $request->getViewContext()->offsetSet('items', $items);
+        $request->getViewContext()->offsetSet('searched', false !== $items);
 
         return null;
     }
@@ -36,46 +32,43 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
      *
      * @return string error msg or null
      */
-    protected function prepareRequest()
+    protected function prepareRequest(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
         return null;
     }
 
     /**
-     * Searches for the items to show in list.
-     *
-     * @throws RuntimeException
+     * @param \Sys25\RnBase\Frontend\Request\RequestInterface $request
      *
      * @return array|false
      */
-    protected function getItems()
+    protected function getItems(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
+        $configurations = $request->getConfigurations();
+        $parameters = $request->getParameters();
+        $viewData = $request->getViewContext();
+
         // get the repo
         $repo = $this->getRepository();
 
         // check the repo interface
-        if (!($repo instanceof Tx_Rnbase_Domain_Repository_InterfaceSearch)) {
-            throw new RuntimeException('the repository "'.get_class($repo).'" '.'has to implement the interface "Tx_Rnbase_Domain_Repository_InterfaceSearch"!', intval(ERROR_CODE_MKLIB.'1'));
+        if (!($repo instanceof \Sys25\RnBase\Domain\Repository\SearchInterface)) {
+            throw new RuntimeException('the repository "'.get_class($repo).'" '.'has to implement the interface "\Sys25\RnBase\Domain\Repository\SearchInterface"!', intval(ERROR_CODE_MKLIB.'1'));
         }
 
         // create filter
-        $filter = tx_rnbase_filter_BaseFilter::createFilter(
-            $this->getParameters(),
-            $this->getConfigurations(),
-            $this->getViewData(),
-            $this->getConfId().'filter.'
-        );
+        $filter = \Sys25\RnBase\Frontend\Filter\BaseFilter::createFilter($request, $this->getConfId().'filter.');
 
         $fields = $options = [];
         // let the filter fill the fields end options
         if ($this->prepareFieldsAndOptions($fields, $options)
             && $filter->init($fields, $options)
         ) {
-            if ($this->getConfigurations()->get($this->getConfId().'pagebrowser')) {
+            if ($configurations->get($this->getConfId().'pagebrowser')) {
                 $filter::handlePageBrowser(
-                    $this->getConfigurations(),
+                    $configurations,
                     $this->getConfId().'pagebrowser',
-                    $this->getConfigurations()->getViewData(),
+                    $viewData,
                     $fields,
                     $options,
                     ['searchcallback' => [$repo, 'search']]
@@ -114,7 +107,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
      */
     public function getViewClassName()
     {
-        return 'tx_rnbase_view_List';
+        return \Sys25\RnBase\Frontend\View\Marker\ListView::class;
     }
 
     /**
@@ -129,7 +122,7 @@ abstract class tx_mklib_action_AbstractList extends tx_rnbase_action_BaseIOC
     /**
      * Liefert die Service Klasse, welche das Suchen übernimmt.
      *
-     * @return Tx_Rnbase_Domain_Repository_InterfaceSearch
+     * @return \Sys25\RnBase\Domain\Repository\SearchInterface
      */
     abstract protected function getRepository();
 }

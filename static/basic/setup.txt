@@ -1,5 +1,3 @@
-includeLibs.tx_rnbase_controller = EXT:rn_base/class.tx_rnbase_controller.php
-
 plugin.tx_mklib = USER
 plugin.tx_mklib.flexform = flexform_main.xml
 plugin.tx_mklib.userFunc = tx_rnbase_controller->main
@@ -15,7 +13,7 @@ lib.mklib.genericlist.default {
         #path = {$plugin.tx_mklib.templatePath}/genericlist.html
         #subpart =
         #itempath = item
-        #markerclass = tx_rnbase_util_SimpleMarker
+        #markerclass = \Sys25\RnBase\Frontend\Marker\SimpleMarker
     }
     filter {
         fields {
