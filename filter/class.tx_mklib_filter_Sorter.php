@@ -324,4 +324,15 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
             $markerArray = array_merge($markerArray, $markOrders);
         }
     }
+
+    /**
+     * Method is called in \Sys25\RnBase\Frontend\Marker\ListBuilder::render() and used to trigger the
+     * parseTemplate() method of this class.
+     *
+     * @return $this
+     */
+    public function getMarker(): tx_mklib_filter_Sorter
+    {
+        return $this;
+    }
 }
