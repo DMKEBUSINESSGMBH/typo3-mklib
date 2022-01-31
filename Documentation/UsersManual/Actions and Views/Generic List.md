@@ -21,7 +21,7 @@ plugin.tx_mklib {
             path = EXT:myext/Ressources/Private/Html/Ext/mklib/genericlist.pages.html
             subpart = ###LISTPAGE###
             itempath = page
-            markerclass = \Sys25\RnBase\Frontend\Marker\SimpleMarker
+            markerclass = Sys25\RnBase\Frontend\Marker\SimpleMarker
          }
          ### filter configuration
          filter {
@@ -38,7 +38,7 @@ plugin.tx_mklib {
                   usealias = 1
                   basetable = pages
                   basetablealias = PAGES
-                  wrapperclass = \Sys25\RnBase\Domain\Model\BaseModel
+                  wrapperclass = Sys25\RnBase\Domain\Model\BaseModel
                   alias {
                      PAGES.table = pages
                      PAGESPARENT.table = pages

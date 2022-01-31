@@ -13,7 +13,7 @@ lib.mklib.genericlist.default {
         #path = {$plugin.tx_mklib.templatePath}/genericlist.html
         #subpart =
         #itempath = item
-        #markerclass = \Sys25\RnBase\Frontend\Marker\SimpleMarker
+        #markerclass = Sys25\RnBase\Frontend\Marker\SimpleMarker
     }
     filter {
         fields {
