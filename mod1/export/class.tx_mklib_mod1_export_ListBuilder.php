@@ -73,7 +73,7 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
         /* @var $listMarker tx_mklib_mod1_export_ListMarker */
         $listMarker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_mod1_export_ListMarker',
-            $this->info->getListMarkerInfo()
+            $this->getInfo()->getListMarkerInfo()
         );
 
         $templateList = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart(
