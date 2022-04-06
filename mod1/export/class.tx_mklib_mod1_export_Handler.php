@@ -431,7 +431,7 @@ class tx_mklib_mod1_export_Handler
     /**
      * The config object.
      *
-     * @return \Sys25\RnBase\Configuration\Processor
+     * @return \Sys25\RnBase\Configuration\ConfigurationInterface
      */
     protected function getConfigurations()
     {

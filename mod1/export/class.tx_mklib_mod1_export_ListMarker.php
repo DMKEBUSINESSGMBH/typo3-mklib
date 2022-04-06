@@ -5,7 +5,7 @@
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-class tx_mklib_mod1_export_ListMarker extends \Sys25\RnBase\Frontend\Marker\ListMarkerInfo
+class tx_mklib_mod1_export_ListMarker extends \Sys25\RnBase\Frontend\Marker\ListMarker
 {
     /**
      * Callback function for next item.
@@ -18,7 +18,7 @@ class tx_mklib_mod1_export_ListMarker extends \Sys25\RnBase\Frontend\Marker\List
         $data->setProperty('line', $this->i); // Marker für aktuelle Zeilenummer
         $data->setProperty('totalline', $this->i + $this->totalLineStart + $this->offset); // Marker für aktuelle Zeilenummer der Gesamtliste
         $this->handleVisitors($data);
-        $part = $this->entryMarker->parseTemplate($this->info->getTemplate($data), $data, $this->formatter, $this->confId, $this->marker);
+        $part = $this->entryMarker->parseTemplate($this->getInfo()->getTemplate($data), $data, $this->getFormatter(), $this->confId, $this->marker);
 
         tx_mklib_mod1_export_Util::doOutPut($part);
 
@@ -33,10 +33,10 @@ class tx_mklib_mod1_export_ListMarker extends \Sys25\RnBase\Frontend\Marker\List
      */
     protected function handleVisitors($data)
     {
-        if (!is_array($this->visitors)) {
+        if (!is_array($this->getVisitors())) {
             return;
         }
-        foreach ($this->visitors as $visitor) {
+        foreach ($this->getVisitors() as $visitor) {
             call_user_func($visitor, $data);
         }
     }
