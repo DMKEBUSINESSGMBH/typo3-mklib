@@ -94,7 +94,7 @@ class Tests
     public static function storeExtConf($sExtKey = 'mklib', $bOverwrite = false)
     {
         if (!isset(self::$aExtConf[$sExtKey]) || $bOverwrite) {
-            self::$aExtConf[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey];
+            self::$aExtConf[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey] ?? null;
         }
     }
 
@@ -127,7 +127,7 @@ class Tests
     public static function setExtConfVar($sCfgKey, $sCfgValue, $sExtKey = 'mklib')
     {
         // aktuelle Konfiguration auslesen
-        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey];
+        $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey] ?? null;
         // wenn keine Konfiguration existiert, legen wir eine an.
         if (!is_array($extConfig)) {
             $extConfig = [];
