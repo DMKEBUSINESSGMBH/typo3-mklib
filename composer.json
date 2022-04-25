@@ -24,9 +24,9 @@
         "typo3-ter/mklib": "self.version"
     },
     "require": {
-        "typo3/cms-core": "^9.5.24 || ^10.4.14",
-        "typo3/cms-scheduler": "^9.5.24 || ^10.4.14",
-        "digedag/rn-base": "^1.15.2"
+        "typo3/cms-core": "^10.4.25 || ^11.5.7",
+        "typo3/cms-scheduler": "^10.4.25 || ^11.5.7",
+        "digedag/rn-base": "^11@dev"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
