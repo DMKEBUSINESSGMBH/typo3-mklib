@@ -130,7 +130,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
     {
         $this->expectException(\RuntimeException::class);
         $this->expectErrorMessage('There was a Soap Fault');
-        $this->expectExceptionCode(-1);
+        $this->expectExceptionCode(version_compare(phpversion(), '8', '>=') ? -1 : 0);
 
         $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapException = new SoapFault('a string code', 'There was a Soap Fault');
