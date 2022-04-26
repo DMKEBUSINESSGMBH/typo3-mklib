@@ -146,8 +146,8 @@ class tx_mklib_util_TS
 
         // ts für die extension auslesen
         $pageTsConfig = $tsObj->setup[$sDomainKey]['tx_'.$sExtKey.'.'];
-        $pageTsConfig['lib.'] = $pageTsConfig['lib.'];
-        $qualifier = $pageTsConfig['qualifier'] ? $pageTsConfig['qualifier'] : $sExtKey;
+        $pageTsConfig['lib.'] = $pageTsConfig['lib.'] ?? null;
+        $qualifier = $pageTsConfig['qualifier'] ?? $sExtKey;
 
         // konfiguration erzeugen
         /* @var $configurations \Sys25\RnBase\Configuration\Processor */
