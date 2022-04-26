@@ -71,22 +71,22 @@ class tx_mklib_util_Date
         $weekDay = self::$days[$day];
 
         $time = strtotime('4 January '.$year);
-        if (0 != date('w', $time)) {//wenn der 4.Januar von dem Jahr keine Sonntag ist, holen wir den timestamp vom ersten Sonntag
+        if (0 != date('w', $time)) {// wenn der 4.Januar von dem Jahr keine Sonntag ist, holen wir den timestamp vom ersten Sonntag
             $time = strtotime('last Sunday', $time);
         }
 
-        $time = strtotime('next '.$weekDay, $time); //anschliessend holen wir den timestamp für das erste Auftreten des Veröffentlichungstags
+        $time = strtotime('next '.$weekDay, $time); // anschliessend holen wir den timestamp für das erste Auftreten des Veröffentlichungstags
 
-        //wenn es nicht die erste Kalenderwoche ist sonder die 2.
+        // wenn es nicht die erste Kalenderwoche ist sonder die 2.
         if (2 == date('W', $time)) {
             $time = strtotime('last '.$weekDay, $time);
-        } //gehen wir eine Woche zurück
-        elseif (52 == date('W', $time) || 53 == date('W', $time)) {//oder die letzte des vorhergehenden Jahres
+        } // gehen wir eine Woche zurück
+        elseif (52 == date('W', $time) || 53 == date('W', $time)) {// oder die letzte des vorhergehenden Jahres
             $time = strtotime('next '.$weekDay, $time);
-        }//gehen wir eine Woche weiter
+        }// gehen wir eine Woche weiter
 
-        //und dann noch das Datum der jeweilgen Woche holen
-        //TODO: Zeitzone beachten
+        // und dann noch das Datum der jeweilgen Woche holen
+        // TODO: Zeitzone beachten
         return strtotime('+'.($calendarWeek - 1).' weeks', $time);
     }
 
@@ -104,13 +104,13 @@ class tx_mklib_util_Date
             $timestamp = time();
         }
 
-        //das gesamte datum
+        // das gesamte datum
         $return['date'] = date('d-m-Y', $timestamp);
-        //numerischer Wochentag
+        // numerischer Wochentag
         $return['weekday'] = date('w', $timestamp);
-        //die Kalenderwoche
+        // die Kalenderwoche
         $return['week'] = date('W', $timestamp);
-        //das Jahr
+        // das Jahr
         $return['year'] = date('Y', $timestamp);
 
         return $return;

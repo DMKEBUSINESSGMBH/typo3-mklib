@@ -36,7 +36,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends \Sys25\RnBase\Testing\Base
      */
     private $defaultSubstitutedPageTitle = 'please provide the method getPageTitle in your action returning the desired page title';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // This class is not autoloaded when the mock for the abstract class is created.
         // In normal usage the class is loaded automatically. You can see this be just instantiating
@@ -225,12 +225,11 @@ class tx_mklib_tests_action_ShowSingeItemTest extends \Sys25\RnBase\Testing\Base
 
     /**
      * @group unit
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Das Repository, welches von getSingleItemRepository() geliefert wird, muss von tx_mklib_repository_Abstract erben!
      */
     public function testHandleRequestThrowsExceptionIfRepositoryNotInheritedFromAbstractRepositoryClass()
     {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('Das Repository, welches von getSingleItemRepository() geliefert wird, muss von tx_mklib_repository_Abstract erben!');
         $repository = $this->getMockForAbstractClass(
             'stdClass',
             [],

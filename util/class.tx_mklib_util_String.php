@@ -35,7 +35,7 @@
  */
 class tx_mklib_util_String extends tx_mklib_util_Var
 {
-    const emailRegex = '/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,4}))/';
+    public const emailRegex = '/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,4}))/';
 
     /**
      * Kürzt einen Text Feld auf die Anzahl angegebener Zeichen
@@ -147,7 +147,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      */
     public static function toCamelCase($sString, $sDelimiter = '_')
     {
-        //$sCamelCase = implode('', array_map('ucfirst', explode($sDelimiter, $sString)));
+        // $sCamelCase = implode('', array_map('ucfirst', explode($sDelimiter, $sString)));
         // das ist schneller als die array_map methode!
         $sCamelCase = '';
         foreach (explode($sDelimiter, $sString) as $sPart) {
@@ -282,20 +282,20 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     public static function formatTelephoneNumberRfc3966($orig, $conf)
     {
         if (!isset($conf['countryCode'])) {
-            $conf['countryCode'] = '49'; //germany
+            $conf['countryCode'] = '49'; // germany
         }
         $num = preg_replace('#[^+0-9]#', '', $orig);
         if ('+' == substr($num, 0, 1)) {
-            //full telephone number
+            // full telephone number
             $tel = $num;
         } elseif ('00' == substr($num, 0, 2)) {
-            //full number with country code, but 00 instead of +
+            // full number with country code, but 00 instead of +
             $tel = '+'.substr($num, 2);
         } elseif ('0' == substr($num, 0, 1)) {
-            //full number without country code
+            // full number without country code
             $tel = '+'.$conf['countryCode'].substr($num, 1);
         } else {
-            //partial number, no country or area code
+            // partial number, no country or area code
             $tel = '+'.$conf['countryCode'].$conf['areaCode'].$num;
         }
 

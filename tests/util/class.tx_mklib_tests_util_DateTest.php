@@ -95,8 +95,8 @@ class tx_mklib_tests_util_DateTest extends \Sys25\RnBase\Testing\BaseTestCase
             "+'38|2011'"
         );
 
-        //1297206000 = 09.02.2011 00:00 Mittwoch 39
-        //1297810800 = 16.02.2011 00:00 Mittwoch 46
+        // 1297206000 = 09.02.2011 00:00 Mittwoch 39
+        // 1297810800 = 16.02.2011 00:00 Mittwoch 46
         $days = tx_mklib_util_Date::getTimesInTimeRange(1297206000, 1297810800, 'z|Y');
 
         self::assertEquals(7, count($days), 'Der zurückgegebene array enthält nicht die richtige Anzahl an Tagen.');
@@ -106,10 +106,10 @@ class tx_mklib_tests_util_DateTest extends \Sys25\RnBase\Testing\BaseTestCase
         self::assertEquals('42|2011', $days[3], 'Der vierte Tag stimmt nicht.');
         self::assertEquals('43|2011', $days[4], 'Der fünfte Tag stimmt nicht.');
         self::assertEquals('44|2011', $days[5], 'Der sechste Tag stimmt nicht.');
-        self::assertEquals('45|2011', $days[6], 'Der siebte Tag stimmt nicht.'); //Dienstag
+        self::assertEquals('45|2011', $days[6], 'Der siebte Tag stimmt nicht.'); // Dienstag
 
-        //1293376600 = 26.12.2010 00:00
-        //1294067800 = 03.01.2011 00:00
+        // 1293376600 = 26.12.2010 00:00
+        // 1294067800 = 03.01.2011 00:00
         $days = tx_mklib_util_Date::getTimesInTimeRange(1293376600, 1294067800, 'z|Y');
 
         self::assertEquals(8, count($days), 'Der zurückgegebene array enthält nicht die richtige Anzahl an Tagen.');

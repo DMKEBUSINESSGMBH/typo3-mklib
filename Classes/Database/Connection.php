@@ -32,17 +32,17 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
     /**
      * @var int
      */
-    const DELETION_MODE_HIDE = 0;
+    public const DELETION_MODE_HIDE = 0;
 
     /**
      * @var int
      */
-    const DELETION_MODE_SOFTDELETE = 1;
+    public const DELETION_MODE_SOFTDELETE = 1;
 
     /**
      * @var int
      */
-    const DELETION_MODE_REALLYDELETE = 2;
+    public const DELETION_MODE_REALLYDELETE = 2;
 
     /**
      * Is logging enabled? (protected für Tests).
@@ -287,9 +287,9 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
 
         $sMmTable = $this->mmGetTable($sTable, $sField);
         $aData = $this->mmGetData($sTable, $sField, $sLocalId, $iForeignId);
-        $this->doInsert($sMmTable, $aData/*, 1*/);
+        $this->doInsert($sMmTable, $aData/* , 1 */);
 
-        return true; //$this->mmExists($sTable, $sField, $sLocalId, $iForeignId);
+        return true; // $this->mmExists($sTable, $sField, $sLocalId, $iForeignId);
     }
 
     /**
@@ -464,7 +464,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
                     throw new Exception("Tx_Mklib_Database_Connection::delete(): Cannot hide records in table $table - no \$TCA entry found!");
                 }
 
-                //else
+                // else
                 $data = [$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] => 1];
                 $affectedRows = $this->doUpdate($table, $where, $data);
                 break;
@@ -477,7 +477,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
                     throw new Exception("Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table $table - no \$TCA entry found!");
                 }
 
-                //else
+                // else
                 $data = [$GLOBALS['TCA'][$table]['ctrl']['delete'] => 1];
                 $affectedRows = $this->doUpdate($table, $where, $data);
                 break;

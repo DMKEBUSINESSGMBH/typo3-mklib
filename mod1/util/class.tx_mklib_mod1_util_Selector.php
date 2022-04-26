@@ -277,11 +277,11 @@ class tx_mklib_mod1_util_Selector
             $aItems
         );
 
-        //label
+        // label
         $aData['label'] = $aOptions['label'];
 
         // as the deleted fe users have always to be hidden the function returns always false
-        //@todo wozu die alte abfrage? return $defId==$id ? false : $selectedItem;
+        // @todo wozu die alte abfrage? return $defId==$id ? false : $selectedItem;
         return $selectedItem;
     }
 

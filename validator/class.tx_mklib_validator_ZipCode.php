@@ -57,8 +57,7 @@ class tx_mklib_validator_ZipCode
     {
         $rule = 9 == $country->getZipRule() ? $country->getZipRule().'_'.$country->getISO2() : $country->getZipRule();
         $labelKey = 'LLL:EXT:mklib/locallang.xml:label_ziperror_r'.$rule;
-        $llObj = (TYPO3_MODE == 'BE') ? $GLOBALS['LANG'] : $GLOBALS['TSFE'];
-        $label = sprintf($llObj->sL($labelKey), $country->getZipLength());
+        $label = sprintf($GLOBALS['LANG']->sL($labelKey), $country->getZipLength());
 
         return $label;
     }

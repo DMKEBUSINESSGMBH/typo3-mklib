@@ -120,9 +120,10 @@ class tx_mklib_mod1_linker_ShowDetails
 
         $params = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('showDetails');
         $params = is_array($params) ? $params : [];
-        list($model, $uid) = each($params);
+        $model = key($params);
+        $uid = current($params);
         if (is_array($uid)) {
-            list($uid) = each($uid);
+            $uid = current($uid);
         }
 
         if (

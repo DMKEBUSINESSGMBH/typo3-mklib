@@ -179,7 +179,7 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
         }
 
         $userIsAdmin = is_object($GLOBALS['BE_USER']) ? $GLOBALS['BE_USER']->isAdmin() : 0;
-        //admins dürfen auch löschen
+        // admins dürfen auch löschen
         if ($userIsAdmin) {
             $cols['remove'] = '';
         }
@@ -212,10 +212,10 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
                     $ret .= $this->getFormTool()->createHideLink($tableName, $uid, $item->getProperty($sHiddenColumn));
                     break;
                 case 'remove':
-                    //Es wird immer ein Bestätigungsdialog ausgegeben!!! Dieser steht
-                    //in der BE-Modul locallang.xml der jeweiligen Extension im Schlüssel
-                    //'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein
-                    //Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
+                    // Es wird immer ein Bestätigungsdialog ausgegeben!!! Dieser steht
+                    // in der BE-Modul locallang.xml der jeweiligen Extension im Schlüssel
+                    // 'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xml) Soll kein
+                    // Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
                     $ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle, ['confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')]);
                     break;
                 case 'moveup':

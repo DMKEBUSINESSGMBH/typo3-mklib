@@ -38,14 +38,14 @@ class tx_mklib_tests_filter_SorterTest extends \Sys25\RnBase\Testing\BaseTestCas
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
         \Sys25\RnBase\Utility\Misc::prepareTSFE(['force' => true]);
 
-        //tq_seo extension hat einen hook der auf das folgende feld zugreift.
-        //wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
-        //wir verhindern wollen!
+        // tq_seo extension hat einen hook der auf das folgende feld zugreift.
+        // wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
+        // wir verhindern wollen!
         if (!is_array($GLOBALS['TSFE']->rootLine)) {
             $GLOBALS['TSFE']->rootLine = [];
         }
@@ -60,7 +60,7 @@ class tx_mklib_tests_filter_SorterTest extends \Sys25\RnBase\Testing\BaseTestCas
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($GLOBALS['TSFE']->rootLine[0]['uid']);
     }
@@ -125,7 +125,7 @@ class tx_mklib_tests_filter_SorterTest extends \Sys25\RnBase\Testing\BaseTestCas
                 'firstField',
                 'asc',
             ],
-            //normaler Link mit asc wenn anderes sortBy gewählt
+            // normaler Link mit asc wenn anderes sortBy gewählt
             [
                 '###SORT_FIRSTFIELD_LINK###link###SORT_FIRSTFIELD_LINK###',
                 '/(\<a href="\?id=)([a-z0-9]+)(&amp;mklib%5BsortBy%5D=firstField&amp;mklib%5BsortOrder%5D=asc"\>link\<\/a\>)/',

@@ -33,16 +33,16 @@
  */
 class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
 {
-    const LOCALECODE_OFFSET = 0;
-    const LOCALECODE_LENGTH = 2;
-    const CHECKSUM_OFFSET = 2;
-    const CHECKSUM_LENGTH = 2;
-    const ACCOUNTIDENTIFICATION_OFFSET = 4;
-    const INSTITUTEIDENTIFICATION_OFFSET = 4;
-    const INSTITUTEIDENTIFICATION_LENGTH = 8;
-    const BANKACCOUNTNUMBER_OFFSET = 12;
-    const BANKACCOUNTNUMBER_LENGTH = 10;
-    const IBAN_MIN_LENGTH = 15;
+    public const LOCALECODE_OFFSET = 0;
+    public const LOCALECODE_LENGTH = 2;
+    public const CHECKSUM_OFFSET = 2;
+    public const CHECKSUM_LENGTH = 2;
+    public const ACCOUNTIDENTIFICATION_OFFSET = 4;
+    public const INSTITUTEIDENTIFICATION_OFFSET = 4;
+    public const INSTITUTEIDENTIFICATION_LENGTH = 8;
+    public const BANKACCOUNTNUMBER_OFFSET = 12;
+    public const BANKACCOUNTNUMBER_LENGTH = 10;
+    public const IBAN_MIN_LENGTH = 15;
 
     protected static $letterMapping = [
         1 => 'A',
@@ -145,10 +145,10 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         }
     }
 
-    const VALIDATE_ERROR_LENGTH = 1;
-    const VALIDATE_ERROR_LOCALCODE = 2;
-    const VALIDATE_ERROR_FORMAT = 3;
-    const VALIDATE_ERROR_CHECKSUM = 4;
+    public const VALIDATE_ERROR_LENGTH = 1;
+    public const VALIDATE_ERROR_LOCALCODE = 2;
+    public const VALIDATE_ERROR_FORMAT = 3;
+    public const VALIDATE_ERROR_CHECKSUM = 4;
 
     public function getValidateError()
     {

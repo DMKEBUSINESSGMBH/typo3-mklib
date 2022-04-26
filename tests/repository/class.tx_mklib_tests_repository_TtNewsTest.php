@@ -36,7 +36,7 @@ class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTes
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('tt_news')) {
             self::markTestSkipped('tt_news nicht installiert');

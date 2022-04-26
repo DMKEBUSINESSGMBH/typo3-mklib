@@ -1,13 +1,13 @@
 <?php
 
-$finder = PhpCsFixer\Finder::create()
+$finder = \PhpCsFixer\Finder::create()
     ->exclude('Resources')
     ->exclude('Documentation')
-    ->exclude('phpmailer')
-    ->in(__DIR__)
-;
+    ->in(__DIR__);
 
-return PhpCsFixer\Config::create()
+$config = new \PhpCsFixer\Config();
+
+return $config
     ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
@@ -16,5 +16,4 @@ return PhpCsFixer\Config::create()
         'fully_qualified_strict_types' => false,
         'php_unit_method_casing' => false,
     ])
-    ->setLineEnding("\n")
-    ;
+    ->setLineEnding("\n");

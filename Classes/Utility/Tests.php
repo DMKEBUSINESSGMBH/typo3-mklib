@@ -29,6 +29,7 @@ namespace DMK\Mklib\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 
 /**
@@ -181,7 +182,7 @@ class Tests
             foreach ($statements as $statement) {
                 if (!$bIgnoreStatementType && \Sys25\RnBase\Utility\Strings::isFirstPartOfStr($statement, $statementType)) {
                     $databaseConnection->doQuery($statement);
-                } elseif ($bIgnoreStatementType) {//alle gefundenen statements ausführen
+                } elseif ($bIgnoreStatementType) {// alle gefundenen statements ausführen
                     $databaseConnection->doQuery($statement);
                 }
             }
@@ -197,9 +198,9 @@ class Tests
      */
     private static function getSqlStatementArrayDependendOnTypo3Version($sql)
     {
-        $dbHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Install\Service\SqlSchemaMigrationService');
+        $reader = new SqlReader();
 
-        return $dbHandler->getStatementArray($sql, 1);
+        return $reader->getStatementArray($sql);
     }
 
     /**
@@ -253,40 +254,10 @@ class Tests
     {
         global $LOCAL_LANG;
         $GLOBALS['LANG']->lang = $lang;
-        //ab typo 4.6 ist das mit den lang labels anders
+        // ab typo 4.6 ist das mit den lang labels anders
         foreach ($labels as $key => $label) {
             $LOCAL_LANG[$lang][$key][0]['target'] = $label;
         }
-    }
-
-    /**
-     * Speichert den Cache.
-     */
-    public static function storeCacheFile()
-    {
-        //aktuelle Konfiguration sichern
-        self::$sCacheFile = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'];
-    }
-
-    /**
-     * Reaktiviert den Cache.
-     */
-    public static function restoreCacheFile()
-    {
-        //aktuelle Konfiguration sichern
-        $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = self::$sCacheFile;
-    }
-
-    /**
-     * Deaktiviert den Cache
-     * damit nicht 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.' kommt.
-     * wenn der text mit einem mkforms formular ist, dann muss auch der testmode gesetzt sein.
-     * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2.
-     */
-    public static function deactivateCacheFile()
-    {
-        //aktuelle Konfiguration sichern
-        $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = null;
     }
 
     /**
@@ -329,7 +300,7 @@ class Tests
             $sExtKey
         );
 
-        //noch extra params?
+        // noch extra params?
         if (!empty($aParams)) {
             foreach ($aParams as $sName => $mValue) {
                 $parameters->offsetSet($sName, $mValue);
@@ -424,7 +395,7 @@ class Tests
         global $TYPO3_LOADED_EXT;
         unset($TYPO3_LOADED_EXT['extbase']);
 
-        //und noch die caching konfig löschen
+        // und noch die caching konfig löschen
         self::deactivateCacheFile();
     }
 

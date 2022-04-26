@@ -30,35 +30,32 @@
 class Tx_Mklib_Database_ConnectionTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Tx_Mklib_Database_Connection::delete(): Unknown deletion mode (123)
-     *
      * @group unit
      */
     public function testDeleteWithUnknownModeThrowsException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('Tx_Mklib_Database_Connection::delete(): Unknown deletion mode (123)');
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('', '', 123);
     }
 
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Tx_Mklib_Database_Connection::delete(): Cannot hide records in table unknown - no $TCA entry found!
-     *
      * @group unit
      */
     public function testDeleteWithModeHiddenThrowsExceptionIfNoDisableColumnInTca()
     {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('Tx_Mklib_Database_Connection::delete(): Cannot hide records in table unknown - no $TCA entry found!');
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_HIDE);
     }
 
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table unknown - no $TCA entry found!
-     *
      * @group unit
      */
     public function testDeleteWithModeSoftDeleteThrowsExceptionIfNoDeleteColumnInTca()
     {
+        $this->expectException(\Exception::class);
+        $this->expectErrorMessage('Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table unknown - no $TCA entry found!');
         \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE);
     }
 

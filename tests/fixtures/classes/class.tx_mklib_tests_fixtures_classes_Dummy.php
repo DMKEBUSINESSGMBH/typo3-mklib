@@ -51,12 +51,12 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
                 4 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5]),
             ];
         }
-        //sortieren?
+        // sortieren?
         if (!empty($options['orderby'])) {
             rsort($aResults);
-        }//reicht um zu sehen ob die Sortierung anspringt
+        }// reicht um zu sehen ob die Sortierung anspringt
 
-        //versteckte zurück geben?
+        // versteckte zurück geben?
         if (1 == $GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden']) {
             $aResults[5] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'hidden' => 1]);
         }

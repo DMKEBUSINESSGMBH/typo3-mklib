@@ -74,8 +74,8 @@ class tx_mklib_util_RTFGenerator
             '&uacute;' => 'fa',
             '&Ugrave;' => 'd9',
             '&ugrave;' => 'f9',
-            '&#8364;' => '80', //euro
-            'â‚¬' => '80', //verkorkstes euro zeichen bei falschem Charset
+            '&#8364;' => '80', // euro
+            'â‚¬' => '80', // verkorkstes euro zeichen bei falschem Charset
             '&Ntilde;' => 'd1',
             '&ntilde;' => 'f1',
             '&Ccedil;' => 'c7',
@@ -98,8 +98,8 @@ class tx_mklib_util_RTFGenerator
             '&uuml;' => 'fc', // ü
             'ü' => 'fc', // ü
             'Ã¼' => 'fc', // verkorkstes ü bei falschem Charset
-            '&szlig;' => 'df', //ß
-            'ß' => 'df', //ß
+            '&szlig;' => 'df', // ß
+            'ß' => 'df', // ß
             'ÃŸ' => 'df', // verkorkstes ß bei falschem Charset
             '&#191;' => 'bf',
             '&#161;' => 'a1',
@@ -125,11 +125,11 @@ class tx_mklib_util_RTFGenerator
         $this->setPaperSize($params['paperSize']);
         $this->setPaperOrientation($params['paperOrientation']);
         $this->setRTFVersion($params['rtfVersion']);
-        //$this->tab_width = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'tabWidth');
-        //Erstellungszeit einfügen
+        // $this->tab_width = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'tabWidth');
+        // Erstellungszeit einfügen
         $this->setCreateTime();
-        //Colour-Table einfügen
-        //$this->addColour("#000000");
+        // Colour-Table einfügen
+        // $this->addColour("#000000");
         $this->exportInfoTable($params['exportInfoTable']);
     }
 
@@ -370,7 +370,7 @@ class tx_mklib_util_RTFGenerator
         // Default font values
         $this->buffer .= '{'.$this->getDefaultFont();
         // Page display settings
-        //$this->buffer .= $this->getPageSettings();
+        // $this->buffer .= $this->getPageSettings();
         // Parse the text into RTF
         $this->buffer .= $this->parseDocument().'}';
         $this->buffer .= '}';
@@ -457,7 +457,7 @@ class tx_mklib_util_RTFGenerator
     private function getDefaultFont($withTrailingSpace = true)
     {
         $font_buffer = "\\f{$this->font_face}\\fs{$this->font_size}\\dn0";
-        //Leerzeichen anhängen oder nicht
+        // Leerzeichen anhängen oder nicht
         if ($withTrailingSpace) {
             $font_buffer .= ' ';
         }
@@ -470,8 +470,8 @@ class tx_mklib_util_RTFGenerator
      */
     private function getWindingsFont()
     {
-        //Wingdings Zeichen müssen im Verhätnis größer sein als Arial Schriftzeichen
-        //Verhätnis von JJK übernommen
+        // Wingdings Zeichen müssen im Verhätnis größer sein als Arial Schriftzeichen
+        // Verhätnis von JJK übernommen
         $iWingdingsFontSize = ceil(($this->font_size * 113.63) / 100);
 
         return "\\f{$this->windings_font_face}\\fs{$iWingdingsFontSize}\\dn0";
@@ -484,14 +484,14 @@ class tx_mklib_util_RTFGenerator
      */
     private function specialCharacters($text)
     {
-        //einfach alle bekannten Sonderzeichen ersetzen
+        // einfach alle bekannten Sonderzeichen ersetzen
         foreach ($this->aSpecialChars as $sSpecialChar => $sReplacement) {
-            //Sonderzeichen ersetzen. immer \' als Prefix
-            //damit es als Sonderzeichen im RTF gilt
+            // Sonderzeichen ersetzen. immer \' als Prefix
+            // damit es als Sonderzeichen im RTF gilt
             $text = str_replace($sSpecialChar, '\\\''.$sReplacement, $text);
         }
 
-        //dann noch die Windings Sonderzeichen ersetzten
+        // dann noch die Windings Sonderzeichen ersetzten
         $sSpecialCharMarker = tx_mklib_util_MiscTools::getSpecialCharMarker();
         $text = preg_replace("/###$sSpecialCharMarker(.*?)###/mi", "}{{$this->getWindingsFont()} \\1}{{$this->getDefaultFont(false)}", $text);
 
@@ -519,8 +519,8 @@ class tx_mklib_util_RTFGenerator
 //        $doc_buffer = preg_replace("/<SUB>(.*?)<\/SUB>/mi", "{\\sub \\1}", $doc_buffer);
 //        $doc_buffer = preg_replace("/<SUP>(.*?)<\/SUP>/mi", "{\\super \\1}", $doc_buffer);
 
-        //$doc_buffer = preg_replace("/<H1>(.*?)<\/H1>/mi", "\\pard\\qc\\fs40 \\1\\par\\pard\\fs{$this->font_size} ", $doc_buffer);
-        //$doc_buffer = preg_replace("/<H2>(.*?)<\/H2>/mi", "\\pard\\qc\\fs32 \\1\\par\\pard\\fs{$this->font_size} ", $doc_buffer);
+        // $doc_buffer = preg_replace("/<H1>(.*?)<\/H1>/mi", "\\pard\\qc\\fs40 \\1\\par\\pard\\fs{$this->font_size} ", $doc_buffer);
+        // $doc_buffer = preg_replace("/<H2>(.*?)<\/H2>/mi", "\\pard\\qc\\fs32 \\1\\par\\pard\\fs{$this->font_size} ", $doc_buffer);
 
 //        $doc_buffer = preg_replace("/<H1>(.*?)<\/H1>/mi", "\\fs48\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);
 //        $doc_buffer = preg_replace("/<H2>(.*?)<\/H2>/mi", "\\fs36\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);

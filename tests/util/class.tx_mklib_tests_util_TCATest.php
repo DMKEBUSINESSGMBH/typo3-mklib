@@ -43,9 +43,9 @@ class tx_mklib_tests_util_TCATest extends \Sys25\RnBase\Testing\BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->returnUrlBackup = $_GET['returnUrl'];
+        $this->returnUrlBackup = $_GET['returnUrl'] ?? '';
     }
 
     /**
@@ -53,7 +53,7 @@ class tx_mklib_tests_util_TCATest extends \Sys25\RnBase\Testing\BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $_GET['returnUrl'] = $this->returnUrlBackup;
         unset($GLOBALS['TCA']['tt_mktest_table']);
@@ -89,21 +89,21 @@ class tx_mklib_tests_util_TCATest extends \Sys25\RnBase\Testing\BaseTestCase
 
     /**
      * @group unit
-     * @expectedException \LogicException
-     * @expectedExceptionCode 4003001
      */
     public function testGetEnableColumnThrowsExceptionForNonExcitingTable()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(4003001);
         tx_mklib_util_TCA::getEnableColumn('tt_mktest_table_does_not_exists', 'disabled');
     }
 
     /**
      * @group unit
-     * @expectedException \LogicException
-     * @expectedExceptionCode 4003002
      */
     public function testGetEnableColumnThrowsExceptionForNonExcitingColumn()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(4003002);
         $GLOBALS['TCA']['tt_mktest_table']['ctrl']['enablecolumns'] = [];
         tx_mklib_util_TCA::getEnableColumn('tt_mktest_table', 'disabled');
     }
@@ -131,11 +131,11 @@ class tx_mklib_tests_util_TCATest extends \Sys25\RnBase\Testing\BaseTestCase
 
     /**
      * @group unit
-     * @expectedException \LogicException
-     * @expectedExceptionCode 4003001
      */
     public function testGetLanguageThrowsExceptionForNonExcitingTable()
     {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionCode(4003001);
         tx_mklib_util_TCA::getLanguageField('tt_mktest_table_does_not_exists');
     }
 

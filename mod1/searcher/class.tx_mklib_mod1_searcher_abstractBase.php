@@ -124,12 +124,15 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function loadOwnLocalLangNotOverwritingExistingLabels()
     {
-        $labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml', false);
+        $labels = new ReflectionProperty(get_class($GLOBALS['LANG']), 'labels');
+        $labels->setAccessible(true);
+        $initialLabels = $labels->getValue($GLOBALS['LANG']);
+        $labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml');
         $labelsFromMklib = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
             $labelsFromMklib,
-            (array) $GLOBALS['LOCAL_LANG']
+            (array) $initialLabels
         );
-        $GLOBALS['LOCAL_LANG'] = $labelsFromMklib;
+        $labels->setValue($GLOBALS['LANG'], $labelsFromMklib);
     }
 
     /**
@@ -404,9 +407,9 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             $fields = $this->options['baseFields'];
         }
 
-        //@todo tests schreiben
-        //es könnte sein dass ein sorting gewählt wurde. dann wollen wir dieses
-        //auch nutzen
+        // @todo tests schreiben
+        // es könnte sein dass ein sorting gewählt wurde. dann wollen wir dieses
+        // auch nutzen
         $this->prepareSorting($options);
         $this->prepareFieldsAndOptions($fields, $options);
 
@@ -423,17 +426,17 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         $sortedCols = [];
         if (\Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField') && \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev')) {
             $sortedCols = [\Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortField') => \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('sortRev')];
-            //wir setzen die daten noch für das Modul um bei einem seiten wechsel
-            //weiterhin die richtige sortierung zu haben
+            // wir setzen die daten noch für das Modul um bei einem seiten wechsel
+            // weiterhin die richtige sortierung zu haben
             $this->getSelector()->setValueToModuleData(
                 $this->getModule()->getName(),
                 [$this->getSearcherId().'orderby' => $sortedCols]
             );
         } elseif ($aOrderByByModuleData = $this->getSelector()->getValueFromModuleData($this->getSearcherId().'orderby')) {
             $sortedCols = $aOrderByByModuleData;
-            //wenn die sortierung aus dem Modul kommt, müssen wir die Sortierung in
-            //den $_GET Daten setzen damit die richtigen Pfeile angezeigt werden
-            //siehe \Sys25\RnBase\Backend\Form\ToolBox::createSortLink
+            // wenn die sortierung aus dem Modul kommt, müssen wir die Sortierung in
+            // den $_GET Daten setzen damit die richtigen Pfeile angezeigt werden
+            // siehe \Sys25\RnBase\Backend\Form\ToolBox::createSortLink
             $aKeys = array_keys($aOrderByByModuleData);
             $_GET['sortField'] = $aKeys[0];
             $aValues = array_values($aOrderByByModuleData);
@@ -474,8 +477,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             $options['enablefieldsbe'] = 1;
         }
 
-        //die fields nun mit dem Suchbegriff und den Spalten,
-        //in denen gesucht werden soll, füllen
+        // die fields nun mit dem Suchbegriff und den Spalten,
+        // in denen gesucht werden soll, füllen
         tx_mklib_mod1_util_SearchBuilder::buildFreeText(
             $fields,
             $this->currentSearchWord,

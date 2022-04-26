@@ -128,7 +128,7 @@ class tx_mklib_util_SearchSorting
     {
         if (count(self::$sortingTables)) {
             $tableAliases = &$params['tableAliases'];
-            //@TODO: $joinedFields && $customFields zusätzlich zu den $tableAliases beachten!!!
+            // @TODO: $joinedFields && $customFields zusätzlich zu den $tableAliases beachten!!!
             // $joinedFields = & $params['joinedFields'];
             // $customFields = & $params['customFields'];
             $options = &$params['options'];

@@ -177,7 +177,7 @@ class tx_mklib_mod1_util_Language
 
             /* @var $mod \Sys25\RnBase\Backend\Module\BaseModule */
             if (!$mod instanceof \Sys25\RnBase\Backend\Module\BaseModule) {
-                $mod = $GLOBALS['SOBE'];
+                return '';
             }
 
             $onclick = $mod->issueCommand(

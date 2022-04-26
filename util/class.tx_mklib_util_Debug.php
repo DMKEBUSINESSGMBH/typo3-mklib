@@ -113,7 +113,7 @@ class tx_mklib_util_Debug
     public static function writeFile($content)
     {
         if (self::$file) {
-            return fwrite(self::$file, $content/*.LF*/);
+            return fwrite(self::$file, $content/* .LF */);
         } else {
             return 0;
         }

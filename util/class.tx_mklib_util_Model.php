@@ -47,17 +47,17 @@ class tx_mklib_util_Model
      */
     public static function splitTextIntoTitleAndRest(\Sys25\RnBase\Domain\Model\DataInterface $model, $textField = 'text', $wordCount = 3, $bStripTags = false)
     {
-        //Html vorher entfernen? Wenn ja werden auch überflüssige Leerzeichen entfernt. aus "  " wird " "
+        // Html vorher entfernen? Wenn ja werden auch überflüssige Leerzeichen entfernt. aus "  " wird " "
         $sText = ($bStripTags) ? preg_replace('/\s\s+/', ' ', strip_tags($model->getProperty($textField))) : $model->getProperty($textField);
-        //nur wenn der text noch nicht aufgesplittet wurde, sprich alles schon vorher einmal aufgerufen wurde
-        $textExploded = explode(' ', $sText); //anhand des Leerzeichens trennen
-        foreach ($textExploded as $key => $value) {//Wörter in array mit ersten 3 Worten und Rest trennen
+        // nur wenn der text noch nicht aufgesplittet wurde, sprich alles schon vorher einmal aufgerufen wurde
+        $textExploded = explode(' ', $sText); // anhand des Leerzeichens trennen
+        foreach ($textExploded as $key => $value) {// Wörter in array mit ersten 3 Worten und Rest trennen
             $newKey = ($key <= ($wordCount - 1)) ? 'titletext' : 'restaftertitle';
             $tempText[$newKey][] = $value;
         }
-        //strings wieder durch leerzeichen getrennt zusammensetzen
+        // strings wieder durch leerzeichen getrennt zusammensetzen
         $model->setProperty('titletext', implode(' ', $tempText['titletext']));
-        //gab es überhaupt mehr Wörter
+        // gab es überhaupt mehr Wörter
         if (!empty($tempText['restaftertitle'])) {
             $model->setProperty('restaftertitle', implode(' ', $tempText['restaftertitle']));
         }
@@ -79,7 +79,7 @@ class tx_mklib_util_Model
      */
     public static function getShortenedText(\Sys25\RnBase\Domain\Model\DataInterface $model, $textField = 'text', $charCount = 150, $bStripTags = false, $suffix = 'shortened')
     {
-        //Html vorher entfernen?
+        // Html vorher entfernen?
         $sText = ($bStripTags) ? strip_tags($model->getProperty($textField)) : $model->getProperty($textField);
         $model->setProperty($textField.$suffix, tx_mklib_util_String::crop($sText, $charCount));
     }

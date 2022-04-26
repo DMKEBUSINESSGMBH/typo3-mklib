@@ -36,7 +36,7 @@ class tx_mklib_tests_srv_FinanceTest extends \Sys25\RnBase\Testing\BaseTestCase
     /**
      * This method is called before the first test of this test class is run.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
             self::prepareLegacyTypo3DbGlobal();
@@ -46,7 +46,7 @@ class tx_mklib_tests_srv_FinanceTest extends \Sys25\RnBase\Testing\BaseTestCase
     public function testGetCurrency()
     {
         self::markTestIncomplete(
-          'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
+          'GeneralUtility:: devLog() will be removed with TYPO3 v10.0.'
         );
 
         $oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();

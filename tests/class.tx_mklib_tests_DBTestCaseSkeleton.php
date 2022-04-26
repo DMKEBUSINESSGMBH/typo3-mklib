@@ -104,7 +104,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
             // read sql file content
             $sqlFilename = \Sys25\RnBase\Utility\Files::getFileAbsFileName(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey, $file));
             if (@is_file($sqlFilename)) {
-                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); //alle statements importieren
+                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); // alle statements importieren
             }
         }
     }
@@ -115,14 +115,12 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      *
      * setUp() = init DB etc.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         self::markTestSkipped(
             'Database tests don\'t work after the support for TYPO3 9 was introduced'.
             ' in rn_base and it\'s database connection. Needs refactoring.'
         );
-        //Devlog stört beim Testen nur
-        \DMK\Mklib\Utility\Tests::disableDevlog();
 
         try {
             $this->createDatabase();
@@ -159,7 +157,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      *
      * tearDown() = destroy DB etc.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanDatabase();
         $this->dropDatabase();

@@ -32,9 +32,9 @@
 abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repository\SearchInterface, \TYPO3\CMS\Core\SingletonInterface
 {
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
-    const DELETION_MODE_HIDE = 0;
-    const DELETION_MODE_SOFTDELETE = 1;
-    const DELETION_MODE_REALLYDELETE = 2;
+    public const DELETION_MODE_HIDE = 0;
+    public const DELETION_MODE_SOFTDELETE = 1;
+    public const DELETION_MODE_REALLYDELETE = 2;
 
     /**
      * Liefert den Namen der Suchklasse.
@@ -148,7 +148,8 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      */
     protected function handleEnableFieldsOptions(&$fields, &$options)
     {
-        if (TYPO3_MODE == 'BE' &&
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof \Psr\Http\Message\ServerRequestInterface &&
+            \TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend() &&
             !isset($options['enablefieldsoff']) &&
             !isset($options['enablefieldsbe']) &&
             !isset($options['enablefieldsfe'])
@@ -309,7 +310,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
             $data['pid'] = $this->getPid();
         }
 
-        $uid = $this->getDatabaseUtility()->doInsert($table, $data/*, 1*/);
+        $uid = $this->getDatabaseUtility()->doInsert($table, $data/* , 1 */);
 
         return $uid;
     }

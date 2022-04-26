@@ -218,9 +218,9 @@ class tx_mklib_tests_util_StringTest extends \Sys25\RnBase\Testing\BaseTestCase
         $GLOBALS['TSFE']->spamProtectEmailAddresses = 2;
         $GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst'] = '&#8203;(at)&#8203';
 
-        //tq_seo extension hat einen hook der auf das folgende feld zugreift.
-        //wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
-        //wir verhindern wollen!
+        // tq_seo extension hat einen hook der auf das folgende feld zugreift.
+        // wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
+        // wir verhindern wollen!
         if (!is_array($GLOBALS['TSFE']->rootLine)) {
             $GLOBALS['TSFE']->rootLine = [];
         }

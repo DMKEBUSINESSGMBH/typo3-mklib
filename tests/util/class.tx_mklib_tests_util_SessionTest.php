@@ -46,10 +46,10 @@ class tx_mklib_tests_util_SessionTest extends \Sys25\RnBase\Testing\BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->cookiesBackup = $_COOKIE;
-        $this->feUserBackUp = $GLOBALS['TSFE']->fe_user;
+        $this->feUserBackUp = $GLOBALS['TSFE']->fe_user ?? null;
 
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
         \DMK\Mklib\Utility\Tests::prepareTSFE(['initFEuser' => true, 'force' => true]);
@@ -60,7 +60,7 @@ class tx_mklib_tests_util_SessionTest extends \Sys25\RnBase\Testing\BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $_COOKIE = $this->cookiesBackup;
         tx_mklib_util_Session::removeSessionValue('checkCookieIsSet');

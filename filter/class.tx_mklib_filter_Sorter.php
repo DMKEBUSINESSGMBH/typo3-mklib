@@ -144,7 +144,7 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
 
             return true;
         }
-        //else
+        // else
 
         $this->initiatedSorting = false;
 

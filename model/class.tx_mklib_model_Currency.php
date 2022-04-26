@@ -79,7 +79,7 @@ class tx_mklib_model_Currency
      */
     public static function getByCountry($country = 'DE')
     {
-        //@TODO: anhand des landes den currency code herausfinden
+        // @TODO: anhand des landes den currency code herausfinden
         if ('DE' === $country) {
             return self::getByCurrencyCode('EUR');
         } else {
@@ -162,7 +162,7 @@ class tx_mklib_model_Currency
     public function __toString()
     {
         $out = get_class($this)."\n\nData:\n";
-        while (list($key, $val) = each($this->record)) {
+        foreach ($this->record as $key => $val) {
             $out .= $key.' = '.$val."\n";
         }
         reset($this->record);

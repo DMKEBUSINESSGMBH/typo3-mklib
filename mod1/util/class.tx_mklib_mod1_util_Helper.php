@@ -26,7 +26,7 @@ class tx_mklib_mod1_util_Helper
         $itemid = 0;
         $data = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('show'.$key);
         if ($data) {
-            list($itemid) = each($data);
+            $itemid = current($data);
         }
         $dataKey = 'current'.$key;
         if ('clear' === $itemid) {
@@ -43,7 +43,7 @@ class tx_mklib_mod1_util_Helper
         $item = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($modelData[0], $modelData[1]);
 
         if (!$item->isValid()) {
-            $item = null; //auf null setzen damit die Suche wieder angezeigt wird
+            $item = null; // auf null setzen damit die Suche wieder angezeigt wird
         }
 
         return $item;

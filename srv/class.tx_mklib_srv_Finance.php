@@ -36,7 +36,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
      */
     public function getCurrency()
     {
-        //@TODO: aktuellen Code auslesen und übergeben,
+        // @TODO: aktuellen Code auslesen und übergeben,
 
         return tx_mklib_model_Currency::getByCurrencyCode();
     }
@@ -51,7 +51,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
      */
     public function getNetPriceByGrossPriceAndTax($gross, $tax)
     {
-        //Rechnen wir mit Double?
+        // Rechnen wir mit Double?
         if (is_double($gross)) {
             return $this->getDoubleByInt($this->getIntByDouble($gross) / ((100 + $tax) / 100));
         } else {
@@ -69,7 +69,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
      */
     public function getGrossPriceByNetPriceAndTax($net, $tax)
     {
-        //Rechnen wir mit Double?
+        // Rechnen wir mit Double?
         if (is_double($net)) {
             return $this->getDoubleByInt($this->getIntByDouble($net) * (1 + $tax / 100));
         } else {
@@ -167,7 +167,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     {
         $baseInt = intval('1'.str_repeat('0', $digits));
         $doubleVal = doubleval(doubleval($int) / $baseInt);
-        //@TODO: hierfür sollte das currency Objekt genutzt werden,
+        // @TODO: hierfür sollte das currency Objekt genutzt werden,
         // das beinhaltet digits, delemiter, etc.
         // das hier ist nur für die berechnung!
         return ($format) ? number_format($doubleVal, $digits, $delimiter, '') : $doubleVal;
@@ -187,15 +187,15 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     {
         $baseInt = intval('1'.str_repeat('0', $digits));
         $roundedDoubleValue = ($doubleValue * $baseInt);
-        //durch einen Bug wird z.B. die Zahl 2.2000 auf 2.21 gerundet. Damit
-        //das nicht passiert prüfen wir ob die Zahl eine Kommastelle enthält
-        //und runden nur dann weil wir sonst schon eine ganze Zahl haben
-        if (strpos($roundedDoubleValue, '.')) {//Ist der $intValue schon eine ganze Zahl?
+        // durch einen Bug wird z.B. die Zahl 2.2000 auf 2.21 gerundet. Damit
+        // das nicht passiert prüfen wir ob die Zahl eine Kommastelle enthält
+        // und runden nur dann weil wir sonst schon eine ganze Zahl haben
+        if (strpos($roundedDoubleValue, '.')) {// Ist der $intValue schon eine ganze Zahl?
             $roundedDoubleValue = ceil($roundedDoubleValue) / $baseInt;
         } else {
             $roundedDoubleValue = $roundedDoubleValue / $baseInt;
         }
-        //@TODO: hierfür sollte das currency Objekt genutzt werden,
+        // @TODO: hierfür sollte das currency Objekt genutzt werden,
         // das beinhaltet digits, delemiter, etc.
         // das hier ist nur für die berechnung!
         return ($format) ? number_format($roundedDoubleValue, $digits, $delimiter, '') : $roundedDoubleValue;

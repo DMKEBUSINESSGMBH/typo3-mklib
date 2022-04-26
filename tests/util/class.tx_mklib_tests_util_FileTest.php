@@ -43,11 +43,11 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
         tx_mklib_util_File::getDocumentRoot();
     }
 
-    public function setUp()
+    public function setUp(): void
     {
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
     }
 
@@ -78,7 +78,7 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
 
     public function testCleanupFilesNotInTypo3temp()
     {
-        //@TODO: lifetime testen
+        // @TODO: lifetime testen
         // testverzeichnis anlegen
         $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
         self::createTestfiles($testfolder);
@@ -97,7 +97,7 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
 
     public function testCleanupFilesWithZipAndXml()
     {
-        //@TODO: lifetime testen
+        // @TODO: lifetime testen
         // testverzeichnis anlegen
         $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
         self::createTestfiles($testfolder);
@@ -117,7 +117,7 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
 
     public function testCleanupFilesRecursiveWithZipAndXml()
     {
-        //@TODO: lifetime testen
+        // @TODO: lifetime testen
         // testverzeichnis anlegen
         $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
         self::createTestfiles($testfolder);

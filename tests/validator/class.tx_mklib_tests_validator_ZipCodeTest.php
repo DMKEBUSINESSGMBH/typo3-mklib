@@ -14,7 +14,7 @@ class tx_mklib_tests_validator_ZipCodeTest extends \Sys25\RnBase\Testing\BaseTes
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
             $this->markTestSkipped('static_info_tables nicht installiert');
@@ -29,7 +29,7 @@ class tx_mklib_tests_validator_ZipCodeTest extends \Sys25\RnBase\Testing\BaseTes
         );
         if (@is_file($sqlFilename)) {
             try {
-                //alle statements importieren
+                // alle statements importieren
                 \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true);
             } catch (RuntimeException $e) {
                 $this->markTestSkipped('ext_tables_static_update failed.');
@@ -44,7 +44,7 @@ class tx_mklib_tests_validator_ZipCodeTest extends \Sys25\RnBase\Testing\BaseTes
     {
         self::checkStaticCountries();
 
-        $country = self::getStaticCountryModel(54 /*DE*/);
+        $country = self::getStaticCountryModel(54 /* DE */);
 
         self::assertTrue(is_object($country), 'No model given.');
         self::assertTrue($country->isValid(), 'No valid model given.');
@@ -99,32 +99,32 @@ class tx_mklib_tests_validator_ZipCodeTest extends \Sys25\RnBase\Testing\BaseTes
         $return = [];
         foreach ([
                          // array($iZip, $country, $result),
-                __LINE__ => ['09113', (54 /*DE*/), true],
-                __LINE__ => ['9120', (54 /*DE*/), false],
-                __LINE__ => ['föllig egal, keine rules!', (130 /*MA*/), true],
-                __LINE__ => ['70014', (85 /*GR*/), false],
-                __LINE__ => ['700 14', (85 /*GR*/), true],
-                __LINE__ => ['irgendwasabermax9', (220 /*US*/), false],
-                __LINE__ => ['99825', (220 /*US*/), true],
-                __LINE__ => ['4526', (13 /*AT*/), true],
-                __LINE__ => ['45267', (13 /*AT*/), false],
-                __LINE__ => ['452', (13 /*AT*/), false],
-                __LINE__ => ['A0A 0A0', (36 /*CA*/), true],
-                __LINE__ => ['9120', (36 /*CA*/), false],
-                __LINE__ => ['irgendwas', (36 /*CA*/), false],
+                __LINE__ => ['09113', (54 /* DE */), true],
+                __LINE__ => ['9120', (54 /* DE */), false],
+                __LINE__ => ['föllig egal, keine rules!', (130 /* MA */), true],
+                __LINE__ => ['70014', (85 /* GR */), false],
+                __LINE__ => ['700 14', (85 /* GR */), true],
+                __LINE__ => ['irgendwasabermax9', (220 /* US */), false],
+                __LINE__ => ['99825', (220 /* US */), true],
+                __LINE__ => ['4526', (13 /* AT */), true],
+                __LINE__ => ['45267', (13 /* AT */), false],
+                __LINE__ => ['452', (13 /* AT */), false],
+                __LINE__ => ['A0A 0A0', (36 /* CA */), true],
+                __LINE__ => ['9120', (36 /* CA */), false],
+                __LINE__ => ['irgendwas', (36 /* CA */), false],
 
-                __LINE__ => ['333', (103 /*IS*/), true],
-                __LINE__ => ['33', (103 /*IS*/), false],
-                __LINE__ => ['3333', (103 /*IS*/), false],
-                __LINE__ => ['4444', (20 /*BE*/), true],
-                __LINE__ => ['444', (20 /*BE*/), false],
-                __LINE__ => ['44444', (20 /*BE*/), false],
-                __LINE__ => ['55555', (72 /*FR*/), true],
-                __LINE__ => ['5555', (72 /*FR*/), false],
-                __LINE__ => ['555555', (72 /*FR*/), false],
-                __LINE__ => ['666666', (46 /*CN*/), true],
-                __LINE__ => ['66666', (46 /*CN*/), false],
-                __LINE__ => ['6666666', (46 /*CN*/), false],
+                __LINE__ => ['333', (103 /* IS */), true],
+                __LINE__ => ['33', (103 /* IS */), false],
+                __LINE__ => ['3333', (103 /* IS */), false],
+                __LINE__ => ['4444', (20 /* BE */), true],
+                __LINE__ => ['444', (20 /* BE */), false],
+                __LINE__ => ['44444', (20 /* BE */), false],
+                __LINE__ => ['55555', (72 /* FR */), true],
+                __LINE__ => ['5555', (72 /* FR */), false],
+                __LINE__ => ['555555', (72 /* FR */), false],
+                __LINE__ => ['666666', (46 /* CN */), true],
+                __LINE__ => ['66666', (46 /* CN */), false],
+                __LINE__ => ['6666666', (46 /* CN */), false],
             ] as $key => $row) {
             $key = 'Line:'.strtolower($key).' Zip:'.$row[0].' Country:'.intval($row[1]).' Return:'.intval($row[2]);
             $return[$key] = $row;
@@ -138,14 +138,14 @@ class tx_mklib_tests_validator_ZipCodeTest extends \Sys25\RnBase\Testing\BaseTes
      */
     private static function checkStaticCountries()
     {
-        $cnt = \Sys25\RnBase\Database\Connection::getInstance()->doSelect('COUNT(uid) as cnt', 'static_countries', ['enablefieldsoff' => 1, /*'debug'=>1,*/ 'where' => 'zipcode_rule > 0']);
+        $cnt = \Sys25\RnBase\Database\Connection::getInstance()->doSelect('COUNT(uid) as cnt', 'static_countries', ['enablefieldsoff' => 1, /* 'debug'=>1, */ 'where' => 'zipcode_rule > 0']);
         $loaded = intval($cnt[0]['cnt']) > 0;
 
         if (!$loaded) {
             // zur Sicherheit die Zip Code Rules einfügen
             $sqlFilename = \Sys25\RnBase\Utility\Files::getFileAbsFileName(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'ext_tables_static_update.sql'));
             if (@is_file($sqlFilename)) {
-                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); //alle statements importieren
+                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); // alle statements importieren
             }
         }
     }

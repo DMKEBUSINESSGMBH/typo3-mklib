@@ -65,16 +65,16 @@ class tx_mklib_mod1_util_SearchBuilder
     {
         $term = $term ? mb_strtolower(trim($term), 'UTF-8') : '*';
 
-        //wir brauchen 3 backslashes (\\\) um einen einfachen zu entwerten.
-        //der erste entwertet den zweiten für die hochkommas. der zweite
-        //entwertet den dritten für regex.
-        //ansonsten sind das alle Zeichen, die in Solr nicht auftauchen
-        //dürfen da sie zur such-syntax gehören
-        //genau dürfen nicht auftauchen: + - & | ! ( ) { } [ ] ^ " ~ * ? : \
-        //außerdem nehmen wir folgende raus um die Suche zu verfeinern:
-        //, . / # '
-        //eigentlich sollte dies aber ebenfalls durch Solr filter realisiert
-        //werden
+        // wir brauchen 3 backslashes (\\\) um einen einfachen zu entwerten.
+        // der erste entwertet den zweiten für die hochkommas. der zweite
+        // entwertet den dritten für regex.
+        // ansonsten sind das alle Zeichen, die in Solr nicht auftauchen
+        // dürfen da sie zur such-syntax gehören
+        // genau dürfen nicht auftauchen: + - & | ! ( ) { } [ ] ^ " ~ * ? : \
+        // außerdem nehmen wir folgende raus um die Suche zu verfeinern:
+        // , . / # '
+        // eigentlich sollte dies aber ebenfalls durch Solr filter realisiert
+        // werden
         $pattern = '/[\s%,.&*+-\/\'!?#()\[\]\{\}"^|:\\\~]+/';
         $arr = preg_split($pattern, $term);
 

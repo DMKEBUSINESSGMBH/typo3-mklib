@@ -87,7 +87,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
                 if ('edit' == $action) {
                     // In case of edit, and editing a test task, set to internal value if not data was submitted already
                     $taskInfo[$sKey] = $task->getOption($sKey);
-                } else /*if ($parentObject->CMD == 'add') */ {
+                } else /* if ($parentObject->CMD == 'add') */ {
                     // In case of new task and if field is empty, set default.
                     $taskInfo[$sKey] = $aOptions['default'];
                 }

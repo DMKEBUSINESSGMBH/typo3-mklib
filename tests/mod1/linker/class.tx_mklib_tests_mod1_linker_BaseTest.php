@@ -33,9 +33,9 @@ class tx_mklib_tests_mod1_linker_BaseTest extends \Sys25\RnBase\Testing\BaseTest
     {
         self::markTestIncomplete('Creating default object from empty value');
 
-        //sprache auf default setzen damit wir die richtigen labels haben
+        // sprache auf default setzen damit wir die richtigen labels haben
         $GLOBALS['LANG']->lang = 'default';
-        //damit labels geladen sind
+        // damit labels geladen sind
         global $LOCAL_LANG;
         $label = 'Details';
         $LOCAL_LANG['default']['label_show_details'][0]['target'] = $label;

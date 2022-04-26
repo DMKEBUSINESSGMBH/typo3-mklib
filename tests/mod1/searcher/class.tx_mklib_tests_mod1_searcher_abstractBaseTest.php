@@ -39,9 +39,9 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
      */
     protected $mod;
 
-    public function setUp()
+    public function setUp(): void
     {
-        //sprache auf default setzen damit wir die richtigen labels haben
+        // sprache auf default setzen damit wir die richtigen labels haben
         self::markTestIncomplete('Creating default object from empty value');
         $GLOBALS['LANG']->lang = 'default';
 
@@ -52,7 +52,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
 
         $GLOBALS['emptyTestResult'] = false;
 
-        //immer wieder löschen
+        // immer wieder löschen
         $_GET['SET'] = null;
         tx_mklib_tests_mod1_Util::unsetSorting($this->mod);
         if (isset($GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['showhidden'])) {
@@ -117,7 +117,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
 
     public function testGetResultListReturnsCorrectTableAndPagerIfResults()
     {
-        //damit currenShowHidden gesetzt wird
+        // damit currenShowHidden gesetzt wird
         $this->searcher->getSearchForm();
         $aResultList = $this->searcher->getResultList();
 
@@ -176,7 +176,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
     public function testGetResultReturnsCorrectResultsDependendOnHiddenSettings()
     {
         $GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['showhidden'] = 1;
-        //damit currenShowHidden gesetzt wird
+        // damit currenShowHidden gesetzt wird
         $this->searcher->getSearchForm();
         $aResultList = $this->searcher->getResultList();
 
@@ -197,11 +197,11 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
         $_GET['sortField'] = 'uid';
         $_GET['sortRev'] = 'asc';
 
-        //damit currenShowHidden gesetzt wird
+        // damit currenShowHidden gesetzt wird
         $this->searcher->getSearchForm();
         $aResultList = $this->searcher->getResultList();
 
-        //Daten im Modul korrekt?
+        // Daten im Modul korrekt?
         $aModuleData = \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData([], \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'), $this->mod->getName());
         self::assertEquals(['uid' => 'asc'], $aModuleData['dummySearcherorderby'], 'OrderBy in Moduldaten nicht korrekt gesetzt.');
 
@@ -215,7 +215,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
         }
 
         self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-        //unberührt?
+        // unberührt?
         self::assertContains(
             '<div class="pager">',
             $aResultList['pager'],
@@ -260,14 +260,14 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
 
     public function testGetResultListReturnsCorrectTableAndPagerIfSortingFromModuleDataAndSetsSortOptionToGetParams()
     {
-        //daten fürs modul setzen
+        // daten fürs modul setzen
         $GLOBALS['BE_USER']->uc['moduleData'][$this->mod->getName()]['dummySearcherorderby'] = ['uid' => 'asc'];
 
-        //damit currenShowHidden gesetzt wird
+        // damit currenShowHidden gesetzt wird
         $this->searcher->getSearchForm();
         $aResultList = $this->searcher->getResultList();
 
-        //Daten in $_GET korrekt?
+        // Daten in $_GET korrekt?
         self::assertEquals('uid', $_GET['sortField'], '$_GET[\'sortField\'] nicht korrekt gesetzt.');
         self::assertEquals('asc', $_GET['sortRev'], '$_GET[\'sortRev\'] nicht korrekt gesetzt.');
 
@@ -281,7 +281,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
         }
 
         self::assertEquals(5, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-        //unberührt?
+        // unberührt?
         self::assertContains(
             '<div class="pager">',
             $aResultList['pager'],

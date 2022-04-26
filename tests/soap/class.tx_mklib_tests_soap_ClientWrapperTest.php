@@ -28,16 +28,14 @@
  */
 class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
-    const SOAP_TEST_METHOD = 'mySoapTestMethod';
-    const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';
+    public const SOAP_TEST_METHOD = 'mySoapTestMethod';
+    public const SOAP_TEST_METHOD_RETURN_VALUE = 'myTestSoapMethodResult';
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!extension_loaded('soap')) {
             $this->markTestSkipped('Skipped because soap is not installed.');
         }
-
-        \DMK\Mklib\Utility\Tests::disableDevlog();
     }
 
     /**
@@ -83,15 +81,12 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
 
     /**
      * @group unit
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 987654321
-     * @expectedExceptionMessage There was a Soap Exception
      */
     public function testCallSoapMethodWithInvalidMethodThrowsCorrectException()
     {
-        self::markTestIncomplete(
-            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectErrorMessage('There was a Soap Exception');
+        $this->expectExceptionCode(987654321);
 
         $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapException = new Exception('There was a Soap Exception', 987654321);
@@ -108,15 +103,12 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
 
     /**
      * @group unit
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 987654321
-     * @expectedExceptionMessage There was a Soap Fault
      */
     public function testCallSoapMethodHandlesSoapFaultCorrect()
     {
-        self::markTestIncomplete(
-            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectErrorMessage('There was a Soap Fault');
+        $this->expectExceptionCode(987654321);
 
         $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapException = new SoapFault('987654321', 'There was a Soap Fault');
@@ -133,15 +125,12 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
 
     /**
      * @group unit
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 0
-     * @expectedExceptionMessage There was a Soap Fault
      */
     public function testCallSoapMethodHandlesSoapFaultWithStringCodeCorrect()
     {
-        self::markTestIncomplete(
-            'GeneralUtility::devLog() will be removed with TYPO3 v10.0.'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectErrorMessage('There was a Soap Fault');
+        $this->expectExceptionCode(-1);
 
         $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
         $soapException = new SoapFault('a string code', 'There was a Soap Fault');

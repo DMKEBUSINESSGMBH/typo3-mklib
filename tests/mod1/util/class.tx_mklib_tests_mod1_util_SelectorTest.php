@@ -54,7 +54,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends \Sys25\RnBase\Testing\BaseTe
      */
     protected $sModuleKey;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->oSelector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_util_Selector');
         self::markTestIncomplete('Class BaseScriptClass is deprecated and will be removed in TYPO3 v10.0');
@@ -62,20 +62,20 @@ class tx_mklib_tests_mod1_util_SelectorTest extends \Sys25\RnBase\Testing\BaseTe
         $this->oSelector->init($this->oMod);
         $this->sModuleKey = 'testSearch';
 
-        //Modul daten zurücksetzen
+        // Modul daten zurücksetzen
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()] = null;
         $_GET['SET'] = null;
 
-        //für cli
+        // für cli
         $GLOBALS['TBE_TEMPLATE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Template\Override\DocumentTemplate::class);
         $GLOBALS['CLIENT']['FORMSTYLE'] = 'something';
 
-        //sprache auf default setzen damit wir die richtigen labels haben
+        // sprache auf default setzen damit wir die richtigen labels haben
         $GLOBALS['LANG']->lang = 'default';
 
-        //damit labels geladen sind
+        // damit labels geladen sind
         global $LOCAL_LANG;
-        //ab typo 4.6 ist das mit den lang labels anders
+        // ab typo 4.6 ist das mit den lang labels anders
         $mHideEntry = 'Hide hidden entries';
         $mShowEntry = 'Show hidden entries';
         $LOCAL_LANG['default']['label_select_hide_hidden'][0]['target'] = $mHideEntry;
@@ -89,7 +89,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends \Sys25\RnBase\Testing\BaseTe
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($_POST['test'])) {
             unset($_POST['test']);
@@ -154,7 +154,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends \Sys25\RnBase\Testing\BaseTe
             'label' => 'testLabel',
             'submit' => true, // wird vom searcher abstractBase gesetzt
         ];
-        //suchstring setzen
+        // suchstring setzen
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
 
         $sSearchString = $this->oSelector->showFreeTextSearchForm($out, $this->sModuleKey, $options);
@@ -168,7 +168,7 @@ class tx_mklib_tests_mod1_util_SelectorTest extends \Sys25\RnBase\Testing\BaseTe
     public function testGetValueFromModuleDataWithExistingKey()
     {
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
-        //key exists
+        // key exists
         self::assertEquals('joh316', $this->oSelector->getValueFromModuleData($this->sModuleKey), 'falscher Wert. 1');
     }
 
@@ -189,19 +189,19 @@ class tx_mklib_tests_mod1_util_SelectorTest extends \Sys25\RnBase\Testing\BaseTe
 
     public function testSetValueToModuleDataWithEmptyData()
     {
-        //vorhandene Daten
+        // vorhandene Daten
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
         $this->oSelector->setValueToModuleData($this->oMod->getName());
-        //es sollten unr die vorhandenen Daten zurück kommen
+        // es sollten unr die vorhandenen Daten zurück kommen
         self::assertEquals(['testSearch' => 'joh316'], $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
     }
 
     public function testSetValueToModuleDataWithData()
     {
-        //vorhandene Daten
+        // vorhandene Daten
         $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()][$this->sModuleKey] = 'joh316';
         $this->oSelector->setValueToModuleData($this->oMod->getName(), ['newTestSearch' => 'john doe']);
-        //es sollten auch die neuen Daten da sein
+        // es sollten auch die neuen Daten da sein
         self::assertEquals(['testSearch' => 'joh316', 'newTestSearch' => 'john doe'], $GLOBALS['BE_USER']->uc['moduleData'][$this->oMod->getName()], 'es gibt doch neue Daten');
     }
 

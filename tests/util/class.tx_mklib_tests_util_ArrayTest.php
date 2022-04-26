@@ -39,16 +39,16 @@ class tx_mklib_tests_util_ArrayTest extends \Sys25\RnBase\Testing\BaseTestCase
      */
     public function testRemoveEmptyValues()
     {
-        $aArray = ['ich', 'bin', 1, '', 0, null, 'Array' => [], 'Test', true, false];
+        $aArray = ['ich', 'bin', 1, '', 0, null, 'Array' => [], 'ArrayNotEmpty' => ['test'], 'Test', true, false];
         $aNoEmptyValues = tx_mklib_util_Array::removeEmptyValues($aArray);
 
         self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
         self::assertEquals(count($aNoEmptyValues), 6, 'Wrong count of entries.');
-        //auf die keys im zurück gegebenen und initialen array achten!!!
+        // auf die keys im zurück gegebenen und initialen array achten!!!
         self::assertEquals('ich', $aNoEmptyValues[0], '1. wert falsch');
         self::assertEquals('bin', $aNoEmptyValues[1], '2. wert falsch');
         self::assertEquals(1, $aNoEmptyValues[2], '3. wert falsch');
-        self::assertEquals([], $aNoEmptyValues['Array'], '4. wert falsch');
+        self::assertEquals(['test'], $aNoEmptyValues['ArrayNotEmpty'], '4. wert falsch');
         self::assertEquals('Test', $aNoEmptyValues[6], '5. wert falsch');
         self::assertEquals(true, $aNoEmptyValues[7], '6. wert falsch');
     }
@@ -64,7 +64,7 @@ class tx_mklib_tests_util_ArrayTest extends \Sys25\RnBase\Testing\BaseTestCase
 
         self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
         self::assertEquals(count($aNoEmptyValues), 5, 'Wrong count of entries.');
-        //auf die keys im zurück gegebenen und initialen array achten!!!
+        // auf die keys im zurück gegebenen und initialen array achten!!!
         self::assertEquals('ich', $aNoEmptyValues[0], '1. wert falsch');
         self::assertEquals('bin', $aNoEmptyValues[1], '2. wert falsch');
         self::assertEquals(1, $aNoEmptyValues[2], '3. wert falsch');

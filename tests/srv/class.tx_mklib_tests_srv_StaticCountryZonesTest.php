@@ -38,7 +38,7 @@ class tx_mklib_tests_srv_StaticCountryZonesTest extends \Sys25\RnBase\Testing\Ba
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables')) {
             $this->markTestSkipped('static_info_tables nicht installiert.');
@@ -51,7 +51,7 @@ class tx_mklib_tests_srv_StaticCountryZonesTest extends \Sys25\RnBase\Testing\Ba
     public function testGetByZnCode()
     {
         $service = tx_mklib_util_ServiceRegistry::getStaticCountryZonesService();
-        $models = $service->getByZnCode('al'); //Alabama
+        $models = $service->getByZnCode('al'); // Alabama
         $model = $models[0];
 
         self::assertInstanceOf(

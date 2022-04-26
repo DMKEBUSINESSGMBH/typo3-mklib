@@ -44,7 +44,7 @@ class tx_mklib_tests_fixtures_classes_DummyFilter extends \Sys25\RnBase\Frontend
 
     public static function handlePageBrowser(&$configurations, $confid, &$viewdata, &$fields, &$options, $cfg = [])
     {
-        //damit wir im test sehen ob alles korrekt übergeben wurde
+        // damit wir im test sehen ob alles korrekt übergeben wurde
         $viewdata->offsetSet('pageBrowserConfig', [
             'config' => $configurations,
             'confid' => $confid,

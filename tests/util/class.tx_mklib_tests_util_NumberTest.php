@@ -9,13 +9,13 @@ class tx_mklib_tests_util_NumberTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
     private $oldLocal = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->oldLocal = setlocale(LC_ALL, 0);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         setlocale(LC_ALL, $this->oldLocal);

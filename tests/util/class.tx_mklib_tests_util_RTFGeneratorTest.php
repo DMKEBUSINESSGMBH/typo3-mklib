@@ -36,13 +36,13 @@ class tx_mklib_tests_util_RTFGeneratorTest extends \Sys25\RnBase\Testing\BaseTes
     /**
      * Enter description here ...
      */
-    public function setUp()
+    public function setUp(): void
     {
         \DMK\Mklib\Utility\Tests::storeExtConf('mklib');
         \DMK\Mklib\Utility\Tests::setExtConfVar('specialCharMarker', 'SPECIALCHAR_', 'mklib');
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         \DMK\Mklib\Utility\Tests::restoreExtConf('mklib');
     }

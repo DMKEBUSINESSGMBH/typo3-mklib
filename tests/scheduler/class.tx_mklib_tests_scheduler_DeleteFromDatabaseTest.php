@@ -43,16 +43,6 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends \Sys25\RnBase\Test
     ];
 
     /**
-     * (non-PHPdoc).
-     *
-     * @see PHPUnit_Framework_TestCase::setUp()
-     */
-    protected function setUp()
-    {
-        \DMK\Mklib\Utility\Tests::disableDevlog();
-    }
-
-    /**
      * @group unit
      */
     public function testGetDatabaseConnection()
@@ -209,48 +199,6 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends \Sys25\RnBase\Test
             [['uid' => 123], ['uid' => 456]],
             $affectedRows->getValue($scheduler),
             'affectedRows falsch gesetzt'
-        );
-    }
-
-    /**
-     * @group unit
-     */
-    public function testExecuteTaskSetsDevLogCorrect()
-    {
-        self::markTestIncomplete(
-            'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'
-        );
-
-        $databaseConnection = $this->getDatabaseConnectionMock();
-        $scheduler = $this->getSchedulerByDbUtil($databaseConnection);
-
-        $affectedRows = new ReflectionProperty(
-            'tx_mklib_scheduler_DeleteFromDatabase',
-            'affectedRows'
-        );
-        $affectedRows->setAccessible(true);
-        $affectedRows->setValue($scheduler, [['uid' => 1], ['uid' => 2]]);
-
-        $devLog = [];
-        $method = new ReflectionMethod('tx_mklib_scheduler_DeleteFromDatabase', 'executeTask');
-        $method->setAccessible(true);
-        $method->invokeArgs($scheduler, [$this->options, &$devLog]);
-
-        $expectedDevLog = [
-            \Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO => [
-                'message' => '2 Datensätze wurden in '.
-                                'someTable mit der Bedingung '.
-                                'someWhereClause und dem Modus 0 entfernt',
-                'dataVar' => [
-                    'betroffene Datensätze' => [['uid' => 1], ['uid' => 2]],
-                ],
-            ],
-        ];
-
-        self::assertEquals(
-            $expectedDevLog,
-            $devLog,
-            'falsches devlog'
         );
     }
 

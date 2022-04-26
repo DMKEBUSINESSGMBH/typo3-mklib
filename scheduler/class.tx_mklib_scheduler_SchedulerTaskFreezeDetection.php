@@ -42,14 +42,14 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      */
     protected function executeTask(array $aOptions, array &$aDevLog)
     {
-        //alle die nicht mehr laufen auf freezedetected = 0 setzen
-        //alle bei denen exectime > freezedeteceted + rememberafter auf freezedetecetd = 0
+        // alle die nicht mehr laufen auf freezedetected = 0 setzen
+        // alle bei denen exectime > freezedeteceted + rememberafter auf freezedetecetd = 0
         $this->resetPossiblyFrozenTasks();
 
-        //wir brauchen alle laufenden Tasks die freezedeteceted=0 sind
+        // wir brauchen alle laufenden Tasks die freezedeteceted=0 sind
         $aPossiblyFrozenTasks = $this->getPossiblyFrozenTasks();
 
-        //nix zu tun
+        // nix zu tun
         if (empty($aPossiblyFrozenTasks)) {
             return 'keine hängengebliebene Scheduler entdeckt!';
         }
@@ -65,7 +65,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      */
     protected function handleFrozenTasks($aPossiblyFrozenTasks)
     {
-        //Nachrichten für den error mail versand
+        // Nachrichten für den error mail versand
         $aMessages = $aUids = [];
         foreach ($aPossiblyFrozenTasks as $aPossiblyFrozenTask) {
             $classname = get_class(unserialize($aPossiblyFrozenTask['serialized_task_object']));
@@ -74,16 +74,16 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
             $aUids[] = $aPossiblyFrozenTask['uid'];
         }
 
-        //wir bauen eine exception damit die error mail von rnbase gebaut werden kann
+        // wir bauen eine exception damit die error mail von rnbase gebaut werden kann
         $sMsg = LF.'Die folgenden Scheduler Tasks hängen seit mindestens '.
             tx_mklib_util_Scheduler::getFormattedTime($this->getOption('threshold')).' : '.implode(', ', $aMessages);
         $oException = new Exception($sMsg, 0);
-        //die Mail soll immer geschickt werden
+        // die Mail soll immer geschickt werden
         $aOptions = ['ignoremaillock' => true];
         \Sys25\RnBase\Utility\Misc::sendErrorMail($this->getOption('receiver'), 'tx_mklib_scheduler_CheckRunningTasks', $oException, $aOptions);
 
-        //bei allen hängen geblibenen tasks freezedetected setzen
-        //damit erst nach der errinerungszeit wieder eine mail versendet wird
+        // bei allen hängen geblibenen tasks freezedetected setzen
+        // damit erst nach der errinerungszeit wieder eine mail versendet wird
         $this->setFreezeDetected($aUids);
 
         return $sMsg;
@@ -129,10 +129,10 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
             $selectFields,
             'tx_scheduler_task',
             [
-                //hat keine TCA
+                // hat keine TCA
                 'enablefieldsoff' => true,
-                //nicht unser eigener Task und nur aktuell laufende, die vor dem
-                //threshold gestartet haben
+                // nicht unser eigener Task und nur aktuell laufende, die vor dem
+                // threshold gestartet haben
                 'where' => 'uid != '.intval($this->taskUid).
                 ' AND LENGTH(serialized_executions) > 0'.
                 ' AND freezedetected = 0'.

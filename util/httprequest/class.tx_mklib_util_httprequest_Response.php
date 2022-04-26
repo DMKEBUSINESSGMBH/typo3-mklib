@@ -549,8 +549,7 @@ class tx_mklib_util_httprequest_Response
 
         // If mbstring overloads substr and strlen functions, we have to
         // override it's internal encoding
-        if (function_exists('mb_internal_encoding') &&
-                ((int) ini_get('mbstring.func_overload')) & 2) {
+        if (function_exists('mb_internal_encoding')) {
             $mbIntEnc = mb_internal_encoding();
             mb_internal_encoding('ASCII');
         }

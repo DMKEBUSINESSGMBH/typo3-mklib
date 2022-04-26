@@ -41,7 +41,7 @@ class tx_mklib_tests_MarkerTestcase extends \Sys25\RnBase\Testing\BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         \Sys25\RnBase\Frontend\Marker\Templates::disableSubstCache();
     }
@@ -51,7 +51,7 @@ class tx_mklib_tests_MarkerTestcase extends \Sys25\RnBase\Testing\BaseTestCase
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         \Sys25\RnBase\Frontend\Marker\Templates::enableSubstCache();
     }

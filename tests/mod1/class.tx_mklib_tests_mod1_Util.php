@@ -39,12 +39,12 @@ class tx_mklib_tests_mod1_Util
     public static function replaceForCli(&$sString)
     {
         if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
-            //wir müssen noch mod.php durch cli_dispatch.phpsh ersetzen
+            // wir müssen noch mod.php durch cli_dispatch.phpsh ersetzen
             $sString = str_replace('mod.php', 'cli_dispatch.phpsh', $sString);
-            //außerdem müssen die get parameter, die im BE gesetzt sind löschen
+            // außerdem müssen die get parameter, die im BE gesetzt sind löschen
             $sString = str_replace('&amp;M=tools_txphpunitbeM1', '', $sString);
             $sString = str_replace('M%3Dtools_txphpunitbeM1', '', $sString);
-            //für CC
+            // für CC
             $sString = str_replace('%2Ftypo3%2Fcli_dispatch.phpsh%3F&amp;', urlencode(\Sys25\RnBase\Utility\Environment::getPublicPath()).'typo3%2Fcli_dispatch.phpsh&amp;', $sString);
             $sString = str_replace('%2Ftypo3%2Fcli_dispatch.phpsh%3F%26', urlencode(\Sys25\RnBase\Utility\Environment::getPublicPath()).'typo3%2Fcli_dispatch.phpsh%3F', $sString);
         }
@@ -57,10 +57,10 @@ class tx_mklib_tests_mod1_Util
      */
     public static function removeVcAndFormToken(&$sString)
     {
-        //cache und formtoken weg - diese sind ständig unterschiedlich
-        //und deren Funktionalität sollte nicht hier getestet werden
-        //auf der cli über cc ist der formtoken um 2 zeichen länger
-        //den formToken gibt es erst ab TYPO3 4.5
+        // cache und formtoken weg - diese sind ständig unterschiedlich
+        // und deren Funktionalität sollte nicht hier getestet werden
+        // auf der cli über cc ist der formtoken um 2 zeichen länger
+        // den formToken gibt es erst ab TYPO3 4.5
         $sVcAndFormTokenRegex = '/&amp;vC=(.*?)&formToken=(.*?)\'\)/';
         $sString = preg_replace($sVcAndFormTokenRegex, '\')', $sString);
         $moduleTokenRegex = '/%26moduleToken%3D(.*?)&amp/';

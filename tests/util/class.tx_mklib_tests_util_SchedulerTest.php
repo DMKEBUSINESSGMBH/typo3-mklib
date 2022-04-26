@@ -44,10 +44,10 @@ class tx_mklib_tests_util_SchedulerTest extends \Sys25\RnBase\Testing\BaseTestCa
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->languageBackup = $GLOBALS['LANG']->lang;
-
+        $this->languageBackup = $GLOBALS['LANG']->lang ?? null;
+        $GLOBALS['LANG'] = $GLOBALS['LANG'] ?? new \stdClass();
         $GLOBALS['LANG']->lang = 'default';
     }
 
@@ -56,7 +56,7 @@ class tx_mklib_tests_util_SchedulerTest extends \Sys25\RnBase\Testing\BaseTestCa
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $GLOBALS['LANG']->lang = $this->languageBackup;
     }

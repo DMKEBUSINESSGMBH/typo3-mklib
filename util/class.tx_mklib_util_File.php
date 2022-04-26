@@ -53,13 +53,13 @@ class tx_mklib_util_File
     {
         $key = (!$mounts && !$f_ext) ? true : false;
         if (!is_array($mounts)) {
-            $mounts = $GLOBALS['FILEMOUNTS'];
+            $mounts = $GLOBALS['FILEMOUNTS'] ?? '';
         }
         if (!is_array($f_ext)) {
-            $f_ext = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions'];
+            $f_ext = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions'] ?? '';
         }
         $key = $key ? 'base' : md5(serialize($mounts).serialize($f_ext));
-        if (!self::$ftInstances[$key]) {
+        if (!isset(self::$ftInstances[$key])) {
             self::$ftInstances[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 \Sys25\RnBase\Utility\Typo3Classes::getBasicFileUtilityClass()
             );
@@ -86,8 +86,11 @@ class tx_mklib_util_File
             $aUnlinkedFiles = [];
         }
 
-        //nur innerhalb von typo3temp zulassen
-        if (!$aOptions['skiptypo3tempcheck'] && false === strpos($sDirectory, $directoryCheckDir)) {
+        // nur innerhalb von typo3temp zulassen
+        if (
+            (!isset($aOptions['skiptypo3tempcheck']) || !$aOptions['skiptypo3tempcheck'])
+            && false === strpos($sDirectory, $directoryCheckDir)
+        ) {
             return 0;
         }
 
@@ -125,7 +128,7 @@ class tx_mklib_util_File
                     }
                 } // Es handelt sich um ein Verzeichniss.
                 elseif ($bRecursive && @is_dir($sFilePath)) {
-                    //@TODO: $bRecursive!
+                    // @TODO: $bRecursive!
                     $iCount += self::cleanupFiles($sFilePath.'/', $aOptions, $aUnlinkedFiles);
                 }
             }
@@ -328,7 +331,7 @@ class tx_mklib_util_File
     public static function isAbsWebPath($sPath)
     {
         $uI = parse_url($sPath);
-        if ($uI['scheme'] && $uI['host']) {
+        if (isset($uI['scheme']) && $uI['scheme'] && isset($uI['host']) && $uI['host']) {
             return true;
         }
 
@@ -421,7 +424,7 @@ class tx_mklib_util_File
         ).'/'.self::removeStartingSlash(
             self::getRelPath($sPath)
         );
-        //@TODO: das funktioniert beim webpfad nicht!
+        // @TODO: das funktioniert beim webpfad nicht!
         return $sPath;
     }
 
@@ -458,9 +461,9 @@ class tx_mklib_util_File
     {
         self::writeDownloadHeaders($sFilename, $sContentType);
         header('Content-length: '.strlen($sOutput));
-        //jetzt die Datei zum Download anbieten
+        // jetzt die Datei zum Download anbieten
         echo $sOutput;
-        //und TYPO3 hindern noch irgend etwas auszugeben
+        // und TYPO3 hindern noch irgend etwas auszugeben
         exit;
     }
 
@@ -485,7 +488,7 @@ class tx_mklib_util_File
         $auth = strlen($parts['user']) > 0 ? $parts['user'].$password.'@' : '';
         $port = strlen($parts['port']) > 0 ? ':'.$parts['port'] : '';
         // check excisting ? ???
-        //$query = strlen($parts['query']) > 0 ? ($parts['query'][0] == '?' ? $parts['query'] : '?'.$parts['query']) : '';
+        // $query = strlen($parts['query']) > 0 ? ($parts['query'][0] == '?' ? $parts['query'] : '?'.$parts['query']) : '';
         $query = strlen($parts['query']) > 0 ? '?'.$parts['query'] : '';
         $fragment = strlen($parts['fragment']) > 0 ? '#'.$parts['fragment'] : '';
 

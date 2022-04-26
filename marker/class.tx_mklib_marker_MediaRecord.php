@@ -142,7 +142,7 @@ class tx_mklib_marker_MediaRecord extends \Sys25\RnBase\Frontend\Marker\BaseMark
         $item->setProperty('icon', '');
 
         return $template;
-        //@TODO: implement if needet
+        // @TODO: implement if needet
         /*
             ###TS
 

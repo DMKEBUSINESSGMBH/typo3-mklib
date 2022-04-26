@@ -253,18 +253,18 @@ class tx_mklib_util_RTFParser
      */
     public function __construct($data, $cleanRtf = false)
     {
-        //da der text evtl. bereinigt wird, müssen wir vorher
-        //wissen ob es Wingdings in der font table gibt und
-        //welchen index Wingdings einnimmt um die Symbole
-        //durch einen Sonderzeichen Marker zu ersetzten
+        // da der text evtl. bereinigt wird, müssen wir vorher
+        // wissen ob es Wingdings in der font table gibt und
+        // welchen index Wingdings einnimmt um die Symbole
+        // durch einen Sonderzeichen Marker zu ersetzten
 
-        //teil der Fontable mit Wingdings
+        // teil der Fontable mit Wingdings
         preg_match('/f[0-9]*.fnil *?Wingdings/i', $data, $matches);
-        //jetzt brauchen wir noch den index von Wingdings in der fonttable
-        //und ersetzten anschliessend alle Wingdings Sonderzeichen
+        // jetzt brauchen wir noch den index von Wingdings in der fonttable
+        // und ersetzten anschliessend alle Wingdings Sonderzeichen
         if (!empty($matches)) {
             preg_match('/[0-9]+/', $matches[0], $aWingdingsFontTableIndex);
-            //jetzt ersetzen aber ohne die magic quotes einstellungen zu beachten
+            // jetzt ersetzen aber ohne die magic quotes einstellungen zu beachten
             $data = preg_replace(
                 '/\{.f'.$aWingdingsFontTableIndex[0].'\\\\[a-z0-9\\\\]+ *(.) *\}/i',
                 '###'.tx_mklib_util_MiscTools::getSpecialCharMarker().'$1###',
@@ -272,15 +272,15 @@ class tx_mklib_util_RTFParser
             );
         }
 
-        //@todo: warum ist es nötig den text zu bereinigen? wäre es nicht besser
-        //den text zu reparieren damit z.B. evtl. das Sonderzeichen parsen funktioniert
-        //womit die eigene ersetzung am ende von parse() wegfallen würde
+        // @todo: warum ist es nötig den text zu bereinigen? wäre es nicht besser
+        // den text zu reparieren damit z.B. evtl. das Sonderzeichen parsen funktioniert
+        // womit die eigene ersetzung am ende von parse() wegfallen würde
         if ($cleanRtf) {
-            //Fontable entfernen
+            // Fontable entfernen
             $data = preg_replace('/{.fonttbl.*?;}}/i', '', $data);
-            //Colortable entfernen
+            // Colortable entfernen
             $data = preg_replace('/{.colortbl.*?}/i', '', $data);
-            //Meta-Infos entfernen
+            // Meta-Infos entfernen
             $data = preg_replace('/{.info.*?}}/i', '', $data);
         }
         $this->len = strlen($data);
@@ -323,7 +323,7 @@ class tx_mklib_util_RTFParser
                 $this->wantHTML = true;
                 break;
             default:
-                break; //plain text
+                break; // plain text
         }
     }
 
@@ -532,7 +532,7 @@ class tx_mklib_util_RTFParser
     protected function checkHtmlSpanContent($command)
     {
         foreach ($this->fontmodifier_table as $rtf => $html) {
-            if (true == $this->flags[$rtf]) {
+            if (isset($this->flags[$rtf]) && true == $this->flags[$rtf]) {
                 if ('start' == $command) {
                     $this->out .= '<'.$html.'>';
                 } else {
@@ -549,8 +549,7 @@ class tx_mklib_util_RTFParser
     {
         if (strlen($this->queue)) {
             // processing logic
-            //if( ereg( "^[0-9]+$", $this->flags["fonttbl_want_fcharset"])) {
-            if (preg_match('/^[0-9]+$/', $this->flags['fonttbl_want_fcharset'])) {
+            if (preg_match('/^[0-9]+$/', $this->flags['fonttbl_want_fcharset'] ?? '')) {
                 $this->fonttable[$this->flags['fonttbl_want_fcharset']]['charset'] = $this->queue;
                 $this->flags['fonttbl_want_fcharset'] = '';
                 $this->queue = '';
@@ -566,12 +565,12 @@ class tx_mklib_util_RTFParser
                     $this->out .= '<plain>'.$this->queue.'</plain>';
                 } elseif ($this->wantHTML) {
                     // only output html if a valid (for now, just numeric;) fonttable is given
-                    //if( ereg( "^[0-9]+$", $this->flags["fonttbl_current_read"])) {
+                    // if( ereg( "^[0-9]+$", $this->flags["fonttbl_current_read"])) {
                     if (preg_match('/^[0-9]+$/', $this->flags['fonttbl_current_read'])) {
                         if (true == $this->flags['beginparagraph']) {
                             $this->flags['beginparagraph'] = false;
                             $this->out .= '<div align="';
-                            switch ($this->flags['alignment']) {
+                            switch ($this->flags['alignment'] ?? '') {
                                 case 'right':
                                     $this->out .= 'right';
                                     break;
@@ -598,7 +597,7 @@ class tx_mklib_util_RTFParser
                         $this->checkHtmlSpanContent('stop');
                         /* close span */
                     }
-                } else {//plain output
+                } else {// plain output
                     $this->out .= $this->queue;
                 }
                 $this->queue = '';
@@ -862,7 +861,7 @@ class tx_mklib_util_RTFParser
                         the control word (but actually its ignored by flushControl)
                         */
                         if (preg_match('/^[a-zA-Z0-9-]?$/', $this->rtf[$i])) { // continue parsing
-                            //if( ereg( "^[a-zA-Z0-9-]?$", $this->rtf[$i])) { // continue parsing
+                            // if( ereg( "^[a-zA-Z0-9-]?$", $this->rtf[$i])) { // continue parsing
                             $this->cword .= $this->rtf[$i];
                             $this->cfirst = false;
                         } else {
@@ -879,7 +878,7 @@ class tx_mklib_util_RTFParser
                                     $this->cw = false;
                                     $this->cfirst = false;
                                     $this->cword = '';
-                                } elseif //if( ereg( "^[{}\*]$", $this->rtf[$i])) {
+                                } elseif // if( ereg( "^[{}\*]$", $this->rtf[$i])) {
                                 (preg_match('^[{}\*]$', $this->rtf[$i])) {
                                     $this->flushComment('control symbols not yet handled');
                                     $specialmatch = true;
@@ -933,10 +932,10 @@ class tx_mklib_util_RTFParser
             $this->makeStyles();
         }
 
-        //jetzt ersetzen wir noch alle übrigen Sonderzeichen da das während dem Parsen
-        //nicht klappt für die Beispiele in den Tests. Wenn aber die Daten bspw. direkt
-        //vom JJK Webservice kommen, werden die umlaute etc. schon vorher ersetzt
-        //@TODO: warum klappt das nicht?
+        // jetzt ersetzen wir noch alle übrigen Sonderzeichen da das während dem Parsen
+        // nicht klappt für die Beispiele in den Tests. Wenn aber die Daten bspw. direkt
+        // vom JJK Webservice kommen, werden die umlaute etc. schon vorher ersetzt
+        // @TODO: warum klappt das nicht?
         foreach ($this->aSpecialChars as $sSpecialChar => $aSpecialCharReplacement) {
             $this->out = str_replace(
                 '\''.$sSpecialChar,

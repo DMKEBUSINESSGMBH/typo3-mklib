@@ -86,7 +86,7 @@ class tx_mklib_util_Array
     public static function removeEmptyValues(
         array $array,
         $resetIndex = false,
-        $emptys = '',
+        $emptys = false,
         $strict = false
     ) {
         $emptyKeys = array_keys($array, $emptys, $strict);

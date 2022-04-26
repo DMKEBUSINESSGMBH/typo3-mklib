@@ -10,8 +10,8 @@ class tx_mklib_util_HttpRequest
     /**
      * HTTP request methods.
      */
-    const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST';
+    public const METHOD_GET = 'GET';
+    public const METHOD_POST = 'POST';
 
     /**
      * The adapter used to perform the actual connection to the server.
@@ -301,7 +301,7 @@ class tx_mklib_util_HttpRequest
         $response = tx_mklib_util_httprequest_Response::fromString($response);
 
         // @TODO: redirect prüfen.
-        //$response->isRedirect()
+        // $response->isRedirect()
 
         return $response;
     }

@@ -52,10 +52,9 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends \Sys25\RnB
      *
      * @see PHPUnit_Framework_TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        \DMK\Mklib\Utility\Tests::disableDevlog();
-        $this->languageBackup = $GLOBALS['LANG']->lang;
+        $this->languageBackup = $GLOBALS['LANG']->lang ?? null;
 
         self::markTestIncomplete('Creating default object from empty value');
         $GLOBALS['LANG']->lang = 'default';
@@ -66,7 +65,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends \Sys25\RnB
      *
      * @see PHPUnit_Framework_TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $GLOBALS['LANG']->lang = $this->languageBackup;
     }

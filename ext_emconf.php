@@ -32,7 +32,7 @@ $EM_CONF['mklib'] = [
     'constraints' => [
         'depends' => [
             'rn_base' => '1.15.2-',
-            'typo3' => '9.5.24-10.4.99',
+            'typo3' => '10.4.25-11.5.99',
         ],
         'conflicts' => [],
     ],

@@ -27,14 +27,14 @@ class tx_mklib_view_GenericList extends tx_rnbase_view_List
      */
     public function createOutput($template, &$viewData, &$configurations, &$formatter)
     {
-        //View-Daten abholen
+        // View-Daten abholen
         $items = $viewData->offsetGet('items');
         $confId = $this->getController()->getExtendedConfId();
 
         $itemPath = $this->getItemPath($configurations, $confId);
         $markerClass = $this->getMarkerClass($configurations, $confId);
 
-        //Liste generieren
+        // Liste generieren
         $listBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Marker\ListBuilder::class);
         $out = $listBuilder->render(
             $items,

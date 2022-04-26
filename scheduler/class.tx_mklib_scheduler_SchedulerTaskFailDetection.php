@@ -81,7 +81,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
      */
     protected function handleFailedTasks($failedTasks)
     {
-        //Nachrichten für den error mail versand
+        // Nachrichten für den error mail versand
         $messages = $aUids = [];
         foreach ($failedTasks as $failedTask) {
             $classname = get_class(unserialize($failedTask['serialized_task_object']));
@@ -90,12 +90,12 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
             $uids[] = $failedTask['uid'];
         }
 
-        //wir bauen eine exception damit die error mail von rnbase gebaut werden kann
+        // wir bauen eine exception damit die error mail von rnbase gebaut werden kann
         $message = 'Die folgenden Scheduler Tasks sind fehlgeschlagen : '.
                     implode(', ', $messages);
 
         $exception = new Exception($message, 0);
-        //die Mail soll immer geschickt werden
+        // die Mail soll immer geschickt werden
         $options = ['ignoremaillock' => true];
         // wir rufen die Methode mit call_user_func_array auf, da sie
         // statisch ist, womit wir diese nicht mocken könnten
@@ -147,9 +147,9 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
             $selectFields,
             'tx_scheduler_task',
             [
-                //hat keine TCA
+                // hat keine TCA
                 'enablefieldsoff' => true,
-                //nicht unser eigener Task, keine deaktivierten und alle mit Fehler
+                // nicht unser eigener Task, keine deaktivierten und alle mit Fehler
                 'where' => 'uid != '.intval($this->taskUid).' AND '.
                             'faildetected = 0 AND '.
                             'lastexecution_failure != "" AND '.

@@ -36,7 +36,7 @@ class tx_mklib_tests_util_MiscToolsTest extends \Sys25\RnBase\Testing\BaseTestCa
     /**
      * setUp() = Extension-Konfiguration speichern.
      */
-    public function setUp()
+    public function setUp(): void
     {
         \DMK\Mklib\Utility\Tests::storeExtConf('mklib');
         \DMK\Mklib\Utility\Tests::storeExtConf('mktest');
@@ -45,7 +45,7 @@ class tx_mklib_tests_util_MiscToolsTest extends \Sys25\RnBase\Testing\BaseTestCa
     /**
      * tearDown() = Extension-Konfiguration zurückspielen.
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         \DMK\Mklib\Utility\Tests::restoreExtConf('mklib');
         \DMK\Mklib\Utility\Tests::restoreExtConf('mktest');

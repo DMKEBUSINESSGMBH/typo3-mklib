@@ -33,10 +33,15 @@ class tx_mklib_tests_repository_AbstractTest extends \Sys25\RnBase\Testing\BaseT
      * @group unit
      * @dataProvider getOptions
      */
-    public function testHandleEnableFieldsOptions(
+    public function testHandleEnableFieldsOptionsWhenInBackend(
         $options,
         $expectedOptions
     ) {
+        $GLOBALS['TYPO3_REQUEST'] = new \TYPO3\CMS\Core\Http\ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute(
+            'applicationType',
+            \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE
+        );
         $repository = $this->getRepositoryMock();
 
         $method = new ReflectionMethod('tx_mklib_repository_Abstract', 'handleEnableFieldsOptions');

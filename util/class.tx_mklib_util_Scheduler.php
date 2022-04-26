@@ -27,9 +27,9 @@ class tx_mklib_util_Scheduler
         $formattedTime = '';
         foreach ($time as $timePart => $value) {
             if ($value < 1) {
-                continue; //null wollen wir nicht sehen
+                continue; // null wollen wir nicht sehen
             }
-            //else
+            // else
             $labelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_'.
                         $timePart.'_'.(($value > 1) ? 'plural' : 'singular');
             $formattedTime .= sprintf('%01d', $value).' '.

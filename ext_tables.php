@@ -12,9 +12,9 @@ if (!defined('TYPO3_MODE')) {
 }
 $_EXTKEY = 'mklib';
 
-////////////////////////////////
+// //////////////////////////////
 // Plugin anmelden
-////////////////////////////////
+// //////////////////////////////
 // Einige Felder ausblenden
 $TCA['tt_content']['types']['list']['subtypes_excludelist']['tx_mklib'] = 'layout,select_key,pages';
 

@@ -31,19 +31,19 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
 {
     protected $backup = [];
 
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->backup['iconsAvailable'] = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'];
-        if (!is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+        $this->backup['iconsAvailable'] = $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] ?? null;
+        if (!is_array($GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] ?? null)) {
             $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = [];
         }
-        $this->backup['beUserAdminState'] = $GLOBALS['BE_USER']->user['admin'];
+        $this->backup['beUserAdminState'] = $GLOBALS['BE_USER']->user['admin'] ?? null;
 
         self::markTestIncomplete('Creating default object from empty value');
         $GLOBALS['LANG']->lang = 'default';
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $GLOBALS['BE_USER']->user['admin'] = $this->backup['beUserAdminState'];
         $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'] = $this->backup['iconsAvailable'];
@@ -51,8 +51,8 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
 
     public function testFormatWithUidColumn()
     {
-        //base model liefert als table name immer 0
-        //also setzen wir die columns für die tabelle 0
+        // base model liefert als table name immer 0
+        // also setzen wir die columns für die tabelle 0
         $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = 'disable';
 
         $record = ['uid' => 1, 'disable' => 0];
@@ -60,12 +60,12 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
         // Achtung: Das Ergebnis ist Multiline. Leider wird der Modifikator nicht akzeptiert...
         self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 
-        //jetzt mit versteckt und record fallback
+        // jetzt mit versteckt und record fallback
         $record = ['uid' => 1, 'disable' => 1];
         $result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
         self::assertRegExp('/<del>1<\/del>/', $result, 'Deaktivierter Datensatz wird falsch geliefert.');
 
-        //jetzt mit versteckt und ohne record fallback
+        // jetzt mit versteckt und ohne record fallback
         $record = ['uid' => 1, 'disable' => 1];
         $result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
         self::assertRegExp('/<del>1<\/del>/', $result, 'es wurde nicht der korrekte Wert zurück geliefert');
@@ -73,19 +73,19 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
 
     public function testFormatWithUidColumnAndNoEnableColumnsConfig()
     {
-        //es sollte hidden genommen werden da nicht in enablecolumns konfiguriert
-        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null; //konfig löschen
+        // es sollte hidden genommen werden da nicht in enablecolumns konfiguriert
+        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null; // konfig löschen
 
         $record = ['uid' => 1, 'disable' => 0];
         $result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
         self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert.');
 
-        //jetzt mit versteckt im falschen feld
+        // jetzt mit versteckt im falschen feld
         $record = ['uid' => 1, 'disable' => 1];
         $result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
         self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 2');
 
-        //jetzt mit versteckt im fallback feld
+        // jetzt mit versteckt im fallback feld
         $record = ['uid' => 1, 'hidden' => 0];
         $result = $this->getDecoratorMock()->format(1, 'uid', $record, $this->getModel($record));
         self::assertRegExp('/.*>1<\/span>/', $result, 'Aktiver Datensatz wird falsch geliefert. 3');
@@ -158,8 +158,8 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
     public function testFormatWithActionsColumnBeingAdminDoesReturnDeleteLink()
     {
         $GLOBALS['BE_USER']->user['admin'] = 1;
-        //base model liefert als table name immer 0
-        //also setzen wir die columns für die tabelle 0
+        // base model liefert als table name immer 0
+        // also setzen wir die columns für die tabelle 0
         $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = 'disable';
 
         $record = ['uid' => 1, 'disable' => 0];
@@ -168,7 +168,7 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
         self::assertContains('data[0][1][disable]=1', $result);
         self::assertContains('cmd[0][1][delete]=1', $result);
 
-        //schon versteckt
+        // schon versteckt
         $record = ['uid' => 1, 'disable' => 1];
         $result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
         self::assertContains('data[0][1][disable]=0', $result);
@@ -178,8 +178,8 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
     public function testFormatWithActionsColumnBeingNoAdminDoesNotReturnDeleteLink()
     {
         $GLOBALS['BE_USER']->user['admin'] = 0;
-        //base model liefert als table name immer 0
-        //also setzen wir die columns für die tabelle 0
+        // base model liefert als table name immer 0
+        // also setzen wir die columns für die tabelle 0
         $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = 'disable';
 
         $record = ['uid' => 1, 'disable' => 0];
@@ -188,7 +188,7 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
         self::assertContains('data[0][1][disable]=1', $result);
         self::assertNotContains('cmd[0][1][delete]=1', $result);
 
-        //schon versteckt
+        // schon versteckt
         $record = ['uid' => 1, 'disable' => 1];
         $result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 
@@ -199,9 +199,9 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
     public function testFormatWithActionsColumnAndNoEnableColumnConfigBeingAdmin()
     {
         $GLOBALS['BE_USER']->user['admin'] = 1;
-        //base model liefert als table name immer 0
-        //also setzen wir die columns für die tabelle 0
-        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null; //konfig löschen
+        // base model liefert als table name immer 0
+        // also setzen wir die columns für die tabelle 0
+        $GLOBALS['TCA'][0]['ctrl']['enablecolumns']['disabled'] = null; // konfig löschen
 
         $record = ['uid' => 1, 'hidden' => 0];
         $result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
@@ -210,7 +210,7 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
         self::assertContains('data[0][1][hidden]=1', $result);
         self::assertContains('cmd[0][1][delete]=1', $result);
 
-        //schon versteckt
+        // schon versteckt
         $record = ['uid' => 1, 'hidden' => 1];
         $result = $this->getDecoratorMock()->format('', 'actions', $record, $this->getModel($record));
 
@@ -225,7 +225,7 @@ class tx_mklib_tests_mod1_decorator_BaseTest extends \Sys25\RnBase\Testing\BaseT
     protected function getDecoratorMock()
     {
         $mod = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_DummyMod');
-        //zurücksetzen aus anderen Tests
+        // zurücksetzen aus anderen Tests
         tx_mklib_tests_mod1_Util::unsetSorting($mod);
 
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_decorator_Base', $mod);
