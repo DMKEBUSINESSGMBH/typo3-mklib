@@ -132,6 +132,9 @@
             "extension-key": "mklib",
             "web-dir": ".Build/Web",
             "app-dir": ".Build"
+        },
+        "branch-alias": {
+            "dev-11.5": "11.0.x-dev"
         }
     }
 }
