@@ -8,7 +8,7 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.tab.common</sheetTitle>
+                    <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tab.common</sheetTitle>
                 </TCEforms>
 
                 <type>array</type>
@@ -16,12 +16,12 @@
                     <action> <!-- Bezeichner ist frei wählbar -->
                         <TCEforms>
                             <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.action</label>
+                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action</label>
                             <config>
                                 <type>select</type>
                                 <items type="array">
                                     <numIndex index="1001" type="array">
-                                        <numIndex index="0">LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.action.gemnericlist</numIndex>
+                                        <numIndex index="0">LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.gemnericlist</numIndex>
                                         <numIndex index="1">tx_mklib_action_GenericList</numIndex>
                                     </numIndex>
                                 </items>
@@ -34,7 +34,7 @@
                     <qualifier>
                         <TCEforms>
                             <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.qualifier</label>
+                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.qualifier</label>
                             <config>
                                 <type>input</type>
                                 <size>50</size>
@@ -54,14 +54,14 @@
         <s_genericlist>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.action.gemnericlist</sheetTitle>
+                    <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.gemnericlist</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <genericlist.extendedConfId>
                         <TCEforms>
                             <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.action.genericlist.extendedConfId</label>
+                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.genericlist.extendedConfId</label>
                             <config>
                                 <type>input</type>
                                 <size>50</size>
@@ -78,14 +78,14 @@
         <s_tssetup>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.tab.TSSetup</sheetTitle>
+                    <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tab.TSSetup</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <flexformTS>
                         <TCEforms>
                             <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xml:plugin.mklib.flexform.tssetup</label>
+                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tssetup</label>
                             <config>
                                 <type>text</type>
                                 <cols>80</cols>

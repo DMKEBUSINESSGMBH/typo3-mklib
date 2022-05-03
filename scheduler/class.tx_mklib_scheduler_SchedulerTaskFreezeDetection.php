@@ -149,7 +149,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
     public function getAdditionalInformation($info = '')
     {
         return parent::getAdditionalInformation(
-            $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_CheckRunningTasks_taskinfo')
+            $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_CheckRunningTasks_taskinfo')
         );
     }
 

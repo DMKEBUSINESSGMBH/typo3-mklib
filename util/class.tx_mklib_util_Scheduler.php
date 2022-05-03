@@ -30,7 +30,7 @@ class tx_mklib_util_Scheduler
                 continue; // null wollen wir nicht sehen
             }
             // else
-            $labelKey = 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_SchedulerTaskFreezeDetection_formattedtime_'.
+            $labelKey = 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_SchedulerTaskFreezeDetection_formattedtime_'.
                         $timePart.'_'.(($value > 1) ? 'plural' : 'singular');
             $formattedTime .= sprintf('%01d', $value).' '.
                                 $GLOBALS['LANG']->sL($labelKey).' ';

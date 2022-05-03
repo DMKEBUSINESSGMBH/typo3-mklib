@@ -270,12 +270,12 @@ class tx_mklib_tests_util_TCATest extends \Sys25\RnBase\Testing\BaseTestCase
     {
         $expectedGermanStatesField = [
             'exclude' => 1,
-            'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+            'label' => 'LLL:EXT:mklib/locallang_db.xlf:tt_address.region',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:mklib/locallang_db.xml:please_choose', ''],
+                    ['LLL:EXT:mklib/locallang_db.xlf:please_choose', ''],
                 ],
                 'foreign_table' => 'static_country_zones',
                 'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',
@@ -299,12 +299,12 @@ class tx_mklib_tests_util_TCATest extends \Sys25\RnBase\Testing\BaseTestCase
     {
         $expectedGermanStatesField = [
             'exclude' => 1,
-            'label' => 'LLL:EXT:mklib/locallang_db.xml:tt_address.region',
+            'label' => 'LLL:EXT:mklib/locallang_db.xlf:tt_address.region',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['LLL:EXT:mklib/locallang_db.xml:please_choose', ''],
+                    ['LLL:EXT:mklib/locallang_db.xlf:please_choose', ''],
                 ],
                 'foreign_table' => 'static_country_zones',
                 'foreign_table_where' => ' AND static_country_zones.zn_country_iso_nr = 276 ORDER BY static_country_zones.zn_name_local',

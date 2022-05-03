@@ -56,7 +56,7 @@ class tx_mklib_validator_ZipCode
     public static function getFormatInfo(tx_mklib_interface_IZipCountry $country)
     {
         $rule = 9 == $country->getZipRule() ? $country->getZipRule().'_'.$country->getISO2() : $country->getZipRule();
-        $labelKey = 'LLL:EXT:mklib/locallang.xml:label_ziperror_r'.$rule;
+        $labelKey = 'LLL:EXT:mklib/locallang.xlf:label_ziperror_r'.$rule;
         $label = sprintf($GLOBALS['LANG']->sL($labelKey), $country->getZipLength());
 
         return $label;

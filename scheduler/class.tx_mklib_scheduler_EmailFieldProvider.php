@@ -42,7 +42,7 @@ class tx_mklib_scheduler_EmailFieldProvider extends tx_mklib_scheduler_GenericFi
             // dann unseren email wert da er später im quelltext auftaucht.
             'mklibEmail' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.email',
+                'label' => 'LLL:EXT:scheduler/mod1/locallang.xlf:label.email',
                 'default' => $GLOBALS['BE_USER']->user['email'],
                 'eval' => 'email',
             ],

@@ -43,35 +43,35 @@ class tx_mklib_scheduler_DeleteFromDatabaseFieldProvider extends tx_mklib_schedu
         return [
             'table' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_table',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_table',
                 'eval' => 'required,trim',
             ],
             'selectFields' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_selectFields',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_selectFields',
                 'eval' => 'trim',
                 'default' => 'uid',
             ],
             'uidField' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_uid',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_uid',
                 'eval' => 'required,trim',
                 'default' => 'uid',
             ],
             'where' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_where',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_where',
                 'default' => "hidden = 1 AND tstamp < (UNIX_TIMESTAMP() - $twentyEightDaysInSeconds)",
                 'eval' => 'required,trim',
             ],
             'mode' => [
                 'type' => 'select',
                 'items' => [
-                    Tx_Mklib_Database_Connection::DELETION_MODE_HIDE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_hidden'),
-                    Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete'),
-                    Tx_Mklib_Database_Connection::DELETION_MODE_REALLYDELETE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode_delete_hard'),
+                    Tx_Mklib_Database_Connection::DELETION_MODE_HIDE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_mode_hidden'),
+                    Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_mode_delete'),
+                    Tx_Mklib_Database_Connection::DELETION_MODE_REALLYDELETE => $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_mode_delete_hard'),
                 ],
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_DeleteFromDatabase_field_mode',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_field_mode',
             ],
         ];
     }

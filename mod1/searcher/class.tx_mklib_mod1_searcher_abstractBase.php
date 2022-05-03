@@ -115,8 +115,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * Es kann sein dass schon vorm aufrufen des tatsächlichen Searchers
      * eine locallang Datei eingebunden wurde, welche Vorrang hat da sie vom konkreten
-     * BE Modul stammt und die Labels enthält die auch in EXT:mklib/mod1/locallang.xml vorhanden sind.
-     * Wenn wir dann EXT:mklib/mod1/locallang.xml ganz normal einbinden, würden
+     * BE Modul stammt und die Labels enthält die auch in EXT:mklib/mod1/locallang.xlf vorhanden sind.
+     * Wenn wir dann EXT:mklib/mod1/locallang.xlf ganz normal einbinden, würden
      * diese überschrieben werden, obwohl diese Vorrang haben sollten.
      * Also überschreiben wir die Labels aus mklib mit vorhandenen aus
      * $GLOBALS['LOCAL_LANG'] und schreiben das dann zurück nach $GLOBALS['LOCAL_LANG'],
@@ -127,7 +127,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         $labels = new ReflectionProperty(get_class($GLOBALS['LANG']), 'labels');
         $labels->setAccessible(true);
         $initialLabels = $labels->getValue($GLOBALS['LANG']);
-        $labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xml');
+        $labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/mod1/locallang.xlf');
         $labelsFromMklib = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
             $labelsFromMklib,
             (array) $initialLabels

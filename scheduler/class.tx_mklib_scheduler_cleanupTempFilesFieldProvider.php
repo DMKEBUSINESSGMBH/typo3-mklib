@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  */
 
-// \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_tools_txschedulerM1', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'scheduler/locallang.xml');
+// \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_tools_txschedulerM1', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'scheduler/locallang.xlf');
 
 /**
  * Fügt Felder im scheduler task hinzu.
@@ -39,13 +39,13 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_schedule
         return [
             'lifetime' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_lifetime',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_cleanupTempFiles_field_lifetime',
                 'default' => 604800, // default is 7 days
                 'eval' => 'trim,int',
             ],
             'directorycheckdir' => [
                 'type' => 'select',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_directorycheckdir',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_cleanupTempFiles_field_directorycheckdir',
                 'items' => [
                     // $value => $caption
                     'typo3temp' => 'typo3temp',
@@ -57,19 +57,19 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_schedule
             ],
             'folder' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_cleanupTempFiles_field_folder',
                 'default' => '',
                 'eval' => 'trim,folder,validateFolder',
             ],
             'filetypes' => [
                 'type' => 'input',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_filetypes',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_cleanupTempFiles_field_filetypes',
                 'default' => '',
                 'eval' => 'trim',
             ],
             'recursive' => [
                 'type' => 'check',
-                'label' => 'LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_recursive',
+                'label' => 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_cleanupTempFiles_field_recursive',
                 'default' => '',
                 'eval' => '',
             ],
@@ -87,6 +87,6 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_schedule
     {
         $directoryCheckDir = isset($submittedData['directorycheckdir']) ? $submittedData['directorycheckdir'] : 'typo3temp';
 
-        return (false === strpos($sPath, $directoryCheckDir)) ? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xml:scheduler_cleanupTempFiles_field_folder_eval_'.$directoryCheckDir) : true;
+        return (false === strpos($sPath, $directoryCheckDir)) ? $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_cleanupTempFiles_field_folder_eval_'.$directoryCheckDir) : true;
     }
 }

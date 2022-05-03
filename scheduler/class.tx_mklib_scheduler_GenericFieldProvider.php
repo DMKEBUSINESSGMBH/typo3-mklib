@@ -54,7 +54,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
      'lifetime' => array(
      // sollte immer ein LLL sein,
      // da fehlermeldungen aus der ll geladen werden $label.'_required'
-     'label' => 'LLL:EXT:mklib/locallang_db.xml:label_key',
+     'label' => 'LLL:EXT:mklib/locallang_db.xlf:label_key',
      'type' => 'input'
      'cshKey' => '_MOD_tools_txschedulerM1',
      'cshLabel' => 'label_key_csh', // key aus der ssh locallang zu cshKey

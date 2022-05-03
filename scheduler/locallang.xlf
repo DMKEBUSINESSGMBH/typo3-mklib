@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2022-05-03T08:35:39Z" product-name="mklib">
+		<header/>
+		<body>
+			<trans-unit id="scheduler_cleanupTempFiles_name" resname="scheduler_cleanupTempFiles_name" >
+				<source>Cleanup files</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_taskinfo" resname="scheduler_cleanupTempFiles_taskinfo" >
+				<source>Cleans up files in an directory.</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_lifetime" resname="scheduler_cleanupTempFiles_field_lifetime" >
+				<source>Lifetime</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_lifetime_eval_int" resname="scheduler_cleanupTempFiles_field_lifetime_eval_int" >
+				<source>Lifetime must be an Integer</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_directorycheckdir" resname="scheduler_cleanupTempFiles_field_directorycheckdir" >
+				<source>Folder*</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_directorycheckdir_eval_required" resname="scheduler_cleanupTempFiles_field_directorycheckdir_eval_required" >
+				<source>The directoryCheckDir was ot set.</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_folder" resname="scheduler_cleanupTempFiles_field_folder" >
+				<source>Folder Path* (relative from the webroot including typo3temp etc.)</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_folder_eval_folder" resname="scheduler_cleanupTempFiles_field_folder_eval_folder" >
+				<source>The folder does not exist.</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_folder_eval_typo3temp" resname="scheduler_cleanupTempFiles_field_folder_eval_typo3temp" >
+				<source>The folder must be in the typo3temp dir.</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_folder_eval_uploads" resname="scheduler_cleanupTempFiles_field_folder_eval_uploads" >
+				<source>The folder must be in the uploads dir.</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_recursive" resname="scheduler_cleanupTempFiles_field_recursive" >
+				<source>Recursive</source>
+			</trans-unit>
+			<trans-unit id="scheduler_cleanupTempFiles_field_filetypes" resname="scheduler_cleanupTempFiles_field_filetypes" >
+				<source>Filetypes</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_name" resname="scheduler_SchedulerTaskFreezeDetection_name" >
+				<source>Scheinbar hängengebliebene Scheduler Tasks melden</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_taskinfo" resname="scheduler_SchedulerTaskFreezeDetection_taskinfo" >
+				<source>Prüft ob aktuell Scheduler Tasks laufen, die schon seit längerer Zeit laufen und somit scheinbar hängen geblieben sind.</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_receiver" resname="scheduler_SchedulerTaskFreezeDetection_field_receiver" >
+				<source>Empfänger der Meldungen</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_receiver_eval_email" resname="scheduler_SchedulerTaskFreezeDetection_field_receiver_eval_email" >
+				<source>Bitte eine korrekte Mail Addresse eintragen</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_receiver_eval_required" resname="scheduler_SchedulerTaskFreezeDetection_field_receiver_eval_required" >
+				<source>Bitte eine Mail Addresse eintragen</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_threshold" resname="scheduler_SchedulerTaskFreezeDetection_field_threshold" >
+				<source>maximal erlaubte Tasklaufdauer bis Freeze Detection</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_int" resname="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_int" >
+				<source>Bitte eine Zahl (Sekunden), als Tasklaufdauer bis Freeze Detection eintritt, eintragen</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold" resname="scheduler_SchedulerTaskFreezeDetection_field_threshold_eval_minThreshold" >
+				<source>Die maximal erlaubte Tasklaufdauer darf nicht kleiner als 10 Sekunden sein.</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter" resname="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter" >
+				<source>Zeit nach der erneut eine Mail versendet wird</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter_eval_int" resname="scheduler_SchedulerTaskFreezeDetection_field_rememberAfter_eval_int" >
+				<source>Bitte eine Zahl (Sekunden) als Zeit nach der erneut eine Mail versendet wird</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_singular" resname="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_singular" >
+				<source>Stunde</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_plural" resname="scheduler_SchedulerTaskFreezeDetection_formattedtime_hours_plural" >
+				<source>Stunden</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_singular" resname="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_singular" >
+				<source>Minute</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_plural" resname="scheduler_SchedulerTaskFreezeDetection_formattedtime_minutes_plural" >
+				<source>Minuten</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_singular" resname="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_singular" >
+				<source>Sekunde</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_plural" resname="scheduler_SchedulerTaskFreezeDetection_formattedtime_seconds_plural" >
+				<source>Sekunden</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_name" resname="scheduler_DeleteFromDatabase_name" >
+				<source>Datensätze in der Datenbank löschen</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_taskinfo" resname="scheduler_DeleteFromDatabase_taskinfo" >
+				<source>Vorsicht: Die where Bedingung, der Modus und die Tabelle sollten korrekt sein!</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_where" resname="scheduler_DeleteFromDatabase_field_where" >
+				<source>where Bedingung</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_mode" resname="scheduler_DeleteFromDatabase_field_mode" >
+				<source>Löschmodus</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_mode_hidden" resname="scheduler_DeleteFromDatabase_field_mode_hidden" >
+				<source>Verstecken</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_mode_delete" resname="scheduler_DeleteFromDatabase_field_mode_delete" >
+				<source>Löschen</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_mode_delete_hard" resname="scheduler_DeleteFromDatabase_field_mode_delete_hard" >
+				<source>hart löschen</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_table" resname="scheduler_DeleteFromDatabase_field_table" >
+				<source>Tabelle</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_selectFields" resname="scheduler_DeleteFromDatabase_field_selectFields" >
+				<source>selektierte Felder (falls nicht nur UID Feld; hautpsächlich interessant fürs Logging)</source>
+			</trans-unit>
+			<trans-unit id="scheduler_DeleteFromDatabase_field_uid" resname="scheduler_DeleteFromDatabase_field_uid" >
+				<source>Feld der UID (falls abweichend - wird benötigt zum löschen)</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFailDetection_name" resname="scheduler_SchedulerTaskFailDetection_name" >
+				<source>Fehlgeschlagene Scheduler Tasks melden</source>
+			</trans-unit>
+			<trans-unit id="scheduler_SchedulerTaskFailDetection_taskinfo" resname="scheduler_SchedulerTaskFailDetection_taskinfo" >
+				<source>Prüft ob aktuell Scheduler Tasks fehlgeschlagen sind, die schon seit längerer Zeit laufen und somit scheinbar hängen geblieben sind.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

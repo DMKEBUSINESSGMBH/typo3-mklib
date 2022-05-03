@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2022-05-03T08:37:48Z" product-name="mklib">
+		<header/>
+		<body>
+			<trans-unit id="general.undef" resname="general.undef" >
+				<source>Undefined</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.label" resname="plugin.mklib.label" >
+				<source>MK Library</source>
+			</trans-unit>
+			<trans-unit id="please_choose" resname="please_choose" >
+				<source>==please choose==</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.tab.common" resname="plugin.mklib.flexform.tab.common" >
+				<source>Common</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.action" resname="plugin.mklib.flexform.action" >
+				<source>View</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.action.gemnericlist" resname="plugin.mklib.flexform.action.gemnericlist" >
+				<source>Generic List</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.qualifier" resname="plugin.mklib.flexform.qualifier" >
+				<source>Qualifier</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.action.genericlist.extendedConfId" resname="plugin.mklib.flexform.action.genericlist.extendedConfId" >
+				<source>Extended ConfID (default is 'default')</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.tab.TSSetup" resname="plugin.mklib.flexform.tab.TSSetup" >
+				<source>TS-Setup</source>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.tssetup" resname="plugin.mklib.flexform.tssetup" >
+				<source>plugin.tx_mklib.</source>
+			</trans-unit>
+			<trans-unit id="static_countries.zipcode_rule" resname="static_countries.zipcode_rule" >
+				<source>zip code rule</source>
+			</trans-unit>
+			<trans-unit id="static_countries.zipcode_length" resname="static_countries.zipcode_length" >
+				<source>zip code length</source>
+			</trans-unit>
+			<trans-unit id="tt_address.region" resname="tt_address.region" >
+				<source>Region/State</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

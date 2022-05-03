@@ -11,7 +11,7 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_ta
         [
             'zipcode_rule' => [
                 'exclude' => '0',
-                'label' => 'LLL:EXT:mklib/locallang_db.xml:static_countries.zipcode_rule',
+                'label' => 'LLL:EXT:mklib/locallang_db.xlf:static_countries.zipcode_rule',
                 'config' => [
                     'type' => 'input',
                     'size' => '1',
@@ -20,7 +20,7 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_ta
             ],
             'zipcode_length' => [
                 'exclude' => '0',
-                'label' => 'LLL:EXT:mklib/locallang_db.xml:static_countries.zipcode_length',
+                'label' => 'LLL:EXT:mklib/locallang_db.xlf:static_countries.zipcode_length',
                 'config' => [
                     'type' => 'input',
                     'size' => '2',

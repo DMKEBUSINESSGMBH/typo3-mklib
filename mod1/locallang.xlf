@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2022-05-03T08:35:35Z" product-name="mklib">
+		<header/>
+		<body>
+			<trans-unit id="label_tableheader_uid" resname="label_tableheader_uid" >
+				<source>Uid</source>
+			</trans-unit>
+			<trans-unit id="label_tableheader_title" resname="label_tableheader_title" >
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="label_tableheader_actions" resname="label_tableheader_actions" >
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="label_tableheader_language" resname="label_tableheader_language" >
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="label_button_update" resname="label_button_update" >
+				<source>Update</source>
+			</trans-unit>
+			<trans-unit id="label_button_search" resname="label_button_search" >
+				<source>search</source>
+			</trans-unit>
+			<trans-unit id="confirmation_deletion" resname="confirmation_deletion" >
+				<source>You realy want to delete this record?</source>
+			</trans-unit>
+			<trans-unit id="label_search" resname="label_search" >
+				<source>Free text search: </source>
+			</trans-unit>
+			<trans-unit id="label_language" resname="label_language" >
+				<source>Language:</source>
+			</trans-unit>
+			<trans-unit id="label_hidden" resname="label_hidden" >
+				<source>Hidden entries:</source>
+			</trans-unit>
+			<trans-unit id="label_select_hide_hidden" resname="label_select_hide_hidden" >
+				<source>Hide</source>
+			</trans-unit>
+			<trans-unit id="label_select_show_hidden" resname="label_select_show_hidden" >
+				<source>Show</source>
+			</trans-unit>
+			<trans-unit id="label_daterange" resname="label_daterange" >
+				<source>Zeitraum (von - bis)</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

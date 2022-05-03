@@ -7,5 +7,5 @@ plugin.tx_mklib {
     templatePath = EXT:mklib/res/template
 
     # cat=mklib/locallangFilename; type=string; label=locallang filename: Path to the locallang file
-    locallangFilename =  EXT:mklib/locallang.xml
+    locallangFilename =  EXT:mklib/locallang.xlf
 }

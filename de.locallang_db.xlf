@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-05-03T08:37:48Z" product-name="mklib">
+		<header/>
+		<body>
+			<trans-unit id="general.undef" resname="general.undef"  approved="yes">
+				<source>Undefined</source>
+				<target>Undefiniert</target>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.label" resname="plugin.mklib.label"  approved="yes">
+				<source>MK Library</source>
+				<target>MK Bibliothek</target>
+			</trans-unit>
+			<trans-unit id="please_choose" resname="please_choose"  approved="yes">
+				<source>==please choose==</source>
+				<target>==bitte wählen==</target>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.tab.common" resname="plugin.mklib.flexform.tab.common"  approved="yes">
+				<source>Common</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.action" resname="plugin.mklib.flexform.action"  approved="yes">
+				<source>View</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.action.gemnericlist" resname="plugin.mklib.flexform.action.gemnericlist"  approved="yes">
+				<source>Generic List</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.qualifier" resname="plugin.mklib.flexform.qualifier"  approved="yes">
+				<source>Qualifier</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.action.genericlist.extendedConfId" resname="plugin.mklib.flexform.action.genericlist.extendedConfId"  approved="yes">
+				<source>Extended ConfID (default is 'default')</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.tab.TSSetup" resname="plugin.mklib.flexform.tab.TSSetup"  approved="yes">
+				<source>TS-Setup</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="plugin.mklib.flexform.tssetup" resname="plugin.mklib.flexform.tssetup"  approved="yes">
+				<source>plugin.tx_mklib.</source>
+				<target/>
+			</trans-unit>
+			<trans-unit id="static_countries.zipcode_rule" resname="static_countries.zipcode_rule"  approved="yes">
+				<source>zip code rule</source>
+				<target>Postleitzahl-Regel</target>
+			</trans-unit>
+			<trans-unit id="static_countries.zipcode_length" resname="static_countries.zipcode_length"  approved="yes">
+				<source>zip code length</source>
+				<target>Postleitzahl-Länge</target>
+			</trans-unit>
+			<trans-unit id="tt_address.region" resname="tt_address.region"  approved="yes">
+				<source>Region/State</source>
+				<target>Bundesland</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
