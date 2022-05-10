@@ -222,7 +222,7 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
      */
     public function getOption($key)
     {
-        return $this->schedulerOptions[$key];
+        return $this->schedulerOptions[$key] ?? null;
     }
 
     /**
