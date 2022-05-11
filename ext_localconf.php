@@ -6,7 +6,7 @@
 /*
  * alle benötigten Klassen einbinden etc.
  */
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     exit('Access denied.');
 }
 

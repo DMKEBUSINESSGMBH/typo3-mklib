@@ -123,13 +123,8 @@ class tx_mklib_tests_repository_PagesTest extends \Sys25\RnBase\Testing\BaseTest
                 self::callback(
                     function ($o) use ($that) {
                         $that::assertTrue(is_array($o));
-                        // if the test rans in be, the enablefieldsbe option will be set
-                        if (TYPO3_MODE === 'BE') {
-                            $that::assertCount(2, $o);
-                            $that::assertArrayHasKey('enablefieldsbe', $o);
-                        } else {
-                            $that::assertCount(1, $o);
-                        }
+                        $that::assertCount(2, $o);
+                        $that::assertArrayHasKey('enablefieldsbe', $o);
                         $that::assertArrayHasKey('searchdef', $o);
 
                         return true;

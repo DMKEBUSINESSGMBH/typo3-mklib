@@ -89,7 +89,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
                     $taskInfo[$sKey] = $task->getOption($sKey);
                 } else /* if ($parentObject->CMD == 'add') */ {
                     // In case of new task and if field is empty, set default.
-                    $taskInfo[$sKey] = $aOptions['default'];
+                    $taskInfo[$sKey] = $aOptions['default'] ?? '';
                 }
             }
 
@@ -113,9 +113,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
             }
             $additionalFields[$fieldID] = [
                     'code' => $fieldCode,
-                    'label' => $aOptions['label'] ? $aOptions['label'] : $sKey,
-                    'cshKey' => $aOptions['cshKey'] ? $aOptions['cshKey'] : 'tx_mklib_scheduler_cleanupTempFiles',
-                    'cshLabel' => ($aOptions['cshLabel'] ? $aOptions['cshLabel'] : $sKey).'_csh',
+                    'label' => $aOptions['label'] ?? $sKey,
+                    'cshKey' => $aOptions['cshKey'] ?? 'tx_mklib_scheduler_cleanupTempFiles',
+                    'cshLabel' => ($aOptions['cshLabel'] ?? $sKey).'_csh',
             ];
         }
 

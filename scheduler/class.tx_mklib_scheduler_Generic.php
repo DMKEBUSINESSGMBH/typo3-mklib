@@ -72,7 +72,7 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
         */
         $devLog = [];
         $options = $this->getOptions();
-        $startTimeInMilliseconds = \Sys25\RnBase\Utility\Misc::milliseconds();
+        $startTimeInMilliseconds = microtime(true);
         $memoryUsageAtStart = memory_get_usage();
 
         \Sys25\RnBase\Utility\Logger::info(
@@ -159,7 +159,7 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
             '['.get_class($this).']: Scheduler ends successful ',
             $this->getExtKey(),
             [
-                'Execution Time' => (\Sys25\RnBase\Utility\Misc::milliseconds() - $startTimeInMilliseconds).' ms',
+                'Execution Time' => (microtime(true) - $startTimeInMilliseconds).' ms',
                 'Memory Start' => $memoryUsageAtStart.' Bytes',
                 'Memory End' => $memoryUsageAtEnd.' Bytes',
                 'Memory Consumed' => ($memoryUsageAtEnd - $memoryUsageAtStart).' Bytes',
