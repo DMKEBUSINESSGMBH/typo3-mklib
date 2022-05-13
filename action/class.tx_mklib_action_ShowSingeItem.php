@@ -137,7 +137,7 @@ abstract class tx_mklib_action_ShowSingeItem extends \Sys25\RnBase\Frontend\Cont
      */
     protected function getViewClassName()
     {
-        return \Sys25\RnBase\Fluid\View\Action::class;
+        return \Sys25\RnBase\ExtBaseFluid\View\Action::class;
     }
 
     protected function substitutePageTitle(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
