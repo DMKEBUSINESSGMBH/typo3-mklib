@@ -90,7 +90,7 @@ class tx_mklib_mod1_util_Selector
             1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
         ];
 
-        $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_hidden');
+        $options['label'] = $options['label'] ?? $GLOBALS['LANG']->getLL('label_hidden');
 
         return $this->showSelectorByArray($items, 'showhidden', $data, $options);
     }
