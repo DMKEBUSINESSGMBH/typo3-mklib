@@ -78,7 +78,7 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_repository_Abstract
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
-    public function handleUpdate(\Sys25\RnBase\Domain\Model\RecordInterface $model, array $data, $where = '')
+    public function handleUpdate(\Sys25\RnBase\Domain\Model\RecordInterface $model, array $data, $where = '', $debug = 0, $noQuoteFields = '')
     {
         \Sys25\RnBase\Utility\Debug::debug([
             'updating a static country zone via the service can\'t be done.',
