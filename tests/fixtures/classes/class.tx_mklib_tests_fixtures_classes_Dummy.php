@@ -31,13 +31,8 @@
 /**
  * Dummy Service um uns DB Abfragen zu ersparen.
  */
-class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_srv_base
+class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_repository_Abstract
 {
-    /**
-     * (non-PHPdoc).
-     *
-     * @see tx_mklib_srv_Base::search()
-     */
     public function search($fields, $options)
     {
         if ($GLOBALS['emptyTestResult']) {

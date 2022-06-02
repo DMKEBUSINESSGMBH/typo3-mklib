@@ -41,11 +41,6 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
         return 'dummySearcher';
     }
 
-    /**
-     * Liefert den Service.
-     *
-     * @return tx_mklib_srv_Base
-     */
     protected function getService()
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_tests_fixtures_classes_Dummy');

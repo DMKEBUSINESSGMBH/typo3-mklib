@@ -25,7 +25,7 @@
 /**
  * @author Hannes Bochmann
  */
-class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
+class tx_mklib_srv_StaticCountryZones extends tx_mklib_repository_Abstract
 {
     /**
      * @return string
@@ -35,11 +35,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
         return 'tx_mklib_search_StaticCountryZones';
     }
 
-    /**
-     * (non-PHPdoc).
-     *
-     * @see tx_mklib_srv_Base::search()
-     */
     public function search($fields, $options)
     {
         // TCA gibt es nicht
@@ -76,11 +71,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
         return $this->search($fields, $options);
     }
 
-    /**
-     * (non-PHPdoc).
-     *
-     * @see tx_mklib_srv_Base::create()
-     */
     public function create(array $data)
     {
         \Sys25\RnBase\Utility\Debug::debug([
@@ -88,11 +78,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
-    /**
-     * (non-PHPdoc).
-     *
-     * @see tx_mklib_srv_Base::handleUpdate()
-     */
     public function handleUpdate(\Sys25\RnBase\Domain\Model\RecordInterface $model, array $data, $where = '')
     {
         \Sys25\RnBase\Utility\Debug::debug([
@@ -100,11 +85,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
-    /**
-     * (non-PHPdoc).
-     *
-     * @see tx_mklib_srv_Base::handleDelete()
-     */
     public function handleDelete(\Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
         \Sys25\RnBase\Utility\Debug::debug([
@@ -112,11 +92,6 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_srv_Base
         ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
     }
 
-    /**
-     * (non-PHPdoc).
-     *
-     * @see tx_mklib_srv_Base::handleCreation()
-     */
     public function handleCreation(array $data)
     {
         \Sys25\RnBase\Utility\Debug::debug([

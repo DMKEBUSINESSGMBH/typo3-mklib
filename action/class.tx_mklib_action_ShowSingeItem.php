@@ -58,7 +58,6 @@ abstract class tx_mklib_action_ShowSingeItem extends \Sys25\RnBase\Frontend\Cont
         // check for interfaces/classes that we know of having the findByUid method
         // as we need it
         if (!$singleItemRepository instanceof tx_mklib_repository_Abstract
-            && !$singleItemRepository instanceof tx_mklib_srv_Base
             && !$singleItemRepository instanceof \Sys25\RnBase\Domain\Repository\AbstractRepository
         ) {
             throw new Exception('Das Repository, welches von getSingleItemRepository() geliefert '.'wird, muss von tx_mklib_repository_Abstract erben!');

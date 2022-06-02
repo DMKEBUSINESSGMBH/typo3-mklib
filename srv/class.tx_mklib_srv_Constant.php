@@ -25,7 +25,7 @@
 /**
  * Service for accessing constants.
  */
-abstract class tx_mklib_srv_Constant extends tx_mklib_srv_Base
+abstract class tx_mklib_srv_Constant extends tx_mklib_repository_Abstract
 {
     /**
      * Get constants by their type.

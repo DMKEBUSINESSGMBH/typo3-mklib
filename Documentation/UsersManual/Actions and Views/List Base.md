@@ -31,9 +31,6 @@ class tx_mkdemo_action_ListDatasets extends tx_mklib_action_ListBase {
             return 'listdatasets';
         }
 
-   /**
-    * @return tx_mklib_srv_Base
-    */
    protected function getService() {
        return tx_mkdemo_util_ServiceRegistry::getDatasetService();
    }

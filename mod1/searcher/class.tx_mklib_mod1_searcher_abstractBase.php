@@ -102,10 +102,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
 
         // set the baseTable for this searcher. required by language column!
         if (!isset($this->options['baseTableName'])) {
-            // @TODO: find a way to get the basetable from old services and new repositories!
-            if ($this->getService() instanceof tx_mklib_srv_Base) {
-                $this->options['baseTableName'] = $this->getService()->get(null)->getTableName();
-            }
             if ($this->getService() instanceof tx_mklib_repository_Abstract) {
                 // $this->options['baseTableName'] = $this->getService()->getTableName();
             }
@@ -155,11 +151,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         return $pageId;
     }
 
-    /**
-     * Liefert den Service.
-     *
-     * @return tx_mklib_srv_Base
-     */
     abstract protected function getService();
 
     /**
