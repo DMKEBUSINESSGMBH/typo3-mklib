@@ -211,7 +211,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     {
         // if there is a uid, so get from database.
         if ((string) (int) $country === (string) $country) {
-            $country = tx_mklib_util_ServiceRegistry::getStaticCountriesService()->get($country);
+            $country = tx_mklib_util_ServiceRegistry::getStaticCountriesService()->findByUid($country);
         }
         // get iso from model
         if ($country instanceof tx_mklib_model_StaticCountry) {
