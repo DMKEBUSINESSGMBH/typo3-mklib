@@ -53,7 +53,7 @@ class tx_mklib_util_ServiceRegistry
      */
     public static function getStaticCountriesService()
     {
-        return \Sys25\RnBase\Utility\Misc::getService(self::$extKey, 'staticCountries');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_srv_StaticCountries');
     }
 
     /**
@@ -61,6 +61,6 @@ class tx_mklib_util_ServiceRegistry
      */
     public static function getStaticCountryZonesService()
     {
-        return \Sys25\RnBase\Utility\Misc::getService(self::$extKey, 'staticCountryZones');
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_srv_StaticCountryZones');
     }
 }
