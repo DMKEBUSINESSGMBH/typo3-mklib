@@ -177,7 +177,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function getFilterTableDataForSearchForm()
     {
         $data = [];
-        $options = ['pid' => $this->options['pid']];
+        $options = ['pid' => $this->options['pid'] ?? 0];
         $selector = $this->getSelector();
 
         $this->currentSearchWord = $selector->showFreeTextSearchForm(
