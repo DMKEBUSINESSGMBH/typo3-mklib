@@ -28,7 +28,7 @@
  * Die Klasse ermöglicht direkt eine CSV Datei
  * mit den Boardmitteln von TYPO3 zu schreiben.
  */
-class tx_mklib_util_Csv extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList
+class tx_mklib_util_Csv
 {
     /**
      * Gibt die Csv Zeilen zurück, die gesetzt wurden.
