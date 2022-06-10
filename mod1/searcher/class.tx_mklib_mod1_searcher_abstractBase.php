@@ -307,7 +307,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function searchItems(array $fields, array $options)
     {
         $firstPrev = $lastNext = false;
-        if ($this->options['baseTableName']
+        $secondPrev = null;
+        if (($this->options['baseTableName'] ?? null)
             && \Sys25\RnBase\Backend\Utility\TCA::getSortbyFieldForTable($this->options['baseTableName'])
             && ($options['limit'] || $options['offset'])
         ) {
@@ -519,7 +520,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             return '';
         }
         $columns = $this->getDecoratorColumns($this->getDecorator($this->getModule(), $options));
-        list($tableData, $tableLayout) = \Sys25\RnBase\Backend\Utility\Tables::prepareTable(
+        list($tableData, $tableLayout) = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Utility\Tables::class)->prepareTable(
             $items,
             $columns,
             $this->getFormTool(),
@@ -542,7 +543,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      *
      * @return tx_mklib_mod1_decorator_Base
      */
-    protected function getDecorator(&$mod, array $options = [])
+    protected function getDecorator($mod, array $options = [])
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             $this->getDecoratorClass(),

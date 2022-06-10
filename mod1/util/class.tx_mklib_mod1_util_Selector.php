@@ -67,10 +67,10 @@ class tx_mklib_mod1_util_Selector
         // Erst das Suchfeld, danach der Button.
         $out['field'] = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
         $out['button'] = empty($options['submit']) ? '' : $this->getFormTool()->createSubmit(
-            $options['buttonName'] ? $options['buttonName'] : $key,
-            $options['buttonValue'] ? $options['buttonValue'] : $GLOBALS['LANG']->getLL('label_button_search')
+            $options['buttonName'] ?? $key,
+            $options['buttonValue'] ?? $GLOBALS['LANG']->getLL('label_button_search')
         );
-        $out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_search');
+        $out['label'] = $options['label'] ?? $GLOBALS['LANG']->getLL('label_search');
 
         return $searchstring;
     }

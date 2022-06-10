@@ -49,7 +49,7 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
     /**
      * @return tx_mklib_mod1_decorator_Base
      */
-    protected function getDecorator(&$mod, array $options = [])
+    protected function getDecorator($mod, array $options = [])
     {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_decorator_Base', $mod, $options);
     }
