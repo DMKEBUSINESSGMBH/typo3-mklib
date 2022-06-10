@@ -86,6 +86,8 @@ class tx_mklib_mod1_export_Handler
 
         // Der Subpart für Debug-Ausgaben wird am ende ausgegeben
         $debug = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart($template, '###DEBUG###');
+        $timeStart = 0;
+        $memStart = 0;
         if ($debug) {
             $template = \Sys25\RnBase\Frontend\Marker\Templates::substituteSubpart(
                 $template,
