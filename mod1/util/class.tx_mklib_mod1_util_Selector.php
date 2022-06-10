@@ -397,7 +397,7 @@ class tx_mklib_mod1_util_Selector
     {
         $fromValue = $this->getDateFieldByKey($key.'_from', $out);
         $toValue = $this->getDateFieldByKey($key.'_to', $out);
-        $out['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_daterange');
+        $out['label'] = $options['label'] ?? $GLOBALS['LANG']->getLL('label_daterange');
 
         $this->setValueToModuleData(
             $this->getMod()->getName(),
@@ -416,6 +416,9 @@ class tx_mklib_mod1_util_Selector
     {
         $value = isset($_POST[$key]) ?
             \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
+        if (!($out['field'] ?? null)) {
+            $out['field'] = '';
+        }
         $out['field'] .= $this->getFormTool()->createDateInput($key, $value);
 
         return $value;
