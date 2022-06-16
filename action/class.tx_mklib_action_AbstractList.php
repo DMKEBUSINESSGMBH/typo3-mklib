@@ -13,7 +13,7 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
      *
      * @return string|null
      */
-    public function handleRequest(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
+    protected function handleRequest(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
         $out = $this->prepareRequest($request);
         if (null !== $out) {
