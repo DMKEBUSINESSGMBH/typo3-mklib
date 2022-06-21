@@ -65,7 +65,10 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
             && $filter->init($fields, $options)
         ) {
             if ($configurations->get($this->getConfId().'pagebrowser')) {
-                $filter::handlePageBrowser(
+                $pageBrowserFilter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                    \Sys25\RnBase\Frontend\Filter\Utility\PageBrowserFilter::class
+                );
+                $pageBrowserFilter->handle(
                     $configurations,
                     $this->getConfId().'pagebrowser',
                     $viewData,

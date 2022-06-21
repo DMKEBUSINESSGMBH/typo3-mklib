@@ -52,7 +52,10 @@ class tx_mklib_action_GenericList extends tx_rnbase_action_BaseIOC
             if ($configurations->get($confId.'pagebrowser')) {
                 $pbOptions = ['searchcallback' => [$searcher, 'search']];
                 $cbOptions['pbid'] = ($var = $configurations->get($confId.'pagebrowser.cbid')) ? $var : 'pb'.$this->confIdExtended;
-                $filter->handlePageBrowser(
+                $pageBrowserFilter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                    \Sys25\RnBase\Frontend\Filter\Utility\PageBrowserFilter::class
+                );
+                $pageBrowserFilter->handle(
                     $configurations,
                     $confId.'pagebrowser',
                     $viewData,
