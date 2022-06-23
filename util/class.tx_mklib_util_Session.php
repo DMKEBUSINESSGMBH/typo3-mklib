@@ -71,7 +71,7 @@ class tx_mklib_util_Session
     {
         $vars = $GLOBALS['TSFE']->fe_user->getKey('ses', $extKey);
 
-        return $vars[$key];
+        return $vars[$key] ?? null;
     }
 
     /**
