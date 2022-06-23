@@ -145,7 +145,7 @@ class tx_mklib_util_TS
         }
 
         // ts für die extension auslesen
-        $pageTsConfig = $tsObj->setup[$sDomainKey]['tx_'.$sExtKey.'.'];
+        $pageTsConfig = $tsObj->setup[$sDomainKey]['tx_'.$sExtKey.'.'] ?? [];
         $pageTsConfig['lib.'] = $pageTsConfig['lib.'] ?? null;
         $qualifier = $pageTsConfig['qualifier'] ?? $sExtKey;
 
