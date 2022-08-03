@@ -4,33 +4,33 @@ config.admPanel = 0
 ### Werte für eingeloggte BE-User setzen zur Entwicklung
 
 ### Admintool aktivieren
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['admin'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'admin') == 1]
     config.admPanel== 1
     config.no_cache== 1
     config.linkVars := addToList(admin)
 [END]
 
 ### Nutzung von Cache unterdrücken
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['nc'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'nc') == 1]
     config.no_cache== 1
     config.linkVars := addToList(nc)
 [END]
 
 ### Realurl unterdrücken
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['nru'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'nru') == 1]
     config.tx_realurl_enable = 0
     config.no_cache== 1
     config.linkVars := addToList(nru)
 [END]
 
 ### debug-Variable kann zum durchschleifen bei Debugausgaben aus Code benutzt werden
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['debug'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'debug') == 1]
     config.linkVars := addToList(debug)
     config.no_cache== 1
 [END]
 
 ### Scriptmerger
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['sm'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'sm') == 1]
     config.no_cache== 1
     ### Scriptmerger_configurieren
     #plugin.tx_scriptmerger >
@@ -42,7 +42,7 @@ config.admPanel = 0
         concatenateJs== 1
     }
 [END]
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['nsm'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'nsm') == 1]
     plugin.tx_scriptmerger >
     config {
         linkVars := addToList(sm)
@@ -55,33 +55,33 @@ config.admPanel = 0
 [END]
 
 ### php-ids
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['phpids'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'phpids') == 1]
     config.linkVars := addToList(phpids)
     page.8.General.debug_mode== 1
     config.no_cache== 1
 [END]
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['phpids'] == 2]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'phpids') == 2]
     config.linkVars := addToList(phpids)
     page.8 >
     config.no_cache== 1
 [END]
 
 ##CSS deaktivieren
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['nocss'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'nocss') == 1]
     config.linkVars := addToList(nocss)
     page.includeCSS >
     config.no_cache== 1
 [END]
 
 ##JS deaktivieren
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['nojs'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'nojs') == 1]
     config.linkVars := addToList(nojs)
     page.includeJS >
     config.no_cache== 1
 [END]
 
 ### Grid einblenden zur Prüfung des Layouts
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['grid'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'grid') == 1]
     config.linkVars := addToList(grid)
     config.no_cache== 1
     page.includeCSS.xMkDevGrid = typo3conf/ext/mklib/res/hugrid/hugrid.css
@@ -111,7 +111,7 @@ config.admPanel = 0
 [END]
 
 ### sourceopt - format as less as possible
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['sourceopt'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'sourceopt') == 1]
     config.sourceopt {
         formatHtml = 4
         formatHtml.tabSize = 2
@@ -120,20 +120,20 @@ config.admPanel = 0
     config.no_cache== 1
 [END]
 ### deactivate sourceopt
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['nosourceopt'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'nosourceopt') == 1]
     config {
         sourceopt.enabled = 0
         linkVars := addToList(nosourceopt)
         no_cache== 1
     }
 [END]
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['showprint']  == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'showprint')  == 1]
     config.linkVars := addToList(GP:showprint)
     config.no_cache== 1
 [END]
 
 ### Aktuelle url anzeigen, wenn z.B. Aufruf aus BE erfolgt.
-[backend.user.isLoggedIn && request.getQueryParams() && request.getQueryParams()['showUrl'] == 1]
+[backend.user.isLoggedIn && request.getQueryParams() && traverse(request.getQueryParams(), 'showUrl') == 1]
     page.1 = TEXT
     page.1 {
         value =
