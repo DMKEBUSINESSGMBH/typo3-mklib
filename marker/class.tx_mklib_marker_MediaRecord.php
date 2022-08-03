@@ -232,7 +232,7 @@ class tx_mklib_marker_MediaRecord extends \Sys25\RnBase\Frontend\Marker\BaseMark
                 $linkObj->initByTS($configurations, $confId.'link.', []);
                 $linkObj->destination($url);
                 // extTarget setzen, wenn im TS. rnbase macht das leider nicht.
-                if (($extTarget = $configurations->get($confId.'link.extTarget'))) {
+                if ($extTarget = $configurations->get($confId.'link.extTarget')) {
                     $linkObj->externalTargetAttribute($extTarget);
                 }
                 if ($makeLink) {

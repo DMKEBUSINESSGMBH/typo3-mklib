@@ -46,7 +46,7 @@ class tx_mklib_tests_srv_FinanceTest extends \Sys25\RnBase\Testing\BaseTestCase
     public function testGetCurrency()
     {
         self::markTestIncomplete(
-          'GeneralUtility:: devLog() will be removed with TYPO3 v10.0.'
+            'GeneralUtility:: devLog() will be removed with TYPO3 v10.0.'
         );
 
         $oSrv = tx_mklib_util_ServiceRegistry::getFinanceService();

@@ -289,7 +289,7 @@ class tx_mklib_util_HttpRequest
         $headers = $this->prepareHeaders();
 
         // Open the connection, send the request and read the response
-        $this->adapter->connect($uri['host'], $uri['port'], ('https' == $uri['scheme'] ? true : false));
+        $this->adapter->connect($uri['host'], $uri['port'], 'https' == $uri['scheme'] ? true : false);
 
         $this->adapter->write($this->method, tx_mklib_util_File::parseUrlFromParts($uri), $headers, $body);
 

@@ -254,7 +254,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             $this->getSearcherId().'Pager',
             $this->getModule()->getName(),
             // @TODO: die PageId solle noch konfigurierbar gemacht werden.
-                $pid = 0
+            $pid = 0
         ) : null;
 
         list($fields, $options) = $this->getFieldsAndOptions();

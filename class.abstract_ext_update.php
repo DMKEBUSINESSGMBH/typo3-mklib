@@ -145,8 +145,8 @@ abstract class abstract_ext_update
             case 1:
                 return 'End key not found. ('.$updateKey.')';
             case 2:
-                // alles ok
-        }
+            // alles ok
+            }
 
         if (0 === count($querys)) {
             return 'No queries found. ('.$updateKey.')';

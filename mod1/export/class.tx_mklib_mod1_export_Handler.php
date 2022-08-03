@@ -121,7 +121,7 @@ class tx_mklib_mod1_export_Handler
         $this->parseDebugs($debug, $timeStart, $memStart);
 
         // done!
-        exit();
+        exit;
     }
 
     /**

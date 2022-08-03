@@ -905,7 +905,7 @@ class tx_mklib_util_RTFParser
                         }
                     } else {
                         // < and > need translation before putting into queue when XML or HTML is wanted
-                        if (($this->wantHTML) || ($this->wantXML)) {
+                        if ($this->wantHTML || $this->wantXML) {
                             switch ($this->rtf[$i]) {
                                 case '<':
                                     $this->queue .= '&lt;';

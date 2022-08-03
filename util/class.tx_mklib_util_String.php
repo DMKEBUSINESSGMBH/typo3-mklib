@@ -53,7 +53,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
             strlen($sText) >= $iLen
             && // nur, wenn nach iCharPos noch ein Leerzeichen gefunden wurde.
             false !== ($iCharPos = strpos($sText, ' ', $iLen))
-          ) {
+        ) {
             // der Text wird gekürzt
             $sText = substr($sText, 0, $iCharPos).$sSuffix;
         }

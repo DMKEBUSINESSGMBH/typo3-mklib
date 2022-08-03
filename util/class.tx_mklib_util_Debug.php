@@ -148,12 +148,12 @@ class tx_mklib_util_Debug
         $data['msg'] = $msg;
         $data['time'] = ($iMicroTime - self::$iMicroTime);
         $data['timeLast'] = ($iMicroTime - self::$iLastMicroTime);
-        $data['timeCurrent'] = ($iMicroTime);
+        $data['timeCurrent'] = $iMicroTime;
         $data['memmory'] = ($iMemory - self::$iMemory);
         $data['memmoryMB'] = $data['memmory'] / 1024 / 1024;
-        $data['memmoryLast'] = (($iMemory - self::$iLastMemory));
+        $data['memmoryLast'] = ($iMemory - self::$iLastMemory);
         $data['memmoryLastMB'] = $data['memmoryLast'] / 1024 / 1024;
-        $data['memmoryCurrent'] = ($iMemory);
+        $data['memmoryCurrent'] = $iMemory;
         $data['memmoryCurrentMB'] = $data['memmoryCurrent'] / 1024 / 1024;
         self::$iLastMicroTime = $iMicroTime;
         self::$iLastMemory = $iMemory;

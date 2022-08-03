@@ -72,16 +72,16 @@ class tx_mklib_mod1_linker_ShowDetails
      * @return string
      */
     public function makeLink(
-            \Sys25\RnBase\Domain\Model\RecordInterface $item,
-            \Sys25\RnBase\Backend\Form\ToolBox $formTool,
-            $options = []
+        \Sys25\RnBase\Domain\Model\RecordInterface $item,
+        \Sys25\RnBase\Backend\Form\ToolBox $formTool,
+        $options = []
     ) {
         $out = $formTool->createSubmit(
-                'showDetails['.$this->identifier.']['.$item->getUid().']',
-                isset($options['label']) ? $options['label'] : '###LABEL_SHOW_DETAILS###',
-                isset($options['confirm']) ? $options['confirm'] : '',
-                $options
-            );
+            'showDetails['.$this->identifier.']['.$item->getUid().']',
+            isset($options['label']) ? $options['label'] : '###LABEL_SHOW_DETAILS###',
+            isset($options['confirm']) ? $options['confirm'] : '',
+            $options
+        );
 
         return $out;
     }
@@ -93,17 +93,17 @@ class tx_mklib_mod1_linker_ShowDetails
      * @return string
      */
     public function makeClearLink(
-            // wird eigentlich nicht benötigt.
-            \Sys25\RnBase\Domain\Model\RecordInterface $item,
-            \Sys25\RnBase\Backend\Form\ToolBox $formTool,
-            $options = []
+        // wird eigentlich nicht benötigt.
+        \Sys25\RnBase\Domain\Model\RecordInterface $item,
+        \Sys25\RnBase\Backend\Form\ToolBox $formTool,
+        $options = []
     ) {
         $out = $formTool->createSubmit(
-                'showDetails['.$this->identifier.'][clear]',
-                isset($options['label']) ? $options['label'] : '###LABEL_BTN_NEWSEARCH###',
-                isset($options['confirm']) ? $options['confirm'] : '',
-                $options
-            );
+            'showDetails['.$this->identifier.'][clear]',
+            isset($options['label']) ? $options['label'] : '###LABEL_BTN_NEWSEARCH###',
+            isset($options['confirm']) ? $options['confirm'] : '',
+            $options
+        );
 
         return $out;
     }

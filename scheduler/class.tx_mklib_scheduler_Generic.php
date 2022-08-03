@@ -91,10 +91,10 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
                     empty($devLog)
                     // infolog setzen, wenn infolog gesetzt, aber keine message vorhanden ist
                     || (
-                            isset($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO])
-                            && empty($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'])
-                        )
-                    ) {
+                        isset($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO])
+                        && empty($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'])
+                    )
+                ) {
                     $devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'] = $message;
                 }
 
@@ -270,10 +270,10 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
                 $ret = null;
             }
             $this->lastRun = (
-                    empty($ret)
-                    || empty($ret[0]['tx_mklib_lastrun'])
-                    || '0000-00-00 00:00:00' === $ret[0]['tx_mklib_lastrun']
-                ) ? null : new DateTime($ret[0]['tx_mklib_lastrun']);
+                empty($ret)
+                || empty($ret[0]['tx_mklib_lastrun'])
+                || '0000-00-00 00:00:00' === $ret[0]['tx_mklib_lastrun']
+            ) ? null : new DateTime($ret[0]['tx_mklib_lastrun']);
         }
 
         return $this->lastRun;

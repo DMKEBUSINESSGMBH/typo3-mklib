@@ -68,8 +68,8 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
         $var = is_null($var) ? $this->getAttributeFromPath($path) : $var;
 
         return !is_null($var) && (
-                isset($var)
-                && strlen((string) $var)
+            isset($var)
+            && strlen((string) $var)
         );
     }
 
@@ -258,8 +258,8 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
     {
         throw new Exception('asArray has to be implementet.');
         // mal bei merchstore schauen und kopieren.
-// 		tx_Base::load('tx_util_XmlToArray');
-// 		$array = tx_util_XmlToArray::createArray($this->asXML());
-// 		return $array[$this->getName()];
+        // 		tx_Base::load('tx_util_XmlToArray');
+        // 		$array = tx_util_XmlToArray::createArray($this->asXML());
+        // 		return $array[$this->getName()];
     }
 }

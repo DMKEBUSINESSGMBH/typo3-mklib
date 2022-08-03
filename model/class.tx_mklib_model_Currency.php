@@ -151,11 +151,11 @@ class tx_mklib_model_Currency
         return sprintf(
             $format,
             // {sign}
-                ($neg) ? '-' : ($this->record['plusSign'] ? '+' : ''),
+            ($neg) ? '-' : ($this->record['plusSign'] ? '+' : ''),
             // {value}
-                $value,
+            $value,
             // {currency}
-                ($htmlEntities ? $this->record['symbolHtmlEntity'] : $this->record['symbol'])
+            $htmlEntities ? $this->record['symbolHtmlEntity'] : $this->record['symbol']
         );
     }
 
