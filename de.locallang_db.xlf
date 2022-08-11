@@ -15,34 +15,6 @@
 				<source>==please choose==</source>
 				<target>==bitte wählen==</target>
 			</trans-unit>
-			<trans-unit id="plugin.mklib.flexform.tab.common" resname="plugin.mklib.flexform.tab.common"  approved="yes">
-				<source>Common</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="plugin.mklib.flexform.action" resname="plugin.mklib.flexform.action"  approved="yes">
-				<source>View</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="plugin.mklib.flexform.action.gemnericlist" resname="plugin.mklib.flexform.action.gemnericlist"  approved="yes">
-				<source>Generic List</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="plugin.mklib.flexform.qualifier" resname="plugin.mklib.flexform.qualifier"  approved="yes">
-				<source>Qualifier</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="plugin.mklib.flexform.action.genericlist.extendedConfId" resname="plugin.mklib.flexform.action.genericlist.extendedConfId"  approved="yes">
-				<source>Extended ConfID (default is 'default')</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="plugin.mklib.flexform.tab.TSSetup" resname="plugin.mklib.flexform.tab.TSSetup"  approved="yes">
-				<source>TS-Setup</source>
-				<target/>
-			</trans-unit>
-			<trans-unit id="plugin.mklib.flexform.tssetup" resname="plugin.mklib.flexform.tssetup"  approved="yes">
-				<source>plugin.tx_mklib.</source>
-				<target/>
-			</trans-unit>
 			<trans-unit id="static_countries.zipcode_rule" resname="static_countries.zipcode_rule"  approved="yes">
 				<source>zip code rule</source>
 				<target>Postleitzahl-Regel</target>

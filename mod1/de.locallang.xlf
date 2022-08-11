@@ -3,10 +3,6 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2022-05-03T08:35:35Z" product-name="mklib">
 		<header/>
 		<body>
-			<trans-unit id="label_tableheader_uid" resname="label_tableheader_uid"  approved="yes">
-				<source>Uid</source>
-				<target/>
-			</trans-unit>
 			<trans-unit id="label_tableheader_title" resname="label_tableheader_title"  approved="yes">
 				<source>Title</source>
 				<target>Titel</target>
@@ -14,10 +10,6 @@
 			<trans-unit id="label_tableheader_actions" resname="label_tableheader_actions"  approved="yes">
 				<source>Actions</source>
 				<target>Aktionen</target>
-			</trans-unit>
-			<trans-unit id="label_tableheader_language" resname="label_tableheader_language"  approved="yes">
-				<source>Language</source>
-				<target/>
 			</trans-unit>
 			<trans-unit id="label_button_update" resname="label_button_update"  approved="yes">
 				<source>Update</source>
@@ -35,10 +27,6 @@
 				<source>Free text search: </source>
 				<target>Freitext-Suche: </target>
 			</trans-unit>
-			<trans-unit id="label_language" resname="label_language"  approved="yes">
-				<source>Language:</source>
-				<target/>
-			</trans-unit>
 			<trans-unit id="label_hidden" resname="label_hidden"  approved="yes">
 				<source>Hidden entries:</source>
 				<target>Versteckte Daten:</target>
@@ -50,10 +38,6 @@
 			<trans-unit id="label_select_show_hidden" resname="label_select_show_hidden"  approved="yes">
 				<source>Show</source>
 				<target>Einblenden</target>
-			</trans-unit>
-			<trans-unit id="label_daterange" resname="label_daterange"  approved="yes">
-				<source>Zeitraum (von - bis)</source>
-				<target/>
 			</trans-unit>
 		</body>
 	</file>
