@@ -112,7 +112,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      */
     public function doInsert($tablename, $values, $debug = 0, array $options = [])
     {
-        if ($options['eleminateNonTcaColumns']) {
+        if ($options['eleminateNonTcaColumns'] ?? false) {
             $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
         }
         $newUid = parent::doInsert(
