@@ -49,12 +49,12 @@ class tx_mklib_mod1_linker_ShowDetails
     private $identifier = null;
 
     /**
-     * @throws InvalidArgumentException
-     *
      * @param string $identifier Model or tablename
      *                           Wird zum Speichern in den Moduldaten,
      *                           zum erzeugen der buttons und
      *                           zum auslesend er Parameter verwendet
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct($identifier)
     {

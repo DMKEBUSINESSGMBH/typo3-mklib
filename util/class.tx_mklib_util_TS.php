@@ -130,7 +130,9 @@ class tx_mklib_util_TS
         $tsObj->generateConfig();
 
         if (isset($GLOBALS['TSFE'])) {
-            $GLOBALS['TSFE']->tmpl = $tsObj;
+            // we need to clone the template object. otherwise after the first array_merge the initial
+            // configuration is gone because $GLOBALS['TSFE']->tmpl and $tsObj is the same object.
+            $GLOBALS['TSFE']->tmpl = clone $tsObj;
             // tsfe config setzen (wird in der \Sys25\RnBase\Configuration\Processor gebraucht (language))
             $GLOBALS['TSFE']->tmpl->setup = array_merge(
                 is_array($GLOBALS['TSFE']->config) ? $GLOBALS['TSFE']->config : [],

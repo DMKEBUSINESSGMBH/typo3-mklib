@@ -115,9 +115,9 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
      * @param string $marker
      * @param bool   $required
      *
-     * @throws Exception
-     *
      * @return string
+     *
+     * @throws Exception
      */
     protected function getWrapForSubpart(
         $template,

@@ -73,9 +73,9 @@ class tx_mklib_util_TCA
      * @param string $column    (disabled, starttime, endtime, fe_group')
      * @param string $default
      *
-     * @throws Exception
-     *
      * @return string
+     *
+     * @throws Exception
      */
     public static function getEnableColumn($tableName, $column, $default = null)
     {
