@@ -139,7 +139,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      */
     public function doUpdate($tablename, $where, $values, $debug = 0, $noQuoteFields = false, array $options = [])
     {
-        if ($options['eleminateNonTcaColumns']) {
+        if ($options['eleminateNonTcaColumns'] ?? false) {
             $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
         }
         $res = parent::doUpdate(
