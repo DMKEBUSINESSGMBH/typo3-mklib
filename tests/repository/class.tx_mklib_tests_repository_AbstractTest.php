@@ -31,6 +31,7 @@ class tx_mklib_tests_repository_AbstractTest extends \Sys25\RnBase\Testing\BaseT
 {
     /**
      * @group unit
+     *
      * @dataProvider getOptions
      */
     public function testHandleEnableFieldsOptionsWhenInBackend(

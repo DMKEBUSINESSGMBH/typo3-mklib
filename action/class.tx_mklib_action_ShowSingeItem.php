@@ -60,7 +60,7 @@ abstract class tx_mklib_action_ShowSingeItem extends \Sys25\RnBase\Frontend\Cont
         if (!$singleItemRepository instanceof tx_mklib_repository_Abstract
             && !$singleItemRepository instanceof \Sys25\RnBase\Domain\Repository\AbstractRepository
         ) {
-            throw new Exception('Das Repository, welches von getSingleItemRepository() geliefert '.'wird, muss von tx_mklib_repository_Abstract erben!');
+            throw new Exception('Das Repository, welches von getSingleItemRepository() geliefert wird, muss von tx_mklib_repository_Abstract erben!');
         }
 
         if (!($item = $singleItemRepository->findByUid($itemUid))) {

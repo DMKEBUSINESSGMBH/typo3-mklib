@@ -254,7 +254,7 @@ class tx_mklib_mod1_export_Handler
     {
         $searcher = $this->getModFunc()->getSearcher();
         if (!$searcher instanceof tx_mklib_mod1_export_ISearcher) {
-            throw new Exception('The searcher "'.get_class($searcher).'" has to implement'.' the interface "tx_mklib_mod1_export_ISearcher"', 1361174776);
+            throw new Exception('The searcher "'.get_class($searcher).'" has to implement the interface "tx_mklib_mod1_export_ISearcher"', 1361174776);
         }
         // wir setzen optional den export handler
         if ($searcher instanceof tx_mklib_mod1_export_IInjectHandler) {

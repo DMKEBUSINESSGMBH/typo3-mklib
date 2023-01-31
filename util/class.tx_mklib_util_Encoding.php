@@ -64,7 +64,7 @@ class tx_mklib_util_Encoding
             }
         } // convert models record
         elseif (is_object($var)) {
-            throw new InvalidArgumentException('Object "'.get_class($var).'" was not supportet for convertEncoding.'.'Possible types are string, array or an object '.'(instanceof "Traversable" or "\Sys25\RnBase\Domain\Model\RecordInterface").', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5');
+            throw new InvalidArgumentException('Object "'.get_class($var).'" was not supportet for convertEncoding.Possible types are string, array or an object (instanceof "Traversable" or "\Sys25\RnBase\Domain\Model\RecordInterface").', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mklib']['baseExceptionCode'].'5');
         } // do nothing, if we have an empty sting or a number
         elseif (empty($var) || is_numeric($var)) {
             // $var = $var;

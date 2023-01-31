@@ -67,6 +67,7 @@ class tx_mklib_util_TCA
      * Liefert den Spaltenname für enablecolumns aus der TCA.
      *
      * @FIXME: Nicht alle felder stehen unter ctrlo.enablecolumns. siehe: tstamp, crdate, cruser_id, delete, ...
+     *
      * @TODO: wirft keine exception, wenn ein default wert gegeben ist. das ist allerdings falsch.
      *
      * @param string $tableName

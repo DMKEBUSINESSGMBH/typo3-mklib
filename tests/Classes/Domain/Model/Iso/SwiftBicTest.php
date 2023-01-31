@@ -38,7 +38,9 @@ class Tx_Mklib_Domain_Model_Iso_SwiftBicTest extends \Sys25\RnBase\Testing\BaseT
      * @param bool   $valid
      *
      * @group unit
+     *
      * @test
+     *
      * @dataProvider getValidateData
      */
     public function testValidate($value, $valid)

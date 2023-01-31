@@ -53,7 +53,7 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
 
         // check the repo interface
         if (!($repo instanceof \Sys25\RnBase\Domain\Repository\SearchInterface)) {
-            throw new RuntimeException('the repository "'.get_class($repo).'" '.'has to implement the interface "\Sys25\RnBase\Domain\Repository\SearchInterface"!', intval(ERROR_CODE_MKLIB.'1'));
+            throw new RuntimeException('the repository "'.get_class($repo).'" has to implement the interface "\Sys25\RnBase\Domain\Repository\SearchInterface"!', intval(ERROR_CODE_MKLIB.'1'));
         }
 
         // create filter

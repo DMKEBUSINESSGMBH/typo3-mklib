@@ -52,7 +52,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
     {
         $searcher = \Sys25\RnBase\Search\SearchBase::getInstance($this->getSearchClass());
         if (!$searcher instanceof \Sys25\RnBase\Search\SearchBase) {
-            throw new Exception(get_class($this).'->getSearchClass() has to return a classname'.' of class which extends \Sys25\RnBase\Search\SearchBase!');
+            throw new Exception(get_class($this).'->getSearchClass() has to return a classname of class which extends \Sys25\RnBase\Search\SearchBase!');
         }
 
         return $searcher;
@@ -379,6 +379,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      * Delete records according to given ready-constructed "where" condition and deletion mode
      *
      * @TODO: use tx_mklib_util_TCA::getEnableColumn to get enablecolumns!
+     *
      * @TODO: should be protected, not public. handleDelete is public!
      *
      * @param string $table

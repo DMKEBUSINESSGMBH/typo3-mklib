@@ -79,7 +79,9 @@ class tx_mklib_tests_srv_FinanceTest extends \Sys25\RnBase\Testing\BaseTestCase
      * @param string $expectedJoin
      *
      * @group unit
+     *
      * @test
+     *
      * @dataProvider getValidateVatRegNoData
      */
     public function testValidateVatRegNo($country, $vatregno, $expected)

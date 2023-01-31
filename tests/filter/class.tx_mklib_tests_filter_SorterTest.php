@@ -67,6 +67,7 @@ class tx_mklib_tests_filter_SorterTest extends \Sys25\RnBase\Testing\BaseTestCas
 
     /**
      * @group unit
+     *
      * @dataProvider getExpectedParsedLinks
      */
     public function testParseTemplateParsesLinksCorrect(

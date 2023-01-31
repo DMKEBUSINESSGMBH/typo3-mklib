@@ -68,6 +68,7 @@ class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTes
      * Test the getSearchClass method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetSearchClassShouldBeGeneric()
@@ -85,6 +86,7 @@ class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTes
      * Test the getEmptyModel method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetEmptyModelShouldBeBaseModelWithPageTable()
@@ -107,6 +109,7 @@ class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTes
      * Test the getSearchdef method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetSearchDefinition()
@@ -129,6 +132,7 @@ class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTes
      * Test the search method.
      *
      * @group unit
+     *
      * @test
      */
     public function testSearchWithGivenSearchDefinition()
@@ -196,6 +200,7 @@ class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTes
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testSearch()
@@ -242,6 +247,7 @@ class tx_mklib_tests_repository_TtNewsTest extends \Sys25\RnBase\Testing\BaseTes
 
     /**
      * @group unit
+     *
      * @test
      */
     public function testSearchSingle()

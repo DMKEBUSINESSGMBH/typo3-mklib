@@ -54,6 +54,7 @@ class tx_mklib_tests_repository_PagesTest extends \Sys25\RnBase\Testing\BaseTest
      * Test the getSearchClass method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetSearchClassShouldBeGeneric()
@@ -71,6 +72,7 @@ class tx_mklib_tests_repository_PagesTest extends \Sys25\RnBase\Testing\BaseTest
      * Test the getEmptyModel method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetEmptyModelShouldBeBaseModelWithPageTable()
@@ -93,6 +95,7 @@ class tx_mklib_tests_repository_PagesTest extends \Sys25\RnBase\Testing\BaseTest
      * Test the getChildren method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetChildren()
@@ -142,6 +145,7 @@ class tx_mklib_tests_repository_PagesTest extends \Sys25\RnBase\Testing\BaseTest
      * Test the getSearchdef method.
      *
      * @group unit
+     *
      * @test
      */
     public function testGetSearchdef()
@@ -164,6 +168,7 @@ class tx_mklib_tests_repository_PagesTest extends \Sys25\RnBase\Testing\BaseTest
      * Test the search method.
      *
      * @group unit
+     *
      * @test
      */
     public function testSearchWithDefSearcher()

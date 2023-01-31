@@ -38,7 +38,9 @@ class Tx_Mklib_Domain_Model_Iso_IbanTest extends \Sys25\RnBase\Testing\BaseTestC
      * @param bool   $valid
      *
      * @group unit
+     *
      * @test
+     *
      * @dataProvider getValidateData
      */
     public function testValidate($iban, $valid)

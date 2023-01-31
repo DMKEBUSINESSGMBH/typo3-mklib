@@ -13,6 +13,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
      * @TODO: um den $float zu erzeugen, sollte nicht der Typecast genutzt werden.
      *     Wir benötigen eine Funktion, welche den String in einen Float umwandelt.
      *     Beispielsweise sollte sowetwas übergeben werden können:
+     *
      * @SEE http://www.php.net/manual/de/function.floatval.php#84793
      *
      * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>

@@ -37,6 +37,7 @@ class tx_mklib_tests_util_FlexFormTest extends \Sys25\RnBase\Testing\BaseTestCas
      * Testet die getByRefererCallsSearchCorrect Methode.
      *
      * @group unit
+     *
      * @test
      */
     public function testFlexForm()

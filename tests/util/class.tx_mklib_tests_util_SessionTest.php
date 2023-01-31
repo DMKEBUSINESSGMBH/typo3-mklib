@@ -72,6 +72,7 @@ class tx_mklib_tests_util_SessionTest extends \Sys25\RnBase\Testing\BaseTestCase
 
     /**
      * @group unit
+     *
      * @dataProvider getCookies
      */
     public function testAreCookiesActivated($cookies, $expectedReturnValue, $setCheckedIfCookiesAreActivatedGetParameter)

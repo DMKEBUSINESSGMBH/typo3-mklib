@@ -156,7 +156,9 @@ class tx_mklib_tests_action_ShowSingeItemTest extends \Sys25\RnBase\Testing\Base
 
     /**
      * @group unit
+     *
      * @expectedException \Sys25\RnBase\Exception\PageNotFound404
+     *
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testThrowItemNotFound404Exception()
@@ -190,6 +192,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends \Sys25\RnBase\Testing\Base
      * @group unit
      *
      * @expectedException \Sys25\RnBase\Exception\PageNotFound404
+     *
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testHandleRequestThrowsItemNotFound404ExceptionIfNoItemId()
@@ -275,6 +278,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends \Sys25\RnBase\Testing\Base
      * @group unit
      *
      * @expectedException \Sys25\RnBase\Exception\PageNotFound404
+     *
      * @expectedExceptionMessage Datensatz nicht gefunden.
      */
     public function testHandleRequestThrowsItemNotFound404ExceptionIfItemNotFound()

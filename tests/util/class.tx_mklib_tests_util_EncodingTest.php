@@ -137,6 +137,7 @@ class tx_mklib_tests_util_EncodingTest extends \Sys25\RnBase\Testing\BaseTestCas
 
     /**
      * @depends test_convert_string_from_ISO_8859_1_to_UTF_8
+     *
      * @group integration
      */
     public function test_convert_array_from_ISO_8859_1_to_UTF_8()
@@ -180,6 +181,7 @@ class tx_mklib_tests_util_EncodingTest extends \Sys25\RnBase\Testing\BaseTestCas
 
     /**
      * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
+     *
      * @group integration
      */
     public function test_convert_ArrayObject_from_ISO_8859_1_to_UTF_8()
@@ -217,6 +219,7 @@ class tx_mklib_tests_util_EncodingTest extends \Sys25\RnBase\Testing\BaseTestCas
 
     /**
      * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
+     *
      * @group integration
      */
     public function test_convert_model_from_ISO_8859_1_to_UTF_8()
@@ -256,6 +259,7 @@ class tx_mklib_tests_util_EncodingTest extends \Sys25\RnBase\Testing\BaseTestCas
 
     /**
      * @depends test_convert_array_from_ISO_8859_1_to_UTF_8
+     *
      * @group integration
      */
     public function test_convert_array_with_model_from_ISO_8859_1_to_UTF_8()
@@ -310,7 +314,9 @@ class tx_mklib_tests_util_EncodingTest extends \Sys25\RnBase\Testing\BaseTestCas
 
     /**
      * @expectedException     \InvalidArgumentException
+     *
      * @expectedExceptionCode 4005
+     *
      * @group integration
      */
     public function test_convert_model_throws_exception()
