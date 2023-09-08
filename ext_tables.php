@@ -27,7 +27,7 @@ $TCA['tt_content']['types']['list']['subtypes_addlist']['tx_mklib'] = 'pi_flexfo
     [
         'LLL:EXT:mklib/locallang_db.php:plugin.mklib.label',
         'tx_mklib',
-        'EXT:mklib/ext_icon.gif',
+        'EXT:mklib/ext_icon.png',
     ],
     'list_type',
     'mklib'
