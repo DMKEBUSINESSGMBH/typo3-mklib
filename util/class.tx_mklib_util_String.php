@@ -50,9 +50,8 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     public static function crop($sText, $iLen = 150, $sSuffix = '')
     {
         if (// der Text ist länger als wir ihn brauchen
-            strlen($sText) >= $iLen
-            && // nur, wenn nach iCharPos noch ein Leerzeichen gefunden wurde.
-            false !== ($iCharPos = strpos($sText, ' ', $iLen))
+            strlen($sText) >= $iLen // nur, wenn nach iCharPos noch ein Leerzeichen gefunden wurde.
+            && false !== ($iCharPos = strpos($sText, ' ', $iLen))
         ) {
             // der Text wird gekürzt
             $sText = substr($sText, 0, $iCharPos).$sSuffix;
@@ -166,7 +165,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     {
         $text = preg_replace_callback(
             self::emailRegex,
-            [self, 'obfusicateEmail'],
+            [self::class, 'obfusicateEmail'],
             $text
         );
 
@@ -200,7 +199,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     {
         $text = preg_replace_callback(
             self::emailRegex,
-            [self, 'convertEmailToMailToLink'],
+            [self::class, 'convertEmailToMailToLink'],
             $text
         );
 

@@ -51,7 +51,7 @@ class tx_mklib_mod1_searcher_Base
      *
      * @return unknown_type
      */
-    public function __construct(\Sys25\RnBase\Backend\Module\IModule $mod, $options = [], $sSelector = 'tx_mklib_mod1_util_Selector')
+    public function __construct(\Sys25\RnBase\Backend\Module\IModule $mod, $options = [])
     {
         $this->init($mod, $options);
     }

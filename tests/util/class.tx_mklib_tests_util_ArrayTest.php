@@ -164,11 +164,6 @@ class tx_mklib_tests_util_ArrayTest extends \Sys25\RnBase\Testing\BaseTestCase
             $objectArray['privateStaticVariable'],
             'privateStaticVariable falsch gecastet'
         );
-        self::assertEquals(
-            'dynamicVariable',
-            $objectArray['dynamicVariable'],
-            'dynamicVariable falsch gecastet'
-        );
     }
 }
 

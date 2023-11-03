@@ -31,6 +31,11 @@
 class tx_mklib_util_Csv
 {
     /**
+     * @var array
+     */
+    protected $csvLines;
+
+    /**
      * Gibt die Csv Zeilen zurück, die gesetzt wurden.
      *
      * @return array
@@ -58,7 +63,7 @@ class tx_mklib_util_Csv
 
         if (!$sFileName) {
             if ($sPrefix) {
-                $sPrefix = $sPrefix.'_';
+                $sPrefix .= '_';
             }
             $sFileName = $sPrefix.date('dmy-Hi').'.csv';
         }

@@ -67,10 +67,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
         $var = $this->getNodeFromPath($path);
         $var = is_null($var) ? $this->getAttributeFromPath($path) : $var;
 
-        return !is_null($var) && (
-            isset($var)
-            && strlen((string) $var)
-        );
+        return !is_null($var) && strlen((string) $var);
     }
 
     /**

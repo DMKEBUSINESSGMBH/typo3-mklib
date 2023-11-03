@@ -38,6 +38,7 @@ class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
      */
     protected function getTableMappings()
     {
+        return [];
     }
 
     /**
@@ -81,5 +82,6 @@ class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
      */
     protected function getJoins($tableAliases)
     {
+        return '';
     }
 }

@@ -21,7 +21,6 @@ Features
 -   TypoScript configurations (deactivate realurl, sourceopt etc.), which can be controlled through url parameters for admin users to diagnose problems.
 -   TreeView for TCA fields
 -   several utility class for working with the TCA, arrays, strings, sessions any many more
--   RTF Parser
 
 [Actions and Views](Actions and Views/Index.md)
 

@@ -33,7 +33,7 @@ class tx_mklib_model_Page extends Sys25\RnBase\Domain\Model\BaseModel
     /**
      * @var array[tx_mklib_model_Page]
      */
-    private $children = null;
+    private $children;
 
     /**
      * Liefert den Namen der Datenbanktabelle.

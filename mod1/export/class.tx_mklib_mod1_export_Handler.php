@@ -36,7 +36,7 @@ class tx_mklib_mod1_export_Handler
      *
      * @var tx_mklib_mod1_export_IModFunc
      */
-    private $modFunc = null;
+    private $modFunc;
 
     /**
      * Byte Order Mark = BOM.
@@ -534,6 +534,7 @@ class tx_mklib_mod1_export_Handler
             padding-left: 24px;
         }
         </style>';
+
         // alle umbrüche und tabs entfernen
         return str_replace(["\t", "\n", "\r"], '', $css);
     }

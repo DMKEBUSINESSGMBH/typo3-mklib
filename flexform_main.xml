@@ -7,42 +7,36 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tab.common</sheetTitle>
-                </TCEforms>
+                <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tab.common</sheetTitle>
 
                 <type>array</type>
                 <el>
                     <action> <!-- Bezeichner ist frei wählbar -->
-                        <TCEforms>
-                            <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action</label>
-                            <config>
-                                <type>select</type>
-                                <items type="array">
-                                    <numIndex index="1001" type="array">
-                                        <numIndex index="0">LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.gemnericlist</numIndex>
-                                        <numIndex index="1">tx_mklib_action_GenericList</numIndex>
-                                    </numIndex>
-                                </items>
-                                <multiple>0</multiple>
-                                <maxitems>10</maxitems>
-                                <size>20</size>
-                            </config>
-                        </TCEforms>
+                        <exclude>1</exclude>
+                        <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action</label>
+                        <config>
+                            <type>select</type>
+                            <items type="array">
+                                <numIndex index="1001" type="array">
+                                    <numIndex index="0">LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.gemnericlist</numIndex>
+                                    <numIndex index="1">tx_mklib_action_GenericList</numIndex>
+                                </numIndex>
+                            </items>
+                            <multiple>0</multiple>
+                            <maxitems>10</maxitems>
+                            <size>20</size>
+                        </config>
                     </action>
                     <qualifier>
-                        <TCEforms>
-                            <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.qualifier</label>
-                            <config>
-                                <type>input</type>
-                                <size>50</size>
-                                <max>256</max>
-                                <eval>trim</eval>
-                                <default>mklib</default>
-                            </config>
-                        </TCEforms>
+                        <exclude>1</exclude>
+                        <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.qualifier</label>
+                        <config>
+                            <type>input</type>
+                            <size>50</size>
+                            <max>256</max>
+                            <eval>trim</eval>
+                            <default>mklib</default>
+                        </config>
                     </qualifier>
                 </el>
             </ROOT>
@@ -53,23 +47,19 @@
 
         <s_genericlist>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.gemnericlist</sheetTitle>
-                </TCEforms>
+                <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.gemnericlist</sheetTitle>
                 <type>array</type>
                 <el>
                     <genericlist.extendedConfId>
-                        <TCEforms>
-                            <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.genericlist.extendedConfId</label>
-                            <config>
-                                <type>input</type>
-                                <size>50</size>
-                                <max>256</max>
-                                <eval>trim</eval>
-                                <default>default</default>
-                            </config>
-                        </TCEforms>
+                        <exclude>1</exclude>
+                        <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.action.genericlist.extendedConfId</label>
+                        <config>
+                            <type>input</type>
+                            <size>50</size>
+                            <max>256</max>
+                            <eval>trim</eval>
+                            <default>default</default>
+                        </config>
                     </genericlist.extendedConfId>
                 </el>
             </ROOT>
@@ -77,21 +67,17 @@
 
         <s_tssetup>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tab.TSSetup</sheetTitle>
-                </TCEforms>
+                <sheetTitle>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tab.TSSetup</sheetTitle>
                 <type>array</type>
                 <el>
                     <flexformTS>
-                        <TCEforms>
-                            <exclude>1</exclude>
-                            <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tssetup</label>
-                            <config>
-                                <type>text</type>
-                                <cols>80</cols>
-                                <rows>10</rows>
-                            </config>
-                        </TCEforms>
+                        <exclude>1</exclude>
+                        <label>LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.flexform.tssetup</label>
+                        <config>
+                            <type>text</type>
+                            <cols>80</cols>
+                            <rows>10</rows>
+                        </config>
                     </flexformTS>
                 </el>
             </ROOT>

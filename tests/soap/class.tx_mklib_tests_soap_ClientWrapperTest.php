@@ -85,7 +85,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
     public function testCallSoapMethodWithInvalidMethodThrowsCorrectException()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectErrorMessage('There was a Soap Exception');
+        $this->expectExceptionMessage('There was a Soap Exception');
         $this->expectExceptionCode(987654321);
 
         $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
@@ -107,7 +107,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
     public function testCallSoapMethodHandlesSoapFaultCorrect()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectErrorMessage('There was a Soap Fault');
+        $this->expectExceptionMessage('There was a Soap Fault');
         $this->expectExceptionCode(987654321);
 
         $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];
@@ -129,7 +129,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
     public function testCallSoapMethodHandlesSoapFaultWithStringCodeCorrect()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectErrorMessage('There was a Soap Fault');
+        $this->expectExceptionMessage('There was a Soap Fault');
         $this->expectExceptionCode(version_compare(phpversion(), '8', '>=') ? -1 : 0);
 
         $expectedSoapMethodParams = ['someParam' => 'usedInSoapMethod'];

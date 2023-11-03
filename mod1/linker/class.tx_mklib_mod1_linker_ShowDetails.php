@@ -46,7 +46,7 @@
  */
 class tx_mklib_mod1_linker_ShowDetails
 {
-    private $identifier = null;
+    private $identifier;
 
     /**
      * @param string $identifier Model or tablename

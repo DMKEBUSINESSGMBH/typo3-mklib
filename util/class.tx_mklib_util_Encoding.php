@@ -108,6 +108,8 @@ class tx_mklib_util_Encoding
                 return false === $utf8Detect
                     && false !== mb_detect_encoding(strval($var), $encoding, true);
         }
+
+        return false;
     }
 
     /**

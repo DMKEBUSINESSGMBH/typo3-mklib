@@ -59,11 +59,12 @@ class tx_mklib_model_Currency
      */
     protected static function makeInstance(array $options = [])
     {
+        static $instances;
         // @TODO: caching umstellen, wenn in den options mehr als nur das symbol steckt.
         // $key = md5(serialize($options));
         $key = $options['symbol'];
         // @todo why is this non static variable used? is static $instances; missing?
-        if (!$instances[$key]) {
+        if (!($instances[$key] ?? null)) {
             $instances[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_Currency', $options);
         }
 

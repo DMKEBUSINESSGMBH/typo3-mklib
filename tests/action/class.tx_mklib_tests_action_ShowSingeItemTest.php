@@ -232,7 +232,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends \Sys25\RnBase\Testing\Base
     public function testHandleRequestThrowsExceptionIfRepositoryNotInheritedFromAbstractRepositoryClass()
     {
         $this->expectException(\Exception::class);
-        $this->expectErrorMessage('Das Repository, welches von getSingleItemRepository() geliefert wird, muss von tx_mklib_repository_Abstract erben!');
+        $this->expectExceptionMessage('Das Repository, welches von getSingleItemRepository() geliefert wird, muss von tx_mklib_repository_Abstract erben!');
         $repository = $this->getMockForAbstractClass(
             'stdClass',
             [],

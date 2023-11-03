@@ -31,8 +31,8 @@ $EM_CONF['mklib'] = [
     'lockType' => '',
     'constraints' => [
         'depends' => [
-            'rn_base' => '1.15.2-',
-            'typo3' => '10.4.25-11.5.99',
+            'rn_base' => '1.17.0-',
+            'typo3' => '11.5.7-12.4.99',
         ],
         'conflicts' => [],
     ],

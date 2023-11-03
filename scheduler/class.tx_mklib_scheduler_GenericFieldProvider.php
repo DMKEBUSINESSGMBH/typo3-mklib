@@ -82,7 +82,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
         $additionalFields = [];
         foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
             // Initialize extra field value
-            if (empty($taskInfo[$sKey])) {
+            if (!($taskInfo[$sKey] ?? false)) {
                 $action = $schedulerModule->getCurrentAction();
                 if ('edit' == $action) {
                     // In case of edit, and editing a test task, set to internal value if not data was submitted already
@@ -95,7 +95,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
 
             // Write the code for the field
             $fieldID = 'task_'.$sKey;
-            switch ($aOptions['type']) {
+            switch ($aOptions['type'] ?? '') {
                 case 'check':
                     $fieldCode = '<input type="checkbox" id="'.$fieldID.'" name="tx_scheduler['.$sKey.']" '.($taskInfo[$sKey] ? 'checked="checked"' : '').'>';
                     break;
@@ -143,8 +143,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
             $bMessage = false;
 
             // Die Einzelnen validatoren anwenden.
+            $sLabelKey = $sMessage = $sEval = '';
             if (!$bMessage) {
-                foreach (\Sys25\RnBase\Utility\Strings::trimExplode(',', $aOptions['eval']) as $sEval) {
+                foreach (\Sys25\RnBase\Utility\Strings::trimExplode(',', $aOptions['eval'] ?? '') as $sEval) {
                     $sLabelKey = ($aOptions['label'] ? $aOptions['label'] : $sKey).'_eval_'.$sEval;
                     switch ($sEval) {
                         case 'required':
@@ -214,8 +215,8 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
 
             // wurde eine fehlermeldung erzeugt?
             if ($bMessage) {
-                $sMessage = $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
-                $sMessage = $sMessage ? $sMessage : ucfirst($sKey).' has to eval '.$sEval.'.';
+                $sMessage = $sMessage ?: $GLOBALS['LANG']->sL($sLabelKey);
+                $sMessage = $sMessage ?: ucfirst($sKey).' has to eval '.$sEval.'.';
                 $flashMessageClass = \Sys25\RnBase\Utility\Typo3Classes::getFlashMessageClass();
                 \Sys25\RnBase\Utility\Misc::addFlashMessage($sMessage, '', $flashMessageClass::ERROR);
                 $bError = true;
@@ -235,7 +236,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
     public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task\AbstractTask $task)
     {
         foreach ($this->getAdditionalFieldConfig() as $sKey => $aOptions) {
-            $task->setOption($sKey, $submittedData[$sKey]);
+            $task->setOption($sKey, $submittedData[$sKey] ?? null);
         }
     }
 }

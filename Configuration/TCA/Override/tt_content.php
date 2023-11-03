@@ -9,7 +9,7 @@ $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['tx_mklib
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('tx_mklib', 'FILE:EXT:mklib/flexform_main.xml');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
     [
-        'LLL:EXT:mklib/locallang_db.php:plugin.mklib.label',
+        'LLL:EXT:mklib/locallang_db.xlf:plugin.mklib.label',
         'tx_mklib',
         'EXT:mklib/ext_icon.gif',
     ],

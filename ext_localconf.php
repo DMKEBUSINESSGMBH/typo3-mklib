@@ -24,3 +24,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_mklib_tca_eval
     'tx_mklib_tca_eval_priceDecimalSeperator';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_mklib_tca_eval_isoDate'] =
     'tx_mklib_tca_eval_isoDate';
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication::class] =
+    ['className' => \DMK\Mklib\Frontend\Authentication\FrontendUserAuthentication::class];

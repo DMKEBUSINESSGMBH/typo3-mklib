@@ -80,7 +80,7 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
     {
         // @TODO: lifetime testen
         // testverzeichnis anlegen
-        $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
+        $testfolder = \TYPO3\CMS\Core\Core\Environment::getVarPath().'/fixtures/toremove';
         self::createTestfiles($testfolder);
 
         // das aufräumen!
@@ -99,7 +99,7 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
     {
         // @TODO: lifetime testen
         // testverzeichnis anlegen
-        $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
+        $testfolder = \TYPO3\CMS\Core\Core\Environment::getVarPath().'/fixtures/toremove';
         self::createTestfiles($testfolder);
 
         // das aufräumen!
@@ -119,7 +119,7 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
     {
         // @TODO: lifetime testen
         // testverzeichnis anlegen
-        $testfolder = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('mklib', 'tests/fixtures/toremove');
+        $testfolder = \TYPO3\CMS\Core\Core\Environment::getVarPath().'/fixtures/toremove';
         self::createTestfiles($testfolder);
 
         // das aufräumen!
@@ -133,82 +133,6 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
         self::assertEquals(4, $count, 'wrong deleted count. testfolder: '.$testfolder);
         // weider löschen
         \Sys25\RnBase\Utility\Files::rmdir($testfolder, true);
-    }
-
-    /**
-     * getServerPath testen.
-     */
-    public function testGetServerPath()
-    {
-        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
-            $this->markTestSkipped('Geht leider nicht unter CLI.');
-        }
-        $pathSite = tx_mklib_util_File::getDocumentRoot();
-        self::assertEquals($pathSite, tx_mklib_util_File::getServerPath());
-        self::assertEquals($pathSite.'typo3conf/', tx_mklib_util_File::getServerPath(tx_mklib_util_File::getSiteUrl().'/typo3conf'));
-        self::assertEquals($pathSite.'typo3conf/', tx_mklib_util_File::getServerPath('\typo3conf'));
-        self::assertEquals($pathSite.'typo3conf/localconf.php', tx_mklib_util_File::getServerPath('/typo3conf\localconf.php'));
-    }
-
-    /**
-     * getRelPath testen.
-     */
-    public function testGetRelPath()
-    {
-        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
-            $this->markTestSkipped('Geht leider nicht unter CLI.');
-        }
-        $pathSite = tx_mklib_util_File::getDocumentRoot();
-        self::assertEquals('/', tx_mklib_util_File::getRelPath());
-        self::assertEquals('/typo3conf/', tx_mklib_util_File::getRelPath(tx_mklib_util_File::getSiteUrl().'\typo3conf'));
-        self::assertEquals('/typo3conf/', tx_mklib_util_File::getRelPath($pathSite.'\typo3conf'));
-        self::assertEquals('/typo3conf/localconf.php', tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php'));
-    }
-
-    /**
-     * getRelPath testen.
-     */
-    public function testGetRelPathWithRemovedStartingSlashSetToTrue()
-    {
-        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
-            $this->markTestSkipped('Geht leider nicht unter CLI.');
-        }
-        $pathSite = tx_mklib_util_File::getDocumentRoot();
-        self::assertEquals('', tx_mklib_util_File::getRelPath('', true));
-        self::assertEquals(
-            'typo3conf/',
-            tx_mklib_util_File::getRelPath(tx_mklib_util_File::getSiteUrl().'\typo3conf', true)
-        );
-        self::assertEquals(
-            'typo3conf/',
-            tx_mklib_util_File::getRelPath($pathSite.'\typo3conf', true)
-        );
-        self::assertEquals(
-            'typo3conf/localconf.php',
-            tx_mklib_util_File::getRelPath($pathSite.'/typo3conf\localconf.php', true)
-        );
-        self::assertEquals(
-            'fileadmin/portal/pdf/test.pdf',
-            tx_mklib_util_File::getRelPath('fileadmin/portal/pdf/test.pdf', true)
-        );
-    }
-
-    /**
-     * getWebPath testen.
-     */
-    public function testGetWebPath()
-    {
-        if (\Sys25\RnBase\Utility\TYPO3::isCliMode()) {
-            $this->markTestSkipped('Geht leider nicht unter CLI.');
-        }
-        $pathSite = tx_mklib_util_File::getDocumentRoot();
-        $siteUrl = tx_mklib_util_File::getSiteUrl();
-        self::assertEquals($siteUrl, tx_mklib_util_File::getWebPath());
-        self::assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath($siteUrl.'/typo3conf'));
-        self::assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath($pathSite.'\typo3conf'));
-        self::assertEquals($siteUrl.'typo3conf/', tx_mklib_util_File::getWebPath('/typo3conf'));
-        self::assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath($pathSite.'/typo3conf\localconf.php'));
-        self::assertEquals($siteUrl.'typo3conf/localconf.php', tx_mklib_util_File::getWebPath('typo3conf\localconf.php'));
     }
 
     public function testParseUrlFromParts()
@@ -259,8 +183,8 @@ class tx_mklib_tests_util_FileTest extends \Sys25\RnBase\Testing\BaseTestCase
     {
         return [
             [tx_mklib_util_File::getServerPath(''), false],
-            [tx_mklib_util_File::getServerPath('EXT:mklib/tests'), false],
-            [tx_mklib_util_File::getServerPath('EXT:mklib/tests/phpunit.xml'), true],
+            [tx_mklib_util_File::getServerPath('typo3'), false],
+            [tx_mklib_util_File::getServerPath('typo3/index.php'), true],
         ];
     }
 

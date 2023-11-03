@@ -61,6 +61,8 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
                             $where.' und dem Modus '.$mode.' entfernt',
             'dataVar' => ['betroffene Datensätze' => $this->affectedRows],
         ];
+
+        return true;
     }
 
     /**

@@ -31,6 +31,7 @@ namespace DMK\Mklib\Utility;
 
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * DMK\Mklib\Utility$Tests.
@@ -174,7 +175,7 @@ class Tests
     {
         $sql = \Sys25\RnBase\Utility\Network::getUrl($sqlFile);
         if (empty($sql)) {
-            throw new Exception('SQL-Datei nicht gefunden');
+            throw new \Exception('SQL-Datei nicht gefunden');
         }
         $databaseConnection = \Sys25\RnBase\Database\Connection::getInstance();
         if ($statementType || $bIgnoreStatementType) {
@@ -198,7 +199,7 @@ class Tests
      */
     private static function getSqlStatementArrayDependendOnTypo3Version($sql)
     {
-        $reader = new SqlReader();
+        $reader = GeneralUtility::makeInstance(SqlReader::class);
 
         return $reader->getStatementArray($sql);
     }
@@ -231,8 +232,8 @@ class Tests
     public static function setFeUserObject($oFeUser = null, $bForce = false)
     {
         $frontendUserAuthenticationClass = \Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass();
-        if (!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass ||
-            $bForce
+        if (!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass
+            || $bForce
         ) {
             if (!is_object($oFeUser)) {
                 $oFeUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($frontendUserAuthenticationClass);
@@ -359,21 +360,6 @@ class Tests
         if (isset($options['initCObject'])) {
             $GLOBALS['TSFE']->newCObj();
         }
-    }
-
-    /**
-     * deaktiviert extbase. kann notwendig sein damit die meldung
-     * 'A cache with identifier "tx_extbase_cache_reflection" has already been registered.'
-     * nicht erscheint.
-     * nur in TYPO3 4.5.x und damit wegen extbase Version 1.3.2.
-     */
-    public static function deactivateExtbase()
-    {
-        global $TYPO3_LOADED_EXT;
-        unset($TYPO3_LOADED_EXT['extbase']);
-
-        // und noch die caching konfig löschen
-        self::deactivateCacheFile();
     }
 
     /**

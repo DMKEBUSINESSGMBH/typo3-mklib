@@ -82,7 +82,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
     protected function handleFailedTasks($failedTasks)
     {
         // Nachrichten für den error mail versand
-        $messages = $aUids = [];
+        $messages = $uids = [];
         foreach ($failedTasks as $failedTask) {
             $classname = get_class(unserialize($failedTask['serialized_task_object']));
 

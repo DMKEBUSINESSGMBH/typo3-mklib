@@ -1,0 +1,39 @@
+parameters:
+    level: 1
+    bootstrapFiles:
+        - "%currentWorkingDirectory%/.Build/vendor/autoload.php"
+    paths:
+        - %currentWorkingDirectory%/scheduler
+        - %currentWorkingDirectory%/exception
+        - %currentWorkingDirectory%/interface
+        - %currentWorkingDirectory%/model
+        - %currentWorkingDirectory%/util
+        - %currentWorkingDirectory%/validator
+        - %currentWorkingDirectory%/Classes
+        - %currentWorkingDirectory%/srv
+        - %currentWorkingDirectory%/action
+        - %currentWorkingDirectory%/filter
+        - %currentWorkingDirectory%/interface
+        - %currentWorkingDirectory%/mod1
+        - %currentWorkingDirectory%/search
+        - %currentWorkingDirectory%/soap
+        - %currentWorkingDirectory%/tca
+        - %currentWorkingDirectory%/view
+        - %currentWorkingDirectory%/repository
+        - %currentWorkingDirectory%/ext_localconf.php
+        - %currentWorkingDirectory%/ext_emconf.php
+    ignoreErrors:
+    		-
+    			message: "#^Constant LF not found\\.$#"
+    			count: 1
+    			path: scheduler/class.tx_mklib_scheduler_SchedulerTaskFreezeDetection.php
+
+    		-
+    			message: "#^Constant CR not found\\.$#"
+    			count: 1
+    			path: util/class.tx_mklib_util_String.php
+
+    		-
+    			message: "#^Constant LF not found\\.$#"
+    			count: 1
+    			path: util/class.tx_mklib_util_String.php

@@ -24,6 +24,9 @@
 
 /**
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
+ *
+ * @todo This class should be dropped or needs refactoring as the table sys_language
+ * doesn't exists anymore since TYPO3 12.
  */
 class tx_mklib_mod1_util_Language
 {
@@ -77,7 +80,7 @@ class tx_mklib_mod1_util_Language
                 [
                     'where' => 'pages_language_overlay.sys_language_uid=sys_language.uid'
                     .' AND pages_language_overlay.pid='.(int) $pageId
-                    .\Sys25\RnBase\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay'),
+                    .' AND pages_language_overlay.deleted=0',
                     'orderby' => 'sys_language.title ASC',
                 ]
             );
@@ -111,7 +114,7 @@ class tx_mklib_mod1_util_Language
         }
         $spriteIconName = 'flags-multiple';
         if (!empty($record)) {
-            $spriteIconName = \Sys25\RnBase\Backend\Utility\BackendUtility_Icons::mapRecordTypeToSpriteIconName(
+            $spriteIconName = \Sys25\RnBase\Backend\Utility\Icons::mapRecordTypeToSpriteIconName(
                 'sys_language',
                 $record
             );

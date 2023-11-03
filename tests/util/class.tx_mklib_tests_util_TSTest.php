@@ -39,7 +39,7 @@ class tx_mklib_tests_util_TSTest extends \Sys25\RnBase\Testing\BaseTestCase
             "TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException: A cache with identifier \"cache_runtime\" does not exist."
         );
 
-        $pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
+        $pageTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig();
 
         self::assertFalse(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS schon geladen');
 
@@ -47,7 +47,7 @@ class tx_mklib_tests_util_TSTest extends \Sys25\RnBase\Testing\BaseTestCase
             '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mklib/static/basic/setup.txt">'
         );
 
-        $pageTSconfig = tx_mklib_util_TS::getPagesTSconfig();
+        $pageTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig();
         self::assertTrue(isset($pageTSconfig['plugin.']['tx_mklib']), 'TS nicht geladen');
     }
 }

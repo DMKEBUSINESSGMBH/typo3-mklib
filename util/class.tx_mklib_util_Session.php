@@ -27,7 +27,8 @@ class tx_mklib_util_Session
      */
     public static function getSessionId($keepId = false)
     {
-        $id = $GLOBALS['TSFE']->fe_user->id;
+        $id = $GLOBALS['TSFE']->fe_user->getUserSession()->getIdentifier();
+
         if ($keepId && !self::getSessionValue('keepsessid')) {
             self::setSessionValue('keepsessid', true);
             self::storeSessionData();
@@ -134,13 +135,14 @@ class tx_mklib_util_Session
     }
 
     /**
+     * Use this method with absolute caution as it takes over sessions of other users.
+     *
      * @param string $sessionId
      */
     public static function setSessionId($sessionId)
     {
-        $GLOBALS['TSFE']->fe_user->id = $sessionId;
-        // sonst werden die Session Daten nicht neu geholt
-        $GLOBALS['TSFE']->fe_user->sesData = [];
-        $GLOBALS['TSFE']->fe_user->fetchUserSession();
+        $GLOBALS['TSFE']->fe_user->setUserSession(
+            \TYPO3\CMS\Core\Session\UserSessionManager::create('FE')->createSessionFromStorage($sessionId)
+        );
     }
 }

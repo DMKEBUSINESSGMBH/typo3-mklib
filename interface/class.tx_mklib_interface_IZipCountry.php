@@ -39,8 +39,8 @@ interface tx_mklib_interface_IZipCountry
 
     /**
      * ID der Regel für die PLZ-Validierung.
-            9: special rules
-
+     * 9: special rules.
+     *
      * @return int 1-9
      */
     public function getZipRule();

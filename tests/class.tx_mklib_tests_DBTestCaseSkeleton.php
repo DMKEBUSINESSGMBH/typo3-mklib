@@ -83,11 +83,11 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
         global $TYPO3_DB, $BE_USER;
         parent::__construct($name, $data, $dataName);
         // TODO: fix Creating default object from empty value
-//        $TYPO3_DB->debugOutput = true;
+        //        $TYPO3_DB->debugOutput = true;
 
         $this->workspaceIdAtStart = $BE_USER->workspace;
         // TODO: fix methos does not exist!
-//         $BE_USER->setWorkspace(0);
+        //         $BE_USER->setWorkspace(0);
     }
 
     /**

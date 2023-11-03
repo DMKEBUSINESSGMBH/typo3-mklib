@@ -55,6 +55,7 @@ class tx_mklib_soap_ClientWrapper
                 $args
             );
         } catch (Exception $exception) {
+            $methodResult = null;
             $this->handleException($exception, $args);
         }
 

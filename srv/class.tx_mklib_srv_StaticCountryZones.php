@@ -73,29 +73,21 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_repository_Abstract
 
     public function create(array $data)
     {
-        \Sys25\RnBase\Utility\Debug::debug([
-            'creating a static country zone via the service can\'t be done.',
-        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        throw new \Exception('creating a static country zone via the service can\'t be done.');
     }
 
     public function handleUpdate(\Sys25\RnBase\Domain\Model\RecordInterface $model, array $data, $where = '', $debug = 0, $noQuoteFields = '')
     {
-        \Sys25\RnBase\Utility\Debug::debug([
-            'updating a static country zone via the service can\'t be done.',
-        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        throw new \Exception('updating a static country zone via the service can\'t be done.');
     }
 
     public function handleDelete(\Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
-        \Sys25\RnBase\Utility\Debug::debug([
-            'deleting a static country zone via the service can\'t be done.',
-        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        throw new \Exception('deleting a static country zone via the service can\'t be done.');
     }
 
     public function handleCreation(array $data)
     {
-        \Sys25\RnBase\Utility\Debug::debug([
-            'creating a static country zone via the service can\'t be done.',
-        ], __METHOD__.' Line: '.__LINE__); // @TODO: remove me
+        throw new \Exception('creating a static country zone via the service can\'t be done.');
     }
 }

@@ -148,11 +148,11 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      */
     protected function handleEnableFieldsOptions(&$fields, &$options)
     {
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof \Psr\Http\Message\ServerRequestInterface &&
-            \TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend() &&
-            !isset($options['enablefieldsoff']) &&
-            !isset($options['enablefieldsbe']) &&
-            !isset($options['enablefieldsfe'])
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof \Psr\Http\Message\ServerRequestInterface
+            && \TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            && !isset($options['enablefieldsoff'])
+            && !isset($options['enablefieldsbe'])
+            && !isset($options['enablefieldsfe'])
         ) {
             $options['enablefieldsbe'] = true;
         }

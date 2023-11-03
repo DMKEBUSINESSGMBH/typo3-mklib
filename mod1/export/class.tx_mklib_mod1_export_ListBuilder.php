@@ -170,5 +170,7 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
             $formatter
         );
         tx_mklib_mod1_export_Util::doOutPut($out);
+
+        return '';
     }
 }

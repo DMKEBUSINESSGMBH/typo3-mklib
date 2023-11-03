@@ -1,8 +1,13 @@
 <?php
+
+namespace DMK\Mklib\Frontend\Authentication;
+
+use TYPO3\CMS\Core\Session\UserSession;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2016 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,35 +28,23 @@
  ***************************************************************/
 
 /**
- * Buffer Handler.
- * Collects all the output internal.
- * Output can be accessed by get Output method.
+ * Class FrontendUserAuthentication.
  *
- * @author Michael Wagner
+ * Adds setter/getter for the UserSession. Is used in tx_mklib_util_Session.
+ *
+ * @author  Hannes Bochmann
+ * @license http://www.gnu.org/licenses/lgpl.html
+ *          GNU Lesser General Public License, version 3 or later
  */
-class tx_mklib_util_list_output_Buffer implements tx_mklib_util_list_output_Interface
+class FrontendUserAuthentication extends \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
 {
-    /**
-     * @var string
-     */
-    private $output = '';
-
-    public function getOutput()
+    public function setUserSession(UserSession $userSession): void
     {
-        return $this->output;
+        $this->userSession = $userSession;
     }
 
-    /**
-     * Do the output.
-     */
-    public function handleOutput()
+    public function getUserSession(): ?UserSession
     {
-        if (func_num_args() > 0) {
-            foreach (func_get_args() as $output) {
-                if ('' != $output) {
-                    $this->output .= $output;
-                }
-            }
-        }
+        return $this->userSession;
     }
 }

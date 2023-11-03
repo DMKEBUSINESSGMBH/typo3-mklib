@@ -131,6 +131,7 @@ class tx_mklib_util_Date
      */
     public static function getTimesInTimeRange($starttime, $endtime, $format = 'z')
     {
+        $days = [];
         for ($index = $starttime; $index < $endtime;) {
             $days[] = date($format, $index);
             $index = strtotime('+1 days', $index);

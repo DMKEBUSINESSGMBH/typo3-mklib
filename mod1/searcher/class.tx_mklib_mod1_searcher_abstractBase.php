@@ -40,13 +40,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      *
      * @var \Sys25\RnBase\Backend\Module\IModule
      */
-    private $mod = null;
+    private $mod;
     /**
      * Selector Klasse.
      *
      * @var tx_mklib_mod1_util_Selector
      */
-    private $selector = null;
+    private $selector;
     /**
      * Otions.
      *
@@ -71,7 +71,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * @var int
      */
-    protected $currentLanguage = null;
+    protected $currentLanguage;
 
     /**
      * Constructor.
@@ -307,7 +307,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function searchItems(array $fields, array $options)
     {
         $firstPrev = $lastNext = false;
-        $secondPrev = null;
+        $secondPrev = $downStep = null;
         if (($this->options['baseTableName'] ?? null)
             && \Sys25\RnBase\Backend\Utility\TCA::getSortbyFieldForTable($this->options['baseTableName'])
             && ($options['limit'] || $options['offset'])

@@ -55,7 +55,7 @@ class tx_mklib_util_TS
 
         $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Utility\Typo3Classes::getContentObjectRendererClass());
 
-        $pageTsConfig = self::getPagesTSconfig(0);
+        $pageTsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig(0);
 
         $tempConfig = $pageTsConfig['plugin.']['tx_'.$extKeyTs.'.'];
         $tempConfig['lib.'][$extKeyTs.'.'] = $pageTsConfig['lib.'][$extKeyTs.'.'];
@@ -79,25 +79,6 @@ class tx_mklib_util_TS
         $configurations->init($pageTsConfig, $cObj, $extKeyTs, $qualifier);
 
         return $configurations;
-    }
-
-    /**
-     * wrapper funktion.
-     *
-     * @param number $pageId
-     *
-     * @return array
-     */
-    public static function getPagesTSconfig($pageId = 0)
-    {
-        // ab TYPO3 6.2.x wird die TS config gecached wenn nicht direkt eine
-        // rootline ungleich NULL übergeben wird.
-        // wir müssen die rootline auf nicht NULL setzen und kein array damit
-        // die rootline korrekt geholt wird und nichts aus dem Cache. Sonst werde
-        // die gerade hinzugefügten TS Dateien nicht beachtet
-        $rootLine = 1;
-
-        return \Sys25\RnBase\Backend\Utility\BackendUtility::getPagesTSconfig($pageId, $rootLine);
     }
 
     /**

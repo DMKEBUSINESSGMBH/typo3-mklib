@@ -19,28 +19,28 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      *
      * @var string
      */
-    protected $host = null;
+    protected $host;
 
     /**
      * What port are we connected to?
      *
      * @var int
      */
-    protected $port = null;
+    protected $port;
 
     /**
      * The curl session handle.
      *
      * @var resource|null
      */
-    protected $curl = null;
+    protected $curl;
 
     /**
      * Response gotten from server.
      *
      * @var string
      */
-    protected $response = null;
+    protected $response;
 
     /**
      * Adapter constructor.

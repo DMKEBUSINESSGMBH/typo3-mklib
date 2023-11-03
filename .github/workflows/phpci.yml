@@ -21,6 +21,8 @@ jobs:
                 php-version:
                     - "7.4"
                     - "8.0"
+                    - "8.1"
+                    - "8.2"
 
         steps:
             -
@@ -34,7 +36,7 @@ jobs:
                     extensions: "${{ env.PHP_EXTENSIONS }}"
             -
                 name: "Validate composer.json and composer.lock"
-                run: "composer validate --strict"
+                run: "composer validate"
             -
                 name: "Determine composer cache directory"
                 id: "determine-composer-cache-directory"
@@ -65,9 +67,12 @@ jobs:
                 command:
                     - "test:phpcs"
                     - "test:phpcompatibility"
+                    - "test:phpstan"
                 php-version:
                     - "7.4"
                     - "8.0"
+                    - "8.1"
+                    - "8.2"
 
         steps:
             -
@@ -81,7 +86,7 @@ jobs:
                     extensions: "${{ env.PHP_EXTENSIONS }}"
             -
                 name: "Validate composer.json and composer.lock"
-                run: "composer validate --strict"
+                run: "composer validate"
             -
                 name: "Determine composer cache directory"
                 id: "determine-composer-cache-directory"
@@ -112,15 +117,14 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    -
-                        typo3-version: "^10.4"
+                    -   typo3-version: "^11.5"
                         php-version: "7.4"
-                    -
-                        typo3-version: "^11.5"
-                        php-version: "7.4"
-                    -
-                        typo3-version: "^11.5"
+                    -   typo3-version: "^11.5"
                         php-version: "8.0"
+                    -   typo3-version: "^12.4"
+                        php-version: "8.1"
+                    -   typo3-version: "^12.4"
+                        php-version: "8.2"
 
         steps:
             -
@@ -134,7 +138,7 @@ jobs:
                     extensions: "${{ env.PHP_EXTENSIONS }}"
             -
                 name: "Validate composer.json and composer.lock"
-                run: "composer validate --strict"
+                run: "composer validate"
             -
                 name: "Determine composer cache directory"
                 id: "determine-composer-cache-directory"

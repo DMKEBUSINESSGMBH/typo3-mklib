@@ -74,5 +74,7 @@ abstract class tx_mklib_srv_Constant extends tx_mklib_repository_Abstract
         if (count($foo)) {
             return $foo[0]['name'];
         }
+
+        return '';
     }
 }
