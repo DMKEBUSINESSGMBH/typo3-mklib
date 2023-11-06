@@ -30,7 +30,7 @@
  */
 class tx_mklib_validator_ZipCode
 {
-    public static $instance = null;
+    public static $instance;
 
     /**
      * Liefert eine instanz des Validators.

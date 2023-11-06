@@ -161,8 +161,8 @@ class tx_mklib_util_TCA
     {
         $parentUid = null;
 
-        if (($parsedQueryParameters = self::getQueryParametersFromReturnUrl()) &&
-            !empty($parsedQueryParameters['P']['uid'])
+        if (($parsedQueryParameters = self::getQueryParametersFromReturnUrl())
+            && !empty($parsedQueryParameters['P']['uid'])
         ) {
             $parentUid = $parsedQueryParameters['P']['uid'];
         }
@@ -177,9 +177,9 @@ class tx_mklib_util_TCA
     {
         $parsedQueryParameters = [];
 
-        if (($returnUrl = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('returnUrl')) &&
-            ($parsedUrl = parse_url($returnUrl)) &&
-            isset($parsedUrl['query'])
+        if (($returnUrl = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('returnUrl'))
+            && ($parsedUrl = parse_url($returnUrl))
+            && isset($parsedUrl['query'])
         ) {
             parse_str($parsedUrl['query'], $parsedQueryParameters);
         }
@@ -216,8 +216,8 @@ class tx_mklib_util_TCA
     private static function getLabelLength(array $tcaTableInformation)
     {
         $labelLength = 80;
-        if (isset($tcaTableInformation['config']['labelLength']) &&
-            intval($tcaTableInformation['config']['labelLength']) > 0
+        if (isset($tcaTableInformation['config']['labelLength'])
+            && intval($tcaTableInformation['config']['labelLength']) > 0
         ) {
             $labelLength = $tcaTableInformation['config']['labelLength'];
         }

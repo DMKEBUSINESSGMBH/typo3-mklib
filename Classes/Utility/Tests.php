@@ -231,8 +231,8 @@ class Tests
     public static function setFeUserObject($oFeUser = null, $bForce = false)
     {
         $frontendUserAuthenticationClass = \Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass();
-        if (!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass ||
-            $bForce
+        if (!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass
+            || $bForce
         ) {
             if (!is_object($oFeUser)) {
                 $oFeUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($frontendUserAuthenticationClass);

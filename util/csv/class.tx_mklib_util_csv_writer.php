@@ -173,9 +173,9 @@ class tx_mklib_util_csv_writer
      */
     protected function removeTrailingLineBreak()
     {
-        if (!$this->trailingLineBreak &&
-            $this->rowCount > 0 &&
-            is_file($this->file)
+        if (!$this->trailingLineBreak
+            && $this->rowCount > 0
+            && is_file($this->file)
         ) {
             @ftruncate($this->handle, filesize($this->file) - 1);
         }

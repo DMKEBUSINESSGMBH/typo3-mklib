@@ -40,13 +40,13 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      *
      * @var \Sys25\RnBase\Backend\Module\IModule
      */
-    private $mod = null;
+    private $mod;
     /**
      * Selector Klasse.
      *
      * @var tx_mklib_mod1_util_Selector
      */
-    private $selector = null;
+    private $selector;
     /**
      * Otions.
      *
@@ -71,7 +71,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     /**
      * @var int
      */
-    protected $currentLanguage = null;
+    protected $currentLanguage;
 
     /**
      * Constructor.

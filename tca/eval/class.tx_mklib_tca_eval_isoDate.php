@@ -62,11 +62,11 @@ LH;
     {
         if (!(
             preg_match('/(\d{4})[-\/.]{1}(\d{1,2})[-\/.]{1}(\d{1,2})/', $value, $matches)
-            &&
-            checkdate($matches[2], $matches[3], $matches[1])
+            && checkdate($matches[2], $matches[3], $matches[1])
         )) {
             return '0000-00-00';
         }
+
         // else
         return $matches[1].'-'.$matches[2].'-'.$matches[3];
     }

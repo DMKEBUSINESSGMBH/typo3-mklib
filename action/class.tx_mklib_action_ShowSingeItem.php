@@ -47,8 +47,8 @@ abstract class tx_mklib_action_ShowSingeItem extends \Sys25\RnBase\Frontend\Cont
         $itemUid = $this->getSingleItemUidFromConfigurations($request);
 
         $itemParameterKey = $this->getSingleItemUidParameterKey($request);
-        if (!$itemUid &&
-            !($itemUid = $parameters->getInt($itemParameterKey))
+        if (!$itemUid
+            && !($itemUid = $parameters->getInt($itemParameterKey))
         ) {
             $this->throwItemNotFound404Exception($request);
         }

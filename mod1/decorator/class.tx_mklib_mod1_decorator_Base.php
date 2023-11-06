@@ -33,11 +33,11 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
     /**
      * @var \Sys25\RnBase\Backend\Module\IModule
      */
-    private $mod = null;
+    private $mod;
     /**
      * @var array
      */
-    private $options = null;
+    private $options;
 
     /**
      * @param \Sys25\RnBase\Backend\Module\IModule $mod

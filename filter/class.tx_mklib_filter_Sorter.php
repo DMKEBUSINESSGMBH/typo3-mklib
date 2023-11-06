@@ -119,7 +119,7 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
     /**
      * @var null || boolean
      */
-    private $initiatedSorting = null;
+    private $initiatedSorting;
 
     /**
      * setzt $this->sortBy und $this->sortOrder.

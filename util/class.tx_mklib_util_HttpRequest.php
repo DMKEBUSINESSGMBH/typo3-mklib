@@ -18,7 +18,7 @@ class tx_mklib_util_HttpRequest
      *
      * @var tx_mklib_util_httprequest_adapter_Interface
      */
-    protected $adapter = null;
+    protected $adapter;
 
     /**
      * Request URI.
@@ -58,7 +58,7 @@ class tx_mklib_util_HttpRequest
      *
      * @var array|null
      */
-    protected $auth = null;
+    protected $auth;
 
     /**
      * Configuration array, set using the constructor or using ::setConfig().

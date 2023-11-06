@@ -14,7 +14,7 @@ class tx_mklib_util_list_output_File implements tx_mklib_util_list_output_Interf
     /**
      * @var string ressource
      */
-    private $fileHandler = null;
+    private $fileHandler;
 
     public function __construct($data)
     {

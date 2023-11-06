@@ -142,6 +142,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     public function getIntByDouble($double, $digits = 4)
     {
         $digits = intval('1'.str_repeat('0', $digits));
+
         // erst zu String, danach zu Integer!
         // (int) 40.05 = 4004
         // (int) (string) 40.05 = 4005
@@ -167,6 +168,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     {
         $baseInt = intval('1'.str_repeat('0', $digits));
         $doubleVal = doubleval(doubleval($int) / $baseInt);
+
         // @TODO: hierfür sollte das currency Objekt genutzt werden,
         // das beinhaltet digits, delemiter, etc.
         // das hier ist nur für die berechnung!
@@ -193,8 +195,9 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
         if (strpos($roundedDoubleValue, '.')) {// Ist der $intValue schon eine ganze Zahl?
             $roundedDoubleValue = ceil($roundedDoubleValue) / $baseInt;
         } else {
-            $roundedDoubleValue = $roundedDoubleValue / $baseInt;
+            $roundedDoubleValue /= $baseInt;
         }
+
         // @TODO: hierfür sollte das currency Objekt genutzt werden,
         // das beinhaltet digits, delemiter, etc.
         // das hier ist nur für die berechnung!

@@ -424,6 +424,7 @@ class tx_mklib_util_File
         ).'/'.self::removeStartingSlash(
             self::getRelPath($sPath)
         );
+
         // @TODO: das funktioniert beim webpfad nicht!
         return $sPath;
     }

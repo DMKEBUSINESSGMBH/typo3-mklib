@@ -505,31 +505,31 @@ class tx_mklib_util_RTFGenerator
     {
         $doc_buffer = $this->specialCharacters($this->document);
 
-//        if(preg_match("/<UL>(.*?)<\/UL>/mi", $doc_buffer)) {
-//            $doc_buffer = str_replace("<UL>", "", $doc_buffer);
-//            $doc_buffer = str_replace("</UL>", "", $doc_buffer);
-//            $doc_buffer = preg_replace("/<LI>(.*?)<\/LI>/mi", "\\f3\\'B7\\tab\\f{$this->font_face} \\1\\par", $doc_buffer);
-//        }
+        //        if(preg_match("/<UL>(.*?)<\/UL>/mi", $doc_buffer)) {
+        //            $doc_buffer = str_replace("<UL>", "", $doc_buffer);
+        //            $doc_buffer = str_replace("</UL>", "", $doc_buffer);
+        //            $doc_buffer = preg_replace("/<LI>(.*?)<\/LI>/mi", "\\f3\\'B7\\tab\\f{$this->font_face} \\1\\par", $doc_buffer);
+        //        }
 
-//        $doc_buffer = preg_replace("/<P>(.*?)<\/P>/mi", "\\1\\par ", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<P>(.*?)<\/P>/mi", "\\1\\par ", $doc_buffer);
         $doc_buffer = preg_replace('/<STRONG>(.*?)<\/STRONG>/mi', "}{\b{$this->getDefaultFont()}\\1 }{{$this->getDefaultFont(false)}", $doc_buffer);
-//        $doc_buffer = preg_replace("/<EM>(.*?)<\/EM>/mi", "\\i \\1\\i0 ", $doc_buffer);
-//        $doc_buffer = preg_replace("/<U>(.*?)<\/U>/mi", "\\ul \\1\\ul0 ", $doc_buffer);
-//        $doc_buffer = preg_replace("/<STRIKE>(.*?)<\/STRIKE>/mi", "\\strike \\1\\strike0 ", $doc_buffer);
-//        $doc_buffer = preg_replace("/<SUB>(.*?)<\/SUB>/mi", "{\\sub \\1}", $doc_buffer);
-//        $doc_buffer = preg_replace("/<SUP>(.*?)<\/SUP>/mi", "{\\super \\1}", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<EM>(.*?)<\/EM>/mi", "\\i \\1\\i0 ", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<U>(.*?)<\/U>/mi", "\\ul \\1\\ul0 ", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<STRIKE>(.*?)<\/STRIKE>/mi", "\\strike \\1\\strike0 ", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<SUB>(.*?)<\/SUB>/mi", "{\\sub \\1}", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<SUP>(.*?)<\/SUP>/mi", "{\\super \\1}", $doc_buffer);
 
         // $doc_buffer = preg_replace("/<H1>(.*?)<\/H1>/mi", "\\pard\\qc\\fs40 \\1\\par\\pard\\fs{$this->font_size} ", $doc_buffer);
         // $doc_buffer = preg_replace("/<H2>(.*?)<\/H2>/mi", "\\pard\\qc\\fs32 \\1\\par\\pard\\fs{$this->font_size} ", $doc_buffer);
 
-//        $doc_buffer = preg_replace("/<H1>(.*?)<\/H1>/mi", "\\fs48\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);
-//        $doc_buffer = preg_replace("/<H2>(.*?)<\/H2>/mi", "\\fs36\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);
-//        $doc_buffer = preg_replace("/<H3>(.*?)<\/H3>/mi", "\\fs27\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);
-//
-//
-//        $doc_buffer = preg_replace("/<HR(.*?)>/i", "\\brdrb\\brdrs\\brdrw30\\brsp20 \\pard\\par ", $doc_buffer);
-//        $doc_buffer = str_replace("<BR>", "\\par ", $doc_buffer);
-//        $doc_buffer = str_replace("<TAB>", "\\tab ", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<H1>(.*?)<\/H1>/mi", "\\fs48\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<H2>(.*?)<\/H2>/mi", "\\fs36\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);
+        //        $doc_buffer = preg_replace("/<H3>(.*?)<\/H3>/mi", "\\fs27\\b \\1\\b0\\fs{$this->font_size}\\par ", $doc_buffer);
+        //
+        //
+        //        $doc_buffer = preg_replace("/<HR(.*?)>/i", "\\brdrb\\brdrs\\brdrw30\\brsp20 \\pard\\par ", $doc_buffer);
+        //        $doc_buffer = str_replace("<BR>", "\\par ", $doc_buffer);
+        //        $doc_buffer = str_replace("<TAB>", "\\tab ", $doc_buffer);
 
         $doc_buffer = $this->nl2par($doc_buffer);
 

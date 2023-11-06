@@ -13,7 +13,7 @@ class tx_mklib_util_list_Builder extends \Sys25\RnBase\Frontend\Marker\ListBuild
     /**
      * @var tx_mklib_util_list_output_Interface
      */
-    private $output = null;
+    private $output;
 
     /**
      * @param tx_mklib_util_list_output_Interface $outputHandler
@@ -28,7 +28,7 @@ class tx_mklib_util_list_Builder extends \Sys25\RnBase\Frontend\Marker\ListBuild
     }
 
     /**
-    /**
+     * /**
      * Add a visitor callback. It is called for each item before rendering.
      *
      * @param array $callback

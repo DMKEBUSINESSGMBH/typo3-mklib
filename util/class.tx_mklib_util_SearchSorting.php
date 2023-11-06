@@ -140,9 +140,9 @@ class tx_mklib_util_SearchSorting
                 $sortingCol = $tableData['column'];
                 $tableName = $tableData['table'];
                 $field = $tableAlias.'.'.$sortingCol;
-                if (isset($tableAliases[$tableAlias]) &&
-                    !isset($options['orderby'][$field]) &&
-                    (!$tableName || isset($tableMappings[$tableName]))
+                if (isset($tableAliases[$tableAlias])
+                    && !isset($options['orderby'][$field])
+                    && (!$tableName || isset($tableMappings[$tableName]))
                 ) {
                     // orderby muss ein array sein
                     if (!is_array($options['orderby'])) {

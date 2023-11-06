@@ -7,7 +7,7 @@
  */
 class tx_mklib_tests_util_NumberTest extends \Sys25\RnBase\Testing\BaseTestCase
 {
-    private $oldLocal = null;
+    private $oldLocal;
 
     public function setUp(): void
     {

@@ -144,7 +144,7 @@ class tx_mklib_util_csv_reader implements Iterator
     {
         if (!$this->next()) {
             // nicht schließen, wenn mehrfach über die csv itteriert werden soll gibts probleme!
-//             fclose($this->handle);
+            //             fclose($this->handle);
             return false;
         }
 

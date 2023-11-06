@@ -7,7 +7,7 @@
  */
 class tx_mklib_util_list_Marker extends \Sys25\RnBase\Frontend\Marker\ListMarkerInfo
 {
-    public $output = null;
+    public $output;
 
     /**
      * @param ListMarkerInfo                      $listMarkerInfo
