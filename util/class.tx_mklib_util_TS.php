@@ -97,46 +97,54 @@ class tx_mklib_util_TS
         $sExtKey = 'mklib',
         $sDomainKey = 'plugin.'
     ) {
-        // rootlines der pid auslesen
-        $aRootLine = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Utility\RootlineUtility::class,
-            intval($mPageUid)
-        )->get();
-
-        // ts für die rootlines erzeugen
-        /* @var $tsObj \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService */
-        $tsObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Utility\Typo3Classes::getExtendedTypoScriptTemplateServiceClass());
-        $tsObj->tt_track = 0;
-        $tsObj->runThroughTemplates($aRootLine);
-        $tsObj->generateConfig();
-
-        if (isset($GLOBALS['TSFE'])) {
-            // we need to clone the template object. otherwise after the first array_merge the initial
-            // configuration is gone because $GLOBALS['TSFE']->tmpl and $tsObj is the same object.
-            $GLOBALS['TSFE']->tmpl = clone $tsObj;
-            // tsfe config setzen (wird in der \Sys25\RnBase\Configuration\Processor gebraucht (language))
-            $GLOBALS['TSFE']->tmpl->setup = array_merge(
-                is_array($GLOBALS['TSFE']->config) ? $GLOBALS['TSFE']->config : [],
-                is_array($tsObj->setup['config.']) ? $tsObj->setup['config.'] : []
-            );
-            // tsfe config setzen (ansonsten funktionieren refereznen nicht (fpdf <= lib.fpdf))
-            // @TODO: Konfigurierbar machen
-            $GLOBALS['TSFE']->tmpl->setup = array_merge(
-                is_array($tsObj->setup) ? $tsObj->setup : [],
-                is_array($GLOBALS['TSFE']->tmpl->setup) ? $GLOBALS['TSFE']->tmpl->setup : []
-            );
-        }
-
         // ts für die extension auslesen
-        $pageTsConfig = $tsObj->setup[$sDomainKey]['tx_'.$sExtKey.'.'] ?? [];
-        $pageTsConfig['lib.'] = $pageTsConfig['lib.'] ?? null;
-        $qualifier = $pageTsConfig['qualifier'] ?? $sExtKey;
+        $typoScriptConfiguration = self::getTypoScriptConfiguration($mPageUid)[$sDomainKey]['tx_'.$sExtKey.'.'] ?? [];
+        $typoScriptConfiguration['lib.'] = $typoScriptConfiguration['lib.'] ?? null;
+        $qualifier = $typoScriptConfiguration['qualifier'] ?? $sExtKey;
 
         // konfiguration erzeugen
         /* @var $configurations \Sys25\RnBase\Configuration\Processor */
         $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
-        $configurations->init($pageTsConfig, $configurations->getCObj(1), $sExtKey, $qualifier);
+        $configurations->init($typoScriptConfiguration, $configurations->getCObj(1), $sExtKey, $qualifier);
 
         return $configurations;
+    }
+
+    protected static function getTypoScriptConfiguration($pageUid = 0): array
+    {
+        $rootLine = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Utility\RootlineUtility::class,
+            intval($pageUid)
+        )->get();
+
+        $tsfe = \Sys25\RnBase\Utility\Misc::prepareTSFE(
+            [
+                'force' => true,
+                'pid' => $pageUid,
+                'type' => 0,
+            ]
+        );
+        $tsfe->rootLine = $rootLine;
+        $tsfe->no_cache = true;
+        $context = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
+        $context->setAspect(
+            'typoscript',
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Context\TypoScriptAspect::class,
+                true
+            )
+        );
+        $tsfe->id = $pageUid;
+        // @todo the if part can be removed when support for TYPO3 11 is dropped.
+        if (is_callable([$tsfe, 'getConfigArray'])) {
+            $tsfe->getConfigArray();
+            $setup = $tsfe->tmpl->setup;
+        } else {
+            $GLOBALS['TYPO3_REQUEST'] = $tsfe->getFromCache($GLOBALS['TYPO3_REQUEST'] ?? \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
+            $setup = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')
+                ->getSetupArray();
+        }
+
+        return $setup;
     }
 }
