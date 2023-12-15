@@ -138,6 +138,13 @@ class tx_mklib_util_Session
      */
     public static function setSessionId($sessionId)
     {
+        // In TYPO3 11.5 $GLOBALS['TSFE']->fe_user->id got removed and setting the id
+        // this way triggers the magic _set() method which takes care of setting the session id.
+        // But this magic method is ofcourse triggered only if the property got not set. So we
+        // need to remove the property in case it exists to retrigger the magic method.
+        if (\Sys25\RnBase\Utility\TYPO3::isTYPO115OrHigher() && isset($GLOBALS['TSFE']->fe_user->id)) {
+            unset($GLOBALS['TSFE']->fe_user->id);
+        }
         $GLOBALS['TSFE']->fe_user->id = $sessionId;
         // sonst werden die Session Daten nicht neu geholt
         $GLOBALS['TSFE']->fe_user->sesData = [];
