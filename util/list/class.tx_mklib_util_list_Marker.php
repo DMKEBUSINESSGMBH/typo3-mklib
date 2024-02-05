@@ -13,7 +13,7 @@ class tx_mklib_util_list_Marker extends \Sys25\RnBase\Frontend\Marker\ListMarker
      * @param ListMarkerInfo                      $listMarkerInfo
      * @param tx_mklib_util_list_output_Interface $output
      */
-    public function __construct(ListMarkerInfo $listMarkerInfo = null, tx_mklib_util_list_output_Interface $output)
+    public function __construct(?ListMarkerInfo $listMarkerInfo = null, tx_mklib_util_list_output_Interface $output)
     {
         $this->output = $output;
         parent::__construct($listMarkerInfo);

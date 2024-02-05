@@ -138,7 +138,7 @@ class tx_mklib_mod1_util_Language
 
     public static function getAddLocalizationLinks(
         \Sys25\RnBase\Domain\Model\RecordInterface $item,
-        \Sys25\RnBase\Backend\Module\BaseModule $mod = null
+        ?\Sys25\RnBase\Backend\Module\BaseModule $mod = null
     ) {
         if (// the item already are an translated item!
             $item->getUid() != $item->getProperty('uid')
