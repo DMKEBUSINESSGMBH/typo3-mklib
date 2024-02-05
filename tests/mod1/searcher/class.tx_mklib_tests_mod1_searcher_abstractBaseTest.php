@@ -461,7 +461,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends \Sys25\RnBase\Testin
     protected function getSearchItemsSearcherMock(
         array $expectedFields = [],
         array $expectedOptions = [],
-        array $items = null
+        ?array $items = null
     ) {
         $service = $this->getMockForAbstractClass(
             'tx_mklib_repository_Abstract',
