@@ -35,9 +35,9 @@ class tx_mklib_util_testSearchSorting extends tx_mklib_util_SearchSorting
 {
     private static $test = false;
     public static $data = [
-                'tableAliases' => '', 'joinedFields' => '',
-                'customFields' => '', 'options' => '',
-            ];
+        'tableAliases' => '', 'joinedFields' => '',
+        'customFields' => '', 'options' => '',
+    ];
 
     public static function registerSortingAliases(array $tableAliases)
     {
@@ -115,10 +115,10 @@ class tx_mklib_tests_util_SearchSortingTest extends \Sys25\RnBase\Testing\BaseTe
             'table1' => 'ALIAS4',
         ];
         tx_mklib_util_testSearchSorting::$data = [
-                'tableAliases' => &$tableAliases, 'joinedFields' => '',
-                'customFields' => '', 'options' => &$options,
-                'tableMappings' => $tableMappings,
-            ];
+            'tableAliases' => &$tableAliases, 'joinedFields' => '',
+            'customFields' => '', 'options' => &$options,
+            'tableMappings' => $tableMappings,
+        ];
         tx_mklib_util_testSearchSorting::registerSortingAliases(
             [
                 'TESTALIAS', 'ALIAS2', 'ALIAS3' => 'title',

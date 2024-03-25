@@ -93,11 +93,11 @@ class tx_mklib_tests_util_ModelTest extends \Sys25\RnBase\Testing\BaseTestCase
     public function testUniqueModelArray()
     {
         $aArray = [
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'name' => 'Model Nr. 6']),
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
-                        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2, 'name' => 'Model Nr. 2']),
-                    ];
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'name' => 'Model Nr. 6']),
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2, 'name' => 'Model Nr. 2']),
+        ];
         $aUnique = tx_mklib_util_Model::uniqueModels($aArray);
         self::assertTrue(is_array($aUnique), 'No array given.');
         self::assertEquals(count($aUnique), 3, 'Array has a wrong count of entries.');

@@ -64,16 +64,16 @@ class tx_mklib_tests_fixtures_classes_DummySearcher extends tx_mklib_mod1_search
     protected function getDecoratorColumns($oDecorator)
     {
         return [
-                'uid' => [
-                    'title' => 'label_tableheader_uid',
-                    'decorator' => &$oDecorator,
-                    'sortable' => 'WORDLIST.',
-                ],
-                'actions' => [
-                    'title' => 'label_tableheader_actions',
-                    'decorator' => &$oDecorator,
-                ],
-            ];
+            'uid' => [
+                'title' => 'label_tableheader_uid',
+                'decorator' => &$oDecorator,
+                'sortable' => 'WORDLIST.',
+            ],
+            'actions' => [
+                'title' => 'label_tableheader_actions',
+                'decorator' => &$oDecorator,
+            ],
+        ];
     }
 
     /**

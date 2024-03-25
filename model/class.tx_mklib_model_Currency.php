@@ -142,10 +142,10 @@ class tx_mklib_model_Currency
         $value = $this->numberFormat(abs($value));
 
         $replaceArray = [
-                '{sign}' => '%1$s', // string
-                '{value}' => '%2$s', // string
-                '{currency}' => '%3$s', // string
-            ];
+            '{sign}' => '%1$s', // string
+            '{value}' => '%2$s', // string
+            '{currency}' => '%3$s', // string
+        ];
 
         $format = str_replace(array_keys($replaceArray), array_values($replaceArray), $this->record['format']);
 

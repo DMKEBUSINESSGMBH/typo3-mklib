@@ -301,9 +301,9 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
                 if ($makeLink || $makeUrl) {
                     // sortierungslinks ausgeben
                     $params = [
-                            'sortBy' => $field,
-                            'sortOrder' => $isField && ('asc' == $this->getSortOrder()) ? 'desc' : 'asc',
-                        ];
+                        'sortBy' => $field,
+                        'sortOrder' => $isField && ('asc' == $this->getSortOrder()) ? 'desc' : 'asc',
+                    ];
                     $link = $configurations->createLink();
                     $link->label($token);
                     $link->initByTS(
