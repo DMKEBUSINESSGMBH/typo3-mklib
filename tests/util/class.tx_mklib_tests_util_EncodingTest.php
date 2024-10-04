@@ -279,18 +279,18 @@ class tx_mklib_tests_util_EncodingTest extends \Sys25\RnBase\Testing\BaseTestCas
             'one' => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 Sys25\RnBase\Domain\Model\BaseModel::class,
                 [
-                        'uid' => 1,
-                        'title' => $stringIso,
-                        'description' => $stringIso,
-                    ]
+                    'uid' => 1,
+                    'title' => $stringIso,
+                    'description' => $stringIso,
+                ]
             ),
             'twoe' => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 Sys25\RnBase\Domain\Model\BaseModel::class,
                 [
-                        'uid' => 1,
-                        'title' => $stringIso,
-                        'description' => $stringIso,
-                    ]
+                    'uid' => 1,
+                    'title' => $stringIso,
+                    'description' => $stringIso,
+                ]
             ),
         ];
 

@@ -227,7 +227,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends \Sys25\RnBase\Test
      * @return Tx_Mklib_Database_Connection
      */
     private function getDatabaseConnectionMock(
-        array $methods = []
+        array $methods = [],
     ) {
         return $this->getMock(
             'Tx_Mklib_Database_Connection',

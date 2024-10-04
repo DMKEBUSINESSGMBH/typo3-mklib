@@ -46,7 +46,7 @@ class tx_mklib_util_list_Builder extends \Sys25\RnBase\Frontend\Marker\ListBuild
         $confId,
         $marker,
         $formatter,
-        $markerParams = null
+        $markerParams = null,
     ) {
         $outerMarker = $this->getOuterMarker($marker, $template);
 

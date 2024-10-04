@@ -65,7 +65,7 @@ class tx_mklib_util_csv_reader implements Iterator
         $file,
         $delimiter = ';',
         $enclosure = '"',
-        $escape = '\\'
+        $escape = '\\',
     ) {
         $this->handle = @fopen($file, 'r');
         if (false === $this->handle) {

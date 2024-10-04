@@ -74,7 +74,7 @@ class tx_mklib_tests_filter_SorterTest extends \Sys25\RnBase\Testing\BaseTestCas
         $template,
         $expectedParsedTemplate,
         $sortBy,
-        $sortOrder
+        $sortOrder,
     ) {
         $parameters = $this->getParameters();
         $configurations = $this->getConfigurations(true);

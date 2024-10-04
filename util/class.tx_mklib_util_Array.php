@@ -54,7 +54,7 @@ class tx_mklib_util_Array
     public static function removeEmptyArrayValuesSimple(
         array $array,
         array $emptys = ['', 0, '0', null, false, []],
-        $strict = true
+        $strict = true,
     ) {
         $ret = [];
         foreach ($array as $key => $value) {
@@ -87,7 +87,7 @@ class tx_mklib_util_Array
         array $array,
         $resetIndex = false,
         $emptys = false,
-        $strict = false
+        $strict = false,
     ) {
         $emptyKeys = array_keys($array, $emptys, $strict);
         foreach ($emptyKeys as $key) {

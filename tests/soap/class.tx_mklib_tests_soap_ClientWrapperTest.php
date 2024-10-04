@@ -154,7 +154,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
     private function getSoapClientWrapper(
         $expectedParams = [],
         $exceptionToThrow = null,
-        $getSoapClientInvocationCount = null
+        $getSoapClientInvocationCount = null,
     ) {
         $soapClient = $this->getSoapClientMock($expectedParams, $exceptionToThrow);
 
@@ -179,7 +179,7 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
      */
     private function getSoapClientMock(
         $expectedParams = [],
-        $exceptionToThrow = null
+        $exceptionToThrow = null,
     ) {
         $soapClient = $this->getMock(
             'SoapClient',

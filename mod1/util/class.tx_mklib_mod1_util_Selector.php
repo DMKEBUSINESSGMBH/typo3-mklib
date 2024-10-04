@@ -209,7 +209,7 @@ class tx_mklib_mod1_util_Selector
     protected function showSelectorByModels(
         $items,
         array &$data,
-        array $options = []
+        array $options = [],
     ) {
         if (!(is_array($items) || $items instanceof Traversable)) {
             throw new Exception('Argument 1 passed to'.__METHOD__.'() must be of the type array or Traversable.');

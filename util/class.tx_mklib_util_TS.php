@@ -32,7 +32,7 @@ class tx_mklib_util_TS
         $sStaticPath = '',
         $aConfig = [],
         $resolveReferences = false,
-        $forceTsfePreparation = false
+        $forceTsfePreparation = false,
     ) {
         $extKeyTs = is_null($extKeyTs) ? $extKey : $extKeyTs;
 
@@ -114,7 +114,7 @@ class tx_mklib_util_TS
     public static function loadTSFromPage(
         $mPageUid = 0,
         $sExtKey = 'mklib',
-        $sDomainKey = 'plugin.'
+        $sDomainKey = 'plugin.',
     ) {
         // rootlines der pid auslesen
         $aRootLine = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(

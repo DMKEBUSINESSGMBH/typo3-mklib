@@ -112,10 +112,10 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements \TYPO3\CMS\Sch
                     break;
             }
             $additionalFields[$fieldID] = [
-                    'code' => $fieldCode,
-                    'label' => $aOptions['label'] ?? $sKey,
-                    'cshKey' => $aOptions['cshKey'] ?? 'tx_mklib_scheduler_cleanupTempFiles',
-                    'cshLabel' => ($aOptions['cshLabel'] ?? $sKey).'_csh',
+                'code' => $fieldCode,
+                'label' => $aOptions['label'] ?? $sKey,
+                'cshKey' => $aOptions['cshKey'] ?? 'tx_mklib_scheduler_cleanupTempFiles',
+                'cshLabel' => ($aOptions['cshLabel'] ?? $sKey).'_csh',
             ];
         }
 
