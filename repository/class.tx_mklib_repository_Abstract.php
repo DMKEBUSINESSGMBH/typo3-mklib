@@ -335,7 +335,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
         array $data,
         $where = '',
         $debug = 0,
-        $noQuoteFields = ''
+        $noQuoteFields = '',
     ) {
         $db = $this->getDatabaseUtility();
         $table = $model->getTableName();

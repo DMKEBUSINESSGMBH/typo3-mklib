@@ -41,7 +41,7 @@ class tx_mklib_util_Encoding
         $var,
         $toEncoding = null,
         $fromEncoding = null,
-        $forceEncoding = false
+        $forceEncoding = false,
     ) {
         // use Typo3 encoding
         if (is_null($toEncoding)) {

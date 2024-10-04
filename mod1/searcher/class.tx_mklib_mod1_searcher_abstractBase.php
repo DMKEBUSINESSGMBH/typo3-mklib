@@ -508,7 +508,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function showItems(
         &$content,
         $items,
-        array $options = []
+        array $options = [],
     ) {
         if (!(is_array($items) || $items instanceof Traversable)) {
             throw new Exception('Argument 2 passed to'.__METHOD__.'() must be of the type array or Traversable.');
@@ -588,7 +588,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function addDecoratorColumnUid(
         array &$columns,
-        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
+        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null,
     ) {
         $columns['uid'] = [
             'title' => 'label_tableheader_uid',
@@ -608,7 +608,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function addDecoratorColumnLabel(
         array &$columns,
-        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
+        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null,
     ) {
         if (!empty($this->options['baseTableName'])) {
             $labelField = \Sys25\RnBase\Backend\Utility\TCA::getLabelFieldForTable($this->options['baseTableName']);
@@ -637,7 +637,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function addDecoratorColumnLanguage(
         array &$columns,
-        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
+        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null,
     ) {
         if (!empty($this->options['baseTableName'])) {
             $sysLanguageUidField = \Sys25\RnBase\Backend\Utility\TCA::getLanguageFieldForTable($this->options['baseTableName']);
@@ -663,7 +663,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
      */
     protected function addDecoratorColumnActions(
         array &$columns,
-        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null
+        ?\Sys25\RnBase\Backend\Decorator\InterfaceDecorator &$oDecorator = null,
     ) {
         $columns['actions'] = [
             'title' => 'label_tableheader_actions',
