@@ -72,7 +72,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
      * @return array[tx_mklib_model_Page]
      */
     public function getChildren(
-        tx_mklib_model_Page $page,
+        tx_mklib_model_Page $page
     ) {
         $fields = $options = [];
         $fields['PAGES.pid'][OP_EQ_INT] = $page->getUid();

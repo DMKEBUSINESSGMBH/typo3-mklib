@@ -341,7 +341,7 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends \Sys25\RnB
      */
     private function getSchedulerByDbUtil(
         $databaseUtility,
-        $methods = ['getDatabaseConnection'],
+        $methods = ['getDatabaseConnection']
     ) {
         self::markTestIncomplete(
             'Uncaught require(typo3-mklib/.Build/Web/typo3conf/LocalConfiguration.php)'

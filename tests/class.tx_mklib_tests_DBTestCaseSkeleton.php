@@ -98,7 +98,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      */
     protected static function importStaticTables(
         $extKey = 'mklib',
-        $files = ['ext_tables_static+adt.sql'],
+        $files = ['ext_tables_static+adt.sql']
     ) {
         foreach ($files as $file) {
             // read sql file content

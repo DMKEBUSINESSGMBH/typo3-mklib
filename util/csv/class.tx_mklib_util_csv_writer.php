@@ -80,7 +80,7 @@ class tx_mklib_util_csv_writer
         $file,
         $delimiter = ';',
         $enclosure = '"',
-        $escape = '\\',
+        $escape = '\\'
     ) {
         $this->handle = @fopen($file, 'w');
         if (false === $this->handle) {

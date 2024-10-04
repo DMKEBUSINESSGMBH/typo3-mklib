@@ -54,7 +54,7 @@ class tx_mklib_mod1_export_Handler
      * @param tx_mklib_mod1_export_IModFunc $modFunc
      */
     public function __construct(
-        tx_mklib_mod1_export_IModFunc $modFunc,
+        tx_mklib_mod1_export_IModFunc $modFunc
     ) {
         $this->modFunc = $modFunc;
     }
@@ -464,7 +464,7 @@ class tx_mklib_mod1_export_Handler
         $template,
         $timeStart = 0,
         $memStart = 0,
-        array $markerArr = [],
+        array $markerArr = []
     ) {
         if (empty($template)) {
             return false;

@@ -317,8 +317,8 @@ class Tests
             $frontendOutput = $handleRequest->invokeArgs(
                 $action,
                 [
-                    &$parameters, &$configurations, &$viewData,
-                ]
+                        &$parameters, &$configurations, &$viewData,
+                    ]
             );
         }
 
