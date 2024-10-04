@@ -120,7 +120,7 @@ class tx_mklib_util_Session
             // um einen Infinite Redirect zu verhindern
             // falls keine Cookies erlaubt sind.
             $parsedUrl = parse_url(\Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_SCRIPT'));
-            $checkedIfCookiesAreActivatedParameter = ($parsedUrl['query'] ? '&' : '?').'checkedIfCookiesAreActivated=1';
+            $checkedIfCookiesAreActivatedParameter = (($parsedUrl['query'] ?? '') ? '&' : '?').'checkedIfCookiesAreActivated=1';
             // Und machen einen Reload um zu sehen ob Cookies gesetzt werden konnten.
             header(
                 'Location: /'.
