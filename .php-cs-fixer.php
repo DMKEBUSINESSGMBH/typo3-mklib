@@ -1,5 +1,5 @@
 <?php
-
+putenv('PHP_MIN=7.4');
 $finder = \PhpCsFixer\Finder::create()
     ->exclude('Resources')
     ->exclude('Documentation')
@@ -15,5 +15,12 @@ return $config
         'no_superfluous_phpdoc_tags' => false,
         'fully_qualified_strict_types' => false,
         'php_unit_method_casing' => false,
+        'trailing_comma_in_multiline' => [
+            'elements' => [
+                'array_destructuring',
+                'arrays',
+                'match',
+            ],
+        ],
     ])
     ->setLineEnding("\n");
