@@ -61,7 +61,7 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
         $confId,
         $marker,
         $formatter,
-        $markerParams = null,
+        $markerParams = null
     ) {
         $outerMarker = $this->getOuterMarker($marker, $template);
 
@@ -122,7 +122,7 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
     protected function getWrapForSubpart(
         $template,
         $marker,
-        $required = true,
+        $required = true
     ) {
         // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
         $token = md5(time()).md5(get_class());
@@ -158,7 +158,7 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
         $confId,
         $marker,
         $formatter,
-        $markerParams = null,
+        $markerParams = null
     ) {
         $out = parent::render(
             $dataArr,

@@ -98,7 +98,7 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
      */
     protected function prepareFieldsAndOptions(
         array &$fields,
-        array &$options,
+        array &$options
     ) {
         return true;
     }

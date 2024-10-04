@@ -32,7 +32,7 @@ class tx_mklib_util_TS
         $sStaticPath = '',
         $aConfig = [],
         $resolveReferences = false,
-        $forceTsfePreparation = false,
+        $forceTsfePreparation = false
     ) {
         $extKeyTs = is_null($extKeyTs) ? $extKey : $extKeyTs;
 
@@ -95,7 +95,7 @@ class tx_mklib_util_TS
     public static function loadTSFromPage(
         $mPageUid = 0,
         $sExtKey = 'mklib',
-        $sDomainKey = 'plugin.',
+        $sDomainKey = 'plugin.'
     ) {
         // ts für die extension auslesen
         $typoScriptConfiguration = self::getTypoScriptConfiguration($mPageUid)[$sDomainKey]['tx_'.$sExtKey.'.'] ?? [];

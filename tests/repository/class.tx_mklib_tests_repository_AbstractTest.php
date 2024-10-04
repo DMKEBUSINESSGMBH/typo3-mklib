@@ -36,7 +36,7 @@ class tx_mklib_tests_repository_AbstractTest extends \Sys25\RnBase\Testing\BaseT
      */
     public function testHandleEnableFieldsOptionsWhenInBackend(
         $options,
-        $expectedOptions,
+        $expectedOptions
     ) {
         $GLOBALS['TYPO3_REQUEST'] = new \TYPO3\CMS\Core\Http\ServerRequest();
         $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute(

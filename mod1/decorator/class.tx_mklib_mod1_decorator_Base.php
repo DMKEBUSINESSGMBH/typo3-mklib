@@ -287,7 +287,7 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
         $value,
         $colName,
         $record,
-        \Sys25\RnBase\Domain\Model\DataInterface $item,
+        \Sys25\RnBase\Domain\Model\DataInterface $item
     ) {
         $stateClass = [];
 

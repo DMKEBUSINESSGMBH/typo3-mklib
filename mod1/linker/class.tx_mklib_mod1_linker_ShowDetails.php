@@ -74,7 +74,7 @@ class tx_mklib_mod1_linker_ShowDetails
     public function makeLink(
         \Sys25\RnBase\Domain\Model\RecordInterface $item,
         \Sys25\RnBase\Backend\Form\ToolBox $formTool,
-        $options = [],
+        $options = []
     ) {
         $out = $formTool->createSubmit(
             'showDetails['.$this->identifier.']['.$item->getUid().']',
@@ -96,7 +96,7 @@ class tx_mklib_mod1_linker_ShowDetails
         // wird eigentlich nicht benötigt.
         \Sys25\RnBase\Domain\Model\RecordInterface $item,
         \Sys25\RnBase\Backend\Form\ToolBox $formTool,
-        $options = [],
+        $options = []
     ) {
         $out = $formTool->createSubmit(
             'showDetails['.$this->identifier.'][clear]',
@@ -112,7 +112,7 @@ class tx_mklib_mod1_linker_ShowDetails
      * @param \Sys25\RnBase\Backend\Module\IModule $mod
      */
     public function getCurrentUid(
-        \Sys25\RnBase\Backend\Module\IModule $mod,
+        \Sys25\RnBase\Backend\Module\IModule $mod
     ) {
         $modSettings = [
             $this->identifier => '0',
