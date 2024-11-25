@@ -1,4 +1,5 @@
 <?php
+
 /**
  * lokale Config laden.
  */

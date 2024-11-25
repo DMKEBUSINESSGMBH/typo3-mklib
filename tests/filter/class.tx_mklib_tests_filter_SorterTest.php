@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
  *
