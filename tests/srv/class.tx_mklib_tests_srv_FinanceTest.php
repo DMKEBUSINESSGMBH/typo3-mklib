@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Hannes Bochmann
  * @author Michael Wagner
