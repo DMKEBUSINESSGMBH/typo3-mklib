@@ -42,8 +42,6 @@ require_once TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY
 // also könnte ein valider exception code dieser extension 4001 sein
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY]['baseExceptionCode'] = 400;
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_mklib_tca_eval_priceDecimalSeperator'] =
-    'tx_mklib_tca_eval_priceDecimalSeperator';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_mklib_tca_eval_isoDate'] =
     'tx_mklib_tca_eval_isoDate';
 
