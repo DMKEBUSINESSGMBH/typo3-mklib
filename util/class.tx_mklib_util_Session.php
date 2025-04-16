@@ -52,7 +52,7 @@ class tx_mklib_util_Session
      */
     public static function getSessionId($keepId = false)
     {
-        $id = $GLOBALS['TSFE']->fe_user->getUserSession()->getIdentifier();
+        $id = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->getUserSession()->getIdentifier();
 
         if ($keepId && !self::getSessionValue('keepsessid')) {
             self::setSessionValue('keepsessid', true);
@@ -75,9 +75,9 @@ class tx_mklib_util_Session
      */
     public static function setSessionValue($key, $value, $extKey = 'mklib'): void
     {
-        $vars = $GLOBALS['TSFE']->fe_user->getKey('ses', $extKey);
+        $vars = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->getKey('ses', $extKey);
         $vars[$key] = &$value;
-        $GLOBALS['TSFE']->fe_user->setKey('ses', $extKey, $vars);
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->setKey('ses', $extKey, $vars);
     }
 
     /**
@@ -92,7 +92,7 @@ class tx_mklib_util_Session
      */
     public static function getSessionValue($key, $extKey = 'mklib')
     {
-        $vars = $GLOBALS['TSFE']->fe_user->getKey('ses', $extKey);
+        $vars = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->getKey('ses', $extKey);
 
         return $vars[$key] ?? null;
     }
@@ -109,9 +109,9 @@ class tx_mklib_util_Session
      */
     public static function removeSessionValue($key, $extKey = 'mklib'): void
     {
-        $vars = $GLOBALS['TSFE']->fe_user->getKey('ses', $extKey);
+        $vars = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->getKey('ses', $extKey);
         unset($vars[$key]);
-        $GLOBALS['TSFE']->fe_user->setKey('ses', $extKey, $vars);
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->setKey('ses', $extKey, $vars);
     }
 
     /**
@@ -119,7 +119,7 @@ class tx_mklib_util_Session
      */
     public static function storeSessionData(): void
     {
-        $GLOBALS['TSFE']->fe_user->storeSessionData();
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->storeSessionData();
     }
 
     /**
@@ -161,7 +161,7 @@ class tx_mklib_util_Session
      */
     public static function setSessionId(string $sessionId): void
     {
-        $GLOBALS['TSFE']->fe_user->setUserSession(
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->setUserSession(
             TYPO3\CMS\Core\Session\UserSessionManager::create('FE')->createSessionFromStorage($sessionId)
         );
     }

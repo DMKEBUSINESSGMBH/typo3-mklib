@@ -187,7 +187,12 @@ class tx_mklib_mod1_decorator_Base implements Sys25\RnBase\Backend\Decorator\Int
                     // in der BE-Modul locallang.xlf der jeweiligen Extension im Schlüssel
                     // 'confirmation_deletion'. (z.B. mkkvbb/Resources/Private/Language/BackendModule/locallang.xlf) Soll kein
                     // Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
-                    $ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle, ['confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')]);
+                    $ret .= $this->getFormTool()->createDeleteLink(
+                        $tableName,
+                        $uid,
+                        $bTitle,
+                        ['confirm' => $this->mod->getLanguageService()->getLL('confirmation_deletion')]
+                    );
                     break;
                 case 'moveup':
                     $fromUid = $uid;

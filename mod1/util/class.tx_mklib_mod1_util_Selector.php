@@ -69,9 +69,9 @@ class tx_mklib_mod1_util_Selector
         $out['field'] = $this->getFormTool()->createTxtInput('SET['.$key.']', $searchstring, 10);
         $out['button'] = empty($options['submit']) ? '' : $this->getFormTool()->createSubmit(
             $options['buttonName'] ?? $key,
-            $options['buttonValue'] ?? $GLOBALS['LANG']->getLL('label_button_search')
+            $options['buttonValue'] ?? $this->mod->getLanguageService()->getLL('label_button_search')
         );
-        $out['label'] = $options['label'] ?? $GLOBALS['LANG']->getLL('label_search');
+        $out['label'] = $options['label'] ?? $this->mod->getLanguageService()->getLL('label_search');
 
         return $searchstring;
     }
@@ -84,11 +84,11 @@ class tx_mklib_mod1_util_Selector
     public function showHiddenSelector(array &$data, array $options = [])
     {
         $items = [
-            0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
-            1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
+            0 => $this->mod->getLanguageService()->getLL('label_select_hide_hidden'),
+            1 => $this->mod->getLanguageService()->getLL('label_select_show_hidden'),
         ];
 
-        $options['label'] ??= $GLOBALS['LANG']->getLL('label_hidden');
+        $options['label'] ??= $this->mod->getLanguageService()->getLL('label_hidden');
 
         return $this->showSelectorByArray($items, 'showhidden', $data, $options);
     }
@@ -111,7 +111,7 @@ class tx_mklib_mod1_util_Selector
             $items[(int) $lang['uid']] = $lang['title'];
         }
 
-        $options['label'] = $options['label'] ?: $GLOBALS['LANG']->getLL('label_language');
+        $options['label'] = $options['label'] ?: $this->mod->getLanguageService()->getLL('label_language');
 
         return $this->showSelectorByArray($items, 'language', $data, $options);
     }
@@ -223,7 +223,7 @@ class tx_mklib_mod1_util_Selector
 
         $itemMenu = [];
         if (isset($options['entryall'])) {
-            $itemMenu['0'] = is_string($options['entryall']) ? $options['entryall'] : $GLOBALS['LANG']->getLL('label_select_all_entries');
+            $itemMenu['0'] = is_string($options['entryall']) ? $options['entryall'] : $this->mod->getLanguageService()->getLL('label_select_all_entries');
         }
 
         $titleMethod = $options['titlemethod'] ?: 'getTcaLabel';
@@ -269,7 +269,7 @@ class tx_mklib_mod1_util_Selector
         $pid = $aOptions['pid'] ?: 0;
 
         // Build select box items
-        $aData['selector'] = Sys25\RnBase\Backend\Utility\BackendUtility::getFuncMenu(
+        $aData['selector'] = Sys25\RnBase\Backend\Utility\BackendUtility::getDropdownMenu(
             $pid,
             'SET['.$id.']',
             $selectedItem,
@@ -387,7 +387,7 @@ class tx_mklib_mod1_util_Selector
     {
         $fromValue = $this->getDateFieldByKey($key.'_from', $out);
         $toValue = $this->getDateFieldByKey($key.'_to', $out);
-        $out['label'] = $options['label'] ?? $GLOBALS['LANG']->getLL('label_daterange');
+        $out['label'] = $options['label'] ?? $this->mod->getLanguageService()->getLL('label_daterange');
 
         $this->setValueToModuleData(
             $this->getMod()->getName(),

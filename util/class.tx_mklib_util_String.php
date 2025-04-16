@@ -172,15 +172,10 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      */
     public static function obfusicateEmail(array $emailParts)
     {
-        static $cObj;
-
-        if (!$cObj) {
-            $cObj = Sys25\RnBase\Utility\TYPO3::getContentObject();
-        }
-
-        $emailMailTo = $cObj->getMailTo($emailParts[0], $emailParts[0]);
-
-        return $emailMailTo[1];
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Frontend\Typolink\EmailLinkBuilder::class)->processEmailLink(
+            $emailParts[0],
+            $emailParts[0]
+        )[1];
     }
 
     /**

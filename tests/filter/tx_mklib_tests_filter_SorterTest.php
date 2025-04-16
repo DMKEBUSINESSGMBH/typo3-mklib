@@ -68,11 +68,7 @@ class tx_mklib_tests_filter_SorterTest extends Sys25\RnBase\Testing\BaseTestCase
         unset($GLOBALS['TSFE']->rootLine[0]['uid']);
     }
 
-    /**
-     * @group unit
-     *
-     * @dataProvider getExpectedParsedLinks
-     */
+    #[PHPUnit\Framework\Attributes\DataProvider('getExpectedParsedLinks')]
     public function testParseTemplateParsesLinksCorrect(
         string $template,
         string $expectedParsedTemplate,
@@ -109,7 +105,7 @@ class tx_mklib_tests_filter_SorterTest extends Sys25\RnBase\Testing\BaseTestCase
         self::assertRegExp($expectedParsedTemplate, $parsedTemplate, 'link falsch');
     }
 
-    public function getExpectedParsedLinks(): array
+    public static function getExpectedParsedLinks(): array
     {
         return [
             // auf grund der default config sollte das orderBy nicht auf asc sondern auf desc stehen

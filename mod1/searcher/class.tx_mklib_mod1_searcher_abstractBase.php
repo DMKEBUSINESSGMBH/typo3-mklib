@@ -187,6 +187,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
             );
         }
 
+        $data['hidden'] = [];
         $this->currentShowHidden = $selector->showHiddenSelector(
             $data['hidden'],
             $options
@@ -211,7 +212,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     {
         return $this->getFormTool()->createSubmit(
             $this->getSearcherId().'Search',
-            $GLOBALS['LANG']->getLL('label_button_update')
+            $this->mod->getLanguageService()->getLL('label_button_update')
         );
     }
 
@@ -243,7 +244,7 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
         $pager = $this->usePager() ? TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             Sys25\RnBase\Backend\Utility\BEPager::class,
             $this->getSearcherId().'Pager',
-            $this->getModule()->getName(),
+            $this->getModule(),
             // @TODO: die PageId solle noch konfigurierbar gemacht werden.
             $pid = 0
         ) : null;

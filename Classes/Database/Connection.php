@@ -398,7 +398,7 @@ class Tx_Mklib_Database_Connection extends Sys25\RnBase\Database\Connection
 
         // daten sammeln
         $data = [];
-        $data['fe_user'] = $GLOBALS['TSFE']->fe_user->user['uid'] ?? 'none';
+        $data['fe_user'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->user['uid'] ?? 'none';
         $data['be_user'] = (array_key_exists('BE_USER', $GLOBALS) && is_object($GLOBALS['BE_USER'])) ? $GLOBALS['BE_USER']->user['uid'] : 'none';
         $data['tablename'] = $tablename;
         if ($where) {
