@@ -34,6 +34,12 @@
  */
 class tx_mklib_tests_util_DateTest extends Sys25\RnBase\Testing\BaseTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        date_default_timezone_set('Europe/Berlin');
+    }
+
     /**
      * Testen ob getTimestampByCalendarWeekDayAndYear den korrekten timestamp zurück gibt.
      */
