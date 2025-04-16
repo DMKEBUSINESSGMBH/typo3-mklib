@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 namespace DMK\Mklib\Utility;
 
 /*
@@ -42,8 +67,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class Tests
 {
-    private static $aExtConf = [];
-    private static $aHooks = [];
+    private static array $aExtConf = [];
+
+    private static array $aHooks = [];
+
     private static $sCacheFile;
 
     /**
@@ -51,7 +78,7 @@ class Tests
      *
      * @param unknown $sExtKey
      */
-    public static function storeHooks($sExtKey)
+    public static function storeHooks($sExtKey): void
     {
         self::$aHooks[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey];
     }
@@ -61,7 +88,7 @@ class Tests
      *
      * @param unknown $sExtKey
      */
-    public static function loadHooks($sExtKey)
+    public static function loadHooks($sExtKey): void
     {
         if (isset(self::$aExtConf[$sExtKey])) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey] = self::$aHooks[$sExtKey];
@@ -74,14 +101,12 @@ class Tests
      * @param string $sExtKey
      * @param string $sHookKey
      */
-    public static function removeHooks($sExtKey, $sHookKey = null)
+    public static function removeHooks($sExtKey, $sHookKey = null): void
     {
         if (!$sHookKey) {
             unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey]);
-        } else {
-            if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey]) {
-                unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey][$sHookKey]);
-            }
+        } elseif ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey]) {
+            unset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$sExtKey][$sHookKey]);
         }
     }
 
@@ -93,7 +118,7 @@ class Tests
      * @param string $sExtKey
      * @param bool   $bOverwrite
      */
-    public static function storeExtConf($sExtKey = 'mklib', $bOverwrite = false)
+    public static function storeExtConf($sExtKey = 'mklib', $bOverwrite = false): void
     {
         if (!isset(self::$aExtConf[$sExtKey]) || $bOverwrite) {
             self::$aExtConf[$sExtKey] = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey] ?? null;
@@ -107,7 +132,7 @@ class Tests
      *
      * @return bool wurde die Konfiguration zurückgesetzt?
      */
-    public static function restoreExtConf($sExtKey = 'mklib')
+    public static function restoreExtConf($sExtKey = 'mklib'): bool
     {
         if (isset(self::$aExtConf[$sExtKey])) {
             $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey] = self::$aExtConf[$sExtKey];
@@ -126,7 +151,7 @@ class Tests
      * @param string $sCfgValue
      * @param string $sExtKey
      */
-    public static function setExtConfVar($sCfgKey, $sCfgValue, $sExtKey = 'mklib')
+    public static function setExtConfVar($sCfgKey, $sCfgValue, $sExtKey = 'mklib'): void
     {
         // aktuelle Konfiguration auslesen
         $extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$sExtKey] ?? null;
@@ -134,6 +159,7 @@ class Tests
         if (!is_array($extConfig)) {
             $extConfig = [];
         }
+
         // neuen Wert setzen
         $extConfig[$sCfgKey] = $sCfgValue;
         // neue Konfiguration zurückschreiben
@@ -142,14 +168,8 @@ class Tests
 
     /**
      * Liefert eine DateiNamen.
-     *
-     * @param $filename
-     * @param $dir
-     * @param $extKey
-     *
-     * @return string
      */
-    public static function getFixturePath($filename, $dir = 'tests/fixtures/', $extKey = 'mklib')
+    public static function getFixturePath(string $filename, string $dir = 'tests/fixtures/', string $extKey = 'mklib'): string
     {
         return \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey).$dir.$filename;
     }
@@ -161,7 +181,7 @@ class Tests
      * @param string $extKey
      * @param bool   $bDisable
      */
-    public static function disableDevlog($extKey = 'devlog', $bDisable = true)
+    public static function disableDevlog($extKey = 'devlog', $bDisable = true): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$extKey]['nolog'] = $bDisable;
     }
@@ -171,12 +191,13 @@ class Tests
      *
      * @param string $sqlFile
      */
-    public static function queryDB($sqlFile, $statementType = false, $bIgnoreStatementType = false)
+    public static function queryDB($sqlFile, $statementType = false, $bIgnoreStatementType = false): void
     {
         $sql = \Sys25\RnBase\Utility\Network::getUrl($sqlFile);
         if (empty($sql)) {
             throw new \Exception('SQL-Datei nicht gefunden');
         }
+
         $databaseConnection = \Sys25\RnBase\Database\Connection::getInstance();
         if ($statementType || $bIgnoreStatementType) {
             $statements = self::getSqlStatementArrayDependendOnTypo3Version($sql);
@@ -192,12 +213,7 @@ class Tests
         }
     }
 
-    /**
-     * @param string $sql
-     *
-     * @return array
-     */
-    private static function getSqlStatementArrayDependendOnTypo3Version($sql)
+    private static function getSqlStatementArrayDependendOnTypo3Version(string $sql): array
     {
         $reader = GeneralUtility::makeInstance(SqlReader::class);
 
@@ -206,18 +222,15 @@ class Tests
 
     /**
      * Lädt den Inhalt einer Datei.
-     *
-     * @param string $filename
-     * @param array  $options
      */
-    public function loadTemplate($filename, $configurations, $extKey = 'mklib', $subpart = null, $dir = 'tests/fixtures/')
+    public function loadTemplate(string $filename, $configurations, string $extKey = 'mklib', $subpart = null, string $dir = 'tests/fixtures/')
     {
         $path = self::getFixturePath($filename, $dir, $extKey);
 
-        $markerTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
+        $markerTemplateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $templateCode = file_get_contents($path);
         if ($subpart) {
-            $templateCode = $markerTemplateService->getSubpart($templateCode, $subpart);
+            return $markerTemplateService->getSubpart($templateCode, $subpart);
         }
 
         return $templateCode;
@@ -229,18 +242,20 @@ class Tests
      * @param tslib_feuserauth $oFeUser Erzeugt das tslib_feuserauth Objekt wenn nix übergeben wurde
      * @param bool             $bForce  setzt das fe_user Objekt auch, wenn es bereits gesetzt ist
      */
-    public static function setFeUserObject($oFeUser = null, $bForce = false)
+    public static function setFeUserObject($oFeUser = null, $bForce = false): void
     {
         $frontendUserAuthenticationClass = \Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass();
         if (!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass
             || $bForce
         ) {
             if (!is_object($oFeUser)) {
-                $oFeUser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($frontendUserAuthenticationClass);
+                $oFeUser = GeneralUtility::makeInstance($frontendUserAuthenticationClass);
             }
+
             if (!is_object($GLOBALS['TSFE'])) {
                 self::prepareTSFE(['force' => true]);
             }
+
             $GLOBALS['TSFE']->fe_user = $oFeUser;
         }
     }
@@ -251,7 +266,7 @@ class Tests
      * @param array  $labels
      * @param string $lang
      */
-    public static function setLocallangLabels($labels = [], $lang = 'default')
+    public static function setLocallangLabels($labels = [], $lang = 'default'): void
     {
         global $LOCAL_LANG;
         $GLOBALS['LANG']->lang = $lang;
@@ -287,11 +302,11 @@ class Tests
         &$viewData = null
     ) {
         if (is_string($action)) {
-            $action = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($action);
+            $action = GeneralUtility::makeInstance($action);
         }
 
-        $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
-        $parameters = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
+        $configurations = GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
+        $parameters = GeneralUtility::makeInstance(\Sys25\RnBase\Frontend\Request\Parameters::class);
 
         $aConfig = (array) $aConfig;
         $configurations->init(
@@ -312,7 +327,7 @@ class Tests
         $action->setConfigurations($configurations);
         $parameters->setQualifier($configurations->getQualifier());
         if ($execute) {
-            $handleRequest = new \ReflectionMethod(get_class($action), 'handleRequest');
+            $handleRequest = new \ReflectionMethod($action::class, 'handleRequest');
             $handleRequest->setAccessible(true);
             $viewData = $configurations->getViewData();
             $frontendOutput = $handleRequest->invokeArgs(
@@ -330,7 +345,7 @@ class Tests
      * @param array $options
      *                       initFEuser: verhindert das Schreiben von Headerdaten
      */
-    public static function prepareTSFE(array $options = [])
+    public static function prepareTSFE(array $options = []): void
     {
         static $loaded = false;
         if ($loaded && !isset($options['force'])) {
@@ -366,12 +381,11 @@ class Tests
      * Liefert einen eindeutigen klassenname für einen Mock.
      * Dies ist sinnvoll, wenn ein Mock mehrfach generiert wird aber nicht gecached werden soll.
      *
-     * @param string $originalClassName
      * @param string $mockClassName
      *
      * @return object
      */
-    public static function generateUniqueMockClassName($originalClassName, $mockClassName = '')
+    public static function generateUniqueMockClassName(string $originalClassName, $mockClassName = '')
     {
         if ('' == $mockClassName) {
             do {
@@ -389,7 +403,7 @@ class Tests
      * typo3/sysext/cms/tslib/class.tslib_content.php on line 1814
      * auftritt. passiert zb bei link generierung.
      */
-    public static function setSysPageToTsfe()
+    public static function setSysPageToTsfe(): void
     {
         self::prepareTSFE();
         $GLOBALS['TSFE']->sys_page = \Sys25\RnBase\Utility\TYPO3::getSysPage();
@@ -398,7 +412,7 @@ class Tests
     /**
      * @param int $pageId
      */
-    public static function enableLinkCreation($pageId = 1)
+    public static function enableLinkCreation($pageId = 1): void
     {
         \Sys25\RnBase\Utility\Misc::prepareTSFE();
 
@@ -408,13 +422,11 @@ class Tests
 
     /**
      * @param string $pdfPath
-     *
-     * @return string
      */
-    public static function removeCreationDateFromPdfContent($pdfPath)
+    public static function removeCreationDateFromPdfContent($pdfPath): ?string
     {
         return preg_replace(
-            '/\/CreationDate \(D\:[0-9].*\)/',
+            '/\/CreationDate \(D\:\d.*\)/',
             '',
             file_get_contents($pdfPath)
         );

@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * HttpRequest.
  *
@@ -11,6 +36,7 @@ class tx_mklib_util_HttpRequest
      * HTTP request methods.
      */
     public const METHOD_GET = 'GET';
+
     public const METHOD_POST = 'POST';
 
     /**
@@ -19,13 +45,6 @@ class tx_mklib_util_HttpRequest
      * @var tx_mklib_util_httprequest_adapter_Interface
      */
     protected $adapter;
-
-    /**
-     * Request URI.
-     *
-     * @var string
-     */
-    protected $uri = '';
 
     /**
      * HTTP request method.
@@ -83,9 +102,11 @@ class tx_mklib_util_HttpRequest
      * @param string $uri
      * @param array  $config configuration key-value pairs
      */
-    public function __construct($uri, $config = null)
+    public function __construct(/**
+     * Request URI.
+     */
+        protected $uri, $config = null)
     {
-        $this->uri = $uri;
         if (is_array($config)) {
             $this->setConfig($config);
         }
@@ -93,12 +114,8 @@ class tx_mklib_util_HttpRequest
 
     /**
      * Set configuration parameters for this HTTP client.
-     *
-     * @param array $config
-     *
-     * @return tx_mklib_util_HttpRequest
      */
-    public function setConfig(array $config = [])
+    public function setConfig(array $config = []): static
     {
         foreach ($config as $k => $v) {
             $this->config[strtolower($k)] = $v;
@@ -119,13 +136,11 @@ class tx_mklib_util_HttpRequest
      * seperated from ->request() to preserve logic and readability
      *
      * @param string $adapter
-     *
-     * @return tx_mklib_util_HttpRequest
      */
-    public function setAdapter($adapter)
+    public function setAdapter($adapter): static
     {
         if (is_string($adapter)) {
-            $adapter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($adapter);
+            $adapter = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($adapter);
         }
 
         if (!$adapter instanceof tx_mklib_util_httprequest_adapter_Interface) {
@@ -145,10 +160,8 @@ class tx_mklib_util_HttpRequest
      *
      * @param string|false $user     User name or false disable authentication
      * @param string       $password Password
-     *
-     * @return tx_mklib_util_HttpRequest
      */
-    public function setAuth($user, $password = '')
+    public function setAuth($user, $password = ''): static
     {
         // If we got false or null, disable authentication
         if (false === $user || null === $user) {
@@ -168,17 +181,12 @@ class tx_mklib_util_HttpRequest
 
     /**
      * Set one or more request headers.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return tx_mklib_util_HttpRequest
      */
-    public function setHeader($name, $value = null)
+    public function setHeader(string $name, $value = null): static
     {
         // Make sure the name is valid if we are in strict mode
-        if ($this->config['strict'] && (!preg_match('/^[a-zA-Z0-9-]+$/', $name))) {
-            throw new Exception("{$name} is not a valid HTTP header name");
+        if ($this->config['strict'] && in_array(preg_match('/^[a-zA-Z0-9-]+$/', $name), [0, false], true)) {
+            throw new Exception($name.' is not a valid HTTP header name');
         }
 
         $normalized_name = strtolower($name);
@@ -192,6 +200,7 @@ class tx_mklib_util_HttpRequest
             if (is_string($value)) {
                 $value = trim($value);
             }
+
             $this->headers[$normalized_name] = [$name, $value];
         }
 
@@ -204,7 +213,7 @@ class tx_mklib_util_HttpRequest
      * @param string      $name
      * @param string|null $value
      */
-    public function addParameter($name, $value = null)
+    public function addParameter($name, $value = null): void
     {
         if (null === $value) {
             if (isset($this->parameters[$name])) {
@@ -236,7 +245,7 @@ class tx_mklib_util_HttpRequest
      *
      * @throws tx_mklib_util_HttpRequest
      */
-    public function setMethod($method = self::METHOD_GET)
+    public function setMethod($method = self::METHOD_GET): static
     {
         $method = strtoupper($method);
 
@@ -253,10 +262,8 @@ class tx_mklib_util_HttpRequest
      * Send the HTTP request and return an HTTP response object.
      *
      * @param string $method
-     *
-     * @return tx_mklib_util_httprequest_Response
      */
-    public function request($method = null)
+    public function request($method = null): tx_mklib_util_httprequest_Response
     {
         if (empty($this->uri)) {
             throw new Exception('No valid URI has been passed to the client');
@@ -276,11 +283,12 @@ class tx_mklib_util_HttpRequest
         // Clone the URI and add the additional GET parameters to it
         $uri = parse_url($this->uri);
 
-        if (!empty($this->parameters) && self::METHOD_GET == $this->method) {
+        if ([] !== $this->parameters && self::METHOD_GET == $this->method) {
             $query = http_build_query($this->parameters, null, '&');
             if ($this->config['rfc3986_strict']) {
                 $query = str_replace('+', '%20', $query);
             }
+
             $uri['query'] = empty($uri['query']) ? '' : $uri['query'].'&';
             $uri['query'] .= $query;
         }
@@ -289,7 +297,7 @@ class tx_mklib_util_HttpRequest
         $headers = $this->prepareHeaders();
 
         // Open the connection, send the request and read the response
-        $this->adapter->connect($uri['host'], $uri['port'], 'https' == $uri['scheme'] ? true : false);
+        $this->adapter->connect($uri['host'], $uri['port'], 'https' === $uri['scheme']);
 
         $this->adapter->write($this->method, tx_mklib_util_File::parseUrlFromParts($uri), $headers, $body);
 
@@ -298,36 +306,26 @@ class tx_mklib_util_HttpRequest
             throw new Exception('Unable to read response, or response is empty');
         }
 
-        $response = tx_mklib_util_httprequest_Response::fromString($response);
-
         // @TODO: redirect prüfen.
         // $response->isRedirect()
 
-        return $response;
+        return tx_mklib_util_httprequest_Response::fromString($response);
     }
 
     /**
      * Prepare the request headers.
-     *
-     * @return array
      */
-    protected function prepareHeaders()
+    protected function prepareHeaders(): array
     {
         $headers = [];
 
         // Set the connection header
-        if (!isset($this->headers['connection'])) {
-            if (!$this->config['keepalive']) {
-                $headers[] = 'Connection: close';
-            }
+        if (!isset($this->headers['connection']) && !$this->config['keepalive']) {
+            $headers[] = 'Connection: close';
         }
 
         if (!isset($this->headers['accept-encoding'])) {
-            if (function_exists('gzinflate')) {
-                $headers[] = 'Accept-encoding: gzip, deflate';
-            } else {
-                $headers[] = 'Accept-encoding: identity';
-            }
+            $headers[] = function_exists('gzinflate') ? 'Accept-encoding: gzip, deflate' : 'Accept-encoding: identity';
         }
 
         // Set the Content-Type header
@@ -350,7 +348,7 @@ class tx_mklib_util_HttpRequest
 
         // Add all other user defined headers
         foreach ($this->headers as $header) {
-            list($name, $value) = $header;
+            [$name, $value] = $header;
             if (is_array($value)) {
                 $value = implode(', ', $value);
             }
@@ -363,10 +361,8 @@ class tx_mklib_util_HttpRequest
 
     /**
      * Prepare the request body (for POST and PUT requests).
-     *
-     * @return string
      */
-    protected function prepareBody()
+    protected function prepareBody(): string
     {
         $body = '';
 

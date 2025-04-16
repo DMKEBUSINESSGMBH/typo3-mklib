@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -46,19 +46,16 @@ class tx_mklib_util_Array
      *
      * @author 2011 hbochmann
      *
-     * @param array $array
      * @param array $emptys alle Werte, die einen leeren Zustand definieren
      * @param bool  $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
-     *
-     * @return array
      */
     public static function removeEmptyArrayValuesSimple(
         array $array,
         array $emptys = ['', 0, '0', null, false, []],
-        $strict = true
-    ) {
+        $strict = true,
+    ): array {
         $ret = [];
-        foreach ($array as $key => $value) {
+        foreach ($array as $value) {
             if (!in_array($value, $emptys, $strict)) {
                 $ret[] = $value;
             }
@@ -77,19 +74,15 @@ class tx_mklib_util_Array
      *
      * @author 2011 mwagner
      *
-     * @param array $array
-     * @param bool  $resetIndexSetzt die Array Keys zurück, falls sie numerisch sind
-     * @param mixed $emptys          Single value for empty or array with multiple empty values
-     * @param bool  $strict          Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
-     *
-     * @return array
+     * @param mixed $emptys Single value for empty or array with multiple empty values
+     * @param bool  $strict Gibt an, ob die Werte Strict (===) verglichen werden oder nicht (==)
      */
     public static function removeEmptyValues(
         array $array,
         $resetIndex = false,
-        $emptys = false,
-        $strict = false
-    ) {
+        mixed $emptys = false,
+        $strict = false,
+    ): array {
         $emptyKeys = array_keys($array, $emptys, $strict);
         foreach ($emptyKeys as $key) {
             unset($array[$key]);
@@ -103,15 +96,14 @@ class tx_mklib_util_Array
      *
      * @author 2011 mwagner
      *
-     * @param mixed $mNeedle
-     * @param array $aHaystack
-     * @param bool  $bStrict
+     * @param bool $bStrict
      */
     public static function inArray($mNeedle, array $aHaystack, $bStrict = false)
     {
         if (!is_array($mNeedle)) {
             return in_array($mNeedle, $aHaystack, $bStrict);
         }
+
         foreach ($mNeedle as $sNeedle) {
             if (in_array($sNeedle, $aHaystack, $bStrict)) {
                 return true;
@@ -125,13 +117,8 @@ class tx_mklib_util_Array
      * Erstellt anhand einer Liste von Models/Arrays ein Array mit Werten einer Spalte.
      *
      * @author 2011 mwagner
-     *
-     * @param \Sys25\RnBase\Domain\Model\RecordInterface|array $objs
-     * @param string                                       $attr
-     *
-     * @return array
      */
-    public static function fieldsToArray($aObj, $sAttr = 'uid')
+    public static function fieldsToArray($aObj, $sAttr = 'uid'): array
     {
         $fieldsArray = [];
         foreach ($aObj as $oObj) {
@@ -148,14 +135,8 @@ class tx_mklib_util_Array
      * Erstellt anhand einer Liste von Models/Arrays ein String mit Werten einer Spalte.
      *
      * @author 2011 mwagner
-     *
-     * @param \Sys25\RnBase\Domain\Model\RecordInterface|array $objs
-     * @param string                                       $attr
-     * @param string                                       $delimiter
-     *
-     * @return string
      */
-    public static function fieldsToString($aObj, $sAttr = 'uid', $sDelimiter = ',')
+    public static function fieldsToString($aObj, $sAttr = 'uid', $sDelimiter = ','): string
     {
         $fieldsArray = self::fieldsToArray($aObj, $sAttr);
 
@@ -164,31 +145,26 @@ class tx_mklib_util_Array
 
     /**
      * @param object $object
-     *
-     * @return array
      */
-    public static function castObjectToArray($object)
+    public static function castObjectToArray($object): array
     {
         if (class_exists('ReflectionObject')) {
             return self::castObjectToArrayViaReflection($object);
-        } else {
-            $result = (array) $object;
-
-            foreach ($result as $key => $value) {
-                $key = self::fixProtectedInstanceVariableNames($key);
-                $result[$key] = $value;
-            }
-
-            return $result;
         }
+
+        $result = (array) $object;
+        foreach ($result as $key => $value) {
+            $key = self::fixProtectedInstanceVariableNames($key);
+            $result[$key] = $value;
+        }
+
+        return $result;
     }
 
     /**
      * @param object $object
-     *
-     * @return array
      */
-    public static function castObjectToArrayViaReflection($object)
+    public static function castObjectToArrayViaReflection($object): array
     {
         $result = [];
 
@@ -217,6 +193,6 @@ class tx_mklib_util_Array
         $matches = [];
         preg_match('/^\x00(?:.*?)\x00(.+)/', $variableName, $matches);
 
-        return $matches ? $matches[1] : $variableName;
+        return [] !== $matches ? $matches[1] : $variableName;
     }
 }

@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -44,18 +44,13 @@ abstract class tx_mklib_mod1_linker_Base
     /**
      * Linker Html ausgeben.
      *
-     * @param \Sys25\RnBase\Domain\Model\RecordInterface $item
-     * @param \Sys25\RnBase\Backend\Form\ToolBox                $formTool
-     *
      * @return string
      */
-    public function makeLink(\Sys25\RnBase\Domain\Model\RecordInterface $oItem, $oFormTool)
+    public function makeLink(Sys25\RnBase\Domain\Model\RecordInterface $oItem, $oFormTool)
     {
-        $sOut = $oFormTool->createSubmit(
-            $this->getActionName().'['.get_class($oItem).'|'.$oItem->getUid().']',
+        return $oFormTool->createSubmit(
+            $this->getActionName().'['.$oItem::class.'|'.$oItem->getUid().']',
             $GLOBALS['LANG']->getLL('label_show_details')
         );
-
-        return $sOut;
     }
 }

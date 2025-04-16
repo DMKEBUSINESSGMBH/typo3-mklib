@@ -1,10 +1,12 @@
 <?php
 
-/***************************************************************
+/*
  * Copyright notice
  *
- * (c) 2016 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,7 +23,7 @@
  * GNU General Public License for more details.
  *
  * This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
 /**
  * Iban Model and Validatort based on jschaedl/Iban.
@@ -35,14 +37,23 @@
 class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
 {
     public const LOCALECODE_OFFSET = 0;
+
     public const LOCALECODE_LENGTH = 2;
+
     public const CHECKSUM_OFFSET = 2;
+
     public const CHECKSUM_LENGTH = 2;
+
     public const ACCOUNTIDENTIFICATION_OFFSET = 4;
+
     public const INSTITUTEIDENTIFICATION_OFFSET = 4;
+
     public const INSTITUTEIDENTIFICATION_LENGTH = 8;
+
     public const BANKACCOUNTNUMBER_OFFSET = 12;
+
     public const BANKACCOUNTNUMBER_LENGTH = 10;
+
     public const IBAN_MIN_LENGTH = 15;
 
     protected static $letterMapping = [
@@ -131,42 +142,53 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         'GB' => '[A-Z]{4}[0-9]{14}',
     ];
 
-    public function validate()
+    public function validate(): bool
     {
         if (!$this->isLengthValid()) {
             return false;
-        } elseif (!$this->isLocalCodeValid()) {
-            return false;
-        } elseif (!$this->isFormatValid()) {
-            return false;
-        } elseif (!$this->isChecksumValid()) {
-            return false;
-        } else {
-            return true;
         }
+
+        if (!$this->isLocalCodeValid()) {
+            return false;
+        }
+
+        if (!$this->isFormatValid()) {
+            return false;
+        }
+
+        return $this->isChecksumValid();
     }
 
     public const VALIDATE_ERROR_LENGTH = 1;
+
     public const VALIDATE_ERROR_LOCALCODE = 2;
+
     public const VALIDATE_ERROR_FORMAT = 3;
+
     public const VALIDATE_ERROR_CHECKSUM = 4;
 
-    public function getValidateError()
+    public function getValidateError(): int|bool
     {
         if (!$this->isLengthValid()) {
             return self::VALIDATE_ERROR_LENGTH;
-        } elseif (!$this->isLocalCodeValid()) {
-            return self::VALIDATE_ERROR_LOCALCODE;
-        } elseif (!$this->isFormatValid()) {
-            return self::VALIDATE_ERROR_FORMAT;
-        } elseif (!$this->isChecksumValid()) {
-            return self::VALIDATE_ERROR_CHECKSUM;
-        } else {
-            return true;
         }
+
+        if (!$this->isLocalCodeValid()) {
+            return self::VALIDATE_ERROR_LOCALCODE;
+        }
+
+        if (!$this->isFormatValid()) {
+            return self::VALIDATE_ERROR_FORMAT;
+        }
+
+        if (!$this->isChecksumValid()) {
+            return self::VALIDATE_ERROR_CHECKSUM;
+        }
+
+        return true;
     }
 
-    public function format()
+    public function format(): string
     {
         return sprintf(
             '%s %s %s %s %s %s',
@@ -179,52 +201,52 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         );
     }
 
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         return substr($this->getValue(), self::LOCALECODE_OFFSET, self::LOCALECODE_LENGTH);
     }
 
-    public function getChecksum()
+    public function getChecksum(): string
     {
         return substr($this->getValue(), self::CHECKSUM_OFFSET, self::CHECKSUM_LENGTH);
     }
 
-    public function getAccountIdentification()
+    public function getAccountIdentification(): string
     {
         return substr($this->getValue(), self::ACCOUNTIDENTIFICATION_OFFSET);
     }
 
-    public function getInstituteIdentification()
+    public function getInstituteIdentification(): string
     {
         return substr($this->getValue(), self::INSTITUTEIDENTIFICATION_OFFSET, self::INSTITUTEIDENTIFICATION_LENGTH);
     }
 
-    public function getBankAccountNumber()
+    public function getBankAccountNumber(): string
     {
         return substr($this->getValue(), self::BANKACCOUNTNUMBER_OFFSET, self::BANKACCOUNTNUMBER_LENGTH);
     }
 
-    private function isLengthValid()
+    private function isLengthValid(): bool
     {
-        return strlen($this->getValue()) < self::IBAN_MIN_LENGTH ? false : true;
+        return strlen($this->getValue()) >= self::IBAN_MIN_LENGTH;
     }
 
-    private function isLocalCodeValid()
+    private function isLocalCodeValid(): bool
     {
         $localeCode = $this->getLocaleCode();
 
-        return !(false === isset(self::$ibanFormatMap[$localeCode]));
+        return isset(self::$ibanFormatMap[$localeCode]);
     }
 
-    private function isFormatValid()
+    private function isFormatValid(): bool
     {
         $localeCode = $this->getLocaleCode();
         $accountIdentification = $this->getAccountIdentification();
 
-        return !(1 !== preg_match('/'.self::$ibanFormatMap[$localeCode].'/', $accountIdentification));
+        return 1 === preg_match('/'.self::$ibanFormatMap[$localeCode].'/', $accountIdentification);
     }
 
-    private function isChecksumValid()
+    private function isChecksumValid(): bool
     {
         $localeCode = $this->getLocaleCode();
         $checksum = $this->getChecksum();
@@ -236,22 +258,22 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         return '1' === $this->local_bcmod($invertedIban, 97);
     }
 
-    private function getNumericLocaleCode($localeCode)
+    private function getNumericLocaleCode(string $localeCode): string
     {
         return $this->getNumericRepresentation($localeCode);
     }
 
-    private function getNumericAccountIdentification($accountIdentification)
+    private function getNumericAccountIdentification(string $accountIdentification): string
     {
         return $this->getNumericRepresentation($accountIdentification);
     }
 
-    private function getNumericRepresentation($letterRepresentation)
+    private function getNumericRepresentation(string $letterRepresentation): string
     {
         $numericRepresentation = '';
         foreach (str_split($letterRepresentation) as $char) {
-            if (array_search($char, self::$letterMapping)) {
-                $numericRepresentation .= array_search($char, self::$letterMapping) + 9;
+            if (array_search($char, self::$letterMapping, true)) {
+                $numericRepresentation .= array_search($char, self::$letterMapping, true) + 9;
             } else {
                 $numericRepresentation .= $char;
             }
@@ -260,7 +282,7 @@ class Tx_Mklib_Domain_Model_Iso_Iban extends Tx_Mklib_Domain_Model_Iso_Base
         return $numericRepresentation;
     }
 
-    private function local_bcmod($x, $y)
+    private function local_bcmod(string $x, int $y): string
     {
         if (!function_exists('bcmod')) {
             // workaround http://php.net/manual/en/function.bcmod.php#38474

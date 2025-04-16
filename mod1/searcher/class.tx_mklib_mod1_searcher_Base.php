@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -34,11 +34,12 @@
  */
 class tx_mklib_mod1_searcher_Base
 {
-    private $mod;
+    private Sys25\RnBase\Backend\Module\IModule $mod;
 
     protected $selector;
 
     protected $options;
+
     protected $formTool;
 
     protected $uid;
@@ -46,13 +47,11 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Constructor.
      *
-     * @param \Sys25\RnBase\Backend\Module\IModule $mod
-     * @param unknown_type          $options
-     * @param string                $sSelector
+     * @param unknown_type $options
      *
      * @return unknown_type
      */
-    public function __construct(\Sys25\RnBase\Backend\Module\IModule $mod, $options = [])
+    public function __construct(Sys25\RnBase\Backend\Module\IModule $mod, $options = [])
     {
         $this->init($mod, $options);
     }
@@ -60,17 +59,15 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Init object.
      *
-     * @param \Sys25\RnBase\Backend\Module\IModule $mod
-     * @param array                 $options
-     * @param string                $sSelector
+     * @param array $options
      */
-    protected function init(\Sys25\RnBase\Backend\Module\IModule $mod, $options, $sSelector = 'tx_mklib_mod1_util_Selector')
+    protected function init(Sys25\RnBase\Backend\Module\IModule $mod, $options, string $sSelector = 'tx_mklib_mod1_util_Selector')
     {
         $this->options = $options;
         $this->mod = $mod;
         $this->formTool = $mod->getFormTool();
 
-        $this->selector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($sSelector);
+        $this->selector = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($sSelector);
         $this->selector->init($mod);
     }
 
@@ -79,7 +76,7 @@ class tx_mklib_mod1_searcher_Base
      * @param unknown_type $fields
      * @param unknown_type $options
      */
-    public function getCount($srv, $fields, $options)
+    public function getCount($srv, $fields, array $options)
     {
         // Get counted data
         $options['count'] = 1;
@@ -99,10 +96,8 @@ class tx_mklib_mod1_searcher_Base
 
     /**
      * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
-     *
-     * @return \Sys25\RnBase\Backend\Module\IModule
      */
-    public function getModule()
+    public function getModule(): Sys25\RnBase\Backend\Module\IModule
     {
         return $this->mod;
     }
@@ -110,7 +105,7 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return \Sys25\RnBase\Backend\Module\IModule
+     * @return Sys25\RnBase\Backend\Module\IModule
      */
     public function getOptions()
     {
@@ -120,7 +115,7 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return \Sys25\RnBase\Backend\Module\IModule
+     * @return Sys25\RnBase\Backend\Module\IModule
      */
     public function getFormTool()
     {
@@ -130,7 +125,7 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Liefert die Funktions-Id.
      */
-    public function getFuncId()
+    public function getFuncId(): string
     {
         return '';
     }
@@ -138,7 +133,7 @@ class tx_mklib_mod1_searcher_Base
     /**
      * Setzte die Uid des Objekts.
      */
-    public function setUid($uid)
+    public function setUid($uid): void
     {
         $this->uid = $uid;
     }

@@ -1,19 +1,36 @@
 <?php
 
-/**
- * Controller
- * Generische Klasse für List Views.
+/*
+ * Copyright notice
  *
- * @author Michael Wagner
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
-abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Controller\AbstractAction
+
+abstract class tx_mklib_action_AbstractList extends Sys25\RnBase\Frontend\Controller\AbstractAction
 {
     /**
-     * @param \Sys25\RnBase\Frontend\Request\RequestInterface $request
-     *
      * @return string|null
      */
-    protected function handleRequest(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
+    protected function handleRequest(Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
         $out = $this->prepareRequest($request);
         if (null !== $out) {
@@ -32,41 +49,39 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
      *
      * @return string error msg or null
      */
-    protected function prepareRequest(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
+    protected function prepareRequest(Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
         return null;
     }
 
     /**
-     * @param \Sys25\RnBase\Frontend\Request\RequestInterface $request
-     *
      * @return array|false
      */
-    protected function getItems(\Sys25\RnBase\Frontend\Request\RequestInterface $request)
+    protected function getItems(Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {
         $configurations = $request->getConfigurations();
-        $parameters = $request->getParameters();
+        $request->getParameters();
         $viewData = $request->getViewContext();
 
         // get the repo
         $repo = $this->getRepository();
 
         // check the repo interface
-        if (!($repo instanceof \Sys25\RnBase\Domain\Repository\SearchInterface)) {
-            throw new RuntimeException('the repository "'.get_class($repo).'" has to implement the interface "\Sys25\RnBase\Domain\Repository\SearchInterface"!', intval(ERROR_CODE_MKLIB.'1'));
+        if (!($repo instanceof Sys25\RnBase\Domain\Repository\SearchInterface)) {
+            throw new RuntimeException('the repository "'.$repo::class.'" has to implement the interface "\Sys25\RnBase\Domain\Repository\SearchInterface"!', intval(ERROR_CODE_MKLIB.'1'));
         }
 
         // create filter
-        $filter = \Sys25\RnBase\Frontend\Filter\BaseFilter::createFilter($request, $this->getConfId().'filter.');
-
-        $fields = $options = [];
+        $filter = Sys25\RnBase\Frontend\Filter\BaseFilter::createFilter($request, $this->getConfId().'filter.');
+        $fields = [];
+        $options = [];
         // let the filter fill the fields end options
         if ($this->prepareFieldsAndOptions($fields, $options)
             && $filter->init($fields, $options)
         ) {
             if ($configurations->get($this->getConfId().'pagebrowser')) {
-                $pageBrowserFilter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    \Sys25\RnBase\Frontend\Filter\Utility\PageBrowserFilter::class
+                $pageBrowserFilter = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                    Sys25\RnBase\Frontend\Filter\Utility\PageBrowserFilter::class
                 );
                 $pageBrowserFilter->handle(
                     $configurations,
@@ -77,6 +92,7 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
                     ['searchcallback' => [$repo, 'search']]
                 );
             }
+
             // we search for the items
             $items = $repo->search($fields, $options);
         } else {
@@ -84,21 +100,18 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
             return false;
         }
 
-        return !(array) $items ? [] : $items;
+        return [] !== (array) $items ? $items : [];
     }
 
     /**
      * Childclass can prepare the fields and options
      * for the search in the repository.
      *
-     * @param array &$fields
-     * @param array &$options
-     *
      * @return bool
      */
     protected function prepareFieldsAndOptions(
         array &$fields,
-        array &$options
+        array &$options,
     ) {
         return true;
     }
@@ -108,9 +121,9 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
      *
      * @return string
      */
-    public function getViewClassName()
+    protected function getViewClassName()
     {
-        return \Sys25\RnBase\Frontend\View\Marker\ListView::class;
+        return Sys25\RnBase\Frontend\View\Marker\ListView::class;
     }
 
     /**
@@ -125,7 +138,7 @@ abstract class tx_mklib_action_AbstractList extends \Sys25\RnBase\Frontend\Contr
     /**
      * Liefert die Service Klasse, welche das Suchen übernimmt.
      *
-     * @return \Sys25\RnBase\Domain\Repository\SearchInterface
+     * @return Sys25\RnBase\Domain\Repository\SearchInterface
      */
     abstract protected function getRepository();
 }

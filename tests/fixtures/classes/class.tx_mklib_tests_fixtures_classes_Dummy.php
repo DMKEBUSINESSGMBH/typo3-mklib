@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -34,19 +34,20 @@
  */
 class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_repository_Abstract
 {
-    public function search($fields, $options)
+    public function search($fields, $options): int|array
     {
         if ($GLOBALS['emptyTestResult']) {
             $aResults = [];
         } else {
             $aResults = [
-                0 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 1]),
-                1 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2]),
-                2 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 3]),
-                3 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 4]),
-                4 => \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5]),
+                0 => TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 1]),
+                1 => TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2]),
+                2 => TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 3]),
+                3 => TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 4]),
+                4 => TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5]),
             ];
         }
+
         // sortieren?
         if (!empty($options['orderby'])) {
             rsort($aResults);
@@ -54,7 +55,7 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_repository_Abstract
 
         // versteckte zurück geben?
         if (1 == $GLOBALS['BE_USER']->uc['moduleData']['dummyMod']['showhidden']) {
-            $aResults[5] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'hidden' => 1]);
+            $aResults[5] = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'hidden' => 1]);
         }
 
         if ($options['count']) {
@@ -66,10 +67,8 @@ class tx_mklib_tests_fixtures_classes_Dummy extends tx_mklib_repository_Abstract
 
     /**
      * Liefert die zugehörige Search-Klasse zurück.
-     *
-     * @return string
      */
-    public function getSearchClass()
+    protected function getSearchClass(): string
     {
         return 'tx_mklib_search_StaticCountries';
     }

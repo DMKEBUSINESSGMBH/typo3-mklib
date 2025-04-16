@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * Util Methoden für das TS, speziell im BE.
  *
@@ -14,34 +39,28 @@ class tx_mklib_util_TS
      * "lib.links." liegt.
      *
      * @param string $extKey               Extension, deren TS Config geladen werden soll
-     * @param string $extKeyTS             Extension, deren Konfig innerhalb der
-     *                                     TS Config geladen werden soll.
-     *                                     Es kann also zb. das TS von mklib geladen werden aber darin die konfig für
-     *                                     das plugin von mkxyz
      * @param string $sStaticPath          pfad zum TS
      * @param array  $aConfig              zusätzliche Konfig, die die default  überschreibt
      * @param bool   $resolveReferences    sollen referenzen die in lib.
      *                                     und plugin.tx_$extKeyTS stehen aufgelöst werden?
      * @param bool   $forceTsfePreparation
-     *
-     * @return \Sys25\RnBase\Configuration\Processor
      */
     public static function loadConfig4BE(
-        $extKey,
+        string $extKey,
         $extKeyTs = null,
         $sStaticPath = '',
-        $aConfig = [],
+        array $aConfig = [],
         $resolveReferences = false,
-        $forceTsfePreparation = false
-    ) {
+        $forceTsfePreparation = false,
+    ): Sys25\RnBase\Configuration\Processor {
         $extKeyTs = is_null($extKeyTs) ? $extKey : $extKeyTs;
 
         if (!$sStaticPath) {
             $sStaticPath = '/static/ts/setup.txt';
         }
 
-        if (file_exists(\Sys25\RnBase\Utility\Files::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
+        if (file_exists(Sys25\RnBase\Utility\Files::getFileAbsFileName('EXT:'.$extKey.$sStaticPath))) {
+            TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.$sStaticPath.'">');
         }
 
         $tsfePreparationOptions = [];
@@ -50,32 +69,32 @@ class tx_mklib_util_TS
         }
 
         // Ist bei Aufruf aus BE notwendig! (@TODO: sicher???)
-        \Sys25\RnBase\Utility\Misc::prepareTSFE($tsfePreparationOptions);
+        Sys25\RnBase\Utility\Misc::prepareTSFE($tsfePreparationOptions);
         $GLOBALS['TSFE']->config = [];
 
-        $cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Utility\Typo3Classes::getContentObjectRendererClass());
+        $cObj = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Utility\Typo3Classes::getContentObjectRendererClass());
 
-        $pageTsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig(0);
+        $pageTsConfig = TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig(0);
 
         $tempConfig = $pageTsConfig['plugin.']['tx_'.$extKeyTs.'.'];
         $tempConfig['lib.'][$extKeyTs.'.'] = $pageTsConfig['lib.'][$extKeyTs.'.'];
         $tempConfig['lib.']['links.'] = $pageTsConfig['lib.']['links.'];
 
         if ($resolveReferences) {
-            $GLOBALS['TSFE']->tmpl->setup['lib.'][$extKeyTs.'.'] =
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getSetupArray()['lib.'][$extKeyTs.'.'] =
                 $tempConfig['lib.'][$extKeyTs.'.'];
-            $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_'.$extKeyTs.'.'] =
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getSetupArray()['plugin.']['tx_'.$extKeyTs.'.'] =
                 $pageTsConfig['plugin.']['tx_'.$extKeyTs.'.'];
         }
 
         $pageTsConfig = $tempConfig;
 
-        $qualifier = $pageTsConfig['qualifier'] ? $pageTsConfig['qualifier'] : $extKeyTs;
+        $qualifier = $pageTsConfig['qualifier'] ?: $extKeyTs;
 
         // möglichkeit die default konfig zu überschreiben
-        $pageTsConfig = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule($pageTsConfig, $aConfig);
+        $pageTsConfig = Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule($pageTsConfig, $aConfig);
 
-        $configurations = new \Sys25\RnBase\Configuration\Processor();
+        $configurations = new Sys25\RnBase\Configuration\Processor();
         $configurations->init($pageTsConfig, $cObj, $extKeyTs, $qualifier);
 
         return $configurations;
@@ -85,26 +104,25 @@ class tx_mklib_util_TS
      * load ts from page.
      *
      * @param mixed  $mPageUid   page uid
-     * @param string $sExtKey
      * @param string $sDomainKey
      *
-     * @return \Sys25\RnBase\Configuration\Processor
+     * @return Sys25\RnBase\Configuration\Processor
      *
      * @TODO: static caching integrieren!?
      */
     public static function loadTSFromPage(
-        $mPageUid = 0,
-        $sExtKey = 'mklib',
-        $sDomainKey = 'plugin.'
+        mixed $mPageUid = 0,
+        string $sExtKey = 'mklib',
+        $sDomainKey = 'plugin.',
     ) {
         // ts für die extension auslesen
         $typoScriptConfiguration = self::getTypoScriptConfiguration($mPageUid)[$sDomainKey]['tx_'.$sExtKey.'.'] ?? [];
-        $typoScriptConfiguration['lib.'] = $typoScriptConfiguration['lib.'] ?? null;
+        $typoScriptConfiguration['lib.'] ??= null;
         $qualifier = $typoScriptConfiguration['qualifier'] ?? $sExtKey;
 
         // konfiguration erzeugen
         /* @var $configurations \Sys25\RnBase\Configuration\Processor */
-        $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
+        $configurations = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Configuration\Processor::class);
         $configurations->init($typoScriptConfiguration, $configurations->getCObj(1), $sExtKey, $qualifier);
 
         return $configurations;
@@ -112,12 +130,12 @@ class tx_mklib_util_TS
 
     protected static function getTypoScriptConfiguration($pageUid = 0): array
     {
-        $rootLine = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Utility\RootlineUtility::class,
+        $rootLine = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            TYPO3\CMS\Core\Utility\RootlineUtility::class,
             intval($pageUid)
         )->get();
 
-        $tsfe = \Sys25\RnBase\Utility\Misc::prepareTSFE(
+        $tsfe = Sys25\RnBase\Utility\Misc::prepareTSFE(
             [
                 'force' => true,
                 'pid' => $pageUid,
@@ -126,25 +144,18 @@ class tx_mklib_util_TS
         );
         $tsfe->rootLine = $rootLine;
         $tsfe->no_cache = true;
-        $context = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
-        $context->setAspect(
-            'typoscript',
-            \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                \TYPO3\CMS\Core\Context\TypoScriptAspect::class,
-                true
-            )
-        );
+
         $tsfe->id = $pageUid;
         // @todo the if part can be removed when support for TYPO3 11 is dropped.
         if (is_callable([$tsfe, 'getConfigArray'])) {
             $tsfe->getConfigArray();
-            $setup = $tsfe->tmpl->setup;
-        } else {
-            $GLOBALS['TYPO3_REQUEST'] = $tsfe->getFromCache($GLOBALS['TYPO3_REQUEST'] ?? \TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
-            $setup = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')
-                ->getSetupArray();
+
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getSetupArray();
         }
 
-        return $setup;
+        $GLOBALS['TYPO3_REQUEST'] = $tsfe->getFromCache($GLOBALS['TYPO3_REQUEST'] ?? TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
+
+        return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')
+            ->getSetupArray();
     }
 }

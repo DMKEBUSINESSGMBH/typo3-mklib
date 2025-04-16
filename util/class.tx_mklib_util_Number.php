@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * Numeric Utils.
  *
@@ -19,10 +44,8 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
      * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
      *
      * @param string $number
-     *
-     * @return float
      */
-    public static function parseFloat($number)
+    public static function parseFloat($number): float
     {
         // Wir machen aus dem Wert ein Float
         $string = (string) $number;
@@ -34,7 +57,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
         // Nur dann können wir uns halbwegs sicher sein,
         // das es sich um ein Dezimaltrennzeichen handelt.
         // Besser wäre, den Wert richtig zu parsen (siehe todo).
-        if (substr_count($string, ',')) {
+        if (0 !== substr_count($string, ',')) {
             $string = str_replace(',', '.', $string);
         }
 
@@ -50,11 +73,10 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
      * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
      *
      * @param string $number
-     * @param array  $config
      *
      * @return string der float wert als String
      */
-    public static function floatVal($number, array $config = [])
+    public static function floatVal($number, array $config = []): string
     {
         $float = self::parseFloat($number);
         $string = (string) $float;

@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2012 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -32,12 +32,12 @@
 /**
  * Class to search ads from database.
  */
-class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
+class tx_mklib_search_StaticCountries extends Sys25\RnBase\Search\SearchBase
 {
     /**
      * getTableMappings().
      */
-    protected function getTableMappings()
+    protected function getTableMappings(): array
     {
         return [];
     }
@@ -45,7 +45,7 @@ class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
     /**
      * useAlias().
      */
-    protected function useAlias()
+    protected function useAlias(): bool
     {
         return true;
     }
@@ -53,7 +53,7 @@ class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
     /**
      * getBaseTableAlias().
      */
-    protected function getBaseTableAlias()
+    protected function getBaseTableAlias(): string
     {
         return 'STATICCOUNTRY';
     }
@@ -61,7 +61,7 @@ class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
     /**
      * getBaseTable().
      */
-    protected function getBaseTable()
+    protected function getBaseTable(): string
     {
         return 'static_countries';
     }
@@ -69,7 +69,7 @@ class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
     /**
      * getWrapperClass().
      */
-    public function getWrapperClass()
+    public function getWrapperClass(): string
     {
         return 'tx_mklib_model_StaticCountry';
     }
@@ -78,10 +78,8 @@ class tx_mklib_search_StaticCountries extends \Sys25\RnBase\Search\SearchBase
      * Liefert alle JOINS zurück.
      *
      * @param array $tableAliases
-     *
-     * @return string
      */
-    protected function getJoins($tableAliases)
+    protected function getJoins($tableAliases): string
     {
         return '';
     }

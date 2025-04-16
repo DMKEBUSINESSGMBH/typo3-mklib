@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -49,14 +49,13 @@ class tx_mklib_util_Csv
     /**
      * Schreibt die ganzen CSV Zeilen in eine Datei.
      *
-     * @param string $sDir
      * @param string $sPrefix
      * @param array  $aData
      * @param string $sFileName | gibt es einen festen dateinamen?
      *
      * @return string|Name der Datei
      */
-    public function writeCsv($sDir, $sPrefix = '', $aData = [], $sFileName = '')
+    public function writeCsv(string $sDir, $sPrefix = '', $aData = [], $sFileName = '')
     {
         if (empty($aData)) {
             $aData = $this->getCsvLines();
@@ -66,24 +65,21 @@ class tx_mklib_util_Csv
             if ($sPrefix) {
                 $sPrefix .= '_';
             }
+
             $sFileName = $sPrefix.date('dmy-Hi').'.csv';
         }
+
         $sCsvLines = implode(chr(13).chr(10), $aData);
 
-        if (\Sys25\RnBase\Utility\Files::writeFile($sDir.$sFileName, $sCsvLines)) {
+        if (Sys25\RnBase\Utility\Files::writeFile($sDir.$sFileName, $sCsvLines)) {
             return $sFileName;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
-    /**
-     * @param array  $csvRow
-     * @param string $delimiter
-     * @param string $quote
-     */
-    public function setCsvRow($csvRow, $delimiter = ',', $quote = '"')
+    public function setCsvRow(array $csvRow, string $delimiter = ',', string $quote = '"'): void
     {
-        $this->csvLines[] = \TYPO3\CMS\Core\Utility\CsvUtility::csvValues($csvRow, $delimiter, $quote);
+        $this->csvLines[] = TYPO3\CMS\Core\Utility\CsvUtility::csvValues($csvRow, $delimiter, $quote);
     }
 }

@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2014 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -30,17 +30,14 @@
  */
 class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
 {
-    /**
-     * @var array
-     */
-    private $affectedRows = [];
+    private array $affectedRows = [];
 
     /**
      * (non-PHPdoc).
      *
      * @see tx_mklib_scheduler_Generic::executeTask()
      */
-    protected function executeTask(array $options, array &$devLog)
+    protected function executeTask(array $options, array &$devLog): bool
     {
         $table = $options['table'];
         $where = $options['where'];
@@ -56,7 +53,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
             ]
         );
 
-        $devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO] = [
+        $devLog[Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO] = [
             'message' => count($this->affectedRows).' Datensätze wurden in '.
                             $table.' mit der Bedingung '.
                             $where.' und dem Modus '.$mode.' entfernt',
@@ -72,9 +69,9 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
     private function getSelectFields()
     {
         $selectFields =
-            $this->getOption('selectFields') ? $this->getOption('selectFields') : 'uid';
+            $this->getOption('selectFields') ?: 'uid';
 
-        if (false === strpos($this->getUidField(), $selectFields)) {
+        if (in_array(str_contains($this->getUidField(), $selectFields), [0, false], true)) {
             $selectFields .= ','.$this->getUidField();
         }
 
@@ -84,15 +81,12 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
     /**
      * @return string
      */
-    protected function getDatabaseConnection()
+    protected function getDatabaseConnection(): object
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
     }
 
-    /**
-     * @param array $row
-     */
-    public function deleteRow(array $row)
+    public function deleteRow(array $row): void
     {
         $this->affectedRows[] = $row;
         $databaseConnection = $this->getDatabaseConnection();
@@ -111,7 +105,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
      */
     private function getUidField()
     {
-        return $this->getOption('uidField') ? $this->getOption('uidField') : 'uid';
+        return $this->getOption('uidField') ?: 'uid';
     }
 
     /**
@@ -122,7 +116,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
     public function getAdditionalInformation($info = '')
     {
         return parent::getAdditionalInformation(
-            $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_DeleteFromDatabase_taskinfo')
+            $GLOBALS['LANG']->sL('LLL:EXT:mklib/Resources/Private/Language/Resources/Private/Language/Scheduler/locallang.xlf:scheduler_DeleteFromDatabase_taskinfo')
         );
     }
 }

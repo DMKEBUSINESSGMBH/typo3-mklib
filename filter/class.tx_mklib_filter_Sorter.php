@@ -1,29 +1,29 @@
 <?php
 
-/**
- * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * BITTE INS WIKI SCHAUEN FÜR EINEN BEISPIEL TESTCASE,
@@ -50,7 +50,7 @@
  * @todo default sortierung per TypoScript konfigurierbar machen
  * @todo mehrfach sortierung unertsützen?
  */
-class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
+class tx_mklib_filter_Sorter extends Sys25\RnBase\Frontend\Filter\BaseFilter
 {
     /**
      * @var string
@@ -112,15 +112,12 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
      */
     private $sortBy;
 
-    /**
-     * @var string
-     */
-    private $sortOrder;
+    private ?string $sortOrder = null;
 
     /**
      * @var null || boolean
      */
-    private $initiatedSorting;
+    private ?bool $initiatedSorting = null;
 
     /**
      * setzt $this->sortBy und $this->sortOrder.
@@ -145,6 +142,7 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
 
             return true;
         }
+
         // else
 
         $this->initiatedSorting = false;
@@ -159,8 +157,8 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
     {
         $parameters = $this->getParameters();
 
-        if (!$sortBy = trim($parameters->get($this->sortByParameterName))) {
-            $sortBy = $this->getDefaultValue($this->defaultFieldConfId);
+        if (($sortBy = trim($parameters->get($this->sortByParameterName))) === '' || ($sortBy = trim($parameters->get($this->sortByParameterName))) === '0') {
+            return $this->getDefaultValue($this->defaultFieldConfId);
         }
 
         return $sortBy;
@@ -173,19 +171,17 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
     {
         $parameters = $this->getParameters();
 
-        if (!$sortOrder = trim($parameters->get($this->sortOrderParameterName))) {
-            $sortOrder = $this->getDefaultValue($this->defaultSortOrderConfId);
+        if (($sortOrder = trim($parameters->get($this->sortOrderParameterName))) === '' || ($sortOrder = trim($parameters->get($this->sortOrderParameterName))) === '0') {
+            return $this->getDefaultValue($this->defaultSortOrderConfId);
         }
 
         return $sortOrder;
     }
 
     /**
-     * @param string $defaultValue
-     *
      * @return string
      */
-    private function getDefaultValue($confId)
+    private function getDefaultValue(string $confId)
     {
         $defaultConfigurationConfId =
             $this->getConfId().$this->sortConfId.$this->defaultConfigurationConfId;
@@ -196,10 +192,8 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
 
     /**
      * @param string $sortOrder
-     *
-     * @return string
      */
-    private function assureSortOrderIsValid($sortOrder)
+    private function assureSortOrderIsValid($sortOrder): string
     {
         return ('desc' == $sortOrder) ? 'desc' : 'asc';
     }
@@ -212,20 +206,15 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
         return $this->sortBy;
     }
 
-    /**
-     * @return string
-     */
-    protected function getSortOrder()
+    protected function getSortOrder(): ?string
     {
         return $this->sortOrder;
     }
 
     /**
      * @param string $sortField
-     *
-     * @return bool
      */
-    private function sortByIsAllowed($sortField)
+    private function sortByIsAllowed($sortField): bool
     {
         return in_array($sortField, $this->getAllowedSortFields());
     }
@@ -239,48 +228,41 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
         $configurations = $this->getConfigurations();
 
         $sortFields = $configurations->get($confId.$this->allowedFieldsConfId);
-        $sortFields = $sortFields ? \Sys25\RnBase\Utility\Strings::trimExplode(',', $sortFields, true) : [];
 
-        return $sortFields;
+        return $sortFields ? Sys25\RnBase\Utility\Strings::trimExplode(',', $sortFields, true) : [];
     }
 
     /**
-     * @param string                    $template  HTML template
-     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
-     * @param string                    $confId
-     * @param string                    $marker
+     * @param string                                  $template  HTML template
+     * @param Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
+     * @param string                                  $confId
+     * @param string                                  $marker
      *
      * @return string
      */
     public function parseTemplate($template, &$formatter, $confId, $marker = 'FILTER')
     {
-        $markerArray = $subpartArray = $wrappedSubpartArray = [];
-
+        $markerArray = [];
+        $subpartArray = [];
+        $wrappedSubpartArray = [];
         $this->initSorting();
         $this->insertMarkersForSorting(
             $template,
             $markerArray,
-            $subpartArray,
             $wrappedSubpartArray,
             $formatter,
             $confId
         );
 
-        $template = \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
-
-        return $template;
+        return Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached($template, $markerArray, $subpartArray, $wrappedSubpartArray);
     }
 
     /**
-     * @param string                    $template            HTML template
-     * @param array                     $markerArray
-     * @param array                     $subpartArray
-     * @param array                     $wrappedSubpartArray
-     * @param \Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
-     * @param string                    $confId
-     * @param string                    $marker
+     * @param string                                  $template  HTML template
+     * @param Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
+     * @param string                                  $confId
      */
-    private function insertMarkersForSorting($template, &$markerArray, &$subpartArray, &$wrappedSubpartArray, &$formatter, $confId)
+    private function insertMarkersForSorting($template, array &$markerArray, array &$wrappedSubpartArray, &$formatter, $confId): void
     {
         $confId = $this->getConfId().$this->sortConfId;
         $configurations = $formatter->getConfigurations();
@@ -296,8 +278,8 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
                 $markOrders[$field.'_order'] = $isField ? $this->getSortOrder() : '';
 
                 $fieldMarker = $this->markerPrefix.'_'.strtoupper($field).'_LINK';
-                $makeLink = \Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker);
-                $makeUrl = \Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker.'URL');
+                $makeLink = Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker);
+                $makeUrl = Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker.'URL');
                 // link generieren
                 if ($makeLink || $makeUrl) {
                     // sortierungslinks ausgeben
@@ -315,11 +297,13 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
                     if ($makeLink) {
                         $wrappedSubpartArray['###'.$fieldMarker.'###'] = explode($token, $link->makeTag());
                     }
+
                     if ($makeUrl) {
                         $markerArray['###'.$fieldMarker.'URL###'] = $link->makeUrl(false);
                     }
                 }
             }
+
             // die sortOrders parsen
             $markOrders = $formatter->getItemMarkerArrayWrapped($markOrders, $confId, 0, $this->markerPrefix.'_', array_keys($markOrders));
             $markerArray = array_merge($markerArray, $markOrders);
@@ -329,8 +313,6 @@ class tx_mklib_filter_Sorter extends \Sys25\RnBase\Frontend\Filter\BaseFilter
     /**
      * Method is called in \Sys25\RnBase\Frontend\Marker\ListBuilder::render() and used to trigger the
      * parseTemplate() method of this class.
-     *
-     * @return $this
      */
     public function getMarker(): tx_mklib_filter_Sorter
     {

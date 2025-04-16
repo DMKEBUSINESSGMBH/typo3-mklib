@@ -1,36 +1,36 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * Search Sorting.
  * Die Klasse registriert einen Hook für rnbase,
  * um SQL-Anfragen mit einer sortierung zu versehen.
  *
- * @see \Sys25\RnBase\Search\SearchBase::search -> searchbase_handleTableMapping
+ * @see Sys25\RnBase\Search\SearchBase::search -> searchbase_handleTableMapping
  *
  * Nützlich ist dies, wenn Einträge immer nach dem Titel sortiert werden sollen,
  * oder die Ausgabe im FE wie im BE mittels der sorting Spalte sortiert werden sollen.
@@ -50,7 +50,7 @@ class tx_mklib_util_SearchSorting
      *
      * @var string
      */
-    protected static $className = __CLASS__;
+    protected static $className = self::class;
 
     /**
      * Wurde der hook bereits gesetzt?
@@ -61,10 +61,8 @@ class tx_mklib_util_SearchSorting
 
     /**
      * Enthält TableAliases, welche sortiert werden sollen.
-     *
-     * @var array
      */
-    private static $sortingTables = [];
+    private static array $sortingTables = [];
 
     /**
      * Fügt Tabellen für das Sortieren hinzu und registriert den Hook.
@@ -78,27 +76,30 @@ class tx_mklib_util_SearchSorting
      *  'CATEGORY'=>'sorting' // nicht optimal
      * )
      */
-    public static function registerSortingAliases(array $tableAliases)
+    public static function registerSortingAliases(array $tableAliases): void
     {
-        if (count($tableAliases)) {
+        if ([] !== $tableAliases) {
             foreach ($tableAliases as $tableAlias => $sortingCol) {
-                list($tableAlias, $tableName) = \Sys25\RnBase\Utility\Strings::trimExplode('.', $tableAlias);
+                [$tableAlias, $tableName] = Sys25\RnBase\Utility\Strings::trimExplode('.', $tableAlias);
                 // wenn der key numeric ist, wurde keine sorting col übergeben!
                 if (is_numeric($tableAlias) && $sortingCol) {
                     $tableAlias = $sortingCol;
                     $sortingCol = 'sorting';
                 }
+
                 if (empty($tableAlias)) {
                     continue;
                 }
+
                 self::$sortingTables[] = [
                     'alias' => $tableAlias,
                     'column' => $sortingCol,
                     'table' => $tableName,
                 ];
             }
+
             // den hook registrieren
-            if (count(self::$sortingTables)) {
+            if ([] !== self::$sortingTables) {
                 self::registerHook();
             }
         }
@@ -107,7 +108,7 @@ class tx_mklib_util_SearchSorting
     /**
      * Registriert den Hook für rnbase, um die sortierung hinzuzufügen.
      */
-    private static function registerHook()
+    private static function registerHook(): void
     {
         if (!self::$hooked) {
             // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['rn_base']['searchbase_handleTableMapping'][] = 'EXT:mklib/util/class.tx_mklib_util_SearchSorting.php:&tx_mklib_util_SearchSorting->handleTableMapping';
@@ -122,12 +123,11 @@ class tx_mklib_util_SearchSorting
     /**
      * Wird von \Sys25\RnBase\Search\SearchBase aufgerufen um die Sortierung hinzuzufügen.
      *
-     * @param array                     $params
-     * @param \Sys25\RnBase\Search\SearchBase $searcher
+     * @param Sys25\RnBase\Search\SearchBase $searcher
      */
-    public static function handleTableMapping(&$params, &$searcher)
+    public static function handleTableMapping(array &$params, &$searcher): void
     {
-        if (count(self::$sortingTables)) {
+        if ([] !== self::$sortingTables) {
             $tableAliases = &$params['tableAliases'];
             // @TODO: $joinedFields && $customFields zusätzlich zu den $tableAliases beachten!!!
             // $joinedFields = & $params['joinedFields'];
@@ -149,6 +149,7 @@ class tx_mklib_util_SearchSorting
                     if (!is_array($options['orderby'])) {
                         $options['orderby'] = [];
                     }
+
                     // immer zuerst anhand von sorting sortieren!!!
                     $options['orderby'] = [$field => 'ASC'] + $options['orderby'];
                 }

@@ -1,27 +1,29 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * @author Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
@@ -36,12 +38,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      */
     protected $aOptionsToFormat = ['threshold', 'rememberAfter'];
 
-    /**
-     * @param array $options
-     *
-     * @return string
-     */
-    protected function executeTask(array $aOptions, array &$aDevLog)
+    protected function executeTask(array $aOptions, array &$aDevLog): string
     {
         // alle die nicht mehr laufen auf freezedetected = 0 setzen
         // alle bei denen exectime > freezedeteceted + rememberafter auf freezedetecetd = 0
@@ -64,12 +61,13 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      *
      * @param array $aPossiblyFrozenTasks
      */
-    protected function handleFrozenTasks($aPossiblyFrozenTasks)
+    protected function handleFrozenTasks($aPossiblyFrozenTasks): string
     {
         // Nachrichten für den error mail versand
-        $aMessages = $aUids = [];
+        $aMessages = [];
+        $aUids = [];
         foreach ($aPossiblyFrozenTasks as $aPossiblyFrozenTask) {
-            $classname = get_class(unserialize($aPossiblyFrozenTask['serialized_task_object']));
+            $classname = unserialize($aPossiblyFrozenTask['serialized_task_object'])::class;
 
             $aMessages[] = '"'.$classname.' (Task-Uid: '.$aPossiblyFrozenTask['uid'].')"';
             $aUids[] = $aPossiblyFrozenTask['uid'];
@@ -81,7 +79,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
         $oException = new Exception($sMsg, 0);
         // die Mail soll immer geschickt werden
         $aOptions = ['ignoremaillock' => true];
-        \Sys25\RnBase\Utility\Misc::sendErrorMail($this->getOption('receiver'), 'tx_mklib_scheduler_CheckRunningTasks', $oException, $aOptions);
+        Sys25\RnBase\Utility\Misc::sendErrorMail($this->getOption('receiver'), 'tx_mklib_scheduler_CheckRunningTasks', $oException, $aOptions);
 
         // bei allen hängen geblibenen tasks freezedetected setzen
         // damit erst nach der errinerungszeit wieder eine mail versendet wird
@@ -97,10 +95,10 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      */
     protected function setFreezeDetected($aUids)
     {
-        \Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
+        Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
             'tx_scheduler_task',
             'uid IN ('.implode(',', $aUids).')',
-            ['freezedetected' => $GLOBALS['EXEC_TIME']]
+            ['freezedetected' => TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp')]
         );
     }
 
@@ -110,9 +108,9 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
      */
     protected function resetPossiblyFrozenTasks()
     {
-        \Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
+        Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
             'tx_scheduler_task',
-            'LENGTH(serialized_executions) = 0 OR freezedetected < '.($GLOBALS['EXEC_TIME'] - $this->getOption('rememberAfter')),
+            'LENGTH(serialized_executions) = 0 OR freezedetected < '.(TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp') - $this->getOption('rememberAfter')),
             ['freezedetected' => 0]
         );
     }
@@ -126,7 +124,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
     {
         $selectFields = 'uid,serialized_task_object';
 
-        return \Sys25\RnBase\Database\Connection::getInstance()->doSelect(
+        return Sys25\RnBase\Database\Connection::getInstance()->doSelect(
             $selectFields,
             'tx_scheduler_task',
             [
@@ -137,7 +135,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
                 'where' => 'uid != '.intval($this->taskUid).
                 ' AND LENGTH(serialized_executions) > 0'.
                 ' AND freezedetected = 0'.
-                ' AND lastexecution_time < '.($GLOBALS['EXEC_TIME'] - $this->getOption('threshold')),
+                ' AND lastexecution_time < '.(TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp') - $this->getOption('threshold')),
             ]
         );
     }
@@ -150,7 +148,7 @@ class tx_mklib_scheduler_SchedulerTaskFreezeDetection extends tx_mklib_scheduler
     public function getAdditionalInformation($info = '')
     {
         return parent::getAdditionalInformation(
-            $GLOBALS['LANG']->sL('LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_CheckRunningTasks_taskinfo')
+            $GLOBALS['LANG']->sL('LLL:EXT:mklib/Resources/Private/Language/Scheduler/locallang.xlf:scheduler_CheckRunningTasks_taskinfo')
         );
     }
 

@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,10 +35,8 @@ class tx_mklib_mod1_util_Language
 {
     /**
      * cached language records.
-     *
-     * @var array
      */
-    private static $sysLanguageRecords = [];
+    private static array $sysLanguageRecords = [];
 
     /**
      * @param int $uid
@@ -47,7 +47,7 @@ class tx_mklib_mod1_util_Language
     {
         $uid = (int) $uid;
         if (empty(static::$sysLanguageRecords[$uid])) {
-            static::$sysLanguageRecords[$uid] = \Sys25\RnBase\Database\Connection::getInstance()->getRecord(
+            static::$sysLanguageRecords[$uid] = Sys25\RnBase\Database\Connection::getInstance()->getRecord(
                 'sys_language',
                 $uid
             );
@@ -66,16 +66,17 @@ class tx_mklib_mod1_util_Language
         static $sysLanguageRecordAll = false;
         if (!$sysLanguageRecordAll) {
             $sysLanguageRecordAll = true;
-            $records = \Sys25\RnBase\Database\Connection::getInstance()->doSelect('*', 'sys_language', []);
+            $records = Sys25\RnBase\Database\Connection::getInstance()->doSelect('*', 'sys_language', []);
             foreach ($records as $record) {
                 static::$sysLanguageRecords[(int) $record['uid']] = $record;
             }
         }
+
         $records = static::$sysLanguageRecords;
 
         if ($pageId) {
             // check all page overlays to get all available languages for the page
-            $available = \Sys25\RnBase\Database\Connection::getInstance()->doSelect(
+            $available = Sys25\RnBase\Database\Connection::getInstance()->doSelect(
                 'sys_language.uid',
                 ['sys_language,pages_language_overlay', 'sys_language'],
                 [
@@ -104,7 +105,7 @@ class tx_mklib_mod1_util_Language
      */
     public static function getLangSpriteIcon($recordOrUid, $options = null)
     {
-        $options = \Sys25\RnBase\Domain\Model\DataModel::getInstance($options);
+        $options = Sys25\RnBase\Domain\Model\DataModel::getInstance($options);
 
         if (!is_array($recordOrUid)) {
             $langUid = (int) $recordOrUid;
@@ -113,14 +114,16 @@ class tx_mklib_mod1_util_Language
             $langUid = (int) $recordOrUid['uid'];
             $record = $recordOrUid;
         }
+
         $spriteIconName = 'flags-multiple';
         if (!empty($record)) {
-            $spriteIconName = \Sys25\RnBase\Backend\Utility\Icons::mapRecordTypeToSpriteIconName(
+            $spriteIconName = Sys25\RnBase\Backend\Utility\Icons::mapRecordTypeToSpriteIconName(
                 'sys_language',
                 $record
             );
         }
-        $out = \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon(
+
+        $out = Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon(
             $spriteIconName
         );
         // add title per default (typo3 equivalent)!
@@ -141,9 +144,9 @@ class tx_mklib_mod1_util_Language
     }
 
     public static function getAddLocalizationLinks(
-        \Sys25\RnBase\Domain\Model\RecordInterface $item,
-        ?\Sys25\RnBase\Backend\Module\BaseModule $mod = null
-    ) {
+        Sys25\RnBase\Domain\Model\RecordInterface $item,
+        ?Sys25\RnBase\Backend\Module\BaseModule $mod = null,
+    ): string {
         if (// the item already are an translated item!
             $item->getUid() != $item->getProperty('uid')
             || 0 !== $item->getSysLanguageUid()
@@ -159,9 +162,9 @@ class tx_mklib_mod1_util_Language
             }
 
             // skip, if a overlay for this language allready exists
-            $parentField = \Sys25\RnBase\Backend\Utility\TCA::getTransOrigPointerFieldForTable($item->getTableName());
-            $sysLanguageUidField = \Sys25\RnBase\Backend\Utility\TCA::getLanguageFieldForTable($item->getTableName());
-            $overlays = \Sys25\RnBase\Database\Connection::getInstance()->doSelect(
+            $parentField = Sys25\RnBase\Backend\Utility\TCA::getTransOrigPointerFieldForTable($item->getTableName());
+            $sysLanguageUidField = Sys25\RnBase\Backend\Utility\TCA::getLanguageFieldForTable($item->getTableName());
+            $overlays = Sys25\RnBase\Database\Connection::getInstance()->doSelect(
                 'uid',
                 $item->getTableName(),
                 [
@@ -180,7 +183,7 @@ class tx_mklib_mod1_util_Language
             }
 
             /* @var $mod \Sys25\RnBase\Backend\Module\BaseModule */
-            if (!$mod instanceof \Sys25\RnBase\Backend\Module\BaseModule) {
+            if (!$mod instanceof Sys25\RnBase\Backend\Module\BaseModule) {
                 return '';
             }
 

@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2012 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,17 +35,15 @@ class tx_mklib_mod1_util_Selector
 {
     // @TODO: whats this? can be removed?
     public $doc;
+
     public $modName;
 
-    /**
-     * @var \Sys25\RnBase\Backend\Module\IModule
-     */
-    private $mod;
+    private ?Sys25\RnBase\Backend\Module\IModule $mod = null;
 
     /**
      * Initialisiert das Objekt mit dem Template und der Modul-Config.
      */
-    public function init(\Sys25\RnBase\Backend\Module\IModule $module)
+    public function init(Sys25\RnBase\Backend\Module\IModule $module): void
     {
         $this->mod = $module;
     }
@@ -61,7 +61,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return string search term
      */
-    public function showFreeTextSearchForm(&$out, $key, array $options = [])
+    public function showFreeTextSearchForm(&$out, string $key, array $options = [])
     {
         $searchstring = $this->getValueFromModuleData($key);
 
@@ -79,19 +79,16 @@ class tx_mklib_mod1_util_Selector
     /**
      * Returns a delete select box. All data is stored in array $data.
      *
-     * @param array $data
-     * @param array $options
-     *
      * @return bool
      */
-    public function showHiddenSelector(&$data, $options = [])
+    public function showHiddenSelector(array &$data, array $options = [])
     {
         $items = [
             0 => $GLOBALS['LANG']->getLL('label_select_hide_hidden'),
             1 => $GLOBALS['LANG']->getLL('label_select_show_hidden'),
         ];
 
-        $options['label'] = $options['label'] ?? $GLOBALS['LANG']->getLL('label_hidden');
+        $options['label'] ??= $GLOBALS['LANG']->getLL('label_hidden');
 
         return $this->showSelectorByArray($items, 'showhidden', $data, $options);
     }
@@ -99,12 +96,9 @@ class tx_mklib_mod1_util_Selector
     /**
      * Returns a delete select box. All data is stored in array $data.
      *
-     * @param array $data
-     * @param array $options
-     *
      * @return bool
      */
-    public function showLanguageSelector(&$data, $options = [])
+    public function showLanguageSelector(array &$data, array $options = [])
     {
         $items = [
             '' => '',
@@ -117,7 +111,7 @@ class tx_mklib_mod1_util_Selector
             $items[(int) $lang['uid']] = $lang['title'];
         }
 
-        $options['label'] = $options['label'] ? $options['label'] : $GLOBALS['LANG']->getLL('label_language');
+        $options['label'] = $options['label'] ?: $GLOBALS['LANG']->getLL('label_language');
 
         return $this->showSelectorByArray($items, 'language', $data, $options);
     }
@@ -125,14 +119,13 @@ class tx_mklib_mod1_util_Selector
     /**
      * Zeigt eine Datumsauswahl mit einzelnen Selects für Tag, Monat und Jahr.
      *
-     * @param array  $aItems   Array mit den werten der Auswahlbox
      * @param string $sDefId   ID-String des Elements
      * @param array  $aData    enthält die Formularelement für die Ausgabe im Screen. Keys: selector, label
      * @param array  $aOptions zusätzliche Optionen: yearfrom, yearto,
      *
      * @return DateTime selected day
      */
-    public function showDateSelector($sDefId, &$aData, $aOptions = [])
+    public function showDateSelector($sDefId, array &$aData, array $aOptions = []): DateTime
     {
         $baseId = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
         // Da es drei Felder gibt, benötigen wir drei IDs
@@ -146,6 +139,7 @@ class tx_mklib_mod1_util_Selector
         if (isset($aOptions['id'])) {
             unset($aOptions['id']);
         }
+
         // Monate
         $tmpDataMonth = [];
         $items = [];
@@ -153,18 +147,20 @@ class tx_mklib_mod1_util_Selector
             $date = new DateTime();
             $items[$i] = $date->setDate(2000, $i, 1)->format('F');
         }
+
         $selectedMonth = $this->getValueFromModuleData($monthId);
-        $selectedMonth = $this->showSelectorByArray($items, $monthId, $tmpDataMonth, ['forcevalue' => ($selectedMonth) ? $selectedMonth : $aDefault[1]]);
+        $selectedMonth = $this->showSelectorByArray($items, $monthId, $tmpDataMonth, ['forcevalue' => $selectedMonth ?: $aDefault[1]]);
 
         // Jahre
         $today = new DateTime();
         $from = intval($aOptions['yearfrom']);
-        if (!$from) {
+        if (0 === $from) {
             // Default 10 Jahre. Damit wir PHP 5.2. verwenden können, die Berechnung etwas umständlich.
             $from = intval($today->format('Y')) - 10;
         }
+
         $to = intval($aOptions['yearto']);
-        if (!$to) {
+        if (0 === $to) {
             $to = intval($today->format('Y'));
         }
 
@@ -173,8 +169,9 @@ class tx_mklib_mod1_util_Selector
         for ($i = $from; $i < $to; ++$i) {
             $items[$i] = $i;
         }
+
         $selectedYear = $this->getValueFromModuleData($yearId);
-        $selectedYear = $this->showSelectorByArray($items, $yearId, $tmpDataYear, ['forcevalue' => ($selectedYear) ? $selectedYear : $aDefault[0]]);
+        $selectedYear = $this->showSelectorByArray($items, $yearId, $tmpDataYear, ['forcevalue' => $selectedYear ?: $aDefault[0]]);
 
         // Tage
         $tmpDataDay = [];
@@ -183,9 +180,10 @@ class tx_mklib_mod1_util_Selector
         for ($i = 1; $i < $totalDays + 1; ++$i) {
             $items[$i] = $i;
         }
+
         $selectedDay = $this->getValueFromModuleData($dayId);
         $selectedDay = ($selectedDay > $totalDays) ? $totalDays : $selectedDay;
-        $selectedDay = $this->showSelectorByArray($items, $dayId, $tmpDataDay, ['forcevalue' => ($selectedDay) ? $selectedDay : $aDefault[2]]);
+        $selectedDay = $this->showSelectorByArray($items, $dayId, $tmpDataDay, ['forcevalue' => $selectedDay ?: $aDefault[2]]);
 
         // Rückgabe
         $aData['day_selector'] = $tmpDataDay['selector'];
@@ -210,9 +208,9 @@ class tx_mklib_mod1_util_Selector
     protected function showSelectorByModels(
         $items,
         array &$data,
-        array $options = []
+        array $options = [],
     ) {
-        if (!(is_array($items) || $items instanceof Traversable)) {
+        if (!is_array($items) && !$items instanceof Traversable) {
             throw new Exception('Argument 1 passed to'.__METHOD__.'() must be of the type array or Traversable.');
         }
 
@@ -221,17 +219,17 @@ class tx_mklib_mod1_util_Selector
             throw new Exception('No ID for widget given!');
         }
 
-        $pid = $options['pid'] ? $options['pid'] : 0;
+        $pid = $options['pid'] ?: 0;
 
         $itemMenu = [];
         if (isset($options['entryall'])) {
             $itemMenu['0'] = is_string($options['entryall']) ? $options['entryall'] : $GLOBALS['LANG']->getLL('label_select_all_entries');
         }
 
-        $titleMethod = $options['titlemethod'] ? $options['titlemethod'] : 'getTcaLabel';
-        $idMethod = $options['idmethod'] ? $options['idmethod'] : 'getUid';
-        $titleField = $options['titlefield'] ? $options['titlefield'] : 'title';
-        $idField = $options['idfield'] ? $options['idfield'] : 'uid';
+        $titleMethod = $options['titlemethod'] ?: 'getTcaLabel';
+        $idMethod = $options['idmethod'] ?: 'getUid';
+        $titleField = $options['titlefield'] ?: 'title';
+        $idField = $options['idfield'] ?: 'uid';
 
         foreach ($items as $item) {
             $uid = is_object($item) ? $item->{$idMethod}() : $item[$idField];
@@ -242,7 +240,7 @@ class tx_mklib_mod1_util_Selector
         $selectedItem = $this->getValueFromModuleData($id);
 
         // Build select box items
-        $data['selector'] = \Sys25\RnBase\Backend\Utility\BackendUtility::getFuncMenu(
+        $data['selector'] = Sys25\RnBase\Backend\Utility\BackendUtility::getFuncMenu(
             $pid,
             'SET['.$id.']',
             $selectedItem,
@@ -262,16 +260,16 @@ class tx_mklib_mod1_util_Selector
      *
      * @return string selected item
      */
-    protected function showSelectorByArray($aItems, $sDefId, &$aData, $aOptions = [])
+    protected function showSelectorByArray($aItems, $sDefId, array &$aData, array $aOptions = [])
     {
         $id = isset($aOptions['id']) && $aOptions['id'] ? $aOptions['id'] : $sDefId;
 
         $selectedItem = array_key_exists('forcevalue', $aOptions) ? $aOptions['forcevalue'] : $this->getValueFromModuleData($id);
 
-        $pid = $aOptions['pid'] ? $aOptions['pid'] : 0;
+        $pid = $aOptions['pid'] ?: 0;
 
         // Build select box items
-        $aData['selector'] = \Sys25\RnBase\Backend\Utility\BackendUtility::getFuncMenu(
+        $aData['selector'] = Sys25\RnBase\Backend\Utility\BackendUtility::getFuncMenu(
             $pid,
             'SET['.$id.']',
             $selectedItem,
@@ -291,12 +289,13 @@ class tx_mklib_mod1_util_Selector
      *
      * @return string selected item
      */
-    protected function showSelectorByTCA($sDefId, $table, $column, &$aData, $aOptions = [])
+    protected function showSelectorByTCA($sDefId, $table, $column, array &$aData, $aOptions = [])
     {
         $items = [];
         if (is_array($aOptions['additionalItems'])) {
             $items = $aOptions['additionalItems'];
         }
+
         if (is_array($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $item) {
                 $items[$item[1]] = $GLOBALS['LANG']->sL($item[0]);
@@ -308,16 +307,14 @@ class tx_mklib_mod1_util_Selector
 
     /**
      * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
-     *
-     * @return \Sys25\RnBase\Backend\Module\IModule
      */
-    protected function getMod()
+    protected function getMod(): ?Sys25\RnBase\Backend\Module\IModule
     {
         return $this->mod;
     }
 
     /**
-     * @return \Sys25\RnBase\Backend\Form\ToolBox
+     * @return Sys25\RnBase\Backend\Form\ToolBox
      */
     protected function getFormTool()
     {
@@ -328,22 +325,17 @@ class tx_mklib_mod1_util_Selector
      * Return requested value from module data.
      *
      * @param string $key
-     *
-     * @return mixed
      */
     public function getValueFromModuleData($key)
     {
         // Fetch selected company trade
-        $modData = \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
+        $modData = Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
             [$key => ''],
-            \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'),
+            Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('SET'),
             $this->getMod()->getName()
         );
-        if (isset($modData[$key])) {
-            return $modData[$key];
-        }
 
-        return null;
+        return $modData[$key] ?? null;
     }
 
     /**
@@ -352,7 +344,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @param array $aModuleData
      */
-    public function setValueToModuleData($sModuleName, $aModuleData = [])
+    public function setValueToModuleData($sModuleName, $aModuleData = []): void
     {
         $aExistingModuleData = $GLOBALS['BE_USER']->getModuleData($sModuleName);
         if (!empty($aModuleData)) {
@@ -360,27 +352,24 @@ class tx_mklib_mod1_util_Selector
                 $aExistingModuleData[$sKey] = $mValue;
             }
         }
+
         $GLOBALS['BE_USER']->pushModuleData($sModuleName, $aExistingModuleData);
     }
 
-    /**
-     * @param array $data
-     *
-     * @return string
-     */
-    public function buildFilterTable(array $data)
+    public function buildFilterTable(array $data): string
     {
         $out = '';
-        if (count($data)) {
+        if ([] !== $data) {
             $out .= '<table class="filters">';
             foreach ($data as $label => $filter) {
                 $out .= '<tr>';
-                $out .= '<td>'.(isset($filter['label']) ? $filter['label'] : $label).'</td>';
+                $out .= '<td>'.($filter['label'] ?? $label).'</td>';
                 unset($filter['label']);
                 $out .= '<td>'.implode(' ', $filter).'</td>';
 
                 $out .= '</tr>';
             }
+
             $out .= '</table>';
         }
 
@@ -394,7 +383,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return array[to => int, from => int]
      */
-    public function showDateRangeSelector(&$out, $key, $options = [])
+    public function showDateRangeSelector(array &$out, string $key, $options = []): array
     {
         $fromValue = $this->getDateFieldByKey($key.'_from', $out);
         $toValue = $this->getDateFieldByKey($key.'_to', $out);
@@ -409,17 +398,16 @@ class tx_mklib_mod1_util_Selector
     }
 
     /**
-     * @param string $key
-     *
      * @return string gewählte zeit in d-m-Y
      */
-    private function getDateFieldByKey($key, &$out)
+    private function getDateFieldByKey(string $key, &$out)
     {
         $value = isset($_POST[$key]) ?
-            \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
+            Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);
         if (!($out['field'] ?? null)) {
             $out['field'] = '';
         }
+
         $out['field'] .= $this->getFormTool()->createDateInput($key, $value);
 
         return $value;
@@ -431,7 +419,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return array[to => int, from => int]
      */
-    protected function getCrDateReturnArray($fromValue, $toValue)
+    protected function getCrDateReturnArray($fromValue, $toValue): array
     {
         $fromTimestamp = 0;
         if ($fromValue) {
@@ -459,7 +447,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return int
      */
-    private function moveTimestampToTheEndOfTheDay($timestamp)
+    private function moveTimestampToTheEndOfTheDay($timestamp): int|float
     {
         return $timestamp + 86400;
     }

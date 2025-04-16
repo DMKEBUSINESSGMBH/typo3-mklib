@@ -1,27 +1,29 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- * (c) 2014 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * Abstracte Repository Klasse.
@@ -30,11 +32,13 @@
  * @license http://www.gnu.org/licenses/lgpl.html
  *          GNU Lesser General Public License, version 3 or later
  */
-abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repository\SearchInterface, \TYPO3\CMS\Core\SingletonInterface
+abstract class tx_mklib_repository_Abstract implements Sys25\RnBase\Domain\Repository\SearchInterface, TYPO3\CMS\Core\SingletonInterface
 {
     // 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE
     public const DELETION_MODE_HIDE = 0;
+
     public const DELETION_MODE_SOFTDELETE = 1;
+
     public const DELETION_MODE_REALLYDELETE = 2;
 
     /**
@@ -47,13 +51,13 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
     /**
      * Liefert den Searcher.
      *
-     * @return \Sys25\RnBase\Search\SearchBase
+     * @return Sys25\RnBase\Search\SearchBase
      */
     protected function getSearcher()
     {
-        $searcher = \Sys25\RnBase\Search\SearchBase::getInstance($this->getSearchClass());
-        if (!$searcher instanceof \Sys25\RnBase\Search\SearchBase) {
-            throw new Exception(get_class($this).'->getSearchClass() has to return a classname of class which extends \Sys25\RnBase\Search\SearchBase!');
+        $searcher = Sys25\RnBase\Search\SearchBase::getInstance($this->getSearchClass());
+        if (!$searcher instanceof Sys25\RnBase\Search\SearchBase) {
+            throw new Exception(static::class.'->getSearchClass() has to return a classname of class which extends \Sys25\RnBase\Search\SearchBase!');
         }
 
         return $searcher;
@@ -74,14 +78,14 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      *
      * @param int|array $rowOrUid
      *
-     * @return \Sys25\RnBase\Domain\Model\RecordInterface|null
+     * @return Sys25\RnBase\Domain\Model\RecordInterface|null
      *
      * @TODO use handleEnableFieldsOptions to get hidden records in BE
      */
     public function findByUid($rowOrUid)
     {
         /* @var $model \Sys25\RnBase\Domain\Model\RecordInterface */
-        $model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $model = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             $this->getWrapperClass(),
             $rowOrUid
         );
@@ -100,9 +104,6 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
     /**
      * Search database.
      *
-     * @param array $fields
-     * @param array $options
-     *
      * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
     public function search(array $fields, array $options)
@@ -116,17 +117,14 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
     /**
      * Search database.
      *
-     * @param array $fields
-     * @param array $options
-     *
-     * @return \Sys25\RnBase\Domain\Model\RecordInterface
+     * @return Sys25\RnBase\Domain\Model\RecordInterface
      */
     public function searchSingle(array $fields = [], array $options = [])
     {
         $options['limit'] = 1;
         $items = $this->search($fields, $options);
 
-        return !empty($items[0]) ? $items[0] : null;
+        return empty($items[0]) ? null : $items[0];
     }
 
     /**
@@ -149,8 +147,8 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      */
     protected function handleEnableFieldsOptions(&$fields, &$options)
     {
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof \Psr\Http\Message\ServerRequestInterface
-            && \TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof Psr\Http\Message\ServerRequestInterface
+            && TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
             && !isset($options['enablefieldsoff'])
             && !isset($options['enablefieldsbe'])
             && !isset($options['enablefieldsfe'])
@@ -176,20 +174,22 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
             $languageField = tx_mklib_util_TCA::getLanguageField($tableName);
             // Die Sprache prüfen wir nur, wenn ein Sprachfeld gesetzt ist.
             if (!empty($languageField)) {
-                $tsfe = \Sys25\RnBase\Utility\TYPO3::getTSFE();
+                $tsfe = Sys25\RnBase\Utility\TYPO3::getTSFE();
                 $languages = [];
                 if (isset($options['additionali18n'])) {
-                    $languages = \Sys25\RnBase\Utility\Strings::trimExplode(',', $options['additionali18n'], true);
+                    $languages = Sys25\RnBase\Utility\Strings::trimExplode(',', $options['additionali18n'], true);
                 }
+
                 $languages[] = '-1'; // for all languages
                 // Wenn eine bestimmte Sprache gesetzt ist,
                 // laden wir diese ebenfalls.
-                if (is_object($tsfe) && \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
-                    $languages[] = \Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe);
+                if (is_object($tsfe) && Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe)) {
+                    $languages[] = Sys25\RnBase\Utility\FrontendControllerUtility::getLanguageContentId($tsfe);
                 } // andernfalls nutzen wir die default sprache
                 else {
                     $languages[] = '0'; // default language
                 }
+
                 $options['i18n'] = implode(',', array_unique($languages, SORT_NUMERIC));
             }
         }
@@ -208,16 +208,14 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
         if (!is_array($items)) {
             return $items;
         }
-        $items = $this->uniqueItems($items, $options);
 
-        return $items;
+        return $this->uniqueItems($items, $options);
     }
 
     /**
      * Entfernt alle doppelten Datensatze, wenn die Option distinct gesetzt ist.
      * Dabei werden die Sprachoverlays bevorzugt.
      *
-     * @param array        $items
      * @param unknown_type $options
      *
      * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
@@ -225,12 +223,12 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
     protected function uniqueItems(array $items, $options)
     {
         // uniqueue, if there are models and the distinct option
-        if (reset($items) instanceof \Sys25\RnBase\Domain\Model\RecordInterface
+        if (reset($items) instanceof Sys25\RnBase\Domain\Model\RecordInterface
             && isset($options['distinct'])
-            && $options['distinct']
-        ) {
+            && $options['distinct']) {
             // seperate master and overlays
-            $master = $overlay = [];
+            $master = [];
+            $overlay = [];
             /* @var $item \Sys25\RnBase\Domain\Model\RecordInterface */
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
@@ -241,6 +239,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
                     $overlay[$uid] = $item;
                 }
             }
+
             // merge master and overlays and keep the order!
             $new = [];
             // uniquemode can be master or overlay!
@@ -249,6 +248,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
                 $uid = (int) $item->getUid();
                 $new[$uid] = !empty($overlay[$uid]) && $preferOverlay ? $overlay[$uid] : $master[$uid];
             }
+
             $items = array_values($new);
         }
 
@@ -265,11 +265,11 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
      *
-     * @return \Sys25\RnBase\Domain\Model\RecordInterface
+     * @return Sys25\RnBase\Domain\Model\RecordInterface
      */
     public function getEmptyModel()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getWrapperClass());
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($this->getWrapperClass());
     }
 
     /**
@@ -291,9 +291,6 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      *
      * @TODO: should be protected, not public. handleCreation is public!
      *
-     * @param array  $data
-     * @param string $table
-     *
      * @return int UID of just created record
      */
     public function create(array $data)
@@ -301,7 +298,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
         $model = $this->getEmptyModel();
         $table = $model->getTableName();
 
-        $data = \Sys25\RnBase\Backend\Utility\TCA::eleminateNonTcaColumns($model, $data);
+        $data = Sys25\RnBase\Backend\Utility\TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
         // setzen wir nur, wenn noch nicht gesetzt!
@@ -311,9 +308,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
             $data['pid'] = $this->getPid();
         }
 
-        $uid = $this->getDatabaseUtility()->doInsert($table, $data/* , 1 */);
-
-        return $uid;
+        return $this->getDatabaseUtility()->doInsert($table, $data/* , 1 */);
     }
 
     /**
@@ -323,20 +318,20 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      * and just call THIS method via parent::handleUpdate().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param \Sys25\RnBase\Domain\Model\RecordInterface $model         this model is being updated
-     * @param array                                  $data          New data
-     * @param string                                 $where         Override default restriction by defining an explicite where clause
-     * @param int                                    $debug         Set to 1 to debug sql-String
-     * @param mixed                                  $noQuoteFields Array or commaseparated string with fieldnames
+     * @param Sys25\RnBase\Domain\Model\RecordInterface $model         this model is being updated
+     * @param array                                     $data          New data
+     * @param string                                    $where         Override default restriction by defining an explicite where clause
+     * @param int                                       $debug         Set to 1 to debug sql-String
+     * @param mixed                                     $noQuoteFields Array or commaseparated string with fieldnames
      *
-     * @return \Sys25\RnBase\Domain\Model\RecordInterface Updated model
+     * @return Sys25\RnBase\Domain\Model\RecordInterface Updated model
      */
     public function handleUpdate(
-        \Sys25\RnBase\Domain\Model\RecordInterface $model,
+        Sys25\RnBase\Domain\Model\RecordInterface $model,
         array $data,
         $where = '',
         $debug = 0,
-        $noQuoteFields = ''
+        mixed $noQuoteFields = '',
     ) {
         $db = $this->getDatabaseUtility();
         $table = $model->getTableName();
@@ -356,7 +351,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
         }
 
         // Eleminate columns not in TCA
-        $data = \Sys25\RnBase\Backend\Utility\TCA::eleminateNonTcaColumns($model, $data);
+        $data = Sys25\RnBase\Backend\Utility\TCA::eleminateNonTcaColumns($model, $data);
         $data = $this->secureFromCrossSiteScripting($model, $data);
 
         $db->doUpdate($table, $where, $data, $debug, $noQuoteFields);
@@ -371,7 +366,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      */
     protected function getDatabaseUtility()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
     }
 
     /**
@@ -402,14 +397,14 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      * and just call THIS method via parent::handleDelete().
      * Additionally, the deriving implementation may perform further checks etc.
      *
-     * @param \Sys25\RnBase\Domain\Model\RecordInterface $model this model is being updated
-     * @param string                                 $where Override default restriction by defining an explicite where clause
-     * @param int                                    $mode  deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record
-     * @param int                                    $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
+     * @param Sys25\RnBase\Domain\Model\RecordInterface $model this model is being updated
+     * @param string                                    $where Override default restriction by defining an explicite where clause
+     * @param int                                       $mode  deletion mode with the following options: 0: Hide record; 1: Soft-delete (via "deleted" field) record; 2: Really DELETE record
+     * @param int                                       $table Wenn eine Tabelle angegeben wird, wird die des Models missachtet (wichtig für temp anzeigen)
      *
-     * @return \Sys25\RnBase\Domain\Model\RecordInterface updated (on success actually empty) model
+     * @return Sys25\RnBase\Domain\Model\RecordInterface updated (on success actually empty) model
      */
-    public function handleDelete(\Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null)
+    public function handleDelete(Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null)
     {
         if (empty($table)) {
             $table = $model->getTableName();
@@ -425,7 +420,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
             );
         }
 
-        $this->delete($table, $where, $mode);
+        static::delete($table, $where, $mode);
 
         $model->reset();
 
@@ -439,9 +434,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      * zu implementieren. Dann natürlich nicht vergessen diese Methode via parent::handleCreation()
      * aufzurufen ;)
      *
-     * @param array $data
-     *
-     * @return \Sys25\RnBase\Domain\Model\RecordInterface created model
+     * @return Sys25\RnBase\Domain\Model\RecordInterface created model
      */
     public function handleCreation(array $data)
     {
@@ -468,8 +461,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
      *
      * @TODO: model has to implement interface!
      *
-     * @param \Sys25\RnBase\Domain\Model\RecordInterface $model
-     * @param array                                  $data
+     * @param Sys25\RnBase\Domain\Model\RecordInterface $model
      *
      * @return array
      */
@@ -478,6 +470,7 @@ abstract class tx_mklib_repository_Abstract implements \Sys25\RnBase\Domain\Repo
         if (!method_exists($model, 'getFieldsToBeStripped')) {
             return $data;
         }
+
         $tags = method_exists($model, 'getTagsToBeIgnoredFromStripping') ? $model->getTagsToBeIgnoredFromStripping() : null;
         foreach ($model->getFieldsToBeStripped() as $field) {
             if (isset($data[$field])) {

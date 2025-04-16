@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -46,6 +46,7 @@ class tx_mklib_util_Date
         6 => 'Saturday',
         7 => 'Sunday',
     ];
+
     // @TODO: wär das nicht besser in der locallang.xlf aufgehoben!?
     // \Sys25\RnBase\Configuration\Processor::getLL()
     public static $aGermanDays = [
@@ -67,7 +68,7 @@ class tx_mklib_util_Date
      *
      * @return int
      */
-    public static function getTimestampByCalendarWeekDayAndYear($day, $calendarWeek, $year)
+    public static function getTimestampByCalendarWeekDayAndYear($day, $calendarWeek, $year): int|false
     {
         $weekDay = self::$days[$day];
 
@@ -127,10 +128,8 @@ class tx_mklib_util_Date
      * @param int    $starttime
      * @param int    $endtime
      * @param string $format
-     *
-     * @return array
      */
-    public static function getTimesInTimeRange($starttime, $endtime, $format = 'z')
+    public static function getTimesInTimeRange($starttime, $endtime, $format = 'z'): array
     {
         $days = [];
         for ($index = $starttime; $index < $endtime;) {
@@ -145,10 +144,8 @@ class tx_mklib_util_Date
      * Prüft, ob es sich bei dem string um ein Datum handelt.
      *
      * @param string $date
-     *
-     * @return bool
      */
-    public static function isMySQLDate($date)
+    public static function isMySQLDate($date): bool
     {
         return !(
             '0000-00-00' === $date
@@ -162,10 +159,8 @@ class tx_mklib_util_Date
      * Format: YYYY-mm-dd HH:ii:ss.
      *
      * @param string $datetime
-     *
-     * @return bool
      */
-    public static function isDateTime($datetime)
+    public static function isDateTime($datetime): bool
     {
         return !(
             19 !== strlen($datetime)
@@ -201,10 +196,8 @@ class tx_mklib_util_Date
     /**
      * @param string|DateTimeZone $date
      * @param string              $timezone
-     *
-     * @return DateTime
      */
-    public static function getDateTime($date = null, $timezone = null)
+    public static function getDateTime($date = null, $timezone = null): DateTime
     {
         $timezone = is_object($timezone) ? $timezone : self::getDateTimeZone($timezone);
 
@@ -216,12 +209,10 @@ class tx_mklib_util_Date
      *
      * @param string $format
      * @param bool   $useGMT
-     *
-     * @return string
      */
-    public static function getExecDate($format = 'U', $useGMT = false)
+    public static function getExecDate($format = 'U', $useGMT = false): string
     {
-        $tstamp = isset($GLOBALS['EXEC_TIME']) ? $GLOBALS['EXEC_TIME'] : time();
+        $tstamp = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp') ?? time();
 
         return $useGMT ? gmdate($format, $tstamp) : date($format, $tstamp);
     }

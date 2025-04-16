@@ -1,27 +1,28 @@
 <?php
 
-/***************************************************************
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -41,7 +42,7 @@ class tx_mklib_validator_ZipCode
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_validator_ZipCode');
+            self::$instance = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_validator_ZipCode');
         }
 
         return self::$instance;
@@ -49,25 +50,19 @@ class tx_mklib_validator_ZipCode
 
     /**
      * Liefert für ein Land einen Hinweistext für das PLZ-Format.
-     *
-     * @param tx_mklib_interface_IZipCountry $country
-     *
-     * @return string
      */
-    public static function getFormatInfo(tx_mklib_interface_IZipCountry $country)
+    public static function getFormatInfo(tx_mklib_interface_IZipCountry $country): string
     {
         $rule = 9 == $country->getZipRule() ? $country->getZipRule().'_'.$country->getISO2() : $country->getZipRule();
-        $labelKey = 'LLL:EXT:mklib/locallang.xlf:label_ziperror_r'.$rule;
-        $label = sprintf($GLOBALS['LANG']->sL($labelKey), $country->getZipLength());
+        $labelKey = 'LLL:EXT:mklib/Resources/Private/Language/locallang.xlf:label_ziperror_r'.$rule;
 
-        return $label;
+        return sprintf($GLOBALS['LANG']->sL($labelKey), $country->getZipLength());
     }
 
     /**
      * Validiert einen PLZ-String für ein Land.
      *
-     * @param tx_mklib_interface_IZipCountry $land
-     * @param string                         $zip
+     * @param string $zip
      *
      * @return bool
      */
@@ -76,9 +71,10 @@ class tx_mklib_validator_ZipCode
         switch ($country->getZipRule()) {
             case 0: // no rule set
                 $result = true;
-                if (\Sys25\RnBase\Utility\Logger::isNoticeEnabled()) {
-                    \Sys25\RnBase\Utility\Logger::notice('No zip rule for country defined.', 'mklib', ['zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()]);
+                if (Sys25\RnBase\Utility\Logger::isNoticeEnabled()) {
+                    Sys25\RnBase\Utility\Logger::notice('No zip rule for country defined.', 'mklib', ['zip' => $zip, 'getISO2' => $country->getISO2(), 'getZipLength' => $country->getZipLength(), 'getZipRule' => $country->getZipRule()]);
                 }
+
                 break;
             case 1: // maximum length without gaps
                 $result = self::validateMaxLengthWG($country, $zip);
@@ -118,126 +114,83 @@ class tx_mklib_validator_ZipCode
     /**
      * http://help.sap.com/saphelp_nw2004s/helpdata/en/0d/40bb3acf19c731e10000000a114084/content.htm.
      *
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
+     * @param string $zip
      *
      * @return bool
      */
-    private static function validateSpecial($country, $zip)
+    private static function validateSpecial(tx_mklib_interface_IZipCountry $country, $zip)
     {
-        switch ($country->getISO2()) {
-            case 'CA':
-                $result = preg_match('/^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/', $zip) > 0;
-                break;
-            case 'SW':
-            case 'GR': // TODO: für Griechenland fehlt das Template.
-            case 'SK':
-            case 'CZ':
-                $result = preg_match('/^\d\d\d \d\d$/', $zip) > 0;
-                break;
-            case 'PT':
-                $result = preg_match('/^\d\d\d\d-\d\d\d$/', $zip) > 0 || preg_match('/^\d\d\d\d$/', $zip) > 0;
-                break;
-            case 'NL':
-                $result = preg_match('/^\d\d\d\d [A-Za-z][A-Za-z]$/', $zip) > 0;
-                break;
-            case 'PL':
-                $result = preg_match('/^\d\d-\d\d\d$/', $zip) > 0;
-                break;
-            case 'KR': // Südkorea
-                $result = preg_match('/^\d\d\d-\d\d\d$/', $zip) > 0;
-                break;
-            default:
-                $result = false;
-        }
-
-        return $result;
+        return match ($country->getISO2()) {
+            'CA' => preg_match('/^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/', $zip) > 0,
+            'SW', 'GR', 'SK', 'CZ' => preg_match('/^\d\d\d \d\d$/', $zip) > 0,
+            'PT' => preg_match('/^\d\d\d\d-\d\d\d$/', $zip) > 0 || preg_match('/^\d\d\d\d$/', $zip) > 0,
+            'NL' => preg_match('/^\d\d\d\d [A-Za-z][A-Za-z]$/', $zip) > 0,
+            'PL' => preg_match('/^\d\d-\d\d\d$/', $zip) > 0,
+            'KR' => preg_match('/^\d\d\d-\d\d\d$/', $zip) > 0,
+            default => false,
+        };
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateMaxLengthWG($country, $zip)
+    private static function validateMaxLengthWG(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[A-Za-z0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateMaxLengthNumWG($country, $zip)
+    private static function validateMaxLengthNumWG(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateLengthWG($country, $zip)
+    private static function validateLengthWG(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[A-Za-z0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateLengthNumWG($country, $zip)
+    private static function validateLengthNumWG(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateMaxLength($country, $zip)
+    private static function validateMaxLength(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[ A-Za-z0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateMaxLengthNum($country, $zip)
+    private static function validateMaxLengthNum(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[ 0-9]{1,'.$country->getZipLength().'}$/', $zip) > 0;
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateLength($country, $zip)
+    private static function validateLength(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[ A-Za-z0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
     }
 
     /**
-     * @param tx_mklib_interface_IZipCountry $country
-     * @param string                         $zip
-     *
-     * @return bool
+     * @param string $zip
      */
-    private static function validateLengthNum($country, $zip)
+    private static function validateLengthNum(tx_mklib_interface_IZipCountry $country, $zip): bool
     {
         return preg_match('/^[ 0-9]{'.$country->getZipLength().'}$/', $zip) > 0;
     }

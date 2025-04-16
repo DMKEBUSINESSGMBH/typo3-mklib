@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * Model eins Landes.
  *
@@ -7,12 +32,10 @@
  */
 class tx_mklib_model_StaticCountry extends Sys25\RnBase\Domain\Model\BaseModel implements tx_mklib_interface_IZipCountry
 {
-    private static $instances = [];
+    private static array $instances = [];
 
     /**
      * @TODO: prüfen, ob die felder zipcode_rule, zipcode_length existieren!!!
-     *
-     * @param mixed $rowOrUid
      *
      * @return tx_mklib_model_StaticCountry
      */
@@ -20,11 +43,12 @@ class tx_mklib_model_StaticCountry extends Sys25\RnBase\Domain\Model\BaseModel i
     {
         // Instanzieren, wenn nicht im Cache oder ein Record übergeben wurde.
         if (is_array($rowOrUid) || !isset(self::$instances[$rowOrUid])) {
-            $item = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
+            $item = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_StaticCountry', $rowOrUid);
             // Nur das erzeugte Model zurückgeben
             if (is_array($rowOrUid)) {
                 return $item;
             }
+
             // else, Model Cachen, wenn eine uid übergeben wurde
             self::$instances[$rowOrUid] = $item;
         }
@@ -37,7 +61,7 @@ class tx_mklib_model_StaticCountry extends Sys25\RnBase\Domain\Model\BaseModel i
      *
      * @return Tabellenname als String
      */
-    public function getTableName()
+    public function getTableName(): string
     {
         return 'static_countries';
     }
@@ -57,17 +81,15 @@ class tx_mklib_model_StaticCountry extends Sys25\RnBase\Domain\Model\BaseModel i
      *
      * @return int 1-9
      */
-    public function getZipRule()
+    public function getZipRule(): int
     {
         return intval($this->getProperty('zipcode_rule'));
     }
 
     /**
      * Erlaubte Anzahl Zeichen der PLZ.
-     *
-     * @return int
      */
-    public function getZipLength()
+    public function getZipLength(): int
     {
         return intval($this->getProperty('zipcode_length'));
     }

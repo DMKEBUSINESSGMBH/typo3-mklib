@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * Base class for Markers.
  *
@@ -9,10 +34,8 @@ class tx_mklib_mod1_export_Util
 {
     /**
      * Sendet die Headerdaten.
-     *
-     * @param array $options
      */
-    public static function sendHeaders(array $options = [])
+    public static function sendHeaders(array $options = []): void
     {
         $fileName = empty($options['filename']) ? 'export.dat' : $options['filename'];
         $contentType = empty($options['contenttype']) ? 'application/octet-stream' : $options['contenttype'];
@@ -47,7 +70,7 @@ class tx_mklib_mod1_export_Util
      *
      * @param string $content
      */
-    public static function doOutPut($content)
+    public static function doOutPut($content): void
     {
         $doFlush = false;
         foreach (func_get_args() as $out) {

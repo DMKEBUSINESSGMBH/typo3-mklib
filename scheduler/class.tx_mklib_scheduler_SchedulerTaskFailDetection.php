@@ -1,27 +1,29 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * tx_mklib_scheduler_SchedulerTaskFailDetection.
@@ -45,7 +47,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
      *
      * @see tx_mklib_scheduler_Generic::executeTask()
      */
-    protected function executeTask(array $options, array &$devLog)
+    protected function executeTask(array $options, array &$devLog): string
     {
         $this->resetFailedTasksDetection();
         $failedTasks = $this->getFailedTasks();
@@ -64,7 +66,7 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
     {
         $this->getDatabaseConnection()->doUpdate(
             'tx_scheduler_task',
-            'faildetected < '.($GLOBALS['EXEC_TIME'] - $this->getOption('failDetectionRememberAfter')),
+            'faildetected < '.(TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp') - $this->getOption('failDetectionRememberAfter')),
             ['faildetected' => 0]
         );
     }
@@ -72,20 +74,21 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
     /**
      * @return Tx_Mklib_Database_Connection
      */
-    protected function getDatabaseConnection()
+    protected function getDatabaseConnection(): object
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');
     }
 
     /**
      * @param array $failedTasks
      */
-    protected function handleFailedTasks($failedTasks)
+    protected function handleFailedTasks($failedTasks): string
     {
         // Nachrichten für den error mail versand
-        $messages = $uids = [];
+        $messages = [];
+        $uids = [];
         foreach ($failedTasks as $failedTask) {
-            $classname = get_class(unserialize($failedTask['serialized_task_object']));
+            $classname = unserialize($failedTask['serialized_task_object'])::class;
 
             $messages[] = '"'.$classname.' (Task-Uid: '.$failedTask['uid'].')"';
             $uids[] = $failedTask['uid'];
@@ -115,23 +118,17 @@ class tx_mklib_scheduler_SchedulerTaskFailDetection extends tx_mklib_scheduler_G
         return $message;
     }
 
-    /**
-     * @return string
-     */
-    protected function getMiscUtility()
+    protected function getMiscUtility(): string
     {
-        return \Sys25\RnBase\Utility\Misc::class;
+        return Sys25\RnBase\Utility\Misc::class;
     }
 
-    /**
-     * @param array $uids
-     */
     protected function setFailDetected(array $uids)
     {
         $this->getDatabaseConnection()->doUpdate(
             'tx_scheduler_task',
             'uid IN ('.implode(',', $uids).')',
-            ['faildetected' => $GLOBALS['EXEC_TIME']]
+            ['faildetected' => TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp')]
         );
     }
 

@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -38,17 +38,16 @@ class tx_mklib_util_MiscTools
      * @param string $sValueKey
      * @param string $sExtKey
      * @param bool   $bFallback
-     *
-     * @return mixed
      */
     public static function getExtensionValue($sValueKey, $sExtKey = 'mklib', $bFallback = false)
     {
         if (!$sExtKey) {
             $sExtKey = 'mklib';
         }
-        $mValue = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue($sExtKey, $sValueKey);
+
+        $mValue = Sys25\RnBase\Configuration\Processor::getExtensionCfgValue($sExtKey, $sValueKey);
         if ($bFallback && false === $mValue && 'mklib' != $sExtKey) {
-            $mValue = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', $sValueKey);
+            return Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', $sValueKey);
         }
 
         return $mValue;
@@ -60,10 +59,8 @@ class tx_mklib_util_MiscTools
      *
      * @param string $sExtKey
      * @param bool   $bFallback
-     *
-     * @return int
      */
-    public static function getProxyBeUserId($sExtKey = 'mklib', $bFallback = true)
+    public static function getProxyBeUserId($sExtKey = 'mklib', $bFallback = true): int
     {
         return intval(self::getExtensionValue('proxyBeUserId', $sExtKey, $bFallback));
     }
@@ -86,10 +83,8 @@ class tx_mklib_util_MiscTools
      *
      * @param string $sExtKey
      * @param bool   $bFallback
-     *
-     * @return int
      */
-    public static function getPortalPageId($sExtKey = 'mklib', $bFallback = true)
+    public static function getPortalPageId($sExtKey = 'mklib', $bFallback = true): int
     {
         return intval(self::getExtensionValue('portalPageId', $sExtKey, $bFallback));
     }
@@ -115,10 +110,10 @@ class tx_mklib_util_MiscTools
      * Requires Redirect in .htaccess:
      *   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
      */
-    public static function enableHttpAuthForCgi()
+    public static function enableHttpAuthForCgi(): void
     {
         if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-            list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
+            [$_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']] =
                 explode(
                     ':',
                     base64_decode(

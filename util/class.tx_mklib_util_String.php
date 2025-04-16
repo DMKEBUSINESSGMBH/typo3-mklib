@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -36,7 +36,7 @@
  */
 class tx_mklib_util_String extends tx_mklib_util_Var
 {
-    public const emailRegex = '/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(([0-9]{1,3})|([a-zA-Z]{2,4}))/';
+    public const emailRegex = '/[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.((\d{1,3})|([a-zA-Z]{2,4}))/';
 
     /**
      * Kürzt einen Text Feld auf die Anzahl angegebener Zeichen
@@ -48,14 +48,12 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      *
      * @return string
      */
-    public static function crop($sText, $iLen = 150, $sSuffix = '')
+    public static function crop($sText, $iLen = 150, string $sSuffix = '')
     {
-        if (// der Text ist länger als wir ihn brauchen
-            strlen($sText) >= $iLen // nur, wenn nach iCharPos noch ein Leerzeichen gefunden wurde.
-            && false !== ($iCharPos = strpos($sText, ' ', $iLen))
-        ) {
+        if (strlen($sText) >= $iLen // nur, wenn nach iCharPos noch ein Leerzeichen gefunden wurde.
+        && false !== ($iCharPos = strpos($sText, ' ', $iLen))) {
             // der Text wird gekürzt
-            $sText = substr($sText, 0, $iCharPos).$sSuffix;
+            return substr($sText, 0, $iCharPos).$sSuffix;
         }
 
         return $sText;
@@ -67,10 +65,8 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      * @TODO Leet beachten -> z.B. 4rsch
      *
      * @param string $string
-     *
-     * @return string
      */
-    public static function removeNoneLetters($string)
+    public static function removeNoneLetters($string): ?string
     {
         return preg_replace('/[^a-zäöüß ]/i', '', $string);
     }
@@ -85,7 +81,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      *
      * @return string Converted string (utf8-encoded)
      */
-    public static function html2plain($t)
+    public static function html2plain($t): string
     {
         return html_entity_decode(
             preg_replace(
@@ -103,7 +99,6 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      * Fünf Leerzeichen auf eines reduzieren: 'a b' = removeRepeatedlyOccurrings('a     b', ' ');.
      *
      * @param string $sHaystack
-     * @param mixed  $mValue
      */
     public static function removeRepeatedlyOccurrings($sHaystack, $mValue = [' ', "\t", LF, CR, CRLF])
     {
@@ -111,7 +106,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         // Alle Werte Prprüfen/ersetzen
         foreach ($mValue as $sValue) {
             // Ist der String mindestens 2x hintereinander enthalten
-            while (false !== strpos($sHaystack, $sValue.$sValue)) {
+            while (str_contains($sHaystack, $sValue.$sValue)) {
                 // doppeltes vorkommen entfernen
                 $sHaystack = str_replace($sValue.$sValue, $sValue, $sHaystack);
             }
@@ -132,6 +127,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         if (function_exists('lcfirst')) {
             return lcfirst($sString);
         }
+
         $sString[0] = strtolower($sString[0]);
 
         return $sString;
@@ -159,18 +155,14 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param string $text
-     *
-     * @return string
      */
-    public static function obfusicateContainedEmails($text)
+    public static function obfusicateContainedEmails($text): ?string
     {
-        $text = preg_replace_callback(
+        return preg_replace_callback(
             self::emailRegex,
             [self::class, 'obfusicateEmail'],
             $text
         );
-
-        return $text;
     }
 
     /**
@@ -178,12 +170,12 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      *
      * @return string
      */
-    public static function obfusicateEmail($emailParts)
+    public static function obfusicateEmail(array $emailParts)
     {
         static $cObj;
 
         if (!$cObj) {
-            $cObj = \Sys25\RnBase\Utility\TYPO3::getContentObject();
+            $cObj = Sys25\RnBase\Utility\TYPO3::getContentObject();
         }
 
         $emailMailTo = $cObj->getMailTo($emailParts[0], $emailParts[0]);
@@ -193,18 +185,14 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param string $text
-     *
-     * @return string
      */
-    public static function convertContainedEmailsToMailToLinks($text)
+    public static function convertContainedEmailsToMailToLinks($text): ?string
     {
-        $text = preg_replace_callback(
+        return preg_replace_callback(
             self::emailRegex,
             [self::class, 'convertEmailToMailToLink'],
             $text
         );
-
-        return $text;
     }
 
     /**
@@ -214,13 +202,13 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      *
      * @todo prüfen ob es die email schon als link im text gibt und dann nicht parsen
      */
-    public static function convertEmailToMailToLink($emailParts)
+    public static function convertEmailToMailToLink(array $emailParts)
     {
         static $configurations;
 
         if (!$configurations) {
             /* @var $configurations \Sys25\RnBase\Configuration\Processor */
-            $configurations = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Configuration\Processor::class);
+            $configurations = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Configuration\Processor::class);
         }
 
         $link = $configurations->createLink();
@@ -231,15 +219,12 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param string $value
-     *
-     * @return string
      */
-    public static function removeLineBreaks($value, $replacement = '')
+    public static function removeLineBreaks($value, $replacement = ''): string
     {
         $value = str_replace("\r\n", $replacement, $value);
-        $value = str_replace("\n", $replacement, $value);
 
-        return $value;
+        return str_replace("\n", $replacement, $value);
     }
 
     /**
@@ -252,17 +237,15 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      *
      * @param string $text
      * @param string $aTagParams
-     *
-     * @return string
      */
-    public static function convertUrlsInTextToLinks($text, $aTagParams = 'target="_blank"')
+    public static function convertUrlsInTextToLinks($text, $aTagParams = 'target="_blank"'): string
     {
         $nonebreakingSpaceChar = chr(160);
-        $patternPrefix = "/(^|[\n\r\t$nonebreakingSpaceChar >\*({\-_])";
-        $patternSuffix = "[^$nonebreakingSpaceChar \,\"\n\r\t<)}\*]*";
-        $text = preg_replace("$patternPrefix([\w]*?)((ht|f)tp(s)?:\/\/[\w]+$patternSuffix)/is", "$1$2&lt;a $aTagParams href=\"$3\" &gt;$3&lt;/a&gt;", $text);
-        $text = preg_replace("$patternPrefix([\w]*?)((www|ftp)\.$patternSuffix)/is", "$1$2&lt;a $aTagParams href=\"http://$3\" &gt;$3&lt;/a&gt;", $text);
-        $text = preg_replace("$patternPrefix([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i", '$1&lt;a href="mailto:$2@$3"&gt;$2@$3&lt;/a&gt;', $text);
+        $patternPrefix = "/(^|[\n\r\t{$nonebreakingSpaceChar} >\*({\-_])";
+        $patternSuffix = "[^{$nonebreakingSpaceChar} \,\"\n\r\t<)}\*]*";
+        $text = preg_replace(sprintf('%s([\w]*?)((ht|f)tp(s)?:\/\/[\w]+%s)/is', $patternPrefix, $patternSuffix), sprintf('$1$2&lt;a %s href="$3" &gt;$3&lt;/a&gt;', $aTagParams), $text);
+        $text = preg_replace(sprintf('%s([\w]*?)((www|ftp)\.%s)/is', $patternPrefix, $patternSuffix), sprintf('$1$2&lt;a %s href="http://$3" &gt;$3&lt;/a&gt;', $aTagParams), $text);
+        $text = preg_replace($patternPrefix.'([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i', '$1&lt;a href="mailto:$2@$3"&gt;$2@$3&lt;/a&gt;', $text);
 
         return html_entity_decode($text);
     }
@@ -284,14 +267,15 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         if (!isset($conf['countryCode'])) {
             $conf['countryCode'] = '49'; // germany
         }
+
         $num = preg_replace('#[^+0-9]#', '', $orig);
-        if ('+' == substr($num, 0, 1)) {
+        if (str_starts_with($num, '+')) {
             // full telephone number
             $tel = $num;
-        } elseif ('00' == substr($num, 0, 2)) {
+        } elseif (str_starts_with($num, '00')) {
             // full number with country code, but 00 instead of +
             $tel = '+'.substr($num, 2);
-        } elseif ('0' == substr($num, 0, 1)) {
+        } elseif (str_starts_with($num, '0')) {
             // full number without country code
             $tel = '+'.$conf['countryCode'].substr($num, 1);
         } else {
@@ -304,10 +288,8 @@ class tx_mklib_util_String extends tx_mklib_util_Var
 
     /**
      * @param string $string
-     *
-     * @return string
      */
-    public static function removeMultipleWhitespaces($string)
+    public static function removeMultipleWhitespaces($string): ?string
     {
         return preg_replace('/\s+/', ' ', $string);
     }

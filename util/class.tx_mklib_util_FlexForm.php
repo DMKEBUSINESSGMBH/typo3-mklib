@@ -1,27 +1,29 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- * (c) 2014 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
@@ -40,9 +42,9 @@ class tx_mklib_util_FlexForm
      *
      * @return tx_mklib_util_FlexForm
      */
-    public static function getInstance($flexForm)
+    public static function getInstance($flexForm): object
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_util_FlexForm',
             $flexForm
         );
@@ -60,11 +62,10 @@ class tx_mklib_util_FlexForm
     /**
      * Return value from somewhere inside a FlexForm structure.
      *
-     * @param array  $T3FlexForm_array FlexForm data
-     * @param string $fieldName        Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
-     * @param string $sheet            Sheet pointer, eg. "sDEF
-     * @param string $lang             Language pointer, eg. "lDEF
-     * @param string $value            Value pointer, eg. "vDEF
+     * @param string $fieldName Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
+     * @param string $sheet     Sheet pointer, eg. "sDEF
+     * @param string $lang      Language pointer, eg. "lDEF
+     * @param string $value     Value pointer, eg. "vDEF
      *
      * @return string the content
      */
@@ -73,6 +74,7 @@ class tx_mklib_util_FlexForm
         if (empty($this->data[$sheet][$lang])) {
             return null;
         }
+
         $sheetArray = $this->data[$sheet][$lang];
         if (!is_array($sheetArray)) {
             return null;
@@ -97,7 +99,7 @@ class tx_mklib_util_FlexForm
     protected function getFromSheetArray($sheetArray, $fieldNameArr, $value)
     {
         $tempArr = $sheetArray;
-        foreach ($fieldNameArr as $k => $v) {
+        foreach ($fieldNameArr as $v) {
             if (is_numeric($v)) {
                 if (is_array($tempArr)) {
                     $c = 0;
@@ -106,6 +108,7 @@ class tx_mklib_util_FlexForm
                             $tempArr = $values;
                             break;
                         }
+
                         ++$c;
                     }
                 }
@@ -124,7 +127,7 @@ class tx_mklib_util_FlexForm
      */
     private function xml2array($xmlData)
     {
-        $className = '\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility';
+        $className = TYPO3\CMS\Core\Utility\GeneralUtility::class;
 
         return $className::xml2array($xmlData);
     }

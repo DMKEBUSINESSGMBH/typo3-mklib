@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2022-05-03T08:37:48Z" product-name="mklib">
+		<header/>
+		<body>
+			<trans-unit id="please_choose" resname="please_choose" >
+				<source>==please choose==</source>
+			</trans-unit>
+			<trans-unit id="static_countries.zipcode_rule" resname="static_countries.zipcode_rule" >
+				<source>zip code rule</source>
+			</trans-unit>
+			<trans-unit id="static_countries.zipcode_length" resname="static_countries.zipcode_length" >
+				<source>zip code length</source>
+			</trans-unit>
+			<trans-unit id="tt_address.region" resname="tt_address.region" >
+				<source>Region/State</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

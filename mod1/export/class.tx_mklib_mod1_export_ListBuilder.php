@@ -1,10 +1,12 @@
 <?php
 
-/***************************************************************
+/*
  * Copyright notice
  *
- * (c) 2016 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,28 +23,24 @@
  * GNU General Public License for more details.
  *
  * This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ */
 
 /**
  * Der Listbuilder erzeugt die ausgabe für den export.
  *
  * @author Michael Wagner
  */
-class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\ListBuilder
+class tx_mklib_mod1_export_ListBuilder extends Sys25\RnBase\Frontend\Marker\ListBuilder
 {
     /**
      * Die ist leider private und muss überschrieben werden.
-     *
-     * @var array
      */
-    private $callbacks = [];
+    private array $callbacks = [];
 
     /**
      * Add a visitor callback. It is called for each item before rendering.
-     *
-     * @param array $callback
      */
-    public function addVisitor(array $callback)
+    public function addVisitor(array $callback): void
     {
         $this->callbacks[] = $callback;
     }
@@ -55,37 +53,37 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
      * @see \Sys25\RnBase\Frontend\Marker\ListBuilder::renderEach()
      */
     public function renderEach(
-        \Sys25\RnBase\Frontend\Marker\IListProvider $provider,
+        Sys25\RnBase\Frontend\Marker\IListProvider $provider,
         $viewData,
         $template,
         $markerClassname,
         $confId,
         $marker,
         $formatter,
-        $markerParams = null
-    ) {
+        $markerParams = null,
+    ): string {
         $outerMarker = $this->getOuterMarker($marker, $template);
 
         // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
-        list($header, $footer) = $this->getWrapForSubpart($template, $outerMarker.'S');
+        [$header, $footer] = str_split($this->getWrapForSubpart($template, $outerMarker.'S'));
 
         tx_mklib_mod1_export_Util::doOutPut($header);
 
         /* @var $listMarker tx_mklib_mod1_export_ListMarker */
-        $listMarker = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $listMarker = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'tx_mklib_mod1_export_ListMarker',
             $this->getInfo()->getListMarkerInfo()
         );
 
-        $templateList = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart(
+        $templateList = Sys25\RnBase\Frontend\Marker\Templates::getSubpart(
             $template,
             '###'.$outerMarker.'S###'
         );
-        list($listHeader, $listFooter) = $this->getWrapForSubpart(
+        [$listHeader, $listFooter] = str_split($this->getWrapForSubpart(
             $templateList,
             $marker
-        );
-        $templateEntry = \Sys25\RnBase\Frontend\Marker\Templates::getSubpart(
+        ));
+        $templateEntry = Sys25\RnBase\Frontend\Marker\Templates::getSubpart(
             $templateList,
             '###'.$marker.'###'
         );
@@ -113,7 +111,6 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
      * Returns the Wrap for the subpart.
      *
      * @param string $template
-     * @param string $marker
      * @param bool   $required
      *
      * @return string
@@ -122,12 +119,12 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
      */
     protected function getWrapForSubpart(
         $template,
-        $marker,
-        $required = true
+        string $marker,
+        $required = true,
     ) {
         // wir teilen das Template, da der erste teil direkt ausgegeben werden muss!
-        $token = md5(time()).md5(get_class());
-        $wrap = \Sys25\RnBase\Frontend\Marker\Templates::substituteSubpart(
+        $token = md5(time()).md5(self::class);
+        $wrap = Sys25\RnBase\Frontend\Marker\Templates::substituteSubpart(
             $template,
             '###'.$marker.'###',
             $token,
@@ -159,8 +156,8 @@ class tx_mklib_mod1_export_ListBuilder extends \Sys25\RnBase\Frontend\Marker\Lis
         $confId,
         $marker,
         $formatter,
-        $markerParams = null
-    ) {
+        $markerParams = null,
+    ): string {
         $out = parent::render(
             $dataArr,
             $viewData,

@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -35,11 +35,13 @@ class tx_mklib_util_File
     /**
      * @var array[\TYPO3\CMS\Core\Utility\File\BasicFileUtility]
      */
-    private static $ftInstances = [];
+    private static array $ftInstances = [];
+
     /**
      * @var string cache
      */
     private static $siteUrl = false;
+
     /**
      * @var string cache
      */
@@ -48,21 +50,23 @@ class tx_mklib_util_File
     /**
      * Liefert eine Instanz der basicFileFunctions von t3lib.
      *
-     * @return \TYPO3\CMS\Core\Utility\File\BasicFileUtility
+     * @return TYPO3\CMS\Core\Utility\File\BasicFileUtility
      */
     public static function getFileTool($mounts = false, $f_ext = false)
     {
-        $key = (!$mounts && !$f_ext) ? true : false;
+        $key = !$mounts && !$f_ext;
         if (!is_array($mounts)) {
             $mounts = $GLOBALS['FILEMOUNTS'] ?? '';
         }
+
         if (!is_array($f_ext)) {
             $f_ext = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions'] ?? '';
         }
+
         $key = $key ? 'base' : md5(serialize($mounts).serialize($f_ext));
         if (!isset(self::$ftInstances[$key])) {
-            self::$ftInstances[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                \Sys25\RnBase\Utility\Typo3Classes::getBasicFileUtilityClass()
+            self::$ftInstances[$key] = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                Sys25\RnBase\Utility\Typo3Classes::getBasicFileUtilityClass()
             );
         }
 
@@ -74,15 +78,13 @@ class tx_mklib_util_File
      *
      * @TODO: fehlerbehandlung integrieren!
      *
-     * @param string $sDirectory
-     * @param array  $aOptions
-     * @param array  $aUnlinkedFiles hier werden die Dateien eingetragen, welche gelöscht wurden
+     * @param array $aUnlinkedFiles hier werden die Dateien eingetragen, welche gelöscht wurden
      *
      * @return int
      */
-    public static function cleanupFiles($sDirectory, array $aOptions, &$aUnlinkedFiles = [])
+    public static function cleanupFiles(string $sDirectory, array $aOptions, &$aUnlinkedFiles = []): int|float
     {
-        $directoryCheckDir = isset($aOptions['directorycheckdir']) ? $aOptions['directorycheckdir'] : 'typo3temp';
+        $directoryCheckDir = $aOptions['directorycheckdir'] ?? 'typo3temp';
         if (!is_array($aUnlinkedFiles)) {
             $aUnlinkedFiles = [];
         }
@@ -90,22 +92,26 @@ class tx_mklib_util_File
         // nur innerhalb von typo3temp zulassen
         if (
             (!isset($aOptions['skiptypo3tempcheck']) || !$aOptions['skiptypo3tempcheck'])
-            && false === strpos($sDirectory, $directoryCheckDir)
+            && !str_contains($sDirectory, $directoryCheckDir)
         ) {
             return 0;
         }
 
         // optionen sammeln.
-        $iLifetime = $aOptions['lifetime'] ? $aOptions['lifetime'] : 0;
-        $aFiletypes = $aOptions['filetypes'] ? \Sys25\RnBase\Utility\Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : [];
-        $bRecursive = $aOptions['recursive'] ? $aOptions['recursive'] : false;
+        $iLifetime = $aOptions['lifetime'] ?: 0;
+        $aFiletypes = $aOptions['filetypes'] ? Sys25\RnBase\Utility\Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : [];
+        $bRecursive = $aOptions['recursive'] ?: false;
 
         $iCount = 0;
 
         if (@is_dir($sDirectory)) {
             $iHandle = opendir($sDirectory);
             while (false !== ($sFile = readdir($iHandle))) {
-                if ('.' === $sFile || '..' === $sFile) {
+                if ('.' === $sFile) {
+                    continue;
+                }
+
+                if ('..' === $sFile) {
                     continue;
                 }
 
@@ -119,7 +125,7 @@ class tx_mklib_util_File
                     if (// Stimmt der Dateityp?
                         (empty($aFiletypes) || in_array($sExt, $aFiletypes))
                         // Ist die Datei alt genug, um sie zu löschen?
-                        && (@filemtime($sFilePath) < ($GLOBALS['EXEC_TIME'] - $iLifetime))
+                        && (@filemtime($sFilePath) < (TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp') - $iLifetime))
                     ) {
                         $aUnlinkedFiles[] = $sFilePath;
                         // löschen!
@@ -133,6 +139,7 @@ class tx_mklib_util_File
                     $iCount += self::cleanupFiles($sFilePath.'/', $aOptions, $aUnlinkedFiles);
                 }
             }
+
             closedir($iHandle);
         }
 
@@ -148,7 +155,7 @@ class tx_mklib_util_File
     public static function getSiteUrl()
     {
         if (false === self::$siteUrl) {
-            self::$siteUrl = \Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_URL');
+            self::$siteUrl = Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_URL');
         }
 
         return self::$siteUrl;
@@ -161,11 +168,9 @@ class tx_mklib_util_File
      */
     public static function getDocumentRoot($slashPath = true)
     {
-        if (false === self::$documentRoot) {
-            if (!self::$documentRoot = \Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT')) {
-                // happens for example on the CLI
-                self::$documentRoot = \Sys25\RnBase\Utility\Environment::getPublicPath();
-            }
+        if (false === self::$documentRoot && !self::$documentRoot = Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_DOCUMENT_ROOT')) {
+            // happens for example on the CLI
+            self::$documentRoot = Sys25\RnBase\Utility\Environment::getPublicPath();
         }
 
         if ($slashPath) {
@@ -182,11 +187,12 @@ class tx_mklib_util_File
      *
      * @return string
      */
-    public function removeDoubleSlash($sPath)
+    public function removeDoubleSlash($sPath): array|string
     {
         if (!self::isAbsWebPath($sPath)) {
             return str_replace('//', '/', $sPath);
         }
+
         // es ist ein webpfad, aufpassen das das scheme:// nicht weggeschnitten wird.
         $uI = parse_url($sPath);
 
@@ -214,7 +220,7 @@ class tx_mklib_util_File
      */
     public static function removeEndingSlash($sPath)
     {
-        return ('/' === substr($sPath, -1)) ? substr($sPath, 0, -1) : $sPath;
+        return (str_ends_with($sPath, '/')) ? substr($sPath, 0, -1) : $sPath;
     }
 
     /**
@@ -254,9 +260,9 @@ class tx_mklib_util_File
     /**
      * @return tx_mklib_util_File
      */
-    public static function getInstance()
+    public static function getInstance(): object
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_util_File');
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_util_File');
     }
 
     /**
@@ -274,16 +280,15 @@ class tx_mklib_util_File
         // beginnenden slash hinzufügen
         if (!self::isAbsWebPath($sPath)
             && (
-                (\TYPO3\CMS\Core\Core\Environment::isWindows() && ':/' != substr($sPath, 1, 2))
-                || !\TYPO3\CMS\Core\Core\Environment::isWindows()
+                (TYPO3\CMS\Core\Core\Environment::isWindows() && ':/' !== substr($sPath, 1, 2))
+                || !TYPO3\CMS\Core\Core\Environment::isWindows()
             )
         ) {
             $sPath = ('/' != $sPath[0] ? '/' : '').$sPath;
         }
-        if (!$directoryCheck || self::getInstance()->isDirectory($sPath)) {
-            if ('/' != substr($sPath, -1)) {
-                return $sPath.'/';
-            }
+
+        if ((!$directoryCheck || self::getInstance()->isDirectory($sPath)) && !str_ends_with($sPath, '/')) {
+            return $sPath.'/';
         }
 
         return $sPath;
@@ -296,10 +301,10 @@ class tx_mklib_util_File
      *
      * @return string returns the cleaned up directory name if OK, otherwise FALSE
      */
-    public function isDirectory($theDir)
+    public function isDirectory($theDir): string|false
     {
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theDir)) {
-            $theDir = \TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
+        if (TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($theDir)) {
+            $theDir = TYPO3\CMS\Core\Utility\PathUtility::getCanonicalPath($theDir);
             if (@is_dir($theDir)) {
                 return $theDir;
             }
@@ -310,33 +315,22 @@ class tx_mklib_util_File
 
     /**
      * Prüft ob es sich um einen absoluten Server-Pfad handelt.
-     *
-     * @param $sPath
-     *
-     * @return bool
      */
-    public static function isAbsServerPath($sPath)
+    public static function isAbsServerPath($sPath): bool
     {
         $sServerRoot = self::removeStartingSlash(self::getDocumentRoot());
 
-        return substr(self::removeStartingSlash($sPath), 0, strlen($sServerRoot)) === $sServerRoot;
+        return str_starts_with(self::removeStartingSlash($sPath), $sServerRoot);
     }
 
     /**
      * Prüft ob es sich um einen absoluten Web-Pfad handelt.
-     *
-     * @param $sPath
-     *
-     * @return bool
      */
-    public static function isAbsWebPath($sPath)
+    public static function isAbsWebPath($sPath): bool
     {
         $uI = parse_url($sPath);
-        if (isset($uI['scheme']) && $uI['scheme'] && isset($uI['host']) && $uI['host']) {
-            return true;
-        }
 
-        return false;
+        return isset($uI['scheme']) && $uI['scheme'] && isset($uI['host']) && $uI['host'];
     }
 
     /**
@@ -349,14 +343,14 @@ class tx_mklib_util_File
      */
     public static function getRelPath($path = '/', $removeStartingSlash = false)
     {
-        if (!strcmp($path, '/')) {
+        if (0 === strcmp($path, '/')) {
             return $path;
         }
 
         $path = self::fixPath($path);
 
         // Web-Pfad abschneiden
-        if (self::isAbsWebPath($path) && false !== strpos($path, self::getSiteUrl())) {
+        if (self::isAbsWebPath($path) && str_contains($path, self::getSiteUrl())) {
             $path = str_replace(self::getSiteUrl(), '', $path);
         }
 
@@ -364,14 +358,14 @@ class tx_mklib_util_File
         $path = self::getServerPath($path);
         $path = str_replace(
             self::removeStartingSlash(self::getDocumentRoot()),
-            \TYPO3\CMS\Core\Core\Environment::isWindows() ? '/' : '',
+            TYPO3\CMS\Core\Core\Environment::isWindows() ? '/' : '',
             $path
         );
 
         // gegebenenfals ein slash anfügen wenn dieser nicht entfernt werden soll
-        if ($removeStartingSlash && '/' == $path[0]) {
+        if ($removeStartingSlash && '/' === $path[0]) {
             $path = self::removeStartingSlash($path);
-        } elseif ('/' != $path[0]) {
+        } elseif ('/' !== $path[0]) {
             $path = '/'.$path;
         }
 
@@ -387,12 +381,14 @@ class tx_mklib_util_File
      */
     public static function getServerPath($sPath = '/')
     {
-        if (!strcmp($sPath, '')) {
+        if (0 === strcmp($sPath, '')) {
             return '';
         }
-        if (!strcmp($sPath, '/')) {
+
+        if (0 === strcmp($sPath, '/')) {
             return self::slashPath(self::getDocumentRoot());
         }
+
         if (self::isAbsWebPath($sPath)) {
             $sPath = self::getRelPath($sPath);
         }
@@ -402,7 +398,7 @@ class tx_mklib_util_File
         // Nur in einen Absoluten Pfad umwandeln, wenn es noch keiner ist.
         if (!self::isAbsServerPath($sPath)) {
             // Absoluten Pfad generieren
-            $sPath = \Sys25\RnBase\Utility\Files::getFileAbsFileName($sPath);
+            $sPath = Sys25\RnBase\Utility\Files::getFileAbsFileName($sPath);
         }
 
         return self::slashPath($sPath);
@@ -417,28 +413,24 @@ class tx_mklib_util_File
      */
     public static function getWebPath($sPath = '/')
     {
-        if (!strcmp($sPath, '/')) {
+        if (0 === strcmp($sPath, '/')) {
             return self::getSiteUrl();
         }
-        $sPath = self::removeEndingSlash(
+
+        // @TODO: das funktioniert beim webpfad nicht!
+        return self::removeEndingSlash(
             self::getSiteUrl()
         ).'/'.self::removeStartingSlash(
             self::getRelPath($sPath)
         );
-
-        // @TODO: das funktioniert beim webpfad nicht!
-        return $sPath;
     }
 
     /**
      * Schreibt HTTP-Header um eine Datei zum Download anzubieten.
      *
      * @todo Output Tests schreiben
-     *
-     * @param string $sFilename
-     * @param string $sContentType
      */
-    public static function writeDownloadHeaders($sFilename, $sContentType = 'application/download', $sDisposition = 'attachment')
+    public static function writeDownloadHeaders(string $sFilename, string $sContentType = 'application/download', string $sDisposition = 'attachment'): void
     {
         header('Content-type: '.$sContentType);
         header('Content-disposition: '.$sDisposition.'; filename='.$sFilename);
@@ -456,10 +448,8 @@ class tx_mklib_util_File
      * @todo Output Tests schreiben
      *
      * @param string $sOutput
-     * @param string $sFilename
-     * @param string $sContentType
      */
-    public static function offerFileForDownload($sOutput, $sFilename, $sContentType = 'application/download')
+    public static function offerFileForDownload($sOutput, string $sFilename, string $sContentType = 'application/download'): void
     {
         self::writeDownloadHeaders($sFilename, $sContentType);
         header('Content-length: '.strlen($sOutput));
@@ -473,12 +463,8 @@ class tx_mklib_util_File
      * Erzeugt eine URL anhand von den uri parts.
      *
      * http://www.php.net/manual/en/function.parse-url.php
-     *
-     * @param array $parts
-     *
-     * @return string
      */
-    public static function parseUrlFromParts(array $parts)
+    public static function parseUrlFromParts(array $parts): string
     {
         $parts = array_merge([
             'scheme' => '', 'host' => '', 'port' => '',
@@ -513,14 +499,15 @@ class tx_mklib_util_File
         if (@is_file($theFile)) {
             return false;
         }
-        $content = $content ? $content : 'order deny,allow'.PHP_EOL.
+
+        $content = $content ?: 'order deny,allow'.PHP_EOL.
                 'deny from all'.PHP_EOL.
                 'allow from 127.0.0.1'.PHP_EOL;
         // Das funktioniert bei den meisten Clustern nicht,
         // da der LoadBallancer die Anfragen intern weiterleitet!
         // 'allow from 192.168'.PHP_EOL
 
-        \Sys25\RnBase\Utility\Files::writeFile($theFile, $content);
+        Sys25\RnBase\Utility\Files::writeFile($theFile, $content);
 
         return @is_file($theFile);
     }
@@ -529,10 +516,8 @@ class tx_mklib_util_File
      * exisitiert die Datei und ist auch kein Ordner?
      *
      * @param string $filepath
-     *
-     * @return bool
      */
-    public static function isValidFile($filepath)
+    public static function isValidFile($filepath): bool
     {
         return file_exists($filepath) && is_file($filepath);
     }

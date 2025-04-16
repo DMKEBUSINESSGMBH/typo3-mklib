@@ -1,27 +1,29 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- *  (c) 2012 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * Generischer Linker für eine Detailseite.
@@ -62,66 +64,53 @@ class tx_mklib_mod1_linker_ShowDetails
         if (empty($identifier)) {
             throw new InvalidArgumentException('Constructor needs a valid identifier');
         }
+
         $this->identifier = $identifier;
     }
 
     /**
-     * @param \Sys25\RnBase\Domain\Model\RecordInterface $item
-     * @param \Sys25\RnBase\Backend\Form\ToolBox                $formTool
-     * @param array                                  $options
-     *
      * @return string
      */
     public function makeLink(
-        \Sys25\RnBase\Domain\Model\RecordInterface $item,
-        \Sys25\RnBase\Backend\Form\ToolBox $formTool,
-        $options = []
+        Sys25\RnBase\Domain\Model\RecordInterface $item,
+        Sys25\RnBase\Backend\Form\ToolBox $formTool,
+        array $options = [],
     ) {
-        $out = $formTool->createSubmit(
+        return $formTool->createSubmit(
             'showDetails['.$this->identifier.']['.$item->getUid().']',
-            isset($options['label']) ? $options['label'] : '###LABEL_SHOW_DETAILS###',
-            isset($options['confirm']) ? $options['confirm'] : '',
+            $options['label'] ?? '###LABEL_SHOW_DETAILS###',
+            $options['confirm'] ?? '',
             $options
         );
-
-        return $out;
     }
 
     /**
-     * @param \Sys25\RnBase\Backend\Form\ToolBox $formTool
-     * @param array                   $options
-     *
      * @return string
      */
     public function makeClearLink(
         // wird eigentlich nicht benötigt.
-        \Sys25\RnBase\Domain\Model\RecordInterface $item,
-        \Sys25\RnBase\Backend\Form\ToolBox $formTool,
-        $options = []
+        Sys25\RnBase\Domain\Model\RecordInterface $item,
+        Sys25\RnBase\Backend\Form\ToolBox $formTool,
+        array $options = [],
     ) {
-        $out = $formTool->createSubmit(
+        return $formTool->createSubmit(
             'showDetails['.$this->identifier.'][clear]',
-            isset($options['label']) ? $options['label'] : '###LABEL_BTN_NEWSEARCH###',
-            isset($options['confirm']) ? $options['confirm'] : '',
+            $options['label'] ?? '###LABEL_BTN_NEWSEARCH###',
+            $options['confirm'] ?? '',
             $options
         );
-
-        return $out;
     }
 
-    /**
-     * @param \Sys25\RnBase\Backend\Module\IModule $mod
-     */
     public function getCurrentUid(
-        \Sys25\RnBase\Backend\Module\IModule $mod
-    ) {
+        Sys25\RnBase\Backend\Module\IModule $mod,
+    ): int {
         $modSettings = [
             $this->identifier => '0',
         ];
 
-        $params = \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('showDetails');
+        $params = Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('showDetails');
         $params = is_array($params) ? $params : [];
-        $model = key($params);
+
         $uid = current($params);
         if (is_array($uid)) {
             $uid = current($uid);
@@ -131,7 +120,7 @@ class tx_mklib_mod1_linker_ShowDetails
             !empty($uid)
             && 'clear' === $uid
         ) {
-            \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
+            Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
                 $modSettings,
                 $modSettings,
                 $mod->getName()
@@ -139,12 +128,13 @@ class tx_mklib_mod1_linker_ShowDetails
 
             return 0;
         }
+
         // else
 
         $uid = intval($uid);
-        $data = \Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
+        $data = Sys25\RnBase\Backend\Utility\BackendUtility::getModuleData(
             $modSettings,
-            $uid
+            0 !== $uid
                 ? [
                     $this->identifier => $uid,
                 ] : [],

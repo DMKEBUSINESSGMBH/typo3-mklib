@@ -1,27 +1,29 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- * (c) 2015 DMK E-BUSINESS GmbH <kontakt@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * Page Repository.
@@ -34,20 +36,16 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
 {
     /**
      * Liefert den Namen der Suchklasse.
-     *
-     * @return string
      */
-    protected function getSearchClass()
+    protected function getSearchClass(): string
     {
-        return \Sys25\RnBase\Search\SearchGeneric::class;
+        return Sys25\RnBase\Search\SearchGeneric::class;
     }
 
     /**
      * Liefert die Model Klasse.
-     *
-     * @return string
      */
-    protected function getWrapperClass()
+    protected function getWrapperClass(): string
     {
         return 'tx_mklib_model_Page';
     }
@@ -58,7 +56,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
      * This is used only to access several model info methods like
      * getTableName(), getColumnNames() etc.
      *
-     * @return \Sys25\RnBase\Domain\Model\RecordInterface
+     * @return Sys25\RnBase\Domain\Model\RecordInterface
      */
     public function getEmptyModel()
     {
@@ -68,14 +66,13 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     /**
      * returns all subpages of a page on first level.
      *
-     * @param tx_mklib_model_Page $page
-     *
      * @return array[tx_mklib_model_Page]
      */
     public function getChildren(
-        tx_mklib_model_Page $page
+        tx_mklib_model_Page $page,
     ) {
-        $fields = $options = [];
+        $fields = [];
+        $options = [];
         $fields['PAGES.pid'][OP_EQ_INT] = $page->getUid();
 
         return $this->search($fields, $options);
@@ -84,9 +81,6 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
     /**
      * Search database.
      *
-     * @param array $fields
-     * @param array $options
-     *
      * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
     public function search(array $fields, array $options)
@@ -94,7 +88,8 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
         if (empty($options['searchdef']) || !is_array($options['searchdef'])) {
             $options['searchdef'] = [];
         }
-        $options['searchdef'] = \Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
+
+        $options['searchdef'] = Sys25\RnBase\Utility\Arrays::mergeRecursiveWithOverrule(
             // default sercher config
             $this->getSearchdef(),
             // searcher config overrides
@@ -104,10 +99,7 @@ class tx_mklib_repository_Pages extends tx_mklib_repository_Abstract
         return parent::search($fields, $options);
     }
 
-    /**
-     * @return array
-     */
-    protected function getSearchdef()
+    protected function getSearchdef(): array
     {
         return [
             'usealias' => '1',

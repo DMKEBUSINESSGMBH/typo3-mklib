@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -34,23 +34,21 @@ class tx_mklib_util_StaticCache
 {
     /**
      * stores static cache data.
-     *
-     * @var array
      */
-    private static $staticCache = [];
+    private static array $staticCache = [];
 
     /**
      * Set static cache value.
      *
      * @param string $key
      * @param string $value
-     * @param $extKey
      */
-    public static function set($key, $value, $extKey = 'mklib')
+    public static function set($key, $value, $extKey = 'mklib'): void
     {
         if (!is_array(self::$staticCache[$extKey])) {
             self::$staticCache[$extKey] = [];
         }
+
         self::$staticCache[$extKey][$key] = $value;
     }
 
@@ -58,9 +56,6 @@ class tx_mklib_util_StaticCache
      * get static cache value.
      *
      * @param string $key
-     * @param $extKey
-     *
-     * @return mixed
      */
     public static function get($key, $extKey = 'mklib')
     {
@@ -68,18 +63,15 @@ class tx_mklib_util_StaticCache
             self::$staticCache[$extKey] = [];
         }
 
-        return array_key_exists($key, self::$staticCache[$extKey]) ? self::$staticCache[$extKey][$key] : null;
+        return self::$staticCache[$extKey][$key] ?? null;
     }
 
     /**
      * get static cache value.
      *
      * @param string $key
-     * @param $extKey
-     *
-     * @return mixed
      */
-    public static function has($key, $extKey = 'mklib')
+    public static function has($key, $extKey = 'mklib'): bool
     {
         return is_array(self::$staticCache[$extKey]) && array_key_exists($key, self::$staticCache[$extKey]);
     }
@@ -88,11 +80,8 @@ class tx_mklib_util_StaticCache
      * remove static cache value.
      *
      * @param string $key
-     * @param $extKey
-     *
-     * @return mixed
      */
-    public static function remove($key, $extKey = 'mklib')
+    public static function remove($key, $extKey = 'mklib'): void
     {
         unset(self::$staticCache[$extKey][$key]);
     }

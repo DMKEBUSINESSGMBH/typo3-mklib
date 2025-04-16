@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -32,9 +32,10 @@
 /**
  * Backend Modul für mklib.
  */
-class tx_mklib_tests_fixtures_classes_DummyMod extends \Sys25\RnBase\Backend\Module\BaseModule
+class tx_mklib_tests_fixtures_classes_DummyMod extends Sys25\RnBase\Backend\Module\BaseModule
 {
     public $pageinfo;
+
     public $tabs;
 
     /**
@@ -42,7 +43,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends \Sys25\RnBase\Backend\Mod
      *
      * @return string Extension key
      */
-    public function getExtensionKey()
+    public function getExtensionKey(): string
     {
         return 'mklib';
     }
@@ -60,10 +61,8 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends \Sys25\RnBase\Backend\Mod
 
     /**
      * Returns the module ident name.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'dummyMod';
     }
@@ -83,7 +82,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends \Sys25\RnBase\Backend\Mod
             if (isset($GLOBALS['TBE_TEMPLATE'])) {
                 $this->doc = $GLOBALS['TBE_TEMPLATE'];
             } else {
-                $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Sys25\RnBase\Backend\Template\Override\DocumentTemplate::class);
+                $this->doc = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Backend\Template\Override\DocumentTemplate::class);
             }
         }
 

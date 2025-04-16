@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * HttpRequest.
  *
@@ -56,10 +81,8 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
 
     /**
      * Set the configuration array for the adapter.
-     *
-     * @param array $config
      */
-    public function setConfig(array $config = [])
+    public function setConfig(array $config = []): void
     {
         if (isset($config['proxy_user']) && isset($config['proxy_pass'])) {
             $this->setCurlOption(CURLOPT_PROXYUSERPWD, $config['proxy_user'].':'.$config['proxy_pass']);
@@ -86,15 +109,15 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      * Direct setter for cURL adapter related options.
      *
      * @param string|int $option
-     * @param mixed      $value
      *
      * @return Zend_Http_Adapter_Curl
      */
-    protected function setCurlOption($option, $value)
+    protected function setCurlOption($option, $value): static
     {
         if (!isset($this->config['curloptions'])) {
             $this->config['curloptions'] = [];
         }
+
         $this->config['curloptions'][$option] = $value;
 
         return $this;
@@ -109,7 +132,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      *
      * @throws Zend_Http_Client_Adapter_Exception if unable to connect
      */
-    public function connect($host, $port = 80, $secure = false)
+    public function connect($host, $port = 80, $secure = false): void
     {
         // If we're already connected, disconnect first
         if ($this->curl) {
@@ -150,6 +173,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
             if (isset($this->config['sslcert'])) {
                 curl_setopt($this->curl, CURLOPT_SSLCERT, $this->config['sslcert']);
             }
+
             if (isset($this->config['sslpassphrase'])) {
                 curl_setopt($this->curl, CURLOPT_SSLCERTPASSWD, $this->config['sslpassphrase']);
             }
@@ -172,13 +196,12 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      *
      * @param string $method
      * @param string $uri
-     * @param float  $http_ver
      * @param array  $headers
      * @param string $body
      *
      * @return string $request
      */
-    public function write($method, $uri, $headers = [], $body = '')
+    public function write($method, $uri, $headers = [], $body = ''): string
     {
         // Make sure we're properly connected
         if (!$this->curl) {
@@ -195,18 +218,11 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         curl_setopt($this->curl, CURLOPT_URL, $uri);
 
         // ensure correct curl call
-        switch ($method) {
-            case tx_mklib_util_HttpRequest::METHOD_GET:
-                $curlMethod = CURLOPT_HTTPGET;
-                break;
-
-            case tx_mklib_util_HttpRequest::METHOD_POST:
-                $curlMethod = CURLOPT_POST;
-                break;
-
-            default:
-                throw new Exception('Method currently not supported');
-        }
+        $curlMethod = match ($method) {
+            tx_mklib_util_HttpRequest::METHOD_GET => CURLOPT_HTTPGET,
+            tx_mklib_util_HttpRequest::METHOD_POST => CURLOPT_POST,
+            default => throw new Exception('Method currently not supported'),
+        };
 
         // mark as HTTP request and set HTTP method
         curl_setopt($this->curl, CURL_HTTP_VERSION_1_1, true);
@@ -247,7 +263,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         $request = curl_getinfo($this->curl, CURLINFO_HEADER_OUT);
         $request .= $body;
 
-        if (empty($this->response)) {
+        if (null === $this->response || (false === $this->response || ('' === $this->response || '0' === $this->response))) {
             throw new Exception('Error in cURL request: '.curl_error($this->curl));
         }
 
@@ -277,12 +293,15 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
     /**
      * Close the connection to the server.
      */
-    public function close()
+    public function close(): void
     {
         if (is_resource($this->curl)) {
             curl_close($this->curl);
         }
-        $this->curl = $this->host = $this->port = null;
+
+        $this->curl = null;
+        $this->host = null;
+        $this->port = null;
         $this->response = null;
     }
 }

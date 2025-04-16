@@ -1,0 +1,191 @@
+<?php
+
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
+/**
+ * benötigte Klassen einbinden.
+ */
+
+/**
+ * Array util tests.
+ */
+class tx_mklib_tests_util_ArrayTest extends Sys25\RnBase\Testing\BaseTestCase
+{
+    /**
+     * Prüfen ob alle leeren Elemente außer dem array gelöscht werden
+     * und keys unberührt bleiben.
+     */
+    public function testRemoveEmptyValues(): void
+    {
+        $aArray = ['ich', 'bin', 1, '', 0, null, 'Array' => [], 'ArrayNotEmpty' => ['test'], 'Test', true, false];
+        $aNoEmptyValues = tx_mklib_util_Array::removeEmptyValues($aArray);
+
+        self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
+        self::assertEquals(count($aNoEmptyValues), 6, 'Wrong count of entries.');
+        // auf die keys im zurück gegebenen und initialen array achten!!!
+        self::assertEquals('ich', $aNoEmptyValues[0], '1. wert falsch');
+        self::assertEquals('bin', $aNoEmptyValues[1], '2. wert falsch');
+        self::assertEquals(1, $aNoEmptyValues[2], '3. wert falsch');
+        self::assertEquals(['test'], $aNoEmptyValues['ArrayNotEmpty'], '4. wert falsch');
+        self::assertEquals('Test', $aNoEmptyValues[6], '5. wert falsch');
+        self::assertEquals(true, $aNoEmptyValues[7], '6. wert falsch');
+    }
+
+    /**
+     * Prüfen ob alle leeren Elemente auch das array gelöscht werden
+     * und keys zurückgesetzt werden.
+     */
+    public function testRemoveEmptyArrayValuesSimple(): void
+    {
+        $aArray = ['ich', 'bin', 1, '', 0, null, 'Array' => [], 'Test', true, false];
+        $aNoEmptyValues = tx_mklib_util_Array::removeEmptyArrayValuesSimple($aArray);
+
+        self::assertTrue(is_array($aNoEmptyValues), 'No array given.');
+        self::assertEquals(count($aNoEmptyValues), 5, 'Wrong count of entries.');
+        // auf die keys im zurück gegebenen und initialen array achten!!!
+        self::assertEquals('ich', $aNoEmptyValues[0], '1. wert falsch');
+        self::assertEquals('bin', $aNoEmptyValues[1], '2. wert falsch');
+        self::assertEquals(1, $aNoEmptyValues[2], '3. wert falsch');
+        self::assertEquals('Test', $aNoEmptyValues[3], '4. wert falsch');
+        self::assertEquals(true, $aNoEmptyValues[4], '5. wert falsch');
+    }
+
+    public function testFieldsToArray(): void
+    {
+        $aArray = [
+            TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2, 'name' => 'Model Nr. 2']),
+            TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+            TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'name' => 'Model Nr. 6']),
+        ];
+        $aFields = tx_mklib_util_Array::fieldsToArray($aArray, 'name');
+        self::assertTrue(is_array($aFields), 'No array given.');
+        self::assertEquals(count($aFields), 3, 'Array has a wrong count of entries.');
+        self::assertEquals('Model Nr. 2', $aFields[0], 'Wrong name in array key 0.');
+        self::assertEquals('Model Nr. 5', $aFields[1], 'Wrong name in array key 1.');
+        self::assertEquals('Model Nr. 6', $aFields[2], 'Wrong name in array key 2.');
+    }
+
+    public function testinArray(): void
+    {
+        $aArray = ['wert1' => 1, 'zwei', 3, 'wert4' => 'vier', '5'];
+
+        self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray), '1 wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray(1, $aArray, true), '1 wurde nicht gefunden.');
+        self::assertFalse(tx_mklib_util_Array::inArray(2, $aArray), '2 wurde gefunden.');
+        self::assertFalse(tx_mklib_util_Array::inArray(2, $aArray, true), '2 wurde gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray('zwei', $aArray), 'zwei wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray('zwei', $aArray, true), 'zwei wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray(3, $aArray), '3 wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray(3, $aArray, true), '3 wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray('3', $aArray), '3 wurde nicht gefunden.');
+        self::assertFalse(tx_mklib_util_Array::inArray('3', $aArray, true), '3 wurde gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray('vier', $aArray), 'vier wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray('vier', $aArray, true), 'vier wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray('5', $aArray), '5 wurde nicht gefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray('5', $aArray, true), '5 wurde nichtgefunden.');
+        self::assertTrue(tx_mklib_util_Array::inArray(5, $aArray), '5 wurde nicht gefunden.');
+        self::assertFalse(tx_mklib_util_Array::inArray(5, $aArray, true), '5 wurde gefunden.');
+
+        self::assertTrue(tx_mklib_util_Array::inArray(['zwei', 5], $aArray), 'zwei oder 5 wurde nicht gefunden.');
+        self::assertFalse(tx_mklib_util_Array::inArray(['3', 5], $aArray, true), '3 oder 5 wurde gefunden.');
+    }
+
+    public function testFieldsToString(): void
+    {
+        $aArray = [
+            TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 2, 'name' => 'Model Nr. 2']),
+            TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 5, 'name' => 'Model Nr. 5']),
+            TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Domain\Model\BaseModel::class, ['uid' => 6, 'name' => 'Model Nr. 6']),
+        ];
+        $sFields = tx_mklib_util_Array::fieldsToString($aArray, 'name', '<>');
+
+        self::assertTrue(is_string($sFields), 'No string given.');
+        self::assertEquals($sFields, 'Model Nr. 2<>Model Nr. 5<>Model Nr. 6', 'Wrong string given.');
+    }
+
+    /**
+     * @group unit
+     */
+    public function testCastObjectToArray(): void
+    {
+        $object = new CastObjectToArrayTest();
+        $objectArray = tx_mklib_util_Array::castObjectToArray($object);
+
+        self::assertEquals(
+            'publicVariable',
+            $objectArray['publicVariable'],
+            'publicVariable falsch gecastet'
+        );
+        self::assertEquals(
+            'protectedVariable',
+            $objectArray['protectedVariable'],
+            'protectedVariable falsch gecastet'
+        );
+        self::assertEquals(
+            'privateVariable',
+            $objectArray['privateVariable'],
+            'privateVariable falsch gecastet'
+        );
+        self::assertEquals(
+            'publicStaticVariable',
+            $objectArray['publicStaticVariable'],
+            'publicStaticVariable falsch gecastet'
+        );
+        self::assertEquals(
+            'protectedStaticVariable',
+            $objectArray['protectedStaticVariable'],
+            'protectedStaticVariable falsch gecastet'
+        );
+        self::assertEquals(
+            'privateStaticVariable',
+            $objectArray['privateStaticVariable'],
+            'privateStaticVariable falsch gecastet'
+        );
+    }
+}
+
+/**
+ * @author Hannes Bochmann
+ */
+class CastObjectToArrayTest
+{
+    public $publicVariable = 'publicVariable';
+
+    protected $protectedVariable = 'protectedVariable';
+
+    private string $privateVariable = 'privateVariable';
+
+    public static $publicStaticVariable = 'publicStaticVariable';
+
+    protected static $protectedStaticVariable = 'protectedStaticVariable';
+
+    private static string $privateStaticVariable = 'privateStaticVariable';
+
+    public function methodToUsePrivatePropertySoRectorIsSatisified(): string
+    {
+        return $this->privateVariable;
+    }
+}

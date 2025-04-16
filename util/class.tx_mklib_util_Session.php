@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * Util für session handling.
  *
@@ -46,10 +71,9 @@ class tx_mklib_util_Session
      * @see tx_t3users_services_feuser::setSessionValue
      *
      * @param string $key
-     * @param mixed  $value
      * @param string $extKey
      */
-    public static function setSessionValue($key, $value, $extKey = 'mklib')
+    public static function setSessionValue($key, $value, $extKey = 'mklib'): void
     {
         $vars = $GLOBALS['TSFE']->fe_user->getKey('ses', $extKey);
         $vars[$key] = &$value;
@@ -65,8 +89,6 @@ class tx_mklib_util_Session
      *
      * @param string $key    key of session value
      * @param string $extKey optional
-     *
-     * @return mixed
      */
     public static function getSessionValue($key, $extKey = 'mklib')
     {
@@ -85,7 +107,7 @@ class tx_mklib_util_Session
      * @param string $key    key of session value
      * @param string $extKey optional
      */
-    public static function removeSessionValue($key, $extKey = 'mklib')
+    public static function removeSessionValue($key, $extKey = 'mklib'): void
     {
         $vars = $GLOBALS['TSFE']->fe_user->getKey('ses', $extKey);
         unset($vars[$key]);
@@ -95,7 +117,7 @@ class tx_mklib_util_Session
     /**
      * Saves the session data to database.
      */
-    public static function storeSessionData()
+    public static function storeSessionData(): void
     {
         $GLOBALS['TSFE']->fe_user->storeSessionData();
     }
@@ -111,21 +133,21 @@ class tx_mklib_util_Session
      */
     public static function areCookiesActivated()
     {
-        if (!empty($_COOKIE) || \Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('checkedIfCookiesAreActivated')) {
-            $cookiesActivated = !empty($_COOKIE);
+        if ([] !== $_COOKIE || Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter('checkedIfCookiesAreActivated')) {
+            $cookiesActivated = [] !== $_COOKIE;
         } else {
             // @TODO diesen Abschnitt testen, aber wie (vor allem auf CLI)?
             // Wir versuchen selbst einen Cookie zu setzen.
-            setcookie('cookiesActivated', 1, time() + 3600);
+            setcookie('cookiesActivated', 1, ['expires' => time() + 3600]);
             // Wir setzen einen Parameter für den Reload,
             // um einen Infinite Redirect zu verhindern
             // falls keine Cookies erlaubt sind.
-            $parsedUrl = parse_url(\Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_SCRIPT'));
+            $parsedUrl = parse_url(Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_SCRIPT'));
             $checkedIfCookiesAreActivatedParameter = (($parsedUrl['query'] ?? '') ? '&' : '?').'checkedIfCookiesAreActivated=1';
             // Und machen einen Reload um zu sehen ob Cookies gesetzt werden konnten.
             header(
                 'Location: /'.
-                \Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_SCRIPT').
+                Sys25\RnBase\Utility\Misc::getIndpEnv('TYPO3_SITE_SCRIPT').
                 $checkedIfCookiesAreActivatedParameter
             );
             exit;
@@ -136,13 +158,11 @@ class tx_mklib_util_Session
 
     /**
      * Use this method with absolute caution as it takes over sessions of other users.
-     *
-     * @param string $sessionId
      */
-    public static function setSessionId($sessionId)
+    public static function setSessionId(string $sessionId): void
     {
         $GLOBALS['TSFE']->fe_user->setUserSession(
-            \TYPO3\CMS\Core\Session\UserSessionManager::create('FE')->createSessionFromStorage($sessionId)
+            TYPO3\CMS\Core\Session\UserSessionManager::create('FE')->createSessionFromStorage($sessionId)
         );
     }
 }

@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * tx_mklib_util_Scheduler.
  *
@@ -14,10 +39,8 @@ class tx_mklib_util_Scheduler
      * wie 1 minute 30 sekunden.
      *
      * @param int $seconds
-     *
-     * @return string
      */
-    public static function getFormattedTime($seconds)
+    public static function getFormattedTime($seconds): string
     {
         $time = [];
         $time['hours'] = floor($seconds / 3600);
@@ -29,8 +52,9 @@ class tx_mklib_util_Scheduler
             if ($value < 1) {
                 continue; // null wollen wir nicht sehen
             }
+
             // else
-            $labelKey = 'LLL:EXT:mklib/scheduler/locallang.xlf:scheduler_SchedulerTaskFreezeDetection_formattedtime_'.
+            $labelKey = 'LLL:EXT:mklib/Resources/Private/Language/Resources/Private/Language/Scheduler/locallang.xlf:scheduler_SchedulerTaskFreezeDetection_formattedtime_'.
                         $timePart.'_'.(($value > 1) ? 'plural' : 'singular');
             $formattedTime .= sprintf('%01d', $value).' '.
                                 $GLOBALS['LANG']->sL($labelKey).' ';

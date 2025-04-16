@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010-2015 DMK-EBUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -30,7 +30,7 @@
  *
  * @author Michael Wagner
  */
-class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractService
+class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractService
 {
     /**
      * @return tx_mklib_model_Currency
@@ -53,48 +53,46 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     public function getNetPriceByGrossPriceAndTax($gross, $tax)
     {
         // Rechnen wir mit Double?
-        if (is_double($gross)) {
+        if (is_float($gross)) {
             return $this->getDoubleByInt($this->getIntByDouble($gross) / ((100 + $tax) / 100));
-        } else {
-            return $gross / ((100 + $tax) / 100);
         }
+
+        return $gross / ((100 + $tax) / 100);
     }
 
     /**
      * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes.
      *
-     * @param doubleval $gross
-     * @param int       $tax
+     * @param int $tax
      *
      * @return float
      */
     public function getGrossPriceByNetPriceAndTax($net, $tax)
     {
         // Rechnen wir mit Double?
-        if (is_double($net)) {
+        if (is_float($net)) {
             return $this->getDoubleByInt($this->getIntByDouble($net) * (1 + $tax / 100));
-        } else {
-            return $net * (1 + $tax / 100);
         }
+
+        return $net * (1 + $tax / 100);
     }
 
     /**
      * Berechnet den Bruttopreis anhand des Nettopreises und des Steuersatzes.
      *
-     * @param doubleval $gross
-     * @param int       $tax
+     * @param int $tax
      *
      * @return float
      */
     public function getTaxAmountByNetPriceAndTax($net, $tax)
     {
-        if (is_double($net)) {
+        if (is_float($net)) {
             return $this->getDoubleByInt(
                 $this->getIntByDouble($net) * ($tax / 100)
             );
-        } else {
-            return $net * ($tax / 100);
         }
+
+        return $net * ($tax / 100);
     }
 
     /**
@@ -137,10 +135,8 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
      *
      * @param float $double
      * @param int   $digits
-     *
-     * @return int
      */
-    public function getIntByDouble($double, $digits = 4)
+    public function getIntByDouble($double, $digits = 4): int
     {
         $digits = intval('1'.str_repeat('0', $digits));
 
@@ -157,7 +153,6 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
      *
      * @see  http://javathreads.de/2009/03/niemals-mit-den-datentypen-float-oder-double-geldbetraege-berechnen/
      *
-     * @param int    $double
      * @param int    $digits
      * @param bool   $format    | soll die double Zahl formatiert werden?
      *                          Bsp: $int=8 --> ohne Format:8 mit Format:8.0000
@@ -168,7 +163,7 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     public function getDoubleByInt($int, $digits = 4, $format = true, $delimiter = '.')
     {
         $baseInt = intval('1'.str_repeat('0', $digits));
-        $doubleVal = doubleval(doubleval($int) / $baseInt);
+        $doubleVal = floatval(floatval($int) / $baseInt);
 
         // @TODO: hierfür sollte das currency Objekt genutzt werden,
         // das beinhaltet digits, delemiter, etc.
@@ -214,46 +209,28 @@ class tx_mklib_srv_Finance extends \Sys25\RnBase\Typo3Wrapper\Service\AbstractSe
     public function validateVatRegNo($country, $vatregno)
     {
         // if there is a uid, so get from database.
-        if ((string) (int) $country === (string) $country) {
+        if (!is_object($country) && (string) (int) $country === (string) $country) {
             $country = tx_mklib_util_ServiceRegistry::getStaticCountriesService()->findByUid($country);
         }
+
         // get iso from model
         if ($country instanceof tx_mklib_model_StaticCountry) {
             $country = $country->getCnIso_2();
         }
 
         $result = true;
-        switch (strtoupper($country)) {
-            // Hier jetzt die einzelnen Regeln implementieren.
-            case 'DE':
-                $result = preg_match('/^DE[0-9]{9}$/', $vatregno) > 0;
-                break;
-            case 'PL':
-                $result = preg_match('/^PL[0-9]{10}$/', $vatregno) > 0;
-                break;
-            case 'FR':
-                $result = preg_match('/^FR[A-Za-z0-9]{2} [0-9]{9}$/', $vatregno) > 0;
-                break;
-            case 'LU':
-                $result = preg_match('/^LU[0-9]{8}$/', $vatregno) > 0;
-                break;
-            case 'BE':
-                $result = preg_match('/^BE[0-9]{10}$/', $vatregno) > 0;
-                break;
-            case 'NL':
-                $result = preg_match('/^NL[A-Za-z0-9]{10}$/', $vatregno) > 0;
-                break;
-            case 'DK':
-                $result = preg_match('/^DK[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}$/', $vatregno) > 0;
-                break;
-            case 'CZ':
-                $result = preg_match('/^CZ[0-9]{8,10}$/', $vatregno) > 0;
-                break;
-            case 'AT':
-                $result = preg_match('/^ATU[A-Za-z0-9]{8}$/', $vatregno) > 0;
-                break;
-        }
 
-        return $result;
+        return match (strtoupper($country)) {
+            'DE' => preg_match('/^DE\d{9}$/', $vatregno) > 0,
+            'PL' => preg_match('/^PL\d{10}$/', $vatregno) > 0,
+            'FR' => preg_match('/^FR[A-Za-z0-9]{2} \d{9}$/', $vatregno) > 0,
+            'LU' => preg_match('/^LU\d{8}$/', $vatregno) > 0,
+            'BE' => preg_match('/^BE\d{10}$/', $vatregno) > 0,
+            'NL' => preg_match('/^NL[A-Za-z0-9]{10}$/', $vatregno) > 0,
+            'DK' => preg_match('/^DK\d{2} \d{2} \d{2} \d{2}$/', $vatregno) > 0,
+            'CZ' => preg_match('/^CZ\d{8,10}$/', $vatregno) > 0,
+            'AT' => preg_match('/^ATU[A-Za-z0-9]{8}$/', $vatregno) > 0,
+            default => $result,
+        };
     }
 }

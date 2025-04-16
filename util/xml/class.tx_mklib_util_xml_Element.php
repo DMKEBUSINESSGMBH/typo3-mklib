@@ -1,5 +1,30 @@
 <?php
 
+/*
+ * Copyright notice
+ *
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 /**
  * Xml Element.
  *
@@ -7,12 +32,7 @@
  */
 class tx_mklib_util_xml_Element extends SimpleXMLElement
 {
-    /**
-     * @param string $path
-     *
-     * @return tx_mklib_util_xml_Element
-     */
-    public function getNodeFromPath($paths)
+    public function getNodeFromPath($paths): ?tx_mklib_util_xml_Element
     {
         $paths = is_array($paths) ? $paths : explode('.', $paths);
 
@@ -28,24 +48,18 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
         }
 
         // return xml node
-        if ($xml instanceof tx_mklib_util_xml_Element) {
-            return $xml;
-        }
-
-        return null;
+        return $xml;
     }
 
     /**
      * @param string $path
-     *
-     * @return string
      */
-    public function getAttributeFromPath($path)
+    public function getAttributeFromPath($path): ?string
     {
         $paths = explode('.', $path);
         $atribute = array_pop($paths);
 
-        $xml = empty($paths) ? $this : $this->getNodeFromPath($paths);
+        $xml = [] === $paths ? $this : $this->getNodeFromPath($paths);
 
         if ($xml instanceof tx_mklib_util_xml_Element
                 && isset($xml[$atribute])) {
@@ -59,10 +73,8 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      * Existiert ein Wert für den angegebenen Pfad.
      *
      * @param string $path
-     *
-     * @return bool
      */
-    public function hasValueForPath($path)
+    public function hasValueForPath($path): bool
     {
         $var = $this->getNodeFromPath($path);
         $var = is_null($var) ? $this->getAttributeFromPath($path) : $var;
@@ -72,34 +84,28 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 
     /**
      * @param string $path
-     * @param mixed  $default
-     *
-     * @return mixed
      */
     public function getValueFromPath($path, $default = null)
     {
         if (!$this->hasValueForPath($path)) {
             return $default;
         }
-        $var = $this->getNodeFromPath($path);
-        $var = is_null($var) ? $this->getAttributeFromPath($path) : (string) $var;
 
-        return $var;
+        $var = $this->getNodeFromPath($path);
+
+        return is_null($var) ? $this->getAttributeFromPath($path) : (string) $var;
     }
 
     /**
      * Liefert ein Datumsobjekt anhand eines Strings im XML.
      *
      * @param string $path
-     *
-     * @return DateTime
      */
-    public function getDateTimeFromPath($path)
+    public function getDateTimeFromPath($path): DateTime
     {
         $date = $this->getValueFromPath($path);
-        $date = tx_mklib_util_Date::getDateTime($date);
 
-        return $date;
+        return tx_mklib_util_Date::getDateTime($date);
     }
 
     /**
@@ -109,11 +115,11 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      *
      * @return float
      */
-    public function getIntFromPath($path)
+    public function getIntFromPath($path): ?int
     {
         $value = $this->getValueFromPath($path);
         if (!is_null($value)) {
-            $value = (int) $value;
+            return (int) $value;
         }
 
         return $value;
@@ -137,10 +143,8 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 
     /**
      * Prüft, ob das Tag Attribute oder ChildNodes hat.
-     *
-     * @return bool
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return 0 == count($this->children()) && 0 == count($this->attributes());
     }
@@ -149,10 +153,8 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      * Liefert ein double anhand eines Strings im XML.
      *
      * @param string $path
-     *
-     * @return float
      */
-    public function getFloatFromPath($path)
+    public function getFloatFromPath($path): ?float
     {
         $value = $this->getValueFromPath($path);
         if (!is_null($value)) {
@@ -170,10 +172,8 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      * @param string $path
      * @param int    $digits bei 2 wird aus 1999 19,99.
      *                       Die Preise sollten also als Centbeträge im Code stehen.
-     *
-     * @return float
      */
-    public function getPriceFromPath($path, $digits = 2)
+    public function getPriceFromPath($path, $digits = 2): float
     {
         $value = $this->getIntFromPath($path);
         if (!is_null($value)) {
@@ -202,13 +202,13 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
             $node = $this->addChild($key);
 
             return $node->addCData($value);
-        } else {
-            $node = dom_import_simplexml($this);
-            $no = $node->ownerDocument;
-            $node->appendChild($no->createCDATASection($value));
-
-            return $this;
         }
+
+        $node = dom_import_simplexml($this);
+        $no = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($value));
+
+        return $this;
     }
 
     /**
@@ -216,42 +216,34 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      *
      * @param array $childs
      */
-    public function addChilds($childs)
+    public function addChilds($childs): void
     {
         foreach ($childs as $key => $value) {
             // Array value weitergeben
             if (is_array($value)) {
                 if (!is_numeric($key)) {
-                    $subnode = $this->addChild("$key");
+                    $subnode = $this->addChild($key);
                     $subnode->addChilds($value);
                 } else {
                     $this->addChilds($value);
                 }
-            } // Value speichern, für Text als CDATA!
-            else {
-                if (is_numeric($value) || empty($value)) {
-                    $this->addChild($key, $value);
-                } else {
-                    $this->addCData($value, $key);
-                }
+            } elseif (is_numeric($value) || empty($value)) {
+                $this->addChild($key, $value);
+            } else {
+                $this->addCData($value, $key);
             }
         }
     }
 
-    /**
-     * @return string
-     */
-    public function asString()
+    public function asString(): string
     {
         return (string) $this;
     }
 
     /**
      * Liefert das XML als Array aus.
-     *
-     * @return array
      */
-    public function asArray()
+    public function asArray(): void
     {
         throw new Exception('asArray has to be implementet.');
         // mal bei merchstore schauen und kopieren.

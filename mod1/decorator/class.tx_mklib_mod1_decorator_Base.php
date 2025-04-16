@@ -1,10 +1,12 @@
 <?php
 
-/**
- * Copyright notice.
+/*
+ * Copyright notice
  *
- * (c) 2011 - 2015 DMK E-Business GmbH <dev@dmk-ebusiness.de>
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
  * All rights reserved
+ *
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
  * free software; you can redistribute it and/or modify
@@ -12,8 +14,8 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * The GNU General Public License can be found at
- * http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
  * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -29,33 +31,18 @@
  * @author Hannes Bochmann
  * @author Michael Wagner
  */
-class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\InterfaceDecorator
+class tx_mklib_mod1_decorator_Base implements Sys25\RnBase\Backend\Decorator\InterfaceDecorator
 {
-    /**
-     * @var \Sys25\RnBase\Backend\Module\IModule
-     */
-    private $mod;
-    /**
-     * @var array
-     */
-    private $options;
-
-    /**
-     * @param \Sys25\RnBase\Backend\Module\IModule $mod
-     */
-    public function __construct(\Sys25\RnBase\Backend\Module\IModule $mod, array $options = [])
+    public function __construct(private Sys25\RnBase\Backend\Module\IModule $mod, private array $options = [])
     {
-        $this->mod = $mod;
-        $this->options = $options;
     }
 
     /**
-     * @param string                                 $value
-     * @param string                                 $colName
-     * @param array                                  $record
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
+     * @param string $value
+     * @param string $colName
+     * @param array  $record
      */
-    public function format($value, $colName, $record, \Sys25\RnBase\Domain\Model\DataInterface $item)
+    public function format($value, $colName, $record, Sys25\RnBase\Domain\Model\DataInterface $item): string
     {
         $ret = $value;
         switch ($colName) {
@@ -89,12 +76,8 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
 
     /**
      * renders the uid column.
-     *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
-     *
-     * @return string
      */
-    protected function getUidColumn(\Sys25\RnBase\Domain\Model\DataInterface $item)
+    protected function getUidColumn(Sys25\RnBase\Domain\Model\DataInterface $item): string
     {
         $wrap = $item->isHidden() ? ['<del>', '</del>'] : ['', ''];
         $ret = $wrap[0].$item->getProperty('uid').$wrap[1];
@@ -107,12 +90,8 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
 
     /**
      * renders the label column.
-     *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
-     *
-     * @return string
      */
-    protected function getLabelColumn(\Sys25\RnBase\Domain\Model\DataInterface $item)
+    protected function getLabelColumn(Sys25\RnBase\Domain\Model\DataInterface $item): string
     {
         $lastModifyDateTime = $item->getLastModifyDateTime();
         $creationDateTime = $item->getCreationDateTime();
@@ -132,11 +111,9 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
      * Renders the flag and the title of the sys language record.
      * Renders some links to create the overlay too.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
-     *
      * @return string
      */
-    protected function getSysLanguageColumn(\Sys25\RnBase\Domain\Model\DataInterface $item)
+    protected function getSysLanguageColumn(Sys25\RnBase\Domain\Model\DataInterface $item)
     {
         if ($item->getTableName()) {
             $ret = tx_mklib_mod1_util_Language::getLangSpriteIcon(
@@ -148,7 +125,7 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
                 $this->getModule()
             );
 
-            if (!empty($new)) {
+            if ('' !== $new && '0' !== $new) {
                 $fileExt = 'xlf';
                 $ret .= ' ('
                     .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.'.$fileExt.':Localize')
@@ -163,18 +140,16 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
     /**
      * Liefert die möglichen Optionen für die actions.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
-     *
-     * @return array
+     * @param Sys25\RnBase\Domain\Model\DataInterface $item
      */
-    protected function getActionOptions($item = null)
+    protected function getActionOptions($item = null): array
     {
         $cols = [
             'edit' => '',
             'hide' => '',
         ];
 
-        if ($item && \Sys25\RnBase\Backend\Utility\TCA::getSortbyFieldForTable($item->getTableName())) {
+        if ($item && Sys25\RnBase\Backend\Utility\TCA::getSortbyFieldForTable($item->getTableName())) {
             $cols['moveup'] = '';
             $cols['movedown'] = '';
         }
@@ -191,13 +166,8 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
     /**
      * @TODO: weitere links integrieren!
      * $options = array('hide'=>'ausblenden,'edit'=>'bearbeiten,'remove'=>'löschen','history'='history','info'=>'info','move'=>'verschieben');
-     *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
-     * @param array                                  $options
-     *
-     * @return string
      */
-    protected function getActions(\Sys25\RnBase\Domain\Model\DataInterface $item, array $options)
+    protected function getActions(Sys25\RnBase\Domain\Model\DataInterface $item, array $options): string
     {
         $ret = '';
         $tableName = $item->getTableName();
@@ -215,7 +185,7 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
                 case 'remove':
                     // Es wird immer ein Bestätigungsdialog ausgegeben!!! Dieser steht
                     // in der BE-Modul locallang.xlf der jeweiligen Extension im Schlüssel
-                    // 'confirmation_deletion'. (z.B. mkkvbb/mod1/locallang.xlf) Soll kein
+                    // 'confirmation_deletion'. (z.B. mkkvbb/Resources/Private/Language/BackendModule/locallang.xlf) Soll kein
                     // Bestätigungsdialog ausgegeben werden, dann einfach 'confirmation_deletion' leer lassen
                     $ret .= $this->getFormTool()->createDeleteLink($tableName, $uid, $bTitle, ['confirm' => $GLOBALS['LANG']->getLL('confirmation_deletion')]);
                     break;
@@ -228,15 +198,16 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
                     // wenn es kein vorvorletztes gibt, verschieben wir das vorletzte element hinter das aktuelle element
                     prev($uidMap);
                     $prevId = key($uidMap);
-                    if ($prevId) {
+                    if (0 !== $prevId && ('' !== $prevId && '0' !== $prevId)) {
                         prev($uidMap);
-                        if (key($uidMap)) {
+                        if (0 !== key($uidMap) && !in_array(key($uidMap), ['', '0'], true)) {
                             $prevId = key($uidMap);
                         } else {
                             $fromUid = $prevId;
                             $prevId = $uid;
                         }
                     }
+
                     if ($prevId) {
                         $ret .= $this->getFormTool()->createMoveUpLink(
                             $tableName,
@@ -248,15 +219,16 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
                             ]
                         );
                     } else {
-                        $ret .= \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon('empty-icon');
+                        $ret .= Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon('empty-icon');
                     }
+
                     break;
                 case 'movedown':
                     $uidMap = $this->getItemsMap($item);
                     // einen schritt in der map nach vorne, denn wir wollen das aktuelle hinter dem nächsten platzieren.
                     next($uidMap);
                     $nextId = key($uidMap);
-                    if ($nextId) {
+                    if (0 !== $nextId && ('' !== $nextId && '0' !== $nextId)) {
                         $ret .= $this->getFormTool()->createMoveDownLink(
                             $tableName,
                             $uid,
@@ -267,8 +239,9 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
                             ]
                         );
                     } else {
-                        $ret .= \Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon('empty-icon');
+                        $ret .= Sys25\RnBase\Backend\Utility\ModuleUtility::getSpriteIcon('empty-icon');
                     }
+
                     break;
                 default:
                     break;
@@ -278,29 +251,25 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
         return $ret;
     }
 
-    /**
-     * @param string $output
-     *
-     * @return string
-     */
     protected function wrapValue(
-        $output,
+        string $output,
         $value,
         $colName,
         $record,
-        \Sys25\RnBase\Domain\Model\DataInterface $item
-    ) {
+        Sys25\RnBase\Domain\Model\DataInterface $item,
+    ): string {
         $stateClass = [];
 
         if ($item->isHidden()) {
             $stateClass[] = 'ef-hidden';
         }
+
         if ($item->isDeleted()) {
             $stateClass[] = 'ef-deleted';
         }
 
-        if (!empty($stateClass)) {
-            $output = '<div class="'.implode(' ', $stateClass).'">'.$output.'</div>';
+        if ([] !== $stateClass) {
+            return '<div class="'.implode(' ', $stateClass).'">'.$output.'</div>';
         }
 
         return $output;
@@ -309,15 +278,14 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
     /**
      * liefert die items map und setzten den pointer auf das aktuelle element.
      *
-     * @param \Sys25\RnBase\Domain\Model\DataInterface $item
-     *
      * @return array
      */
-    protected function getItemsMap(\Sys25\RnBase\Domain\Model\DataInterface $item)
+    protected function getItemsMap(Sys25\RnBase\Domain\Model\DataInterface $item)
     {
         if (empty($this->options['items_map'])) {
             return [];
         }
+
         $currentId = $item->getUid();
         $map = $this->options['items_map'];
 
@@ -330,10 +298,8 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
 
     /**
      * Returns the module.
-     *
-     * @return \Sys25\RnBase\Backend\Module\IModule
      */
-    protected function getModule()
+    protected function getModule(): Sys25\RnBase\Backend\Module\IModule
     {
         return $this->mod;
     }
@@ -341,7 +307,7 @@ class tx_mklib_mod1_decorator_Base implements \Sys25\RnBase\Backend\Decorator\In
     /**
      * Returns an instance of \Sys25\RnBase\Backend\Module\IModule.
      *
-     * @return \Sys25\RnBase\Backend\Form\ToolBox
+     * @return Sys25\RnBase\Backend\Form\ToolBox
      */
     protected function getFormTool()
     {

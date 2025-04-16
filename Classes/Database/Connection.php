@@ -1,34 +1,36 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
+ *
+ * This script is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- ***************************************************************/
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * Beinhaltet Utility-Methoden für Datenbank handling.
  *
  * @author Michael Wagner
  */
-class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
+class Tx_Mklib_Database_Connection extends Sys25\RnBase\Database\Connection
 {
     /**
      * @var int
@@ -74,7 +76,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
         if (isset($GLOBALS['TCA'][$tablename]['ctrl']['crdate'])
             && !isset($data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']])
         ) {
-            $data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
+            $data[$GLOBALS['TCA'][$tablename]['ctrl']['crdate']] = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp');
         }
 
         return $this->insertTimestamp($data, $tablename);
@@ -95,7 +97,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
         if (isset($GLOBALS['TCA'][$tablename]['ctrl']['tstamp'])
             && !isset($data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']])
         ) {
-            $data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+            $data[$GLOBALS['TCA'][$tablename]['ctrl']['tstamp']] = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\Context\Context::class)->getPropertyFromAspect('date', 'timestamp');
         }
 
         return $data;
@@ -107,7 +109,6 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      * @param string $tablename
      * @param array  $values
      * @param int    $debug     = 0      Set to 1 to debug sql-String
-     * @param array  $options
      *
      * @return int UID of created record
      */
@@ -116,6 +117,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
         if ($options['eleminateNonTcaColumns'] ?? false) {
             $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
         }
+
         $newUid = parent::doInsert(
             $tablename,
             $this->insertCrdateAndTimestamp($values, $tablename),
@@ -134,7 +136,6 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      * @param array  $values
      * @param int    $debug         = 0      Set to 1 to debug sql-String
      * @param mixed  $noQuoteFields Array or commaseparated string with fieldnames
-     * @param array  $options
      *
      * @return int number of rows affected
      */
@@ -143,6 +144,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
         if ($options['eleminateNonTcaColumns'] ?? false) {
             $values = tx_mklib_util_TCA::eleminateNonTcaColumnsByTable($tablename, $values);
         }
+
         $res = parent::doUpdate(
             $tablename,
             $where,
@@ -194,9 +196,6 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      *
      * @TODO: logging integrieren!
      *
-     * @param string $sqlQuery
-     * @param int    $debug
-     *
      * @return bool
      */
     public function doQuery($query, array $options = [])
@@ -207,7 +206,6 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
     /* *** ************ *** *
      * *** MM FUNCTIONS ***
      * *** ************ *** */
-
     /**
      * Prüft ob ein MM eintrag bereits existiert.
      *
@@ -217,10 +215,8 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      * @param string $sField
      * @param int    $sLocalId
      * @param int    $iForeignId
-     *
-     * @return bool
      */
-    public function mmExists($sTable, $sField, $sLocalId, $iForeignId)
+    public function mmExists($sTable, $sField, $sLocalId, $iForeignId): bool
     {
         $sMmTable = $this->mmGetTable($sTable, $sField);
 
@@ -236,7 +232,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
 
         $ret = $this->doSelect('COUNT(*) as cnt', $sMmTable, $options);
 
-        return count($ret) ? (intval($ret[0]['cnt']) > 0) : false;
+        return count($ret) && intval($ret[0]['cnt']) > 0;
     }
 
     /**
@@ -247,7 +243,6 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      * @param string $sTable
      * @param string $sField
      * @param int    $sLocalId
-     * @param int    $iForeignId
      *
      * @return bool
      */
@@ -276,10 +271,8 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      * @param string $sField
      * @param int    $sLocalId
      * @param int    $iForeignId
-     *
-     * @return bool
      */
-    public function mmCreate($sTable, $sField, $sLocalId, $iForeignId)
+    public function mmCreate($sTable, $sField, $sLocalId, $iForeignId): bool
     {
         // Der mm Eintrag existiert bereits
         if ($this->mmExists($sTable, $sField, $sLocalId, $iForeignId)) {
@@ -303,7 +296,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      *
      * @return string
      */
-    private function mmGetTable($sTable, $sField, $sCF = 'MM')
+    private function mmGetTable($sTable, $sField, string $sCF = 'MM')
     {
         return $GLOBALS['TCA'][$sTable]['columns'][$sField]['config'][$sCF];
     }
@@ -317,11 +310,8 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      * @param string $sField
      * @param int    $sLocalId
      * @param int    $iForeignId
-     * @param bool   $bWhere
-     *
-     * @return array
      */
-    private function mmGetData($sTable, $sField, $sLocalId = false, $iForeignId = false, $bWhere = false)
+    private function mmGetData($sTable, $sField, $sLocalId = false, $iForeignId = false, bool $bWhere = false): array
     {
         $aFieldConfig = $GLOBALS['TCA'][$sTable]['columns'][$sField]['config'];
 
@@ -336,6 +326,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
         if ($sLocalId) {
             $aData[$sLocalField] = $sLocalId;
         }
+
         if ($iForeignId) {
             $aData[$sForeignField] = $iForeignId;
         }
@@ -344,7 +335,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
             // Anhand der Daten das WHERE aufbauen
             $where = [];
             foreach ($aData as $sField => $sValue) {
-                $where[] = $sMmTable.'.'.$sField.' = '.\Sys25\RnBase\Database\Connection::getInstance()->fullQuoteStr($sValue, $sMmTable);
+                $where[] = $sMmTable.'.'.$sField.' = '.Sys25\RnBase\Database\Connection::getInstance()->fullQuoteStr($sValue, $sMmTable);
             }
 
             return $where;
@@ -356,32 +347,31 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
     /* *** **************** *** *
      * *** LOGGIN FUNCTIONS ***
      * *** **************** *** */
-
     /**
      * Is logging enabled?
      *
-     * @param string $tablename
-     *
      * @return bool
      */
-    private function isLog($tablename)
+    private function isLog(string $tablename)
     {
         if (-1 == $this->log) {
             // erst die Extension Konfiguration fragen!
-            $this->log = intval(\Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'logDbHandler'));
-            if ($this->log) {
-                $this->log = \Sys25\RnBase\Utility\Logger::isNoticeEnabled();
+            $this->log = intval(Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'logDbHandler'));
+            if (0 !== $this->log) {
+                $this->log = Sys25\RnBase\Utility\Logger::isNoticeEnabled();
             }
         }
+
         if ($this->log) {
             // ignore tables besorgen
             if (!is_array($this->ignoreTables)) {
-                $this->ignoreTables = \Sys25\RnBase\Utility\Strings::trimExplode(
+                $this->ignoreTables = Sys25\RnBase\Utility\Strings::trimExplode(
                     ',',
-                    \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'logDbIgnoreTables'),
+                    Sys25\RnBase\Configuration\Processor::getExtensionCfgValue('mklib', 'logDbIgnoreTables'),
                     true
                 );
             }
+
             // tabelle loggen ?
             if (in_array($tablename, $this->ignoreTables)) {
                 return false;
@@ -396,29 +386,29 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
      *
      * @TODO: t3users log nutzen, wenn installiert! tx_t3users_util_ServiceRegistry::getLoggingService();
      *
-     * @param string $msg
-     * @param string $tablename
      * @param string $where
-     * @param mixed  $values
      */
-    private function log($msg, $tablename, $where = false, $values = false)
+    private function log(string $msg, string $tablename, $where = false, $values = false): bool
     {
         if (!$this->isLog($tablename)) {
             return false;
         }
+
         // else
 
         // daten sammeln
         $data = [];
-        $data['fe_user'] = isset($GLOBALS['TSFE']->fe_user->user['uid']) ? $GLOBALS['TSFE']->fe_user->user['uid'] : 'none';
+        $data['fe_user'] = $GLOBALS['TSFE']->fe_user->user['uid'] ?? 'none';
         $data['be_user'] = (array_key_exists('BE_USER', $GLOBALS) && is_object($GLOBALS['BE_USER'])) ? $GLOBALS['BE_USER']->user['uid'] : 'none';
         $data['tablename'] = $tablename;
         if ($where) {
             $data['where'] = $where;
         }
+
         if ($values) {
             $data['values'] = $values;
         }
+
         // backtrace Konfigurierbar machen?
         $data['debug_backtrace'] = tx_mklib_util_Logger::getDebugBacktrace();
 
@@ -427,6 +417,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
         if ($values && isset($values[$disabled]) && $values[$disabled]) {
             $msg .= '->disabled';
         }
+
         // wurde gelöscht?
         $delete = tx_mklib_util_TCA::getEnableColumn($tablename, 'delete', 'deleted');
         if ($values && isset($values[$delete]) && $values[$delete]) {
@@ -436,7 +427,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
         // tabellenname ergänzen
         $msg .= '('.$tablename.')';
 
-        \Sys25\RnBase\Utility\Logger::notice($msg, 'mklib', $data);
+        Sys25\RnBase\Utility\Logger::notice($msg, 'mklib', $data);
 
         return true;
     }
@@ -462,7 +453,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
                 global $GLOBALS;
                 // Set hidden field according to $TCA
                 if (!isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
-                    throw new Exception("Tx_Mklib_Database_Connection::delete(): Cannot hide records in table $table - no \$TCA entry found!");
+                    throw new Exception(sprintf('Tx_Mklib_Database_Connection::delete(): Cannot hide records in table %s - no $TCA entry found!', $table));
                 }
 
                 // else
@@ -475,7 +466,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
                 global $GLOBALS;
                 // Set deleted field according to $TCA
                 if (!isset($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
-                    throw new Exception("Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table $table - no \$TCA entry found!");
+                    throw new Exception(sprintf('Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table %s - no $TCA entry found!', $table));
                 }
 
                 // else
@@ -489,7 +480,7 @@ class Tx_Mklib_Database_Connection extends \Sys25\RnBase\Database\Connection
                 break;
 
             default:
-                throw new Exception("Tx_Mklib_Database_Connection::delete(): Unknown deletion mode ($mode)");
+                throw new Exception(sprintf('Tx_Mklib_Database_Connection::delete(): Unknown deletion mode (%s)', $mode));
         }
 
         return $affectedRows;

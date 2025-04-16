@@ -1,34 +1,36 @@
 <?php
 
-/***************************************************************
- *  Copyright notice
+/*
+ * Copyright notice
  *
- *  (c) 2011 DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
- *  All rights reserved
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
 
 /**
  * generic abstract scheduler.
  *
  * @author Michael Wagner <michael.wagner@dmk-ebusiness.de>
  */
-abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\AbstractTask
+abstract class tx_mklib_scheduler_Generic extends TYPO3\CMS\Scheduler\Task\AbstractTask
 {
     /**
      * The DateTime Object with the last run time.
@@ -76,8 +78,8 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
         $startTimeInMilliseconds = microtime(true);
         $memoryUsageAtStart = memory_get_usage();
 
-        \Sys25\RnBase\Utility\Logger::info(
-            '['.get_class($this).']: Scheduler starts',
+        Sys25\RnBase\Utility\Logger::info(
+            '['.static::class.']: Scheduler starts',
             $this->getExtKey()
         );
 
@@ -87,27 +89,28 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
             $this->setLastRunTime();
 
             // devlog
-            if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('devlog')) {
+            if (TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('devlog')) {
                 if (// infolog setzen, wenn devlog leer
-                    empty($devLog)
+                    [] === $devLog
                     // infolog setzen, wenn infolog gesetzt, aber keine message vorhanden ist
                     || (
-                        isset($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO])
-                        && empty($devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'])
+                        isset($devLog[Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO])
+                        && empty($devLog[Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'])
                     )
                 ) {
-                    $devLog[\Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'] = $message;
+                    $devLog[Sys25\RnBase\Utility\Logger::LOGLEVEL_INFO]['message'] = $message;
                 }
 
                 foreach ($devLog as $logLevel => $logData) {
                     if (empty($logData['message'])) {
                         continue;
                     }
-                    \Sys25\RnBase\Utility\Logger::devLog(
-                        '['.get_class($this).']: '.$logData['message'],
-                        isset($logData['extKey']) ? $logData['extKey'] : $this->getExtKey(),
+
+                    Sys25\RnBase\Utility\Logger::devLog(
+                        '['.static::class.']: '.$logData['message'],
+                        $logData['extKey'] ?? $this->getExtKey(),
                         $logLevel,
-                        isset($logData['dataVar']) ? $logData['dataVar'] : false
+                        $logData['dataVar'] ?? false
                     );
                 }
             }
@@ -120,20 +123,22 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
                 // bisherige logs mitgeben
                 'devlog' => $devLog,
             ];
-            if ($exception instanceof \Sys25\RnBase\Exception\AdditionalException) {
+            if ($exception instanceof Sys25\RnBase\Exception\AdditionalException) {
                 $dataVar['exception_data'] = $exception->getAdditional(false);
             }
-            if (\Sys25\RnBase\Utility\Logger::isFatalEnabled()) {
-                \Sys25\RnBase\Utility\Logger::fatal(
-                    'Task ['.get_class($this).'] failed.'.
+
+            if (Sys25\RnBase\Utility\Logger::isFatalEnabled()) {
+                Sys25\RnBase\Utility\Logger::fatal(
+                    'Task ['.static::class.'] failed.'.
                         ' Error('.$exception->getCode().'):'.
                         $exception->getMessage(),
                     $this->getExtKey(),
                     $dataVar
                 );
             }
+
             // Exception Mail an die Entwicker senden
-            $mail = \Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
+            $mail = Sys25\RnBase\Configuration\Processor::getExtensionCfgValue(
                 'rn_base',
                 'sendEmailOnException'
             );
@@ -141,23 +146,24 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
                 $this->sendErrorMail(
                     $mail,
                     // Wir erstellen eine weitere Exception mit zusätzlichen Daten.
-                    \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                        \Sys25\RnBase\Exception\AdditionalException::class,
-                        get_class($exception).': '.$exception->getMessage(),
+                    TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                        Sys25\RnBase\Exception\AdditionalException::class,
+                        $exception::class.': '.$exception->getMessage(),
                         $exception->getCode(),
                         $dataVar,
                         $exception
                     )
                 );
             }
+
             // Wir geben die Exception weiter,
             // damit der Scheduler eine entsprechende Meldung ausgeben kann.
             throw $exception;
         }
 
         $memoryUsageAtEnd = memory_get_usage();
-        \Sys25\RnBase\Utility\Logger::info(
-            '['.get_class($this).']: Scheduler ends successful ',
+        Sys25\RnBase\Utility\Logger::info(
+            '['.static::class.']: Scheduler ends successful ',
             $this->getExtKey(),
             [
                 'Execution Time' => (microtime(true) - $startTimeInMilliseconds).' ms',
@@ -177,7 +183,6 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
      * to be handled and logged by the client implementations.
      * Should return true on successful execution, false on error.
      *
-     * @param array $options
      * @param array &$devLog Put some informations for the logging here
      *
      * @return string
@@ -205,7 +210,6 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
      * Setzt eine Option.
      *
      * @param string $key
-     * @param mixed  $value
      *
      * @return mixed der gesetzte Wert
      */
@@ -218,8 +222,6 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
      * Liefert eine Option.
      *
      * @param string $key
-     *
-     * @return mixed
      */
     public function getOption($key)
     {
@@ -228,8 +230,6 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
 
     /**
      * Setzt alle Otionen.
-     *
-     * @param array $options
      *
      * @return mixed der gesetzte Wert
      */
@@ -259,17 +259,18 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
         if (false === $this->lastRun) {
             $options = [];
             $options['enablefieldsoff'] = 1;
-            $options['where'] = 'uid='.(int) $this->getTaskUid();
+            $options['where'] = 'uid='.$this->getTaskUid();
             $options['limit'] = 1;
             try {
-                $ret = @\Sys25\RnBase\Database\Connection::getInstance()->doSelect(
+                $ret = @Sys25\RnBase\Database\Connection::getInstance()->doSelect(
                     'tx_mklib_lastrun',
                     'tx_scheduler_task',
                     $options
                 );
-            } catch (Exception $e) {
+            } catch (Exception) {
                 $ret = null;
             }
+
             $this->lastRun = (
                 empty($ret)
                 || empty($ret[0]['tx_mklib_lastrun'])
@@ -289,14 +290,14 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
     {
         try {
             $lastRun = new DateTime();
-            $return = @\Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
+            $return = @Sys25\RnBase\Database\Connection::getInstance()->doUpdate(
                 'tx_scheduler_task',
-                'uid='.(int) $this->getTaskUid(),
+                'uid='.$this->getTaskUid(),
                 [
                     'tx_mklib_lastrun' => $lastRun->format('Y-m-d H:i:s'),
                 ]
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
             $return = 0;
         }
 
@@ -306,12 +307,11 @@ abstract class tx_mklib_scheduler_Generic extends \TYPO3\CMS\Scheduler\Task\Abst
     /**
      * sends a exception mail.
      *
-     * @param string    $email
-     * @param Exception $exception
+     * @param string $email
      */
     protected function sendErrorMail($email, Exception $exception)
     {
         $options = ['ignoremaillock' => true];
-        \Sys25\RnBase\Utility\Misc::sendErrorMail($email, get_class($this), $exception, $options);
+        Sys25\RnBase\Utility\Misc::sendErrorMail($email, static::class, $exception, $options);
     }
 }

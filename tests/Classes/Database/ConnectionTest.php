@@ -1,72 +1,71 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
  * DB util tests.
  */
-class Tx_Mklib_Database_ConnectionTest extends \Sys25\RnBase\Testing\BaseTestCase
+class Tx_Mklib_Database_ConnectionTest extends Sys25\RnBase\Testing\BaseTestCase
 {
     /**
      * @group unit
      */
-    public function testDeleteWithUnknownModeThrowsException()
+    public function testDeleteWithUnknownModeThrowsException(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Tx_Mklib_Database_Connection::delete(): Unknown deletion mode (123)');
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('', '', 123);
+        TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('', '', 123);
     }
 
     /**
      * @group unit
      */
-    public function testDeleteWithModeHiddenThrowsExceptionIfNoDisableColumnInTca()
+    public function testDeleteWithModeHiddenThrowsExceptionIfNoDisableColumnInTca(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Tx_Mklib_Database_Connection::delete(): Cannot hide records in table unknown - no $TCA entry found!');
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_HIDE);
+        TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_HIDE);
     }
 
     /**
      * @group unit
      */
-    public function testDeleteWithModeSoftDeleteThrowsExceptionIfNoDeleteColumnInTca()
+    public function testDeleteWithModeSoftDeleteThrowsExceptionIfNoDeleteColumnInTca(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Tx_Mklib_Database_Connection::delete(): Cannot soft-delete records in table unknown - no $TCA entry found!');
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE);
+        TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection')->delete('unknown', '', Tx_Mklib_Database_Connection::DELETION_MODE_SOFTDELETE);
     }
 
     /**
      * @group unit
      */
-    public function testDeleteWithModeHiddenCallsDoUpdateCorrect()
+    public function testDeleteWithModeHiddenCallsDoUpdateCorrect(): void
     {
-        self::markTestIncomplete('Exception: Tx_Mklib_Database_Connection::delete():'.
-        'Cannot hide records in table pages - no $TCA entry found!');
+        $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled'] = 'hidden';
 
         $util = $this->getUtilMock();
         $util->expects(self::never())
@@ -82,11 +81,9 @@ class Tx_Mklib_Database_ConnectionTest extends \Sys25\RnBase\Testing\BaseTestCas
     /**
      * @group unit
      */
-    public function testDeleteWithModeSoftDeleteCallsDoUpdateCorrect()
+    public function testDeleteWithModeSoftDeleteCallsDoUpdateCorrect(): void
     {
-        self::markTestIncomplete('Exception: Tx_Mklib_Database_Connection::delete():'.
-        'Cannot soft-delete records in table pages - no $TCA entry found!');
-
+        $GLOBALS['TCA']['pages']['ctrl']['delete'] = 'deleted';
         $util = $this->getUtilMock();
         $util->expects(self::never())
             ->method('doDelete');
@@ -101,7 +98,7 @@ class Tx_Mklib_Database_ConnectionTest extends \Sys25\RnBase\Testing\BaseTestCas
     /**
      * @group unit
      */
-    public function testDeleteWithModeHardDeleteCallsDoDeleteCorrect()
+    public function testDeleteWithModeHardDeleteCallsDoDeleteCorrect(): void
     {
         $util = $this->getUtilMock();
         $util->expects(self::never())

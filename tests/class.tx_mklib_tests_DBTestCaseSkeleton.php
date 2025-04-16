@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Hannes Bochmann
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2010 Hannes Bochmann <hannes.bochmann@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 use PHPUnit\Framework\TestCase;
@@ -37,6 +37,7 @@ use PHPUnit\Framework\TestCase;
 abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
 {
     protected $workspaceIdAtStart;
+
     /**
      * Extensions, welche importiert werden sollen.
      *
@@ -54,6 +55,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      * @var array
      */
     protected $importDependencies = false;
+
     /**
      * Sollen die statischen Daten einer Extension
      * (ext_tables_static.sql) in die Datenbank importiert werden?
@@ -61,6 +63,7 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      * @var bool
      */
     protected $importStaticTables = false;
+
     /**
      * Diese FixtureXMLs werden beim setUp in die Datenbank geladen.
      * Es sollte nach folgendem Muster angegeben werden:
@@ -75,11 +78,9 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      *
      *  Klassenkonstruktor - BE-Workspace setzen
      *
-     * @param string $name
-     * @param array  $data
      * @param string $dataName
      */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         global $TYPO3_DB, $BE_USER;
         parent::__construct($name, $data, $dataName);
@@ -98,14 +99,14 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
      * @param unknown_type $files
      */
     protected static function importStaticTables(
-        $extKey = 'mklib',
-        $files = ['ext_tables_static+adt.sql']
+        string $extKey = 'mklib',
+        $files = ['ext_tables_static+adt.sql'],
     ) {
         foreach ($files as $file) {
             // read sql file content
-            $sqlFilename = \Sys25\RnBase\Utility\Files::getFileAbsFileName(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey, $file));
+            $sqlFilename = Sys25\RnBase\Utility\Files::getFileAbsFileName(TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey, $file));
             if (@is_file($sqlFilename)) {
-                \DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); // alle statements importieren
+                DMK\Mklib\Utility\Tests::queryDB($sqlFilename, false, true); // alle statements importieren
             }
         }
     }
@@ -125,17 +126,18 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
 
         try {
             $this->createDatabase();
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             $this->markTestSkipped(
                 'This test is skipped because the test database is not available.'
             );
         }
+
         // assuming that test-database can be created otherwise PHPUnit will skip the test
         $this->useTestDatabase();
         $this->importStdDB();
 
         // extensions laden
-        if (count($this->importExtensions)) {
+        if (0 !== count($this->importExtensions)) {
             foreach ($this->importExtensions as $extension) {
                 $this->importExtensions([$extension], $this->importDependencies);
                 // static tables in die db importieren
@@ -144,10 +146,11 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
                 }
             }
         }
+
         // fixtures laden
-        if (count($this->importDataSet)) {
+        if (0 !== count($this->importDataSet)) {
             foreach ($this->importDataSet as $fixturePath) {
-                $this->importDataSet(\Sys25\RnBase\Utility\Files::getFileAbsFileName($fixturePath));
+                $this->importDataSet(Sys25\RnBase\Utility\Files::getFileAbsFileName($fixturePath));
             }
         }
     }

@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author mwagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -35,27 +35,24 @@
  *          Ein Scheduler, welcher die aktuellen Kurse aktualisiert,
  *          um zwischen Währungen umzurechnen wäre denkbar.
  */
-class tx_mklib_model_Currency
+class tx_mklib_model_Currency implements Stringable
 {
-    private $record = [];
+    private array $record;
 
     public function __construct(array $options = [])
     {
         $data = [];
-        $data['symbol'] = $options['symbol'] ? $options['symbol'] : '';
-        $data['symbolHtmlEntity'] = $options['symbolHtmlEntity'] ?
-                $options['symbolHtmlEntity'] : htmlentities($data['symbol'], ENT_QUOTES, 'UTF-8');
-        $data['plusSign'] = $options['plusSign'] ? (bool) $options['plusSign'] : false;
-        $data['format'] = $options['format'] ? $options['format'] : '{sign}{value} {currency}';
+        $data['symbol'] = $options['symbol'] ?: '';
+        $data['symbolHtmlEntity'] = ($options['symbolHtmlEntity'] ?? null) ?: htmlentities($data['symbol'], ENT_QUOTES, 'UTF-8');
+        $data['plusSign'] = $options['plusSign'] && (bool) $options['plusSign'];
+        $data['format'] = $options['format'] ?: '{sign}{value} {currency}';
         $data['decimals'] = $options['decimals'] ? intval($options['decimals']) : 2;
-        $data['delimiter'] = $options['delimiter'] ? $options['delimiter'] : '.';
-        $data['thousands'] = $options['thousands'] ? $options['thousands'] : '';
+        $data['delimiter'] = $options['delimiter'] ?: '.';
+        $data['thousands'] = $options['thousands'] ?: '';
         $this->record = $data;
     }
 
     /**
-     * @param array $options
-     *
      * @return tx_mklib_model_Currency
      */
     protected static function makeInstance(array $options = [])
@@ -66,7 +63,7 @@ class tx_mklib_model_Currency
         $key = $options['symbol'];
         // @todo why is this non static variable used? is static $instances; missing?
         if (!($instances[$key] ?? null)) {
-            $instances[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_Currency', $options);
+            $instances[$key] = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_model_Currency', $options);
         }
 
         return $instances[$key];
@@ -84,11 +81,9 @@ class tx_mklib_model_Currency
         // @TODO: anhand des landes den currency code herausfinden
         if ('DE' === $country) {
             return self::getByCurrencyCode('EUR');
-        } else {
-            throw \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
         }
 
-        return null;
+        throw TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
     }
 
     /**
@@ -111,7 +106,7 @@ class tx_mklib_model_Currency
             $options['delimiter'] = ',';
             $options['thousands'] = '.';
         } else {
-            throw \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
+            throw TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_exception_InvalidConfiguration', __METHOD__.': Currency ordentlich implementieren, bzw. Konzept entwickeln!');
         }
 
         return self::makeInstance($options);
@@ -119,14 +114,10 @@ class tx_mklib_model_Currency
 
     /**
      * @param float $value
-     *
-     * @return string
      */
-    protected function numberFormat($value)
+    protected function numberFormat($value): string
     {
-        $value = number_format(doubleval($value), $this->record['decimals'], $this->record['delimiter'], $this->record['thousands']);
-
-        return $value;
+        return number_format(floatval($value), $this->record['decimals'], $this->record['delimiter'], $this->record['thousands']);
     }
 
     /**
@@ -134,12 +125,10 @@ class tx_mklib_model_Currency
      *
      * @param float $value
      * @param bool  $htmlEntities
-     *
-     * @return string
      */
-    public function getFormatted($value, $htmlEntities = true)
+    public function getFormatted($value, $htmlEntities = true): string
     {
-        $neg = doubleval($value) < 0;
+        $neg = floatval($value) < 0;
         $value = $this->numberFormat(abs($value));
 
         $replaceArray = [
@@ -161,12 +150,13 @@ class tx_mklib_model_Currency
         );
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        $out = get_class($this)."\n\nData:\n";
+        $out = static::class."\n\nData:\n";
         foreach ($this->record as $key => $val) {
             $out .= $key.' = '.$val."\n";
         }
+
         reset($this->record);
 
         return $out;

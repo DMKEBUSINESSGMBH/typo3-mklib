@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @author Michael Wagner
+/*
+ * Copyright notice
  *
- *  Copyright notice
+ * (c) DMK E-BUSINESS GmbH <dev@dmk-ebusiness.de>
+ * All rights reserved
  *
- *  (c) 2011 Michael Wagner <michael.wagner@dmk-ebusiness.de>
- *  All rights reserved
+ * This file is part of the "mklib" Extension for TYPO3 CMS.
  *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
+ * GNU Lesser General Public License can be found at
+ * www.gnu.org/licenses/lgpl.html
  *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  This copyright notice MUST APPEAR in all copies of the script!
+ * This copyright notice MUST APPEAR in all copies of the script!
  */
 
 /**
@@ -45,9 +45,9 @@ class tx_mklib_util_Var
      *
      * @return bool Ist der Wert TRUE
      */
-    public static function isTrueVal($mVal)
+    public static function isTrueVal($mVal): bool
     {
-        return (true === $mVal) || ('1' == $mVal) || ('TRUE' == strtoupper($mVal));
+        return (true === $mVal) || ('1' == $mVal) || ('TRUE' === strtoupper($mVal));
     }
 
     /**
@@ -59,8 +59,8 @@ class tx_mklib_util_Var
      *
      * @return bool Ist der Wert FALSE
      */
-    public static function isFalseVal($mVal)
+    public static function isFalseVal($mVal): bool
     {
-        return (false == $mVal) || ('0' == $mVal) || ('FALSE' == strtoupper($mVal));
+        return (false == $mVal) || ('0' == $mVal) || ('FALSE' === strtoupper($mVal));
     }
 }
