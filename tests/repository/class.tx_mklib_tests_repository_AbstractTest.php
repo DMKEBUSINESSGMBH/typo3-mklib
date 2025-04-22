@@ -277,7 +277,9 @@ class tx_mklib_tests_repository_AbstractTest extends \Sys25\RnBase\Testing\BaseT
      */
     public function testSecureFromCrossSiteScriptingReturnsDataIfNoFieldsToBeStrippedAreDefined()
     {
-        $model = $this->getModelMock([], ['secureFromCrossSiteScripting']);
+        $model = $this->getMockBuilder(Sys25\RnBase\Domain\Model\BaseModel::class)
+            ->addMethods(['secureFromCrossSiteScripting'])
+            ->getMock();
         $repository = $this->getRepositoryMock();
 
         $data = [
@@ -300,10 +302,9 @@ class tx_mklib_tests_repository_AbstractTest extends \Sys25\RnBase\Testing\BaseT
      */
     public function testSecureFromCrossSiteScriptingReturnsStrippedData()
     {
-        $model = $this->getModelMock(
-            [],
-            ['getTagsToBeIgnoredFromStripping', 'getFieldsToBeStripped']
-        );
+        $model = $this->getMockBuilder(Sys25\RnBase\Domain\Model\BaseModel::class)
+            ->addMethods(['getTagsToBeIgnoredFromStripping', 'getFieldsToBeStripped'])
+            ->getMock();
         $repository = $this->getRepositoryMock();
 
         $data = [

@@ -182,13 +182,9 @@ class tx_mklib_tests_soap_ClientWrapperTest extends \Sys25\RnBase\Testing\BaseTe
         $expectedParams = [],
         $exceptionToThrow = null
     ) {
-        $soapClient = $this->getMock(
-            'SoapClient',
-            [self::SOAP_TEST_METHOD],
-            [],
-            '',
-            false
-        );
+        $soapClient = $this->getMockBuilder('SoapClient')
+            ->addMethods([self::SOAP_TEST_METHOD])
+            ->disableOriginalConstructor()->getMock();
 
         if (!is_null($exceptionToThrow)) {
             $methodAction = $this->throwException($exceptionToThrow);
