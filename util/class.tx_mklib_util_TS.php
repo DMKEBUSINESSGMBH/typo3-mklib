@@ -130,32 +130,32 @@ class tx_mklib_util_TS
 
     protected static function getTypoScriptConfiguration($pageUid = 0): array
     {
-        $rootLine = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            TYPO3\CMS\Core\Utility\RootlineUtility::class,
-            intval($pageUid)
-        )->get();
+        // @todo the if part can be removed when support for TYPO3 12 is dropped.
+        if (!Sys25\RnBase\Utility\TYPO3::isTYPO130OrHigher()) {
+            $rootLine = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                TYPO3\CMS\Core\Utility\RootlineUtility::class,
+                intval($pageUid)
+            )->get();
 
-        $tsfe = Sys25\RnBase\Utility\Misc::prepareTSFE(
-            [
-                'force' => true,
-                'pid' => $pageUid,
-                'type' => 0,
-            ]
-        );
-        $tsfe->rootLine = $rootLine;
-        $tsfe->no_cache = true;
+            $tsfe = Sys25\RnBase\Utility\Misc::prepareTSFE(
+                [
+                    'force' => true,
+                    'pid' => $pageUid,
+                    'type' => 0,
+                ]
+            );
+            $tsfe->rootLine = $rootLine;
+            $tsfe->no_cache = true;
 
-        $tsfe->id = $pageUid;
-        // @todo the if part can be removed when support for TYPO3 11 is dropped.
-        if (is_callable([$tsfe, 'getConfigArray'])) {
-            $tsfe->getConfigArray();
+            $tsfe->id = $pageUid;
+            $GLOBALS['TYPO3_REQUEST'] = $tsfe->getFromCache($GLOBALS['TYPO3_REQUEST'] ?? TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
 
-            return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getSetupArray();
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')
+                ->getSetupArray();
         }
 
-        $GLOBALS['TYPO3_REQUEST'] = $tsfe->getFromCache($GLOBALS['TYPO3_REQUEST'] ?? TYPO3\CMS\Core\Http\ServerRequestFactory::fromGlobals());
-
-        return $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')
-            ->getSetupArray();
+        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class)->getConfiguration(
+            TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+        );
     }
 }
