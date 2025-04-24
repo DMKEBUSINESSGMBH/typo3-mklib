@@ -221,13 +221,13 @@ class tx_mklib_util_httprequest_Response implements Stringable
     public function getBody()
     {
         // Decode the body if it was transfer-encoded
-        $body = match (strtolower($this->getHeader('transfer-encoding'))) {
+        $body = match (strtolower((string) $this->getHeader('transfer-encoding'))) {
             'chunked' => self::decodeChunkedBody($this->body),
             default => $this->body,
         };
 
         // Decode any content-encoding (gzip or deflate) if needed
-        switch (strtolower($this->getHeader('content-encoding'))) {
+        switch (strtolower((string) $this->getHeader('content-encoding'))) {
             // Handle gzip encoding
             case 'gzip':
                 $body = self::decodeGzip($body);
