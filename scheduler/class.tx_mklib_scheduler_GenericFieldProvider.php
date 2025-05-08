@@ -25,6 +25,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
+use TYPO3\CMS\Scheduler\SchedulerManagementAction;
+
 /**
  * tx_mklib_scheduler_GenericFieldProvider.
  *
@@ -90,7 +92,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements TYPO3\CMS\Sche
             // Initialize extra field value
             if (!($taskInfo[$sKey] ?? false)) {
                 $action = $schedulerModule->getCurrentAction();
-                $taskInfo[$sKey] = 'edit' == $action ? $task->getOption($sKey) : $aOptions['default'] ?? '';
+                $taskInfo[$sKey] = SchedulerManagementAction::EDIT == $action ? $task->getOption($sKey) : $aOptions['default'] ?? '';
             }
 
             // Write the code for the field
