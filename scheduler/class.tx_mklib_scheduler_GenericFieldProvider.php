@@ -90,7 +90,9 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements TYPO3\CMS\Sche
             // Initialize extra field value
             if (!($taskInfo[$sKey] ?? false)) {
                 $action = $schedulerModule->getCurrentAction();
-                $editAction = Sys25\RnBase\Utility\TYPO3::isTYPO130OrHigher() ? TYPO3\CMS\Scheduler\SchedulerManagementAction::EDIT : 'edit';
+                $editAction = Sys25\RnBase\Utility\TYPO3::isTYPO130OrHigher()
+                    ? constant('\\TYPO3\\CMS\\Scheduler\\SchedulerManagementAction::EDIT')
+                    : 'edit';
                 $taskInfo[$sKey] = $editAction == $action ? $task->getOption($sKey) : $aOptions['default'] ?? '';
             }
 
