@@ -154,7 +154,21 @@ class tx_mklib_util_TS
                 ->getSetupArray();
         }
 
-        return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class)->getConfiguration(
+        $configurationManager = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class
+        );
+        if (TYPO3\CMS\Core\Core\Environment::isCli()) {
+            $configurationManager->setRequest(
+                (new TYPO3\CMS\Core\Http\ServerRequest())
+                    ->withAttribute('extbase', [])
+                    ->withAttribute(
+                        'applicationType', TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE
+                    )
+                    ->withParsedBody(['id' => $pageUid])
+            );
+        }
+
+        return $configurationManager->getConfiguration(
             TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
         );
     }
