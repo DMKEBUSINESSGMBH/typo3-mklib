@@ -99,8 +99,13 @@
             ".Build/bin/parallel-lint ./Classes",
             "[ ! -e ../../autoload.php.bak ] || mv ../../autoload.php.bak ../../autoload.php"
         ],
+        "lint:yaml": [
+            "[ -e .Build/bin/yaml-lint ] || composer update",
+            ".Build/bin/yaml-lint --ansi -n -v ./Configuration ./Resources ./.github"
+        ],
         "lint": [
-            "@lint:php"
+            "@lint:php",
+            "@lint:yaml"
         ],
         "test:phpcs": [
             "[ -e .Build/bin/php-cs-fixer ] || composer update",
