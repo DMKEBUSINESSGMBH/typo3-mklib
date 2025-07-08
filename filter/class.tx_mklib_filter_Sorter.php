@@ -157,7 +157,7 @@ class tx_mklib_filter_Sorter extends Sys25\RnBase\Frontend\Filter\BaseFilter
     {
         $parameters = $this->getParameters();
 
-        if (($sortBy = trim($parameters->get($this->sortByParameterName))) === '' || ($sortBy = trim($parameters->get($this->sortByParameterName))) === '0') {
+        if (($sortBy = trim((string) $parameters->get($this->sortByParameterName))) === '' || ($sortBy = trim((string) $parameters->get($this->sortByParameterName))) === '0') {
             return $this->getDefaultValue($this->defaultFieldConfId);
         }
 
@@ -171,7 +171,7 @@ class tx_mklib_filter_Sorter extends Sys25\RnBase\Frontend\Filter\BaseFilter
     {
         $parameters = $this->getParameters();
 
-        if (($sortOrder = trim($parameters->get($this->sortOrderParameterName))) === '' || ($sortOrder = trim($parameters->get($this->sortOrderParameterName))) === '0') {
+        if (($sortOrder = trim((string) $parameters->get($this->sortOrderParameterName))) === '' || ($sortOrder = trim((string) $parameters->get($this->sortOrderParameterName))) === '0') {
             return $this->getDefaultValue($this->defaultSortOrderConfId);
         }
 
