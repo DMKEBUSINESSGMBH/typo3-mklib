@@ -40,7 +40,7 @@ class tx_mklib_soap_ClientWrapper
     /**
      * @var int
      */
-    protected $soapVersion = 1;
+    protected $soapVersion = SOAP_1_1;
 
     /**
      * @param string $method
