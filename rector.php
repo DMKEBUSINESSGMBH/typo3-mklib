@@ -86,4 +86,11 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__.'/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php',
         ],
     ]);
+
+    // keep backwards compatibility to TYPO3 12.4
+    if (class_exists(Ssch\TYPO3Rector\TYPO313\v0\MigrateTypoScriptFrontendControllerReadOnlyPropertiesRector::class)) {
+        $rectorConfig->skip([
+            Ssch\TYPO3Rector\TYPO313\v0\MigrateTypoScriptFrontendControllerReadOnlyPropertiesRector::class,
+        ]);
+    }
 };

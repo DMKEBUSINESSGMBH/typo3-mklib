@@ -34,7 +34,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
 {
     public function getNodeFromPath($paths): ?tx_mklib_util_xml_Element
     {
-        $paths = is_array($paths) ? $paths : explode('.', $paths);
+        $paths = is_array($paths) ? $paths : explode('.', (string) $paths);
 
         $xml = $this;
 

@@ -33,7 +33,7 @@
  */
 class tx_mklib_mod1_decorator_Base implements Sys25\RnBase\Backend\Decorator\InterfaceDecorator
 {
-    public function __construct(private Sys25\RnBase\Backend\Module\IModule $mod, private array $options = [])
+    public function __construct(private readonly Sys25\RnBase\Backend\Module\IModule $mod, private array $options = [])
     {
     }
 

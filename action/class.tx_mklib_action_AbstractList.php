@@ -89,7 +89,7 @@ abstract class tx_mklib_action_AbstractList extends Sys25\RnBase\Frontend\Contro
                     $viewData,
                     $fields,
                     $options,
-                    ['searchcallback' => [$repo, 'search']]
+                    ['searchcallback' => $repo->search(...)]
                 );
             }
 

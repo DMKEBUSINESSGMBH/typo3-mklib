@@ -50,7 +50,7 @@ class tx_mklib_util_Model
         // Html vorher entfernen? Wenn ja werden auch überflüssige Leerzeichen entfernt. aus "  " wird " "
         $sText = ($bStripTags) ? preg_replace('/\s\s+/', ' ', strip_tags($model->getProperty($textField))) : $model->getProperty($textField);
         // nur wenn der text noch nicht aufgesplittet wurde, sprich alles schon vorher einmal aufgerufen wurde
-        $textExploded = explode(' ', $sText); // anhand des Leerzeichens trennen
+        $textExploded = explode(' ', (string) $sText); // anhand des Leerzeichens trennen
         foreach ($textExploded as $key => $value) {// Wörter in array mit ersten 3 Worten und Rest trennen
             $newKey = ($key <= ($wordCount - 1)) ? 'titletext' : 'restaftertitle';
             $tempText[$newKey][] = $value;

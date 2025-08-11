@@ -173,8 +173,8 @@ class tx_mklib_util_TCA
         if (!empty($items)) {
             foreach ($items as &$item) {
                 $label = &$item[0];
-                if (mb_strlen($label, 'utf-8') > $labelLength) {
-                    $label = mb_substr($label, 0, $labelLength, 'utf-8').'...';
+                if (mb_strlen((string) $label, 'utf-8') > $labelLength) {
+                    $label = mb_substr((string) $label, 0, $labelLength, 'utf-8').'...';
                 }
             }
         }

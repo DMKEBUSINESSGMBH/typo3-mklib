@@ -94,21 +94,21 @@ class tx_mklib_tests_util_SessionTest extends Sys25\RnBase\Testing\BaseTestCase
     public function testSetSessionIdSetsIdAndEmptiesSessionData(): void
     {
         $oldRandomSessionId = uniqid();
-        $GLOBALS['TSFE']->fe_user->id = $oldRandomSessionId;
-        $GLOBALS['TSFE']->fe_user->sesData = ['something'];
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->id = $oldRandomSessionId;
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->sesData = ['something'];
 
         $newRandomSessionId = uniqid();
         tx_mklib_util_Session::setSessionId($newRandomSessionId);
 
         self::assertEquals(
             $newRandomSessionId,
-            $GLOBALS['TSFE']->fe_user->id,
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->id,
             'falsche neue session id'
         );
 
         self::assertEquals(
             [],
-            $GLOBALS['TSFE']->fe_user->sesData,
+            $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->sesData,
             'session data für neue id nicht leer'
         );
     }
@@ -125,7 +125,7 @@ class tx_mklib_tests_util_SessionTest extends Sys25\RnBase\Testing\BaseTestCase
             Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass(),
             ['fetchSessionData']
         );
-        $GLOBALS['TSFE']->fe_user->expects(self::once())
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->expects(self::once())
             ->method('fetchSessionData');
 
         tx_mklib_util_Session::setSessionId(456);
@@ -143,7 +143,7 @@ class tx_mklib_tests_util_SessionTest extends Sys25\RnBase\Testing\BaseTestCase
             Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass(),
             ['fetchUserSession']
         );
-        $GLOBALS['TSFE']->fe_user->expects(self::once())
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user')->expects(self::once())
             ->method('fetchUserSession');
 
         tx_mklib_util_Session::setSessionId(456);

@@ -49,7 +49,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
             $table,
             [
                 'where' => $where, 'enablefieldsoff' => true,
-                'callback' => [$this, 'deleteRow'],
+                'callback' => $this->deleteRow(...),
             ]
         );
 
@@ -71,7 +71,7 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
         $selectFields =
             $this->getOption('selectFields') ?: 'uid';
 
-        if (in_array(str_contains($this->getUidField(), $selectFields), [0, false], true)) {
+        if (in_array(str_contains((string) $this->getUidField(), (string) $selectFields), [0, false], true)) {
             $selectFields .= ','.$this->getUidField();
         }
 

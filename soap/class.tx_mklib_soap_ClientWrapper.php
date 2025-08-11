@@ -86,7 +86,7 @@ class tx_mklib_soap_ClientWrapper
     /**
      * @throws RuntimeException
      */
-    protected function handleException(Exception $exception, array $args = [])
+    protected function handleException(Exception $exception, array $args = []): never
     {
         $this->logException($exception, $args);
         $this->throwRuntimeException($exception);
@@ -116,7 +116,7 @@ class tx_mklib_soap_ClientWrapper
     /**
      * @throws RuntimeException
      */
-    protected function throwRuntimeException(Exception $exception)
+    protected function throwRuntimeException(Exception $exception): never
     {
         $errorCode = $exception instanceof SoapFault ? $exception->faultcode : $exception->getCode();
 

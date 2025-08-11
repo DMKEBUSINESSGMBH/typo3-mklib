@@ -151,7 +151,7 @@ class tx_mklib_util_httprequest_Response implements Stringable
 
         foreach ($headers as $name => $value) {
             if (is_int($name)) {
-                $header = explode(':', $value, 2);
+                $header = explode(':', (string) $value, 2);
                 if (2 != count($header)) {
                     throw new Exception('"'.$value.'" is not a valid HTTP header');
                 }

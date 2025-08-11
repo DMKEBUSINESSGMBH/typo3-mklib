@@ -73,22 +73,22 @@ class tx_mklib_srv_StaticCountryZones extends tx_mklib_repository_Abstract
         return $this->search($fields, $options);
     }
 
-    public function create(array $data)
+    public function create(array $data): never
     {
         throw new Exception('creating a static country zone via the service can\'t be done.');
     }
 
-    public function handleUpdate(Sys25\RnBase\Domain\Model\RecordInterface $model, array $data, $where = '', $debug = 0, $noQuoteFields = '')
+    public function handleUpdate(Sys25\RnBase\Domain\Model\RecordInterface $model, array $data, $where = '', $debug = 0, $noQuoteFields = ''): never
     {
         throw new Exception('updating a static country zone via the service can\'t be done.');
     }
 
-    public function handleDelete(Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null)
+    public function handleDelete(Sys25\RnBase\Domain\Model\RecordInterface $model, $where = '', $mode = 0, $table = null): never
     {
         throw new Exception('deleting a static country zone via the service can\'t be done.');
     }
 
-    public function handleCreation(array $data)
+    public function handleCreation(array $data): never
     {
         throw new Exception('creating a static country zone via the service can\'t be done.');
     }

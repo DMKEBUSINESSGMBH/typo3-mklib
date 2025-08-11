@@ -243,7 +243,7 @@ abstract class tx_mklib_repository_Abstract implements Sys25\RnBase\Domain\Repos
             // merge master and overlays and keep the order!
             $new = [];
             // uniquemode can be master or overlay!
-            $preferOverlay = empty($options['uniquemode']) || 'master' !== strtolower($options['uniquemode']);
+            $preferOverlay = empty($options['uniquemode']) || 'master' !== strtolower((string) $options['uniquemode']);
             foreach ($items as $item) {
                 $uid = (int) $item->getUid();
                 $new[$uid] = !empty($overlay[$uid]) && $preferOverlay ? $overlay[$uid] : $master[$uid];

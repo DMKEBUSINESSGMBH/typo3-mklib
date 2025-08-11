@@ -113,7 +113,7 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends Sys25\RnBase\Testing
         self::assertContains('LABEL_NO_DUMMYSEARCHER_FOUND', $aResultList['table'], 'Die Tabelle ist falsch.');
 
         self::assertEquals(0, $aResultList['totalsize'], 'Die Anzahl ist falsch.');
-        self::assertEquals('', trim(strip_tags($aResultList['pager'])), 'Der Pager ist falsch.');
+        self::assertEquals('', trim(strip_tags((string) $aResultList['pager'])), 'Der Pager ist falsch.');
     }
 
     public function testGetResultListReturnsCorrectTableAndPagerIfResults(): void

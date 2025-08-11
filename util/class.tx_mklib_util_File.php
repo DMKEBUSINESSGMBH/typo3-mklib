@@ -99,7 +99,7 @@ class tx_mklib_util_File
 
         // optionen sammeln.
         $iLifetime = $aOptions['lifetime'] ?: 0;
-        $aFiletypes = $aOptions['filetypes'] ? Sys25\RnBase\Utility\Strings::trimExplode(',', strtolower($aOptions['filetypes'])) : [];
+        $aFiletypes = $aOptions['filetypes'] ? Sys25\RnBase\Utility\Strings::trimExplode(',', strtolower((string) $aOptions['filetypes'])) : [];
         $bRecursive = $aOptions['recursive'] ?: false;
 
         $iCount = 0;
@@ -328,7 +328,7 @@ class tx_mklib_util_File
      */
     public static function isAbsWebPath($sPath): bool
     {
-        $uI = parse_url($sPath);
+        $uI = parse_url((string) $sPath);
 
         return isset($uI['scheme']) && $uI['scheme'] && isset($uI['host']) && $uI['host'];
     }
@@ -472,13 +472,13 @@ class tx_mklib_util_File
             'path' => '', 'query' => '', 'fragment' => '',
         ], $parts);
 
-        $password = strlen($parts['pass']) > 0 ? ':'.$parts['pass'] : '';
-        $auth = strlen($parts['user']) > 0 ? $parts['user'].$password.'@' : '';
-        $port = strlen($parts['port']) > 0 ? ':'.$parts['port'] : '';
+        $password = strlen((string) $parts['pass']) > 0 ? ':'.$parts['pass'] : '';
+        $auth = strlen((string) $parts['user']) > 0 ? $parts['user'].$password.'@' : '';
+        $port = strlen((string) $parts['port']) > 0 ? ':'.$parts['port'] : '';
         // check excisting ? ???
         // $query = strlen($parts['query']) > 0 ? ($parts['query'][0] == '?' ? $parts['query'] : '?'.$parts['query']) : '';
-        $query = strlen($parts['query']) > 0 ? '?'.$parts['query'] : '';
-        $fragment = strlen($parts['fragment']) > 0 ? '#'.$parts['fragment'] : '';
+        $query = strlen((string) $parts['query']) > 0 ? '?'.$parts['query'] : '';
+        $fragment = strlen((string) $parts['fragment']) > 0 ? '#'.$parts['fragment'] : '';
 
         return $parts['scheme'].'://'.$auth
             .$parts['host'].$port

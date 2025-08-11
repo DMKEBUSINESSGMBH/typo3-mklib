@@ -47,7 +47,7 @@ class tx_mklib_util_Var
      */
     public static function isTrueVal($mVal): bool
     {
-        return (true === $mVal) || ('1' == $mVal) || ('TRUE' === strtoupper($mVal));
+        return (true === $mVal) || ('1' == $mVal) || ('TRUE' === strtoupper((string) $mVal));
     }
 
     /**
@@ -61,6 +61,6 @@ class tx_mklib_util_Var
      */
     public static function isFalseVal($mVal): bool
     {
-        return (false == $mVal) || ('0' == $mVal) || ('FALSE' === strtoupper($mVal));
+        return (false == $mVal) || ('0' == $mVal) || ('FALSE' === strtoupper((string) $mVal));
     }
 }

@@ -134,7 +134,7 @@ class tx_mklib_mod1_util_Selector
         $yearId = $baseId.'_year';
 
         // Defaultwerte werden benötigt, wenn noch keine Eingabe erfolgte
-        $aDefault = explode('-', $aOptions['default']);
+        $aDefault = explode('-', (string) $aOptions['default']);
 
         if (isset($aOptions['id'])) {
             unset($aOptions['id']);

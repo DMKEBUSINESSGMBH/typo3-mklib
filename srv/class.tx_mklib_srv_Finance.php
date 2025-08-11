@@ -188,7 +188,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
         // durch einen Bug wird z.B. die Zahl 2.2000 auf 2.21 gerundet. Damit
         // das nicht passiert prüfen wir ob die Zahl eine Kommastelle enthält
         // und runden nur dann weil wir sonst schon eine ganze Zahl haben
-        if (strpos($roundedDoubleValue, '.')) {// Ist der $intValue schon eine ganze Zahl?
+        if (strpos((string) $roundedDoubleValue, '.')) {// Ist der $intValue schon eine ganze Zahl?
             $roundedDoubleValue = ceil($roundedDoubleValue) / $baseInt;
         } else {
             $roundedDoubleValue /= $baseInt;
@@ -220,7 +220,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
 
         $result = true;
 
-        return match (strtoupper($country)) {
+        return match (strtoupper((string) $country)) {
             'DE' => preg_match('/^DE\d{9}$/', $vatregno) > 0,
             'PL' => preg_match('/^PL\d{10}$/', $vatregno) > 0,
             'FR' => preg_match('/^FR[A-Za-z0-9]{2} \d{9}$/', $vatregno) > 0,

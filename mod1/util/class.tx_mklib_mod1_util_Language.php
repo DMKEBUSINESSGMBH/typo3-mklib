@@ -137,7 +137,7 @@ class tx_mklib_mod1_util_Language
                 $langTitle = $record['title'];
             }
 
-            $out .= '&nbsp;'.htmlspecialchars($GLOBALS['LANG']->sL($langTitle));
+            $out .= '&nbsp;'.htmlspecialchars((string) $GLOBALS['LANG']->sL($langTitle));
         }
 
         return $out;

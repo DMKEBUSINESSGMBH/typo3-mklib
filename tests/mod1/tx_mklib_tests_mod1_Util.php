@@ -63,9 +63,9 @@ class tx_mklib_tests_mod1_Util
         // auf der cli über cc ist der formtoken um 2 zeichen länger
         // den formToken gibt es erst ab TYPO3 4.5
         $sVcAndFormTokenRegex = '/&amp;vC=(.*?)&formToken=(.*?)\'\)/';
-        $sString = preg_replace($sVcAndFormTokenRegex, '\')', $sString);
+        $sString = preg_replace($sVcAndFormTokenRegex, '\')', (string) $sString);
         $moduleTokenRegex = '/%26moduleToken%3D(.*?)&amp/';
-        $sString = preg_replace($moduleTokenRegex, '&amp', $sString);
+        $sString = preg_replace($moduleTokenRegex, '&amp', (string) $sString);
         $sString = str_replace('=1&amp;', '=1\'', $sString);
     }
 

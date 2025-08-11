@@ -43,7 +43,7 @@ class tx_mklib_model_Currency implements Stringable
     {
         $data = [];
         $data['symbol'] = $options['symbol'] ?: '';
-        $data['symbolHtmlEntity'] = ($options['symbolHtmlEntity'] ?? null) ?: htmlentities($data['symbol'], ENT_QUOTES, 'UTF-8');
+        $data['symbolHtmlEntity'] = ($options['symbolHtmlEntity'] ?? null) ?: htmlentities((string) $data['symbol'], ENT_QUOTES, 'UTF-8');
         $data['plusSign'] = $options['plusSign'] && (bool) $options['plusSign'];
         $data['format'] = $options['format'] ?: '{sign}{value} {currency}';
         $data['decimals'] = $options['decimals'] ? intval($options['decimals']) : 2;

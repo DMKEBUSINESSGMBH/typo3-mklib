@@ -35,7 +35,7 @@
         "phpcompatibility/php-compatibility": "^9.3",
         "phpstan/phpstan": "^1.1 || ^2.0",
         "phpstan/extension-installer": "^1.1 || ^2.0",
-        "rector/rector": "^1.0 || 2.0.10",
+        "rector/rector": "^1.0 || ^2.0",
         "saschaegerer/phpstan-typo3": "^1.0 || ^2.0",
         "ssch/typo3-rector": "^2.8 | ^3.1",
         "typo3/testing-framework": "^8.0 || ^9.0"
@@ -109,7 +109,7 @@
         ],
         "test:phpcs": [
             "[ -e .Build/bin/php-cs-fixer ] || composer update",
-            "export PHP_CS_FIXER_IGNORE_ENV=1 && .Build/bin/php-cs-fixer fix -v --dry-run --diff"
+            ".Build/bin/php-cs-fixer fix -v --dry-run --diff"
         ],
         "test:rector": [
             "[ -e .Build/bin/rector ] || composer update",
@@ -136,7 +136,7 @@
         ],
         "fix:phpcs": [
             "[ -e .Build/bin/php-cs-fixer ] || composer update",
-            "export PHP_CS_FIXER_IGNORE_ENV=1 && .Build/bin/php-cs-fixer fix -v"
+            ".Build/bin/php-cs-fixer fix -v"
         ],
         "fix:rector": [
             "[ -e .Build/bin/rector ] || composer update",

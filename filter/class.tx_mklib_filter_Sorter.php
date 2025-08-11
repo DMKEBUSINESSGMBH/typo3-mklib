@@ -277,7 +277,7 @@ class tx_mklib_filter_Sorter extends Sys25\RnBase\Frontend\Filter\BaseFilter
                 // sortOrder ausgeben
                 $markOrders[$field.'_order'] = $isField ? $this->getSortOrder() : '';
 
-                $fieldMarker = $this->markerPrefix.'_'.strtoupper($field).'_LINK';
+                $fieldMarker = $this->markerPrefix.'_'.strtoupper((string) $field).'_LINK';
                 $makeLink = Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker);
                 $makeUrl = Sys25\RnBase\Frontend\Marker\BaseMarker::containsMarker($template, $fieldMarker.'URL');
                 // link generieren

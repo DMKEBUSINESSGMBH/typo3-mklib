@@ -57,7 +57,7 @@ class tx_mklib_util_Number extends tx_mklib_util_Var
         // Nur dann können wir uns halbwegs sicher sein,
         // das es sich um ein Dezimaltrennzeichen handelt.
         // Besser wäre, den Wert richtig zu parsen (siehe todo).
-        if (0 !== substr_count($string, ',')) {
+        if (0 !== substr_count((string) $string, ',')) {
             $string = str_replace(',', '.', $string);
         }
 

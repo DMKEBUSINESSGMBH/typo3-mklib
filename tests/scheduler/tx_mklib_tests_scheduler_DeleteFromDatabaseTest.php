@@ -71,7 +71,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends Sys25\RnBase\Testi
                 $this->options['table'],
                 [
                     'where' => $this->options['where'], 'enablefieldsoff' => true,
-                    'callback' => [$scheduler, 'deleteRow'],
+                    'callback' => $scheduler->deleteRow(...),
                 ]
             );
 
@@ -94,7 +94,7 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends Sys25\RnBase\Testi
                 $this->options['table'],
                 [
                     'where' => $this->options['where'], 'enablefieldsoff' => true,
-                    'callback' => [$scheduler, 'deleteRow'],
+                    'callback' => $scheduler->deleteRow(...),
                 ]
             );
 

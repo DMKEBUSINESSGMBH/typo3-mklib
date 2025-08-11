@@ -37,7 +37,7 @@ abstract class Tx_Mklib_Domain_Model_Iso_Base
     /**
      * The iso value.
      */
-    private ?string $value;
+    private readonly ?string $value;
 
     /**
      * Returns the iso value.
@@ -83,7 +83,7 @@ abstract class Tx_Mklib_Domain_Model_Iso_Base
      */
     private function normalize($value): ?string
     {
-        $value = trim($value);
+        $value = trim((string) $value);
 
         return preg_replace('/\s+/', '', $value);
     }

@@ -124,8 +124,8 @@ class tx_mklib_util_Encoding
     {
         $utf8Detect = self::detectUtfEncoding($var);
 
-        return match (strtolower($encoding)) {
-            'utf-8', 'utf-32', 'utf-16' => strtolower($encoding) === strtolower($utf8Detect),
+        return match (strtolower((string) $encoding)) {
+            'utf-8', 'utf-32', 'utf-16' => strtolower((string) $encoding) === strtolower($utf8Detect),
             'iso-8859-1' => false === $utf8Detect
                 && false !== mb_detect_encoding(strval($var), $encoding, true),
             default => false,

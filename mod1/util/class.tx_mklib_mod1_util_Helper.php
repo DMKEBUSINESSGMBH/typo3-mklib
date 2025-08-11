@@ -60,7 +60,7 @@ class tx_mklib_mod1_util_Helper
             return false;
         }
 
-        $modelData = explode('|', $itemid);
+        $modelData = explode('|', (string) $itemid);
         $item = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($modelData[0], $modelData[1]);
 
         if (!$item->isValid()) {

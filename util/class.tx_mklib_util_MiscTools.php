@@ -117,7 +117,7 @@ class tx_mklib_util_MiscTools
                 explode(
                     ':',
                     base64_decode(
-                        substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)
+                        substr((string) $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)
                     )
                 );
         }

@@ -84,7 +84,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     public static function html2plain($t): string
     {
         return html_entity_decode(
-            preg_replace(
+            (string) preg_replace(
                 ['/(\s+|(<.*?>)+)/', '/<!--.*?-->/'],
                 [' ', ''],
                 $t
@@ -160,7 +160,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     {
         return preg_replace_callback(
             self::emailRegex,
-            [self::class, 'obfusicateEmail'],
+            self::obfusicateEmail(...),
             $text
         );
     }
@@ -185,7 +185,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
     {
         return preg_replace_callback(
             self::emailRegex,
-            [self::class, 'convertEmailToMailToLink'],
+            self::convertEmailToMailToLink(...),
             $text
         );
     }
@@ -239,10 +239,10 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         $patternPrefix = "/(^|[\n\r\t{$nonebreakingSpaceChar} >\*({\-_])";
         $patternSuffix = "[^{$nonebreakingSpaceChar} \,\"\n\r\t<)}\*]*";
         $text = preg_replace(sprintf('%s([\w]*?)((ht|f)tp(s)?:\/\/[\w]+%s)/is', $patternPrefix, $patternSuffix), sprintf('$1$2&lt;a %s href="$3" &gt;$3&lt;/a&gt;', $aTagParams), $text);
-        $text = preg_replace(sprintf('%s([\w]*?)((www|ftp)\.%s)/is', $patternPrefix, $patternSuffix), sprintf('$1$2&lt;a %s href="http://$3" &gt;$3&lt;/a&gt;', $aTagParams), $text);
-        $text = preg_replace($patternPrefix.'([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i', '$1&lt;a href="mailto:$2@$3"&gt;$2@$3&lt;/a&gt;', $text);
+        $text = preg_replace(sprintf('%s([\w]*?)((www|ftp)\.%s)/is', $patternPrefix, $patternSuffix), sprintf('$1$2&lt;a %s href="http://$3" &gt;$3&lt;/a&gt;', $aTagParams), (string) $text);
+        $text = preg_replace($patternPrefix.'([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+)+)/i', '$1&lt;a href="mailto:$2@$3"&gt;$2@$3&lt;/a&gt;', (string) $text);
 
-        return html_entity_decode($text);
+        return html_entity_decode((string) $text);
     }
 
     /**
@@ -264,15 +264,15 @@ class tx_mklib_util_String extends tx_mklib_util_Var
         }
 
         $num = preg_replace('#[^+0-9]#', '', $orig);
-        if (str_starts_with($num, '+')) {
+        if (str_starts_with((string) $num, '+')) {
             // full telephone number
             $tel = $num;
-        } elseif (str_starts_with($num, '00')) {
+        } elseif (str_starts_with((string) $num, '00')) {
             // full number with country code, but 00 instead of +
-            $tel = '+'.substr($num, 2);
-        } elseif (str_starts_with($num, '0')) {
+            $tel = '+'.substr((string) $num, 2);
+        } elseif (str_starts_with((string) $num, '0')) {
             // full number without country code
-            $tel = '+'.$conf['countryCode'].substr($num, 1);
+            $tel = '+'.$conf['countryCode'].substr((string) $num, 1);
         } else {
             // partial number, no country or area code
             $tel = '+'.$conf['countryCode'].$conf['areaCode'].$num;

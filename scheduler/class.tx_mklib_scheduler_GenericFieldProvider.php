@@ -157,7 +157,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements TYPO3\CMS\Sche
                         $bMessage = empty($mValue);
                         break;
                     case 'trim':
-                        $mValue = trim($mValue);
+                        $mValue = trim((string) $mValue);
                         break;
                     case 'int':
                         $bMessage = !is_numeric($mValue);
@@ -172,7 +172,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements TYPO3\CMS\Sche
                     case 'email':
                         // wir unterstützen kommaseparierte listen von email adressen
                         if (!empty($mValue)) {
-                            $aEmails = explode(',', $mValue);
+                            $aEmails = explode(',', (string) $mValue);
                             $bMessage = false;
                             foreach ($aEmails as $sEmail) {
                                 if (!Sys25\RnBase\Utility\Strings::validEmail($sEmail)) {

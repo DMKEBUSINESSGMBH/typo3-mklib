@@ -452,8 +452,8 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
                 // das Label in die notwendige SQL-Anweisung umwandeln. Normalerweise ein Spaltenname.
                 $sortCol = $configuredCol['sortable'];
                 // Wenn am Ende ein Punkt steht, muss die Spalte zusammengefügt werden.
-                $sortCol = str_ends_with($sortCol, '.') ? $sortCol.$colLabel : $sortCol;
-                $options['orderby'][$sortCol] = ('asc' === strtolower($sortOrder) ? 'asc' : 'desc');
+                $sortCol = str_ends_with((string) $sortCol, '.') ? $sortCol.$colLabel : $sortCol;
+                $options['orderby'][$sortCol] = ('asc' === strtolower((string) $sortOrder) ? 'asc' : 'desc');
             }
         }
     }

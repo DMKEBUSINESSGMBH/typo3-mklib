@@ -49,7 +49,7 @@ class tx_mklib_mod1_export_Handler
         /**
          * The Module or handler.
          */
-        private tx_mklib_mod1_export_IModFunc $modFunc,
+        private readonly tx_mklib_mod1_export_IModFunc $modFunc,
     ) {
     }
 
