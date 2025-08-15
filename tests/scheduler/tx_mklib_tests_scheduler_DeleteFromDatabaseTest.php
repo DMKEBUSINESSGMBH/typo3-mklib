@@ -168,7 +168,6 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends Sys25\RnBase\Testi
             'tx_mklib_scheduler_DeleteFromDatabase',
             'affectedRows'
         );
-        $affectedRows->setAccessible(true);
 
         self::assertEquals(
             [['uid' => 123], ['uid' => 456]],

@@ -266,7 +266,6 @@ class tx_mklib_tests_mod1_util_SelectorTest extends Sys25\RnBase\Testing\BaseTes
         $selector = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_util_Selector');
 
         $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getCrDateReturnArray');
-        $method->setAccessible(true);
 
         $returnArray = $method->invoke($selector, '2013-07-08T00:00:00Z', '2013-07-09T00:00:00Z');
         $expectedReturnArray = [
@@ -284,7 +283,6 @@ class tx_mklib_tests_mod1_util_SelectorTest extends Sys25\RnBase\Testing\BaseTes
         $selector = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_mklib_mod1_util_Selector');
 
         $method = new ReflectionMethod('tx_mklib_mod1_util_Selector', 'getCrDateReturnArray');
-        $method->setAccessible(true);
 
         $returnArray = $method->invoke($selector, '', '');
         $expectedReturnArray = [

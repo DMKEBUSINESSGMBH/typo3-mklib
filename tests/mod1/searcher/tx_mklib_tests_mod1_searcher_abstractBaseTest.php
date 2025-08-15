@@ -62,7 +62,6 @@ class tx_mklib_tests_mod1_searcher_abstractBaseTest extends Sys25\RnBase\Testing
 
         // zurücksetzen
         $localLangLoadedProperty = new ReflectionProperty('tx_mklib_mod1_searcher_abstractBase', 'localLangLoaded');
-        $localLangLoadedProperty->setAccessible(true);
         $localLangLoadedProperty->setValue(null, false);
     }
 

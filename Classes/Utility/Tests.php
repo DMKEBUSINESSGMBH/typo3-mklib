@@ -328,7 +328,6 @@ class Tests
         $parameters->setQualifier($configurations->getQualifier());
         if ($execute) {
             $handleRequest = new \ReflectionMethod($action::class, 'handleRequest');
-            $handleRequest->setAccessible(true);
             $viewData = $configurations->getViewData();
             $frontendOutput = $handleRequest->invokeArgs(
                 $action,

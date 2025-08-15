@@ -173,7 +173,6 @@ class tx_mklib_util_Array
         $properties = $reflectedObject->getProperties();
 
         foreach ($properties as $property) {
-            $property->setAccessible(true);
             $result[$property->getName()] = $property->getValue($object);
         }
 

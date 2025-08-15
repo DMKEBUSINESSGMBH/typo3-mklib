@@ -116,7 +116,6 @@ abstract class tx_mklib_mod1_searcher_abstractBase implements tx_mklib_mod1_expo
     protected function loadOwnLocalLangNotOverwritingExistingLabels()
     {
         $labels = new ReflectionProperty($GLOBALS['LANG']::class, 'labels');
-        $labels->setAccessible(true);
 
         $initialLabels = $labels->getValue($GLOBALS['LANG']);
         $labelsFromMklib = $GLOBALS['LANG']->includeLLFile('EXT:mklib/Resources/Private/Language/BackendModule/locallang.xlf');

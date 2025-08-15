@@ -255,7 +255,6 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends Sys25\RnBa
             'tx_mklib_scheduler_SchedulerTaskFailDetection',
             'executeTask'
         );
-        $method->setAccessible(true);
         self::assertEquals(
             'keine fehlgeschlagenen Scheduler entdeckt!',
             $method->invokeArgs($scheduler, [[], &$devLog])
@@ -290,7 +289,6 @@ class tx_mklib_tests_scheduler_SchedulerTaskFailDetectionTest extends Sys25\RnBa
             'tx_mklib_scheduler_SchedulerTaskFailDetection',
             'executeTask'
         );
-        $method->setAccessible(true);
         self::assertEquals(
             'tasks failed',
             $method->invokeArgs($scheduler, [[], &$devLog])

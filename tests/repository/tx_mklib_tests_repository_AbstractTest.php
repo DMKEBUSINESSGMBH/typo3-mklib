@@ -43,7 +43,6 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
         $repository = $this->getRepositoryMock();
 
         $method = new ReflectionMethod('tx_mklib_repository_Abstract', 'handleEnableFieldsOptions');
-        $method->setAccessible(true);
 
         $fields = [];
         $method->invokeArgs($repository, [&$fields, &$options]);
@@ -69,7 +68,6 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
         $repository = $this->getRepositoryMock();
 
         $method = new ReflectionMethod('tx_mklib_repository_Abstract', 'getSearcher');
-        $method->setAccessible(true);
 
         self::assertInstanceOf(
             'tx_mklib_search_StaticCountries',
@@ -118,7 +116,6 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
         $repository = $this->getRepositoryMock();
 
         $method = new ReflectionMethod('tx_mklib_repository_Abstract', 'getWrapperClass');
-        $method->setAccessible(true);
 
         self::assertEquals(
             'tx_mklib_model_StaticCountry',
@@ -282,7 +279,6 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
             'tx_mklib_repository_Abstract',
             'secureFromCrossSiteScripting'
         );
-        $method->setAccessible(true);
 
         $returnArray = $method->invoke($repository, $model, $data);
         $expectedReturnArray = $data;
@@ -305,7 +301,6 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
             'tx_mklib_repository_Abstract',
             'secureFromCrossSiteScripting'
         );
-        $method->setAccessible(true);
 
         $returnArray = $method->invoke($repository, $model, $data);
         $expectedReturnArray = ['field1' => 'value1', 'field2' => '<b>value2</b>', 'field3' => 'value3'];
