@@ -36,7 +36,7 @@ $EM_CONF['mklib'] = [
     'state' => 'stable',
     'constraints' => [
         'depends' => [
-            'rn_base' => '1.17.0-',
+            'rn_base' => '1.20.0-',
             'typo3' => '12.4.0-13.4.99',
         ],
         'conflicts' => [],

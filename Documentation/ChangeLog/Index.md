@@ -5,7 +5,10 @@ The following is a very high level overview of the changes in this extension.
 
 | Version | Changes                                                                                                              |
 |---------|----------------------------------------------------------------------------------------------------------------------|
-| 12.0.0  | TYPO3 12.4 compatibility                                                     |
+| 13.0.0  | TYPO3 12.4 and 13.4 compatibility only                                                                               |
+| 12.0.2  | maintenance and minor bugfixing                                                                                      |
+| 12.0.1  | maintenance and minor bugfixing                                                                                             |
+| 12.0.0  | TYPO3 12.4 compatibility                                                                                             |
 | 11.0.2  | new extension icon                                                                                                   |
 | 11.0.1  | Cleanup and minor bugfixes                                                                                           |
 | 11.0.0  | added support for TYPO3 10.4 and 11.5 and PHP 7.4 and 8.0 only                                                       |
