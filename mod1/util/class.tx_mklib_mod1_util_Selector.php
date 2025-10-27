@@ -289,7 +289,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return string selected item
      */
-    protected function showSelectorByTCA($sDefId, $table, $column, array &$aData, $aOptions = [])
+    protected function showSelectorByTCA($sDefId, $table, $column, array &$aData, array $aOptions = [])
     {
         $items = [];
         if (is_array($aOptions['additionalItems'])) {
@@ -383,7 +383,7 @@ class tx_mklib_mod1_util_Selector
      *
      * @return array[to => int, from => int]
      */
-    public function showDateRangeSelector(array &$out, string $key, $options = []): array
+    public function showDateRangeSelector(array &$out, string $key, array $options = []): array
     {
         $fromValue = $this->getDateFieldByKey($key.'_from', $out);
         $toValue = $this->getDateFieldByKey($key.'_to', $out);
@@ -400,7 +400,7 @@ class tx_mklib_mod1_util_Selector
     /**
      * @return string gewählte zeit in d-m-Y
      */
-    private function getDateFieldByKey(string $key, &$out)
+    private function getDateFieldByKey(string $key, array &$out)
     {
         $value = isset($_POST[$key]) ?
             Sys25\RnBase\Frontend\Request\Parameters::getPostOrGetParameter($key) : $this->getValueFromModuleData($key);

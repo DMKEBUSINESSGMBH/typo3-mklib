@@ -117,7 +117,7 @@ class tx_mklib_tests_repository_PagesTest extends Sys25\RnBase\Testing\BaseTestC
             ->with(
                 // check, if only (count:1) the page field is set
                 self::callback(
-                    function ($f) use ($that): bool {
+                    function (Countable|iterable $f) use ($that): bool {
                         $that::assertTrue(is_array($f));
                         $that::assertCount(1, $f);
                         $that::assertSame(57, $f['PAGES.pid'][OP_EQ_INT]);
@@ -127,7 +127,7 @@ class tx_mklib_tests_repository_PagesTest extends Sys25\RnBase\Testing\BaseTestC
                 ),
                 // check, if only (count:1) the searchdef
                 self::callback(
-                    function ($o) use ($that): bool {
+                    function (Countable|iterable|ArrayAccess $o) use ($that): bool {
                         $that::assertTrue(is_array($o));
                         $that::assertCount(2, $o);
                         $that::assertArrayHasKey('enablefieldsbe', $o);
@@ -201,7 +201,7 @@ class tx_mklib_tests_repository_PagesTest extends Sys25\RnBase\Testing\BaseTestC
             ->method('search')
             ->with(
                 self::callback(
-                    function ($f) use ($that): bool {
+                    function (array|ArrayAccess $f) use ($that): bool {
                         $that::assertTrue(is_array($f));
                         $that::assertArrayHasKey('NEWALIAS.uid', $f);
                         $that::assertTrue(is_array($f['NEWALIAS.uid']));
@@ -212,7 +212,7 @@ class tx_mklib_tests_repository_PagesTest extends Sys25\RnBase\Testing\BaseTestC
                     }
                 ),
                 self::callback(
-                    function ($o) use ($that): bool {
+                    function (array|ArrayAccess $o) use ($that): bool {
                         $that::assertTrue(is_array($o));
                         $that::assertArrayHasKey('sqlonly', $o);
                         $that::assertTrue($o['sqlonly']);

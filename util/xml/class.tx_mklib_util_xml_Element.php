@@ -146,7 +146,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      */
     public function isEmpty(): bool
     {
-        return 0 == count($this->children()) && 0 == count($this->attributes());
+        return 0 === count($this->children()) && 0 === count($this->attributes());
     }
 
     /**

@@ -46,14 +46,14 @@ class tx_mklib_mod1_util_Language
     public static function getLangRecord($uid)
     {
         $uid = (int) $uid;
-        if (empty(static::$sysLanguageRecords[$uid])) {
-            static::$sysLanguageRecords[$uid] = Sys25\RnBase\Database\Connection::getInstance()->getRecord(
+        if (empty(self::$sysLanguageRecords[$uid])) {
+            self::$sysLanguageRecords[$uid] = Sys25\RnBase\Database\Connection::getInstance()->getRecord(
                 'sys_language',
                 $uid
             );
         }
 
-        return static::$sysLanguageRecords[$uid];
+        return self::$sysLanguageRecords[$uid];
     }
 
     /**
@@ -68,11 +68,11 @@ class tx_mklib_mod1_util_Language
             $sysLanguageRecordAll = true;
             $records = Sys25\RnBase\Database\Connection::getInstance()->doSelect('*', 'sys_language', []);
             foreach ($records as $record) {
-                static::$sysLanguageRecords[(int) $record['uid']] = $record;
+                self::$sysLanguageRecords[(int) $record['uid']] = $record;
             }
         }
 
-        $records = static::$sysLanguageRecords;
+        $records = self::$sysLanguageRecords;
 
         if ($pageId) {
             // check all page overlays to get all available languages for the page

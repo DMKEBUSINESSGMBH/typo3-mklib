@@ -300,7 +300,7 @@ class Tests
         $execute = true,
         &$frontendOutput = '',
         &$viewData = null
-    ) {
+    ): object {
         if (is_string($action)) {
             $action = GeneralUtility::makeInstance($action);
         }

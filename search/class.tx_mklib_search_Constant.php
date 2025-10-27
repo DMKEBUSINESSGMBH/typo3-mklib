@@ -37,10 +37,7 @@ abstract class tx_mklib_search_Constant extends Sys25\RnBase\Search\SearchBase
      */
     protected function getTableMappings()
     {
-        $tableMapping['CONSTANT'] = $this->getBaseTable();
-        $tableMapping['CONSTANTTYPE'] = $this->getConstantTypesTable();
-
-        return $tableMapping;
+        return ['CONSTANT' => $this->getBaseTable(), 'CONSTANTTYPE' => $this->getConstantTypesTable()];
     }
 
     /**

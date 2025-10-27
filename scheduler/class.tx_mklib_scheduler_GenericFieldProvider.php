@@ -224,7 +224,7 @@ abstract class tx_mklib_scheduler_GenericFieldProvider implements TYPO3\CMS\Sche
             // wurde eine fehlermeldung erzeugt?
             if ($bMessage) {
                 $sMessage = '' !== $sMessage && '0' !== $sMessage ? $sMessage : $GLOBALS['LANG']->sL($sLabelKey);
-                $sMessage = $sMessage ?: ucfirst($sKey).' has to eval '.$sEval.'.';
+                $sMessage = $sMessage ?: ucfirst((string) $sKey).' has to eval '.$sEval.'.';
                 $flashMessageClass = Sys25\RnBase\Utility\Typo3Classes::getFlashMessageClass();
                 Sys25\RnBase\Utility\Misc::addFlashMessage($sMessage, '', $flashMessageClass::ERROR);
                 $bError = true;

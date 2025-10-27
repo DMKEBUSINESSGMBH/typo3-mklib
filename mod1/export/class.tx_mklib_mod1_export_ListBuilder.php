@@ -132,7 +132,7 @@ class tx_mklib_mod1_export_ListBuilder extends Sys25\RnBase\Frontend\Marker\List
         );
         $wrap = explode($token, $wrap);
 
-        if ($required && 2 != count($wrap)) {
+        if ($required && 2 !== count($wrap)) {
             // es ist etwas schiefgelaufen, wir sollten immer 2 teile haben
             // einmal header und einmal footer
             throw new Exception('Marker '.$marker.' not fount in Template', 1361171589);

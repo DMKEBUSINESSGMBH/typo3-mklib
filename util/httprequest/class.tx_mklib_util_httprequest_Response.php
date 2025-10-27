@@ -152,7 +152,7 @@ class tx_mklib_util_httprequest_Response implements Stringable
         foreach ($headers as $name => $value) {
             if (is_int($name)) {
                 $header = explode(':', (string) $value, 2);
-                if (2 != count($header)) {
+                if (2 !== count($header)) {
                     throw new Exception('"'.$value.'" is not a valid HTTP header');
                 }
 
@@ -580,7 +580,7 @@ class tx_mklib_util_httprequest_Response implements Stringable
          * @see http://framework.zend.com/issues/browse/ZF-6040
          */
         $zlibHeader = unpack('n', substr($body, 0, 2));
-        if ($zlibHeader[1] % 31 == 0) {
+        if ($zlibHeader[1] % 31 === 0) {
             return gzuncompress($body);
         }
 

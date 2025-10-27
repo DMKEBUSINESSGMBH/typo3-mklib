@@ -90,7 +90,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         }
 
         foreach ($config as $k => $v) {
-            $option = strtolower($k);
+            $option = strtolower((string) $k);
             switch ($option) {
                 case 'proxy_host':
                     $this->setCurlOption(CURLOPT_PROXY, $v);
@@ -249,7 +249,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
         // set additional curl options
         if (isset($this->config['curloptions'])) {
             foreach ((array) $this->config['curloptions'] as $k => $v) {
-                if (false == curl_setopt($this->curl, $k, $v)) {
+                if (false === curl_setopt($this->curl, $k, $v)) {
                     throw new Exception('Unknown or erroreous cURL option "'.$k.'" set');
                 }
             }

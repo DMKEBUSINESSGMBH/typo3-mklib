@@ -472,13 +472,13 @@ class tx_mklib_util_File
             'path' => '', 'query' => '', 'fragment' => '',
         ], $parts);
 
-        $password = strlen((string) $parts['pass']) > 0 ? ':'.$parts['pass'] : '';
-        $auth = strlen((string) $parts['user']) > 0 ? $parts['user'].$password.'@' : '';
-        $port = strlen((string) $parts['port']) > 0 ? ':'.$parts['port'] : '';
+        $password = '' !== (string) $parts['pass'] ? ':'.$parts['pass'] : '';
+        $auth = '' !== (string) $parts['user'] ? $parts['user'].$password.'@' : '';
+        $port = '' !== (string) $parts['port'] ? ':'.$parts['port'] : '';
         // check excisting ? ???
         // $query = strlen($parts['query']) > 0 ? ($parts['query'][0] == '?' ? $parts['query'] : '?'.$parts['query']) : '';
-        $query = strlen((string) $parts['query']) > 0 ? '?'.$parts['query'] : '';
-        $fragment = strlen((string) $parts['fragment']) > 0 ? '#'.$parts['fragment'] : '';
+        $query = '' !== (string) $parts['query'] ? '?'.$parts['query'] : '';
+        $fragment = '' !== (string) $parts['fragment'] ? '#'.$parts['fragment'] : '';
 
         return $parts['scheme'].'://'.$auth
             .$parts['host'].$port

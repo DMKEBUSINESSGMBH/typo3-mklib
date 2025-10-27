@@ -51,7 +51,7 @@ class tx_mklib_tests_util_HttpRequestTest extends Sys25\RnBase\Testing\BaseTestC
         $request = new tx_mklib_util_HttpRequest($url, $config);
 
         $request->addParameter('httprequest', ['time' => $time, 'return' => 'time']);
-        $request->setMethod($request::METHOD_POST);
+        $request->setMethod(tx_mklib_util_HttpRequest::METHOD_POST);
 
         $response = $request->request();
 

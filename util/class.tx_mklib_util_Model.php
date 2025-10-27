@@ -117,7 +117,7 @@ class tx_mklib_util_Model
      *
      * @return Sys25\RnBase\Domain\Model\RecordInterface
      */
-    public static function getEmptyInstance(string $sClassName)
+    public static function getEmptyInstance(string $sClassName): object
     {
         $key = 'empty_instance_'.$sClassName;
         $oInstance = tx_mklib_util_StaticCache::get($key);

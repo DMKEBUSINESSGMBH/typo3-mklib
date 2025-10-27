@@ -162,7 +162,7 @@ class tx_mklib_tests_repository_TtNewsTest extends Sys25\RnBase\Testing\BaseTest
             ->method('search')
             ->with(
                 self::callback(
-                    function ($f) use ($that): bool {
+                    function (array|ArrayAccess $f) use ($that): bool {
                         $that::assertTrue(is_array($f));
                         $that::assertArrayHasKey('NEWALIAS.uid', $f);
                         $that::assertTrue(is_array($f['NEWALIAS.uid']));
@@ -173,7 +173,7 @@ class tx_mklib_tests_repository_TtNewsTest extends Sys25\RnBase\Testing\BaseTest
                     }
                 ),
                 self::callback(
-                    function ($o) use ($that): bool {
+                    function (array|ArrayAccess $o) use ($that): bool {
                         $that::assertTrue(is_array($o));
                         $that::assertArrayHasKey('sqlonly', $o);
                         $that::assertTrue($o['sqlonly']);
@@ -222,7 +222,7 @@ class tx_mklib_tests_repository_TtNewsTest extends Sys25\RnBase\Testing\BaseTest
             ->method('search')
             ->with(
                 self::callback(
-                    function ($f) use ($that): bool {
+                    function (array|ArrayAccess $f) use ($that): bool {
                         $that::assertTrue(is_array($f));
                         $that::assertArrayHasKey('NEWS.uid', $f);
                         $that::assertTrue(is_array($f['NEWS.uid']));
@@ -233,7 +233,7 @@ class tx_mklib_tests_repository_TtNewsTest extends Sys25\RnBase\Testing\BaseTest
                     }
                 ),
                 self::callback(
-                    function ($o) use ($that): bool {
+                    function (array|ArrayAccess $o) use ($that): bool {
                         $that::assertTrue(is_array($o));
                         $that::assertArrayHasKey('searchdef', $o);
                         $searchdef = &$o['searchdef'];
@@ -270,7 +270,7 @@ class tx_mklib_tests_repository_TtNewsTest extends Sys25\RnBase\Testing\BaseTest
             ->method('search')
             ->with(
                 self::callback(
-                    function ($f) use ($that): bool {
+                    function (array|ArrayAccess $f) use ($that): bool {
                         $that::assertTrue(is_array($f));
                         $that::assertArrayHasKey('NEWS.uid', $f);
                         $that::assertTrue(is_array($f['NEWS.uid']));
@@ -281,7 +281,7 @@ class tx_mklib_tests_repository_TtNewsTest extends Sys25\RnBase\Testing\BaseTest
                     }
                 ),
                 self::callback(
-                    function ($o) use ($that): bool {
+                    function (array|ArrayAccess $o) use ($that): bool {
                         $that::assertTrue(is_array($o));
                         $that::assertArrayHasKey('searchdef', $o);
                         $searchdef = &$o['searchdef'];

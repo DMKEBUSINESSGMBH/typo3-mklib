@@ -81,7 +81,7 @@ class tx_mklib_scheduler_cleanupTempFilesFieldProvider extends tx_mklib_schedule
      *
      * @param string $sPath
      */
-    protected function validateFolder($sPath, $submittedData)
+    protected function validateFolder($sPath, array $submittedData)
     {
         $directoryCheckDir = $submittedData['directorycheckdir'] ?? 'typo3temp';
 

@@ -156,7 +156,7 @@ class tx_mklib_tests_filter_SorterTest extends Sys25\RnBase\Testing\BaseTestCase
     /**
      * @return Sys25\RnBase\Frontend\Request\Parameters
      */
-    private function getParameters()
+    private function getParameters(): object
     {
         $parameters = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(Sys25\RnBase\Frontend\Request\Parameters::class);
         $parameters->setQualifier('mklib');
@@ -167,7 +167,7 @@ class tx_mklib_tests_filter_SorterTest extends Sys25\RnBase\Testing\BaseTestCase
     /**
      * @return Sys25\RnBase\Configuration\Processor
      */
-    private function getConfigurations(bool $defaultConfig = false)
+    private function getConfigurations(bool $defaultConfig = false): object
     {
         Sys25\RnBase\Utility\Misc::prepareTSFE();
 

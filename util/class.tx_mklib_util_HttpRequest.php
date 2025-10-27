@@ -118,7 +118,7 @@ class tx_mklib_util_HttpRequest
     public function setConfig(array $config = []): static
     {
         foreach ($config as $k => $v) {
-            $this->config[strtolower($k)] = $v;
+            $this->config[strtolower((string) $k)] = $v;
         }
 
         // Pass configuration options to the adapter if it exists

@@ -469,10 +469,8 @@ class tx_mklib_mod1_export_Handler
 
     /**
      * Liefert die styles der Buttons.
-     *
-     * @return string
      */
-    private function getButtonStyles(): string|array
+    private function getButtonStyles(): string
     {
         $css = '<style type="text/css">
         .mklibexport {

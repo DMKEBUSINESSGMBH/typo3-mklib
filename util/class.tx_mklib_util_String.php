@@ -257,7 +257,7 @@ class tx_mklib_util_String extends tx_mklib_util_Var
      *
      * @author Christian Weiske <cweiske@cweiske.de>
      */
-    public static function formatTelephoneNumberRfc3966($orig, $conf)
+    public static function formatTelephoneNumberRfc3966($orig, array $conf)
     {
         if (!isset($conf['countryCode'])) {
             $conf['countryCode'] = '49'; // germany

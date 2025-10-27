@@ -131,9 +131,8 @@ abstract class tx_mklib_repository_Abstract implements Sys25\RnBase\Domain\Repos
      * On default, return hidden and deleted fields in backend.
      *
      * @param array &$fields
-     * @param array &$options
      */
-    protected function prepareFieldsAndOptions(&$fields, &$options)
+    protected function prepareFieldsAndOptions(&$fields, array &$options)
     {
         $this->handleEnableFieldsOptions($fields, $options);
         $this->handleLanguageOptions($fields, $options);
@@ -143,9 +142,8 @@ abstract class tx_mklib_repository_Abstract implements Sys25\RnBase\Domain\Repos
      * On default, return hidden and deleted fields in backend.
      *
      * @param array &$fields
-     * @param array &$options
      */
-    protected function handleEnableFieldsOptions(&$fields, &$options)
+    protected function handleEnableFieldsOptions(&$fields, array &$options)
     {
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof Psr\Http\Message\ServerRequestInterface
             && TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
@@ -162,9 +160,8 @@ abstract class tx_mklib_repository_Abstract implements Sys25\RnBase\Domain\Repos
      * damit nur valide Daten für die aktuelle Sprache ausgelesen werden.
      *
      * @param array &$fields
-     * @param array &$options
      */
-    protected function handleLanguageOptions(&$fields, &$options)
+    protected function handleLanguageOptions(&$fields, array &$options)
     {
         if (!isset($options['i18n'])
             && !isset($options['ignorei18n'])
@@ -199,11 +196,10 @@ abstract class tx_mklib_repository_Abstract implements Sys25\RnBase\Domain\Repos
      * Modifiziert die Ergebisliste.
      *
      * @param array $items
-     * @param array $options
      *
      * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
-    protected function prepareItems($items, $options)
+    protected function prepareItems($items, array $options)
     {
         if (!is_array($items)) {
             return $items;
@@ -220,7 +216,7 @@ abstract class tx_mklib_repository_Abstract implements Sys25\RnBase\Domain\Repos
      *
      * @return array[\Sys25\RnBase\Domain\Model\RecordInterface]
      */
-    protected function uniqueItems(array $items, $options)
+    protected function uniqueItems(array $items, array $options)
     {
         // uniqueue, if there are models and the distinct option
         if (reset($items) instanceof Sys25\RnBase\Domain\Model\RecordInterface

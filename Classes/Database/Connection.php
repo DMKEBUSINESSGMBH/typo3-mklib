@@ -64,12 +64,9 @@ class Tx_Mklib_Database_Connection extends Sys25\RnBase\Database\Connection
     /**
      * Insert crdate and timestamp into correct field (gotten from TCA).
      *
-     * @param array  $data
      * @param string $tablename
-     *
-     * @return array
      */
-    private function insertCrdateAndTimestamp($data, $tablename)
+    private function insertCrdateAndTimestamp(array $data, $tablename): array
     {
         global $GLOBALS;
         // Force creation of timestamp
@@ -85,12 +82,9 @@ class Tx_Mklib_Database_Connection extends Sys25\RnBase\Database\Connection
     /**
      * Insert timestamp into correct field (gotten from TCA).
      *
-     * @param array  $data
      * @param string $tablename
-     *
-     * @return array
      */
-    private function insertTimestamp($data, $tablename)
+    private function insertTimestamp(array $data, $tablename): array
     {
         global $GLOBALS;
         // Force creation of timestamp

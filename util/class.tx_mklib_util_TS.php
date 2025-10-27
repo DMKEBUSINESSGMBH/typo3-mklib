@@ -114,7 +114,7 @@ class tx_mklib_util_TS
         mixed $mPageUid = 0,
         string $sExtKey = 'mklib',
         $sDomainKey = 'plugin.',
-    ) {
+    ): object {
         // ts für die extension auslesen
         $typoScriptConfiguration = self::getTypoScriptConfiguration($mPageUid)[$sDomainKey]['tx_'.$sExtKey.'.'] ?? [];
         $typoScriptConfiguration['lib.'] ??= null;

@@ -124,7 +124,7 @@ class tx_mklib_tests_validator_ZipCodeTest extends Sys25\RnBase\Testing\BaseTest
             1 => ['09113', 54 /* DE */, true],
             2 => ['6666666', 46 /* CN */, false],
         ] as $key => $row) {
-            $key = 'Line:'.strtolower($key).' Zip:'.$row[0].' Country:'.intval($row[1]).' Return:'.intval($row[2]);
+            $key = 'Line:'.strtolower((string) $key).' Zip:'.$row[0].' Country:'.intval($row[1]).' Return:'.intval($row[2]);
             $return[$key] = $row;
         }
 
