@@ -190,7 +190,7 @@ class tx_mklib_mod1_util_Language
             $onclick = $mod->issueCommand(
                 '&cmd['.$item->getTableName().']['.$item->getUid().'][localize]='.$lang['uid']
             );
-            $onclick = 'window.location.href=\''.$onclick.'\'; return false;';
+            $onclick = "window.location.href='".$onclick."'; return false;";
 
             $out .= sprintf(
                 '<a href="#" onclick="%1$s">%2$s</a>',

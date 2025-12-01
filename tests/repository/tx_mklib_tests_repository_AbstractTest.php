@@ -345,10 +345,10 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
-            ->willReturn('\'quoted123\'');
+            ->willReturn("'quoted123'");
         $databaseConnection->expects(self::once())
             ->method('doUpdate')
-            ->with('unknown', '1=1 AND `unknown`.`uid`=\'quoted123\'');
+            ->with('unknown', "1=1 AND `unknown`.`uid`='quoted123'");
 
         $repository->expects(self::once())
             ->method('getDatabaseUtility')
@@ -384,12 +384,12 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
-            ->willReturn('\'quoted123\'');
+            ->willReturn("'quoted123'");
         $databaseConnection->expects(self::once())
             ->method('doUpdate')
             ->with(
                 'unknown',
-                '1=1 AND `unknown`.`uid`=\'quoted123\'',
+                "1=1 AND `unknown`.`uid`='quoted123'",
                 ['column_1' => 'new value']
             );
 
@@ -427,10 +427,10 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
-            ->willReturn('\'quoted123\'');
+            ->willReturn("'quoted123'");
         $databaseConnection->expects(self::once())
             ->method('doUpdate')
-            ->with('unknown', '1=1 AND `unknown`.`uid`=\'quoted123\'', ['secured']);
+            ->with('unknown', "1=1 AND `unknown`.`uid`='quoted123'", ['secured']);
 
         $repository->expects(self::once())
             ->method('getDatabaseUtility')
@@ -471,12 +471,12 @@ class tx_mklib_tests_repository_AbstractTest extends Sys25\RnBase\Testing\BaseTe
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
-            ->willReturn('\'quoted123\'');
+            ->willReturn("'quoted123'");
         $databaseConnection->expects(self::once())
             ->method('doUpdate')
             ->with(
                 'unknown',
-                '1=1 AND `unknown`.`uid`=\'quoted123\'',
+                "1=1 AND `unknown`.`uid`='quoted123'",
                 ['column_1' => 'new value']
             );
 

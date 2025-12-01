@@ -120,8 +120,8 @@ abstract class tx_mklib_tests_DBTestCaseSkeleton extends TestCase
     protected function setUp(): void
     {
         self::markTestSkipped(
-            'Database tests don\'t work after the support for TYPO3 9 was introduced'.
-            ' in rn_base and it\'s database connection. Needs refactoring.'
+            "Database tests don't work after the support for TYPO3 9 was introduced".
+            " in rn_base and it's database connection. Needs refactoring."
         );
 
         try {

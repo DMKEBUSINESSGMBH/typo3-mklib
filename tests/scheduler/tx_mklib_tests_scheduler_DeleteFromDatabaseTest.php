@@ -110,13 +110,13 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends Sys25\RnBase\Testi
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
-            ->willReturn('\'quoted123\'');
+            ->willReturn("'quoted123'");
 
         $databaseConnection->expects(self::once())
             ->method('delete')
             ->with(
                 $this->options['table'],
-                'uid = \'quoted123\'',
+                "uid = 'quoted123'",
                 $this->options['mode']
             );
 
@@ -135,12 +135,12 @@ class tx_mklib_tests_scheduler_DeleteFromDatabaseTest extends Sys25\RnBase\Testi
         $databaseConnection->expects(self::once())
             ->method('fullQuoteStr')
             ->with('123')
-            ->willReturn('\'quoted123\'');
+            ->willReturn("'quoted123'");
         $databaseConnection->expects(self::once())
             ->method('delete')
             ->with(
                 $this->options['table'],
-                $this->options['uidField'].' = \'quoted123\'',
+                $this->options['uidField']." = 'quoted123'",
                 $this->options['mode']
             );
 

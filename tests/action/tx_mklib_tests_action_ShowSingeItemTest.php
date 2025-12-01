@@ -404,7 +404,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends Sys25\RnBase\Testing\BaseT
         self::assertNotEquals(
             $this->defaultSubstitutedPageTitle,
             Sys25\RnBase\Utility\TYPO3::getTSFE()->page['title'],
-            Sys25\RnBase\Utility\TYPO3::class.'::getTSFE()->page[\'title\'] doch ersetzt'
+            Sys25\RnBase\Utility\TYPO3::class."::getTSFE()->page['title'] doch ersetzt"
         );
         self::assertNotEquals(
             $this->defaultSubstitutedPageTitle,
@@ -464,7 +464,7 @@ class tx_mklib_tests_action_ShowSingeItemTest extends Sys25\RnBase\Testing\BaseT
         self::assertEquals(
             $this->defaultSubstitutedPageTitle,
             Sys25\RnBase\Utility\TYPO3::getTSFE()->page['title'],
-            Sys25\RnBase\Utility\TYPO3::class.'::getTSFE()->page[\'title\'] falsch ersetzt'
+            Sys25\RnBase\Utility\TYPO3::class."::getTSFE()->page['title'] falsch ersetzt"
         );
         self::assertEquals(
             $this->defaultSubstitutedPageTitle,

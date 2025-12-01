@@ -117,7 +117,7 @@ class Tx_Mklib_Database_Connection extends Sys25\RnBase\Database\Connection
             $this->insertCrdateAndTimestamp($values, $tablename),
             $debug
         );
-        $this->log('doInsert', $tablename, '1=1 AND `'.$tablename.'`.`uid`=\''.$newUid.'\'', $values);
+        $this->log('doInsert', $tablename, '1=1 AND `'.$tablename."`.`uid`='".$newUid."'", $values);
 
         return $newUid;
     }
