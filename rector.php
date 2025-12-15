@@ -78,10 +78,6 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__.'/Configuration/*.php',
             __DIR__.'/Configuration/**/*.php',
         ],
-
-        // makes double-quoted strings, we don't want this at the moment.
-        Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector::class,
-
         Rector\CodingStyle\Rector\String_\UseClassKeywordForClassNameResolutionRector::class => [
             __DIR__.'/scheduler/class.tx_mklib_scheduler_GenericFieldProvider.php',
         ],
