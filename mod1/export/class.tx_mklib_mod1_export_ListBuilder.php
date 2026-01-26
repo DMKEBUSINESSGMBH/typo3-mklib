@@ -50,7 +50,7 @@ class tx_mklib_mod1_export_ListBuilder extends Sys25\RnBase\Frontend\Marker\List
      *
      * {@inheritdoc}
      *
-     * @see \Sys25\RnBase\Frontend\Marker\ListBuilder::renderEach()
+     * @see Sys25\RnBase\Frontend\Marker\ListBuilder::renderEach()
      */
     public function renderEach(
         Sys25\RnBase\Frontend\Marker\IListProvider $provider,
@@ -146,7 +146,7 @@ class tx_mklib_mod1_export_ListBuilder extends Sys25\RnBase\Frontend\Marker\List
      *
      * {@inheritdoc}
      *
-     * @see \Sys25\RnBase\Frontend\Marker\ListBuilder::render()
+     * @see Sys25\RnBase\Frontend\Marker\ListBuilder::render()
      */
     public function render(
         &$dataArr,

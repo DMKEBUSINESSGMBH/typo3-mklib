@@ -33,7 +33,7 @@ abstract class tx_mklib_search_Constant extends Sys25\RnBase\Search\SearchBase
     /**
      * (non-PHPdoc).
      *
-     * @see \Sys25\RnBase\Search\SearchBase::getTableMappings()
+     * @see Sys25\RnBase\Search\SearchBase::getTableMappings()
      */
     protected function getTableMappings()
     {
@@ -43,7 +43,7 @@ abstract class tx_mklib_search_Constant extends Sys25\RnBase\Search\SearchBase
     /**
      * (non-PHPdoc).
      *
-     * @see \Sys25\RnBase\Search\SearchBase::useAlias()
+     * @see Sys25\RnBase\Search\SearchBase::useAlias()
      */
     protected function useAlias()
     {
@@ -53,7 +53,7 @@ abstract class tx_mklib_search_Constant extends Sys25\RnBase\Search\SearchBase
     /**
      * (non-PHPdoc).
      *
-     * @see \Sys25\RnBase\Search\SearchBase::getBaseTableAlias()
+     * @see Sys25\RnBase\Search\SearchBase::getBaseTableAlias()
      */
     protected function getBaseTableAlias()
     {
@@ -70,7 +70,7 @@ abstract class tx_mklib_search_Constant extends Sys25\RnBase\Search\SearchBase
     /**
      * (non-PHPdoc).
      *
-     * @see \Sys25\RnBase\Search\SearchBase::getJoins()
+     * @see Sys25\RnBase\Search\SearchBase::getJoins()
      */
     protected function getJoins($tableAliases)
     {

@@ -67,7 +67,7 @@ abstract class tx_mklib_action_AbstractList extends Sys25\RnBase\Frontend\Contro
         $repo = $this->getRepository();
 
         // check the repo interface
-        if (!($repo instanceof Sys25\RnBase\Domain\Repository\SearchInterface)) {
+        if (!$repo instanceof Sys25\RnBase\Domain\Repository\SearchInterface) {
             throw new RuntimeException('the repository "'.$repo::class.'" has to implement the interface "\Sys25\RnBase\Domain\Repository\SearchInterface"!', intval(ERROR_CODE_MKLIB.'1'));
         }
 

@@ -74,7 +74,7 @@ class tx_mklib_tests_fixtures_classes_DummyMod extends Sys25\RnBase\Backend\Modu
      *
      * {@inheritdoc}
      *
-     * @see \Sys25\RnBase\Backend\Module\BaseModule::getDoc()
+     * @see Sys25\RnBase\Backend\Module\BaseModule::getDoc()
      */
     public function getDoc()
     {

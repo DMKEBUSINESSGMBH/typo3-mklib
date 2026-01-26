@@ -33,7 +33,7 @@ abstract class tx_mklib_filter_SingleItem extends Sys25\RnBase\Frontend\Filter\B
     /**
      * (non-PHPdoc).
      *
-     * @see \Sys25\RnBase\Frontend\Filter\BaseFilter::initFilter()
+     * @see Sys25\RnBase\Frontend\Filter\BaseFilter::initFilter()
      */
     protected function initFilter(&$fields, &$options, Sys25\RnBase\Frontend\Request\RequestInterface $request)
     {

@@ -33,7 +33,7 @@ class tx_mklib_tests_fixtures_classes_SorterFilter extends tx_mklib_filter_Sorte
     /**
      * (non-PHPdoc).
      *
-     * @see \Sys25\RnBase\Frontend\Filter\BaseFilter::initFilter()
+     * @see Sys25\RnBase\Frontend\Filter\BaseFilter::initFilter()
      */
     protected function initFilter(&$fields, &$options, Sys25\RnBase\Frontend\Request\RequestInterface $request): string
     {
