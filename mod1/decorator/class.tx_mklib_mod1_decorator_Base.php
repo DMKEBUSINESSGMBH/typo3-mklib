@@ -253,7 +253,7 @@ class tx_mklib_mod1_decorator_Base implements Sys25\RnBase\Backend\Decorator\Int
             }
         }
 
-        return $ret;
+        return '<div class="btn-group">'.$ret.'</div>';
     }
 
     protected function wrapValue(
