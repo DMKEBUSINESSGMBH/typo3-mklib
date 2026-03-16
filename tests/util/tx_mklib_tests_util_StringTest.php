@@ -216,8 +216,8 @@ class tx_mklib_tests_util_StringTest extends Sys25\RnBase\Testing\BaseTestCase
         self::markTestIncomplete("Error: Class 'TYPO3\CMS\Core\TimeTracker\NullTimeTracker' not found");
         Sys25\RnBase\Utility\Misc::prepareTSFE();
 
-        $GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] = 2;
-        $GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst'] = '&#8203;(at)&#8203';
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['spamProtectEmailAddresses'] = 2;
+        $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript')->getConfigArray()['spamProtectEmailAddresses_atSubst'] = '&#8203;(at)&#8203';
 
         // tq_seo extension hat einen hook der auf das folgende feld zugreift.
         // wenn dieses nicht da ist bricht der test mit einer php warnung ab, was
