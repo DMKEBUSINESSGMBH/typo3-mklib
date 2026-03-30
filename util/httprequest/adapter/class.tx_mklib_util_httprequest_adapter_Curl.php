@@ -242,7 +242,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
          * Make sure POSTFIELDS is set after $curlMethod is set:
          * @link http://de2.php.net/manual/en/function.curl-setopt.php#81161
          */
-        if (tx_mklib_util_HttpRequest::METHOD_POST == $method) {
+        if (tx_mklib_util_HttpRequest::METHOD_POST === $method) {
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, $body);
         }
 
