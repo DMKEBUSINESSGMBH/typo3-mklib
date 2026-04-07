@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Copyright notice
  *
@@ -28,7 +30,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-
 /**
  * Class to access services.
  */

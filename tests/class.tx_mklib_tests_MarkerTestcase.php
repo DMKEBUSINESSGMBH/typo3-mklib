@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * Copyright notice
  *
@@ -28,7 +30,6 @@
 /**
  * benötigte Klassen einbinden.
  */
-
 /**
  * Testklasse für Marker Klassen, die ihre Ausgabe über
  * \Sys25\RnBase\Frontend\Marker\Templates::substituteMarkerArrayCached erstellen.
