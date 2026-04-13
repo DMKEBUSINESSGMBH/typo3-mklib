@@ -237,30 +237,6 @@ class Tests
     }
 
     /**
-     * Setzt das fe_user objekt, falls es noch nicht gesetzt wurde.
-     *
-     * @param tslib_feuserauth $oFeUser Erzeugt das tslib_feuserauth Objekt wenn nix übergeben wurde
-     * @param bool             $bForce  setzt das fe_user Objekt auch, wenn es bereits gesetzt ist
-     */
-    public static function setFeUserObject($oFeUser = null, $bForce = false): void
-    {
-        $frontendUserAuthenticationClass = \Sys25\RnBase\Utility\Typo3Classes::getFrontendUserAuthenticationClass();
-        if (!$GLOBALS['TSFE']->fe_user instanceof $frontendUserAuthenticationClass
-            || $bForce
-        ) {
-            if (!is_object($oFeUser)) {
-                $oFeUser = GeneralUtility::makeInstance($frontendUserAuthenticationClass);
-            }
-
-            if (!is_object($GLOBALS['TSFE'])) {
-                self::prepareTSFE(['force' => true]);
-            }
-
-            $GLOBALS['TSFE']->fe_user = $oFeUser;
-        }
-    }
-
-    /**
      * Setzt Sprach-Labels.
      *
      * @param array  $labels
