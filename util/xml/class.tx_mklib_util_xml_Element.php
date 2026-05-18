@@ -77,7 +77,7 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
     public function hasValueForPath($path): bool
     {
         $var = $this->getNodeFromPath($path);
-        $var = is_null($var) ? $this->getAttributeFromPath($path) : $var;
+        $var ??= $this->getAttributeFromPath($path);
 
         return !is_null($var) && strlen((string) $var);
     }

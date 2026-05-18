@@ -53,7 +53,7 @@ class tx_mklib_util_TS
         $resolveReferences = false,
         $forceTsfePreparation = false,
     ): Sys25\RnBase\Configuration\Processor {
-        $extKeyTs = is_null($extKeyTs) ? $extKey : $extKeyTs;
+        $extKeyTs ??= $extKey;
 
         if (!$sStaticPath) {
             $sStaticPath = '/static/ts/setup.txt';
