@@ -50,7 +50,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
      *
      * @return float
      */
-    public function getNetPriceByGrossPriceAndTax($gross, $tax)
+    public function getNetPriceByGrossPriceAndTax($gross, $tax): float|string|int
     {
         // Rechnen wir mit Double?
         if (is_float($gross)) {
@@ -67,7 +67,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
      *
      * @return float
      */
-    public function getGrossPriceByNetPriceAndTax($net, $tax)
+    public function getGrossPriceByNetPriceAndTax($net, $tax): float|string|int
     {
         // Rechnen wir mit Double?
         if (is_float($net)) {
@@ -84,7 +84,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
      *
      * @return float
      */
-    public function getTaxAmountByNetPriceAndTax($net, $tax)
+    public function getTaxAmountByNetPriceAndTax($net, $tax): float|string|int
     {
         if (is_float($net)) {
             return $this->getDoubleByInt(
@@ -119,7 +119,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
      * @param doubleval $net
      * @param doubleval $gross
      */
-    public function getTaxAmountByNetAndGrossPrice($net, $gross)
+    public function getTaxAmountByNetAndGrossPrice($net, $gross): string|float
     {
         return $this->getDoubleByInt(
             $this->getIntByDouble($gross) - $this->getIntByDouble($net)
@@ -160,7 +160,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
      *
      * @return float
      */
-    public function getDoubleByInt($int, $digits = 4, $format = true, $delimiter = '.')
+    public function getDoubleByInt($int, $digits = 4, $format = true, $delimiter = '.'): string|float
     {
         $baseInt = intval('1'.str_repeat('0', $digits));
         $doubleVal = floatval(floatval($int) / $baseInt);
@@ -181,7 +181,7 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
      *
      * @return doubleval
      */
-    public function roundUpDouble($doubleValue, $digits = 4, $format = true, $delimiter = '.')
+    public function roundUpDouble($doubleValue, $digits = 4, $format = true, $delimiter = '.'): string|int|float
     {
         $baseInt = intval('1'.str_repeat('0', $digits));
         $roundedDoubleValue = ($doubleValue * $baseInt);

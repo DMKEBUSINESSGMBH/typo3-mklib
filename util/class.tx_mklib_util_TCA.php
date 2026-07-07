@@ -84,7 +84,7 @@ class tx_mklib_util_TCA
             // wollen wir als fallback immer ein array!
             null === $default ? null : []
         );
-        if (!(is_array($fields) && isset($fields[$column])) && null === $default) {
+        if ((!is_array($fields) || !isset($fields[$column])) && null === $default) {
             throw new LogicException('The enablecolumn "'.$column.'" does not exists in TCA for for table "'.$tableName.'".', intval(ERROR_CODE_MKLIB. 3002));
         }
 
