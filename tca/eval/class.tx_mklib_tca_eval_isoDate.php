@@ -59,7 +59,7 @@ LH;
      */
     public function evaluateFieldValue($value, $is_in, &$set): string
     {
-        if (!preg_match('/(\d{4})[-\/.]{1}(\d{1,2})[-\/.]{1}(\d{1,2})/', $value, $matches) || !checkdate($matches[2], $matches[3], $matches[1])) {
+        if (in_array(preg_match('/(\d{4})[-\/.]{1}(\d{1,2})[-\/.]{1}(\d{1,2})/', $value, $matches), [0, false], true) || !checkdate($matches[2], $matches[3], $matches[1])) {
             return '0000-00-00';
         }
 
