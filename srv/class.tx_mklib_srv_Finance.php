@@ -178,8 +178,6 @@ class tx_mklib_srv_Finance extends Sys25\RnBase\Typo3Wrapper\Service\AbstractSer
      * @param int       $digits
      * @param bool      $format
      * @param string    $delimiter
-     *
-     * @return doubleval
      */
     public function roundUpDouble($doubleValue, $digits = 4, $format = true, $delimiter = '.'): string|int|float
     {

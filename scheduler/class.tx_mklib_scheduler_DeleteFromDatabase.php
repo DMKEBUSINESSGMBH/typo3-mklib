@@ -78,9 +78,6 @@ class tx_mklib_scheduler_DeleteFromDatabase extends tx_mklib_scheduler_Generic
         return $selectFields;
     }
 
-    /**
-     * @return string
-     */
     protected function getDatabaseConnection(): object
     {
         return TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Mklib_Database_Connection');

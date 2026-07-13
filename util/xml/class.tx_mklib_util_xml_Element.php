@@ -112,8 +112,6 @@ class tx_mklib_util_xml_Element extends SimpleXMLElement
      * Liefert ein double anhand eines Strings im XML.
      *
      * @param string $path
-     *
-     * @return float
      */
     public function getIntFromPath($path): ?int
     {

@@ -77,8 +77,6 @@ class tx_mklib_mod1_export_ListMarker extends Sys25\RnBase\Frontend\Marker\ListM
      * @param string                                  $marker
      * @param Sys25\RnBase\Frontend\Marker\FormatUtil $formatter
      * @param int                                     $offset
-     *
-     * @return array
      */
     public function render($dataArr, $template, $markerClassname, $confId, $marker, &$formatter, $markerParams = false, $offset = 0): string
     {
