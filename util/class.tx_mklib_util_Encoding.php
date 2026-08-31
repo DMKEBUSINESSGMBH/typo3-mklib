@@ -67,9 +67,7 @@ class tx_mklib_util_Encoding
         $forceEncoding = false,
     ) {
         // use Typo3 encoding
-        if (is_null($toEncoding)) {
-            $toEncoding = self::getTypo3Encoding();
-        }
+        $toEncoding ??= self::getTypo3Encoding();
 
         // convert array recursive
         if ($var instanceof Sys25\RnBase\Domain\Model\DataModel) {

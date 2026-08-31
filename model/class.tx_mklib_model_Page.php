@@ -55,9 +55,7 @@ class tx_mklib_model_Page extends Sys25\RnBase\Domain\Model\BaseModel
      */
     public function getChildren()
     {
-        if (null === $this->children) {
-            $this->children = $this->getRepository()->getChildren($this);
-        }
+        $this->children ??= $this->getRepository()->getChildren($this);
 
         return $this->children;
     }

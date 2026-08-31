@@ -114,9 +114,7 @@ class tx_mklib_util_httprequest_adapter_Curl implements tx_mklib_util_httpreques
      */
     protected function setCurlOption($option, $value): static
     {
-        if (!isset($this->config['curloptions'])) {
-            $this->config['curloptions'] = [];
-        }
+        $this->config['curloptions'] ??= [];
 
         $this->config['curloptions'][$option] = $value;
 

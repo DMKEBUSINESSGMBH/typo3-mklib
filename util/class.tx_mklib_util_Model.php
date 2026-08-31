@@ -99,9 +99,7 @@ class tx_mklib_util_Model
         $aUniques = [];
         if (is_array($aModels)) {
             foreach ($aModels as $oModel) {
-                if (!isset($aUniques[$oModel->getUid()])) {
-                    $aUniques[$oModel->getUid()] = $oModel;
-                }
+                $aUniques[$oModel->getUid()] ??= $oModel;
             }
         } // wurde nur ein Model übergeben?
         elseif (is_object($aModels)) {

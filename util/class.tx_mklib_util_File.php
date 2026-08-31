@@ -64,11 +64,9 @@ class tx_mklib_util_File
         }
 
         $key = $key ? 'base' : md5(serialize($mounts).serialize($f_ext));
-        if (!isset(self::$ftInstances[$key])) {
-            self::$ftInstances[$key] = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                Sys25\RnBase\Utility\Typo3Classes::getBasicFileUtilityClass()
-            );
-        }
+        self::$ftInstances[$key] ??= TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            Sys25\RnBase\Utility\Typo3Classes::getBasicFileUtilityClass()
+        );
 
         return self::$ftInstances[$key];
     }

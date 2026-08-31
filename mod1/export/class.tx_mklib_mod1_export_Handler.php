@@ -123,7 +123,7 @@ class tx_mklib_mod1_export_Handler
      *
      * @return string|bool
      */
-    public function getCurrentExportType()
+    public function getCurrentExportType(): false|int|string|null
     {
         $parameters = Sys25\RnBase\Frontend\Request\Parameters::getPostAndGetParametersMerged('mklib');
         if (empty($parameters['export'])) {
@@ -131,7 +131,7 @@ class tx_mklib_mod1_export_Handler
         }
 
         // den Typ des Exports auslesen;
-        $type = reset(array_keys($parameters['export']));
+        $type = array_key_first($parameters['export']);
         $types = $this->getExportTypes();
 
         if (!in_array($type, $types)) {
