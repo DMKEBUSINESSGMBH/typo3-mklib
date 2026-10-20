@@ -98,7 +98,7 @@ class tx_mklib_util_Array
      *
      * @param bool $bStrict
      */
-    public static function inArray($mNeedle, array $aHaystack, $bStrict = false)
+    public static function inArray($mNeedle, array $aHaystack, $bStrict = false): bool
     {
         if (!is_array($mNeedle)) {
             return in_array($mNeedle, $aHaystack, $bStrict);
