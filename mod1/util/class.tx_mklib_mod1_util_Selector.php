@@ -442,12 +442,7 @@ class tx_mklib_mod1_util_Selector
         return ['from' => $fromTimestamp, 'to' => $toTimestamp];
     }
 
-    /**
-     * @param int $timestamp
-     *
-     * @return int
-     */
-    private function moveTimestampToTheEndOfTheDay($timestamp): int|float
+    private function moveTimestampToTheEndOfTheDay(int $timestamp): int
     {
         return $timestamp + 86400;
     }
